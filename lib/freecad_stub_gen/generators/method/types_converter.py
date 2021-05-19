@@ -79,7 +79,7 @@ class TypesConverter:
                 argS for argS in self.argumentStrings[varArg]
                 if all(fm not in argS for fm in self._FORBIDDEN_MACROS)]
 
-    def convertFormatToTypes(self) -> Iterator[Arg]:
+    def convertFormatToTypes(self, kwargList: list[str]) -> Iterator[Arg]:
         formatStr = self.argumentStrings[self.formatStrPosition]
         realArgNum = self.realStartArgNum
         argNum = 0
@@ -93,7 +93,8 @@ class TypesConverter:
                         parseTupleMap['O!'] = self._findPointerType(realArgNum)
 
                     if objType := parseTupleMap.get(curVal):
-                        yield Arg(self.startArgNum + argNum, objType, optional)
+                        name = self._getArgName(formatStr, kwargList, argNum)
+                        yield Arg(self.startArgNum + argNum, objType, optional, name)
                         argNum += 1
                         realArgNum += parseSizeMap[curVal]
                         formatStr = formatStr[size:]
@@ -114,6 +115,14 @@ class TypesConverter:
 
         if self.onlyPositional and argNum != 0:
             yield PositionalOnlyArg(-1, '', default=False)
+
+    def _getArgName(self, formatStr: str, kwargList: list[str], argNum: int) -> Optional[str]:
+        if self.onlyPositional:
+            return None
+        try:
+            return kwargList[argNum]
+        except IndexError:
+            logger.error(f"Too few kw arguments for {formatStr=}, {self.funCall=}, {self.xmlPath=}")
 
     def _findPointerType(self, realArgNum: int) -> Optional[str]:
         try:

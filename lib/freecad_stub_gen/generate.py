@@ -28,7 +28,6 @@ def generateFreeCadStubs(sourcePath=SOURCE_DIR, genPath=GEN_DIR, targetPath=TARG
 
     # TODO P4 preprocess and remove macros
     # https://www.tutorialspoint.com/cplusplus/cpp_preprocessor.htm
-    # TODO P3 support kwargs
 
 
 def _generatePythonBase(pythonBaseFile: Path):

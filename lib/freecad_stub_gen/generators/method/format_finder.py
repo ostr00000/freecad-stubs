@@ -2,7 +2,8 @@ import logging
 import re
 from re import Pattern
 
-from freecad_stub_gen.generators.method.function_finder import FunctionFinder, findFunctionCall
+from freecad_stub_gen.generators.method.function_finder import FunctionFinder, findFunctionCall, \
+    generateExpressionUntilChar
 from freecad_stub_gen.generators.method.types_converter import TypesConverter
 
 logger = logging.getLogger(__name__)
@@ -41,5 +42,20 @@ class FormatFinder(FunctionFinder):
                                 realStartArgNum=minSize)
 
             assert minSize <= len(tc.argumentStrings), "Invalid format - expected bigger size"
-            args = list(tc.convertFormatToTypes())
+
+            kwargsList = []
+            if not onlyPositional:
+                kwargsArgumentName = tc.argumentStrings[formatStrPosition + 1]
+                kwargsDeclaration = functionBody[:funStart]
+                matches: list[str] = re.findall(
+                    rf'{kwargsArgumentName}\s*\[\s*]\s*=\s*{{((?:.|\s)*?)}}', kwargsDeclaration)
+                if matches:
+                    # take the latest match and remove whitespaces
+                    kwargsStr = ''.join(matches[-1].split())
+                    kwargsList = [
+                        kw[1:-1]
+                        for kw in generateExpressionUntilChar(kwargsStr, 0, ',')
+                        if kw.startswith('"') and kw.endswith('"')]
+
+            args = list(tc.convertFormatToTypes(kwargsList))
             yield args

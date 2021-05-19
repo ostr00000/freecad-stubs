@@ -12,16 +12,18 @@ def genXmlFiles(sourcePath: Path = SOURCE_DIR):
 
 
 class _ModuleNamespace:
-    def __init__(self):
+    def __init__(self, sourcePath: Path = SOURCE_DIR):
+        self.sourcePath = sourcePath
         self.stemToPaths = defaultdict(list)
-        for file in genXmlFiles():
+        for file in genXmlFiles(sourcePath):
             self.stemToPaths[file.stem].append(file)
 
     def getNamespaceForStem(self, name: str) -> str:
         possiblePaths = self.stemToPaths[name]
         assert len(possiblePaths) > 0
         if len(possiblePaths) > 1:
-            logger.warning(f'There is more than one {possiblePaths=}')
+            paths = [p.relative_to(self.sourcePath) for p in possiblePaths]
+            logger.warning(f'There is more than one possible {paths=}')
 
         return possiblePaths[0].parent.name
 
