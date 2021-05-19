@@ -18,12 +18,25 @@ class _ModuleNamespace:
             self.stemToPaths[file.stem].append(file)
 
     def getNamespaceForStem(self, name: str) -> str:
-        paths = self.stemToPaths[name]
-        assert len(paths) == 1
-        return paths[0].parent.name
+        possiblePaths = self.stemToPaths[name]
+        assert len(possiblePaths) > 0
+        if len(possiblePaths) > 1:
+            logger.warning(f'There is more than one {possiblePaths=}')
+
+        return possiblePaths[0].parent.name
 
     def __contains__(self, item: str):
         return item in self.stemToPaths
+
+    NAMESPACE_TO_MODULE = {
+        'Base': 'FreeCAD',
+        'App': 'FreeCAD',
+        'Gui': 'FreeCAD.Gui',
+        'Data': 'FreeCAD',
+    }
+
+    def convertNamespaceToModule(self, namespace: str):
+        return self.NAMESPACE_TO_MODULE.get(namespace, namespace)
 
 
 moduleNamespace = _ModuleNamespace()

@@ -5,6 +5,7 @@ import xml.etree.ElementTree as ET
 from typing import Iterator, Optional, Any
 
 from freecad_stub_gen.generators.method.function_finder import generateExpressionUntilChar
+from freecad_stub_gen.generators.names import genBaseClasses, genTypeForStem
 from freecad_stub_gen.module_map import moduleNamespace
 
 logger = logging.getLogger(__name__)
@@ -145,34 +146,19 @@ class TypesConverter:
         if pointerArg.endswith('::Type'):
             return self._convertCustomClass(pointerArg)
         elif pointerArg.startswith('Py'):
-            typ = cTypeToPythonType[pointerArg]
-            if len(modAndType := typ.split('.')) > 1:
-                self.requiredImports.add('.'.join(modAndType[:-1]))
-            return typ
+            return cTypeToPythonType[pointerArg]
         else:
             logger.error(f"Unknown pointer kind {pointerArg=}")
 
     def _convertCustomClass(self, pointerArg: str) -> Optional[str]:
         pTypePy = pointerArg.removesuffix('::Type')
-        pType = pTypePy.removesuffix('Py')
+        if '::' in pTypePy:
+            namespace, pTypePy = pTypePy.split('::')
 
-        if '::' in pType:
-            namespace, pType = pType.split('::')
-        else:
-            namespace = None
-
-        if pType == self.currentNode.attrib['Twin']:
-            return pType
-        elif namespace is not None:
-            pass
-        elif pTypePy in moduleNamespace:
-            namespace = moduleNamespace.getNamespaceForStem(pTypePy)
-        else:
-            logger.error(f'Cannot find namespace for type {pType=}')
-            return f'"{pType}"'
-
-        self.requiredImports.add(namespace)
-        return f'{namespace}.{pType}'
+        fullTypeName = genTypeForStem(pTypePy)
+        module = fullTypeName[:fullTypeName.rfind('.')]
+        self.requiredImports.add(module)
+        return fullTypeName
 
 
 # based on https://pyo3.rs/v0.11.1/conversions.html

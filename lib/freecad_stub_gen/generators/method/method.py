@@ -1,4 +1,5 @@
 import dataclasses
+import keyword
 import logging
 import re
 import xml.etree.ElementTree as ET
@@ -25,7 +26,8 @@ class MethodGenerator(FormatFinder):
     _CLASSIC = '@classmethod\n'
 
     def genMethod(self, node: ET.Element, cName: str = None, pythonName: str = None) -> str:
-        # TODO check more *Py.cpp ?
+        # TODO P4 check more *Py.cpp ?
+        # https://docs.python.org/3/c-api/structures.html#c.PyMethodDef
         ret = ''
         cName = cName or node.attrib["Name"]
         pythonName = pythonName or node.attrib["Name"]
@@ -60,11 +62,6 @@ class MethodGenerator(FormatFinder):
             # last signature should have docstring
             body = '\n' + self.indent(docs) if (docs := self._genDoc(node)) else ' ...\n'
             ret += f'def {pythonName}({sigArgs[-1]}):{body}\n'
-
-        if strtobool(node.attrib.get('RichCompare', 'False')):
-            ret += self._genRichCompare()
-        if strtobool(node.attrib.get('NumberProtocol', 'False')):
-            ret += self._genNumberProtocol()
 
         return ret
 
@@ -189,6 +186,8 @@ class MethodGenerator(FormatFinder):
             name = re.sub(cls.REG_ALL_EXCEPT_WORLD, '_', name)
             if not re.match(cls.REG_START_WITH_LETTER, name):
                 name = 'arg'
+            elif keyword.iskeyword(name):
+                name += '_'
 
             if name in seen:
                 name = f'{name}{argNum}'
@@ -197,7 +196,7 @@ class MethodGenerator(FormatFinder):
             name = yield name, argNum
 
     @classmethod
-    def _genRichCompare(cls) -> str:
+    def genRichCompare(cls) -> str:
         ret = ''
         ret += cls._genEmptyMethod('__eq__')
         ret += cls._genEmptyMethod('__ne__')
@@ -208,7 +207,7 @@ class MethodGenerator(FormatFinder):
         return ret
 
     @classmethod
-    def _genNumberProtocol(cls) -> str:
+    def genNumberProtocol(cls) -> str:
         ret = ''
         ret += cls._genEmptyMethod('__add__', 'other')
         ret += cls._genEmptyMethod('__sub__', 'other')

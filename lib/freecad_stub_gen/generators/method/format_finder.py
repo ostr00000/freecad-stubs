@@ -18,6 +18,8 @@ class FormatFinder(FunctionFinder):
 
         yield from self.__findParseTuple(funBody, start)
         yield from self.__findParseTupleAndKeywords(funBody, start)
+        # TODO P5 PyArg_UnpackTuple
+        # https://docs.python.org/3/c-api/arg.html#c.PyArg_UnpackTuple
 
     def __findParseTuple(self, functionBody: str, start: int):
         yield from self._baseParse(

@@ -1,11 +1,12 @@
 import re
 import textwrap
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Optional
 from xml.etree.ElementTree import ParseError
 
 from freecad_stub_gen.config import INDENT_SIZE, SOURCE_DIR
-import xml.etree.ElementTree as ET
+from freecad_stub_gen.module_map import moduleNamespace
 
 _REG_COMMENT_REM = re.compile(
     r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"',
@@ -54,15 +55,8 @@ class BaseGenerator:
         if docs := node.find("./Documentation//UserDocu").text:
             return f'"""{docs}"""\n'
 
-    @classmethod
-    def _genName(cls, name: str, module: str = None):
-        name = name.removesuffix('Py')
-        name = name.removesuffix('Topo')
-        if module:
-            name = module + '.' + name
-        return name
-
     def genImports(self):
+        # TODO P5 maybe better sorting - sys.stdlib_module_names
         return '\n'.join(f'import {imp}' for imp in sorted(self.requiredImports)) + '\n\n'
 
     @property
