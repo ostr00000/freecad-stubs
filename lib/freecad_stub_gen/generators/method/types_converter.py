@@ -5,8 +5,7 @@ import xml.etree.ElementTree as ET
 from typing import Iterator, Optional, Any
 
 from freecad_stub_gen.generators.method.function_finder import generateExpressionUntilChar
-from freecad_stub_gen.generators.names import genBaseClasses, genTypeForStem
-from freecad_stub_gen.module_map import moduleNamespace
+from freecad_stub_gen.generators.names import genTypeForStem
 
 logger = logging.getLogger(__name__)
 
@@ -87,17 +86,21 @@ class TypesConverter:
 
         try:
             while formatStr:
-                for size in range(3, 0, -1):
-                    curVal = formatStr[:size]
+                for formatSize in range(3, 0, -1):
+                    curVal = formatStr[:formatSize]
                     if curVal == 'O!':
-                        parseTupleMap['O!'] = self._findPointerType(realArgNum)
+                        parseTypeMap['O!'] = self._findPointerType(realArgNum)
 
-                    if objType := parseTupleMap.get(curVal):
+                    elif curVal == '(':
+                        parseSizeMap['('], parseTypeMap['('], formatSize = \
+                            self._parseSequence(formatStr)
+
+                    if objType := parseTypeMap.get(curVal):
                         name = self._getArgName(formatStr, kwargList, argNum)
                         yield Arg(self.startArgNum + argNum, objType, optional, name)
                         argNum += 1
                         realArgNum += parseSizeMap[curVal]
-                        formatStr = formatStr[size:]
+                        formatStr = formatStr[formatSize:]
                         break
                 else:
                     curVal = formatStr[0]
@@ -160,14 +163,25 @@ class TypesConverter:
             logger.error(f"Unknown pointer kind {pointerArg=}")
 
     def _convertCustomClass(self, pointerArg: str) -> Optional[str]:
-        pTypePy = pointerArg.removesuffix('::Type')
+        namespace, pTypePy = None, pointerArg.removesuffix('::Type')
         if '::' in pTypePy:
             namespace, pTypePy = pTypePy.split('::')
 
-        fullTypeName = genTypeForStem(pTypePy)
+        fullTypeName = genTypeForStem(pTypePy, namespace)
         module = fullTypeName[:fullTypeName.rfind('.')]
         self.requiredImports.add(module)
         return fullTypeName
+
+    def _parseSequence(self, sequence: str) -> tuple[int, str, int]:
+        """:return realArguments, type, skipSize"""
+        self.requiredImports.add('typing')
+        if sequence.startswith(f := '(s)'):
+            return len(f) - 2, 'typing.Sequence[str]', len(f)
+        elif sequence.startswith(f := '(fff)'):
+            return len(f) - 2, 'typing.Sequence[float, float, float]', len(f)
+
+        # there are only two known cases, too much work to automate this
+        raise NotImplementedError
 
 
 # based on https://pyo3.rs/v0.11.1/conversions.html
@@ -249,11 +263,11 @@ O! (object) [typeobject, PyObject *]
 O& (object) [converter, anything]
 p (bool) [int]
 """
-parseTupleMap: dict[str, str] = {
+parseTypeMap: dict[str, str] = {
     (keyAndValue := line.split(' ', maxsplit=1))[0]: keyAndValue[1]
     for line in parseTupleStr.splitlines() if line}
-parseSizeMap = {k: len(v.split('[')[1].split(',')) for k, v in parseTupleMap.items()}
-parseTupleMap = {k: v.removeprefix('(').split(' ')[0].removesuffix(')').removesuffix(',')
-                 for k, v in parseTupleMap.items()}
+parseSizeMap = {k: len(v.split('[')[1].split(',')) for k, v in parseTypeMap.items()}
+parseTypeMap = {k: v.removeprefix('(').split(' ')[0].removesuffix(')').removesuffix(',')
+                for k, v in parseTypeMap.items()}
 _autoGenTypeToRealType = {'read-only': 'bytes', 'read-write': 'bytes', 'bytes-like': 'bytes'}
-parseTupleMap = {k: _autoGenTypeToRealType.get(v, v) for k, v in parseTupleMap.items()}
+parseTypeMap = {k: _autoGenTypeToRealType.get(v, v) for k, v in parseTypeMap.items()}

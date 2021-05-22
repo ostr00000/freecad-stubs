@@ -13,7 +13,7 @@ class FormatFinder(FunctionFinder):
     REG_TUP = re.compile(r'PyArg_ParseTuple(?!\w)\s*\(')
     REG_TUP_KW = re.compile(r'PyArg_ParseTupleAndKeywords\s*\(')
 
-    def _generateArgFromCode(self, functionName, start=1):
+    def generateArgFromCode(self, functionName, start=1):
         if not (funBody := self.findFunctionBody(functionName, self.parentXml)):
             return
 
@@ -38,7 +38,7 @@ class FormatFinder(FunctionFinder):
             funStart, _endOFFormat = match.span()
             funCall = findFunctionCall(functionBody, funStart, bracketL='(', bracketR=')')
             tc = TypesConverter(funCall, self.currentNode, self.requiredImports,
-                                onlyPositional, formatStrPosition, start, self.xmlPath,
+                                onlyPositional, formatStrPosition, start, self.baseGenFilePath,
                                 realStartArgNum=minSize)
 
             assert minSize <= len(tc.argumentStrings), "Invalid format - expected bigger size"
@@ -59,3 +59,30 @@ class FormatFinder(FunctionFinder):
 
             args = list(tc.convertFormatToTypes(kwargsList))
             yield args
+
+    def convertMethodToStr(self, methodName: str, args: list, docsText: str = None,
+                           isClassic=False, isStatic=False, functionSpacing=1) -> str:
+        """Element of args must implement __str__ method."""
+        ret = ''
+        if not args:
+            return ret
+
+        static = '@staticmethod\n' if isStatic else ''
+        classic = '@classmethod\n' if isClassic else ''
+
+        # only single signature should not have overload
+        if len(args) > 1:
+            self.requiredImports.add('typing')
+            overload = '@typing.overload\n'
+        else:
+            overload = ''
+
+        spacing = '\n' * functionSpacing
+        pattern = f'{static}{classic}{overload}def {methodName}({{args}}):{{docs}}{spacing}'
+        for arg in args[:-1]:
+            ret += pattern.format(args=arg, docs=' ...\n')
+
+        # last signature should have docstring
+        doc = f'\n{self.indent(self._genDocFromStr(docsText))}' if docsText else ' ...\n'
+        ret += pattern.format(args=args[-1], docs=doc)
+        return ret

@@ -7,6 +7,10 @@ from freecad_stub_gen.config import SOURCE_DIR
 logger = logging.getLogger(__name__)
 
 
+def genPyCppFiles(sourcePath: Path = SOURCE_DIR):
+    yield from Path(sourcePath).glob('**/*Py.cpp')
+
+
 def genXmlFiles(sourcePath: Path = SOURCE_DIR):
     yield from Path(sourcePath).glob('**/*.xml')
 
@@ -25,7 +29,11 @@ class _ModuleNamespace:
             paths = [p.relative_to(self.sourcePath) for p in possiblePaths]
             logger.warning(f'There is more than one possible {paths=}')
 
-        return possiblePaths[0].parent.name
+        path = possiblePaths[0]
+        if 'Mod' in str(path):
+            return path.parent.parent.name
+        else:
+            return path.parent.name
 
     def __contains__(self, item: str):
         return item in self.stemToPaths

@@ -1,10 +1,14 @@
+import logging
 import shutil
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from freecad_stub_gen.config import SOURCE_DIR, GEN_DIR, TARGET_DIR
-from freecad_stub_gen.generators.freecad_stub import FreecadStubGenerator
-from freecad_stub_gen.module_map import genXmlFiles, moduleNamespace
+from freecad_stub_gen.generators.from_methods import FreecadStubGeneratorFromMethods
+from freecad_stub_gen.generators.from_xml import FreecadStubGeneratorFromXML
+from freecad_stub_gen.module_map import genXmlFiles, genPyCppFiles
+
+logger = logging.getLogger(__name__)
 
 
 def generateFreeCadStubs(sourcePath=SOURCE_DIR, genPath=GEN_DIR, targetPath=TARGET_DIR):
@@ -13,7 +17,7 @@ def generateFreeCadStubs(sourcePath=SOURCE_DIR, genPath=GEN_DIR, targetPath=TARG
     targetPath = targetPath.resolve()
 
     for i, xmlPath in enumerate(genXmlFiles(sourcePath)):
-        if not (tg := FreecadStubGenerator.safeCreate(xmlPath)):
+        if not (tg := FreecadStubGeneratorFromXML.safeCreate(xmlPath, sourcePath)):
             continue
 
         typingPath = genPath / xmlPath.relative_to(sourcePath)
@@ -23,6 +27,13 @@ def generateFreeCadStubs(sourcePath=SOURCE_DIR, genPath=GEN_DIR, targetPath=TARG
         except ET.ParseError:
             continue
 
+    for cppPath in genPyCppFiles(sourcePath):
+        funcFile = genPath / cppPath.relative_to(sourcePath).with_suffix('.pyi')
+        funcFile = funcFile.with_stem(funcFile.stem + '__functions')
+        methodGen = FreecadStubGeneratorFromMethods(cppPath, sourcePath)
+        methodGen.generateToFile(funcFile)
+
+    _generateUnits(genPath / 'Base' / 'Units.pyi')
     _generatePythonBase(genPath / 'Base' / 'PyObject.pyi')
     _prepareStructure(genPath, targetPath)
 
@@ -35,6 +46,12 @@ def _generatePythonBase(pythonBaseFile: Path):
     pythonBase = 'class PyObjectBase(object): ...'
     with open(pythonBaseFile, 'w') as file:
         file.write(pythonBase)
+
+
+def _generateUnits(pythonUnitsFile: Path):
+    with open(pythonUnitsFile, 'w') as file:
+        file.write('from FreeCAD.Quantity import Quantity\n\n')
+        file.write('Quantity = Quantity\n')
 
 
 def _prepareStructure(genPath: Path = GEN_DIR, targetPath: Path = TARGET_DIR):
@@ -85,11 +102,14 @@ def _createInitForModules(packagePath: Path, genClassImport=True):
 
 
 def _createInitRecursive(packagePath: Path):
-    for module in packagePath.iterdir():
-        if module.is_dir():
-            _createInitRecursive(module)
+    try:
+        for module in packagePath.iterdir():
+            if module.is_dir():
+                _createInitRecursive(module)
 
-    _createInitForModules(packagePath, genClassImport=True)
+        _createInitForModules(packagePath, genClassImport=True)
+    except FileNotFoundError as fnf:
+        logger.warning(fnf)
 
 
 def _redirectModule(packagePath: Path, moduleName: str):

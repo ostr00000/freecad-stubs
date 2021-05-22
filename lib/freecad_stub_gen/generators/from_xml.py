@@ -2,14 +2,15 @@ import xml.etree.ElementTree as ET
 from distutils.util import strtobool
 from pathlib import Path
 
+from freecad_stub_gen.config import SOURCE_DIR
 from freecad_stub_gen.generators.method.method import MethodGenerator
-from freecad_stub_gen.generators.names import genBaseClasses, genClassName, getSimpleClassName
+from freecad_stub_gen.generators.names import genBaseClasses, getSimpleClassName
 from freecad_stub_gen.generators.property import PropertyGenerator
 
 
-class FreecadStubGenerator(PropertyGenerator, MethodGenerator):
-    def __init__(self, xmlPath: Path):
-        super().__init__(xmlPath)
+class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
+    def __init__(self, filePath: Path, sourceDir: Path = SOURCE_DIR):
+        super().__init__(filePath, sourceDir)
         self.currentNode = None
 
     def parseFile(self) -> str:
@@ -22,7 +23,7 @@ class FreecadStubGenerator(PropertyGenerator, MethodGenerator):
             file.write(content)
 
     def _parseFile(self) -> str:
-        tree = ET.parse(self.xmlPath)
+        tree = ET.parse(self.baseGenFilePath)
         root = tree.getroot()
 
         for child in root:
@@ -33,7 +34,7 @@ class FreecadStubGenerator(PropertyGenerator, MethodGenerator):
     def genClass(self):
         baseClasses = ', '.join(self.genBaseClasses())
         classStr = f"class {getSimpleClassName(self.currentNode)}({baseClasses}):\n"
-        if doc := self._genDoc(self.currentNode):
+        if doc := self._genDocFromStr(self._getDocFromNode(self.currentNode)):
             classStr += self.indent(doc)
             classStr += '\n'
         classStr += self.indent(self.genInit())
@@ -49,7 +50,7 @@ class FreecadStubGenerator(PropertyGenerator, MethodGenerator):
         if strtobool(self.currentNode.attrib.get('NumberProtocol', 'False')):
             classStr += self.indent(self.genNumberProtocol())
 
-        ret = f'{self.genImports()}\n{classStr}'.rstrip() + '\n'
+        ret = f'{self.genImports()}{classStr}'.rstrip() + '\n'
         return ret
 
     @staticmethod

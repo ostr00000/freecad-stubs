@@ -1,6 +1,8 @@
-import xml.etree.ElementTree as ET
-from freecad_stub_gen.module_map import moduleNamespace
 import logging
+import xml.etree.ElementTree as ET
+from typing import Optional
+
+from freecad_stub_gen.module_map import moduleNamespace
 
 logger = logging.getLogger(__name__)
 
@@ -58,3 +60,18 @@ def genClassName(currentNode: ET.Element) -> str:
 def getSimpleClassName(currentNode: ET.Element) -> str:
     className = genClassName(currentNode)
     return className[className.rfind('.') + 1:]
+
+
+def validatePythonValue(value: str) -> Optional[str]:
+    try:
+        eval(value, {}, {})
+    except NameError:
+        if value in ('true', 'false'):
+            return value.title()
+        logger.debug(f'Invalid value for default argument {value=}')
+    except SyntaxError:
+        return None
+    except Exception as exc:
+        logger.debug(f'Cannot evaluate value: {exc}')
+    else:
+        return value

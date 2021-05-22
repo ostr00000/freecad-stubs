@@ -12,6 +12,7 @@ from freecad_stub_gen.generators.method.function_finder import findFunctionCall,
     generateExpressionUntilChar
 from freecad_stub_gen.generators.method.types_converter import KeyWorldOnlyArg, PositionalOnlyArg, \
     Arg
+from freecad_stub_gen.generators.names import validatePythonValue
 
 logger = logging.getLogger(__name__)
 
@@ -21,49 +22,16 @@ class MethodGenerator(FormatFinder):
         # maybe should check self.currentNode.attrib['Constructor']
         return self.genMethod(self.currentNode, cName='PyInit', pythonName='__init__')
 
-    _OVERLOAD = '@typing.overload\n'
-    _STATIC = '@staticmethod\n'
-    _CLASSIC = '@classmethod\n'
-
     def genMethod(self, node: ET.Element, cName: str = None, pythonName: str = None) -> str:
-        # TODO P4 check more *Py.cpp ?
-        # https://docs.python.org/3/c-api/structures.html#c.PyMethodDef
-        ret = ''
         cName = cName or node.attrib["Name"]
         pythonName = pythonName or node.attrib["Name"]
-        static = self._STATIC if strtobool(node.attrib.get('Static', 'False')) else ''
-        classic = self._STATIC if strtobool(node.attrib.get('Class', 'False')) else ''
+        static = strtobool(node.attrib.get('Static', 'False'))
+        classic = strtobool(node.attrib.get('Class', 'False'))
         firstArgumentName = self._firstArgumentName(bool(static), bool(classic))
 
         sigArgs = list(self._signatureArgGen(cName, node, firstArgumentName))
-        if len(sigArgs) > 1:  # only one signature should not have overload
-            self.requiredImports.add('typing')
-
-            ret += static
-            ret += classic
-            ret += self._OVERLOAD
-            ret += f'def {pythonName}({sigArgs[0]}): ...\n\n'
-
-            for arg in sigArgs[1:-1]:
-                ret += static
-                ret += classic
-                ret += self._OVERLOAD
-                ret += f'def {pythonName}({arg}): ...\n\n'
-
-            ret += static
-            ret += classic
-            ret += self._OVERLOAD
-
-        elif len(sigArgs) > 0:
-            ret += static
-            ret += classic
-
-        if len(sigArgs) > 0:
-            # last signature should have docstring
-            body = '\n' + self.indent(docs) if (docs := self._genDoc(node)) else ' ...\n'
-            ret += f'def {pythonName}({sigArgs[-1]}):{body}\n'
-
-        return ret
+        return self.convertMethodToStr(
+            pythonName, sigArgs, self._getDocFromNode(node), classic, static)
 
     @classmethod
     def _firstArgumentName(cls, isStaticMethod: bool, isClassMethod: bool) -> str:
@@ -86,7 +54,7 @@ class MethodGenerator(FormatFinder):
             return
 
         yielded = False
-        codeSuites = list(self._generateArgFromCode(methodName, start=len(retVal)))
+        codeSuites = list(self.generateArgFromCode(methodName, start=len(retVal)))
         docSuite = list(self._generateArgSuiteFromDocString(
             methodName, node, start=len(retVal)))
         if len(codeSuites) == len(docSuite) == 0:
@@ -164,11 +132,7 @@ class MethodGenerator(FormatFinder):
             if '=' in argText:
                 argName, defValue = argText.split('=')
                 argName, defValue = argName.strip(), defValue.strip()
-                try:
-                    eval(defValue, {}, {})
-                except Exception as exc:
-                    logger.debug(f'Cannot evaluate value: {exc}')
-                    defValue = None
+                defValue = validatePythonValue(defValue)
             else:
                 argName, defValue = argText, None
             uniqueName, argNum = uniqueNameGen.send(argName)
@@ -198,12 +162,12 @@ class MethodGenerator(FormatFinder):
     @classmethod
     def genRichCompare(cls) -> str:
         ret = ''
-        ret += cls._genEmptyMethod('__eq__')
-        ret += cls._genEmptyMethod('__ne__')
-        ret += cls._genEmptyMethod('__lt__')
-        ret += cls._genEmptyMethod('__le__')
-        ret += cls._genEmptyMethod('__ge__')
-        ret += cls._genEmptyMethod('__gt__')
+        ret += cls._genEmptyMethod('__eq__', 'other')
+        ret += cls._genEmptyMethod('__ne__', 'other')
+        ret += cls._genEmptyMethod('__lt__', 'other')
+        ret += cls._genEmptyMethod('__le__', 'other')
+        ret += cls._genEmptyMethod('__ge__', 'other')
+        ret += cls._genEmptyMethod('__gt__', 'other')
         return ret
 
     @classmethod

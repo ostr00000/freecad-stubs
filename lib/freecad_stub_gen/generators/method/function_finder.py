@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import Optional
 
 from freecad_stub_gen.generators.base import BaseGenerator
-from freecad_stub_gen.module_map import moduleNamespace
 
 logger = logging.getLogger(__name__)
 
@@ -26,15 +25,20 @@ class FunctionFinder(BaseGenerator):
             if name == 'PyInit':
                 pass  # skip implicit constructor - probably inherited from PyObject
             else:
-                logger.error(f"Cannot find {parentXmlPath=} for {self.xmlPath=}")
+                logger.error(f"Cannot find {parentXmlPath=} for {self.baseGenFilePath=}")
             return
 
         return baseClass.findFunctionBody(name)
 
     def _findFunction(self, name: str) -> Optional[str]:
-        if match := re.search(fr'{name}\s*\(\s*PyObject\s*\*.*?\)', self.impContent):
-            fnSygStart, fnSygEnd = match.span()
-            return findFunctionCall(self.impContent, fnSygEnd)
+        for searchRegex in (
+                fr'{name}\s*\(\s*PyObject\s*\*.*?\)',
+                fr'::{name}\s*\([^)]*\)',
+                fr'Py::Object {name}\s*\([^)]*\)',
+        ):
+            if match := re.search(searchRegex, self.impContent):
+                fnSygStart, fnSygEnd = match.span()
+                return findFunctionCall(self.impContent, fnSygEnd)
 
 
 def findFunctionCall(text: str, bodyStart: int, bracketL='{', bracketR='}'):

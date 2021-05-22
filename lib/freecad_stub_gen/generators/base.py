@@ -1,4 +1,5 @@
 import re
+import sys
 import textwrap
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -6,7 +7,6 @@ from typing import Optional
 from xml.etree.ElementTree import ParseError
 
 from freecad_stub_gen.config import INDENT_SIZE, SOURCE_DIR
-from freecad_stub_gen.module_map import moduleNamespace
 
 _REG_COMMENT_REM = re.compile(
     r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"',
@@ -34,15 +34,15 @@ class BaseGenerator:
         except(FileNotFoundError, ParseError):
             return None
 
-    def __init__(self, xmlPath: Path, sourceDir: Path = SOURCE_DIR):
+    def __init__(self, filePath: Path, sourceDir: Path = SOURCE_DIR):
         self.sourceDir = sourceDir
-        self.xmlPath = xmlPath
+        self.baseGenFilePath = filePath
         self.requiredImports = set()
         self.currentNode: Optional[ET.Element] = None
 
-        impPath = xmlPath.with_stem(xmlPath.stem + 'Imp').with_suffix('.cpp')
+        impPath = filePath.with_stem(filePath.stem + 'Imp').with_suffix('.cpp')
         if not impPath.exists():  # special case for PyObjectBase
-            impPath = xmlPath.with_suffix('.cpp')
+            impPath = filePath.with_suffix('.cpp')
 
         self.impContent = commentRemover(impPath.read_text())
 
@@ -51,17 +51,34 @@ class BaseGenerator:
         return textwrap.indent(block, ' ' * distance * indentSize)
 
     @classmethod
-    def _genDoc(cls, node: ET.Element) -> Optional[str]:
+    def _genDocFromStr(cls, docs: Optional[str]) -> Optional[str]:
+        if docs is None:
+            return None
+        return f'"""{docs}"""\n'
+
+    @classmethod
+    def _getDocFromNode(cls, node: ET.Element) -> Optional[str]:
         if docs := node.find("./Documentation//UserDocu").text:
-            return f'"""{docs}"""\n'
+            return docs
 
     def genImports(self):
-        # TODO P5 maybe better sorting - sys.stdlib_module_names
-        return '\n'.join(f'import {imp}' for imp in sorted(self.requiredImports)) + '\n\n'
+        sysImports, libImports = [], []
+        for imp in self.requiredImports:
+            importList = sysImports if imp in sys.stdlib_module_names else libImports
+            importList.append(f'import {imp}')
+
+        res = '\n'.join(sorted(sysImports))
+        if res:
+            res += '\n\n'
+        res += '\n'.join(sorted(libImports))
+        if res:
+            res += '\n\n\n'
+        return res
 
     @property
-    def parentXml(self):
-        assert self.currentNode is not None
+    def parentXml(self) -> Optional[Path]:
+        if self.currentNode is None:
+            return
 
         fatherInclude = self.currentNode.attrib['FatherInclude'].replace('/', '.')
         parentFile = (self.sourceDir / fatherInclude).with_suffix('.xml')

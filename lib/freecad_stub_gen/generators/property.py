@@ -9,9 +9,13 @@ class PropertyGenerator(BaseGenerator):
         name = node.attrib["Name"]
         pythonType = self.__findType(node)
 
+        if docs := self._getDocFromNode(node):
+            docs = '\n' + self.indent(self._genDocFromStr(docs))
+        else:
+            docs = ' ...\n'
+
         retType = f' -> {pythonType}' if pythonType else ''
-        body = '\n' + self.indent(docs) if (docs := self._genDoc(node)) else ' ...\n'
-        prop = f'@property\ndef {name}(self){retType}:{body}\n'
+        prop = f'@property\ndef {name}(self){retType}:{docs}\n'
 
         if not strtobool(node.attrib.get('ReadOnly', 'True')):
             valueType = f': {pythonType}' if pythonType else ''
