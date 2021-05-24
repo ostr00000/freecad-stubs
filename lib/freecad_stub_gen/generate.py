@@ -11,6 +11,7 @@ from freecad_stub_gen.module_map import genXmlFiles, genPyCppFiles
 logger = logging.getLogger(__name__)
 
 
+
 def generateFreeCadStubs(sourcePath=SOURCE_DIR, genPath=GEN_DIR, targetPath=TARGET_DIR):
     sourcePath = sourcePath.resolve()
     genPath = genPath.resolve()
@@ -28,14 +29,18 @@ def generateFreeCadStubs(sourcePath=SOURCE_DIR, genPath=GEN_DIR, targetPath=TARG
             continue
 
     for cppPath in genPyCppFiles(sourcePath):
+        if not (methodGen := FreecadStubGeneratorFromMethods.safeCreate(cppPath, sourcePath)):
+            continue
+
         funcFile = genPath / cppPath.relative_to(sourcePath).with_suffix('.pyi')
         funcFile = funcFile.with_stem(funcFile.stem + '__functions')
-        methodGen = FreecadStubGeneratorFromMethods(cppPath, sourcePath)
         methodGen.generateToFile(funcFile)
 
     _generateUnits(genPath / 'Base' / 'Units.pyi')
+    _generateConsole(genPath / 'Base' / 'Console.pyi')
     _generatePythonBase(genPath / 'Base' / 'PyObject.pyi')
     _prepareStructure(genPath, targetPath)
+    _addDynamicVariablesToInit(targetPath / 'FreeCAD/__init__.py')
 
     # TODO P4 preprocess and remove macros
     # https://www.tutorialspoint.com/cplusplus/cpp_preprocessor.htm
@@ -50,8 +55,25 @@ def _generatePythonBase(pythonBaseFile: Path):
 
 def _generateUnits(pythonUnitsFile: Path):
     with open(pythonUnitsFile, 'w') as file:
+        file.write('from FreeCAD.Unit import Unit\n')
         file.write('from FreeCAD.Quantity import Quantity\n\n')
         file.write('Quantity = Quantity\n')
+        file.write('Unit = Unit\n')
+
+
+def _generateConsole(pythonConsoleFile: Path):
+    with open(pythonConsoleFile, 'w') as file:
+        file.write('from FreeCAD.Console__functions import *')
+
+
+def _addDynamicVariablesToInit(targetPath: Path):
+    content = """
+GuiUp: int  # but only 0 or 1
+Workbench: Gui.Workbench
+ActiveDocument: Document
+"""
+    with open(targetPath, 'a') as file:
+        file.write(content)
 
 
 def _prepareStructure(genPath: Path = GEN_DIR, targetPath: Path = TARGET_DIR):

@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 def genPyCppFiles(sourcePath: Path = SOURCE_DIR):
-    yield from Path(sourcePath).glob('**/*Py.cpp')
+    yield from Path(sourcePath).glob('**/*.cpp')
 
 
 def genXmlFiles(sourcePath: Path = SOURCE_DIR):
