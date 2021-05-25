@@ -39,7 +39,7 @@ def generateFreeCadStubs(sourcePath=SOURCE_DIR, genPath=GEN_DIR, targetPath=TARG
     _generateConsole(genPath / 'Base' / 'Console.pyi')
     _generatePythonBase(genPath / 'Base' / 'PyObject.pyi')
     _prepareStructure(genPath, targetPath)
-    _addDynamicVariablesToInit(targetPath / 'FreeCAD/__init__.py')
+    _addDynamicVariablesToInit(targetPath / 'FreeCAD/__init__.pyi')
 
     # TODO P4 preprocess and remove macros
     # https://www.tutorialspoint.com/cplusplus/cpp_preprocessor.htm
@@ -102,12 +102,12 @@ def _createInitForModules(packagePath: Path, genClassImport=True):
     if not packagePath.exists():
         return
 
-    initFilePath = packagePath / '__init__.py'
+    initFilePath = packagePath / '__init__.pyi'
     if genClassImport:
         modules = sorted((
             mod for mod in packagePath.iterdir()
             if ((mod.is_file() and mod.suffix == '.pyi')
-                or (mod.is_dir() and (mod / '__init__.py').exists()))
+                or (mod.is_dir() and (mod / '__init__.pyi').exists()))
         ), key=lambda p: (p.is_file(), p))
         with open(initFilePath, 'w') as initFile:
             for modulePath in modules:
@@ -136,5 +136,5 @@ def _createInitRecursive(packagePath: Path):
 def _redirectModule(packagePath: Path, moduleName: str):
     modulePath = packagePath / moduleName
     if modulePath.exists():
-        with open(packagePath / '__init__.py', 'a') as file:
+        with open(packagePath / '__init__.pyi', 'a') as file:
             file.write(f'from {moduleName} import *\n')
