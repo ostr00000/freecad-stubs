@@ -7,14 +7,8 @@ from freecad_stub_gen.module_map import moduleNamespace
 logger = logging.getLogger(__name__)
 
 
-def genBaseClasses(currentNode: ET.Element):
-    bases = []
-    if genClassName(currentNode) == 'Workbench':
-        bases.append('FreeCADGui.Workbench')
-
-    fatherClass = genFatherClass(currentNode)
-    bases.append(fatherClass)
-    return tuple(bases)
+def genBaseClasses(currentNode: ET.Element) -> tuple[str, ...]:
+    return genFatherClass(currentNode),
 
 
 def genFatherClass(currentNode: ET.Element) -> str:

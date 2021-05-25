@@ -13,8 +13,8 @@ class FormatFinder(FunctionFinder):
     REG_TUP = re.compile(r'PyArg_ParseTuple(?!\w)\s*\(')
     REG_TUP_KW = re.compile(r'PyArg_ParseTupleAndKeywords\s*\(')
 
-    def generateArgFromCode(self, functionName, start=1):
-        if not (funBody := self.findFunctionBody(functionName, self.parentXml)):
+    def generateArgFromCode(self, functionName: str, className: str = '', *, start=1):
+        if not (funBody := self.findFunctionBody(functionName, className, self.parentXml)):
             return
 
         yield from self.__findParseTuple(funBody, start)

@@ -10,31 +10,32 @@ logger = logging.getLogger(__name__)
 
 
 class FunctionFinder(BaseGenerator):
-    def findFunctionBody(self, name: str, parentXmlPath: Path = None) -> Optional[str]:
-        if res := self._findFunction(name):
+    def findFunctionBody(self, funcName: str, className: str = '',
+                         parentXmlPath: Path = None) -> Optional[str]:
+        if res := self._findFunction(funcName, className):
             return res
 
-        redirectedName = name[0].lower() + name[1:]
-        if res := self._findFunction(redirectedName):
+        redirectedName = funcName[0].lower() + funcName[1:]
+        if res := self._findFunction(redirectedName, className):
             return res
 
         if parentXmlPath is None:
             return
 
         if not (baseClass := type(self).safeCreate(parentXmlPath)):
-            if name == 'PyInit':
+            if funcName == 'PyInit':
                 pass  # skip implicit constructor - probably inherited from PyObject
             else:
                 logger.error(f"Cannot find {parentXmlPath=} for {self.baseGenFilePath=}")
             return
 
-        return baseClass.findFunctionBody(name)
+        return baseClass.findFunctionBody(funcName, className)
 
-    def _findFunction(self, name: str) -> Optional[str]:
+    def _findFunction(self, funcName: str, className: str = '') -> Optional[str]:
         for searchRegex in (
-                fr'{name}\s*\(\s*PyObject\s*\*.*?\)',
-                fr'::{name}\s*\([^)]*\)',
-                fr'Py::Object {name}\s*\([^)]*\)',
+                fr'{funcName}\s*\(\s*PyObject\s*\*.*?\)',
+                fr'{className}::{funcName}\s*\([^)]*\)',
+                fr'Py::Object {funcName}\s*\([^)]*\)',
         ):
             if match := re.search(searchRegex, self.impContent):
                 fnSygStart, fnSygEnd = match.span()

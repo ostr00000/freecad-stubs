@@ -12,6 +12,7 @@ from freecad_stub_gen.generators.method.format_finder import FormatFinder
 from freecad_stub_gen.generators.method.function_finder import findFunctionCall, \
     generateExpressionUntilChar
 from freecad_stub_gen.generators.method.types_converter import Arg
+from freecad_stub_gen.logger import LEVEL_CODE
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,7 @@ logger = logging.getLogger(__name__)
 class Method:
     args: list[str]
     pythonMethodName: str = ''
-    cPointer: str = ''
+    cFunction: str = ''
     doc: str = None
     pythonArgs: list[Arg] = None
 
@@ -32,7 +33,7 @@ class Method:
             for e in self.args]
 
         self.pythonMethodName = self.args[0]
-        self.cPointer = self.parsePointer(self.args[1])
+        self.cClass, self.cFunction = self._parsePointer(self.args[1])
         try:
             self.doc = re.sub(
                 self.REG_WHITESPACE_WITH_APOSTROPHE, '', self.args[-1]
@@ -40,19 +41,23 @@ class Method:
         except IndexError:
             pass
 
-    REG_POINTER = re.compile(r'.*\b(\w+)\b')
+    REG_POINTER = re.compile(r'(?:\w+::)*?(?:(?P<class>\w+)::)?\b(?P<func>\w+)\b\W*$')
 
     @classmethod
-    def parsePointer(cls, pointer: str) -> str:
-        match = cls.REG_POINTER.match(pointer)
+    def _parsePointer(cls, pointer: str) -> tuple[str, str]:
+        match = cls.REG_POINTER.search(pointer)
         assert match
-        return match.group(1)
+        return match.group('class') or '', match.group('func')
+
+    def __repr__(self):
+        return f'{self.cClass}::{self.cFunction}'
 
     def __str__(self):
-        return ', '.join(map(str, self.pythonArgs))
+        assert self.pythonArgs is not None
+        return f"{', '.join(map(str, self.pythonArgs))}"
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(repr=False)
 class PyMethodDef(Method):
     flags: Any = None
 
@@ -101,13 +106,15 @@ class FreecadStubGeneratorFromMethods(FormatFinder):
 
     def _genMethodWithArgs(self, method: Method) -> Iterable[Method]:
         yielded = False
-        for argList in self.generateArgFromCode(method.cPointer):
+        for argList in self.generateArgFromCode(method.cFunction, method.cClass):
             yielded = True
             yield dataclasses.replace(method, pythonArgs=argList)
 
         if not yielded:
-            logger.debug(f"Not found args for {method.pythonMethodName=} "
-                         f"{self.baseGenFilePath=}")
+            logger.debug(f"Not found args for {method=!r} {self.baseGenFilePath=}")
+            if logger.isEnabledFor(LEVEL_CODE):
+                logger.log(LEVEL_CODE, self.findFunctionBody(
+                    method.cFunction, method.cClass))
 
     REG_NOARGS_METHOD = re.compile('add_noargs_method')
     REG_VARGS_METHOD = re.compile('add_varargs_method')

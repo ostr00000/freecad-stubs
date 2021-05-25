@@ -11,7 +11,6 @@ from freecad_stub_gen.module_map import genXmlFiles, genPyCppFiles
 logger = logging.getLogger(__name__)
 
 
-
 def generateFreeCadStubs(sourcePath=SOURCE_DIR, genPath=GEN_DIR, targetPath=TARGET_DIR):
     sourcePath = sourcePath.resolve()
     genPath = genPath.resolve()
