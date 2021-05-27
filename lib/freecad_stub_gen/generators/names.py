@@ -56,6 +56,18 @@ def getSimpleClassName(currentNode: ET.Element) -> str:
     return className[className.rfind('.') + 1:]
 
 
+def getShortModuleFormat(fullTypeName: str) -> tuple[str, str]:
+    """ Return main module and class:
+    >>> assert getShortModuleFormat('foo.bar.baz') == ('foo', 'foo.baz')
+    This is workaround, because submodules are not supported yet."""
+    module = fullTypeName[:fullTypeName.find('.')]
+    className = fullTypeName[fullTypeName.rfind('.') + 1:]
+    return module, f'{module}.{className}'
+
+
+assert getShortModuleFormat('foo.bar.baz') == ('foo', 'foo.baz')
+
+
 def validatePythonValue(value: str) -> Optional[str]:
     try:
         eval(value, {}, {})

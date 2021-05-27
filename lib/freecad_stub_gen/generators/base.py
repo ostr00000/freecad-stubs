@@ -1,5 +1,4 @@
 import re
-import sys
 import textwrap
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -60,20 +59,6 @@ class BaseGenerator:
     def _getDocFromNode(cls, node: ET.Element) -> Optional[str]:
         if docs := node.find("./Documentation//UserDocu").text:
             return docs
-
-    def genImports(self):
-        sysImports, libImports = [], []
-        for imp in self.requiredImports:
-            importList = sysImports if imp in sys.stdlib_module_names else libImports
-            importList.append(f'import {imp}')
-
-        res = '\n'.join(sorted(sysImports))
-        if res:
-            res += '\n\n'
-        res += '\n'.join(sorted(libImports))
-        if res:
-            res += '\n\n\n'
-        return res
 
     @property
     def parentXml(self) -> Optional[Path]:

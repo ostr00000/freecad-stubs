@@ -1,11 +1,14 @@
 import xml.etree.ElementTree as ET
 from distutils.util import strtobool
 from pathlib import Path
+from typing import Optional
 
 from freecad_stub_gen.config import SOURCE_DIR
 from freecad_stub_gen.generators.method.method import MethodGenerator
-from freecad_stub_gen.generators.names import genBaseClasses, getSimpleClassName
+from freecad_stub_gen.generators.names import genBaseClasses, getSimpleClassName, \
+    getShortModuleFormat
 from freecad_stub_gen.generators.property import PropertyGenerator
+from freecad_stub_gen.stub_container import StubContainer
 
 
 class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
@@ -13,14 +16,10 @@ class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
         super().__init__(filePath, sourceDir)
         self.currentNode = None
 
-    def parseFile(self) -> str:
-        return '\n'.join(self._parseFile())
-
-    def generateToFile(self, targetFile: Path):
-        targetFile.parent.mkdir(exist_ok=True, parents=True)
-        content = self.parseFile()
-        with open(targetFile, 'w') as file:
-            file.write(content)
+    def getStub(self) -> Optional[StubContainer]:
+        header = f'# {self.baseGenFilePath.name}\n'
+        content = '\n'.join(self._parseFile())
+        return StubContainer(header + content, self.requiredImports)
 
     def _parseFile(self) -> str:
         tree = ET.parse(self.baseGenFilePath)
@@ -50,8 +49,7 @@ class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
         if strtobool(self.currentNode.attrib.get('NumberProtocol', 'False')):
             classStr += self.indent(self.genNumberProtocol())
 
-        ret = f'{self.genImports()}{classStr}'.rstrip() + '\n'
-        return ret
+        return classStr
 
     @staticmethod
     def _nodeSort(node: ET.Element):
@@ -59,5 +57,7 @@ class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
 
     def genBaseClasses(self):
         for base in genBaseClasses(self.currentNode):
-            self.requiredImports.add(base[:base.rfind('.')])
+            # self.requiredImports.add(base[:base.rfind('.')])
+            module, base = getShortModuleFormat(base)  # workaround
+            self.requiredImports.add(module)
             yield base

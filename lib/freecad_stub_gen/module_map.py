@@ -41,7 +41,7 @@ class _ModuleNamespace:
     NAMESPACE_TO_MODULE = {
         'Base': 'FreeCAD',
         'App': 'FreeCAD',
-        'Gui': 'FreeCAD.Gui',
+        'Gui': 'FreeCADGui',
         'Data': 'FreeCAD',
     }
 

@@ -3,8 +3,7 @@ import logging
 import re
 from collections import defaultdict
 from itertools import chain
-from pathlib import Path
-from typing import Any, Iterable, DefaultDict
+from typing import Any, Iterable, DefaultDict, Optional
 
 from more_itertools import islice_extended
 
@@ -13,6 +12,7 @@ from freecad_stub_gen.generators.method.function_finder import findFunctionCall,
     generateExpressionUntilChar
 from freecad_stub_gen.generators.method.types_converter import Arg
 from freecad_stub_gen.logger import LEVEL_CODE
+from freecad_stub_gen.stub_container import StubContainer
 
 logger = logging.getLogger(__name__)
 
@@ -68,15 +68,10 @@ class PyMethodDef(Method):
 
 class FreecadStubGeneratorFromMethods(FormatFinder):
 
-    def generateToFile(self, targetFile: Path):
-        if (content := self.getMethodsText()).strip():
-            targetFile.parent.mkdir(exist_ok=True, parents=True)
-            with open(targetFile, 'w') as file:
-                file.write(content)
-
-    def getMethodsText(self) -> str:
-        result = ''.join(self._genAllMethods())
-        return f'{self.genImports()}{result}'.rstrip() + '\n'
+    def getStub(self) -> Optional[StubContainer]:
+        if result := ''.join(self._genAllMethods()).rstrip():
+            header = f'# {self.baseGenFilePath.name}\n'
+            return StubContainer(header + result + '\n\n', self.requiredImports)
 
     def _genAllMethods(self) -> Iterable[str]:
         methodNameToMethod: DefaultDict[str, list[Method]] = defaultdict(list)

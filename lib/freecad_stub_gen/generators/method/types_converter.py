@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 from typing import Iterator, Optional, Any
 
 from freecad_stub_gen.generators.method.function_finder import generateExpressionUntilChar
-from freecad_stub_gen.generators.names import genTypeForStem
+from freecad_stub_gen.generators.names import genTypeForStem, getShortModuleFormat
 
 logger = logging.getLogger(__name__)
 
@@ -168,9 +168,15 @@ class TypesConverter:
             namespace, pTypePy = pTypePy.split('::')
 
         fullTypeName = genTypeForStem(pTypePy, namespace)
-        module = fullTypeName[:fullTypeName.rfind('.')]
+        # the correct solution is below
+        # module = fullTypeName[:fullTypeName.rfind('.')]
+        # self.requiredImports.add(module)
+        # return fullTypeName
+        # but at this moment submodules are not supported
+
+        module, modWithClass = getShortModuleFormat(fullTypeName)
         self.requiredImports.add(module)
-        return fullTypeName
+        return modWithClass
 
     def _parseSequence(self, sequence: str) -> tuple[int, str, int]:
         """:return realArguments, type, skipSize"""
