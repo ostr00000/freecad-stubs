@@ -1,2 +1,65 @@
 # freecad-stubs
-Python stubs generated from FreeCAD source code 
+Python stubs generated from FreeCAD source code.
+
+### Stub source
+Stubs are generated based on several available info:
+- `*Py.xml` files - mainly docstrings, argument names, properties.
+- corresponding `*PyImp.cpp` file - argument types are extracted from C code.
+- other `*.cpp` files - functions for modules.
+
+Unfortunately not all typing information may be generated. 
+For example some objects are added dynamically. 
+There are also many special cases 
+therefore not all object are correctly mapped.
+Moreover, some of C function has errors - invalid types, missing arguments 
+(you can see more these errors if you change logger flag in configuration file `freecad-stubs/lib/freecad_stub_gen/config.py`) 
+
+### Adding stubs to python path
+There are a lot of possible methods. This is only example: 
+
+1. Copy stubs from a desired branch from this repository.  
+Checkout to desired branch and copy folder `/stub_target`.
+   
+2. (Optional) Or [generate](#Stub-Generation) stubs manually.
+   Copy/move generated stubs to location of your choice. For example:
+   ```shell
+   cp -r ./stub_target "$HOME/.local/lib/python3.9/freecad_stubs" 
+   ```
+
+3. Add location with stubs to python search path.
+   For example:
+   ```shell
+   echo "$HOME/.local/lib/python3.9/freecad_stubs" > "$HOME/.local/lib/python3.9/site-packages/freecad_stubs.pth" 
+   ```
+
+### Stub Generation
+
+1. Clone [freecad repository](https://github.com/FreeCAD/FreeCAD).
+    ```shell
+    git clone https://github.com/FreeCAD/FreeCAD.git
+    ```
+   #### Warning: FreeCAD repository has over `1.29 GB`
+   You may download only these required folders:
+    - /src/App
+    - /src/Base
+    - /src/Gui
+    - /src/Mod
+
+
+2. Clone this repository
+    ```shell
+    git clone https://github.com/ostr00000/freecad-stubs
+    ```
+
+3. Configure paths  
+   In the file `freecad-stubs/lib/freecad_stub_gen/config.py`
+   set desired configuration:
+    - `SOURCE_DIR` - `src` folder from FreeCAD repository,
+    - `TARGET_DIR` - target folder where stubs should be generated.
+      #### Warning: `TARGET_DIR` folder and its content may be removed when generating stubs.
+
+4. Run the main file from this project in Python
+    ```shell
+    pytohn freecad-stubs/lib/freecad_stub_gen/__main__.py
+    ```
+   Recommended python version: `3.10`.
