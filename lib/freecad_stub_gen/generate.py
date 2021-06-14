@@ -24,7 +24,13 @@ def _genModule(moduleName: str, modulePath: Path, sourcePath=SOURCE_DIR):
             continue
 
         if stub := mg.getStub():
-            moduleStub += stub
+            # this is special case when we create separate module
+            if cppPath.stem in ('Selection', 'Console', 'Translate', 'UnitsApiPy'):
+                subCon = StubContainer(name=cppPath.stem)
+                subCon += stub
+                moduleStub @= subCon
+            else:
+                moduleStub += stub
 
     return moduleStub
 
@@ -39,11 +45,15 @@ def generateFreeCadStubs(sourcePath=SOURCE_DIR, targetPath=TARGET_DIR):
     freeCADStub += _genModule('FreeCAD', sourcePath / 'App', sourcePath)
     freeCADStub += StubContainer('GuiUp: typing.Literal[0, 1]', {'typing'})
     freeCADStub += StubContainer('Gui = FreeCADGui', {'FreeCADGui'})
+    freeCADStub += StubContainer('ActiveDocument: Document')
+    freeCADStub += StubContainer(requiredImports={
+        'Console', 'Translate as Qt', 'UnitsApiPy as Units'})
     freeCADStub.save(targetPath)
 
     freeCADGuiStub = _genModule('FreeCADGui', sourcePath / 'Gui')
     freeCADGuiStub += StubContainer('Workbench: FreeCADGui.Workbench')
     freeCADGuiStub += StubContainer('ActiveDocument: Document')
+    freeCADGuiStub += StubContainer(requiredImports={'Selection'})
     freeCADGuiStub.save(targetPath)
 
     for mod in (sourcePath / 'Mod').iterdir():
