@@ -217,6 +217,7 @@ datetime.timedelta;-;&PyDelta
 typing.Optional[T];Option<T>;-
 typing.Sequence[T];Vec<T>;&PySequence
 typing.Iterator[Any];-;&PyIterator
+typing.Type;-;PyClass;this is special case for python2
 """
 
 cTypeToPythonType: dict[str, str] = {

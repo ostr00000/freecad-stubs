@@ -32,11 +32,15 @@ class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
 
     def genClass(self):
         baseClasses = ', '.join(self.genBaseClasses())
-        classStr = f"class {getSimpleClassName(self.currentNode)}({baseClasses}):\n"
+        className = getSimpleClassName(self.currentNode)
+        classStr = f"class {className}({baseClasses}):\n"
         if doc := self._genDocFromStr(self._getDocFromNode(self.currentNode)):
             classStr += self.indent(doc)
             classStr += '\n'
         classStr += self.indent(self.genInit())
+
+        if specialCaseCode := self.getCodeForSpecialCase(className):
+            classStr += self.indent(specialCaseCode)
 
         for attributeNode in sorted(self.currentNode.findall('Attribute'), key=self._nodeSort):
             classStr += self.indent(self.getAttributes(attributeNode))
@@ -47,7 +51,7 @@ class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
         if strtobool(self.currentNode.attrib.get('RichCompare', 'False')):
             classStr += self.indent(self.genRichCompare())
         if strtobool(self.currentNode.attrib.get('NumberProtocol', 'False')):
-            classStr += self.indent(self.genNumberProtocol())
+            classStr += self.indent(self.genNumberProtocol(className))
 
         return classStr
 
@@ -61,3 +65,12 @@ class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
             module, base = getShortModuleFormat(base)  # workaround
             self.requiredImports.add(module)
             yield base
+
+    def getCodeForSpecialCase(self, className: str) -> str:
+        ret = ''
+        if className == 'DocumentObject':
+            ret += self.getProperty('Label', 'str', readOnly=False)
+            ret += self.getProperty('Proxy', 'object', readOnly=False)
+        elif className == 'GroupExtension':
+            ret += self.getProperty('Group', 'list[DocumentObject]', readOnly=False)
+        return ret

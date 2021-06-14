@@ -8,8 +8,12 @@ class PropertyGenerator(BaseGenerator):
     def getAttributes(self, node: ET.Element):
         name = node.attrib["Name"]
         pythonType = self.__findType(node)
+        docs = self._getDocFromNode(node)
+        readOnly = strtobool(node.attrib.get('ReadOnly', 'True'))
+        return self.getProperty(name, pythonType, docs, readOnly)
 
-        if docs := self._getDocFromNode(node):
+    def getProperty(self, name: str, pythonType: str = '', docs: str = '', readOnly=True):
+        if docs:
             docs = '\n' + self.indent(self._genDocFromStr(docs))
         else:
             docs = ' ...\n'
@@ -17,7 +21,7 @@ class PropertyGenerator(BaseGenerator):
         retType = f' -> {pythonType}' if pythonType else ''
         prop = f'@property\ndef {name}(self){retType}:{docs}\n'
 
-        if not strtobool(node.attrib.get('ReadOnly', 'True')):
+        if not readOnly:
             valueType = f': {pythonType}' if pythonType else ''
             prop += f'@{name}.setter\ndef {name}(self, value{valueType}): ...\n\n'
         return prop

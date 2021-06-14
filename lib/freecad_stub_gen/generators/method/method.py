@@ -162,26 +162,26 @@ class MethodGenerator(FormatFinder):
     @classmethod
     def genRichCompare(cls) -> str:
         ret = ''
-        ret += cls._genEmptyMethod('__eq__', 'other')
-        ret += cls._genEmptyMethod('__ne__', 'other')
-        ret += cls._genEmptyMethod('__lt__', 'other')
-        ret += cls._genEmptyMethod('__le__', 'other')
-        ret += cls._genEmptyMethod('__ge__', 'other')
-        ret += cls._genEmptyMethod('__gt__', 'other')
+        ret += cls._genEmptyMethod('__eq__', 'other', retType='bool')
+        ret += cls._genEmptyMethod('__ne__', 'other', retType='bool')
+        ret += cls._genEmptyMethod('__lt__', 'other', retType='bool')
+        ret += cls._genEmptyMethod('__le__', 'other', retType='bool')
+        ret += cls._genEmptyMethod('__ge__', 'other', retType='bool')
+        ret += cls._genEmptyMethod('__gt__', 'other', retType='bool')
         return ret
 
     @classmethod
-    def genNumberProtocol(cls) -> str:
+    def genNumberProtocol(cls, className:str) -> str:
         ret = ''
-        ret += cls._genEmptyMethod('__add__', 'other')
-        ret += cls._genEmptyMethod('__sub__', 'other')
-        ret += cls._genEmptyMethod('__mul__', 'other')
+        ret += cls._genEmptyMethod('__add__', 'other', retType=className)
+        ret += cls._genEmptyMethod('__sub__', 'other', retType=className)
+        ret += cls._genEmptyMethod('__mul__', 'other', retType=className)
         ret += cls._genEmptyMethod('__floordiv__', 'other')
         ret += cls._genEmptyMethod('__divmod__', 'other')
         ret += cls._genEmptyMethod('__pow__', 'power', 'modulo=None')
-        ret += cls._genEmptyMethod('__neg__')
-        ret += cls._genEmptyMethod('__pos__')
-        ret += cls._genEmptyMethod('__abs__')
+        ret += cls._genEmptyMethod('__neg__', retType=className)
+        ret += cls._genEmptyMethod('__pos__', retType=className)
+        ret += cls._genEmptyMethod('__abs__', retType=className)
         ret += cls._genEmptyMethod('__invert__')
         ret += cls._genEmptyMethod('__lshift__', 'other')
         ret += cls._genEmptyMethod('__rshift__', 'other')
@@ -193,5 +193,6 @@ class MethodGenerator(FormatFinder):
         return ret
 
     @classmethod
-    def _genEmptyMethod(cls, name: str, *args) -> str:
-        return f'def {name}({", ".join(("self",) + args)}): ...\n\n'
+    def _genEmptyMethod(cls, name: str, *args, retType=None) -> str:
+        retType = f' -> {retType}' if retType else ''
+        return f'def {name}({", ".join(("self",) + args)}){retType}:...\n\n'
