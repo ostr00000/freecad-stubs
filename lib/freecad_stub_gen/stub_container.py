@@ -51,20 +51,28 @@ class StubContainer:
         return f'{self.genImports()}{self.content}'
 
     def genImports(self):
-        sysImports, libImports = [], []
+        sysImports, libImports, localImports = [], [], []
         try:  # required python 3.10
             stdlib_module_names = sys.stdlib_module_names
         except AttributeError:
             stdlib_module_names = ()
 
         for imp in self.requiredImports:
-            importList = sysImports if imp in stdlib_module_names else libImports
-            importList.append(f'import {imp}')
+            if imp in stdlib_module_names:
+                importList = sysImports
+            elif 'import' not in imp:
+                importList = libImports
+            else:
+                importList = localImports
 
-        res = '\n'.join(sorted(sysImports))
-        if res:
-            res += '\n\n'
-        res += '\n'.join(sorted(libImports))
+            if 'import' not in imp:
+                imp = f'import {imp}'
+            importList.append(imp)
+
+        sysImportText = '\n'.join(sorted(sysImports))
+        libImportText = '\n'.join(sorted(libImports))
+        locImportText = '\n'.join(sorted(localImports))
+        res = '\n\n'.join(filter(None, (sysImportText, libImportText, locImportText)))
         if res:
             res += '\n\n\n'
         return res

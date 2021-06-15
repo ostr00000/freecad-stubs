@@ -47,13 +47,13 @@ def generateFreeCadStubs(sourcePath=SOURCE_DIR, targetPath=TARGET_DIR):
     freeCADStub += StubContainer('Gui = FreeCADGui', {'FreeCADGui'})
     freeCADStub += StubContainer('ActiveDocument: Document')
     freeCADStub += StubContainer(requiredImports={
-        'Console', 'Translate as Qt', 'UnitsApiPy as Units'})
+        'FreeCAD.Console', 'FreeCAD.Translate as Qt', 'FreeCAD.UnitsApiPy as Units'})
     freeCADStub.save(targetPath)
 
     freeCADGuiStub = _genModule('FreeCADGui', sourcePath / 'Gui')
     freeCADGuiStub += StubContainer('Workbench: FreeCADGui.Workbench')
     freeCADGuiStub += StubContainer('ActiveDocument: Document')
-    freeCADGuiStub += StubContainer(requiredImports={'Selection'})
+    freeCADGuiStub += StubContainer(requiredImports={'FreeCADGui.Selection'})
     freeCADGuiStub.save(targetPath)
 
     for mod in (sourcePath / 'Mod').iterdir():

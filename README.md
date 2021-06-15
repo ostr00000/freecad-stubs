@@ -18,12 +18,12 @@ Moreover, some of C function has errors - invalid types, missing arguments
 There are a lot of possible methods. This is only example: 
 
 1. Copy stubs from a desired branch from this repository.  
-Checkout to desired branch and copy folder `/stub_target`.
+Checkout to desired branch and copy folder `/freecad_stubs`.
    
 2. (Optional) Or [generate](#Stub-Generation) stubs manually.
    Copy/move generated stubs to location of your choice. For example:
    ```shell
-   cp -r ./stub_target "$HOME/.local/lib/python3.9/freecad_stubs" 
+   cp -r ./freecad_stubs "$HOME/.local/lib/python3.9/freecad_stubs" 
    ```
 
 3. Add location with stubs to python search path.
