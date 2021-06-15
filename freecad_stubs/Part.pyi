@@ -392,21 +392,21 @@ class TopoShape(Part.TopoShape):
 
     @property
     def MatrixOfInertia(self) -> object:
-        """Returns the matrix of inertia. It is a symmetrical matrix.
-        The coefficients of the matrix are the quadratic moments of
-        inertia.
+        """Returns the matrix of inertia. It is a symmetrical matrix. 
+        The coefficients of the matrix are the quadratic moments of 
+        inertia. 
 
-         | Ixx Ixy Ixz 0 |
-         | Ixy Iyy Iyz 0 |
-         | Ixz Iyz Izz 0 |
-         | 0   0   0   1 |
+         | Ixx Ixy Ixz 0 | 
+         | Ixy Iyy Iyz 0 | 
+         | Ixz Iyz Izz 0 | 
+         | 0   0   0   1 | 
 
-        The moments of inertia are denoted by Ixx, Iyy, Izz.
-        The products of inertia are denoted by Ixy, Ixz, Iyz.
-        The matrix of inertia is returned in the central coordinate
-        system (G, Gx, Gy, Gz) where G is the centre of mass of the
-        system and Gx, Gy, Gz the directions parallel to the X(1,0,0)
-        Y(0,1,0) Z(0,0,1) directions of the absolute cartesian
+        The moments of inertia are denoted by Ixx, Iyy, Izz. 
+        The products of inertia are denoted by Ixy, Ixz, Iyz. 
+        The matrix of inertia is returned in the central coordinate 
+        system (G, Gx, Gy, Gz) where G is the centre of mass of the 
+        system and Gx, Gy, Gz the directions parallel to the X(1,0,0) 
+        Y(0,1,0) Z(0,0,1) directions of the absolute cartesian 
         coordinate system."""
 
     @property
@@ -417,52 +417,40 @@ class TopoShape(Part.TopoShape):
 
     @property
     def PrincipalProperties(self) -> dict:
-        """Computes the principal properties of inertia of the current system.
-         There is always a set of axes for which the products
-         of inertia of a geometric system are equal to 0; i.e. the
-         matrix of inertia of the system is diagonal. These axes
-         are the principal axes of inertia. Their origin is
-         coincident with the center of mass of the system. The
-         associated moments are called the principal moments of inertia.
-         This function computes the eigen values and the
+        """Computes the principal properties of inertia of the current system. 
+         There is always a set of axes for which the products 
+         of inertia of a geometric system are equal to 0; i.e. the 
+         matrix of inertia of the system is diagonal. These axes 
+         are the principal axes of inertia. Their origin is 
+         coincident with the center of mass of the system. The 
+         associated moments are called the principal moments of inertia. 
+         This function computes the eigen values and the 
          eigen vectors of the matrix of inertia of the system."""
 
     @property
     def StaticMoments(self) -> object:
-        """Returns Ix, Iy, Iz, the static moments of inertia of the
-         current system; i.e. the moments of inertia about the
+        """Returns Ix, Iy, Iz, the static moments of inertia of the 
+         current system; i.e. the moments of inertia about the 
          three axes of the Cartesian coordinate system."""
 
     def getMomentOfInertia(self, point: FreeCAD.Vector, direction: FreeCAD.Vector, /):
         """computes the moment of inertia of the material system about the axis A.
-        getMomentOfInertia(point,direction) -> Float
-                """
+        mySolid.getMomentOfInertia( point, direction )"""
 
     def getRadiusOfGyration(self, point: FreeCAD.Vector, direction: FreeCAD.Vector, /):
         """Returns the radius of gyration of the current system about the axis A.
-        getRadiusOfGyration(point,direction) -> Float
-                """
+        mySolid.getRadiusOfGyration( point, direction )"""
 
     @typing.overload
-    def offsetFaces(self, facesTuple: object, offset: float, /): ...
+    def offsetFaces(self, arg: object, solid_Faces_1_2_0_: float, /): ...
 
     @typing.overload
-    def offsetFaces(self, dict: dict, /): ...
-
-    @typing.overload
-    def offsetFaces(self, arg: object, arg2: float, /): ...
-
-    @typing.overload
-    def offsetFaces(self, arg: object, solid_Faces_1_2_0_: float, /):
+    def offsetFaces(self, arg: object, arg2: float, /):
         """Extrude single faces of the solid.
-        offsetFaces(facesTuple, offset) -> Solid
-        or
-        offsetFaces(dict) -> Solid
-        --
+        Example:
+        solid.offsetFaces({solid.Faces[0]:1.0,solid.Faces[1]:2.0})
         Example:
         solid.offsetFaces((solid.Faces[0],solid.Faces[1]), 1.5)
-
-        solid.offsetFaces({solid.Faces[0]:1.0,solid.Faces[1]:2.0})
                 """
 
 
@@ -818,21 +806,21 @@ class TopoShape(Part.TopoShape):
 
     @property
     def MatrixOfInertia(self) -> object:
-        """Returns the matrix of inertia. It is a symmetrical matrix.
-        The coefficients of the matrix are the quadratic moments of
-        inertia.
+        """Returns the matrix of inertia. It is a symmetrical matrix. 
+        The coefficients of the matrix are the quadratic moments of 
+        inertia. 
 
-         | Ixx Ixy Ixz 0 |
-         | Ixy Iyy Iyz 0 |
-         | Ixz Iyz Izz 0 |
-         | 0   0   0   1 |
+         | Ixx Ixy Ixz 0 | 
+         | Ixy Iyy Iyz 0 | 
+         | Ixz Iyz Izz 0 | 
+         | 0   0   0   1 | 
 
-        The moments of inertia are denoted by Ixx, Iyy, Izz.
-        The products of inertia are denoted by Ixy, Ixz, Iyz.
-        The matrix of inertia is returned in the central coordinate
-        system (G, Gx, Gy, Gz) where G is the centre of mass of the
-        system and Gx, Gy, Gz the directions parallel to the X(1,0,0)
-        Y(0,1,0) Z(0,0,1) directions of the absolute cartesian
+        The moments of inertia are denoted by Ixx, Iyy, Izz. 
+        The products of inertia are denoted by Ixy, Ixz, Iyz. 
+        The matrix of inertia is returned in the central coordinate 
+        system (G, Gx, Gy, Gz) where G is the centre of mass of the 
+        system and Gx, Gy, Gz the directions parallel to the X(1,0,0) 
+        Y(0,1,0) Z(0,0,1) directions of the absolute cartesian 
         coordinate system."""
 
     @property
@@ -845,20 +833,20 @@ class TopoShape(Part.TopoShape):
 
     @property
     def PrincipalProperties(self) -> dict:
-        """Computes the principal properties of inertia of the current system.
-         There is always a set of axes for which the products
-         of inertia of a geometric system are equal to 0; i.e. the
-         matrix of inertia of the system is diagonal. These axes
-         are the principal axes of inertia. Their origin is
-         coincident with the center of mass of the system. The
-         associated moments are called the principal moments of inertia.
-         This function computes the eigen values and the
+        """Computes the principal properties of inertia of the current system. 
+         There is always a set of axes for which the products 
+         of inertia of a geometric system are equal to 0; i.e. the 
+         matrix of inertia of the system is diagonal. These axes 
+         are the principal axes of inertia. Their origin is 
+         coincident with the center of mass of the system. The 
+         associated moments are called the principal moments of inertia. 
+         This function computes the eigen values and the 
          eigen vectors of the matrix of inertia of the system."""
 
     @property
     def StaticMoments(self) -> object:
-        """Returns Ix, Iy, Iz, the static moments of inertia of the
-         current system; i.e. the moments of inertia about the
+        """Returns Ix, Iy, Iz, the static moments of inertia of the 
+         current system; i.e. the moments of inertia about the 
          three axes of the Cartesian coordinate system."""
 
     @property
@@ -874,82 +862,59 @@ class TopoShape(Part.TopoShape):
         """The outer wire of this face
         deprecated -- please use OuterWire"""
 
-    def addWire(self, wire: Part.TopoShape, /):
-        """Adds a wire to the face.
-        addWire(wire)
-                        """
+    def addWire(self, arg1: Part.TopoShape, /):
+        """Adds a wire to the face."""
 
-    def curvatureAt(self, u: float, v: float, /):
-        """Get the curvature at the given parameter [0|Length] if defined
-        curvatureAt(u,v) -> Float
-                        """
+    def curvatureAt(self, arg1: float, arg2: float, /):
+        """Float = curvatureAt(pos) - Get the curvature at the given parameter [0|Length] if defined"""
 
-    def curveOnSurface(self, Edge: Part.TopoShape, /):
-        """Returns the curve associated to the edge in the parametric space of the face.
-        curveOnSurface(Edge) -> (curve, min, max) or None
-        --
-        If this curve exists then a tuple of curve and parameter range is returned.
-        Returns None if this curve  does not exist.
-                        """
+    def curveOnSurface(self, arg1: Part.TopoShape, /):
+        """
+        curveonSurface(Edge) -> None or tuple
+        Returns the curve  associated to the  edge in  the
+        parametric  space of  the  face.  Returns None if this
+        curve  does not exist. If this curve exists then a tuple
+        of curve and parameter range is returned.
+        				"""
 
     def cutHoles(self, list_of_wires: list, /):
         """Cut holes in the face.
-        cutHoles(list_of_wires)
-                        """
+        aFace.cutHoles(list_of_wires)
+        				"""
 
-    def derivative1At(self, u: float, v: float, /):
-        """Get the first derivative at the given parameter [0|Length] if defined
-        derivative1At(u,v) -> (vectorU,vectorV)
-                        """
+    def derivative1At(self, arg1: float, arg2: float, /):
+        """Vector = d1At(pos) - Get the first derivative at the given parameter [0|Length] if defined"""
 
-    def derivative2At(self, u: float, v: float, /):
-        """Vector = d2At(pos) - Get the second derivative at the given parameter [0|Length] if defined
-        derivative2At(u,v) -> (vectorU,vectorV)
-                        """
+    def derivative2At(self, arg1: float, arg2: float, /):
+        """Vector = d2At(pos) - Get the second derivative at the given parameter [0|Length] if defined"""
 
     def getUVNodes(self):
-        """Get the list of (u,v) nodes of the tessellation
-        getUVNodes() -> list
-        --
+        """
+        getUVNodes() --> list
+        Get the list of (u,v) nodes of the tessellation
         An exception is raised if the face is not triangulated.
         """
 
-    def isPartOfDomain(self, u: float, v: float, /):
-        """Check if a given (u,v) pair is inside the domain of a face
-        isPartOfDomain(u,v) -> bool
-                        """
+    def isPartOfDomain(self, arg1: float, arg2: float, /):
+        """Check if a given (u,v) pair is inside the domain of a face"""
 
-    def makeHalfSpace(self, pos: FreeCAD.Vector, /):
-        """Make a half-space solid by this face and a reference point.
-        makeHalfSpace(pos) -> Shape
-                        """
+    def makeHalfSpace(self, arg1: FreeCAD.Vector, /):
+        """Make a half-space solid by this face and a reference point."""
 
-    def makeOffset(self, dist: float, /):
-        """Offset the face by a given amount.
-        makeOffset(dist) -> Face
-        --
-        Returns Compound of Wires. Deprecated - use makeOffset2D instead.
-                        """
+    def makeOffset(self, arg1: float, /):
+        """Offset the face by a given amount. Returns Compound of Wires. Deprecated - use makeOffset2D instead."""
 
     def normalAt(self, arg1: float, arg2: float, /):
-        """Get the normal vector at the given parameter [0|Length] if defined
-        normalAt(pos) -> Vector
-                        """
+        """Vector = normalAt(pos) - Get the normal vector at the given parameter [0|Length] if defined"""
 
-    def tangentAt(self, u: float, v: float, /):
-        """Get the tangent in u and v isoparametric at the given point if defined
-        tangentAt(u,v) -> Vector
-                        """
+    def tangentAt(self, arg1: float, arg2: float, /):
+        """Get the tangent in u and v isoparametric at the given point if defined"""
 
     def validate(self):
-        """Validate the face.
-        validate()
-                        """
+        """Validate the face."""
 
-    def valueAt(self, u: float, v: float, /):
-        """Get the point at the given parameter [0|Length] if defined
-        valueAt(u,v) -> Vector
-                        """
+    def valueAt(self, arg1: float, arg2: float, /):
+        """Vector = valueAt(pos) - Get the point at the given parameter [0|Length] if defined"""
 
 
 # BRepOffsetAPI_MakePipeShellPy.xml
@@ -1128,10 +1093,8 @@ class TopoShape(Part.TopoShape):
     def __init__(self, arg1: object, /):
         """TopoShapeCompSolid is the OpenCasCade topological compound solid wrapper"""
 
-    def add(self, solid: Part.TopoShape, /):
-        """Add a solid to the compound.
-        add(solid)
-                """
+    def add(self, arg1: Part.TopoShape, /):
+        """Add a solid to the compound."""
 
 
 # ParabolaPy.xml
@@ -1250,21 +1213,20 @@ class TopoShape(FreeCAD.ComplexGeoData):
         """List of wires in this shape."""
 
     def ancestorsOfType(self, shape: Part.TopoShape, shape_type: type, /):
-        """For a sub-shape of this shape get its ancestors of a type.
-        ancestorsOfType(shape, shape type) -> list
+        """ancestorsOfType(shape, shape type) -> list
+        For a sub-shape of this shape get its ancestors of a type.
                 """
 
     def check(self, runBopCheck: bool = False, /):
         """Checks the shape and report errors in the shape structure.
-        check([runBopCheck = False])
-        --
         This is a more detailed check as done in isValid().
+        myShape.check(runBopCheck = False)
         if runBopCheck is True, a BOPCheck analysis is also performed."""
 
     def childShapes(self, cumOri: bool = True, cumLoc: bool = True, /):
-        """Return a list of sub-shapes that are direct children of this shape.
+        """
         childShapes([cumOri=True, cumLoc=True]) -> list
-        --
+        Return a list of sub-shapes that are direct children of this shape.
          * If cumOri is true, the function composes all
            sub-shapes with the orientation of this shape.
          * If cumLoc is true, the function multiplies all
@@ -1274,8 +1236,6 @@ class TopoShape(FreeCAD.ComplexGeoData):
 
     def cleaned(self):
         """This creates a cleaned copy of the shape with the triangulation removed.
-        clean()
-        --
         This can be useful to reduce file size when exporting as a BREP file.
         Warning: Use the cleaned shape with care because certain algorithms may work incorrectly
         if the shape has no internal triangulation any more.
@@ -1293,7 +1253,9 @@ class TopoShape(FreeCAD.ComplexGeoData):
         common(tool) -> Shape
           or
         common((tool1,tool2,...),[tolerance=0.0]) -> Shape
-        --
+
+        Intersection of this and a given list of topo shapes.
+
         Supports:
         - Fuzzy Boolean operations (global tolerance for a Boolean operation)
         - Support of multiple arguments for a single Boolean operation (s1 AND (s2 OR s3))
@@ -1303,24 +1265,19 @@ class TopoShape(FreeCAD.ComplexGeoData):
 
     def complement(self):
         """Computes the complement of the orientation of this shape,
-        i.e. reverses the interior/exterior status of boundaries of this shape.
-        complement()
-                """
+        i.e. reverses the interior/exterior status of boundaries of this shape."""
 
     def copy(self, copyGeom: bool = True, copyMesh: bool = False, /):
         """Create a copy of this shape
         copy(copyGeom=True, copyMesh=False) -> Shape
-        --
         If copyMesh is True, triangulation contained in original shape will be
         copied along with geometry.
         If copyGeom is False, only topological objects will be copied, while
         geometry and triangulation will be shared with original shape.
         """
 
-    def countElement(self, type: str, /):
-        """Returns the count of a type of element
-        countElement(type) -> int
-                """
+    def countElement(self, arg1: str, /):
+        """Returns the count of a type of element"""
 
     @typing.overload
     def cut(self, tool: Part.TopoShape, /): ...
@@ -1334,7 +1291,9 @@ class TopoShape(FreeCAD.ComplexGeoData):
         cut(tool) -> Shape
           or
         cut((tool1,tool2,...),[tolerance=0.0]) -> Shape
-        --
+
+        Substraction of this and a given list of topo shapes.
+
         Supports:
         - Fuzzy Boolean operations (global tolerance for a Boolean operation)
         - Support of multiple arguments for a single Boolean operation
@@ -1342,16 +1301,16 @@ class TopoShape(FreeCAD.ComplexGeoData):
 
         OCC 6.9.0 or later is required."""
 
-    def defeaturing(self, shapeList: object, /):
+    def defeaturing(self, arg1: object, /):
         """Remove a feature defined by supplied faces and return a new shape.
-        defeaturing(shapeList) -> Shape
-        --
         The parameter is a list of faces."""
 
-    def distToShape(self, shape: Part.TopoShape, /):
+    def distToShape(self, Shape_s: Part.TopoShape, /):
         """Find the minimum distance to another shape.
-        distToShape(shape) -> (dist, vectors, infos)
-        --
+        distToShape(Shape s):  Returns a list of minimum distance and solution point pairs.
+
+        Returned is a tuple of three: (dist, vectors, infos).
+
         dist is the minimum distance, in mm (float value).
 
         vectors is a list of pairs of App.Vector. Each pair corresponds to solution.
@@ -1372,70 +1331,51 @@ class TopoShape(FreeCAD.ComplexGeoData):
             params is a tuple (u,v). """
 
     def dumpToString(self):
-        """Dump information about the shape to a string.
-        dumpToString() -> string"""
+        """Dump information about the shape to a string."""
 
-    def exportBinary(self, filename: str, /):
-        """Export the content of this shape in binary format to a file.
-        exportBinary(filename)
-                """
+    def exportBinary(self, arg1: str, /):
+        """Export the content of this shape in binary format to a file."""
 
     @typing.overload
-    def exportBrep(self, filename: str, /): ...
+    def exportBrep(self, arg1: str, /): ...
 
     @typing.overload
-    def exportBrep(self, filename: object, /):
-        """Export the content of this shape to an BREP file.
-        exportBrep(filename)
-        --
-        BREP is an OpenCasCade native format.
-                """
+    def exportBrep(self, arg1: object, /):
+        """Export the content of this shape to an BREP file. BREP is a CasCade native format."""
 
     def exportBrepToString(self):
-        """Export the content of this shape to a string in BREP format.
-        exportBrepToString() -> string
-        --
-        BREP is an OpenCasCade native format."""
+        """Export the content of this shape to a string in BREP format. BREP is a CasCade native format."""
 
-    def exportIges(self, filename: str, /):
-        """Export the content of this shape to an IGES file.
-        exportIges(filename)
-                """
+    def exportIges(self, arg1: str, /):
+        """Export the content of this shape to an IGES file."""
 
-    def exportStep(self, filename: str, /):
-        """Export the content of this shape to an STEP file.
-        exportStep(filename)
-                """
+    def exportStep(self, arg1: str, /):
+        """Export the content of this shape to an STEP file."""
 
     def exportStl(self, arg1: str, arg2: float = None, /):
-        """Export the content of this shape to an STL mesh file.
-        exportStl(filename)"""
+        """Export the content of this shape to an STL mesh file."""
 
     def extrude(self, arg1: FreeCAD.Vector, /):
-        """Extrude the shape along a direction.
-        extrude(direction, length)"""
+        """Extrude the shape along a direction."""
 
     def findPlane(self, tol: float = None, /):
-        """return a plane if the shape is planar
-        findPlane(tol=None) -> Shape
-                  """
+        """findPlane(tol=None) -- return a plane if the shape is planar"""
 
     def fix(self, working_precision: float, minimum_precision: float, maximum_precision: float, /):
-        """Tries to fix a broken shape.
-        fix(working precision, minimum precision, maximum precision) -> bool
-        --
-        True is returned if the operation succeeded, False otherwise.
+        """Tries to fix a broken shape. True is returned if the operation succeeded, False otherwise.
+        fix(working precision, minimum precision, maximum precision)
                 """
 
     def fixTolerance(self, value: float, ShapeType: type = None, /):
-        """Sets (enforces) tolerances in a shape to the given value
-        fixTolerance(value, [ShapeType=Shape])
-        --
-        ShapeType = Vertex : only vertices are set
-        ShapeType = Edge   : only edges are set
-        ShapeType = Face   : only faces are set
-        ShapeType = Wire   : to have edges and their vertices set
-        ShapeType = other value : all (vertices,edges,faces) are set
+        """
+                fixTolerance(value, ShapeType=Shape)
+
+                Sets (enforces) tolerances in a shape to the given value
+                ShapeType = Vertex : only vertices are set
+                ShapeType = Edge   : only edges are set
+                ShapeType = Face   : only faces are set
+                ShapeType = Wire   : to have edges and their vertices set
+                ShapeType = other value : all (vertices,edges,faces) are set
                 """
 
     @typing.overload
@@ -1450,7 +1390,7 @@ class TopoShape(FreeCAD.ComplexGeoData):
         fuse(tool) -> Shape
           or
         fuse((tool1,tool2,...),[tolerance=0.0]) -> Shape
-        --
+
         Union of this and a given list of topo shapes.
 
         Supports (OCCT 6.9.0 and above):
@@ -1461,9 +1401,8 @@ class TopoShape(FreeCAD.ComplexGeoData):
         Beginning from OCCT 6.8.1 a tolerance value can be specified."""
 
     def generalFuse(self, list_of_other_shapes: object, fuzzy_value: float = 0.0, /):
-        """Run general fuse algorithm (GFA) between this and given shapes.
-        generalFuse(list_of_other_shapes, [fuzzy_value = 0.0]) -> (result, map)
-        --
+        """generalFuse(list_of_other_shapes, fuzzy_value = 0.0): Run general fuse algorithm (GFA) between this and given shapes.
+
         list_of_other_shapes: shapes to run the algorithm against (the list is
         effectively prepended by 'self').
 
@@ -1488,76 +1427,65 @@ class TopoShape(FreeCAD.ComplexGeoData):
         OCC 6.9.0 or later is required.
         """
 
-    def getElement(self, elementName: str, /):
-        """Returns a SubElement
-        getElement(elementName) -> Face | Edge | Vertex
-                """
+    def getElement(self, arg1: str, /):
+        """Returns a SubElement"""
 
     def getTolerance(self, mode: int, ShapeType: type = None, /):
-        """Determines a tolerance from the ones stored in a shape
-        getTolerance(mode, ShapeType=Shape) -> float
-        --
-        mode = 0 : returns the average value between sub-shapes,
-        mode > 0 : returns the maximal found,
-        mode < 0 : returns the minimal found.
-        ShapeType defines what kinds of sub-shapes to consider:
-        Shape (default) : all : Vertex, Edge, Face,
-        Vertex : only vertices,
-        Edge   : only edges,
-        Face   : only faces,
-        Shell  : combined Shell + Face, for each face (and containing
-                 shell), also checks edge and Vertex
+        """
+                getTolerance(mode, ShapeType=Shape) -> float
+
+                Determines a tolerance from the ones stored in a shape
+                mode = 0 : returns the average value between sub-shapes,
+                mode > 0 : returns the maximal found,
+                mode < 0 : returns the minimal found.
+                ShapeType defines what kinds of sub-shapes to consider:
+                Shape (default) : all : Vertex, Edge, Face,
+                Vertex : only vertices,
+                Edge   : only edges,
+                Face   : only faces,
+                Shell  : combined Shell + Face, for each face (and containing
+                         shell), also checks edge and Vertex
                 """
 
     def globalTolerance(self, mode: int, /):
-        """Returns the computed tolerance according to the mode
-        globalTolerance(mode) -> float
-        --
-        mode = 0 : average
-        mode > 0 : maximal
-        mode < 0 : minimal
+        """
+                globalTolerance(mode) -> float
+
+                Returns the computed tolerance according to the mode
+                mode = 0 : average
+                mode > 0 : maximal
+                mode < 0 : minimal
                 """
 
-    def hashCode(self, arg: int = None, /):
+    def hashCode(self, arg1: int = None, /):
         """This value is computed from the value of the underlying shape reference and the location.
-        hashCode() -> int
-        --
         Orientation is not taken into account."""
 
-    def importBinary(self, filename: str, /):
-        """Import the content to this shape of a string in BREP format.
-        importBinary(filename)"""
+    def importBinary(self, arg1: str, /):
+        """Import the content to this shape of a string in BREP format."""
 
     @typing.overload
-    def importBrep(self, filename: str, /): ...
+    def importBrep(self, arg1: str, /): ...
 
     @typing.overload
-    def importBrep(self, filename: object, /):
-        """Load the shape from a file in BREP format.
-        importBrep(filename)"""
+    def importBrep(self, arg1: object, /):
+        """Load the shape from a file in BREP format."""
 
-    @typing.overload
-    def importBrepFromString(self, string: str, displayProgressBar: int = True, /): ...
-
-    @typing.overload
     def importBrepFromString(self, str: str, False_: int = None, /):
         """Load the shape from a string that keeps the content in BREP format.
-        importBrepFromString(string, [displayProgressBar=True])
-        --
         importBrepFromString(str,False) to not display a progress bar.
                 """
 
     def inTolerance(self, arg1: float, arg2: float, arg3: type = None, /):
-        """Determines which shapes have a tolerance within a given interval
-        inTolerance(value, [ShapeType=Shape]) -> ShapeList
-        --
-        ShapeType is interpreted as in the method getTolerance
+        """
+                inTolerance(value, ShapeType=Shape) -> float
+
+                Determines which shapes have a tolerance within a given interval
+                ShapeType is interpreted as in the method getTolerance
                 """
 
     def isClosed(self):
-        """Checks if the shape is closed.
-        isClosed() -> bool
-        --
+        """Checks if the shape is closed
         If the shape is a shell it returns True if it has no free boundaries (edges).
         If the shape is a wire it returns True if it has no free ends (vertices).
         (Internal and External sub-shepes are ignored in these checks)
@@ -1565,93 +1493,76 @@ class TopoShape(FreeCAD.ComplexGeoData):
         """
 
     def isCoplanar(self, shape: Part.TopoShape, tol: float = None, /):
-        """Checks if this shape is coplanar with the given shape.
-        isCoplanar(shape,tol=None) -> bool
-                """
+        """isCoplanar(shape,tol=None) -- Checks if this shape is coplanar with the given shape."""
 
-    def isEqual(self, shape: Part.TopoShape, /):
+    def isEqual(self, arg1: Part.TopoShape, /):
         """Checks if both shapes are equal.
                 This means geometry, placement and orientation are equal.
-        isEqual(shape) -> bool
                 """
 
     def isInfinite(self):
-        """Checks if this shape has an infinite expansion.
-        isInfinite() -> bool
-                """
+        """isInfinite() -- Checks if this shape has an infinite expansion."""
 
-    def isInside(self, point: FreeCAD.Vector, tolerance: float, checkFace: bool, /):
+    def isInside(self, App_Vector: FreeCAD.Vector, float: float, Boolean: bool, /):
         """Checks whether a point is inside or outside the shape.
-        isInside(point, tolerance, checkFace) => Boolean
-        --
-        checkFace indicates if the point lying directly on a face is considered to be inside or not
+        isInside(App.Vector, float, Boolean) => Boolean
+        The App.Vector is the point you want to check if it's inside or not
+        float gives the tolerance
+        Boolean indicates if the point lying directly on a face is considered to be inside or not 
                 """
 
     def isNull(self):
-        """Checks if the shape is null.
-        isNull() -> bool"""
+        """Checks if the shape is null."""
 
-    def isPartner(self, shape: Part.TopoShape, /):
+    def isPartner(self, arg1: Part.TopoShape, /):
         """Checks if both shapes share the same geometry.
-        Placement and orientation may differ.
-        isPartner(shape) -> bool
+                Placement and orientation may differ.
                 """
 
-    def isSame(self, shape: Part.TopoShape, /):
+    def isSame(self, arg1: Part.TopoShape, /):
         """Checks if both shapes share the same geometry
                 and placement. Orientation may differ.
-        isSame(shape) -> bool
                 """
 
     def isValid(self):
-        """Checks if the shape is valid, i.e. neither null, nor empty nor corrupted.
-        isValid() -> bool
-                """
+        """Checks if the shape is valid, i.e. neither null, nor empty nor corrupted."""
 
     def limitTolerance(self, tmin: float, tmax: float = 0, ShapeType: type = None, /):
-        """Limits tolerances in a shape
-        limitTolerance(tmin, [tmax=0, ShapeType=Shape]) -> bool
-        --
-        tmin = tmax -> as fixTolerance (forces)
-        tmin = 0   -> maximum tolerance will be tmax
-        tmax = 0 or not given (more generally, tmax < tmin) ->
-        tmax ignored, minimum will be tmin
-        else, maximum will be max and minimum will be min
-        ShapeType = Vertex : only vertices are set
-        ShapeType = Edge   : only edges are set
-        ShapeType = Face   : only faces are set
-        ShapeType = Wire   : to have edges and their vertices set
-        ShapeType = other value : all (vertices,edges,faces) are set
-        Returns True if at least one tolerance of the sub-shape has been modified
+        """
+                limitTolerance(tmin, tmax=0, ShapeType=Shape)
+
+                Limits tolerances in a shape as follows :
+                tmin = tmax -> as fixTolerance (forces)
+                tmin = 0   -> maximum tolerance will be tmax
+                tmax = 0 or not given (more generally, tmax < tmin) ->
+                tmax ignored, minimum will be tmin
+                else, maximum will be max and minimum will be min
+                ShapeType = Vertex : only vertices are set
+                ShapeType = Edge   : only edges are set
+                ShapeType = Face   : only faces are set
+                ShapeType = Wire   : to have edges and their vertices set
+                ShapeType = other value : all (vertices,edges,faces) are set
+                Returns True if at least one tolerance of the sub-shape has
+                been modified
                 """
 
     @typing.overload
-    def makeChamfer(self, radius: float, edgeList: object, /): ...
+    def makeChamfer(self, arg1: float, arg2: float, arg3: object, /): ...
 
     @typing.overload
-    def makeChamfer(self, radius1: float, radius2: float, edgeList: object, /):
-        """Make chamfer.
-        makeChamfer(radius,edgeList) -> Shape
-        or
-        makeChamfer(radius1,radius2,edgeList) -> Shape"""
+    def makeChamfer(self, arg1: float, arg2: object, /):
+        """Make chamfer."""
 
     @typing.overload
-    def makeFillet(self, radius: float, edgeList: object, /): ...
+    def makeFillet(self, arg1: float, arg2: float, arg3: object, /): ...
 
     @typing.overload
-    def makeFillet(self, radius1: float, radius2: float, edgeList: object, /):
-        """Make fillet.
-        makeFillet(radius,edgeList) -> Shape
-        or
-        makeFillet(radius1,radius2,edgeList) -> Shape
-                """
+    def makeFillet(self, arg1: float, arg2: object, /):
+        """Make fillet."""
 
     def makeOffset2D(self, offset: float, join: int = None, fill: bool = None, openResult: bool = None, intersection: bool = None):
-        """makes an offset shape (2d offsetting).
-        makeOffset2D(offset, [join = 0, fill = False, openResult = false, intersection =
-        false]) -> Shape
-        --
-        The function supports keyword
+        """makeOffset2D(offset, join = 0, fill = False, openResult = false, intersection =
+        false): makes an offset shape (2d offsetting). The function supports keyword
         arguments. Input shape (self) can be edge, wire, face, or a compound of those.
 
         * offset: distance to expand the shape by. Negative value will shrink the
@@ -1677,10 +1588,8 @@ class TopoShape(FreeCAD.ComplexGeoData):
         structure follows that of source shape."""
 
     def makeOffsetShape(self, offset: float, tolerance: float, inter: bool = None, self_inter: bool = None, offsetMode: int = None, join: int = None, fill: bool = None):
-        """makes an offset shape (3d offsetting).
-        makeOffsetShape(offset, tolerance, [inter = False, self_inter = False,
-        offsetMode = 0, join = 0, fill = False]) -> Shape
-        --
+        """makeOffsetShape(offset, tolerance, inter = False, self_inter = False,
+        offsetMode = 0, join = 0, fill = False): makes an offset shape (3d offsetting).
         The function supports keyword arguments.
 
         * offset: distance to expand the shape by. Negative value will shrink the
@@ -1703,32 +1612,28 @@ class TopoShape(FreeCAD.ComplexGeoData):
 
     def makeParallelProjection(self, shape: Part.TopoShape, dir: FreeCAD.Vector, /):
         """Parallel projection of an edge or wire on this shape
-        makeParallelProjection(shape, dir) -> Shape
+        makeParallelProjection(shape, dir)
                 """
 
     def makePerspectiveProjection(self, shape: Part.TopoShape, pnt: FreeCAD.Vector, /):
         """Perspective projection of an edge or wire on this shape
-        makePerspectiveProjection(shape, pnt) -> Shape
+        makePerspectiveProjection(shape, pnt)
                 """
 
-    def makeShapeFromMesh(self, arg: tuple, tolerance: float, /):
+    def makeShapeFromMesh(self, arg1: tuple, arg2: float, /):
         """Make a compound shape out of mesh data.
-        makeShapeFromMesh((vertex,facets),tolerance) -> Shape
-        --
         Note: This should be used for rather small meshes only."""
 
     def makeThickness(self, arg1: object, arg2: float, arg3: float, arg4: bool = None, arg5: bool = None, arg6: int = None, arg7: int = None, /):
-        """Hollow a solid according to given thickness and faces.
-        makeThickness(List of faces, Offset (Float), Tolerance (Float)) -> Shape
-        --
+        """makeThickness(List of shapes, Offset (Float), Tolerance (Float)) -> Shape
         A hollowed solid is built from an initial solid and a set of faces on this solid,
         which are to be removed. The remaining faces of the solid become the walls of
         the hollowed solid, their thickness defined at the time of construction."""
 
     def makeWires(self, op: str, /):
-        """make wire(s) using the edges of this shape
-        makeWires([op=None])
-        --
+        """
+        makeWires(op=None): make wire(s) using the edges of this shape
+
         The function will sort any edges inside the current shape, and connect them
         into wire. If more than one wire is found, then it will make a compound out of
         all found wires.
@@ -1740,16 +1645,15 @@ class TopoShape(FreeCAD.ComplexGeoData):
         op: an optional string to be appended when auto generates element mapping.
                 """
 
-    def mirror(self, base: FreeCAD.Vector, norm: FreeCAD.Vector, /):
+    def mirror(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, /):
         """Mirror this shape on a given plane.
-        mirror(base, norm) -> Shape
-        --
         The plane is given with its base point and its normal direction."""
 
     def multiFuse(self, arg: object, tolerance: float = 0.0, /):
-        """Union of this and a given list of topo shapes.
-        multiFuse((tool1,tool2,...),[tolerance=0.0]) -> Shape
-        --
+        """multiFuse((tool1,tool2,...),[tolerance=0.0]) -> Shape
+
+        Union of this and a given list of topo shapes.
+
         Supports (OCCT 6.9.0 and above):
         - Fuzzy Boolean operations (global tolerance for a Boolean operation)
         - Support of multiple arguments for a single Boolean operation
@@ -1760,94 +1664,58 @@ class TopoShape(FreeCAD.ComplexGeoData):
 
     def nullify(self):
         """Destroys the reference to the underlying shape stored in this shape.
-        As a result, this shape becomes null.
-        nullify()
-                """
+        As a result, this shape becomes null."""
 
-    def oldFuse(self, tool: Part.TopoShape, /):
-        """Union of this and a given topo shape (old algorithm).
-        oldFuse(tool) -> Shape
-                """
+    def oldFuse(self, arg1: Part.TopoShape, /):
+        """Union of this and a given topo shape (old algorithm)."""
 
     def optimalBoundingBox(self, useTriangulation: bool = True, useShapeTolerance: object = False, /):
-        """Get the optimal bounding box
-        optimalBoundingBox([useTriangulation = True, useShapeTolerance = False]) -> bound box
+        """
+                optimalBoundingBox(useTriangulation = True, useShapeTolerance = False) -> bound box
                 """
 
     def overTolerance(self, value: float, ShapeType: type = None, /):
-        """Determines which shapes have a tolerance over the given value
-        overTolerance(value, [ShapeType=Shape]) -> ShapeList
-        --
-        ShapeType is interpreted as in the method getTolerance
+        """
+                overTolerance(value, ShapeType=Shape) -> float
+
+                Determines which shapes have a tolerance over the given value
+                ShapeType is interpreted as in the method getTolerance
                 """
 
-    def project(self, shapeList: object, /):
-        """Project a list of shapes on this shape
-        project(shapeList) -> Shape
+    def project(self, arg1: object, /):
+        """Project a list of shapes on this shape"""
+
+    def proximity(self, arg1: Part.TopoShape, arg2: float = None, /):
+        """proximity(Shape s): Returns two lists of Face indexes for the Faces involved in the intersection."""
+
+    def read(self, arg1: str, /):
+        """Read in an IGES, STEP or BREP file."""
+
+    def reflectLines(self, ViewDir: FreeCAD.Vector, ViewPos: FreeCAD.Vector, UpDir: FreeCAD.Vector):
+        """Build reflect lines on a shape according to the axes of view.
+        Reflect lines are represented by edges in 3d.
+        reflectLines(ViewDir, ViewPos, UpDir) -> Shape
                 """
 
-    def proximity(self, shape: Part.TopoShape, tolerance: float = None, /):
-        """Returns two lists of Face indexes for the Faces involved in the intersection.
-        proximity(shape,[tolerance]) -> (selfFaces, shapeFaces)
-                """
+    def removeInternalWires(self, arg1: float, /):
+        """Removes internal wires (also holes) from the shape."""
 
-    def read(self, filename: str, /):
-        """Read in an IGES, STEP or BREP file.
-        read(filename)
-                """
-
-    def reflectLines(self, ViewDir: FreeCAD.Vector, ViewPos: FreeCAD.Vector = None, UpDir: FreeCAD.Vector = None, EdgeType: str = None, Visible: bool = None, OnShape: bool = None):
-        """Build projection or reflect lines of a shape according to a view direction.
-        reflectLines(ViewDir, [ViewPos, UpDir, EdgeType, Visible, OnShape]) -> Shape (Compound of edges)
-        --
-        This algorithm computes the projection of the shape in the ViewDir direction.
-        If OnShape is False(default), the returned edges are flat on the XY plane defined by
-        ViewPos(origin) and UpDir(up direction).
-        If OnShape is True, the returned edges are the corresponding 3D reflect lines located on the shape.
-        EdgeType is a string defining the type of result edges :
-        - IsoLine : isoparametric line
-        - OutLine : outline (silhouette) edge
-        - Rg1Line : smooth edge of G1-continuity between two surfaces
-        - RgNLine : sewn edge of CN-continuity on one surface
-        - Sharp : sharp edge (of C0-continuity)
-        If Visible is True (default), only visible edges are returned.
-        If Visible is False, only invisible edges are returned.
-                """
-
-    def removeInternalWires(self, minimalArea: float, /):
-        """Removes internal wires (also holes) from the shape.
-        removeInternalWires(minimalArea) -> bool
-                """
-
-    def removeShape(self, shapeList: object, /):
+    def removeShape(self, arg1: object, /):
         """Remove a sub-shape and return a new shape.
-        removeShape(shapeList) -> Shape
-        --
         The parameter is a list of shapes."""
 
     def removeSplitter(self):
-        """Removes redundant edges from the B-REP model
-        removeSplitter() -> Shape
-        """
+        """Removes redundant edges from the B-REP model"""
 
-    def replaceShape(self, tupleList: object, /):
+    def replaceShape(self, arg1: object, /):
         """Replace a sub-shape with a new shape and return a new shape.
-        replaceShape(tupleList) -> Shape
-        --
         The parameter is in the form list of tuples with the two shapes."""
 
     def reverse(self):
-        """Reverses the orientation of this shape.
-        reverse()
-                """
+        """Reverses the orientation of this shape."""
 
     def reversed(self):
-        """Reverses the orientation of a copy of this shape.
-        reversed() -> Shape
-                """
-
-    @typing.overload
-    def revolve(self, base: FreeCAD.Vector, direction: FreeCAD.Vector, angle: float = None, /): ...
+        """Reverses the orientation of a copy of this shape."""
 
     @typing.overload
     def revolve(self, Vector_0_0_0_: FreeCAD.Vector, Vector_0_0_1_: FreeCAD.Vector, arg: float = None, /): ...
@@ -1861,8 +1729,6 @@ class TopoShape(FreeCAD.ComplexGeoData):
     @typing.overload
     def revolve(self, V_0_0_0_: FreeCAD.Vector, V_0_1_0_: FreeCAD.Vector, arg: float = None, /):
         """Revolve the shape around an Axis to a given degree.
-        revolve(base, direction, angle)
-        --
         Part.revolve(Vector(0,0,0),Vector(0,0,1),360) - revolves the shape around the Z Axis 360 degree.
 
         Hints: Sometimes you want to create a rotation body out of a closed edge or wire.
@@ -1898,30 +1764,27 @@ class TopoShape(FreeCAD.ComplexGeoData):
         Part.show(r)
                 """
 
-    @typing.overload
-    def rotate(self, base: object, dir: object, degree: float, /): ...
-
-    @typing.overload
     def rotate(self, Vector_0_0_0_: object, Vector_0_0_1_: object, arg: float, /):
-        """Apply the rotation (base,dir,degree) to the current location of this shape
-        rotate(base,dir,degree)
-        --
+        """
+        Apply the rotation (base,dir,degree) to the current location of this shape
         Shp.rotate(Vector(0,0,0),Vector(0,0,1),180) - rotate the shape around the Z Axis 180 degrees.
                 """
 
     def rotated(self, base, dir, degree):
-        """Create a new shape with rotation.
+        """
         rotated(base,dir,degree) -> shape
+
+        Create a new shape with rotation.
                 """
 
-    def scale(self, factor: float, base: FreeCAD.Vector = None, /):
-        """Apply scaling with point and factor to this shape.
-        scale(factor,[base=Vector(0,0,0)])
-                """
+    def scale(self, arg1: float, arg2: FreeCAD.Vector = None, /):
+        """Apply scaling with point and factor to this shape."""
 
     def scaled(self, factor, base):
-        """Create a new shape with scale.
-        scaled(factor,[base=Vector(0,0,0)]) -> shape
+        """
+        scaled(factor,base=Vector(0,0,0)) -> shape
+
+        Create a new shape with scale.
                   """
 
     @typing.overload
@@ -1936,8 +1799,10 @@ class TopoShape(FreeCAD.ComplexGeoData):
         section(tool,[approximation=False]) -> Shape
           or
         section((tool1,tool2,...),[tolerance=0.0, approximation=False]) -> Shape
-        --
+
         If approximation is True, section edges are approximated to a C1-continuous BSpline curve.
+
+        Section of this and a given list of topo shapes.
 
         Supports:
         - Fuzzy Boolean operations (global tolerance for a Boolean operation)
@@ -1947,36 +1812,25 @@ class TopoShape(FreeCAD.ComplexGeoData):
         OCC 6.9.0 or later is required."""
 
     def sewShape(self):
-        """Sew the shape if there is a gap.
-        sewShape()
-                """
+        """Sew the shape if there is a gap."""
 
-    def slice(self, direction: FreeCAD.Vector, distance: float, /):
-        """Make single slice of this shape.
-        slice(direction, distance) --> Wires"""
+    def slice(self, arg1: FreeCAD.Vector, arg2: float, /):
+        """Make single slice of this shape."""
 
-    def slices(self, direction: FreeCAD.Vector, distancesList: object, /):
-        """Make slices of this shape.
-        slices(direction, distancesList) --> Wires
-                """
+    def slices(self, arg1: FreeCAD.Vector, arg2: object, /):
+        """Make slices of this shape."""
 
     def tessellate(self, arg1: float, arg2: bool = None, /):
-        """Tessellate the shape and return a list of vertices and face indices
-        tessellate() -> (vertex,facets)
-                """
+        """Tessellate the shape and return a list of vertices and face indices"""
 
     def toNurbs(self):
         """Conversion of the complete geometry of a shape into NURBS geometry.
-        toNurbs() -> Shape
-        --
         For example, all curves supporting edges of the basis shape are converted
         into B-spline curves, and all surfaces supporting its faces are converted
         into B-spline surfaces."""
 
-    def transformGeometry(self, matrix: FreeCAD.Matrix, /):
+    def transformGeometry(self, Matrix: FreeCAD.Matrix, /):
         """Apply geometric transformation on this or a copy the shape.
-        transformGeometry(matrix) -> Shape
-        --
         This method returns a new shape.
         The transformation to be applied is defined as a 4x4 matrix.
         The underlying geometry of the following shapes may change:
@@ -1993,34 +1847,37 @@ class TopoShape(FreeCAD.ComplexGeoData):
 
         Note: If you want to transform a shape without changing the
         underlying geometry then use the methods translate or rotate.
+
+        transformGeometry(Matrix) -> Shape
         """
 
     def transformShape(self, Matrix: FreeCAD.Matrix, boolean_copy: bool = False, checkScale: object = False, /):
-        """Apply transformation on a shape without changing the underlying geometry.
+        """Apply transformation on a shape without changing
+        the underlying geometry.
         transformShape(Matrix,[boolean copy=False, checkScale=False]) -> None
-        --
+
         If checkScale is True, it will use transformGeometry if non-uniform
         scaling is detected."""
 
     def transformed(self, matrix: FreeCAD.Matrix, copy: object = False, checkScale: object = False, op: str = None):
-        """Create a new transformed shape
+        """
         transformed(Matrix,copy=False,checkScale=False,op=None) -> shape
+
+        Create a new transformed shape
                 """
 
-    def translate(self, vector: object, /):
-        """Apply the translation to the current location of this shape.
-        translate(vector)
-                """
+    def translate(self, arg1: object, /):
+        """Apply the translation to the current location of this shape."""
 
     def translated(self, vector):
-        """Create a new shape with translation
+        """
         translated(vector) -> shape
+
+        Create a new shape with translation
                  """
 
     def writeInventor(self, Mode: int = None, Deviation: float = None, Angle: float = None, FaceColors: object = None):
-        """Write the mesh in OpenInventor format to a string.
-        writeInventor() -> string
-                """
+        """Write the mesh in OpenInventor format to a string."""
 
 
 # ArcOfHyperbolaPy.xml
@@ -2144,23 +2001,6 @@ class BSplineCurve(Part.BoundedCurve):
     def buildFromPoles(self, arg1: object, arg2: bool = None, arg3: int = None, arg4: bool = None, /):
         """
         					Builds a B-Spline by a list of poles.
-        					arguments: poles (sequence of Base.Vector), [periodic (default is False), degree (default is 3), interpolate (default is False)]
-
-        					Examples:
-        					from FreeCAD import Base
-        					import Part
-        					V = Base.Vector
-        					poles = [V(-2, 2, 0),V(0, 2, 1),V(2, 2, 0),V(2, -2, 0),V(0, -2, 1),V(-2, -2, 0)]
-
-        					# non-periodic spline
-        					n=Part.BSplineCurve()
-        					n.buildFromPoles(poles)
-        					Part.show(n.toShape())
-
-        					# periodic spline
-        					n=Part.BSplineCurve()
-        					n.buildFromPoles(poles, True)
-        					Part.show(n.toShape())
         				"""
 
     def buildFromPolesMultsKnots(self, poles: object, mults: object = None, knots: object = None, periodic: bool = None, degree: int = None, weights: object = None, CheckRational: bool = None):
@@ -2527,15 +2367,12 @@ class TopoShape(Part.TopoShape):
     def __init__(self, arg1: object, /):
         """Create a compound out of a list of shapes"""
 
-    def add(self, shape: Part.TopoShape, /):
-        """Add a shape to the compound.
-        add(shape)
-                """
+    def add(self, arg1: Part.TopoShape, /):
+        """Add a shape to the compound."""
 
     def connectEdgesToWires(self, Shared: bool = True, Tolerance: float = 1e-7, /):
         """Build a compound of wires out of the edges of this compound.
-        connectEdgesToWires([Shared = True, Tolerance = 1e-7]) -> Compound
-        --
+        myCompound.connectEdgesToWires( Shared = True, Tolerance = 1e-7)
         If Shared is True  connection is performed only when adjacent edges share the same vertex.
         If Shared is False connection is performed only when ends of adjacent edges are at distance less than Tolerance."""
 
@@ -2571,21 +2408,21 @@ class TopoShape(Part.TopoShape):
 
     @property
     def MatrixOfInertia(self) -> object:
-        """Returns the matrix of inertia. It is a symmetrical matrix.
-        The coefficients of the matrix are the quadratic moments of
-        inertia.
+        """Returns the matrix of inertia. It is a symmetrical matrix. 
+        The coefficients of the matrix are the quadratic moments of 
+        inertia. 
 
-         | Ixx Ixy Ixz 0 |
-         | Ixy Iyy Iyz 0 |
-         | Ixz Iyz Izz 0 |
-         | 0   0   0   1 |
+         | Ixx Ixy Ixz 0 | 
+         | Ixy Iyy Iyz 0 | 
+         | Ixz Iyz Izz 0 | 
+         | 0   0   0   1 | 
 
-        The moments of inertia are denoted by Ixx, Iyy, Izz.
-        The products of inertia are denoted by Ixy, Ixz, Iyz.
-        The matrix of inertia is returned in the central coordinate
-        system (G, Gx, Gy, Gz) where G is the centre of mass of the
-        system and Gx, Gy, Gz the directions parallel to the X(1,0,0)
-        Y(0,1,0) Z(0,0,1) directions of the absolute cartesian
+        The moments of inertia are denoted by Ixx, Iyy, Izz. 
+        The products of inertia are denoted by Ixy, Ixz, Iyz. 
+        The matrix of inertia is returned in the central coordinate 
+        system (G, Gx, Gy, Gz) where G is the centre of mass of the 
+        system and Gx, Gy, Gz the directions parallel to the X(1,0,0) 
+        Y(0,1,0) Z(0,0,1) directions of the absolute cartesian 
         coordinate system."""
 
     @property
@@ -2598,34 +2435,27 @@ class TopoShape(Part.TopoShape):
 
     @property
     def PrincipalProperties(self) -> dict:
-        """Computes the principal properties of inertia of the current system.
-         There is always a set of axes for which the products
-         of inertia of a geometric system are equal to 0; i.e. the
-         matrix of inertia of the system is diagonal. These axes
-         are the principal axes of inertia. Their origin is
-         coincident with the center of mass of the system. The
-         associated moments are called the principal moments of inertia.
-         This function computes the eigen values and the
+        """Computes the principal properties of inertia of the current system. 
+         There is always a set of axes for which the products 
+         of inertia of a geometric system are equal to 0; i.e. the 
+         matrix of inertia of the system is diagonal. These axes 
+         are the principal axes of inertia. Their origin is 
+         coincident with the center of mass of the system. The 
+         associated moments are called the principal moments of inertia. 
+         This function computes the eigen values and the 
          eigen vectors of the matrix of inertia of the system."""
 
     @property
     def StaticMoments(self) -> object:
-        """Returns Ix, Iy, Iz, the static moments of inertia of the
-         current system; i.e. the moments of inertia about the
+        """Returns Ix, Iy, Iz, the static moments of inertia of the 
+         current system; i.e. the moments of inertia about the 
          three axes of the Cartesian coordinate system."""
 
-    def add(self, edge: Part.TopoShape, /):
-        """Add an edge to the wire
-        add(edge)
-                        """
+    def add(self, arg1: Part.TopoShape, /):
+        """Add an edge to the wire"""
 
-    def approximate(self, Tol2d: float = None, Tol3d: float = 1e-4, MaxSegments: int = 10, MaxDegree: int = 3):
-        """Approximate B-Spline-curve from this wire
-        approximate([Tol2d,Tol3d=1e-4,MaxSegments=10,MaxDegree=3]) -> BSpline
-                """
-
-    @typing.overload
-    def discretize(self, kwargs: object, /): ...
+    def approximate(self, Tol2d: float = None, Tol3d: float = None, MaxSegments: int = None, MaxDegree: int = None):
+        """Approximate B-Spline-curve from this wire"""
 
     @typing.overload
     def discretize(self, Number: object, /): ...
@@ -2675,8 +2505,6 @@ class TopoShape(Part.TopoShape):
     @typing.overload
     def discretize(self, QuasiDeflection: float, First: float = 0.01, Last: float = 100):
         """Discretizes the wire and returns a list of points.
-        discretize(kwargs) -> list
-        --
         The function accepts keywords as argument:
         discretize(Number=n) => gives a list of 'n' equidistant points
         discretize(QuasiNumber=n) => gives a list of 'n' quasi equidistant points (is faster than the method above)
@@ -2711,34 +2539,27 @@ class TopoShape(Part.TopoShape):
         p=w.discretize(Angular=0.09,Curvature=0.01,Minimum=100)
         s=Part.Compound([Part.Vertex(i) for i in p])
         Part.show(s)
-                """
+        """
 
     def fixWire(self, face: Part.TopoShape = None, tolerance: float = None, /):
         """Fix wire
-        fixWire([face, tolerance])
-        --
         A face and a tolerance can optionally be supplied to the algorithm:
-                        """
+        myWire.fixWire( face, tolerance )
+        """
 
-    def makeHomogenousWires(self, wire: Part.TopoShape, /):
-        """Make this and the given wire homogeneous to have the same number of edges
-        makeHomogenousWires(wire) -> Wire
-                    """
+    def makeHomogenousWires(self, arg1: Part.TopoShape, /):
+        """Make this and the given wire homogeneous to have the same number of edges"""
 
     def makeOffset(self, arg1: float, /):
         """Offset the shape by a given amount. DEPRECATED - use makeOffset2D instead."""
 
-    def makePipe(self, profile: Part.TopoShape, /):
-        """Make a pipe by sweeping along a wire.
-        makePipe(profile) -> Shape
-                """
+    def makePipe(self, arg1: Part.TopoShape, /):
+        """Make a pipe by sweeping along a wire."""
 
-    def makePipeShell(self, shapeList: object, isSolid: bool = False, isFrenet: bool = False, transition: int = 0, /):
-        """Make a loft defined by a list of profiles along a wire.
-        makePipeShell(shapeList,[isSolid=False,isFrenet=False,transition=0]) -> Shape
-        --
-        Transition can be 0 (default), 1 (right corners) or 2 (rounded corners).
-                """
+    def makePipeShell(self, shapeList: object, isSolid: bool = None, isFrenet: bool = None, transition: int = None, /):
+        """makePipeShell(shapeList,[isSolid,isFrenet,transition])
+        Make a loft defined by a list of profiles along a wire. Transition can be
+        0 (default), 1 (right corners) or 2 (rounded corners)."""
 
 
 # SurfaceOfExtrusionPy.xml
@@ -2842,60 +2663,52 @@ class TopoShape(Part.TopoShape):
 
     @property
     def MatrixOfInertia(self) -> object:
-        """Returns the matrix of inertia. It is a symmetrical matrix.
-        The coefficients of the matrix are the quadratic moments of
-        inertia.
+        """Returns the matrix of inertia. It is a symmetrical matrix. 
+        The coefficients of the matrix are the quadratic moments of 
+        inertia. 
 
-         | Ixx Ixy Ixz 0 |
-         | Ixy Iyy Iyz 0 |
-         | Ixz Iyz Izz 0 |
-         | 0   0   0   1 |
+         | Ixx Ixy Ixz 0 | 
+         | Ixy Iyy Iyz 0 | 
+         | Ixz Iyz Izz 0 | 
+         | 0   0   0   1 | 
 
-        The moments of inertia are denoted by Ixx, Iyy, Izz.
-        The products of inertia are denoted by Ixy, Ixz, Iyz.
-        The matrix of inertia is returned in the central coordinate
-        system (G, Gx, Gy, Gz) where G is the centre of mass of the
-        system and Gx, Gy, Gz the directions parallel to the X(1,0,0)
-        Y(0,1,0) Z(0,0,1) directions of the absolute cartesian
+        The moments of inertia are denoted by Ixx, Iyy, Izz. 
+        The products of inertia are denoted by Ixy, Ixz, Iyz. 
+        The matrix of inertia is returned in the central coordinate 
+        system (G, Gx, Gy, Gz) where G is the centre of mass of the 
+        system and Gx, Gy, Gz the directions parallel to the X(1,0,0) 
+        Y(0,1,0) Z(0,0,1) directions of the absolute cartesian 
         coordinate system."""
 
     @property
     def PrincipalProperties(self) -> dict:
-        """Computes the principal properties of inertia of the current system.
-         There is always a set of axes for which the products
-         of inertia of a geometric system are equal to 0; i.e. the
-         matrix of inertia of the system is diagonal. These axes
-         are the principal axes of inertia. Their origin is
-         coincident with the center of mass of the system. The
-         associated moments are called the principal moments of inertia.
-         This function computes the eigen values and the
+        """Computes the principal properties of inertia of the current system. 
+         There is always a set of axes for which the products 
+         of inertia of a geometric system are equal to 0; i.e. the 
+         matrix of inertia of the system is diagonal. These axes 
+         are the principal axes of inertia. Their origin is 
+         coincident with the center of mass of the system. The 
+         associated moments are called the principal moments of inertia. 
+         This function computes the eigen values and the 
          eigen vectors of the matrix of inertia of the system."""
 
     @property
     def StaticMoments(self) -> object:
-        """Returns Ix, Iy, Iz, the static moments of inertia of the
-         current system; i.e. the moments of inertia about the
+        """Returns Ix, Iy, Iz, the static moments of inertia of the 
+         current system; i.e. the moments of inertia about the 
          three axes of the Cartesian coordinate system."""
 
-    def add(self, face: Part.TopoShape, /):
-        """Add a face to the shell.
-        add(face)
-                """
+    def add(self, arg1: Part.TopoShape, /):
+        """Add a face to the shell."""
 
     def getBadEdges(self):
-        """Get bad edges as compound.
-        getBadEdges() -> compound
-                """
+        """Get bad edges as compound."""
 
     def getFreeEdges(self):
-        """Get free edges as compound.
-        getFreeEdges() -> compound
-                """
+        """Get free edges as compound."""
 
-    def makeHalfSpace(self, point: FreeCAD.Vector, /):
-        """Make a half-space solid by this shell and a reference point.
-        makeHalfSpace(point) -> Solid
-                """
+    def makeHalfSpace(self, arg1: FreeCAD.Vector, /):
+        """Make a half-space solid by this shell and a reference point."""
 
 
 # ConicPy.xml
@@ -3854,11 +3667,11 @@ class TopoShape(Part.TopoShape):
     @property
     def FirstParameter(self) -> float:
         """
-        Returns the start value of the range of the primary parameter
+        Returns the start value of the range of the primary parameter 
         defining the curve.
 
-        What the parameter is depends on what type of edge it is. For a
-        Line the parameter is simply its cartesian length. Some other
+        What the parameter is depends on what type of edge it is. For a 
+        Line the parameter is simply its cartesian length. Some other 
         examples are shown below:
 
         Type                 Parameter
@@ -3866,16 +3679,16 @@ class TopoShape(Part.TopoShape):
         Circle               Angle swept by circle (or arc) in radians
         BezierCurve          Unitless number in the range 0.0 to 1.0
         Helix                Angle swept by helical turns in radians
-                  """
+        """
 
     @property
     def LastParameter(self) -> float:
         """
-        Returns the end value of the range of the primary parameter
+        Returns the end value of the range of the primary parameter 
         defining the curve.
 
-        What the parameter is depends on what type of edge it is. For a
-        Line the parameter is simply its cartesian length. Some other
+        What the parameter is depends on what type of edge it is. For a 
+        Line the parameter is simply its cartesian length. Some other 
         examples are shown below:
 
         Type                 Parameter
@@ -3883,7 +3696,7 @@ class TopoShape(Part.TopoShape):
         Circle               Angle swept by circle (or arc) in radians
         BezierCurve          Unitless number in the range 0.0 to 1.0
         Helix                Angle swept by helical turns in radians
-                  """
+        """
 
     @property
     def Length(self) -> float:
@@ -3895,34 +3708,34 @@ class TopoShape(Part.TopoShape):
 
     @property
     def MatrixOfInertia(self) -> object:
-        """Returns the matrix of inertia. It is a symmetrical matrix.
-        The coefficients of the matrix are the quadratic moments of
-        inertia.
+        """Returns the matrix of inertia. It is a symmetrical matrix. 
+        The coefficients of the matrix are the quadratic moments of 
+        inertia. 
 
-         | Ixx Ixy Ixz 0 |
-         | Ixy Iyy Iyz 0 |
-         | Ixz Iyz Izz 0 |
-         | 0   0   0   1 |
+         | Ixx Ixy Ixz 0 | 
+         | Ixy Iyy Iyz 0 | 
+         | Ixz Iyz Izz 0 | 
+         | 0   0   0   1 | 
 
-        The moments of inertia are denoted by Ixx, Iyy, Izz.
-        The products of inertia are denoted by Ixy, Ixz, Iyz.
-        The matrix of inertia is returned in the central coordinate
-        system (G, Gx, Gy, Gz) where G is the centre of mass of the
-        system and Gx, Gy, Gz the directions parallel to the X(1,0,0)
-        Y(0,1,0) Z(0,0,1) directions of the absolute cartesian
+        The moments of inertia are denoted by Ixx, Iyy, Izz. 
+        The products of inertia are denoted by Ixy, Ixz, Iyz. 
+        The matrix of inertia is returned in the central coordinate 
+        system (G, Gx, Gy, Gz) where G is the centre of mass of the 
+        system and Gx, Gy, Gz the directions parallel to the X(1,0,0) 
+        Y(0,1,0) Z(0,0,1) directions of the absolute cartesian 
         coordinate system."""
 
     @property
     def ParameterRange(self) -> tuple:
         """
-        Returns a 2 tuple with the range of the primary parameter
-        defining the curve. This is the same as would be returned by
+        Returns a 2 tuple with the range of the primary parameter 
+        defining the curve. This is the same as would be returned by 
         the FirstParameter and LastParameter properties, i.e.
 
         (LastParameter,FirstParameter)
 
-        What the parameter is depends on what type of edge it is. For a
-        Line the parameter is simply its cartesian length. Some other
+        What the parameter is depends on what type of edge it is. For a 
+        Line the parameter is simply its cartesian length. Some other 
         examples are shown below:
 
         Type                 Parameter
@@ -3930,47 +3743,42 @@ class TopoShape(Part.TopoShape):
         Circle               Angle swept by circle (or arc) in radians
         BezierCurve          Unitless number in the range 0.0 to 1.0
         Helix                Angle swept by helical turns in radians
-                  """
+        """
 
     @property
     def PrincipalProperties(self) -> dict:
-        """Computes the principal properties of inertia of the current system.
-         There is always a set of axes for which the products
-         of inertia of a geometric system are equal to 0; i.e. the
-         matrix of inertia of the system is diagonal. These axes
-         are the principal axes of inertia. Their origin is
-         coincident with the center of mass of the system. The
-         associated moments are called the principal moments of inertia.
-         This function computes the eigen values and the
+        """Computes the principal properties of inertia of the current system. 
+         There is always a set of axes for which the products 
+         of inertia of a geometric system are equal to 0; i.e. the 
+         matrix of inertia of the system is diagonal. These axes 
+         are the principal axes of inertia. Their origin is 
+         coincident with the center of mass of the system. The 
+         associated moments are called the principal moments of inertia. 
+         This function computes the eigen values and the 
          eigen vectors of the matrix of inertia of the system."""
 
     @property
     def StaticMoments(self) -> object:
-        """Returns Ix, Iy, Iz, the static moments of inertia of the
-         current system; i.e. the moments of inertia about the
+        """Returns Ix, Iy, Iz, the static moments of inertia of the 
+         current system; i.e. the moments of inertia about the 
          three axes of the Cartesian coordinate system."""
 
     @property
     def Tolerance(self) -> float:
         """Set or get the tolerance of the vertex"""
 
-    def centerOfCurvatureAt(self, paramval: float, /):
-        """Get the center of curvature at the given parameter [First|Last] if defined
-        centerOfCurvatureAt(paramval) -> Vector
-                  """
+    def centerOfCurvatureAt(self, float_pos: float, /):
+        """Vector = centerOfCurvatureAt(float pos) - Get the center of curvature at the given parameter [First|Last] if defined"""
 
     def curvatureAt(self, paramval: float, /):
-        """Get the curvature at the given parameter [First|Last] if defined
-        curvatureAt(paramval) -> Float
-                  """
+        """Float = curvatureAt(paramval) - Get the curvature at the given parameter [First|Last] if defined"""
 
     def curveOnSurface(self, idx: int, /):
-        """Returns the 2D curve, the surface, the placement and the parameter range of index idx.
-        curveOnSurface(idx) -> None or tuple
-        --
+        """curveOnSurface(idx) -> None or tuple
+        Returns the 2D curve, the surface, the placement and the parameter range of index idx.
         Returns None if index idx is out of range.
         Returns a 5-items tuple of a curve, a surface, a placement, first parameter and last parameter.
-                  """
+        				"""
 
     @typing.overload
     def derivative1At(self, paramval: float, /): ...
@@ -3983,29 +3791,30 @@ class TopoShape(Part.TopoShape):
 
     @typing.overload
     def derivative1At(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /):
-        """Get the first derivative at the given parameter value along the Edge if it is defined
-        derivative1At(paramval) -> Vector
-        --
-        Args:
-            paramval (float or int): The parameter value along the Edge at which to
-                determine the first derivative e.g:
+        """Vector = derivative1At(paramval)
+        Get the first derivative at the given parameter value along the Edge if it 
+        is defined
 
-                x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)
+        Args:
+            paramval (float or int): The parameter value along the Edge at which to 
+                determine the first derivative e.g:
+        
+                x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)    
                 y = x.derivative1At(x.FirstParameter + 0.5 * (x.LastParameter - x.FirstParameter))
 
                 y is the Vector (-0.7071067811865475, 0.7071067811865476, 0.0)
 
-                Values with magnitude greater than the Edge length return
-                values of the first derivative on the curve extrapolated
-                beyond its length. This may not be valid for all Edges.
-                Negative values similarly return a first derivative on the
-                curve extrapolated backwards (before the start point of the
+                Values with magnitude greater than the Edge length return 
+                values of the first derivative on the curve extrapolated 
+                beyond its length. This may not be valid for all Edges. 
+                Negative values similarly return a first derivative on the 
+                curve extrapolated backwards (before the start point of the 
                 Edge). For example, using the same shape as above:
 
                 >>> x.derivative1At(x.FirstParameter + 3.5*(x.LastParameter - x.FirstParameter))
                 Vector (0.7071067811865477, 0.7071067811865474, 0.0)
 
-                Which gives the same result as
+                Which gives the same result as 
 
                 >>> x.derivative1At(x.FirstParameter -0.5*(x.LastParameter - x.FirstParameter))
                 Vector (0.7071067811865475, 0.7071067811865476, 0.0)
@@ -4013,9 +3822,10 @@ class TopoShape(Part.TopoShape):
                 Since it is a circle
 
         Returns:
-            Vector: representing the first derivative to the Edge at the
+
+            Vector: representing the first derivative to the Edge at the 
                given location along its length (or extrapolated length)
-                  """
+        """
 
     @typing.overload
     def derivative2At(self, paramval: float, /): ...
@@ -4028,29 +3838,30 @@ class TopoShape(Part.TopoShape):
 
     @typing.overload
     def derivative2At(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /):
-        """Get the second derivative at the given parameter value along the Edge if it is defined
-        derivative2At(paramval) -> Vector
-        --
-        Args:
-            paramval (float or int): The parameter value along the Edge at which to
-                determine the second derivative e.g:
+        """Vector = derivative2At(paramval)
+        Get the second derivative at the given parameter value along the Edge if it 
+        is defined
 
-                x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)
+        Args:
+            paramval (float or int): The parameter value along the Edge at which to 
+                determine the second derivative e.g:
+        
+                x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)    
                 y = x.derivative2At(x.FirstParameter + 0.5 * (x.LastParameter - x.FirstParameter))
 
                 y is the Vector (-0.7071067811865476, -0.7071067811865475, 0.0)
 
-                Values with magnitude greater than the Edge length return
-                values of the second derivative on the curve extrapolated
-                beyond its length. This may not be valid for all Edges.
-                Negative values similarly return a second derivative on the
-                curve extrapolated backwards (before the start point of the
+                Values with magnitude greater than the Edge length return 
+                values of the second derivative on the curve extrapolated 
+                beyond its length. This may not be valid for all Edges. 
+                Negative values similarly return a second derivative on the 
+                curve extrapolated backwards (before the start point of the 
                 Edge). For example, using the same shape as above:
 
                 >>> x.derivative2At(x.FirstParameter + 3.5*(x.LastParameter - x.FirstParameter))
                 Vector (-0.7071067811865474, 0.7071067811865477, 0.0)
 
-                Which gives the same result as
+                Which gives the same result as 
 
                 >>> x.derivative2At(x.FirstParameter -0.5*(x.LastParameter - x.FirstParameter))
                 Vector (-0.7071067811865476, 0.7071067811865475, 0.0)
@@ -4058,9 +3869,10 @@ class TopoShape(Part.TopoShape):
                 Since it is a circle
 
         Returns:
-            Vector: representing the second derivative to the Edge at the
+
+            Vector: representing the second derivative to the Edge at the 
                given location along its length (or extrapolated length)
-                  """
+        """
 
     @typing.overload
     def derivative3At(self, paramval: float, /): ...
@@ -4073,29 +3885,30 @@ class TopoShape(Part.TopoShape):
 
     @typing.overload
     def derivative3At(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /):
-        """Get the third derivative at the given parameter value along the Edge if it is defined
-        derivative3At(paramval) -> Vector
-        --
-        Args:
-            paramval (float or int): The parameter value along the Edge at which to
-                determine the third derivative e.g:
+        """Vector = derivative3At(paramval)
+        Get the third derivative at the given parameter value along the Edge if it 
+        is defined
 
-                x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)
+        Args:
+            paramval (float or int): The parameter value along the Edge at which to 
+                determine the third derivative e.g:
+        
+                x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)    
                 y = x.derivative3At(x.FirstParameter + 0.5 * (x.LastParameter - x.FirstParameter))
 
                 y is the Vector (0.7071067811865475, -0.7071067811865476, -0.0)
 
-                Values with magnitude greater than the Edge length return
-                values of the third derivative on the curve extrapolated
-                beyond its length. This may not be valid for all Edges.
-                Negative values similarly return a third derivative on the
-                curve extrapolated backwards (before the start point of the
+                Values with magnitude greater than the Edge length return 
+                values of the third derivative on the curve extrapolated 
+                beyond its length. This may not be valid for all Edges. 
+                Negative values similarly return a third derivative on the 
+                curve extrapolated backwards (before the start point of the 
                 Edge). For example, using the same shape as above:
 
                 >>> x.derivative3At(x.FirstParameter + 3.5*(x.LastParameter - x.FirstParameter))
                 Vector (-0.7071067811865477, -0.7071067811865474, 0.0)
 
-                Which gives the same result as
+                Which gives the same result as 
 
                 >>> x.derivative3At(x.FirstParameter -0.5*(x.LastParameter - x.FirstParameter))
                 Vector (-0.7071067811865475, -0.7071067811865476, 0.0)
@@ -4103,12 +3916,10 @@ class TopoShape(Part.TopoShape):
                 Since it is a circle
 
         Returns:
-            Vector: representing the third derivative to the Edge at the
-               given location along its length (or extrapolated length)
-                  """
 
-    @typing.overload
-    def discretize(self, kwargs: object, /): ...
+            Vector: representing the third derivative to the Edge at the 
+               given location along its length (or extrapolated length)
+        """
 
     @typing.overload
     def discretize(self, Number: object, /): ...
@@ -4140,8 +3951,6 @@ class TopoShape(Part.TopoShape):
     @typing.overload
     def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None):
         """Discretizes the edge and returns a list of points.
-        discretize(kwargs) -> list
-        --
         The function accepts keywords as argument:
         discretize(Number=n) => gives a list of 'n' equidistant points
         discretize(QuasiNumber=n) => gives a list of 'n' quasi equidistant points (is faster than the method above)
@@ -4171,45 +3980,43 @@ class TopoShape(Part.TopoShape):
         p=e.discretize(Angular=0.09,Curvature=0.01,Last=3.14,Minimum=100)
         s=Part.Compound([Part.Vertex(i) for i in p])
         Part.show(s)
-                  """
+        """
 
     def firstVertex(self, Orientation: bool = False, /):
-        """Returns the Vertex of orientation FORWARD in this edge.
-        firstVertex([Orientation=False]) -> Vertex
-        --
+        """Vertex = firstVertex(Orientation=False)
+        Returns the Vertex of orientation FORWARD in this edge.
         If there is none a Null shape is returned.
         Orientation = True : taking into account the edge orientation
-                  """
+        """
 
     def getParameterByLength(self, pos: float, tolerance: float = 1e-7, /):
-        """Get the value of the primary parameter at the given distance along the cartesian length of the edge.
-        getParameterByLength(pos, [tolerance = 1e-7]) -> Float
-        --
+        """paramval = getParameterByLength(pos, [tolerance = 1e-7])
+        Get the value of the primary parameter at the given distance along the cartesian
+        length of the edge.
+
         Args:
-            pos (float or int): The distance along the length of the edge at which to
-                determine the primary parameter value. See help for the FirstParameter or
+            pos (float or int): The distance along the length of the edge at which to 
+                determine the primary parameter value. See help for the FirstParameter or 
                 LastParameter properties for more information on the primary parameter.
                 If the given value is positive, the distance from edge start is used.
                 If the given value is negative, the distance from edge end is used.
             tol (float): Computing tolerance. Optional, defaults to 1e-7.
 
         Returns:
-            paramval (float): the value of the primary parameter defining the edge at the
+
+            paramval (float): the value of the primary parameter defining the edge at the 
                 given position along its cartesian length.
-                """
+        """
 
     def isSeam(self, Face: Part.TopoShape, /):
-        """Checks whether the edge is a seam edge.
-        isSeam(Face)
-                  """
+        """isSeam(Face) - Checks whether the edge is a seam edge."""
 
     def lastVertex(self, Orientation: bool = False, /):
-        """Returns the Vertex of orientation REVERSED in this edge.
-        lastVertex([Orientation=False]) -> Vertex
-        --
+        """Vertex = lastVertex(Orientation=False)
+        Returns the Vertex of orientation REVERSED in this edge.
         If there is none a Null shape is returned.
         Orientation = True : taking into account the edge orientation
-                  """
+        """
 
     @typing.overload
     def normalAt(self, paramval: float, /): ...
@@ -4222,29 +4029,30 @@ class TopoShape(Part.TopoShape):
 
     @typing.overload
     def normalAt(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /):
-        """Get the normal direction at the given parameter value along the Edge if it is defined
-        normalAt(paramval) -> Vector
-        --
-        Args:
-            paramval (float or int): The parameter value along the Edge at which to
-                determine the normal direction e.g:
+        """Vector = normalAt(paramval)
+        Get the normal direction at the given parameter value along the Edge if it 
+        is defined
 
-                x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)
+        Args:
+            paramval (float or int): The parameter value along the Edge at which to 
+                determine the normal direction e.g:
+        
+                x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)    
                 y = x.normalAt(x.FirstParameter + 0.5 * (x.LastParameter - x.FirstParameter))
 
                 y is the Vector (-0.7071067811865476, -0.7071067811865475, 0.0)
 
-                Values with magnitude greater than the Edge length return
-                values of the normal on the curve extrapolated beyond its
-                length. This may not be valid for all Edges. Negative values
-                similarly return a normal on the curve extrapolated backwards
-                (before the start point of the Edge). For example, using the
+                Values with magnitude greater than the Edge length return 
+                values of the normal on the curve extrapolated beyond its 
+                length. This may not be valid for all Edges. Negative values 
+                similarly return a normal on the curve extrapolated backwards 
+                (before the start point of the Edge). For example, using the 
                 same shape as above:
 
                 >>> x.normalAt(x.FirstParameter + 3.5*(x.LastParameter - x.FirstParameter))
                 Vector (-0.7071067811865474, 0.7071067811865477, 0.0)
 
-                Which gives the same result as
+                Which gives the same result as 
 
                 >>> x.normalAt(x.FirstParameter -0.5*(x.LastParameter - x.FirstParameter))
                 Vector (-0.7071067811865476, 0.7071067811865475, 0.0)
@@ -4252,37 +4060,37 @@ class TopoShape(Part.TopoShape):
                 Since it is a circle
 
         Returns:
-            Vector: representing the normal to the Edge at the given
+
+            Vector: representing the normal to the Edge at the given 
                location along its length (or extrapolated length)
-                  """
+        """
 
     def parameterAt(self, arg1: Part.TopoShape, arg2: Part.TopoShape = None, /):
-        """Get the parameter at the given vertex if lying on the edge
-        parameterAt(Vertex) -> Float
-                    """
+        """Float = parameterAt(Vertex) - Get the parameter at the given vertex if lying on the edge"""
 
     def parameters(self, face: Part.TopoShape = None, /):
-        """Get the list of parameters of the tessellation of an edge.
-        parameters([face]) -> list
-        --
-        If the edge is part of a face then this face is required as argument.
+        """
+        parameters([face]) --> list
+        Get the list of parameters of the tessellation of an edge. If the edge is part of
+        a face then this face is required as argument.
         An exception is raised if the edge has no polygon.
-                  """
+        """
 
     def split(self, paramval: object, /):
-        """Splits the edge at the given parameter values and builds a wire out of it
-        split(paramval) -> Wire
-        --
-        Args:
-            paramval (float or int): The parameter value along the Edge at which to
-                split it e.g:
+        """Wire = split(paramval) 
+        Splits the edge at the given parameter values and builds a wire out of it
 
-                x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)
+        Args:
+            paramval (float or int): The parameter value along the Edge at which to 
+                split it e.g:
+        
+                x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)    
                 y = x.derivative3At(x.FirstParameter + 0.5 * (x.LastParameter - x.FirstParameter))
 
         Returns:
+
             Wire: wire made up of two Edges
-                  """
+        """
 
     @typing.overload
     def tangentAt(self, paramval: float, /): ...
@@ -4295,29 +4103,30 @@ class TopoShape(Part.TopoShape):
 
     @typing.overload
     def tangentAt(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /):
-        """Get the tangent direction at the given primary parameter value along the Edge if it is defined
-        tangentAt(paramval) -> Vector
-        --
-        Args:
-            paramval (float or int): The parameter value along the Edge at which to
-                determine the tangent direction e.g:
+        """Vector = tangentAt(paramval)
+        Get the tangent direction at the given primary parameter value along the Edge 
+        if it is defined
 
-                x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)
+        Args:
+            paramval (float or int): The parameter value along the Edge at which to 
+                determine the tangent direction e.g:
+        
+                x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)    
                 y = x.tangentAt(x.FirstParameter + 0.5 * (x.LastParameter - x.FirstParameter))
 
                 y is the Vector (-0.7071067811865475, 0.7071067811865476, 0.0)
 
-                Values with magnitude greater than the Edge length return
-                values of the tangent on the curve extrapolated beyond its
-                length. This may not be valid for all Edges. Negative values
-                similarly return a tangent on the curve extrapolated backwards
-                (before the start point of the Edge). For example, using the
+                Values with magnitude greater than the Edge length return 
+                values of the tangent on the curve extrapolated beyond its 
+                length. This may not be valid for all Edges. Negative values 
+                similarly return a tangent on the curve extrapolated backwards 
+                (before the start point of the Edge). For example, using the 
                 same shape as above:
 
                 >>> x.tangentAt(x.FirstParameter + 3.5*(x.LastParameter - x.FirstParameter))
                 Vector (0.7071067811865477, 0.7071067811865474, 0.0)
 
-                Which gives the same result as
+                Which gives the same result as 
 
                 >>> x.tangentAt(x.FirstParameter -0.5*(x.LastParameter - x.FirstParameter))
                 Vector (0.7071067811865475, 0.7071067811865476, 0.0)
@@ -4325,9 +4134,10 @@ class TopoShape(Part.TopoShape):
                 Since it is a circle
 
         Returns:
-            Vector: representing the tangent to the Edge at the given
+
+            Vector: representing the tangent to the Edge at the given 
                location along its length (or extrapolated length)
-                """
+        """
 
     @typing.overload
     def valueAt(self, paramval: float, /): ...
@@ -4340,33 +4150,34 @@ class TopoShape(Part.TopoShape):
 
     @typing.overload
     def valueAt(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /):
-        """Get the value of the cartesian parameter value at the given parameter value along the Edge
-        valueAt(paramval) -> Vector
-        --
+        """Vector = valueAt(paramval)
+        Get the value of the cartesian parameter value at the given parameter value along 
+        the Edge
+
         Args:
-            paramval (float or int): The parameter value along the Edge at which to
-                determine the value in terms of the main parameter defining
+            paramval (float or int): The parameter value along the Edge at which to 
+                determine the value in terms of the main parameter defining 
                 the edge, what the parameter value is depends on the type of
                 edge. See  e.g:
-
+        
                 For a circle value
 
-                x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)
+                x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)    
                 y = x.valueAt(x.FirstParameter + 0.5 * (x.LastParameter - x.FirstParameter))
 
                 y is theVector (0.7071067811865476, 0.7071067811865475, 0.0)
 
-                Values with magnitude greater than the Edge length return
-                values on the curve extrapolated beyond its length. This may
-                not be valid for all Edges. Negative values similarly return
-                a parameter value on the curve extrapolated backwards (before the
-                start point of the Edge). For example, using the same shape
+                Values with magnitude greater than the Edge length return 
+                values on the curve extrapolated beyond its length. This may 
+                not be valid for all Edges. Negative values similarly return 
+                a parameter value on the curve extrapolated backwards (before the 
+                start point of the Edge). For example, using the same shape 
                 as above:
 
                 >>> x.valueAt(x.FirstParameter + 3.5*(x.LastParameter - x.FirstParameter))
                 Vector (0.7071067811865474, -0.7071067811865477, 0.0)
 
-                Which gives the same result as
+                Which gives the same result as 
 
                 >>> x.valueAt(x.FirstParameter -0.5*(x.LastParameter - x.FirstParameter))
                 Vector (0.7071067811865476, -0.7071067811865475, 0.0)
@@ -4374,9 +4185,10 @@ class TopoShape(Part.TopoShape):
                 Since it is a circle
 
         Returns:
-            Vector: representing the cartesian location on the Edge at the given
+
+            Vector: representing the cartesian location on the Edge at the given 
                distance along its length (or extrapolated length)
-                  """
+        """
 
 
 # BezierCurvePy.xml
@@ -4817,8 +4629,6 @@ class Curve(Part.Geometry):
     def intersect(self, arg1: Part.GeometrySurface, arg2: float = None, /):
         """
                           Returns all intersection points and curve segments between the curve and the curve/surface.
-
-        				  arguments: curve/surface (for the intersection), precision (float)
                       """
 
     def intersect2d(self, arg1: Part.Curve, arg2: Part.Plane, /):
@@ -4857,7 +4667,7 @@ class Curve(Part.Geometry):
         of the nearest orthogonal projection of the point."""
 
     def parameterAtDistance(self, abscissa: float, startingParameter: float = None, /):
-        """Returns the parameter on the curve of a point at the given distance from a starting parameter.
+        """Returns the parameter on the curve of a point at the given distance from a starting parameter. 
         parameterAtDistance([abscissa, startingParameter]) -> Float the"""
 
     def period(self):
@@ -7100,11 +6910,6 @@ def makeRuledSurface(arg1: Part.TopoShape, arg2: Part.TopoShape, /):
     Create a ruled surface out of two edges or wires. If wires are used thenthese must have the same number of edges."""
 
 
-def makeShellFromWires(arg1: object, /):
-    """makeShellFromWires(Wires) -- Make a shell from wires.
-    The wires must have the same number of edges."""
-
-
 def makeTube(arg1: Part.TopoShape, arg2: float, arg3: str = None, arg4: int = None, arg5: int = None, /):
     """makeTube(edge,radius,[continuity,max degree,max segments]) -- Create a tube.
     continuity is a string which must be 'C0','C1','C2','C3','CN','G1' or 'G1',"""
@@ -7128,7 +6933,59 @@ def makeWireString(arg1: object, arg2: str, arg3: str, arg4: float, arg5: float 
 
 
 @typing.overload
-def makeWireString(arg1: object, arg2: str, arg3: float, arg4: float = None, /):
+def makeWireString(arg1: object, arg2: str, arg3: float, arg4: float = None, /): ...
+
+
+@typing.overload
+def makeWireString(arg1: str = None, /): ...
+
+
+@typing.overload
+def makeWireString(arg1: str, arg2: str, /): ...
+
+
+@typing.overload
+def makeWireString(arg1: str, arg2: object, /): ...
+
+
+@typing.overload
+def makeWireString(arg1: Part.TopoShape, /): ...
+
+
+@typing.overload
+def makeWireString(arg1: object, /): ...
+
+
+@typing.overload
+def makeWireString(arg1: object, /): ...
+
+
+@typing.overload
+def makeWireString(arg1: object, /): ...
+
+
+@typing.overload
+def makeWireString(arg1: Part.TopoShape, /): ...
+
+
+@typing.overload
+def makeWireString(arg1: object, /): ...
+
+
+@typing.overload
+def makeWireString(): ...
+
+
+@typing.overload
+def makeWireString(arg1: str, /): ...
+
+
+@typing.overload
+def makeWireString(arg1: str, arg2: str, arg3: str, /): ...
+
+
+@typing.overload
+def makeWireString(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matrix = None, needSubElement: object = None, transform: object = None, retType: int = None, noElementMap: object = None, refine: object = None):
     """makeWireString(string,fontdir,fontfile,height,[track]) -- Make list of wires in the form of a string's characters."""
 
 
@@ -7164,7 +7021,47 @@ def setStaticValue(arg1: str, arg2: str, /): ...
 
 
 @typing.overload
-def setStaticValue(arg1: str, arg2: object, /):
+def setStaticValue(arg1: str, arg2: object, /): ...
+
+
+@typing.overload
+def setStaticValue(arg1: Part.TopoShape, /): ...
+
+
+@typing.overload
+def setStaticValue(arg1: object, /): ...
+
+
+@typing.overload
+def setStaticValue(arg1: object, /): ...
+
+
+@typing.overload
+def setStaticValue(arg1: object, /): ...
+
+
+@typing.overload
+def setStaticValue(arg1: Part.TopoShape, /): ...
+
+
+@typing.overload
+def setStaticValue(arg1: object, /): ...
+
+
+@typing.overload
+def setStaticValue(): ...
+
+
+@typing.overload
+def setStaticValue(arg1: str, /): ...
+
+
+@typing.overload
+def setStaticValue(arg1: str, arg2: str, arg3: str, /): ...
+
+
+@typing.overload
+def setStaticValue(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matrix = None, needSubElement: object = None, transform: object = None, retType: int = None, noElementMap: object = None, refine: object = None):
     """setStaticValue(string,string|int|float) -- Set a name to a value The value can be a string, int or float."""
 
 

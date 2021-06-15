@@ -499,9 +499,6 @@ class SketchObject(Part.Part2DObject):
     def solve(self):
         """solve the actual set of geometry and constraints"""
 
-    def split(self, arg1: int, arg2: FreeCAD.Vector, /):
-        """split a curve with a given id at a given reference point"""
-
     def toggleActive(self, arg1: int, /):
         """toggle the active status of constraint (enforced or not)"""
 

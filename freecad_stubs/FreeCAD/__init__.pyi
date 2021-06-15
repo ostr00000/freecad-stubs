@@ -2071,7 +2071,59 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         Return -1 if element visibility is not supported, 0 if element not found, 1 if success
                         """
 
-    def setExpression(self, arg1: str, arg2: object, arg3: str = None, /):
+    @typing.overload
+    def setExpression(self, arg1: str, arg2: object, arg3: str = None, /): ...
+
+    @typing.overload
+    def setExpression(self, arg1: str, /): ...
+
+    @typing.overload
+    def setExpression(self, arg1: object = None, /): ...
+
+    @typing.overload
+    def setExpression(self): ...
+
+    @typing.overload
+    def setExpression(self): ...
+
+    @typing.overload
+    def setExpression(self, arg1: str, /): ...
+
+    @typing.overload
+    def setExpression(self, arg1: int = None, /): ...
+
+    @typing.overload
+    def setExpression(self, arg1: str, /): ...
+
+    @typing.overload
+    def setExpression(self, arg1: str, arg2: object = None, /): ...
+
+    @typing.overload
+    def setExpression(self): ...
+
+    @typing.overload
+    def setExpression(self): ...
+
+    @typing.overload
+    def setExpression(self): ...
+
+    @typing.overload
+    def setExpression(self, arg1: FreeCAD.DocumentObject, /): ...
+
+    @typing.overload
+    def setExpression(self, arg1: str, /): ...
+
+    @typing.overload
+    def setExpression(self, arg1: str, arg2: object = None, arg3: int = None, /): ...
+
+    @typing.overload
+    def setExpression(self, arg1: FreeCAD.DocumentObject, arg2: object = None, /): ...
+
+    @typing.overload
+    def setExpression(self, subname: object, retType: int = None, matrix: object = None, transform: object = None, depth: int = None): ...
+
+    @typing.overload
+    def setExpression(self, recursive: object = None, matrix: object = None, transform: object = None, depth: int = None):
         """Register an expression for a property"""
 
     def supportedProperties(self):
@@ -2798,7 +2850,40 @@ def removeDocumentObserver(arg1: object, /):
     Remove an added document observer."""
 
 
-def setLogLevel(arg1: str, arg2: object, /):
+@typing.overload
+def setLogLevel(arg1: str, arg2: object, /): ...
+
+
+@typing.overload
+def setLogLevel(arg1: str, /): ...
+
+
+@typing.overload
+def setLogLevel(arg1: int, /): ...
+
+
+@typing.overload
+def setLogLevel(arg1: object = None, arg2: int = None, arg3: int = None, /): ...
+
+
+@typing.overload
+def setLogLevel(arg1: object, arg2: int = None, /): ...
+
+
+@typing.overload
+def setLogLevel(arg1: str, arg2: object = None, /): ...
+
+
+@typing.overload
+def setLogLevel(): ...
+
+
+@typing.overload
+def setLogLevel(arg1: object = None, arg2: int = None, /): ...
+
+
+@typing.overload
+def setLogLevel():
     """setLogLevel(tag, level) -- Set the log level for a string tag.
     'level' can either be string 'Log', 'Msg', 'Wrn', 'Error', or an integer value"""
 

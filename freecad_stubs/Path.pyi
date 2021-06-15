@@ -236,6 +236,15 @@ class Command(FreeCAD.Persistence):
     pairs, or a placement, or a vector"""
 
     @typing.overload
+    def __init__(self): ...
+
+    @typing.overload
+    def __init__(self, arg1: str, /): ...
+
+    @typing.overload
+    def __init__(self, arg1: FreeCAD.Placement, /): ...
+
+    @typing.overload
     def __init__(self, name: str = None, parameters: dict = None): ...
 
     @typing.overload

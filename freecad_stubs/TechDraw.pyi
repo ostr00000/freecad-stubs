@@ -495,14 +495,6 @@ def makeGeomHatch(arg1: object, arg2: float = None, arg3: str = None, arg4: str 
     """makeGeomHatch(face, [patScale], [patName], [patFile]) -- draw a geom hatch on a given face, using optionally the given scale (default 1) and a given pattern name (ex. Diamond) and .pat file (the default pattern name and/or .pat files set in preferences are used if none are given). Returns a Part compound shape."""
 
 
-# MDIViewPagePy.xml
-class MDIViewPage(FreeCAD.PyObjectBase):
-    """MDIViewPage object"""
-
-    def getPage(self):
-        """returns the page being displayed"""
-
-
 # AppTechDrawGuiPy.cpp
 def export(arg1: object, arg2: str, /):
     """TechDraw hook for FC Gui exporter."""
