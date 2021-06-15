@@ -195,4 +195,4 @@ class MethodGenerator(FormatFinder):
     @classmethod
     def _genEmptyMethod(cls, name: str, *args, retType=None) -> str:
         retType = f' -> {retType}' if retType else ''
-        return f'def {name}({", ".join(("self",) + args)}){retType}:...\n\n'
+        return f'def {name}({", ".join(("self",) + args)}){retType}: ...\n\n'

@@ -2,7 +2,7 @@ import typing
 
 import FreeCAD
 import FreeCADGui
-import Selection
+import FreeCADGui.Selection
 
 
 # WorkbenchPy.xml
