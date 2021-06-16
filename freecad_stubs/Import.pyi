@@ -36,11 +36,11 @@ def writeDXFShape(arg1: Part.TopoShape, arg2: str, arg3: int = None, arg4: objec
 
 
 @typing.overload
-def writeDXFObject(arg1: list, arg2: str, arg3: int = None, arg4: object = None, arg5: str = None, /): ...
+def writeDXFObject(objects: list, filename_: str, version: int = None, usePolyline: object = None, optionSource: str = None, /): ...
 
 
 @typing.overload
-def writeDXFObject(arg1: FreeCAD.DocumentObject, arg2: str, arg3: int = None, arg4: object = None, arg5: str = None, /):
+def writeDXFObject(objects: FreeCAD.DocumentObject, filename_: str, version: int = None, usePolyline: object = None, optionSource: str = None, /):
     """writeDXFObject([objects],filename [,version,usePolyline,optionSource]): Exports DocumentObject(s) to a DXF file."""
 
 
@@ -57,7 +57,7 @@ def export(obj: object, name: str, exportHidden: object = None, legacy: object =
 
 
 # AppImportGuiPy.cpp
-def ocaf(arg1: str, /):
+def ocaf(string: str, /):
     """ocaf(string) -- Browse the ocaf structure."""
 
 

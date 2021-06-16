@@ -6913,39 +6913,39 @@ class UnifySameDomain(FreeCAD.PyObjectBase):
 
 
 # AppPartPy.cpp
-def open(arg1: str, /):
+def open(string: str, /):
     """open(string) -- Create a new document and load the file into the document."""
 
 
-def insert(arg1: str, arg2: str, /):
+def insert(string: str, string1: str, /):
     """insert(string,string) -- Insert the file into the given document."""
 
 
-def export(arg1: object, arg2: str, /):
+def export(list: object, string: str, /):
     """export(list,string) -- Export a list of objects into a single file."""
 
 
-def read(arg1: str, /):
+def read(string: str, /):
     """read(string) -- Load the file and return the shape."""
 
 
-def show(arg1: Part.TopoShape, arg2: str = None, /):
+def show(shape: Part.TopoShape, string: str = None, /):
     """show(shape,[string]) -- Add the shape to the active document or create one if no document exists."""
 
 
-def getFacets(arg1: object, /):
+def getFacets(shape: object, /):
     """getFacets(shape): simplified mesh generation"""
 
 
-def makeCompound(arg1: object, /):
+def makeCompound(list: object, /):
     """makeCompound(list) -- Create a compound out of a list of shapes."""
 
 
-def makeShell(arg1: object, /):
+def makeShell(list: object, /):
     """makeShell(list) -- Create a shell out of a list of faces."""
 
 
-def makeFace(arg1: object, arg2: str, /):
+def makeFace(list_of_shapes_or_compound: object, maker_class_name: str, /):
     """makeFace(list_of_shapes_or_compound, maker_class_name) -- Create a face (faces) using facemaker class.
     maker_class_name is a string like 'Part::FaceMakerSimple'."""
 
@@ -6954,16 +6954,16 @@ def makeFilledFace(arg1: object, arg2: Part.TopoShape = None, /):
     """makeFilledFace(list) -- Create a face out of a list of edges."""
 
 
-def makeSolid(arg1: Part.TopoShape, /):
+def makeSolid(shape: Part.TopoShape, /):
     """makeSolid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created."""
 
 
-def makePlane(arg1: float, arg2: float, arg3: FreeCAD.Vector = None, arg4: FreeCAD.Vector = None, arg5: FreeCAD.Vector = None, /):
+def makePlane(length: float, width: float, pnt: FreeCAD.Vector = None, dirZ: FreeCAD.Vector = None, dirX: FreeCAD.Vector = None, /):
     """makePlane(length,width,[pnt,dirZ,dirX]) -- Make a plane
     By default pnt=Vector(0,0,0) and dirZ=Vector(0,0,1), dirX is ignored in this case"""
 
 
-def makeBox(arg1: float, arg2: float, arg3: float, arg4: FreeCAD.Vector = None, arg5: FreeCAD.Vector = None, /):
+def makeBox(length: float, width: float, height: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, /):
     """makeBox(length,width,height,[pnt,dir]) -- Make a box located
     in pnt with the dimensions (length,width,height)
     By default pnt=Vector(0,0,0) and dir=Vector(0,0,1)"""
@@ -6976,7 +6976,7 @@ def makeWedge(arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, a
     By default pnt=Vector(0,0,0) and dir=Vector(0,0,1)"""
 
 
-def makeLine(arg1: object, arg2: object, /):
+def makeLine(startpnt: object, endpnt: object, /):
     """makeLine(startpnt,endpnt) -- Make a line between two points
 
     Args:
@@ -7006,27 +7006,27 @@ def makePolygon(arg1: object, arg2: bool = None, /):
     """
 
 
-def makeCircle(arg1: float, arg2: FreeCAD.Vector = None, arg3: FreeCAD.Vector = None, arg4: float = None, arg5: float = None, /):
+def makeCircle(radius: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle1: float = None, angle2: float = None, /):
     """makeCircle(radius,[pnt,dir,angle1,angle2]) -- Make a circle with a given radius
     By default pnt=Vector(0,0,0), dir=Vector(0,0,1), angle1=0 and angle2=360"""
 
 
-def makeSphere(arg1: float, arg2: FreeCAD.Vector = None, arg3: FreeCAD.Vector = None, arg4: float = None, arg5: float = None, arg6: float = None, /):
+def makeSphere(radius: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle1: float = None, angle2: float = None, angle3: float = None, /):
     """makeSphere(radius,[pnt, dir, angle1,angle2,angle3]) -- Make a sphere with a given radius
     By default pnt=Vector(0,0,0), dir=Vector(0,0,1), angle1=0, angle2=90 and angle3=360"""
 
 
-def makeCylinder(arg1: float, arg2: float, arg3: FreeCAD.Vector = None, arg4: FreeCAD.Vector = None, arg5: float = None, /):
+def makeCylinder(radius: float, height: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle: float = None, /):
     """makeCylinder(radius,height,[pnt,dir,angle]) -- Make a cylinder with a given radius and height
     By default pnt=Vector(0,0,0),dir=Vector(0,0,1) and angle=360"""
 
 
-def makeCone(arg1: float, arg2: float, arg3: float, arg4: FreeCAD.Vector = None, arg5: FreeCAD.Vector = None, arg6: float = None, /):
+def makeCone(radius1: float, radius2: float, height: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle: float = None, /):
     """makeCone(radius1,radius2,height,[pnt,dir,angle]) -- Make a cone with given radii and height
     By default pnt=Vector(0,0,0), dir=Vector(0,0,1) and angle=360"""
 
 
-def makeTorus(arg1: float, arg2: float, arg3: FreeCAD.Vector = None, arg4: FreeCAD.Vector = None, arg5: float = None, arg6: float = None, arg7: float = None, /):
+def makeTorus(radius1: float, radius2: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle1: float = None, angle2: float = None, angle: float = None, /):
     """makeTorus(radius1,radius2,[pnt,dir,angle1,angle2,angle]) -- Make a torus with a given radii and angles
     By default pnt=Vector(0,0,0),dir=Vector(0,0,1),angle1=0,angle1=360 and angle=360"""
 
@@ -7037,39 +7037,39 @@ def makeHelix(arg1: float, arg2: float, arg3: float, arg4: float = None, arg5: b
     (the apex given in degree) a conical surface is used instead"""
 
 
-def makeLongHelix(arg1: float, arg2: float, arg3: float, arg4: float = None, arg5: bool = None, /):
+def makeLongHelix(pitch: float, height: float, radius: float, angle: float = None, hand: bool = None, /):
     """makeLongHelix(pitch,height,radius,[angle],[hand]) -- Make a (multi-edge) helix with a given pitch, height and radius
     By default a cylindrical surface is used to create the helix. If the fourth parameter is set
     (the apex given in degree) a conical surface is used instead."""
 
 
-def makeThread(arg1: float, arg2: float, arg3: float, arg4: float, /):
+def makeThread(pitch: float, depth: float, height: float, radius: float, /):
     """makeThread(pitch,depth,height,radius) -- Make a thread with a given pitch, depth, height and radius"""
 
 
 @typing.overload
-def makeRevolution(arg1: Part.Geometry, arg2: float = None, arg3: float = None, arg4: float = None, arg5: FreeCAD.Vector = None, arg6: FreeCAD.Vector = None, arg7: type = None, /): ...
+def makeRevolution(Curve_or_Edge: Part.Geometry, vmin: float = None, vmax: float = None, angle: float = None, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, shapetype: type = None, /): ...
 
 
 @typing.overload
-def makeRevolution(arg1: Part.TopoShape, arg2: float = None, arg3: float = None, arg4: float = None, arg5: FreeCAD.Vector = None, arg6: FreeCAD.Vector = None, arg7: type = None, /):
+def makeRevolution(Curve_or_Edge: Part.TopoShape, vmin: float = None, vmax: float = None, angle: float = None, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, shapetype: type = None, /):
     """makeRevolution(Curve or Edge,[vmin,vmax,angle,pnt,dir,shapetype]) -- Make a revolved shape
     by rotating the curve or a portion of it around an axis given by (pnt,dir).
     By default vmin/vmax=bounds of the curve, angle=360, pnt=Vector(0,0,0),
     dir=Vector(0,0,1) and shapetype=Part.Solid"""
 
 
-def makeRuledSurface(arg1: Part.TopoShape, arg2: Part.TopoShape, /):
+def makeRuledSurface(Edge_Wire: Part.TopoShape, Edge_Wire1: Part.TopoShape, /):
     """makeRuledSurface(Edge|Wire,Edge|Wire) -- Make a ruled surface
     Create a ruled surface out of two edges or wires. If wires are used thenthese must have the same number of edges."""
 
 
-def makeShellFromWires(arg1: object, /):
+def makeShellFromWires(Wires: object, /):
     """makeShellFromWires(Wires) -- Make a shell from wires.
     The wires must have the same number of edges."""
 
 
-def makeTube(arg1: Part.TopoShape, arg2: float, arg3: str = None, arg4: int = None, arg5: int = None, /):
+def makeTube(edge: Part.TopoShape, radius: float, continuity: str = None, max_degree: int = None, max_segments: int = None, /):
     """makeTube(edge,radius,[continuity,max degree,max segments]) -- Create a tube.
     continuity is a string which must be 'C0','C1','C2','C3','CN','G1' or 'G1',"""
 
@@ -7078,25 +7078,15 @@ def makeSweepSurface(arg1: Part.TopoShape, arg2: Part.TopoShape, arg3: float = N
     """makeSweepSurface(edge(path),edge(profile),[float]) -- Create a profile along a path."""
 
 
-@typing.overload
-def makeLoft(arg1: object, /): ...
-
-
-@typing.overload
-def makeLoft(arg1: object, arg2: bool = None, arg3: bool = None, arg4: bool = None, arg5: int = None, /):
+def makeLoft(list_of_wires: object, solid: bool = False, ruled: bool = False, closed: bool = False, maxDegree: int = 5, /):
     """makeLoft(list of wires,[solid=False,ruled=False,closed=False,maxDegree=5]) -- Create a loft shape."""
 
 
-@typing.overload
-def makeWireString(arg1: object, arg2: str, arg3: str, arg4: float, arg5: float = None, /): ...
-
-
-@typing.overload
-def makeWireString(arg1: object, arg2: str, arg3: float, arg4: float = None, /):
+def makeWireString(string: object, fontdir: str, fontfile: str, height: float, track: float = None, /):
     """makeWireString(string,fontdir,fontfile,height,[track]) -- Make list of wires in the form of a string's characters."""
 
 
-def makeSplitShape(arg1: Part.TopoShape, arg2: object, arg3: bool = None, /):
+def makeSplitShape(shape: Part.TopoShape, list_of_shape_pairs: object, check_Interior: bool = True, /):
     """makeSplitShape(shape, list of shape pairs,[check Interior=True]) -> two lists of shapes.
     The following shape pairs are supported:
     * Wire, Face
@@ -7119,28 +7109,28 @@ def makeSplitShape(arg1: Part.TopoShape, arg2: object, arg3: bool = None, /):
     """
 
 
-def exportUnits(arg1: str = None, /):
+def exportUnits(string: str = None, /):
     """exportUnits([string=MM|M|INCH|FT|MI|KM|MIL|UM|CM|UIN]) -- Set units for exporting STEP/IGES files and returns the units."""
 
 
 @typing.overload
-def setStaticValue(arg1: str, arg2: str, /): ...
+def setStaticValue(string: str, string_int_float: str, /): ...
 
 
 @typing.overload
-def setStaticValue(arg1: str, arg2: object, /):
+def setStaticValue(string: str, string_int_float: object, /):
     """setStaticValue(string,string|int|float) -- Set a name to a value The value can be a string, int or float."""
 
 
-def cast_to_shape(arg1: Part.TopoShape, /):
+def cast_to_shape(shape: Part.TopoShape, /):
     """cast_to_shape(shape) -- Cast to the actual shape type"""
 
 
-def getSortedClusters(arg1: object, /):
+def getSortedClusters(list_of_edges: object, /):
     """getSortedClusters(list of edges) -- Helper method to sort and cluster a variety of edges"""
 
 
-def __sortEdges__(arg1: object, /):
+def __sortEdges__(list_of_edges: object, /):
     """__sortEdges__(list of edges) -- list of edges
     Helper method to sort an unsorted list of edges so that afterwards
     the start and end vertex of two consecutive edges are geometrically coincident.
@@ -7149,17 +7139,17 @@ def __sortEdges__(arg1: object, /):
     The sorted list can be used to create a Wire."""
 
 
-def sortEdges(arg1: object, /):
+def sortEdges(list_of_edges: object, /):
     """sortEdges(list of edges) -- list of lists of edges
     It does basically the same as __sortEdges__ but sorts all input edges and thus returns
     a list of lists of edges"""
 
 
-def __toPythonOCC__(arg1: Part.TopoShape, /):
+def __toPythonOCC__(shape: Part.TopoShape, /):
     """__toPythonOCC__(shape) -- Helper method to convert an internal shape to pythonocc shape"""
 
 
-def __fromPythonOCC__(arg1: object, /):
+def __fromPythonOCC__(occ: object, /):
     """__fromPythonOCC__(occ) -- Helper method to convert a pythonocc shape to an internal shape"""
 
 
@@ -7167,7 +7157,7 @@ def clearShapeCache():
     """clearShapeCache() -- Clears internal shape cache"""
 
 
-def splitSubname(arg1: str, /):
+def splitSubname(subname: str, /):
     """splitSubname(subname) -> list(sub,mapped,subElement)
     Split the given subname into a list
 
@@ -7176,7 +7166,7 @@ def splitSubname(arg1: str, /):
     subElement: old style element name, or '' if none"""
 
 
-def joinSubname(arg1: str, arg2: str, arg3: str, /):
+def joinSubname(sub: str, mapped: str, subElement: str, /):
     """joinSubname(sub,mapped,subElement) -> subname
     """
 
@@ -7199,9 +7189,9 @@ def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matr
 
 
 # AttacherTexts.cpp
-def getModeStrings(arg1: str, arg2: int, /):
+def getModeStrings(attacher_type: str, mode_index: int, /):
     """getModeStrings(attacher_type, mode_index) - gets mode user-friendly name and brief description."""
 
 
-def getRefTypeUserFriendlyName(arg1: int, /):
+def getRefTypeUserFriendlyName(type_index: int, /):
     """getRefTypeUserFriendlyName(type_index) - gets user-friendly name of AttachEngine's shape type."""

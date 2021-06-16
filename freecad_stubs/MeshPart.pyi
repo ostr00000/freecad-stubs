@@ -6,7 +6,7 @@ import Part
 
 
 # AppMeshPartPy.cpp
-def loftOnCurve(arg1: Part.TopoShape, arg2: object, arg3: typing.Sequence[float, float, float], arg4: float, /):
+def loftOnCurve(curve: Part.TopoShape, poly: object, upVector: typing.Sequence[float, float, float], MaxSize: float, /):
     """Creates a mesh loft based on a curve and an up vector
 
     loftOnCurve(curve, poly, upVector, MaxSize)
@@ -19,7 +19,7 @@ def loftOnCurve(arg1: Part.TopoShape, arg2: object, arg3: typing.Sequence[float,
     """
 
 
-def findSectionParameters(arg1: Part.TopoShape, arg2: Mesh.MeshObject, arg3: FreeCAD.Vector, /):
+def findSectionParameters(Edge: Part.TopoShape, Mesh: Mesh.MeshObject, Vector: FreeCAD.Vector, /):
     """Find the parameters of the edge where when projecting the corresponding point
     will lie on an edge of the mesh
 
@@ -27,7 +27,7 @@ def findSectionParameters(arg1: Part.TopoShape, arg2: Mesh.MeshObject, arg3: Fre
     """
 
 
-def projectPointsOnMesh(arg1: object, arg2: Mesh.MeshObject, arg3: FreeCAD.Vector, arg4: float = None, /):
+def projectPointsOnMesh(list_of_points: object, Mesh: Mesh.MeshObject, Vector: FreeCAD.Vector, float: float = None, /):
     """Projects points onto a mesh with a given direction
     and tolerance.projectPointsOnMesh(list of points, Mesh, Vector, [float]) -> list of points
     """
@@ -66,11 +66,7 @@ def projectShapeOnMesh(Polygons: object, Mesh: Mesh.MeshObject, Direction: FreeC
 
 
 @typing.overload
-def meshFromShape(arg1: Part.TopoShape, /): ...
-
-
-@typing.overload
-def meshFromShape(Shape: Part.TopoShape, LinearDeflection: float, AngularDeflection: float = None, Relative: bool = None, Segments: bool = None, GroupColors: object = None): ...
+def meshFromShape(Shape: Part.TopoShape, /): ...
 
 
 @typing.overload
@@ -90,15 +86,7 @@ def meshFromShape(Shape: Part.TopoShape, Deflection: float): ...
 
 
 @typing.overload
-def meshFromShape(Shape: Part.TopoShape, MinLength: float, MaxLength: float): ...
-
-
-@typing.overload
-def meshFromShape(Shape: Part.TopoShape, Fineness: int, SecondOrder: int = None, Optimize: int = None, AllowQuad: int = None, MinLength: float = None, MaxLength: float = None): ...
-
-
-@typing.overload
-def meshFromShape(Shape: Part.TopoShape, GrowthRate: float = None, SegPerEdge: float = None, SegPerRadius: float = None, SecondOrder: int = None, Optimize: int = None, AllowQuad: int = None, MinLength: float = None, MaxLength: float = None):
+def meshFromShape(Shape: Part.TopoShape, MinLength: float, MaxLength: float):
     """Create surface mesh from shape
 
     Multiple signatures are available:

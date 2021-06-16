@@ -447,23 +447,23 @@ class GeomFormat(FreeCAD.PyObjectBase):
 
 
 # AppTechDrawPy.cpp
-def edgeWalker(arg1: list, arg2: object = None, /):
+def edgeWalker(edgePile: list, inclBiggest: object = None, /):
     """[wires] = edgeWalker(edgePile,inclBiggest) -- Planar graph traversal finds wires in edge pile."""
 
 
-def findOuterWire(arg1: list, /):
+def findOuterWire(edgeList: list, /):
     """wire = findOuterWire(edgeList) -- Planar graph traversal finds OuterWire in edge pile."""
 
 
-def findShapeOutline(arg1: object, arg2: float, arg3: object, /):
+def findShapeOutline(shape: object, scale: float, direction: object, /):
     """wire = findShapeOutline(shape,scale,direction) -- Project shape in direction and find outer wire of result."""
 
 
-def viewPartAsDxf(arg1: object, /):
+def viewPartAsDxf(DrawViewPart: object, /):
     """string = viewPartAsDxf(DrawViewPart) -- Return the edges of a DrawViewPart in Dxf format."""
 
 
-def viewPartAsSvg(arg1: object, /):
+def viewPartAsSvg(DrawViewPart: object, /):
     """string = viewPartAsSvg(DrawViewPart) -- Return the edges of a DrawViewPart in Svg format."""
 
 
@@ -471,19 +471,19 @@ def writeDXFView(arg1: object, arg2: str, arg3: object = None, /):
     """writeDXFView(view,filename): Exports a DrawViewPart to a DXF file."""
 
 
-def writeDXFPage(arg1: object, arg2: str, /):
+def writeDXFPage(page: object, filename: str, /):
     """writeDXFPage(page,filename): Exports a DrawPage to a DXF file."""
 
 
-def findCentroid(arg1: object, arg2: object, /):
+def findCentroid(shape: object, direction: object, /):
     """vector = findCentroid(shape,direction): finds geometric centroid of shape looking in direction."""
 
 
-def makeExtentDim(arg1: object, arg2: list, arg3: int, /):
+def makeExtentDim(DrawViewPart: object, edges: list, direction: int, /):
     """makeExtentDim(DrawViewPart, [edges], direction) -- draw horizontal or vertical extent dimension for edges (or all of DrawViewPart if edge list is empty. direction:  0 - Horizontal, 1 - Vertical."""
 
 
-def makeDistanceDim(arg1: object, arg2: object, arg3: object, arg4: object, /):
+def makeDistanceDim(DrawViewPart: object, dimType: object, fromPoint: object, toPoint: object, /):
     """makeDistanceDim(DrawViewPart, dimType, fromPoint, toPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 2d View points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."""
 
 
@@ -491,7 +491,7 @@ def makeDistanceDim3d(arg1: object, arg2: object, arg3: object, arg4: object, /)
     """makeDistanceDim(DrawViewPart, dimType, 3dFromPoint, 3dToPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 3d model points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."""
 
 
-def makeGeomHatch(arg1: object, arg2: float = None, arg3: str = None, arg4: str = None, /):
+def makeGeomHatch(face: object, patScale: float = None, patName: str = None, patFile: str = None, /):
     """makeGeomHatch(face, [patScale], [patName], [patFile]) -- draw a geom hatch on a given face, using optionally the given scale (default 1) and a given pattern name (ex. Diamond) and .pat file (the default pattern name and/or .pat files set in preferences are used if none are given). Returns a Part compound shape."""
 
 
@@ -508,11 +508,11 @@ def export(arg1: object, arg2: str, /):
     """TechDraw hook for FC Gui exporter."""
 
 
-def exportPageAsPdf(arg1: object, arg2: str, /):
+def exportPageAsPdf(DrawPageObject: object, FilePath: str, /):
     """exportPageAsPdf(DrawPageObject,FilePath) -- print page as Pdf to file."""
 
 
-def exportPageAsSvg(arg1: object, arg2: str, /):
+def exportPageAsSvg(DrawPageObject: object, FilePath: str, /):
     """exportPageAsSvg(DrawPageObject,FilePath) -- print page as Svg to file."""
 
 
@@ -520,5 +520,5 @@ def copyActiveViewToSvgFile(arg1: object, arg2: str, arg3: float = None, arg4: f
     """copyActiveViewToSvgFile(DrawPageObject,FilePath) -- copy ActiveView to Svg file."""
 
 
-def addQGIToView(arg1: object, arg2: object, /):
+def addQGIToView(View: object, QGraphicsItem: object, /):
     """addQGIToView(View, QGraphicsItem) -- insert graphics item into view's graphic."""

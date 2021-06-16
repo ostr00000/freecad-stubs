@@ -183,5 +183,5 @@ class RobotObject(FreeCAD.DocumentObject):
 
 
 # AppRobot.cpp
-def simulateToFile(arg1: Robot.Robot6Axis, arg2: Robot.Trajectory, arg3: float, arg4: str, /):
+def simulateToFile(Robot: Robot.Robot6Axis, Trajectory: Robot.Trajectory, TickSize: float, FileName: str, /):
     """simulateToFile(Robot,Trajectory,TickSize,FileName) - runs the simulation and write the result to a file."""

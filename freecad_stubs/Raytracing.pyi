@@ -42,7 +42,7 @@ def open(arg1: str, arg2: str = None, /):
     """open(string) -- Create a new text document and load the file into the document."""
 
 
-def insert(arg1: str, arg2: str = None, /):
+def insert(string: str, string1: str = None, /):
     """insert(string,string) -- Create a new text document and load the file into the document."""
 
 

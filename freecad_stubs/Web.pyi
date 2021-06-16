@@ -1,16 +1,16 @@
 # AppWeb.cpp
-def startServer(arg1: str = None, arg2: int = None, /):
+def startServer(address: str = None, port: int = 0, /):
     """startServer(address=127.0.0.1,port=0) -- Start a server."""
 
 
-def waitForConnection(arg1: str = None, arg2: int = None, arg3: int = None, /):
+def waitForConnection(address: str = None, port: int = 0, timeout: int = 0, /):
     """waitForConnection(address=127.0.0.1,port=0,timeout=0)
     Start a server, wait for connection and close server.
     Its use is disadvised in a the GUI version, since it will
     stop responding until the function returns."""
 
 
-def registerServerFirewall(arg1: object, /):
+def registerServerFirewall(callable_string_: object, /):
     """registerServerFirewall(callable(string)) -- Register a firewall."""
 
 
@@ -27,12 +27,12 @@ def openBrowserWindow(arg1: str = None, /):
     """&Module::openBrowserWindow"""
 
 
-def open(arg1: str, /):
+def open(string: str, /):
     """open(string)
     Load a local (X)HTML file."""
 
 
-def insert(arg1: str, /):
+def insert(string: str, /):
     """insert(string)
     Load a local (X)HTML file."""
 

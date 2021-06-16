@@ -644,18 +644,18 @@ def read(arg1: str, /):
     """Read a mesh from a file and returns a Mesh object."""
 
 
-def open(arg1: str, /):
+def open(string: str, /):
     """open(string)
     Create a new document and a Mesh feature to load the file into
     the document."""
 
 
-def insert(arg1: str, arg2: str = None, /):
+def insert(string_mesh: str, string: str = None, /):
     """insert(string|mesh,[string])
     Load or insert a mesh into the given or active document."""
 
 
-def show(arg1: Mesh.MeshObject, arg2: str = None, /):
+def show(shape: Mesh.MeshObject, string: str = None, /):
     """show(shape,[string]) -- Add the mesh to the active document or create one if no document exists."""
 
 
@@ -687,7 +687,7 @@ def createTorus(arg1: float = None, arg2: float = None, arg3: int = None, /):
     """Create a tessellated torus"""
 
 
-def calculateEigenTransform(arg1: object, /):
+def calculateEigenTransform(seq_Base_Vector_: object, /):
     """calculateEigenTransform(seq(Base.Vector))
     Calculates the eigen Transformation from a list of points.
     calculate the point's local coordinate system with the center
@@ -697,11 +697,11 @@ def calculateEigenTransform(arg1: object, /):
     """
 
 
-def polynomialFit(arg1: object, /):
+def polynomialFit(seq_Base_Vector_: object, /):
     """polynomialFit(seq(Base.Vector)) -- Calculates a polynomial fit."""
 
 
-def minimumVolumeOrientedBox(arg1: object, /):
+def minimumVolumeOrientedBox(seq_Base_Vector_: object, /):
     """minimumVolumeOrientedBox(seq(Base.Vector)) -- Calculates the minimum
     volume oriented box containing all points. The return value is a
     tuple of seven items:
@@ -709,7 +709,7 @@ def minimumVolumeOrientedBox(arg1: object, /):
     """
 
 
-def export(objectList: object, filename: str, tolerance: float = None, exportAmfCompressed: bool = None):
+def export(objectList: object, filename: str, tolerance: float = 0.1, exportAmfCompressed: bool = True):
     """export(objects, filename, [tolerance=0.1, exportAmfCompressed=True])
     Export a list of objects into a single file identified by filename.
     tolerance is in mm and specifies the maximum acceptable deviation

@@ -4,7 +4,12 @@ import FreeCAD
 
 
 # UnitsApiPy.cpp
-def parseQuantity(arg1: str, /):
+@typing.overload
+def parseQuantity(string: str, /): ...
+
+
+@typing.overload
+def parseQuantity(arg: str, /):
     """parseQuantity(string) -> Base.Quantity()
 
     calculate a mathematical expression with units to a quantity object. 
@@ -20,7 +25,7 @@ def listSchemas(): ...
 
 
 @typing.overload
-def listSchemas(arg1: int, /):
+def listSchemas(int: int, /):
     """listSchemas() -> a tuple of schemas
 
     listSchemas(int) -> description of the given schema
@@ -34,13 +39,13 @@ def getSchema():
     The int is the position of the tuple returned by listSchemas"""
 
 
-def setSchema(arg1: int, /):
+def setSchema(int: int, /):
     """setSchema(int) -> None
 
     Sets the current schema to the given number, if possible"""
 
 
-def schemaTranslate(arg1: FreeCAD.Quantity, arg2: int, /):
+def schemaTranslate(Quantity: FreeCAD.Quantity, int: int, /):
     """schemaTranslate(Quantity, int) -> tuple
 
     Translate a quantity to a given schema"""

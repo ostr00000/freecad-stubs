@@ -257,15 +257,15 @@ class FemPostPipeline(FreeCAD.GeoFeature):
 
 
 # AppFemPy.cpp
-def open(arg1: str, /):
+def open(string: str, /):
     """open(string) -- Create a new document and a Mesh::Import feature to load the file into the document."""
 
 
-def insert(arg1: str, arg2: str = None, /):
+def insert(string_mesh: str, string: str = None, /):
     """insert(string|mesh,[string]) -- Load or insert a mesh into the given or active document."""
 
 
-def export(arg1: object, arg2: str, /):
+def export(list: object, string: str, /):
     """export(list,string) -- Export a list of objects into a single file."""
 
 
@@ -281,13 +281,21 @@ def writeResult(arg1: str, arg2: FreeCAD.DocumentObject = None, /):
     """write a CFD or FEM result (auto detect) to a file (file format detected from file suffix)"""
 
 
-def show(arg1: Fem.FemMesh, arg2: str = None, /):
+def show(shape: Fem.FemMesh, string: str = None, /):
     """show(shape,[string]) -- Add the mesh to the active document or create one if no document exists."""
 
 
 # HypothesisPy.cpp
+def setLibName(String):
+    """setLibName(String)"""
+
+
 def getLibName():
     """String getLibName()"""
+
+
+def setParameters(String):
+    """setParameters(String)"""
 
 
 def getParameters():
@@ -310,8 +318,12 @@ def isAuxiliary():
     """Bool isAuxiliary()"""
 
 
-def setParametersByMesh(arg1: Fem.FemMesh, arg2: Part.TopoShape, /):
+def setParametersByMesh(Mesh: Fem.FemMesh, Shape: Part.TopoShape, /):
     """setParametersByMesh(Mesh,Shape)"""
+
+
+def setLength():
+    """setLength()"""
 
 
 @typing.overload
@@ -319,16 +331,12 @@ def getLength(arg1: int, /): ...
 
 
 @typing.overload
-def getLength(): ...
-
-
-@typing.overload
-def getLength(): ...
-
-
-@typing.overload
 def getLength():
     """getLength()"""
+
+
+def setFineness():
+    """setFineness()"""
 
 
 def getFineness():
@@ -343,28 +351,64 @@ def getPreestimatedLength():
     """getPreestimatedLength()"""
 
 
+def setPreestimatedLength():
+    """setPreestimatedLength()"""
+
+
+def setUsePreestimatedLength():
+    """setUsePreestimatedLength()"""
+
+
 def getUsePreestimatedLength():
     """getUsePreestimatedLength()"""
+
+
+def setPrecision():
+    """setPrecision()"""
 
 
 def getPrecision():
     """getPrecision()"""
 
 
+def setMaxArea():
+    """setMaxArea()"""
+
+
 def getMaxArea():
     """getMaxArea()"""
+
+
+def setDeflection():
+    """setDeflection()"""
+
+
+def setNumberOfSegments():
+    """setNumberOfSegments()"""
 
 
 def getNumberOfSegments():
     """getNumberOfSegments()"""
 
 
+def setNumberOfLayers():
+    """setNumberOfLayers()"""
+
+
 def getNumberOfLayers():
     """getNumberOfLayers()"""
 
 
+def setMaxVolume():
+    """setMaxVolume()"""
+
+
 def getMaxVolume():
     """getMaxVolume()"""
+
+
+def setMode():
+    """setMode()"""
 
 
 def getMode():
@@ -433,7 +477,7 @@ class ViewProviderFemMesh(FreeCADGui.ViewProviderDocumentObject):
 
 
 # AppFemGuiPy.cpp
-def setActiveAnalysis(arg1: FreeCAD.DocumentObject = None, /):
+def setActiveAnalysis(AnalysisObject: FreeCAD.DocumentObject = None, /):
     """setActiveAnalysis(AnalysisObject) -- Set the Analysis object in work."""
 
 
@@ -445,5 +489,5 @@ def open(arg1: str, arg2: str = None, /):
     """open(string) -- Opens an Abaqus file in a text editor."""
 
 
-def insert(arg1: str, arg2: str = None, /):
+def insert(string: str, string1: str = None, /):
     """insert(string,string) -- Opens an Abaqus file in a text editor."""
