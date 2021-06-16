@@ -12,7 +12,7 @@ from freecad_stub_gen.generators.method.function_finder import findFunctionCall,
     generateExpressionUntilChar
 from freecad_stub_gen.generators.method.types_converter import KeyWorldOnlyArg, PositionalOnlyArg, \
     Arg
-from freecad_stub_gen.generators.names import validatePythonValue
+from freecad_stub_gen.generators.names import validatePythonValue, getSimpleClassName
 
 logger = logging.getLogger(__name__)
 
@@ -20,16 +20,22 @@ logger = logging.getLogger(__name__)
 class MethodGenerator(FormatFinder):
     def genInit(self) -> str:
         # maybe should check self.currentNode.attrib['Constructor']
-        return self.genMethod(self.currentNode, cName='PyInit', pythonName='__init__')
+        className = getSimpleClassName(self.currentNode)
+        return self.genMethod(self.currentNode, cName='PyInit',
+                              docName=className, pythonName='__init__')
 
-    def genMethod(self, node: ET.Element, cName: str = None, pythonName: str = None) -> str:
-        cName = cName or node.attrib["Name"]
-        pythonName = pythonName or node.attrib["Name"]
+    def genMethod(self, node: ET.Element, cName: str = None,
+                  docName: str = None, pythonName: str = None) -> str:
+        cName = cName or node.attrib['Name']
+        docName = docName or node.attrib['Name']
+        pythonName = pythonName or node.attrib['Name']
         static = strtobool(node.attrib.get('Static', 'False'))
         classic = strtobool(node.attrib.get('Class', 'False'))
         firstArgumentName = self._firstArgumentName(bool(static), bool(classic))
 
-        sigArgs = list(self._signatureArgGen(cName, node, firstArgumentName))
+        uniqueArgs = dict.fromkeys(self._signatureArgGen(
+            cName, docName, node, firstArgumentName))
+        sigArgs = list(uniqueArgs.keys())
         return self.convertMethodToStr(
             pythonName, sigArgs, self._getDocFromNode(node), classic, static)
 
@@ -43,7 +49,7 @@ class MethodGenerator(FormatFinder):
             retVal = 'self'
         return retVal
 
-    def _signatureArgGen(self, methodName: str, node: ET.Element,
+    def _signatureArgGen(self, cName: str, docName: str, node: ET.Element,
                          firstArgumentName: str) -> Iterator[str]:
         retVal = []
         if firstArgumentName:
@@ -54,9 +60,9 @@ class MethodGenerator(FormatFinder):
             return
 
         yielded = False
-        codeSuites = list(self.generateArgFromCode(methodName, start=len(retVal)))
+        codeSuites = list(self.generateArgFromCode(cName, start=len(retVal)))
         docSuite = list(self._generateArgSuiteFromDocString(
-            methodName, node, start=len(retVal)))
+            docName, node, start=len(retVal)))
         if len(codeSuites) == len(docSuite) == 0:
             return  # function does not exist neither in code nor xml
 
@@ -124,7 +130,9 @@ class MethodGenerator(FormatFinder):
 
         for argText in generateExpressionUntilChar(funDocString, 0, ','):
             argText = argText.strip()
-            if argText[-2:] == '[]':
+            if argText == '':
+                return
+            elif argText[-2:] == '[]':
                 pass
             else:
                 argText = argText.removeprefix('[').removesuffix(']')
@@ -171,7 +179,7 @@ class MethodGenerator(FormatFinder):
         return ret
 
     @classmethod
-    def genNumberProtocol(cls, className:str) -> str:
+    def genNumberProtocol(cls, className: str) -> str:
         ret = ''
         ret += cls._genEmptyMethod('__add__', 'other', retType=className)
         ret += cls._genEmptyMethod('__sub__', 'other', retType=className)
