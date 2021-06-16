@@ -61,7 +61,7 @@ class CosmeticExtension(FreeCAD.DocumentObjectExtension):
 class DrawViewDimExtent(TechDraw.DrawViewDimension):
     """Feature for creating and manipulating Technical Drawing DimExtents"""
 
-    def tbd(self, arg):
+    def tbd(self):
         """tbd() - returns tbd."""
 
 
@@ -79,22 +79,22 @@ class DrawTile(FreeCAD.DocumentObject):
 class DrawViewDimension(TechDraw.DrawView):
     """Feature for creating and manipulating Technical Drawing Dimensions"""
 
-    def getAnglePoints(self, arg):
+    def getAnglePoints(self):
         """getAnglePoints() - returns list of points for angle Dimension"""
 
-    def getArcPoints(self, arg):
+    def getArcPoints(self):
         """getArcPoints() - returns list of points for circle/arc Dimension"""
 
-    def getArrowPositions(self, arg):
+    def getArrowPositions(self):
         """getArrowPositions() - returns list of locations or Dimension Arrowheads. Locations are in unscaled coordinates of parent View """
 
-    def getLinearPoints(self, arg):
+    def getLinearPoints(self):
         """getLinearPoints() - returns list of points for linear Dimension"""
 
-    def getRawValue(self, arg):
+    def getRawValue(self):
         """getRawValue() - returns Dimension value in mm."""
 
-    def getText(self, arg):
+    def getText(self):
         """getText() - returns Dimension text."""
 
 
@@ -176,7 +176,7 @@ class DrawProjGroup(TechDraw.DrawViewCollection):
     def getXYPosition(self, string_projectionType: str, /):
         """getXYPosition(string projectionType) - return the AutoDistribute position for specified Projection Item"""
 
-    def purgeProjections(self, arg):
+    def purgeProjections(self):
         """purgeProjections() - Remove all Projection Items from this Group. Returns int number of views in Group (0)."""
 
     def removeProjection(self, string_projectionType: str, /):
@@ -199,16 +199,16 @@ class DrawParametricTemplate(TechDraw.DrawTemplate):
 class DrawViewPart(TechDraw.DrawView):
     """Feature for creating and manipulating Technical Drawing Part Views"""
 
-    def clearCenterLines(self, arg):
+    def clearCenterLines(self):
         """clearCenterLines() - remove all CenterLines from the View. Returns None."""
 
-    def clearCosmeticEdges(self, arg):
+    def clearCosmeticEdges(self):
         """clearCosmeticEdges() - remove all CosmeticLines from the View. Returns None."""
 
-    def clearCosmeticVertices(self, arg):
+    def clearCosmeticVertices(self):
         """clearCosmeticVertices() - remove all CosmeticVertices from the View. Returns None."""
 
-    def clearGeomFormats(self, arg):
+    def clearGeomFormats(self):
         """clearGeomFormats() - remove all GeomFormats from the View. Returns None."""
 
     def formatGeometricEdge(self, index: int, style: int, weight: float, color: object, visible: int, /):
@@ -238,7 +238,7 @@ class DrawViewPart(TechDraw.DrawView):
     def getEdgeBySelection(self, edgeName: str, /):
         """getEdgeBySelection(edgeName). Returns Part.TopoShape."""
 
-    def getHiddenEdges(self, arg):
+    def getHiddenEdges(self):
         """getHiddenEdges() - get the hidden edges in the View as Part::TopoShapeEdges"""
 
     def getVertexByIndex(self, vertexIndex: int, /):
@@ -247,7 +247,7 @@ class DrawViewPart(TechDraw.DrawView):
     def getVertexBySelection(self, vertexName: str, /):
         """getVertexBySelection(vertexName). Returns Part.TopoShape."""
 
-    def getVisibleEdges(self, arg):
+    def getVisibleEdges(self):
         """getVisibleEdges() - get the visible edges in the View as Part::TopoShapeEdges"""
 
     def makeCenterLine(self, subNames: object, mode: int, /):
@@ -296,7 +296,7 @@ class DrawViewPart(TechDraw.DrawView):
     def replaceCosmeticVertex(self, cv):
         """rc = replaceCosmeticVertex(cv) - replaces CosmeticVertex in View. Returns True/False."""
 
-    def requestPaint(self, arg):
+    def requestPaint(self):
         """requestPaint(). Redraw the graphic for this View."""
 
 
@@ -376,7 +376,7 @@ class DrawPage(FreeCAD.DocumentObject):
     def addView(self, DrawView: FreeCAD.DocumentObject, /):
         """addView(DrawView) - Add a View to this Page"""
 
-    def getAllViews(self, arg):
+    def getAllViews(self):
         """getAllViews() - returns a list of all the views on page including Views inside Collections"""
 
     def removeView(self, DrawView: FreeCAD.DocumentObject, /):
@@ -392,7 +392,7 @@ class DrawHatch(FreeCAD.DocumentObject):
 class DrawProjGroupItem(TechDraw.DrawViewPart):
     """Feature for creating and manipulating component Views Technical Drawing Projection Groups"""
 
-    def autoPosition(self, arg):
+    def autoPosition(self):
         """autoPosition() - Move to AutoDistribute/Unlocked position on Page. Returns none."""
 
 

@@ -414,7 +414,7 @@ class Command(FreeCAD.PyObjectBase):
         resetShortcut() -> bool
         """
 
-    def run(self, arg: int = None, /):
+    def run(self, arg1: int = None, /):
         """Runs the given command.
         run() -> None
         """
@@ -652,7 +652,7 @@ class Document(FreeCAD.Persistence):
         """Return the object with the given name
         getObject(Name) -> Object or None"""
 
-    def hide(self, arg: str, /):
+    def hide(self, arg1: str, /):
         """Hide the object
         hide() -> None
         """
@@ -695,7 +695,7 @@ class Document(FreeCAD.Persistence):
         """Set the position
         setPos(matrix) -> None"""
 
-    def show(self, arg: str, /):
+    def show(self, arg1: str, /):
         """Show the object
         show() -> None
         """

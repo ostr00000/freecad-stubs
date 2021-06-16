@@ -69,19 +69,19 @@ class Cylinder(Part.GeometrySurface):
     			"""
 
     @typing.overload
-    def __init__(self, Cylinder: Part.Cylinder, Distance: float): ...
+    def __init__(self): ...
 
     @typing.overload
     def __init__(self, Cylinder: Part.Cylinder): ...
 
     @typing.overload
-    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Point3: FreeCAD.Vector): ...
-
-    @typing.overload
     def __init__(self, Circle: Part.Circle): ...
 
     @typing.overload
-    def __init__(self):
+    def __init__(self, Cylinder: Part.Cylinder, Distance: float): ...
+
+    @typing.overload
+    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Point3: FreeCAD.Vector):
         """Describes a cylinder in 3D space
         				To create a cylinder there are several ways:
         				Part.Cylinder()
@@ -624,19 +624,19 @@ class Circle(Part.Conic):
        """
 
     @typing.overload
+    def __init__(self): ...
+
+    @typing.overload
+    def __init__(self, Circle: Part.Circle): ...
+
+    @typing.overload
     def __init__(self, Circle: Part.Circle, Distance: float): ...
 
     @typing.overload
     def __init__(self, Center: FreeCAD.Vector, Normal: FreeCAD.Vector, Radius: float): ...
 
     @typing.overload
-    def __init__(self, Circle: Part.Circle): ...
-
-    @typing.overload
-    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Point3: FreeCAD.Vector): ...
-
-    @typing.overload
-    def __init__(self):
+    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Point3: FreeCAD.Vector):
         """Describes a circle in 3D space
         To create a circle there are several ways:
         Part.Circle()
@@ -726,22 +726,22 @@ class Plane(Part.GeometrySurface):
     """
 
     @typing.overload
-    def __init__(self, Plane: Part.Plane, Distance: float): ...
-
-    @typing.overload
-    def __init__(self, A: float, B: float, C: float, D: float): ...
-
-    @typing.overload
-    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Point3: FreeCAD.Vector): ...
-
-    @typing.overload
-    def __init__(self, Location: FreeCAD.Vector, Normal: FreeCAD.Vector): ...
+    def __init__(self): ...
 
     @typing.overload
     def __init__(self, Plane: Part.Plane): ...
 
     @typing.overload
-    def __init__(self):
+    def __init__(self, Plane: Part.Plane, Distance: float): ...
+
+    @typing.overload
+    def __init__(self, Location: FreeCAD.Vector, Normal: FreeCAD.Vector): ...
+
+    @typing.overload
+    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Point3: FreeCAD.Vector): ...
+
+    @typing.overload
+    def __init__(self, A: float, B: float, C: float, D: float):
         """Describes an infinite plane
         To create a plane there are several ways:
         Part.Plane()
@@ -1518,7 +1518,7 @@ class TopoShape(FreeCAD.ComplexGeoData):
         mode < 0 : minimal
                 """
 
-    def hashCode(self, arg: int = None, /):
+    def hashCode(self, arg1: int = None, /):
         """This value is computed from the value of the underlying shape reference and the location.
         hashCode() -> int
         --
@@ -1851,12 +1851,6 @@ class TopoShape(FreeCAD.ComplexGeoData):
 
     @typing.overload
     def revolve(self, Vector_0_0_0_: FreeCAD.Vector, Vector_0_0_1_: FreeCAD.Vector, arg: float = None, /): ...
-
-    @typing.overload
-    def revolve(self, V_0_0_0_: FreeCAD.Vector, V_0_1_0_: FreeCAD.Vector, arg: float = None, /): ...
-
-    @typing.overload
-    def revolve(self, V_0_0_0_: FreeCAD.Vector, V_0_1_0_: FreeCAD.Vector, arg: float = None, /): ...
 
     @typing.overload
     def revolve(self, V_0_0_0_: FreeCAD.Vector, V_0_1_0_: FreeCAD.Vector, arg: float = None, /):
@@ -2658,9 +2652,6 @@ class TopoShape(Part.TopoShape):
     def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None): ...
 
     @typing.overload
-    def discretize(self, Number: object, /): ...
-
-    @typing.overload
     def discretize(self, Number: int, First: float = 0.01, Last: float = 100): ...
 
     @typing.overload
@@ -2778,10 +2769,16 @@ class Point(Part.Geometry):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, arg1: Part.Point, /): ...
+    def __init__(self, Point: Part.Point, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Vector, /):
+    def __init__(self, Point: FreeCAD.Vector, /): ...
+
+    @typing.overload
+    def __init__(self, Vector: Part.Point, /): ...
+
+    @typing.overload
+    def __init__(self, Vector: FreeCAD.Vector, /):
         """Describes a point
         To create a point there are several ways:
         Part.Point()
@@ -3615,10 +3612,10 @@ class Line(Part.Curve):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, arg1: Part.Line, /): ...
+    def __init__(self, Line: Part.Line, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, /):
+    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, /):
         """Describes an infinite line
         To create a line there are several ways:
         Part.Line()
@@ -3747,25 +3744,6 @@ class GeometrySurface(Part.Geometry):
         """Returns the parameter on the curve
         of the nearest orthogonal projection of the point."""
 
-    @typing.overload
-    def projectPoint(self, Point: FreeCAD.Vector, Method: str = None): ...
-
-    @typing.overload
-    def projectPoint(self, Point: FreeCAD.Vector, Method: str = None): ...
-
-    @typing.overload
-    def projectPoint(self, Point: FreeCAD.Vector, Method: str = None): ...
-
-    @typing.overload
-    def projectPoint(self, Point: FreeCAD.Vector, Method: str = None): ...
-
-    @typing.overload
-    def projectPoint(self, Point: FreeCAD.Vector, Method: str = None): ...
-
-    @typing.overload
-    def projectPoint(self, Point: FreeCAD.Vector, Method: str = None): ...
-
-    @typing.overload
     def projectPoint(self, Point: FreeCAD.Vector, Method: str = None):
         """
         Computes the projection of a point on the surface
@@ -3979,10 +3957,7 @@ class TopoShape(Part.TopoShape):
     def derivative1At(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /): ...
 
     @typing.overload
-    def derivative1At(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /): ...
-
-    @typing.overload
-    def derivative1At(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /):
+    def derivative1At(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /):
         """Get the first derivative at the given parameter value along the Edge if it is defined
         derivative1At(paramval) -> Vector
         --
@@ -4024,10 +3999,7 @@ class TopoShape(Part.TopoShape):
     def derivative2At(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /): ...
 
     @typing.overload
-    def derivative2At(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /): ...
-
-    @typing.overload
-    def derivative2At(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /):
+    def derivative2At(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /):
         """Get the second derivative at the given parameter value along the Edge if it is defined
         derivative2At(paramval) -> Vector
         --
@@ -4069,10 +4041,7 @@ class TopoShape(Part.TopoShape):
     def derivative3At(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /): ...
 
     @typing.overload
-    def derivative3At(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /): ...
-
-    @typing.overload
-    def derivative3At(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /):
+    def derivative3At(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /):
         """Get the third derivative at the given parameter value along the Edge if it is defined
         derivative3At(paramval) -> Vector
         --
@@ -4218,10 +4187,7 @@ class TopoShape(Part.TopoShape):
     def normalAt(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /): ...
 
     @typing.overload
-    def normalAt(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /): ...
-
-    @typing.overload
-    def normalAt(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /):
+    def normalAt(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /):
         """Get the normal direction at the given parameter value along the Edge if it is defined
         normalAt(paramval) -> Vector
         --
@@ -4291,10 +4257,7 @@ class TopoShape(Part.TopoShape):
     def tangentAt(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /): ...
 
     @typing.overload
-    def tangentAt(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /): ...
-
-    @typing.overload
-    def tangentAt(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /):
+    def tangentAt(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /):
         """Get the tangent direction at the given primary parameter value along the Edge if it is defined
         tangentAt(paramval) -> Vector
         --
@@ -4336,10 +4299,7 @@ class TopoShape(Part.TopoShape):
     def valueAt(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /): ...
 
     @typing.overload
-    def valueAt(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /): ...
-
-    @typing.overload
-    def valueAt(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /):
+    def valueAt(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /):
         """Get the value of the cartesian parameter value at the given parameter value along the Edge
         valueAt(paramval) -> Vector
         --
@@ -4398,6 +4358,25 @@ class BezierCurve(Part.BoundedCurve):
     					bc.setPoles([p1, p2, p3, p4])
     					curveShape = bc.toShape()
     			"""
+
+    def __init__(self):
+        """
+        				Describes a rational or non-rational Bezier curve:
+        				-- a non-rational Bezier curve is defined by a table of poles (also called control points)
+        				-- a rational Bezier curve is defined by a table of poles with varying weights
+
+        				Constructor takes no arguments.
+
+        				Example usage:
+        					p1 = Base.Vector(-1, 0, 0)
+        					p2 = Base.Vector(0, 1, 0.2)
+        					p3 = Base.Vector(1, 0, 0.4)
+        					p4 = Base.Vector(0, -1, 1)
+
+        					bc = BezierCurve()
+        					bc.setPoles([p1, p2, p3, p4])
+        					curveShape = bc.toShape()
+        			"""
 
     @property
     def Degree(self) -> int:
@@ -4582,16 +4561,10 @@ class LineSegment(Part.TrimmedCurve):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, arg1: Part.LineSegment, /): ...
+    def __init__(self, LineSegment: Part.LineSegment, /): ...
 
     @typing.overload
-    def __init__(self, arg1: Part.LineSegment, arg2: float, arg3: float, /): ...
-
-    @typing.overload
-    def __init__(self, arg1: Part.Line, arg2: float, arg3: float, /): ...
-
-    @typing.overload
-    def __init__(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, /):
+    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, /):
         """Describes a line segment
         To create a line segment there are several ways:
         Part.LineSegment()
@@ -4933,13 +4906,13 @@ class Cone(Part.GeometrySurface):
     def __init__(self): ...
 
     @typing.overload
+    def __init__(self, Cone: Part.Cone, Distance: float): ...
+
+    @typing.overload
     def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Radius1: float, Radius2: float): ...
 
     @typing.overload
-    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Point3: FreeCAD.Vector, Point4: FreeCAD.Vector): ...
-
-    @typing.overload
-    def __init__(self, Cone: Part.Cone, arg2: float):
+    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Point3: FreeCAD.Vector, Point4: FreeCAD.Vector):
         """Describes a cone in 3D space
         				To create a cone there are several ways:
         				Part.Cone()
@@ -5154,10 +5127,7 @@ class BRepOffsetAPI_MakeFilling(FreeCAD.PyObjectBase):
     def add(self, Point: FreeCAD.Vector): ...
 
     @typing.overload
-    def add(self, Constraint: Part.TopoShape, Support: Part.TopoShape, Order: int, IsBound: bool = None): ...
-
-    @typing.overload
-    def add(self, U: float, V: float, Support: Part.TopoShape, Order: int):
+    def add(self, Constraint: Part.TopoShape, Support: Part.TopoShape, Order: int, IsBound: bool = None):
         """
                           add(Edge, Order, IsBound=True)
                           add(Edge, Support, Order, IsBound=True)
@@ -5974,19 +5944,19 @@ class Circle2d(Part.Conic2d):
        """
 
     @typing.overload
+    def __init__(self): ...
+
+    @typing.overload
+    def __init__(self, Circle: Part.Circle2d): ...
+
+    @typing.overload
     def __init__(self, Circle: Part.Circle2d, Distance: float): ...
 
     @typing.overload
     def __init__(self, Center: object, Radius: float): ...
 
     @typing.overload
-    def __init__(self, Circle: Part.Circle2d): ...
-
-    @typing.overload
-    def __init__(self, Point1: object, Point2: object, Point3: object): ...
-
-    @typing.overload
-    def __init__(self):
+    def __init__(self, Point1: object, Point2: object, Point3: object):
         """Describes a circle in 3D space
         To create a circle there are several ways:
         Part.Geom2d.Circle2d()
@@ -6049,16 +6019,10 @@ class Line2dSegment(Part.Curve2d):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, arg1: Part.Line2dSegment, /): ...
+    def __init__(self, Line: Part.Line2dSegment, /): ...
 
     @typing.overload
-    def __init__(self, arg1: Part.Line2dSegment, arg2: float, arg3: float, /): ...
-
-    @typing.overload
-    def __init__(self, arg1: Part.Line2d, arg2: float, arg3: float, /): ...
-
-    @typing.overload
-    def __init__(self, arg1: object, arg2: object, /):
+    def __init__(self, Point1: object, Point2: object, /):
         """Describes a line segment in 2D space
         To create a line there are several ways:
         Part.Geom2d.Line2dSegment()
@@ -6799,10 +6763,10 @@ class Line2d(Part.Curve2d):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, arg1: Part.Line2d, /): ...
+    def __init__(self, Line: Part.Line2d, /): ...
 
     @typing.overload
-    def __init__(self, arg1: object, arg2: object, /):
+    def __init__(self, Point: object, Dir: object, /):
         """Describes an infinite line in 2D space
         To create a line there are several ways:
         Part.Geom2d.Line2d()

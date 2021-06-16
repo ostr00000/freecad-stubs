@@ -183,6 +183,13 @@ class Feature(FreeCAD.GeoFeature):
     d.addObject(\"Mesh::Feature\").
     			"""
 
+    def __init__(self):
+        """The Mesh::Feature class handles meshes.
+        The Mesh.MeshFeature() function is for internal use only and cannot be used to create instances of this class.
+        Therefore you must have a reference to a document, e.g. 'd' then you can create an instance with
+        d.addObject(\"Mesh::Feature\").
+        			"""
+
     def fixDegenerations(self, arg1: float = None, /):
         """Remove degenerated facets"""
 
@@ -347,9 +354,6 @@ class MeshObject(FreeCAD.ComplexGeoData):
 
     @typing.overload
     def decimate(self, tolerance_Float_: float, reduction_Float_: float, /): ...
-
-    @typing.overload
-    def decimate(self, arg: float, arg2: float, /): ...
 
     @typing.overload
     def decimate(self, arg: float, arg2: float, /):
@@ -621,12 +625,6 @@ class MeshObject(FreeCAD.ComplexGeoData):
 
     def unite(self, arg1: Mesh.MeshObject, /):
         """Union of this and the given mesh object."""
-
-    @typing.overload
-    def write(self, Filename: str, Format: str = 'STL', Name: str = 'Object name', Material: object = None): ...
-
-    @typing.overload
-    def write(self, Stream: object, Format: str, Name: str = 'Object name', Material: object = None): ...
 
     @typing.overload
     def write(self, Filename: str, Format: str = 'STL', Name: str = 'Object name', Material: object = None): ...

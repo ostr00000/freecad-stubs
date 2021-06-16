@@ -414,10 +414,6 @@ class Persistence(FreeCAD.BaseClass):
     def MemSize(self) -> int:
         """Memory size of the object in byte"""
 
-    @typing.overload
-    def dumpContent(self, Compression: int = None): ...
-
-    @typing.overload
     def dumpContent(self, Compression: int = 1-9):
         """Dumps the content of the object, both the XML representation as well as the additional datafiles  
         required, into a byte representation. It will be returned as byte array.
@@ -448,19 +444,22 @@ class BoundBox(FreeCAD.PyObjectBase):
     	  """
 
     @typing.overload
-    def __init__(self): ...
+    def __init__(self, Xmin: float, Ymin: float = None, Zmin: float = None, Xmax: float = None, Ymax: float = None, Zmax: float = None, /): ...
 
     @typing.overload
-    def __init__(self, arg1: float, arg2: float = None, arg3: float = None, arg4: float = None, arg5: float = None, arg6: float = None, /): ...
+    def __init__(self, Tuple: tuple, Tuple2: tuple, /): ...
 
     @typing.overload
-    def __init__(self, arg1: tuple, arg2: tuple, /): ...
+    def __init__(self, Tuple: FreeCAD.Vector, Tuple2: FreeCAD.Vector, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, /): ...
+    def __init__(self, Vector: tuple, Vector2: tuple, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.BoundBox, /):
+    def __init__(self, Vector: FreeCAD.Vector, Vector2: FreeCAD.Vector, /): ...
+
+    @typing.overload
+    def __init__(self, BoundBox: FreeCAD.BoundBox, /):
         """Bound box class
         A bounding box is an orthographic cube which is a way to describe outer boundaries.
         You get a bounding box from a lot of 3D types. It is often used to check if a 3D
@@ -659,19 +658,31 @@ class Placement(FreeCAD.PyObjectBase):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Matrix, /): ...
+    def __init__(self, Placement: FreeCAD.Matrix, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Placement, /): ...
+    def __init__(self, Placement: FreeCAD.Placement, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: float, /): ...
+    def __init__(self, Matrix: FreeCAD.Matrix, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Rotation, /): ...
+    def __init__(self, Matrix: FreeCAD.Placement, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Rotation, arg3: FreeCAD.Vector, /):
+    def __init__(self, Base: FreeCAD.Vector, Rotation: FreeCAD.Rotation, /): ...
+
+    @typing.overload
+    def __init__(self, Base: FreeCAD.Vector, Rotation: FreeCAD.Vector, Center: float, /): ...
+
+    @typing.overload
+    def __init__(self, Base: FreeCAD.Vector, Rotation: FreeCAD.Rotation, Center: FreeCAD.Vector, /): ...
+
+    @typing.overload
+    def __init__(self, Base: FreeCAD.Vector, Axis: FreeCAD.Vector, Angle: float, /): ...
+
+    @typing.overload
+    def __init__(self, Base: FreeCAD.Vector, Axis: FreeCAD.Rotation, Angle: FreeCAD.Vector, /):
         """Placement
         A placement defines an orientation (rotation) and a position (base) in 3D space.
         It is used when no scaling or other distortion is needed.
@@ -785,7 +796,7 @@ class Placement(FreeCAD.PyObjectBase):
     def translate(self, Vector): ...
 
     @typing.overload
-    def translate(self, arg):
+    def translate(self):
         """
         					translate(Vector) 
         					alias to move(), to be compatible with TopoShape.translate()
@@ -853,16 +864,34 @@ class Unit(FreeCAD.PyObjectBase):
             """
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Quantity, /): ...
+    def __init__(self, i1: int = None, i2: int = None, i3: int = None, i4: int = None, i5: int = None, i6: int = None, i7: int = None, i8: int = None, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Unit, /): ...
+    def __init__(self, Quantity: FreeCAD.Quantity, /): ...
 
     @typing.overload
-    def __init__(self, arg1: str, /): ...
+    def __init__(self, Quantity: FreeCAD.Unit, /): ...
 
     @typing.overload
-    def __init__(self, arg1: int = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, /):
+    def __init__(self, Quantity: str, /): ...
+
+    @typing.overload
+    def __init__(self, Unit: FreeCAD.Quantity, /): ...
+
+    @typing.overload
+    def __init__(self, Unit: FreeCAD.Unit, /): ...
+
+    @typing.overload
+    def __init__(self, Unit: str, /): ...
+
+    @typing.overload
+    def __init__(self, string: FreeCAD.Quantity, /): ...
+
+    @typing.overload
+    def __init__(self, string: FreeCAD.Unit, /): ...
+
+    @typing.overload
+    def __init__(self, string: str, /):
         """
          Unit
          defines a unit type, calculate and compare.
@@ -944,19 +973,28 @@ class Quantity(FreeCAD.PyObjectBase):
     		"""
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Quantity, /): ...
+    def __init__(self, Value: FreeCAD.Quantity, /): ...
 
     @typing.overload
-    def __init__(self, arg1: float, arg2: FreeCAD.Unit, /): ...
+    def __init__(self, Value: str, /): ...
 
     @typing.overload
-    def __init__(self, arg1: float, arg2: FreeCAD.Quantity, /): ...
+    def __init__(self, Value: float, Unit: FreeCAD.Unit, /): ...
 
     @typing.overload
-    def __init__(self, arg1: float = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /): ...
+    def __init__(self, Value: float, Unit: FreeCAD.Quantity, /): ...
 
     @typing.overload
-    def __init__(self, arg1: str, /):
+    def __init__(self, Quantity: FreeCAD.Quantity, /): ...
+
+    @typing.overload
+    def __init__(self, Quantity: str, /): ...
+
+    @typing.overload
+    def __init__(self, string: FreeCAD.Quantity, /): ...
+
+    @typing.overload
+    def __init__(self, string: str, /):
         """Quantity
         defined by a value and a unit.
 
@@ -1560,10 +1598,10 @@ class Axis(FreeCAD.PyObjectBase):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Axis, /): ...
+    def __init__(self, Axis: FreeCAD.Axis, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Vector, arg2: object, /):
+    def __init__(self, Base: FreeCAD.Vector, Direction: object, /):
         """Axis
         An defines a direction and a position (base) in 3D space.
 
@@ -2101,13 +2139,7 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
     def configLinkProperty(self, key, arg): ...
 
     @typing.overload
-    def configLinkProperty(self, key, arg): ...
-
-    @typing.overload
-    def configLinkProperty(self, arg): ...
-
-    @typing.overload
-    def configLinkProperty(self, key, arg):
+    def configLinkProperty(self):
         """
         configLinkProperty(key=val,...): property configuration
         configLinkProperty(key,...): property configuration with default name
@@ -2152,10 +2184,7 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
         """getLinkExtPropertyName(name): lookup the property name by its predefined name """
 
     @typing.overload
-    def getLinkPropertyInfo(self, arg: int, /): ...
-
-    @typing.overload
-    def getLinkPropertyInfo(self, arg: str, /): ...
+    def getLinkPropertyInfo(self): ...
 
     @typing.overload
     def getLinkPropertyInfo(self, index: int, /): ...
@@ -2181,12 +2210,6 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
 
     @typing.overload
     def setLink(self, obj, arg): ...
-
-    @typing.overload
-    def setLink(self, arg, arg2): ...
-
-    @typing.overload
-    def setLink(self, arg, arg2): ...
 
     @typing.overload
     def setLink(self, arg, arg2):

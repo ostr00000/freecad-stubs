@@ -15,7 +15,7 @@ class StepShape(FreeCAD.PyObjectBase):
         This class gives a interface to retrieve TopoShapes out of an loaded STEP file of any kind. 
         		"""
 
-    def read(self, arg):
+    def read(self):
         """method read()
         Read a STEP file into memory and make it accessible
         			  """

@@ -266,7 +266,7 @@ class Command(FreeCAD.Persistence):
     @Placement.setter
     def Placement(self, value: object): ...
 
-    def setFromGCode(self, arg: str, /):
+    def setFromGCode(self, arg1: str, /):
         """setFromGCode(): sets the path from the contents of the given GCode string"""
 
     def toGCode(self):
@@ -282,6 +282,12 @@ class Area(FreeCAD.BaseClass):
     Path.Area(key=value ...)\n
     The constructor accepts the same parameters as setParams(...) to configure the object
     All arguments are optional."""
+
+    def __init__(self, key):
+        """FreeCAD python wrapper of libarea\n
+        Path.Area(key=value ...)\n
+        The constructor accepts the same parameters as setParams(...) to configure the object
+        All arguments are optional."""
 
     @property
     def Sections(self) -> list:
@@ -452,7 +458,7 @@ class Tooltable(FreeCAD.Persistence):
         """setTool(int,tool):
         adds a tool at the given position"""
 
-    def templateAttrs(self, arg):
+    def templateAttrs(self):
         """templateAttrs() ... returns a dictionary representing the receivers attributes for a template"""
 
 
@@ -460,7 +466,7 @@ class Tooltable(FreeCAD.Persistence):
 class Voronoi(FreeCAD.BaseClass):
     """Voronoi([segments]): Create voronoi for given collection of line segments"""
 
-    def __init__(self, arg1: float = None, /):
+    def __init__(self, segments: float = None, /):
         """Voronoi([segments]): Create voronoi for given collection of line segments"""
 
     @property

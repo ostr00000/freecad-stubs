@@ -148,11 +148,7 @@ class Trajectory(FreeCAD.Persistence):
     @Waypoints.setter
     def Waypoints(self, value: list): ...
 
-    @typing.overload
-    def deleteLast(self, n: int = None, /): ...
-
-    @typing.overload
-    def deleteLast(self, arg: int = None, /):
+    def deleteLast(self, n: int = None, /):
         """
                   deleteLast(n) - delete n waypoints at the end
                   deleteLast()  - delete the last waypoint
