@@ -1,18 +1,13 @@
-import dataclasses
-import keyword
 import logging
-import re
 import xml.etree.ElementTree as ET
 from distutils.util import strtobool
-from itertools import count
-from typing import Iterator, Generator
+from typing import Iterator
 
+from freecad_stub_gen.generators.method.arg_suit_merger import mergeArgSuitesGen
+from freecad_stub_gen.generators.method.doc_string import generateArgSuitFromDocstring
 from freecad_stub_gen.generators.method.format_finder import FormatFinder
-from freecad_stub_gen.generators.method.function_finder import findFunctionCall, \
-    generateExpressionUntilChar
-from freecad_stub_gen.generators.method.types_converter import KeyWorldOnlyArg, PositionalOnlyArg, \
-    Arg
-from freecad_stub_gen.generators.names import validatePythonValue, getSimpleClassName
+from freecad_stub_gen.generators.method.types_converter import Arg
+from freecad_stub_gen.generators.names import getSimpleClassName
 
 logger = logging.getLogger(__name__)
 
@@ -59,113 +54,19 @@ class MethodGenerator(FormatFinder):
             yield ', '.join(retVal)
             return
 
-        yielded = False
-        codeSuites = list(self.generateArgFromCode(cName, start=len(retVal)))
-        docSuite = list(self._generateArgSuiteFromDocString(
-            docName, node, start=len(retVal)))
-        if len(codeSuites) == len(docSuite) == 0:
-            return  # function does not exist neither in code nor xml
-
-        for docS in docSuite:
-            for codeS in codeSuites:
-                compatible = True
-                matchedSuite = list(retVal)
-                docSuiteIt = iter(docS)
-
-                for codeArg in codeS:
-                    if isinstance(codeArg, (PositionalOnlyArg, KeyWorldOnlyArg)):
-                        matchedSuite.append(codeArg)
-                        continue
-
-                    try:
-                        docArg = next(docSuiteIt)
-                    except StopIteration:
-                        compatible = False
-                        break
-
-                    newArg = codeArg
-                    if codeArg.name is None:
-                        newArg = dataclasses.replace(codeArg, name=docArg.name)
-                    if codeArg.default and codeArg.value is None:
-                        newArg = dataclasses.replace(newArg, value=docArg.value)
-
-                    matchedSuite.append(newArg)
-
-                if compatible and len(list(docSuiteIt)) == 0:
-                    yield ', '.join(map(str, matchedSuite))
-                    yielded = True
-
-        # maybe nameSuite is empty, try argSuite
-        if not yielded:
-            for codeS in codeSuites:
-                yield ', '.join(map(str, retVal + codeS))
-                yielded = True
-
-        # maybe argSuite is empty, try nameSuite
-        if not yielded:
-            for docS in docSuite:
-                yield ', '.join(map(str, retVal + docS))
-                yielded = True
-
-        # this should never be reachable
-        if not yielded:
-            yield ', '.join(retVal)
+        codeSuites = list(self.generateArgFromCode(
+            cName, argNumStart=len(retVal)))
+        docSuites = list(self._generateArgSuiteFromDocString(
+            docName, node, argNumStart=len(retVal)))
+        yield from mergeArgSuitesGen(codeSuites, docSuites, firstArgumentName)
 
     @classmethod
     def _generateArgSuiteFromDocString(
-            cls, name: str, node: ET.Element, start) -> Iterator[list[Arg]]:
+            cls, name: str, node: ET.Element, argNumStart: int) -> Iterator[list[Arg]]:
         if not (docString := node.find("./Documentation/UserDocu").text):
             return
 
-        for match in re.finditer(fr'{name}\((.*?)\):?', docString):
-            funStart, _funEnd = match.span()
-            funCall = findFunctionCall(docString, funStart, bracketL='(', bracketR=')')
-            funCall = funCall.removeprefix(name).removeprefix('(').removesuffix(')')
-            yield list(cls._argSuiteGen(funCall, start))
-
-    @classmethod
-    def _argSuiteGen(cls, funDocString: str, start) -> Iterator[Arg]:
-        uniqueNameGen = cls._uniqueArgNameGen(start)
-        next(uniqueNameGen)
-
-        for argText in generateExpressionUntilChar(funDocString, 0, ','):
-            argText = argText.strip()
-            if argText == '':
-                return
-            elif argText[-2:] == '[]':
-                pass
-            else:
-                argText = argText.removeprefix('[').removesuffix(']')
-
-            if '=' in argText:
-                argName, defValue = argText.split('=')
-                argName, defValue = argName.strip(), defValue.strip()
-                defValue = validatePythonValue(defValue)
-            else:
-                argName, defValue = argText, None
-            uniqueName, argNum = uniqueNameGen.send(argName)
-            yield Arg(argNum, '', defValue is not None, uniqueName, defValue)
-
-    REG_ALL_EXCEPT_WORLD = re.compile(r'\W+')
-    REG_START_WITH_LETTER = re.compile(r'[a-zA-Z].*')
-
-    @classmethod
-    def _uniqueArgNameGen(cls, start=1) -> Generator[tuple[str, int], str, None]:
-        name: str = yield
-        seen = set()
-
-        for argNum in count(start):
-            name = re.sub(cls.REG_ALL_EXCEPT_WORLD, '_', name)
-            if not re.match(cls.REG_START_WITH_LETTER, name):
-                name = 'arg'
-            elif keyword.iskeyword(name):
-                name += '_'
-
-            if name in seen:
-                name = f'{name}{argNum}'
-            else:
-                seen.add(name)
-            name = yield name, argNum
+        yield from generateArgSuitFromDocstring(name, docString, argNumStart)
 
     @classmethod
     def genRichCompare(cls) -> str:
