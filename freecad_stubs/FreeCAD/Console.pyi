@@ -1,13 +1,13 @@
 # Console.cpp
-def PrintMessage(arg1: object, /):
+def PrintMessage(string: object, /):
     """PrintMessage(string) -- Print a message to the output"""
 
 
-def PrintLog(arg1: object, /):
+def PrintLog(string: object, /):
     """PrintLog(string) -- Print a log message to the output"""
 
 
-def PrintError(arg1: object, /):
+def PrintError(string: object, /):
     """PrintError(string) -- Print an error message to the output"""
 
 

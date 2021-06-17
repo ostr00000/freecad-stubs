@@ -4,12 +4,7 @@ import FreeCAD
 
 
 # Selection.cpp
-@typing.overload
-def addSelection(arg1: FreeCAD.DocumentObject, arg2: str = None, arg3: float = None, arg4: float = None, arg5: float = None, /): ...
-
-
-@typing.overload
-def addSelection(arg1: FreeCAD.DocumentObject, arg2: object, /):
+def addSelection(object: FreeCAD.DocumentObject, string: str = None, float: float = None, float3: float = None, float4: float = None, /):
     """addSelection(object,[string,float,float,float]) -- Add an object to the selection
     where string is the sub-element name and the three floats represent a 3d point"""
 
@@ -18,7 +13,7 @@ def removeSelection(arg1: FreeCAD.DocumentObject, arg2: str = None, /):
     """removeSelection(object) -- Remove an object from the selection"""
 
 
-def clearSelection(arg1: str = None, /):
+def clearSelection(string: str = None, /):
     """clearSelection([string]) -- Clear the selection
     Clear the selection to the given document name. If no document is
     given the complete selection is cleared."""
@@ -36,14 +31,14 @@ def clearPreselection():
     """clearPreselection() -- Clear the preselection"""
 
 
-def countObjectsOfType(arg1: str, arg2: str = None, /):
+def countObjectsOfType(string: str, string1: str = None, /):
     """countObjectsOfType(string, [string]) -- Get the number of selected objects
     The first argument defines the object type e.g. \"Part::Feature\" and the
     second argumeht defines the document name. If no document name is given the
     currently active document is used"""
 
 
-def getSelection(arg1: str = None, /):
+def getSelection(string: str = None, /):
     """getSelection([string]) -- Return a list of selected objets
     Return a list of selected objects for a given document name. If no
     document name is given the selection for the active document is returned."""
@@ -53,7 +48,7 @@ def getCompleteSelection():
     """getCompleteSelection() -- Return a list of selected objects of all documents."""
 
 
-def getSelectionEx(arg1: str = None, /):
+def getSelectionEx(string: str = None, /):
     """getSelectionEx([string]) -- Return a list of SelectionObjects
     Return a list of SelectionObjects for a given document name. If no
     document is given the selection of the active document is returned.
@@ -61,30 +56,42 @@ def getSelectionEx(arg1: str = None, /):
     e.g. sub-element names."""
 
 
-def getSelectionObject(arg1: str, arg2: str, arg3: str, arg4: tuple = None, /):
+def getSelectionObject(doc: str, obj: str, sub: str, arg: tuple = None, /):
     """getSelectionObject(doc,obj,sub,(x,y,z)) -- Return a SelectionObject"""
 
 
-def addObserver(arg1: object, /):
+def addObserver(Object: object, /):
     """addObserver(Object) -- Install an observer
     """
 
 
-def removeObserver(arg1: object, /):
+def removeObserver(Object: object, /):
     """removeObserver(Object) -- Uninstall an observer
     """
 
 
 @typing.overload
-def addSelectionGate(arg1: str, /): ...
+def addSelectionGate(String_Filter_Gate: str, /): ...
 
 
 @typing.overload
-def addSelectionGate(arg1: object, /): ...
+def addSelectionGate(String_Filter_Gate: object, /): ...
 
 
 @typing.overload
-def addSelectionGate(arg1: object, /):
+def addSelectionGate(filter: str, /): ...
+
+
+@typing.overload
+def addSelectionGate(filter: object, /): ...
+
+
+@typing.overload
+def addSelectionGate(Gate_: str, /): ...
+
+
+@typing.overload
+def addSelectionGate(Gate_: object, /):
     """addSelectionGate(String|Filter|Gate) -- activate the selection gate.
     The selection gate will prohibit all selections which do not match
     the given selection filter string.

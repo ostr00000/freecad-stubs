@@ -5,7 +5,7 @@ import Part
 
 
 # AppMeshPartPy.cpp
-def loftOnCurve(arg1: Part.TopoShape, arg2: object, arg3: typing.Sequence[float, float, float], arg4: float, /):
+def loftOnCurve(curve: Part.TopoShape, poly: object, upVector: typing.Sequence[float, float, float], MaxSize: float, /):
     """Creates a mesh loft based on a curve and an up vector
 
     loftOnCurve(curve, poly, upVector, MaxSize)
@@ -24,11 +24,7 @@ def wireFromSegment(arg1: Mesh.MeshObject, arg2: list, /):
 
 
 @typing.overload
-def meshFromShape(arg1: Part.TopoShape, /): ...
-
-
-@typing.overload
-def meshFromShape(Shape: Part.TopoShape, LinearDeflection: float, AngularDeflection: float = None, Relative: bool = None, Segments: bool = None, GroupColors: object = None): ...
+def meshFromShape(Shape: Part.TopoShape, /): ...
 
 
 @typing.overload
@@ -48,15 +44,7 @@ def meshFromShape(Shape: Part.TopoShape, Deflection: float): ...
 
 
 @typing.overload
-def meshFromShape(Shape: Part.TopoShape, MinLength: float, MaxLength: float): ...
-
-
-@typing.overload
-def meshFromShape(Shape: Part.TopoShape, Fineness: int, SecondOrder: int = None, Optimize: int = None, AllowQuad: int = None): ...
-
-
-@typing.overload
-def meshFromShape(Shape: Part.TopoShape, GrowthRate: float = None, SegPerEdge: float = None, SegPerRadius: float = None, SecondOrder: int = None, Optimize: int = None, AllowQuad: int = None):
+def meshFromShape(Shape: Part.TopoShape, MinLength: float, MaxLength: float):
     """Create surface mesh from shape
 
     Multiple signatures are available:

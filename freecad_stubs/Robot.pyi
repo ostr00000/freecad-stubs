@@ -148,11 +148,7 @@ class Trajectory(FreeCAD.Persistence):
     @Waypoints.setter
     def Waypoints(self, value: list): ...
 
-    @typing.overload
-    def deleteLast(self, n: int = None, /): ...
-
-    @typing.overload
-    def deleteLast(self, arg: int = None, /):
+    def deleteLast(self, n: int = None, /):
         """
                   deleteLast(n) - delete n waypoints at the end
                   deleteLast()  - delete the last waypoint
@@ -187,5 +183,5 @@ class RobotObject(FreeCAD.DocumentObject):
 
 
 # AppRobot.cpp
-def simulateToFile(arg1: Robot.Robot6Axis, arg2: Robot.Trajectory, arg3: float, arg4: str, /):
+def simulateToFile(Robot: Robot.Robot6Axis, Trajectory: Robot.Trajectory, TickSize: float, FileName: str, /):
     """simulateToFile(Robot,Trajectory,TickSize,FileName) - runs the simulation and write the result to a file."""

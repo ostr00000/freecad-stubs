@@ -68,5 +68,5 @@ def export(arg1: object, arg2: str, /):
     """&Module::exporter"""
 
 
-def show(arg1: Points.PointKernel, arg2: str = None, /):
+def show(points: Points.PointKernel, string: str = None, /):
     """show(points,[string]) -- Add the points to the active document or create one if no document exists."""
