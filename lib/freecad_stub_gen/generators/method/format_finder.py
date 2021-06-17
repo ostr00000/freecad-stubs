@@ -13,32 +13,30 @@ class FormatFinder(FunctionFinder):
     REG_TUP = re.compile(r'PyArg_ParseTuple(?!\w)\s*\(')
     REG_TUP_KW = re.compile(r'PyArg_ParseTupleAndKeywords\s*\(')
 
-    def generateArgFromCode(self, functionName: str, className: str = '', *, start=1):
+    def generateArgFromCode(self, functionName: str, className: str = '', *, argNumStart=1):
         if not (funBody := self.findFunctionBody(functionName, className, self.parentXml)):
             return
 
-        yield from self.__findParseTuple(funBody, start)
-        yield from self.__findParseTupleAndKeywords(funBody, start)
+        yield from self.__findParseTuple(funBody, argNumStart)
+        yield from self.__findParseTupleAndKeywords(funBody, argNumStart)
         # TODO P5 PyArg_UnpackTuple
         # https://docs.python.org/3/c-api/arg.html#c.PyArg_UnpackTuple
 
-    def __findParseTuple(self, functionBody: str, start: int):
-        yield from self._baseParse(
-            functionBody, pattern=self.REG_TUP,
-            formatStrPosition=1, minSize=2, onlyPositional=True, start=start)
+    def __findParseTuple(self, functionBody: str, argNumStart: int):
+        yield from self._baseParse(functionBody, pattern=self.REG_TUP, formatStrPosition=1,
+                                   minSize=2, onlyPositional=True, argNumStart=argNumStart)
 
-    def __findParseTupleAndKeywords(self, functionBody: str, start: int):
-        yield from self._baseParse(
-            functionBody, pattern=self.REG_TUP_KW,
-            formatStrPosition=2, minSize=4, onlyPositional=False, start=start)
+    def __findParseTupleAndKeywords(self, functionBody: str, argNumStart: int):
+        yield from self._baseParse(functionBody, pattern=self.REG_TUP_KW, formatStrPosition=2,
+                                   minSize=4, onlyPositional=False, argNumStart=argNumStart)
 
     def _baseParse(self, functionBody: str, pattern: Pattern,
-                   formatStrPosition: int, minSize: int, onlyPositional: bool, start: int):
+                   formatStrPosition: int, minSize: int, onlyPositional: bool, argNumStart: int):
         for match in re.finditer(pattern, functionBody):
             funStart, _endOFFormat = match.span()
             funCall = findFunctionCall(functionBody, funStart, bracketL='(', bracketR=')')
             tc = TypesConverter(funCall, self.currentNode, self.requiredImports,
-                                onlyPositional, formatStrPosition, start, self.baseGenFilePath,
+                                onlyPositional, formatStrPosition, argNumStart, self.baseGenFilePath,
                                 realStartArgNum=minSize)
 
             assert minSize <= len(tc.argumentStrings), "Invalid format - expected bigger size"

@@ -7,10 +7,11 @@ from typing import Any, Iterable, DefaultDict, Optional
 
 from more_itertools import islice_extended
 
+from freecad_stub_gen.generators.method.arg_suit_merger import mergeArgSuitesGen
+from freecad_stub_gen.generators.method.doc_string import generateArgSuitFromDocstring
 from freecad_stub_gen.generators.method.format_finder import FormatFinder
 from freecad_stub_gen.generators.method.function_finder import findFunctionCall, \
     generateExpressionUntilChar
-from freecad_stub_gen.generators.method.types_converter import Arg
 from freecad_stub_gen.logger import LEVEL_CODE
 from freecad_stub_gen.stub_container import StubContainer
 
@@ -23,7 +24,7 @@ class Method:
     pythonMethodName: str = ''
     cFunction: str = ''
     doc: str = None
-    pythonArgs: list[Arg] = None
+    pythonArgs: str = None
 
     REG_WHITESPACE_WITH_APOSTROPHE = re.compile(r'"\s*"')
 
@@ -54,7 +55,7 @@ class Method:
 
     def __str__(self):
         assert self.pythonArgs is not None
-        return f"{', '.join(map(str, self.pythonArgs))}"
+        return self.pythonArgs
 
 
 @dataclasses.dataclass(repr=False)
@@ -80,8 +81,10 @@ class FreecadStubGeneratorFromMethods(FormatFinder):
 
         for methods in methodNameToMethod.values():
             docContent = next((met.doc for met in methods), None)
+            uniqueMethods = list({str(m): m for m in methods}.values())
             yield self.convertMethodToStr(
-                methods[0].pythonMethodName, methods, docContent, functionSpacing=2)
+                methods[0].pythonMethodName, uniqueMethods,
+                docContent, functionSpacing=2)
 
     REG_METHOD_DEF = re.compile(r'PyMethodDef(?!\s*\*)')
 
@@ -100,8 +103,12 @@ class FreecadStubGeneratorFromMethods(FormatFinder):
                 yield from self._genMethodWithArgs(method)
 
     def _genMethodWithArgs(self, method: Method) -> Iterable[Method]:
+        docSuites = list(generateArgSuitFromDocstring(
+            method.pythonMethodName, method.doc))
+        codeSuites = list(self.generateArgFromCode(method.cFunction, method.cClass))
+
         yielded = False
-        for argList in self.generateArgFromCode(method.cFunction, method.cClass):
+        for argList in mergeArgSuitesGen(codeSuites, docSuites):
             yielded = True
             yield dataclasses.replace(method, pythonArgs=argList)
 

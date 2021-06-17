@@ -18,7 +18,7 @@ def addSelection(arg1: FreeCAD.DocumentObject, arg2: object, arg3: bool = None, 
     where string is the sub-element name and the three floats represent a 3d point"""
 
 
-def updateSelection(arg1: object, arg2: FreeCAD.DocumentObject, arg3: str = None, /):
+def updateSelection(show: object, object: FreeCAD.DocumentObject, string: str = None, /):
     """updateSelection(show,object,[string]) -- update an object in the selection
     where string is the sub-element name and the three floats represent a 3d point"""
 
@@ -32,12 +32,7 @@ def removeSelection(arg1: FreeCAD.DocumentObject, arg2: str = None, /):
     """removeSelection(object) -- Remove an object from the selection"""
 
 
-@typing.overload
-def clearSelection(arg1: bool = None, /): ...
-
-
-@typing.overload
-def clearSelection(arg1: str = None, arg2: bool = None, /):
+def clearSelection(docName: str = '', clearPreSelect: bool = True, /):
     """clearSelection(docName='',clearPreSelect=True) -- Clear the selection
     Clear the selection to the given document name. If no document is
     given the complete selection is cleared."""
@@ -59,14 +54,14 @@ def clearPreselection():
     """clearPreselection() -- Clear the preselection"""
 
 
-def countObjectsOfType(arg1: str, arg2: str = None, arg3: int = None, /):
+def countObjectsOfType(string: str, string1: str = None, resolve: int = 1, /):
     """countObjectsOfType(string, [string],[resolve=1]) -- Get the number of selected objects
     The first argument defines the object type e.g. \"Part::Feature\" and the
     second argumeht defines the document name. If no document name is given the
     currently active document is used"""
 
 
-def getSelection(arg1: str = None, arg2: int = None, arg3: object = None, /):
+def getSelection(docName: str = '', resolve: int = 1, single: object = False, /):
     """getSelection(docName='',resolve=1,single=False) -- Return a list of selected objects
 
     docName - document name. Empty string means the active document, and '*' means all document
@@ -75,21 +70,21 @@ def getSelection(arg1: str = None, arg2: int = None, arg3: object = None, /):
     single - only return if there is only one selection"""
 
 
-def getPickedList(arg1: str = None, /):
+def getPickedList(docName: str = '', /):
     """getPickedList(docName='') -- Return a list of objects under the last mouse click
 
     docName - document name. Empty string means the active document, and '*' means all document"""
 
 
-def enablePickedList(arg1: object = None, /):
+def enablePickedList(boolean: object = None, /):
     """enablePickedList(boolean) -- Enable/disable pick list"""
 
 
-def getCompleteSelection(arg1: int = None, /):
+def getCompleteSelection(resolve: int = 1, /):
     """getCompleteSelection(resolve=1) -- Return a list of selected objects of all documents."""
 
 
-def getSelectionEx(arg1: str = None, arg2: int = None, arg3: object = None, /):
+def getSelectionEx(docName: str = '', resolve: int = 1, single: object = False, /):
     """getSelectionEx(docName='',resolve=1, single=False) -- Return a list of SelectionObjects
 
     docName - document name. Empty string means the active document, and '*' means all document
@@ -100,30 +95,26 @@ def getSelectionEx(arg1: str = None, arg2: int = None, arg3: object = None, /):
     The SelectionObjects contain a variety of information about the selection, e.g. sub-element names."""
 
 
-def getSelectionObject(arg1: str, arg2: str, arg3: str, arg4: tuple = None, /):
+def getSelectionObject(doc: str, obj: str, sub: str, arg: tuple = None, /):
     """getSelectionObject(doc,obj,sub,(x,y,z)) -- Return a SelectionObject"""
 
 
-def addObserver(arg1: object, arg2: int = None, /):
+def addObserver(Object: object, resolve: int = 1, /):
     """addObserver(Object, resolve=1) -- Install an observer
     """
 
 
-def removeObserver(arg1: object, /):
+def removeObserver(Object: object, /):
     """removeObserver(Object) -- Uninstall an observer
     """
 
 
 @typing.overload
-def addSelectionGate(arg1: str, arg2: int = None, /): ...
+def addSelectionGate(String_Filter_Gate: str, resolve: int = 1, /): ...
 
 
 @typing.overload
-def addSelectionGate(arg1: object, arg2: int = None, /): ...
-
-
-@typing.overload
-def addSelectionGate(arg1: object, arg2: int = None, /):
+def addSelectionGate(String_Filter_Gate: object, resolve: int = 1, /):
     """addSelectionGate(String|Filter|Gate, resolve=1) -- activate the selection gate.
     The selection gate will prohibit all selections which do not match
     the given selection filter string.
@@ -148,29 +139,29 @@ def removeSelectionGate():
     """
 
 
-def setVisible(arg1: object = None, /):
+def setVisible(visible: object = None, /):
     """setVisible(visible=None) -- set visibility of all selection items
     If 'visible' is None, then toggle visibility"""
 
 
-def pushSelStack(arg1: object = None, arg2: object = None, /):
+def pushSelStack(clearForward: object = True, overwrite: object = False, /):
     """pushSelStack(clearForward=True, overwrite=False) -- push current selection to stack
 
     clearForward: whether to clear the forward selection stack.
     overwrite: overwrite the top back selection stack with current selection."""
 
 
-def hasSelection(arg1: str = None, arg2: object = None, /):
+def hasSelection(docName: str = '', resolve: object = False, /):
     """hasSelection(docName='', resolve=False) -- check if there is any selection
     """
 
 
-def hasSubSelection(arg1: str = None, arg2: bool = None, /):
+def hasSubSelection(docName: str = '', subElement: bool = False, /):
     """hasSubSelection(docName='',subElement=False) -- check if there is any selection with subname
     """
 
 
-def getSelectionFromStack(arg1: str = None, arg2: int = None, arg3: int = None, /):
+def getSelectionFromStack(docName: str = '', resolve: int = 1, index: int = 0, /):
     """getSelectionFromStack(docName='',resolve=1,index=0) -- Return a list of SelectionObjects from selection stack
 
     docName - document name. Empty string means the active document, and '*' means all document

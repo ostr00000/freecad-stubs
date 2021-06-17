@@ -61,7 +61,7 @@ class CosmeticExtension(FreeCAD.DocumentObjectExtension):
 class DrawViewDimExtent(TechDraw.DrawViewDimension):
     """Feature for creating and manipulating Technical Drawing DimExtents"""
 
-    def tbd(self, arg):
+    def tbd(self):
         """tbd() - returns tbd."""
 
 
@@ -79,22 +79,22 @@ class DrawTile(FreeCAD.DocumentObject):
 class DrawViewDimension(TechDraw.DrawView):
     """Feature for creating and manipulating Technical Drawing Dimensions"""
 
-    def getAnglePoints(self, arg):
+    def getAnglePoints(self):
         """getAnglePoints() - returns list of points for angle Dimension"""
 
-    def getArcPoints(self, arg):
+    def getArcPoints(self):
         """getArcPoints() - returns list of points for circle/arc Dimension"""
 
-    def getArrowPositions(self, arg):
+    def getArrowPositions(self):
         """getArrowPositions() - returns list of locations or Dimension Arrowheads. Locations are in unscaled coordinates of parent View """
 
-    def getLinearPoints(self, arg):
+    def getLinearPoints(self):
         """getLinearPoints() - returns list of points for linear Dimension"""
 
-    def getRawValue(self, arg):
+    def getRawValue(self):
         """getRawValue() - returns Dimension value in mm."""
 
-    def getText(self, arg):
+    def getText(self):
         """getText() - returns Dimension text."""
 
 
@@ -176,7 +176,7 @@ class DrawProjGroup(TechDraw.DrawViewCollection):
     def getXYPosition(self, string_projectionType: str, /):
         """getXYPosition(string projectionType) - return the AutoDistribute position for specified Projection Item"""
 
-    def purgeProjections(self, arg):
+    def purgeProjections(self):
         """purgeProjections() - Remove all Projection Items from this Group. Returns int number of views in Group (0)."""
 
     def removeProjection(self, string_projectionType: str, /):
@@ -199,16 +199,16 @@ class DrawParametricTemplate(TechDraw.DrawTemplate):
 class DrawViewPart(TechDraw.DrawView):
     """Feature for creating and manipulating Technical Drawing Part Views"""
 
-    def clearCenterLines(self, arg):
+    def clearCenterLines(self):
         """clearCenterLines() - remove all CenterLines from the View. Returns None."""
 
-    def clearCosmeticEdges(self, arg):
+    def clearCosmeticEdges(self):
         """clearCosmeticEdges() - remove all CosmeticLines from the View. Returns None."""
 
-    def clearCosmeticVertices(self, arg):
+    def clearCosmeticVertices(self):
         """clearCosmeticVertices() - remove all CosmeticVertices from the View. Returns None."""
 
-    def clearGeomFormats(self, arg):
+    def clearGeomFormats(self):
         """clearGeomFormats() - remove all GeomFormats from the View. Returns None."""
 
     def formatGeometricEdge(self, index: int, style: int, weight: float, color: object, visible: int, /):
@@ -238,7 +238,7 @@ class DrawViewPart(TechDraw.DrawView):
     def getEdgeBySelection(self, edgeName: str, /):
         """getEdgeBySelection(edgeName). Returns Part.TopoShape."""
 
-    def getHiddenEdges(self, arg):
+    def getHiddenEdges(self):
         """getHiddenEdges() - get the hidden edges in the View as Part::TopoShapeEdges"""
 
     def getVertexByIndex(self, vertexIndex: int, /):
@@ -247,7 +247,7 @@ class DrawViewPart(TechDraw.DrawView):
     def getVertexBySelection(self, vertexName: str, /):
         """getVertexBySelection(vertexName). Returns Part.TopoShape."""
 
-    def getVisibleEdges(self, arg):
+    def getVisibleEdges(self):
         """getVisibleEdges() - get the visible edges in the View as Part::TopoShapeEdges"""
 
     def makeCenterLine(self, subNames: object, mode: int, /):
@@ -296,7 +296,7 @@ class DrawViewPart(TechDraw.DrawView):
     def replaceCosmeticVertex(self, cv):
         """rc = replaceCosmeticVertex(cv) - replaces CosmeticVertex in View. Returns True/False."""
 
-    def requestPaint(self, arg):
+    def requestPaint(self):
         """requestPaint(). Redraw the graphic for this View."""
 
 
@@ -376,7 +376,7 @@ class DrawPage(FreeCAD.DocumentObject):
     def addView(self, DrawView: FreeCAD.DocumentObject, /):
         """addView(DrawView) - Add a View to this Page"""
 
-    def getAllViews(self, arg):
+    def getAllViews(self):
         """getAllViews() - returns a list of all the views on page including Views inside Collections"""
 
     def removeView(self, DrawView: FreeCAD.DocumentObject, /):
@@ -392,7 +392,7 @@ class DrawHatch(FreeCAD.DocumentObject):
 class DrawProjGroupItem(TechDraw.DrawViewPart):
     """Feature for creating and manipulating component Views Technical Drawing Projection Groups"""
 
-    def autoPosition(self, arg):
+    def autoPosition(self):
         """autoPosition() - Move to AutoDistribute/Unlocked position on Page. Returns none."""
 
 
@@ -447,23 +447,23 @@ class GeomFormat(FreeCAD.PyObjectBase):
 
 
 # AppTechDrawPy.cpp
-def edgeWalker(arg1: list, arg2: object = None, /):
+def edgeWalker(edgePile: list, inclBiggest: object = None, /):
     """[wires] = edgeWalker(edgePile,inclBiggest) -- Planar graph traversal finds wires in edge pile."""
 
 
-def findOuterWire(arg1: list, /):
+def findOuterWire(edgeList: list, /):
     """wire = findOuterWire(edgeList) -- Planar graph traversal finds OuterWire in edge pile."""
 
 
-def findShapeOutline(arg1: object, arg2: float, arg3: object, /):
+def findShapeOutline(shape: object, scale: float, direction: object, /):
     """wire = findShapeOutline(shape,scale,direction) -- Project shape in direction and find outer wire of result."""
 
 
-def viewPartAsDxf(arg1: object, /):
+def viewPartAsDxf(DrawViewPart: object, /):
     """string = viewPartAsDxf(DrawViewPart) -- Return the edges of a DrawViewPart in Dxf format."""
 
 
-def viewPartAsSvg(arg1: object, /):
+def viewPartAsSvg(DrawViewPart: object, /):
     """string = viewPartAsSvg(DrawViewPart) -- Return the edges of a DrawViewPart in Svg format."""
 
 
@@ -471,19 +471,19 @@ def writeDXFView(arg1: object, arg2: str, arg3: object = None, /):
     """writeDXFView(view,filename): Exports a DrawViewPart to a DXF file."""
 
 
-def writeDXFPage(arg1: object, arg2: str, /):
+def writeDXFPage(page: object, filename: str, /):
     """writeDXFPage(page,filename): Exports a DrawPage to a DXF file."""
 
 
-def findCentroid(arg1: object, arg2: object, /):
+def findCentroid(shape: object, direction: object, /):
     """vector = findCentroid(shape,direction): finds geometric centroid of shape looking in direction."""
 
 
-def makeExtentDim(arg1: object, arg2: list, arg3: int, /):
+def makeExtentDim(DrawViewPart: object, edges: list, direction: int, /):
     """makeExtentDim(DrawViewPart, [edges], direction) -- draw horizontal or vertical extent dimension for edges (or all of DrawViewPart if edge list is empty. direction:  0 - Horizontal, 1 - Vertical."""
 
 
-def makeDistanceDim(arg1: object, arg2: object, arg3: object, arg4: object, /):
+def makeDistanceDim(DrawViewPart: object, dimType: object, fromPoint: object, toPoint: object, /):
     """makeDistanceDim(DrawViewPart, dimType, fromPoint, toPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 2d View points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."""
 
 
@@ -491,7 +491,7 @@ def makeDistanceDim3d(arg1: object, arg2: object, arg3: object, arg4: object, /)
     """makeDistanceDim(DrawViewPart, dimType, 3dFromPoint, 3dToPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 3d model points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."""
 
 
-def makeGeomHatch(arg1: object, arg2: float = None, arg3: str = None, arg4: str = None, /):
+def makeGeomHatch(face: object, patScale: float = None, patName: str = None, patFile: str = None, /):
     """makeGeomHatch(face, [patScale], [patName], [patFile]) -- draw a geom hatch on a given face, using optionally the given scale (default 1) and a given pattern name (ex. Diamond) and .pat file (the default pattern name and/or .pat files set in preferences are used if none are given). Returns a Part compound shape."""
 
 
@@ -500,11 +500,11 @@ def export(arg1: object, arg2: str, /):
     """TechDraw hook for FC Gui exporter."""
 
 
-def exportPageAsPdf(arg1: object, arg2: str, /):
+def exportPageAsPdf(DrawPageObject: object, FilePath: str, /):
     """exportPageAsPdf(DrawPageObject,FilePath) -- print page as Pdf to file."""
 
 
-def exportPageAsSvg(arg1: object, arg2: str, /):
+def exportPageAsSvg(DrawPageObject: object, FilePath: str, /):
     """exportPageAsSvg(DrawPageObject,FilePath) -- print page as Svg to file."""
 
 
@@ -512,5 +512,5 @@ def copyActiveViewToSvgFile(arg1: object, arg2: str, arg3: float = None, arg4: f
     """copyActiveViewToSvgFile(DrawPageObject,FilePath) -- copy ActiveView to Svg file."""
 
 
-def addQGIToView(arg1: object, arg2: object, /):
+def addQGIToView(View: object, QGraphicsItem: object, /):
     """addQGIToView(View, QGraphicsItem) -- insert graphics item into view's graphic."""
