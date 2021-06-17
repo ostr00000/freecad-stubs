@@ -13,15 +13,6 @@ class Command(FreeCAD.Persistence):
     pairs, or a placement, or a vector"""
 
     @typing.overload
-    def __init__(self): ...
-
-    @typing.overload
-    def __init__(self, arg1: str, /): ...
-
-    @typing.overload
-    def __init__(self, arg1: FreeCAD.Placement, /): ...
-
-    @typing.overload
     def __init__(self, name: str = None, parameters: dict = None): ...
 
     @typing.overload
@@ -68,6 +59,12 @@ class Area(FreeCAD.BaseClass):
     Path.Area(key=value ...)\n
     The constructor accepts the same parameters as setParams(...) to configure the object
     All arguments are optional."""
+
+    def __init__(self, key):
+        """FreeCAD python wrapper of libarea\n
+        Path.Area(key=value ...)\n
+        The constructor accepts the same parameters as setParams(...) to configure the object
+        All arguments are optional."""
 
     @property
     def Sections(self) -> list:
@@ -252,19 +249,19 @@ class FeaturePathCompound(FreeCAD.DocumentObject):
 
 
 # AppPathPy.cpp
-def write(arg1: object, arg2: str, /):
+def write(object: object, filename: str, /):
     """write(object,filename): Exports a given path object to a GCode file"""
 
 
-def read(arg1: str, arg2: str = None, /):
+def read(filename: str, document: str = None, /):
     """read(filename,[document]): Imports a GCode file into the given document"""
 
 
-def show(arg1: Path.Toolpath, arg2: str = None, /):
+def show(path: Path.Toolpath, string: str = None, /):
     """show(path,[string]): Add the path to the active document or create one if no document exists"""
 
 
-def fromShape(arg1: object, /):
+def fromShape(Shape: object, /):
     """fromShape(Shape): Returns a Path object from a Part Shape (deprecated - use fromShapes() instead)"""
 
 
@@ -314,20 +311,20 @@ def getDefaultParams():
 def abort(aborting: object = None): ...
 
 
-def getParamsDesc(as_string: object = None):
+def getParamsDesc(as_string: object = False):
     """getParamsDesc(as_string=False): Returns a list of supported parameters and their descriptions.
 
     * as_string: if False, then return a dictionary of documents of all supported parameters."""
 
 
 # AppPathGuiPy.cpp
-def open(arg1: str, /):
+def open(filename: str, /):
     """open(filename): Opens a GCode file as a new document"""
 
 
-def insert(arg1: str, arg2: str = None, /):
+def insert(filename: str, docname: str = None, /):
     """insert(filename,docname): Imports a given GCode file into the given document"""
 
 
-def export(arg1: object, arg2: str, /):
+def export(objectslist: object, filename: str, /):
     """export(objectslist,filename): Exports a given list of Path objects to a GCode file"""

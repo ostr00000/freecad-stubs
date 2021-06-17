@@ -18,7 +18,7 @@ def projectToDXF(arg1: Part.TopoShape, arg2: FreeCAD.Vector = None, arg3: str = 
      -- Project a shape and return the DXF representation as string."""
 
 
-def removeSvgTags(arg1: str, /):
+def removeSvgTags(string: str, /):
     """string = removeSvgTags(string) -- Removes the opening and closing svg tags
     and other metatags from a svg code, making it embeddable"""
 

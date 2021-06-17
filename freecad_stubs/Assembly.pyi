@@ -28,5 +28,13 @@ class Item(FreeCAD.DocumentObject):
 
 
 # AppAssemblyGuiPy.cpp
-def setActiveAssembly(arg1: Assembly.Item = None, /):
+def setActiveAssembly(AssemblyObject: Assembly.Item = None, /):
     """setActiveAssembly(AssemblyObject) -- Set the Assembly object in work."""
+
+
+def getActiveAssembly():
+    """getActiveAssembly() -- Returns the Assembly object in work."""
+
+
+def clearActiveAssembly():
+    """clearActiveAssembly() -- Removes the current active Assembly as object in work"""

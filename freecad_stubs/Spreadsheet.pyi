@@ -83,25 +83,7 @@ class Sheet(FreeCAD.DocumentObject):
     def setAlignment(self, arg1: str, arg2: object, /): ...
 
     @typing.overload
-    def setAlignment(self, arg1: str, /): ...
-
-    @typing.overload
-    def setAlignment(self, arg1: str, arg2: object, /): ...
-
-    @typing.overload
-    def setAlignment(self, arg1: str, /): ...
-
-    @typing.overload
-    def setAlignment(self, arg1: str, arg2: int, /): ...
-
-    @typing.overload
-    def setAlignment(self, arg1: str, /): ...
-
-    @typing.overload
-    def setAlignment(self, arg1: str, arg2: int, /): ...
-
-    @typing.overload
-    def setAlignment(self, arg1: str, /):
+    def setAlignment(self, arg1: str, arg2: int, /):
         """Set alignment of the cell"""
 
     def setBackground(self, arg1: str, arg2: object, /):
@@ -132,43 +114,7 @@ class Sheet(FreeCAD.DocumentObject):
     def setStyle(self, arg1: str, arg2: object, /): ...
 
     @typing.overload
-    def setStyle(self, arg1: str, /): ...
-
-    @typing.overload
-    def setStyle(self, arg1: str, /): ...
-
-    @typing.overload
-    def setStyle(self, arg1: str, /): ...
-
-    @typing.overload
-    def setStyle(self, arg1: str, arg2: object, arg3: str = None, /): ...
-
-    @typing.overload
-    def setStyle(self, arg1: str, /): ...
-
-    @typing.overload
-    def setStyle(self, arg1: str, arg2: object, /): ...
-
-    @typing.overload
-    def setStyle(self, arg1: str, /): ...
-
-    @typing.overload
-    def setStyle(self, arg1: str, arg2: object, /): ...
-
-    @typing.overload
-    def setStyle(self, arg1: str, /): ...
-
-    @typing.overload
-    def setStyle(self, arg1: str, arg2: int, /): ...
-
-    @typing.overload
-    def setStyle(self, arg1: str, /): ...
-
-    @typing.overload
-    def setStyle(self, arg1: str, arg2: int, /): ...
-
-    @typing.overload
-    def setStyle(self, arg1: str, /):
+    def setStyle(self, arg1: str, arg2: int, /):
         """Set style of the cell"""
 
     def splitCell(self, arg1: str, /):

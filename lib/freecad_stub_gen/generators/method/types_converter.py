@@ -47,14 +47,14 @@ class TypesConverter:
     REG_REMOVE_WHITESPACES = re.compile(r'\s+')
 
     def __init__(self, funCall: str, currentNode: ET.Element, requiredImports: set[str],
-                 onlyPositional: bool, formatStrPosition: int, startArgNum=1, xmlPath=None,
+                 onlyPositional: bool, formatStrPosition: int, argNumStart=1, xmlPath=None,
                  realStartArgNum: int = 2):
         self.funCall = funCall
         self.currentNode = currentNode
         self.requiredImports = requiredImports
         self.onlyPositional = onlyPositional
         self.formatStrPosition = formatStrPosition
-        self.startArgNum = startArgNum
+        self.argNumStart = argNumStart
         self.realStartArgNum = realStartArgNum
         self.xmlPath = xmlPath
 
@@ -97,7 +97,7 @@ class TypesConverter:
 
                     if objType := parseTypeMap.get(curVal):
                         name = self._getArgName(formatStr, kwargList, argNum)
-                        yield Arg(self.startArgNum + argNum, objType, optional, name)
+                        yield Arg(self.argNumStart + argNum, objType, optional, name)
                         argNum += 1
                         realArgNum += parseSizeMap[curVal]
                         formatStr = formatStr[formatSize:]

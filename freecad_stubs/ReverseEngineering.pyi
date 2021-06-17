@@ -40,7 +40,7 @@ def filterVoxelGrid(Points: Points.PointKernel, DimX: float, DimY: float = None,
     """filterVoxelGrid(dim)."""
 
 
-def normalEstimation(Points: Points.PointKernel, KSearch: int = None, SearchRadius: float = None):
+def normalEstimation(Points: Points.PointKernel, KSearch: int = 0, SearchRadius: float = 0):
     """normalEstimation(Points,[KSearch=0, SearchRadius=0]) -> Normals
     KSearch is an int and used to search the k-nearest neighbours in
     the k-d tree. Alternatively, SearchRadius (a float) can be used

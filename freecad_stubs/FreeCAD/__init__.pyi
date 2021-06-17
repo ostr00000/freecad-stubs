@@ -358,10 +358,6 @@ class Persistence(FreeCAD.BaseClass):
     def MemSize(self) -> int:
         """Memory size of the object in byte"""
 
-    @typing.overload
-    def dumpContent(self, Compression: int = None): ...
-
-    @typing.overload
     def dumpContent(self, Compression: int = 1-9):
         """Dumps the content of the object, both the XML representation as well as the additional datafiles  
         required, into a byte representation. It will be returned as byte array.
@@ -392,19 +388,22 @@ class BoundBox(FreeCAD.PyObjectBase):
     	  """
 
     @typing.overload
-    def __init__(self): ...
+    def __init__(self, Xmin: float, Ymin: float = None, Zmin: float = None, Xmax: float = None, Ymax: float = None, Zmax: float = None, /): ...
 
     @typing.overload
-    def __init__(self, arg1: float, arg2: float = None, arg3: float = None, arg4: float = None, arg5: float = None, arg6: float = None, /): ...
+    def __init__(self, Tuple: tuple, Tuple2: tuple, /): ...
 
     @typing.overload
-    def __init__(self, arg1: tuple, arg2: tuple, /): ...
+    def __init__(self, Tuple: FreeCAD.Vector, Tuple2: FreeCAD.Vector, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, /): ...
+    def __init__(self, Vector: tuple, Vector2: tuple, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.BoundBox, /):
+    def __init__(self, Vector: FreeCAD.Vector, Vector2: FreeCAD.Vector, /): ...
+
+    @typing.overload
+    def __init__(self, BoundBox: FreeCAD.BoundBox, /):
         """Bound box class
         A bounding box is an orthographic cube which is a way to describe outer boundaries.
         You get a bounding box from a lot of 3D types. It is often used to check if a 3D
@@ -603,19 +602,31 @@ class Placement(FreeCAD.PyObjectBase):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Matrix, /): ...
+    def __init__(self, Placement: FreeCAD.Matrix, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Placement, /): ...
+    def __init__(self, Placement: FreeCAD.Placement, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: float, /): ...
+    def __init__(self, Matrix: FreeCAD.Matrix, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Rotation, /): ...
+    def __init__(self, Matrix: FreeCAD.Placement, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Rotation, arg3: FreeCAD.Vector, /):
+    def __init__(self, Base: FreeCAD.Vector, Rotation: FreeCAD.Rotation, /): ...
+
+    @typing.overload
+    def __init__(self, Base: FreeCAD.Vector, Rotation: FreeCAD.Vector, Center: float, /): ...
+
+    @typing.overload
+    def __init__(self, Base: FreeCAD.Vector, Rotation: FreeCAD.Rotation, Center: FreeCAD.Vector, /): ...
+
+    @typing.overload
+    def __init__(self, Base: FreeCAD.Vector, Axis: FreeCAD.Vector, Angle: float, /): ...
+
+    @typing.overload
+    def __init__(self, Base: FreeCAD.Vector, Axis: FreeCAD.Rotation, Angle: FreeCAD.Vector, /):
         """Placement
         A placement defines an orientation (rotation) and a position (base) in 3D space.
         It is used when no scaling or other distortion is needed.
@@ -713,16 +724,34 @@ class Unit(FreeCAD.PyObjectBase):
             """
 
     @typing.overload
-    def __init__(self, arg1: int = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, /): ...
+    def __init__(self, i1: int = None, i2: int = None, i3: int = None, i4: int = None, i5: int = None, i6: int = None, i7: int = None, i8: int = None, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Quantity, /): ...
+    def __init__(self, Quantity: FreeCAD.Quantity, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Unit, /): ...
+    def __init__(self, Quantity: FreeCAD.Unit, /): ...
 
     @typing.overload
-    def __init__(self, arg1: str, /):
+    def __init__(self, Quantity: str, /): ...
+
+    @typing.overload
+    def __init__(self, Unit: FreeCAD.Quantity, /): ...
+
+    @typing.overload
+    def __init__(self, Unit: FreeCAD.Unit, /): ...
+
+    @typing.overload
+    def __init__(self, Unit: str, /): ...
+
+    @typing.overload
+    def __init__(self, string: FreeCAD.Quantity, /): ...
+
+    @typing.overload
+    def __init__(self, string: FreeCAD.Unit, /): ...
+
+    @typing.overload
+    def __init__(self, string: str, /):
         """
          Unit
          defines a unit type, calculate and compare.
@@ -804,19 +833,28 @@ class Quantity(FreeCAD.PyObjectBase):
     		"""
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Quantity, /): ...
+    def __init__(self, Value: FreeCAD.Quantity, /): ...
 
     @typing.overload
-    def __init__(self, arg1: float, arg2: FreeCAD.Unit, /): ...
+    def __init__(self, Value: str, /): ...
 
     @typing.overload
-    def __init__(self, arg1: float, arg2: FreeCAD.Quantity, /): ...
+    def __init__(self, Value: float, Unit: FreeCAD.Unit, /): ...
 
     @typing.overload
-    def __init__(self, arg1: float = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /): ...
+    def __init__(self, Value: float, Unit: FreeCAD.Quantity, /): ...
 
     @typing.overload
-    def __init__(self, arg1: str, /):
+    def __init__(self, Quantity: FreeCAD.Quantity, /): ...
+
+    @typing.overload
+    def __init__(self, Quantity: str, /): ...
+
+    @typing.overload
+    def __init__(self, string: FreeCAD.Quantity, /): ...
+
+    @typing.overload
+    def __init__(self, string: str, /):
         """Quantity
         defined by a value and a unit.
 
@@ -1342,10 +1380,10 @@ class Axis(FreeCAD.PyObjectBase):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Axis, /): ...
+    def __init__(self, Axis: FreeCAD.Axis, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Vector, arg2: object, /):
+    def __init__(self, Base: FreeCAD.Vector, Direction: object, /):
         """Axis
         An defines a direction and a position (base) in 3D space.
 
@@ -1394,8 +1432,17 @@ class Axis(FreeCAD.PyObjectBase):
         				"""
 
 
+# Interpreter.cpp
+def write():
+    """write()"""
+
+
+def flush():
+    """flush()"""
+
+
 # ParameterPy.cpp
-def GetGroup(arg1: str, /):
+def GetGroup(str: str, /):
     """GetGroup(str)"""
 
 
@@ -1403,11 +1450,11 @@ def GetGroups():
     """GetGroups()"""
 
 
-def RemGroup(arg1: str, /):
+def RemGroup(str: str, /):
     """RemGroup(str)"""
 
 
-def HasGroup(arg1: str, /):
+def HasGroup(str: str, /):
     """HasGroup(str)"""
 
 
@@ -1532,7 +1579,7 @@ def GetContents():
 
 
 # Sequencer.cpp
-def start(arg1: str, arg2: int, /):
+def start(string: str, int: int, /):
     """start(string,int)"""
 
 
@@ -1710,12 +1757,6 @@ class DocumentObject(FreeCAD.ExtensionContainer):
 
     @typing.overload
     def setExpression(self, arg1: str, arg2: object, arg3: str = None, /): ...
-
-    @typing.overload
-    def setExpression(self): ...
-
-    @typing.overload
-    def setExpression(self): ...
 
     @typing.overload
     def setExpression(self): ...
@@ -2030,7 +2071,7 @@ def ParamGet(arg1: str, /):
     """Get parameters by path"""
 
 
-def saveParameter(arg1: str = None, /):
+def saveParameter(config: str = 'User parameter', /):
     """saveParameter(config='User parameter') -> None
     Save parameter set to file. The default set is 'User parameter'"""
 
@@ -2039,11 +2080,11 @@ def Version():
     """Print the version to the output."""
 
 
-def ConfigGet(arg1: str, /):
+def ConfigGet(string: str, /):
     """ConfigGet(string) -- Get the value for the given key."""
 
 
-def ConfigSet(arg1: str, arg2: str, /):
+def ConfigSet(string: str, string1: str, /):
     """ConfigSet(string, string) -- Set the given key to the given value."""
 
 
@@ -2083,7 +2124,7 @@ def getUserAppDataDir():
     """Get the root directory of user settings"""
 
 
-def getUserMacroDir(arg1: bool = None, /):
+def getUserMacroDir(bool: bool = False, /):
     """getUserMacroDir(bool=False) -> stringGet the directory of the user's macro directory
     If parameter is False (the default) it returns the standard path in theuser's home directory, otherwise it returns the user-defined path."""
 
@@ -2109,7 +2150,7 @@ def open(arg1: str, /):
     """See openDocument(string)"""
 
 
-def openDocument(arg1: str, /):
+def openDocument(string: str, /):
     """openDocument(string) -> object
 
     Create a document and load the project file into the document.
@@ -2126,7 +2167,7 @@ def newDocument(arg1: str = None, arg2: str = None, /):
     is checked automatically."""
 
 
-def closeDocument(arg1: str, /):
+def closeDocument(string: str, /):
     """closeDocument(string) -> None
 
     Close the document with a given name."""
@@ -2144,7 +2185,7 @@ def setActiveDocument(arg1: str, /):
     Set the active document by its name."""
 
 
-def getDocument(arg1: str, /):
+def getDocument(string: str, /):
     """getDocument(string) -> object
 
     Get a document by its name or raise an exception
@@ -2169,17 +2210,12 @@ def removeDocumentObserver(arg1: object, /):
     Remove an added document observer."""
 
 
-@typing.overload
-def setLogLevel(arg1: str, arg2: object, /): ...
-
-
-@typing.overload
-def setLogLevel(arg1: str, /):
+def setLogLevel(tag: str, level: object, /):
     """setLogLevel(tag, level) -- Set the log level for a string tag.
     'level' can either be string 'Log', 'Msg', 'Wrn', 'Error', or an integer value"""
 
 
-def getLogLevel(arg1: str, /):
+def getLogLevel(tag: str, /):
     """getLogLevel(tag) -- Get the log level of a string tag"""
 
 

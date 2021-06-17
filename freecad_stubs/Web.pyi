@@ -1,9 +1,9 @@
 # AppWeb.cpp
-def startServer(arg1: str = None, arg2: int = None, /):
+def startServer(address: str = None, port: int = 0, /):
     """startServer(address=127.0.0.1,port=0) -- Start a server."""
 
 
-def registerServerFirewall(arg1: object, /):
+def registerServerFirewall(callable_string_: object, /):
     """registerServerFirewall(callable(string)) -- Register a firewall."""
 
 

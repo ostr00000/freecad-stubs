@@ -15,7 +15,7 @@ class StepShape(FreeCAD.PyObjectBase):
         This class gives a interface to retrieve TopoShapes out of an loaded STEP file of any kind. 
         		"""
 
-    def read(self, arg):
+    def read(self):
         """method read()
         Read a STEP file into memory and make it accessible
         			  """
@@ -26,11 +26,11 @@ def open(arg1: str, arg2: str = None, /):
     """open(string) -- Open the file and create a new document."""
 
 
-def insert(arg1: str, arg2: str = None, /):
+def insert(string: str, string1: str = None, /):
     """insert(string,string) -- Insert the file into the given document."""
 
 
-def export(arg1: object, arg2: str, /):
+def export(list: object, string: str, /):
     """export(list,string) -- Export a list of objects into a single file."""
 
 
@@ -48,22 +48,26 @@ def writeDXFShape(arg1: Part.TopoShape, arg2: str, arg3: int = None, arg4: objec
 
 
 @typing.overload
-def writeDXFObject(arg1: list, arg2: str, arg3: int = None, arg4: object = None, arg5: str = None, /): ...
+def writeDXFObject(objects: list, filename_: str, version: int = None, usePolyline: object = None, optionSource: str = None, /): ...
 
 
 @typing.overload
-def writeDXFObject(arg1: FreeCAD.DocumentObject, arg2: str, arg3: int = None, arg4: object = None, arg5: str = None, /):
+def writeDXFObject(objects: FreeCAD.DocumentObject, filename_: str, version: int = None, usePolyline: object = None, optionSource: str = None, /):
     """writeDXFObject([objects],filename [,version,usePolyline,optionSource]): Exports DocumentObject(s) to a DXF file."""
 
 
 # AppImportGuiPy.cpp
-def insert(arg1: str, arg2: str = None, /):
+def open(string):
+    """open(string) -- Open the file and create a new document."""
+
+
+def insert(string: str, string1: str = None, /):
     """insert(string,string) -- Insert the file into the given document."""
 
 
-def export(arg1: object, arg2: str, /):
+def export(list: object, string: str, /):
     """export(list,string) -- Export a list of objects into a single file."""
 
 
-def ocaf(arg1: str, /):
+def ocaf(string: str, /):
     """ocaf(string) -- Browse the ocaf structure."""

@@ -49,16 +49,16 @@ class DrawViewCollection(TechDraw.DrawView):
 class DrawViewDimension(TechDraw.DrawView):
     """Feature for creating and manipulating Technical Drawing Dimensions"""
 
-    def getAnglePoints(self, arg):
+    def getAnglePoints(self):
         """getAnglePoints() - returns list of points for angle Dimension"""
 
-    def getArcPoints(self, arg):
+    def getArcPoints(self):
         """getArcPoints() - returns list of points for circle/arc Dimension"""
 
-    def getLinearPoints(self, arg):
+    def getLinearPoints(self):
         """getLinearPoints() - returns list of points for linear Dimension"""
 
-    def getText(self, arg):
+    def getText(self):
         """getText() - returns Dimension text."""
 
 
@@ -91,7 +91,7 @@ class DrawProjGroup(TechDraw.DrawViewCollection):
     def getXYPosition(self, string_projectionType: str, /):
         """getXYPosition(string projectionType) - return the AutoDistribute position for specified Projection Item"""
 
-    def purgeProjections(self, arg):
+    def purgeProjections(self):
         """purgeProjections() - Remove all Projection Items from this Group. Returns int number of views in Group (0)."""
 
     def removeProjection(self, string_projectionType: str, /):
@@ -127,7 +127,7 @@ class DrawPage(FreeCAD.DocumentObject):
     def addView(self, DrawView: FreeCAD.DocumentObject, /):
         """addView(DrawView) - Add a View to this Page"""
 
-    def getAllViews(self, arg):
+    def getAllViews(self):
         """getAllViews() - returns a list of all the views on page including Views inside Collections"""
 
     def removeView(self, DrawView: FreeCAD.DocumentObject, /):
@@ -143,28 +143,28 @@ class DrawHatch(FreeCAD.DocumentObject):
 class DrawProjGroupItem(TechDraw.DrawViewPart):
     """Feature for creating and manipulating component Views Technical Drawing Projection Groups"""
 
-    def autoPosition(self, arg):
+    def autoPosition(self):
         """autoPosition() - Move to AutoDistribute/Unlocked position on Page. Returns none."""
 
 
 # AppTechDrawPy.cpp
-def edgeWalker(arg1: list, arg2: object = None, /):
+def edgeWalker(edgePile: list, inclBiggest: object = None, /):
     """[wires] = edgeWalker(edgePile,inclBiggest) -- Planar graph traversal finds wires in edge pile."""
 
 
-def findOuterWire(arg1: list, /):
+def findOuterWire(edgeList: list, /):
     """wire = findOuterWire(edgeList) -- Planar graph traversal finds OuterWire in edge pile."""
 
 
-def findShapeOutline(arg1: object, arg2: float, arg3: object, /):
+def findShapeOutline(shape: object, scale: float, direction: object, /):
     """wire = findShapeOutline(shape,scale,direction) -- Project shape in direction and find outer wire of result."""
 
 
-def viewPartAsDxf(arg1: object, /):
+def viewPartAsDxf(DrawViewPart: object, /):
     """string = viewPartAsDxf(DrawViewPart) -- Return the edges of a DrawViewPart in Dxf format."""
 
 
-def viewPartAsSvg(arg1: object, /):
+def viewPartAsSvg(DrawViewPart: object, /):
     """string = viewPartAsSvg(DrawViewPart) -- Return the edges of a DrawViewPart in Svg format."""
 
 
@@ -172,11 +172,11 @@ def writeDXFView(arg1: object, arg2: str, arg3: object = None, /):
     """writeDXFView(view,filename): Exports a DrawViewPart to a DXF file."""
 
 
-def writeDXFPage(arg1: object, arg2: str, /):
+def writeDXFPage(page: object, filename: str, /):
     """writeDXFPage(page,filename): Exports a DrawPage to a DXF file."""
 
 
-def findCentroid(arg1: object, arg2: object, /):
+def findCentroid(shape: object, direction: object, /):
     """vector = findCentroid(shape,direction): finds geometric centroid of shape looking in direction."""
 
 
@@ -185,9 +185,9 @@ def export(arg1: object, arg2: str, /):
     """TechDraw hook for FC Gui exporter."""
 
 
-def exportPageAsPdf(arg1: object, arg2: str, /):
+def exportPageAsPdf(DrawPageObject: object, FilePath: str, /):
     """exportPageAsPdf(DrawPageObject,FilePath) -- print page as Pdf to file."""
 
 
-def exportPageAsSvg(arg1: object, arg2: str, /):
+def exportPageAsSvg(DrawPageObject: object, FilePath: str, /):
     """exportPageAsSvg(DrawPageObject,FilePath) -- print page as Svg to file."""

@@ -3,11 +3,11 @@ import Part
 
 
 # AppCamPy.cpp
-def open(arg1: str, /):
+def open(string: str, /):
     """open(string) -- Not implemented for this Module so far."""
 
 
-def insert(arg1: str, arg2: str, /):
+def insert(string: str, string1: str, /):
     """insert(string, string) -- Not implemented for this Module so far."""
 
 
@@ -59,7 +59,7 @@ def spring_back(arg1: Mesh.MeshObject, arg2: Part.TopoShape, /):
     """1"""
 
 
-def useMesh(arg1: Mesh.MeshObject, /):
+def useMesh(MeshObject: Mesh.MeshObject, /):
     """useMesh(MeshObject) -- Shows the usage of Mesh objects from the Mesh Module."""
 
 

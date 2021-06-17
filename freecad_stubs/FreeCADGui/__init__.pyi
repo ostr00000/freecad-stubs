@@ -283,7 +283,7 @@ class Document(FreeCAD.Persistence):
 
 
 # Application.cpp
-def subgraphFromObject(arg1: FreeCAD.DocumentObject, /):
+def subgraphFromObject(object: FreeCAD.DocumentObject, /):
     """subgraphFromObject(object) -> Node
 
     Return the Inventor subgraph to an object"""
@@ -393,7 +393,7 @@ def dump(arg1: str, /):
     """dump()"""
 
 
-def dumpNode(arg1: object, /):
+def dumpNode(node: object, /):
     """dumpNode(node)"""
 
 
@@ -436,7 +436,7 @@ def getViewDirection():
     """
 
 
-def setViewDirection(arg1: object, /):
+def setViewDirection(tuple: object, /):
     """setViewDirection(tuple) --> None
     Sets the direction the view is pointing at. The direction must be given as tuple with
     three coordinates xyz"""
@@ -479,7 +479,7 @@ def getCursorPos():
     """
 
 
-def getObjectInfo(arg1: object, arg2: float = None, /):
+def getObjectInfo(tuple_int_int_: object, pick_radius: float = None, /):
     """getObjectInfo(tuple(int,int), [pick_radius]) -> dictionary or None
 
     Return a dictionary with the name of document, object and component. The
@@ -489,7 +489,7 @@ def getObjectInfo(arg1: object, arg2: float = None, /):
     """
 
 
-def getObjectsInfo(arg1: object, arg2: float = None, /):
+def getObjectsInfo(tuple_int_int_: object, pick_radius: float = None, /):
     """getObjectsInfo(tuple(int,int), [pick_radius]) -> dictionary or None
 
     Does the same as getObjectInfo() but returns a list of dictionaries or None.
@@ -508,12 +508,7 @@ def getPoint(arg1: int, arg2: int, /):
     """
 
 
-@typing.overload
-def getPointOnScreen(arg1: FreeCAD.Vector, /): ...
-
-
-@typing.overload
-def getPointOnScreen(arg1: float, arg2: float, arg3: float, /):
+def getPointOnScreen(arg: FreeCAD.Vector, /):
     """getPointOnScreen(3D vector) -> pixel coords (as integer)
 
     Return the projected 3D point (in pixel coordinates).
@@ -560,6 +555,14 @@ def removeEventCallbackSWIG(arg1: object, arg2: object, arg3: int = None, /):
     """Deprecated -- use removeEventCallbackPivy()"""
 
 
+def listNavigationTypes():
+    """listNavigationTypes()"""
+
+
+def getNavigationType():
+    """getNavigationType()"""
+
+
 def setNavigationType(arg1: str, /):
     """setNavigationType()"""
 
@@ -572,7 +575,7 @@ def hasAxisCross():
     """check if the big axis-cross is on or off()"""
 
 
-def addDraggerCallback(arg1: object, arg2: str, arg3: object, /):
+def addDraggerCallback(SoDragger: object, String_CallbackType: str, function: object, /):
     """addDraggerCallback(SoDragger, String CallbackType, function)
     Add a DraggerCalback function to the coin node
     Possibles types :
@@ -580,7 +583,7 @@ def addDraggerCallback(arg1: object, arg2: str, arg3: object, /):
     """
 
 
-def removeDraggerCallback(arg1: object, arg2: str, arg3: object, /):
+def removeDraggerCallback(SoDragger: object, String_CallbackType: str, function: object, /):
     """removeDraggerCallback(SoDragger, String CallbackType, function)
     Remove the DraggerCalback function from the coin node
     Possibles types :
@@ -588,17 +591,17 @@ def removeDraggerCallback(arg1: object, arg2: str, arg3: object, /):
     """
 
 
-def setActiveObject(arg1: str, arg2: FreeCAD.DocumentObject, /):
+def setActiveObject(name: str, object: FreeCAD.DocumentObject, /):
     """setActiveObject(name,object)
     add or set a new active object"""
 
 
-def getActiveObject(arg1: str, /):
+def getActiveObject(name: str, /):
     """getActiveObject(name)
     returns the active object for the given type"""
 
 
-def getViewProvidersOfType(arg1: str, /):
+def getViewProvidersOfType(name: str, /):
     """getViewProvidersOfType(name)
     returns a list of view providers for the given type"""
 
@@ -612,12 +615,43 @@ def boxZoom(XMin: int, YMin: int, XMax: int, YMax: int):
 
 
 # WidgetFactory.cpp
+@typing.overload
+def load(string, QWidget_parent = None): ...
+
+
+@typing.overload
+def load(QIODevice, QWidget_parent = None):
+    """load(string, QWidget parent=None) -> QWidget
+    load(QIODevice, QWidget parent=None) -> QWidget"""
+
+
+def createWidget():
+    """createWidget()"""
+
+
 def value(arg1: str, arg2: str, /):
     """&PyResource::value"""
 
 
 def setValue(arg1: str, arg2: str, arg3: object, /):
     """&PyResource::setValue"""
+
+
+# PythonConsolePy.cpp
+def isatty():
+    """isatty()"""
+
+
+def write():
+    """write()"""
+
+
+def flush():
+    """flush()"""
+
+
+def readline():
+    """readline()"""
 
 
 # SplitView3DInventor.cpp
@@ -657,7 +691,7 @@ def viewIsometric():
     """viewIsometric()"""
 
 
-def getViewer(arg1: int, /):
+def getViewer(index: int, /):
     """getViewer(index)"""
 
 
@@ -670,7 +704,11 @@ def match():
     """Check if the current selection matches the filter"""
 
 
-def test(arg1: FreeCAD.DocumentObject, arg2: str = None, /):
+def result():
+    """If match() returns True then with result() you get a list of the matching objects"""
+
+
+def test(Feature: FreeCAD.DocumentObject, SubName: str = '', /):
     """test(Feature, SubName='')
     Test if a given object is described in the filter.
     If SubName is not empty the sub-element gets also tested."""
@@ -681,17 +719,12 @@ def setFilter(arg1: str, /):
 
 
 # PythonDebugger.cpp
-@typing.overload
-def write(arg1: str, /): ...
-
-
-@typing.overload
 def write(arg1: str, /):
     """write to stdout"""
 
 
 # ApplicationPy.cpp
-def activateWorkbench(arg1: str, /):
+def activateWorkbench(string: str, /):
     """activateWorkbench(string) -> None
 
     Activate the workbench by name"""
@@ -703,13 +736,13 @@ def addWorkbench(arg1: object, /):
     Add a workbench under a defined name."""
 
 
-def removeWorkbench(arg1: str, /):
+def removeWorkbench(string: str, /):
     """removeWorkbench(string) -> None
 
     Remove the workbench with name"""
 
 
-def getWorkbench(arg1: str, /):
+def getWorkbench(string: str, /):
     """getWorkbench(string) -> object
 
     Get the workbench by its name"""
@@ -727,26 +760,26 @@ def activeWorkbench():
     Return the active workbench object"""
 
 
-def addResourcePath(arg1: str, /):
+def addResourcePath(string: str, /):
     """addResourcePath(string) -> None
 
     Add a new path to the system where to find resource files
     like icons or localization files"""
 
 
-def addLanguagePath(arg1: str, /):
+def addLanguagePath(string: str, /):
     """addLanguagePath(string) -> None
 
     Add a new path to the system where to find language files"""
 
 
-def addIconPath(arg1: str, /):
+def addIconPath(string: str, /):
     """addIconPath(string) -> None
 
     Add a new path to the system where to find icon files"""
 
 
-def addIcon(arg1: str, arg2: str, /):
+def addIcon(string: str, string_or_list: str, /):
     """addIcon(string, string or list) -> None
 
     Add an icon as file name or in XPM format to the system"""
@@ -789,112 +822,32 @@ def supportedLocales():
     Returns a dict of all supported languages/top-level domains"""
 
 
-def createDialog(arg1: str, /):
+def createDialog(string: str, /):
     """createDialog(string) -- Open a UI file"""
 
 
 @typing.overload
-def addPreferencePage(arg1: str, arg2: str, /): ...
+def addPreferencePage(string: str, string1: str, /): ...
 
 
 @typing.overload
-def addPreferencePage(arg1: type, arg2: str, /): ...
+def addPreferencePage(string: type, string1: str, /): ...
 
 
 @typing.overload
-def addPreferencePage(arg1: typing.Type, arg2: str, /): ...
+def addPreferencePage(string: typing.Type, string1: str, /): ...
 
 
 @typing.overload
-def addPreferencePage(arg1: type, arg2: str, /): ...
+def addPreferencePage(string: str, string1: int = None, /): ...
 
 
 @typing.overload
-def addPreferencePage(arg1: str, /): ...
+def addPreferencePage(string: str = None, string1: int = None, /): ...
 
 
 @typing.overload
-def addPreferencePage(arg1: object, /): ...
-
-
-@typing.overload
-def addPreferencePage(arg1: str, /): ...
-
-
-@typing.overload
-def addPreferencePage(arg1: str, /): ...
-
-
-@typing.overload
-def addPreferencePage(): ...
-
-
-@typing.overload
-def addPreferencePage(): ...
-
-
-@typing.overload
-def addPreferencePage(arg1: str, /): ...
-
-
-@typing.overload
-def addPreferencePage(arg1: str, /): ...
-
-
-@typing.overload
-def addPreferencePage(arg1: str, /): ...
-
-
-@typing.overload
-def addPreferencePage(arg1: str, arg2: str, /): ...
-
-
-@typing.overload
-def addPreferencePage(arg1: str, arg2: object, arg3: str = None, /): ...
-
-
-@typing.overload
-def addPreferencePage(arg1: str, arg2: int = None, /): ...
-
-
-@typing.overload
-def addPreferencePage(): ...
-
-
-@typing.overload
-def addPreferencePage(arg1: str, /): ...
-
-
-@typing.overload
-def addPreferencePage(arg1: str, /): ...
-
-
-@typing.overload
-def addPreferencePage(arg1: str, /): ...
-
-
-@typing.overload
-def addPreferencePage(): ...
-
-
-@typing.overload
-def addPreferencePage(arg1: str = None, arg2: int = None, /): ...
-
-
-@typing.overload
-def addPreferencePage(arg1: int = None, arg2: str = None, /): ...
-
-
-@typing.overload
-def addPreferencePage(arg1: str = None, arg2: int = None, /): ...
-
-
-@typing.overload
-def addPreferencePage(arg1: object, /): ...
-
-
-@typing.overload
-def addPreferencePage(arg1: object, /):
+def addPreferencePage(string: int = None, string1: str = None, /):
     """addPreferencePage(string,string) -- Add a UI form to the
     preferences dialog. The first argument specifies the file nameand the second specifies the group name"""
 
@@ -929,13 +882,13 @@ def show(arg1: str, /):
     """deprecated"""
 
 
-def hideObject(arg1: FreeCAD.DocumentObject, /):
+def hideObject(object: FreeCAD.DocumentObject, /):
     """hideObject(object) -> None
 
     Hide the view provider to the given object"""
 
 
-def showObject(arg1: FreeCAD.DocumentObject, /):
+def showObject(object: FreeCAD.DocumentObject, /):
     """showObject(object) -> None
 
     Show the view provider to the given object"""
@@ -960,11 +913,11 @@ def activeDocument():
 
 
 @typing.overload
-def setActiveDocument(arg1: str, /): ...
+def setActiveDocument(string_or_App_Document: str, /): ...
 
 
 @typing.overload
-def setActiveDocument(arg1: FreeCAD.Document, /):
+def setActiveDocument(string_or_App_Document: FreeCAD.Document, /):
     """setActiveDocument(string or App.Document) -> None
 
     Activate the specified document"""
@@ -983,29 +936,29 @@ def activateView(arg1: str, arg2: bool, /):
 
 
 @typing.overload
-def getDocument(arg1: str, /): ...
+def getDocument(string: str, /): ...
 
 
 @typing.overload
-def getDocument(arg1: FreeCAD.Document, /):
+def getDocument(string: FreeCAD.Document, /):
     """getDocument(string) -> object
 
     Get a document by its name"""
 
 
-def doCommand(arg1: str, /):
+def doCommand(string: str, /):
     """doCommand(string) -> None
 
     Prints the given string in the python console and runs it"""
 
 
-def doCommandGui(arg1: str, /):
+def doCommandGui(string: str, /):
     """doCommandGui(string) -> None
 
     Prints the given string in the python console and runs it but doesn't record it in macros"""
 
 
-def addModule(arg1: str, /):
+def addModule(string: str, /):
     """addModule(string) -> None
 
     Prints the given module import only once in the macro recording"""
@@ -1017,7 +970,7 @@ def showDownloads():
     Shows the downloads manager window"""
 
 
-def showPreferences(arg1: str = None, arg2: int = None, /):
+def showPreferences(string: str = None, int: int = None, /):
     """showPreferences([string,int]) -> None
 
     Shows the preferences window. If string and int are provided, the given page index in the given group is shown."""
@@ -1066,11 +1019,11 @@ def getSceneGraph():
     """getSceneGraph() -> SoNode"""
 
 
-def setSceneGraph(arg1: object, /):
+def setSceneGraph(SoNode: object, /):
     """setSceneGraph(SoNode)"""
 
 
-def seekToPoint(arg1: object, /):
+def seekToPoint(tuple: object, /):
     """seekToPoint(tuple) -> None
     Initiate a seek action towards the 3D intersection of the scene and the
     ray from the screen coordinate's point and in the same direction as the
@@ -1080,7 +1033,7 @@ def seekToPoint(arg1: object, /):
     point xyz and the seek is done towards this point"""
 
 
-def setFocalDistance(arg1: float, /):
+def setFocalDistance(float: float, /):
     """setFocalDistance(float) -> None
     """
 
@@ -1090,7 +1043,7 @@ def getFocalDistance():
     """
 
 
-def getPoint(arg1: int, arg2: int, /):
+def getPoint(x: int, y: int, /):
     """getPoint(x, y) -> Base::Vector(x,y,z)"""
 
 
@@ -1098,11 +1051,11 @@ def getPickRadius():
     """getPickRadius(): returns radius of confusion in pixels for picking objects on screen (selection)."""
 
 
-def setPickRadius(arg1: float, /):
+def setPickRadius(new_radius: float, /):
     """setPickRadius(new_radius): sets radius of confusion in pixels for picking objects on screen (selection)."""
 
 
-def setRedirectToSceneGraph(arg1: bool, /):
+def setRedirectToSceneGraph(bool: bool, /):
     """setRedirectToSceneGraph(bool): enables or disables to redirect events directly to the scene graph."""
 
 
@@ -1110,7 +1063,7 @@ def isRedirectedToSceneGraph():
     """isRedirectedToSceneGraph() -> bool: check whether event redirection is enabled."""
 
 
-def setEnabledNaviCube(arg1: bool, /):
+def setEnabledNaviCube(bool: bool, /):
     """setEnabledNaviCube(bool): enables or disables the navi cube of the viewer."""
 
 
@@ -1118,9 +1071,46 @@ def isEnabledNaviCube():
     """isEnabledNaviCube() -> bool: check whether the navi cube is enabled."""
 
 
-def setNaviCubeCorner(arg1: int, /):
+def setNaviCubeCorner(int: int, /):
     """setNaviCubeCorner(int): sets the corner where to show the navi cube:
     0=top left, 1=top right, 2=bottom left, 3=bottom right"""
+
+
+# TaskDialogPython.cpp
+def showDialog():
+    """showDialog()"""
+
+
+def activeDialog():
+    """activeDialog()"""
+
+
+def closeDialog():
+    """closeDialog()"""
+
+
+def addTaskWatcher():
+    """addTaskWatcher()"""
+
+
+def clearTaskWatcher():
+    """clearTaskWatcher()"""
+
+
+def isAllowedAlterDocument():
+    """isAllowedAlterDocument()"""
+
+
+def isAllowedAlterView():
+    """isAllowedAlterView()"""
+
+
+def isAllowedAlterSelection():
+    """isAllowedAlterSelection()"""
+
+
+def showTaskView():
+    """showTaskView()"""
 
 
 Workbench: FreeCADGui.Workbench
