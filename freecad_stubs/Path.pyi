@@ -260,11 +260,11 @@ class Command(FreeCAD.Persistence):
     def Parameters(self, value: dict): ...
 
     @property
-    def Placement(self) -> object:
+    def Placement(self) -> FreeCAD.Placement:
         """The coordinates of the endpoint of the command"""
 
     @Placement.setter
-    def Placement(self, value: object): ...
+    def Placement(self, value: FreeCAD.Placement): ...
 
     def setFromGCode(self, arg1: str, /):
         """setFromGCode(): sets the path from the contents of the given GCode string"""

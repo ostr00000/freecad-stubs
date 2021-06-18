@@ -697,25 +697,25 @@ class Placement(FreeCAD.PyObjectBase):
         		"""
 
     @property
-    def Base(self) -> object:
+    def Base(self) -> FreeCAD.Vector:
         """Vector to the Base Position of the Placement"""
 
     @Base.setter
-    def Base(self, value: object): ...
+    def Base(self, value: FreeCAD.Vector): ...
 
     @property
-    def Matrix(self) -> object:
+    def Matrix(self) -> FreeCAD.Matrix:
         """Set/get matrix representation of this placement"""
 
     @Matrix.setter
-    def Matrix(self, value: object): ...
+    def Matrix(self, value: FreeCAD.Matrix): ...
 
     @property
-    def Rotation(self) -> object:
+    def Rotation(self) -> FreeCAD.Rotation:
         """Orientation of the placement expressed as rotation"""
 
     @Rotation.setter
-    def Rotation(self, value: object): ...
+    def Rotation(self, value: FreeCAD.Rotation): ...
 
     def copy(self):
         """
@@ -1927,11 +1927,11 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         """The unique identifier (among its document) of this object"""
 
     @property
-    def InList(self) -> list:
+    def InList(self) -> list[FreeCAD.DocumentObject]:
         """A list of all objects which link to this object."""
 
     @property
-    def InListRecursive(self) -> list:
+    def InListRecursive(self) -> list[FreeCAD.DocumentObject]:
         """A list of all objects which link to this object recursively."""
 
     @property
@@ -1951,15 +1951,15 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         """Contains the old label before change"""
 
     @property
-    def OutList(self) -> list:
+    def OutList(self) -> list[FreeCAD.DocumentObject]:
         """A list of all objects this object links to."""
 
     @property
-    def OutListRecursive(self) -> list:
+    def OutListRecursive(self) -> list[FreeCAD.DocumentObject]:
         """A list of all objects this object links to recursively."""
 
     @property
-    def Parents(self) -> list:
+    def Parents(self) -> list[tuple[FreeCAD.DocumentObject, str]]:
         """A List of tuple(parent,subname) holding all parents to this object"""
 
     @property
@@ -1967,11 +1967,11 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         """Indicate if the object is being removed"""
 
     @property
-    def State(self) -> list:
+    def State(self) -> list[FreeCAD.DocumentObject]:
         """State of the object in the document"""
 
     @property
-    def ViewObject(self) -> object:
+    def ViewObject(self) -> typing.Optional[FreeCADGui.ViewProviderDocumentObject]:
         """If the GUI is loaded the associated view provider is returned
         or None if the GUI is not up"""
 
@@ -2654,18 +2654,18 @@ class ComplexGeoData(FreeCAD.Persistence):
         """Get the BoundBox of the object"""
 
     @property
-    def Matrix(self) -> object:
+    def Matrix(self) -> FreeCAD.Matrix:
         """Get the current transformation of the object as matrix"""
 
     @Matrix.setter
-    def Matrix(self, value: object): ...
+    def Matrix(self, value: FreeCAD.Matrix): ...
 
     @property
-    def Placement(self) -> object:
+    def Placement(self) -> FreeCAD.Placement:
         """Get the current transformation of the object as placement"""
 
     @Placement.setter
-    def Placement(self, value: object): ...
+    def Placement(self, value: FreeCAD.Placement): ...
 
     @property
     def Tag(self) -> int:

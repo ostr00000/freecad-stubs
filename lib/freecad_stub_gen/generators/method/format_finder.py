@@ -1,6 +1,7 @@
 import logging
 import re
 from re import Pattern
+from typing import Optional
 
 from freecad_stub_gen.generators.method.function_finder import FunctionFinder, findFunctionCall, \
     generateExpressionUntilChar
@@ -36,8 +37,8 @@ class FormatFinder(FunctionFinder):
             funStart, _endOFFormat = match.span()
             funCall = findFunctionCall(functionBody, funStart, bracketL='(', bracketR=')')
             tc = TypesConverter(funCall, self.currentNode, self.requiredImports,
-                                onlyPositional, formatStrPosition, argNumStart, self.baseGenFilePath,
-                                realStartArgNum=minSize)
+                                onlyPositional, formatStrPosition, argNumStart,
+                                self.baseGenFilePath, realStartArgNum=minSize)
 
             assert minSize <= len(tc.argumentStrings), "Invalid format - expected bigger size"
 
@@ -76,7 +77,8 @@ class FormatFinder(FunctionFinder):
             overload = ''
 
         spacing = '\n' * functionSpacing
-        pattern = f'{static}{classic}{overload}def {methodName}({{args}}):{{docs}}{spacing}'
+        returnType = f' -> {rt}' if (rt := self._getReturnType(methodName)) else ''
+        pattern = f'{static}{classic}{overload}def {methodName}({{args}}){returnType}:{{docs}}{spacing}'
         for arg in args[:-1]:
             ret += pattern.format(args=arg, docs=' ...\n')
 
@@ -84,3 +86,6 @@ class FormatFinder(FunctionFinder):
         doc = f'\n{self.indent(self._genDocFromStr(docsText))}' if docsText else ' ...\n'
         ret += pattern.format(args=args[-1], docs=doc)
         return ret
+
+    def _getReturnType(self, methodName: str) -> Optional[str]:
+        pass

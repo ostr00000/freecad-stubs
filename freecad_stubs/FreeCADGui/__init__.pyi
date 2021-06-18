@@ -3,6 +3,7 @@ import typing
 import FreeCAD
 import FreeCADGui
 import FreeCADGui.Selection
+import FreeCADGui.TaskDialogPython as Control
 
 
 # WorkbenchPy.xml
@@ -544,7 +545,7 @@ class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
     """This is the ViewProvider base class"""
 
     @property
-    def Document(self) -> object:
+    def Document(self) -> FreeCADGui.Document:
         """Return the document the view provider is part of"""
 
     @property
@@ -552,7 +553,7 @@ class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
         """Reference count to force update visual"""
 
     @property
-    def Object(self) -> object:
+    def Object(self) -> FreeCAD.DocumentObject:
         """Set/Get the associated data object"""
 
     def update(self):
@@ -1652,59 +1653,6 @@ def isEnabledNaviCube():
 def setNaviCubeCorner(int: int, /):
     """setNaviCubeCorner(int): sets the corner where to show the navi cube:
     0=top left, 1=top right, 2=bottom left, 3=bottom right"""
-
-
-# TaskDialogPython.cpp
-def showDialog(dialog: object, /):
-    """show the given dialog in the task panel
-    showDialog(dialog)
-    --
-    if a task is already active a RuntimeError is raised"""
-
-
-def activeDialog():
-    """check if a dialog is active in the task panel
-    activeDialog() --> bool"""
-
-
-def closeDialog():
-    """close the active dialog
-    closeDialog()"""
-
-
-def addTaskWatcher(TaskWatcher_list: object, /):
-    """install a (list of) TaskWatcher
-    addTaskWatcher(TaskWatcher | list)"""
-
-
-def clearTaskWatcher():
-    """remove all TaskWatchers
-    clearTaskWatcher()"""
-
-
-def isAllowedAlterDocument():
-    """return the permission to alter the current Document
-    isAllowedAlterDocument() --> bool"""
-
-
-def isAllowedAlterView():
-    """return the permission to alter the current View
-    isAllowedAlterView() --> bool"""
-
-
-def isAllowedAlterSelection():
-    """return the permission to alter the current Selection
-    isAllowedAlterSelection() --> bool"""
-
-
-def showTaskView():
-    """show the Task panel
-    showTaskView()"""
-
-
-def showModelView():
-    """show the Model panel
-    showModelView()"""
 
 
 Workbench: FreeCADGui.Workbench

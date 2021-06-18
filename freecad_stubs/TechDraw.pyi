@@ -342,7 +342,7 @@ class CenterLine(FreeCAD.PyObjectBase):
         """The names of source Points for this CenterLine."""
 
     @property
-    def Rotation(self) -> float:
+    def Rotation(self) -> FreeCAD.Rotation:
         """The rotation of the Centerline in degrees."""
 
     @property
