@@ -446,79 +446,9 @@ class GeomFormat(FreeCAD.PyObjectBase):
         """Create a copy of this geomformat"""
 
 
-# AppTechDrawPy.cpp
-def edgeWalker(edgePile: list, inclBiggest: object = None, /):
-    """[wires] = edgeWalker(edgePile,inclBiggest) -- Planar graph traversal finds wires in edge pile."""
-
-
-def findOuterWire(edgeList: list, /):
-    """wire = findOuterWire(edgeList) -- Planar graph traversal finds OuterWire in edge pile."""
-
-
-def findShapeOutline(shape: object, scale: float, direction: object, /):
-    """wire = findShapeOutline(shape,scale,direction) -- Project shape in direction and find outer wire of result."""
-
-
-def viewPartAsDxf(DrawViewPart: object, /):
-    """string = viewPartAsDxf(DrawViewPart) -- Return the edges of a DrawViewPart in Dxf format."""
-
-
-def viewPartAsSvg(DrawViewPart: object, /):
-    """string = viewPartAsSvg(DrawViewPart) -- Return the edges of a DrawViewPart in Svg format."""
-
-
-def writeDXFView(arg1: object, arg2: str, arg3: object = None, /):
-    """writeDXFView(view,filename): Exports a DrawViewPart to a DXF file."""
-
-
-def writeDXFPage(page: object, filename: str, /):
-    """writeDXFPage(page,filename): Exports a DrawPage to a DXF file."""
-
-
-def findCentroid(shape: object, direction: object, /):
-    """vector = findCentroid(shape,direction): finds geometric centroid of shape looking in direction."""
-
-
-def makeExtentDim(DrawViewPart: object, edges: list, direction: int, /):
-    """makeExtentDim(DrawViewPart, [edges], direction) -- draw horizontal or vertical extent dimension for edges (or all of DrawViewPart if edge list is empty. direction:  0 - Horizontal, 1 - Vertical."""
-
-
-def makeDistanceDim(DrawViewPart: object, dimType: object, fromPoint: object, toPoint: object, /):
-    """makeDistanceDim(DrawViewPart, dimType, fromPoint, toPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 2d View points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."""
-
-
-def makeDistanceDim3d(arg1: object, arg2: object, arg3: object, arg4: object, /):
-    """makeDistanceDim(DrawViewPart, dimType, 3dFromPoint, 3dToPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 3d model points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."""
-
-
-def makeGeomHatch(face: object, patScale: float = None, patName: str = None, patFile: str = None, /):
-    """makeGeomHatch(face, [patScale], [patName], [patFile]) -- draw a geom hatch on a given face, using optionally the given scale (default 1) and a given pattern name (ex. Diamond) and .pat file (the default pattern name and/or .pat files set in preferences are used if none are given). Returns a Part compound shape."""
-
-
 # MDIViewPagePy.xml
 class MDIViewPage(FreeCAD.PyObjectBase):
     """MDIViewPage object"""
 
     def getPage(self):
         """returns the page being displayed"""
-
-
-# AppTechDrawGuiPy.cpp
-def export(arg1: object, arg2: str, /):
-    """TechDraw hook for FC Gui exporter."""
-
-
-def exportPageAsPdf(DrawPageObject: object, FilePath: str, /):
-    """exportPageAsPdf(DrawPageObject,FilePath) -- print page as Pdf to file."""
-
-
-def exportPageAsSvg(DrawPageObject: object, FilePath: str, /):
-    """exportPageAsSvg(DrawPageObject,FilePath) -- print page as Svg to file."""
-
-
-def copyActiveViewToSvgFile(arg1: object, arg2: str, arg3: float = None, arg4: float = None, arg5: object = None, arg6: object = None, arg7: float = None, arg8: float = None, arg9: int = None, /):
-    """copyActiveViewToSvgFile(DrawPageObject,FilePath) -- copy ActiveView to Svg file."""
-
-
-def addQGIToView(View: object, QGraphicsItem: object, /):
-    """addQGIToView(View, QGraphicsItem) -- insert graphics item into view's graphic."""

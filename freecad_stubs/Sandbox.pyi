@@ -1,23 +1,19 @@
-import FreeCAD
-
-
-# AppSandbox.cpp
-def DocumentProtector(Document: FreeCAD.Document, /):
-    """DocumentProtector(Document)"""
-
-
-def DocumentObjectProtector(DocumentObject: FreeCAD.DocumentObject, /):
-    """DocumentObjectProtector(DocumentObject)"""
-
-
 # DocumentProtectorPy.cpp
-def addObject(type: str, name: str = None, /):
-    """addObject(type,name)"""
+class DocumentProtectorPy:
+    """Python binding class for the document protector class"""
+
+    @staticmethod
+    def addObject(type: str, name: str = None, /):
+        """addObject(type,name)"""
+
+    @staticmethod
+    def recompute():
+        """recompute()"""
 
 
-def recompute():
-    """recompute()"""
+class DocumentObjectProtectorPy:
+    """Python binding class for the document object protector class"""
 
-
-def purgeTouched():
-    """purgeTouched()"""
+    @staticmethod
+    def purgeTouched():
+        """purgeTouched()"""

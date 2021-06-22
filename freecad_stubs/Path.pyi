@@ -278,14 +278,18 @@ class Command(FreeCAD.Persistence):
 
 # AreaPy.xml
 class Area(FreeCAD.BaseClass):
-    """FreeCAD python wrapper of libarea\n
-    Path.Area(key=value ...)\n
+    """FreeCAD python wrapper of libarea
+
+    Path.Area(key=value ...)
+
     The constructor accepts the same parameters as setParams(...) to configure the object
     All arguments are optional."""
 
     def __init__(self, key):
-        """FreeCAD python wrapper of libarea\n
-        Path.Area(key=value ...)\n
+        """FreeCAD python wrapper of libarea
+
+        Path.Area(key=value ...)
+
         The constructor accepts the same parameters as setParams(...) to configure the object
         All arguments are optional."""
 
@@ -310,9 +314,13 @@ class Area(FreeCAD.BaseClass):
         """Get current algorithm parameters as a dictionary."""
 
     def getShape(self, index: int = -1, rebuild: object = False):
-        """getShape(index=-1,rebuild=False): Return the resulting shape\n
-        \n* index (-1): the index of the section. -1 means all sections. No effect on planar shape.\n
-        \n* rebuild: clean the internal cache and rebuild"""
+        """getShape(index=-1,rebuild=False): Return the resulting shape
+
+
+        * index (-1): the index of the section. -1 means all sections. No effect on planar shape.
+
+
+        * rebuild: clean the internal cache and rebuild"""
 
     def makeOffset(self, index: int = None): ...
 
@@ -323,7 +331,8 @@ class Area(FreeCAD.BaseClass):
     def setParams(self): ...
 
     def setPlane(self, shape: Part.TopoShape, /):
-        """setPlane(shape): Set the working plane.\n
+        """setPlane(shape): Set the working plane.
+
         The supplied shape does not need to be planar. Area will try to find planar
         sub-shape (face, wire or edge). If more than one planar sub-shape is found, it
         will prefer the top plane parallel to XY0 plane. If no working plane are set,
@@ -539,7 +548,8 @@ class FeatureArea(FreeCAD.DocumentObject):
         """Return a copy of the encapsulated Python Area object."""
 
     def setParams(self):
-        """setParams(key=value...): Convenient function to configure this feature.\n
+        """setParams(key=value...): Convenient function to configure this feature.
+
         Same usage as Path.Area.setParams(). This function stores the parameters in the properties."""
 
 
@@ -600,54 +610,6 @@ class FeaturePathCompound(FreeCAD.DocumentObject):
         """Remove an object from the group"""
 
 
-# AppPathPy.cpp
-def write(object: object, filename: str, /):
-    """write(object,filename): Exports a given path object to a GCode file"""
-
-
-def read(filename: str, document: str = None, /):
-    """read(filename,[document]): Imports a GCode file into the given document"""
-
-
-def show(path: Path.Toolpath, string: str = None, /):
-    """show(path,[string]): Add the path to the active document or create one if no document exists"""
-
-
-def fromShape(Shape: object, /):
-    """fromShape(Shape): Returns a Path object from a Part Shape (deprecated - use fromShapes() instead)"""
-
-
-def fromShapes(shapes: object, start: FreeCAD.Vector = None, return_end: object = None):
-    """fromShapes(shapes, start=Vector(), return_end=False" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_PATH) ")
-
-    Returns a Path object from a list of shapes
-
-    * shapes: input list of shapes.
-
-    * start (Vector()): feed start position, and also serves as a hint of path entry.
-
-    * return_end (False): if True, returns tuple (path, endPosition).
-    "
-                PARAM_PY_DOC(ARG, AREA_PARAMS_PATH)"""
-
-
-def sortWires(shapes: object, start: FreeCAD.Vector = None):
-    """sortWires(shapes, start=Vector(), "
-                PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_ARC_PLANE)
-                PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_SORT) ")
-
-    Returns (wires,end), where 'wires' is sorted across Z value and with optimized travel distance,
-    and 'end' is the ending position of the whole wires. If arc_plane==1, it returns (wires,end,arc_plane),
-    where arc_plane is the found plane if any, or unchanged.
-
-    * shapes: input shape list
-
-    * start (Vector()): optional start position.
-    "
-                PARAM_PY_DOC(ARG, AREA_PARAMS_ARC_PLANE)
-                PARAM_PY_DOC(ARG, AREA_PARAMS_SORT)"""
-
-
 # AreaPyImp.cpp
 def setDefaultParams():
     """setDefaultParams(key=value...):
@@ -667,16 +629,3 @@ def getParamsDesc(as_string: object = False):
     """getParamsDesc(as_string=False): Returns a list of supported parameters and their descriptions.
 
     * as_string: if False, then return a dictionary of documents of all supported parameters."""
-
-
-# AppPathGuiPy.cpp
-def open(filename: str, /):
-    """open(filename): Opens a GCode file as a new document"""
-
-
-def insert(filename: str, docname: str = None, /):
-    """insert(filename,docname): Imports a given GCode file into the given document"""
-
-
-def export(objectslist: object, filename: str, /):
-    """export(objectslist,filename): Exports a given list of Path objects to a GCode file"""

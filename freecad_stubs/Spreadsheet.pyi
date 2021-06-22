@@ -117,8 +117,3 @@ class SheetView(FreeCAD.PyObjectBase):
 
     def getSheet(self):
         """returns the sheet being displayed"""
-
-
-# AppSpreadsheetGui.cpp
-def open(arg1: str, arg2: str = None, /):
-    """&Module::open"""

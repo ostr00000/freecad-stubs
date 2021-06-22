@@ -1,5 +1,7 @@
 import logging
 import re
+from abc import ABC
+from pathlib import Path
 from re import Pattern
 from typing import Optional
 
@@ -10,7 +12,7 @@ from freecad_stub_gen.generators.method.types_converter import TypesConverter
 logger = logging.getLogger(__name__)
 
 
-class FormatFinder(FunctionFinder):
+class FormatFinder(FunctionFinder, ABC):
     REG_TUP = re.compile(r'PyArg_ParseTuple(?!\w)\s*\(')
     REG_TUP_KW = re.compile(r'PyArg_ParseTupleAndKeywords\s*\(')
 
@@ -22,6 +24,15 @@ class FormatFinder(FunctionFinder):
         yield from self.__findParseTupleAndKeywords(funBody, argNumStart)
         # TODO P5 PyArg_UnpackTuple
         # https://docs.python.org/3/c-api/arg.html#c.PyArg_UnpackTuple
+
+    @property
+    def parentXml(self) -> Optional[Path]:
+        if self.currentNode is None:
+            return
+
+        fatherInclude = self.currentNode.attrib['FatherInclude'].replace('/', '.')
+        parentFile = (self.sourceDir / fatherInclude).with_suffix('.xml')
+        return parentFile
 
     def __findParseTuple(self, functionBody: str, argNumStart: int):
         yield from self._baseParse(functionBody, pattern=self.REG_TUP, formatStrPosition=1,

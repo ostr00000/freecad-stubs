@@ -1,11 +1,12 @@
 import xml.etree.ElementTree as ET
+from abc import ABC
 from distutils.util import strtobool
 
 from freecad_stub_gen.generators.base import BaseGenerator
 from freecad_stub_gen.generators.names import getSimpleClassName
 
 
-class PropertyGenerator(BaseGenerator):
+class PropertyGenerator(BaseGenerator, ABC):
     def getAttributes(self, node: ET.Element):
         name = node.attrib["Name"]
         pythonType = self.__findType(node)

@@ -180,6 +180,8 @@ class Vector(FreeCAD.PyObjectBase):
 
     def __divmod__(self, other): ...
 
+    def __truediv__(self, other) -> Vector: ...
+
     def __pow__(self, power, modulo=None): ...
 
     def __neg__(self) -> Vector: ...
@@ -377,6 +379,8 @@ class Rotation(FreeCAD.PyObjectBase):
 
     def __divmod__(self, other): ...
 
+    def __truediv__(self, other) -> Rotation: ...
+
     def __pow__(self, power, modulo=None): ...
 
     def __neg__(self) -> Rotation: ...
@@ -422,7 +426,7 @@ class Persistence(FreeCAD.BaseClass):
                         """
 
     def restoreContent(self, buffer: object, /):
-        """Restore the content of the object from a byte representation as stored by \"dumpContent\".
+        """Restore the content of the object from a byte representation as stored by "dumpContent".
         It could be restored from any python object implementing the buffer protocol.
         restoreContent(buffer) -- restores from the given byte array
                         """
@@ -824,6 +828,8 @@ class Placement(FreeCAD.PyObjectBase):
 
     def __divmod__(self, other): ...
 
+    def __truediv__(self, other) -> Placement: ...
+
     def __pow__(self, power, modulo=None): ...
 
     def __neg__(self) -> Placement: ...
@@ -933,6 +939,8 @@ class Unit(FreeCAD.PyObjectBase):
     def __floordiv__(self, other): ...
 
     def __divmod__(self, other): ...
+
+    def __truediv__(self, other) -> Unit: ...
 
     def __pow__(self, power, modulo=None): ...
 
@@ -1108,6 +1116,8 @@ class Quantity(FreeCAD.PyObjectBase):
     def __floordiv__(self, other): ...
 
     def __divmod__(self, other): ...
+
+    def __truediv__(self, other) -> Quantity: ...
 
     def __pow__(self, power, modulo=None): ...
 
@@ -1424,6 +1434,8 @@ class Matrix(FreeCAD.PyObjectBase):
 
     def __divmod__(self, other): ...
 
+    def __truediv__(self, other) -> Matrix: ...
+
     def __pow__(self, power, modulo=None): ...
 
     def __neg__(self) -> Matrix: ...
@@ -1650,163 +1662,162 @@ class Axis(FreeCAD.PyObjectBase):
         				"""
 
 
-# Interpreter.cpp
-def write():
-    """write()"""
-
-
-def flush():
-    """flush()"""
-
-
 # ParameterPy.cpp
-def GetGroup(str: str, /):
-    """GetGroup(str)"""
-
-
-def GetGroups():
-    """GetGroups()"""
-
-
-def RemGroup(str: str, /):
-    """RemGroup(str)"""
-
-
-def HasGroup(str: str, /):
-    """HasGroup(str)"""
-
-
-def IsEmpty():
-    """IsEmpty()"""
-
-
-def Clear():
-    """Clear()"""
-
-
-def Attach(arg1: object, /):
-    """Attach()"""
-
-
-def Detach(arg1: object, /):
-    """Detach()"""
-
-
-def Notify(arg1: str, /):
-    """Notify()"""
-
-
-def NotifyAll():
-    """NotifyAll()"""
-
-
-def SetBool(arg1: str, arg2: int, /):
-    """SetBool()"""
-
-
-def GetBool(arg1: str, arg2: int = None, /):
-    """GetBool()"""
-
-
-def GetBools(arg1: str = None, /):
-    """GetBools()"""
-
-
-def RemBool(arg1: str, /):
-    """RemBool()"""
-
-
-def SetInt(arg1: str, arg2: int, /):
-    """SetInt()"""
-
-
-def GetInt(arg1: str, arg2: int = None, /):
-    """GetInt()"""
-
-
-def GetInts(arg1: str = None, /):
-    """GetInts()"""
-
-
-def RemInt(arg1: str, /):
-    """RemInt()"""
-
-
-def SetUnsigned(arg1: str, arg2: int, /):
-    """SetUnsigned()"""
-
-
-def GetUnsigned(arg1: str, arg2: int = None, /):
-    """GetUnsigned()"""
-
-
-def GetUnsigneds(arg1: str = None, /):
-    """GetUnsigneds()"""
-
-
-def RemUnsigned(arg1: str, /):
-    """RemUnsigned()"""
-
-
-def SetFloat(arg1: str, arg2: float, /):
-    """SetFloat()"""
-
-
-def GetFloat(arg1: str, arg2: float = None, /):
-    """GetFloat()"""
-
-
-def GetFloats(arg1: str = None, /):
-    """GetFloats()"""
-
-
-def RemFloat(arg1: str, /):
-    """RemFloat()"""
-
-
-def SetString(arg1: str, arg2: str, /):
-    """SetString()"""
-
-
-def GetString(arg1: str, arg2: str = None, /):
-    """GetString()"""
-
-
-def GetStrings(arg1: str = None, /):
-    """GetStrings()"""
-
-
-def RemString(arg1: str, /):
-    """RemString()"""
-
-
-def Import(arg1: str, /):
-    """Import()"""
-
-
-def Insert(arg1: str, /):
-    """Insert()"""
-
-
-def Export(arg1: str, /):
-    """Export()"""
-
-
-def GetContents():
-    """GetContents()"""
+class ParameterGrp:
+    """Python interface class to set parameters"""
+
+    @staticmethod
+    def GetGroup(str: str, /):
+        """GetGroup(str)"""
+
+    @staticmethod
+    def GetGroups():
+        """GetGroups()"""
+
+    @staticmethod
+    def RemGroup(str: str, /):
+        """RemGroup(str)"""
+
+    @staticmethod
+    def HasGroup(str: str, /):
+        """HasGroup(str)"""
+
+    @staticmethod
+    def IsEmpty():
+        """IsEmpty()"""
+
+    @staticmethod
+    def Clear():
+        """Clear()"""
+
+    @staticmethod
+    def Attach(arg1: object, /):
+        """Attach()"""
+
+    @staticmethod
+    def Detach(arg1: object, /):
+        """Detach()"""
+
+    @staticmethod
+    def Notify(arg1: str, /):
+        """Notify()"""
+
+    @staticmethod
+    def NotifyAll():
+        """NotifyAll()"""
+
+    @staticmethod
+    def SetBool(arg1: str, arg2: int, /):
+        """SetBool()"""
+
+    @staticmethod
+    def GetBool(arg1: str, arg2: int = None, /):
+        """GetBool()"""
+
+    @staticmethod
+    def GetBools(arg1: str = None, /):
+        """GetBools()"""
+
+    @staticmethod
+    def RemBool(arg1: str, /):
+        """RemBool()"""
+
+    @staticmethod
+    def SetInt(arg1: str, arg2: int, /):
+        """SetInt()"""
+
+    @staticmethod
+    def GetInt(arg1: str, arg2: int = None, /):
+        """GetInt()"""
+
+    @staticmethod
+    def GetInts(arg1: str = None, /):
+        """GetInts()"""
+
+    @staticmethod
+    def RemInt(arg1: str, /):
+        """RemInt()"""
+
+    @staticmethod
+    def SetUnsigned(arg1: str, arg2: int, /):
+        """SetUnsigned()"""
+
+    @staticmethod
+    def GetUnsigned(arg1: str, arg2: int = None, /):
+        """GetUnsigned()"""
+
+    @staticmethod
+    def GetUnsigneds(arg1: str = None, /):
+        """GetUnsigneds()"""
+
+    @staticmethod
+    def RemUnsigned(arg1: str, /):
+        """RemUnsigned()"""
+
+    @staticmethod
+    def SetFloat(arg1: str, arg2: float, /):
+        """SetFloat()"""
+
+    @staticmethod
+    def GetFloat(arg1: str, arg2: float = None, /):
+        """GetFloat()"""
+
+    @staticmethod
+    def GetFloats(arg1: str = None, /):
+        """GetFloats()"""
+
+    @staticmethod
+    def RemFloat(arg1: str, /):
+        """RemFloat()"""
+
+    @staticmethod
+    def SetString(arg1: str, arg2: str, /):
+        """SetString()"""
+
+    @staticmethod
+    def GetString(arg1: str, arg2: str = None, /):
+        """GetString()"""
+
+    @staticmethod
+    def GetStrings(arg1: str = None, /):
+        """GetStrings()"""
+
+    @staticmethod
+    def RemString(arg1: str, /):
+        """RemString()"""
+
+    @staticmethod
+    def Import(arg1: str, /):
+        """Import()"""
+
+    @staticmethod
+    def Insert(arg1: str, /):
+        """Insert()"""
+
+    @staticmethod
+    def Export(arg1: str, /):
+        """Export()"""
+
+    @staticmethod
+    def GetContents():
+        """GetContents()"""
 
 
 # Sequencer.cpp
-def start(string: str, int: int, /):
-    """start(string,int)"""
+class ProgressIndicator:
+    """Progress indicator"""
 
+    @staticmethod
+    def start(string: str, int: int, /):
+        """start(string,int)"""
 
-def next(arg1: int = None, /):
-    """next()"""
+    @staticmethod
+    def next(arg1: int = None, /):
+        """next()"""
 
-
-def stop():
-    """stop()"""
+    @staticmethod
+    def stop():
+        """stop()"""
 
 
 # MaterialPy.xml
@@ -2616,7 +2627,7 @@ class PropertyContainer(FreeCAD.Persistence):
         """Return the type of a named property. This can be (Hidden,ReadOnly,Output) or any combination. """
 
     def restorePropertyContent(self, propertyname: str, buffer: object, /):
-        """Restore the content of given property from a byte representation as stored by \"dumpContent\".
+        """Restore the content of given property from a byte representation as stored by "dumpContent".
         It could be restored from any python object implementing the buffer protocol.
         restorePropertyContent(propertyname, buffer) -- restores from the given byte array
                         """

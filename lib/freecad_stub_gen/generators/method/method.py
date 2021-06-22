@@ -1,5 +1,6 @@
 import logging
 import xml.etree.ElementTree as ET
+from abc import ABC
 from distutils.util import strtobool
 from typing import Iterator
 
@@ -12,7 +13,7 @@ from freecad_stub_gen.generators.names import getSimpleClassName
 logger = logging.getLogger(__name__)
 
 
-class MethodGenerator(FormatFinder):
+class MethodGenerator(FormatFinder, ABC):
     def genInit(self) -> str:
         # maybe should check self.currentNode.attrib['Constructor']
         className = getSimpleClassName(self.currentNode)
@@ -87,6 +88,7 @@ class MethodGenerator(FormatFinder):
         ret += cls._genEmptyMethod('__mul__', 'other', retType=className)
         ret += cls._genEmptyMethod('__floordiv__', 'other')
         ret += cls._genEmptyMethod('__divmod__', 'other')
+        ret += cls._genEmptyMethod('__truediv__', 'other', retType=className)
         ret += cls._genEmptyMethod('__pow__', 'power', 'modulo=None')
         ret += cls._genEmptyMethod('__neg__', retType=className)
         ret += cls._genEmptyMethod('__pos__', retType=className)

@@ -1,17 +1,13 @@
 import dataclasses
 import logging
 import re
+from abc import ABC
 from collections import defaultdict
-from itertools import chain
 from typing import Any, Iterable, DefaultDict, Optional
-
-from more_itertools import islice_extended
 
 from freecad_stub_gen.generators.method.arg_suit_merger import mergeArgSuitesGen
 from freecad_stub_gen.generators.method.doc_string import generateArgSuitFromDocstring
 from freecad_stub_gen.generators.method.format_finder import FormatFinder
-from freecad_stub_gen.generators.method.function_finder import findFunctionCall, \
-    generateExpressionUntilChar
 from freecad_stub_gen.logger import LEVEL_CODE
 from freecad_stub_gen.stub_container import StubContainer
 
@@ -67,16 +63,19 @@ class PyMethodDef(Method):
         self.flags = self.args[2]
 
 
-class FreecadStubGeneratorFromMethods(FormatFinder):
-
+class FreecadStubGeneratorFromCpp(FormatFinder, ABC):
     def getStub(self) -> Optional[StubContainer]:
-        if result := ''.join(self._genAllMethods()).rstrip():
+        if result := ''.join(self._genStub()).rstrip():
             header = f'# {self.baseGenFilePath.name}\n'
             return StubContainer(header + result + '\n\n', self.requiredImports)
 
-    def _genAllMethods(self) -> Iterable[str]:
+    def _genStub(self):
+        raise NotImplementedError
+
+    def _genAllMethods(self, it: Iterable[Method], isStatic: bool,
+                       functionSpacing: int = 1) -> Iterable[str]:
         methodNameToMethod: DefaultDict[str, list[Method]] = defaultdict(list)
-        for method in chain(self._findArrayGen(), self._findFunctionCallsGen()):
+        for method in it:
             methodNameToMethod[method.pythonMethodName].append(method)
 
         for methods in methodNameToMethod.values():
@@ -84,23 +83,7 @@ class FreecadStubGeneratorFromMethods(FormatFinder):
             uniqueMethods = list({str(m): m for m in methods}.values())
             yield self.convertMethodToStr(
                 methods[0].pythonMethodName, uniqueMethods,
-                docContent, functionSpacing=2)
-
-    REG_METHOD_DEF = re.compile(r'PyMethodDef(?!\s*\*)')
-
-    def _findArrayGen(self) -> Iterable[Method]:
-        """Based on https://docs.python.org/3/c-api/structures.html#c.PyMethodDef"""
-        for match in self.REG_METHOD_DEF.finditer(self.impContent):
-            start, end = match.span()
-            arrayStr = findFunctionCall(self.impContent, start)
-            arrayStrStartPos = arrayStr.find('{') + 1
-
-            for arrayElemText in islice_extended(generateExpressionUntilChar(
-                    arrayStr, arrayStrStartPos, ',', bracketL='{', bracketR='}'), -1):
-                arrayElemStartPos = arrayElemText.find('{') + 1
-                method = PyMethodDef(list(
-                    generateExpressionUntilChar(arrayElemText, arrayElemStartPos, ',')))
-                yield from self._genMethodWithArgs(method)
+                docContent, isStatic=isStatic, functionSpacing=functionSpacing)
 
     def _genMethodWithArgs(self, method: Method) -> Iterable[Method]:
         docSuites = list(generateArgSuitFromDocstring(
@@ -117,20 +100,3 @@ class FreecadStubGeneratorFromMethods(FormatFinder):
             if logger.isEnabledFor(LEVEL_CODE):
                 logger.log(LEVEL_CODE, self.findFunctionBody(
                     method.cFunction, method.cClass))
-
-    REG_NOARGS_METHOD = re.compile('add_noargs_method')
-    REG_VARGS_METHOD = re.compile('add_varargs_method')
-    REG_KEYWORD_METHOD = re.compile('add_keyword_method')
-
-    def _findFunctionCallsGen(self) -> Iterable[Method]:
-        for match in chain(
-                self.REG_NOARGS_METHOD.finditer(self.impContent),
-                self.REG_VARGS_METHOD.finditer(self.impContent),
-                self.REG_KEYWORD_METHOD.finditer(self.impContent),
-        ):
-            funcCall = findFunctionCall(
-                self.impContent, match.span()[0], bracketL='(', bracketR=')')
-            funcCallStartPos = funcCall.find('(') + 1
-            method = Method(list(generateExpressionUntilChar(
-                funcCall, funcCallStartPos, splitChar=',')))
-            yield from self._genMethodWithArgs(method)

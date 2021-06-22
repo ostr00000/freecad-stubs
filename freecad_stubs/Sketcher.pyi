@@ -462,6 +462,9 @@ class SketchObject(Part.Part2DObject):
                   relatively to the current one.
                 """
 
+    def removeAxesAlignment(self, arg1: object, /):
+        """modifies constraints so that the shape is not forced to be aligned with axes."""
+
     def renameConstraint(self, arg1: int, arg2: str, /):
         """Rename a constraint of the sketch"""
 
@@ -818,12 +821,3 @@ class GeometryFacade(FreeCAD.BaseClass):
     @typing.overload
     def translate(self, arg1: tuple, /):
         """Translates this geometric object"""
-
-
-# AppSketcherPy.cpp
-def open(arg1: str, /):
-    """&Module::open"""
-
-
-def insert(arg1: str, arg2: str, /):
-    """&Module::insert"""

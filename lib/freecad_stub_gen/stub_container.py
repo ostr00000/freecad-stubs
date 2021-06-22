@@ -10,7 +10,7 @@ class StubContainer:
     def __init__(self, stubContent: str = '', requiredImports: set = (), name: str = '',
                  subContainers=None):
         self.content = stubContent
-        self.requiredImports = set(requiredImports)
+        self.requiredImports: set[str] = set(requiredImports)
         self.name = name
         self.subContainers: dict[str, StubContainer] = \
             subContainers or defaultdict(StubContainer)
@@ -58,15 +58,18 @@ class StubContainer:
             stdlib_module_names = ()
 
         for imp in self.requiredImports:
-            if imp in stdlib_module_names:
-                importList = sysImports
-            elif 'import' not in imp:
-                importList = libImports
+            if imp.startswith('from '):
+                sortModule = imp.removeprefix('from ').split(' ')[0]
             else:
-                importList = localImports
+                sortModule = imp
+                if 'import' not in imp:
+                    imp = f'import {imp}'
 
-            if 'import' not in imp:
-                imp = f'import {imp}'
+            if sortModule in stdlib_module_names:
+                importList = sysImports
+            else:
+                importList = libImports
+
             importList.append(imp)
 
         sysImportText = '\n'.join(sorted(sysImports))
