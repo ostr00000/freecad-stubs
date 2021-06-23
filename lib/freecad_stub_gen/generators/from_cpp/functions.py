@@ -12,12 +12,10 @@ from freecad_stub_gen.generators.method.function_finder import findFunctionCall,
 logger = logging.getLogger(__name__)
 
 
-# TODO P2 find functions added directly to module
-#  ex.    Module() : Py::ExtensionModule<Module>("DraftUtils")
-
 class FreecadStubGeneratorFromCppFunctions(FreecadStubGeneratorFromCpp):
+    """Generate functions from cpp code defined in array."""
 
-    def _genStub(self):
+    def _genStub(self) -> Iterable[str]:
         it = self._findArrayGen()
         methods = self._genAllMethods(it, isStatic=False, functionSpacing=2)
         yield from methods

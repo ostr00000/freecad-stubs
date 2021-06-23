@@ -13,6 +13,9 @@ from freecad_stub_gen.stub_container import StubContainer
 
 
 class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
+    """Generate class defined in xml file.
+    Argument types are extracted from code."""
+
     def __init__(self, filePath: Path, sourceDir: Path = SOURCE_DIR):
         super().__init__(filePath, sourceDir)
         self.currentNode = None

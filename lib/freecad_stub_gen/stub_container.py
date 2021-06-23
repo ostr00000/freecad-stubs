@@ -1,4 +1,3 @@
-import copy
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -8,36 +7,50 @@ from freecad_stub_gen.config import TARGET_DIR
 
 class StubContainer:
     def __init__(self, stubContent: str = '', requiredImports: set = (), name: str = '',
-                 subContainers=None):
+                 subContainers=None, siblingContainers=None):
         self.content = stubContent
         self.requiredImports: set[str] = set(requiredImports)
         self.name = name
         self.subContainers: dict[str, StubContainer] = \
             subContainers or defaultdict(StubContainer)
+        self.siblingContainers: dict[str, StubContainer] = \
+            siblingContainers or defaultdict(StubContainer)
 
     def __add__(self, other):
+        """Adding stub containers merge both text."""
         if not isinstance(other, (type(self), str)):
             return NotImplemented
 
         if isinstance(other, str):
-            return StubContainer(
-                self.content + other, self.requiredImports, self.name)
+            self.content += other
+            return self
+
+        self.name = self.name or other.name
+        self.requiredImports.update(other.requiredImports)
 
         if self.content and other.content:
-            content = '\n'.join((self.content, other.content))
+            self.content = '\n'.join((self.content, other.content))
         else:
-            content = self.content or other.content
+            self.content = self.content or other.content
 
-        subContainers = copy.deepcopy(self.subContainers)
         for s in other.subContainers.values():
-            subContainers[s.name] += s
+            self.subContainers[s.name] += s
 
-        return StubContainer(
-            content,
-            self.requiredImports.union(other.requiredImports),
-            self.name or other.name, subContainers)
+        for s in other.siblingContainers.values():
+            self.siblingContainers[s.name] += s
+
+        return self
 
     def __matmul__(self, other):
+        """Operator @ add stub container as sibling to this container."""
+        if not isinstance(other, type(self)):
+            return NotImplemented
+
+        self.siblingContainers[other.name] += other
+        return self
+
+    def __truediv__(self, other):
+        """Div operation add sub module with stubs."""
         if not isinstance(other, type(self)):
             return NotImplemented
 
@@ -81,10 +94,8 @@ class StubContainer:
         return res
 
     def save(self, targetPath: Path = TARGET_DIR):
-        if not self.content:
-            return
-
-        self.content = self.content.rstrip() + '\n'
+        for sc in self.siblingContainers.values():
+            sc.save(targetPath)
 
         savePath = targetPath / self.name
         if self.subContainers:
@@ -93,5 +104,11 @@ class StubContainer:
                 sc.save(savePath)
             savePath = savePath / '__init__'
 
+        if not self.content:
+            if self.subContainers:
+                savePath.with_suffix('.pyi').touch()
+            return
+
+        self.content = self.content.rstrip() + '\n'
         with open(savePath.with_suffix('.pyi'), 'w') as file:
             file.write(str(self))
