@@ -2,8 +2,8 @@ import typing
 
 import FreeCAD
 import FreeCAD.Console
-import FreeCAD.Translate as Qt
 import FreeCAD.UnitsApiPy as Units
+import FreeCAD.__Translate__ as Qt
 import FreeCADGui
 
 

@@ -1164,12 +1164,10 @@ class PyResource:
     """PyResource"""
 
     @staticmethod
-    def value(arg1: str, arg2: str, /):
-        """&PyResource::value"""
+    def value(arg1: str, arg2: str, /): ...
 
     @staticmethod
-    def setValue(arg1: str, arg2: str, arg3: object, /):
-        """&PyResource::setValue"""
+    def setValue(arg1: str, arg2: str, arg3: object, /): ...
 
 
 # PythonConsolePy.cpp
@@ -1762,3 +1760,4 @@ class View3DInventorViewerPy:
 
 Workbench: FreeCADGui.Workbench
 ActiveDocument: Document
+Control = Control  # hack to show this module in current module hints
