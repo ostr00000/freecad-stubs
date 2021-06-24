@@ -2,6 +2,7 @@ import logging
 import shutil
 from pathlib import Path
 
+from freecad_stub_gen.additional import additionalPath
 from freecad_stub_gen.config import SOURCE_DIR, TARGET_DIR
 from freecad_stub_gen.generators.from_cpp.functions import FreecadStubGeneratorFromCppFunctions
 from freecad_stub_gen.generators.from_cpp.klass import FreecadStubGeneratorFromCppClass
@@ -74,6 +75,8 @@ def generateFreeCadStubs(sourcePath=SOURCE_DIR, targetPath=TARGET_DIR):
     (targetPath / '__init__.pyi').touch(exist_ok=True)
     rootStub.save(targetPath)
 
+    for additionalModule in additionalPath.glob('[!_]*.py'):
+        shutil.copy(additionalModule, targetPath / additionalModule.name)
 
 # TODO P4 preprocess and remove macros
 # https://www.tutorialspoint.com/cplusplus/cpp_preprocessor.htm

@@ -5,6 +5,7 @@ import FreeCAD.Console
 import FreeCAD.UnitsApiPy as Units
 import FreeCAD.__Translate__ as Qt
 import FreeCADGui
+import FreeCADTemplates
 
 
 class PyObjectBase(object): ...
@@ -1920,10 +1921,10 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     def Label(self, value: str): ...
 
     @property
-    def Proxy(self) -> object: ...
+    def Proxy(self) -> FreeCADTemplates.ProxyPython: ...
 
     @Proxy.setter
-    def Proxy(self, value: object): ...
+    def Proxy(self, value: FreeCADTemplates.ProxyPython): ...
 
     @property
     def Document(self) -> object:

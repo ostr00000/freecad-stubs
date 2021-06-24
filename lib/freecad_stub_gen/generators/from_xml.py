@@ -74,7 +74,11 @@ class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
         ret = ''
         if className == 'DocumentObject':
             ret += self.getProperty('Label', 'str', readOnly=False)
-            ret += self.getProperty('Proxy', 'object', readOnly=False)
+            ret += self.getProperty('Proxy', 'FreeCADTemplates.ProxyPython', readOnly=False)
+            self.requiredImports.add('FreeCADTemplates')
+        elif className == 'ViewProviderDocumentObject':
+            ret += self.getProperty('Proxy', 'FreeCADTemplates.ViewProxyPython', readOnly=False)
+            self.requiredImports.add('FreeCADTemplates')
         elif className == 'GroupExtension':
             ret += self.getProperty('Group', 'list[DocumentObject]', readOnly=False)
         elif className == 'Workbench':

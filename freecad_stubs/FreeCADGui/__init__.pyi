@@ -4,6 +4,7 @@ from FreeCADGui.TaskDialogPython import Control
 import FreeCAD
 import FreeCADGui
 import FreeCADGui.Selection
+import FreeCADTemplates
 
 
 # WorkbenchPy.xml
@@ -543,6 +544,12 @@ class AxisOrigin(FreeCAD.BaseClass):
 # ViewProviderDocumentObjectPy.xml
 class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
     """This is the ViewProvider base class"""
+
+    @property
+    def Proxy(self) -> FreeCADTemplates.ViewProxyPython: ...
+
+    @Proxy.setter
+    def Proxy(self, value: FreeCADTemplates.ViewProxyPython): ...
 
     @property
     def Document(self) -> FreeCADGui.Document:
