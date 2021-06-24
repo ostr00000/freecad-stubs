@@ -256,6 +256,35 @@ class FemPostPipeline(FreeCAD.GeoFeature):
         """Read in vtk file"""
 
 
+# AppFemPy.cpp
+def open(string: str, /):
+    """open(string) -- Create a new document and a Mesh::Import feature to load the file into the document."""
+
+
+def insert(string_mesh: str, string: str = None, /):
+    """insert(string|mesh,[string]) -- Load or insert a mesh into the given or active document."""
+
+
+def export(list: object, string: str, /):
+    """export(list,string) -- Export a list of objects into a single file."""
+
+
+def read(arg1: str, /):
+    """Read a mesh from a file and returns a Mesh object."""
+
+
+def readResult(arg1: str, arg2: str = None, /):
+    """Read a CFD or Mechanical result (auto detect) from a file (file format detected from file suffix)"""
+
+
+def writeResult(arg1: str, arg2: FreeCAD.DocumentObject = None, /):
+    """write a CFD or FEM result (auto detect) to a file (file format detected from file suffix)"""
+
+
+def show(shape: Fem.FemMesh, string: str = None, /):
+    """show(shape,[string]) -- Add the mesh to the active document or create one if no document exists."""
+
+
 # HypothesisPy.cpp
 class StdMeshers_Arithmetic1D:
     """StdMeshers_Arithmetic1D"""

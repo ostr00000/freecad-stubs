@@ -43,9 +43,7 @@ def _genModule(moduleName: str, modulePath: Path, sourcePath=SOURCE_DIR):
 
 
 def generateFreeCadStubs(sourcePath=SOURCE_DIR, targetPath=TARGET_DIR):
-    shutil.rmtree(targetPath, ignore_errors=True)
-    targetPath.mkdir(parents=True, exist_ok=True)
-    (targetPath / '__init__.pyi').touch(exist_ok=True)
+    rootStub = StubContainer()
 
     freeCADStub = StubContainer('class PyObjectBase(object): ...\n\n')
     freeCADStub += _genModule('FreeCAD', sourcePath / 'Base', sourcePath)
@@ -55,7 +53,7 @@ def generateFreeCadStubs(sourcePath=SOURCE_DIR, targetPath=TARGET_DIR):
     freeCADStub += StubContainer('ActiveDocument: Document')
     freeCADStub += StubContainer(requiredImports={
         'FreeCAD.Console', 'FreeCAD.__Translate__ as Qt', 'FreeCAD.UnitsApiPy as Units'})
-    freeCADStub.save(targetPath)
+    rootStub @= freeCADStub
 
     freeCADGuiStub = _genModule('FreeCADGui', sourcePath / 'Gui')
     freeCADGuiStub += StubContainer('Workbench: FreeCADGui.Workbench')
@@ -64,12 +62,18 @@ def generateFreeCadStubs(sourcePath=SOURCE_DIR, targetPath=TARGET_DIR):
         'Control = Control  # hack to show this module in current module hints')
     freeCADGuiStub += StubContainer(requiredImports={
         'FreeCADGui.Selection', 'from FreeCADGui.TaskDialogPython import Control'})
-    freeCADGuiStub.save(targetPath)
+    rootStub @= freeCADGuiStub
 
     for mod in (sourcePath / 'Mod').iterdir():
         ms = _genModule(mod.name, mod / 'App', sourcePath)
         ms += _genModule(mod.name, mod / 'Gui', sourcePath)
-        ms.save(targetPath)
+        rootStub @= ms
+
+    shutil.rmtree(targetPath, ignore_errors=True)
+    targetPath.mkdir(parents=True, exist_ok=True)
+    (targetPath / '__init__.pyi').touch(exist_ok=True)
+    rootStub.save(targetPath)
+
 
 # TODO P4 preprocess and remove macros
 # https://www.tutorialspoint.com/cplusplus/cpp_preprocessor.htm

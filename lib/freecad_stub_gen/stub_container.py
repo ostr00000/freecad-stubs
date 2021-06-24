@@ -37,7 +37,10 @@ class StubContainer:
             self.subContainers[s.name] += s
 
         for s in other.siblingContainers.values():
-            self.siblingContainers[s.name] += s
+            if s.name == self.name:  # this is not sibling but it is the same stub
+                self.__add__(s)
+            else:
+                self.siblingContainers[s.name] += s
 
         return self
 
