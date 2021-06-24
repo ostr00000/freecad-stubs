@@ -1,68 +1,59 @@
 # UnitTestPy.cpp
-def clearErrorList():
-    """clearErrorList"""
+class TestGui_UnitTest:
+    """About TestGui.UnitTest"""
 
+    @staticmethod
+    def clearErrorList():
+        """clearErrorList"""
 
-def insertError(arg1: str, arg2: str, /):
-    """insertError"""
+    @staticmethod
+    def insertError(arg1: str, arg2: str, /):
+        """insertError"""
 
+    @staticmethod
+    def setUnitTest(arg1: str, /):
+        """setUnitTest"""
 
-def setUnitTest(arg1: str, /):
-    """setUnitTest"""
+    @staticmethod
+    def getUnitTest():
+        """getUnitTest"""
 
+    @staticmethod
+    def setStatusText(arg1: str, /):
+        """setStatusText"""
 
-def getUnitTest():
-    """getUnitTest"""
+    @staticmethod
+    def setProgressFraction(arg1: float, arg2: str = None, /):
+        """setProgressFraction"""
 
+    @staticmethod
+    def errorDialog(arg1: str, arg2: str, /):
+        """errorDialog"""
 
-def setStatusText(arg1: str, /):
-    """setStatusText"""
+    @staticmethod
+    def setRunCount(arg1: int, /):
+        """setRunCount"""
 
+    @staticmethod
+    def setFailCount(arg1: int, /):
+        """setFailCount"""
 
-def setProgressFraction(arg1: float, arg2: str = None, /):
-    """setProgressFraction"""
+    @staticmethod
+    def setErrorCount(arg1: int, /):
+        """setErrorCount"""
 
+    @staticmethod
+    def setRemainCount(arg1: int, /):
+        """setRemainCount"""
 
-def errorDialog(arg1: str, arg2: str, /):
-    """errorDialog"""
+    @staticmethod
+    def updateGUI():
+        """updateGUI"""
 
+    @staticmethod
+    def addUnitTest(arg1: str, /):
+        """addUnitTest"""
 
-def setRunCount(arg1: int, /):
-    """setRunCount"""
-
-
-def setFailCount(arg1: int, /):
-    """setFailCount"""
-
-
-def setErrorCount(arg1: int, /):
-    """setErrorCount"""
-
-
-def setRemainCount(arg1: int, /):
-    """setRemainCount"""
-
-
-def updateGUI():
-    """updateGUI"""
-
-
-def addUnitTest(arg1: str, /):
-    """addUnitTest"""
-
-
-def clearUnitTests():
-    """clearUnitTests"""
-
-
-# AppTestGui.cpp
-def UnitTest():
-    """UnitTest"""
-
-
-def setTest(arg1: str = None, /):
-    """setTest"""
-
-
-def addTest(arg1: str = None, /):
-    """addTest"""
+    @staticmethod
+    def clearUnitTests():
+        """clearUnitTests"""

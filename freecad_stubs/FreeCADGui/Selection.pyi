@@ -56,7 +56,7 @@ def clearPreselection():
 
 def countObjectsOfType(string: str, string1: str = None, resolve: int = 1, /):
     """countObjectsOfType(string, [string],[resolve=1]) -- Get the number of selected objects
-    The first argument defines the object type e.g. \"Part::Feature\" and the
+    The first argument defines the object type e.g. "Part::Feature" and the
     second argumeht defines the document name. If no document name is given the
     currently active document is used"""
 

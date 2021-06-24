@@ -2060,7 +2060,7 @@ class BSplineCurve(Part.BoundedCurve):
         for a given 3D tolerance (Tolerance3D).
         If f(t) is the equation of this B-Spline curve, the parametric tolerance
         ensures that:
-        |t1-t0| < UTolerance =""==> |f(t1)-f(t0)| < Tolerance3D"""
+        |t1-t0| < UTolerance ===> |f(t1)-f(t0)| < Tolerance3D"""
 
     def getWeight(self, arg1: int, /):
         """Get a weight of the B-Spline curve."""
@@ -3468,7 +3468,7 @@ class GeometrySurface(Part.Geometry):
         				"""
 
     @property
-    def Rotation(self) -> object:
+    def Rotation(self) -> FreeCAD.Rotation:
         """Returns a rotation object to describe the orientation for surface that supports it"""
 
     def UPeriod(self):
@@ -3561,13 +3561,13 @@ class GeometrySurface(Part.Geometry):
         """
         Computes the projection of a point on the surface
 
-        projectPoint(Point=Vector,[Method=\"NearestPoint\"])
-        projectPoint(Vector,\"NearestPoint\") -> Vector
-        projectPoint(Vector,\"LowerDistance\") -> float
-        projectPoint(Vector,\"LowerDistanceParameters\") -> tuple of floats (u,v)
-        projectPoint(Vector,\"Distance\") -> list of floats
-        projectPoint(Vector,\"Parameters\") -> list of tuples of floats
-        projectPoint(Vector,\"Point\") -> list of points
+        projectPoint(Point=Vector,[Method="NearestPoint"])
+        projectPoint(Vector,"NearestPoint") -> Vector
+        projectPoint(Vector,"LowerDistance") -> float
+        projectPoint(Vector,"LowerDistanceParameters") -> tuple of floats (u,v)
+        projectPoint(Vector,"Distance") -> list of floats
+        projectPoint(Vector,"Parameters") -> list of tuples of floats
+        projectPoint(Vector,"Point") -> list of points
         """
 
     def tangent(self, u: float, v: float, /):
@@ -4224,7 +4224,7 @@ class BezierCurve(Part.BoundedCurve):
         for a given 3D tolerance (Tolerance3D).
         If f(t) is the equation of this Bezier curve, the parametric tolerance
         ensures that:
-        |t1-t0| < UTolerance =""==> |f(t1)-f(t0)| < Tolerance3D"""
+        |t1-t0| < UTolerance ===> |f(t1)-f(t0)| < Tolerance3D"""
 
     def getWeight(self, arg1: int, /):
         """Get a weight of the Bezier curve."""
@@ -4500,7 +4500,7 @@ class Curve(Part.Geometry):
         				"""
 
     @property
-    def Rotation(self) -> object:
+    def Rotation(self) -> FreeCAD.Rotation:
         """Returns a rotation object to describe the orientation for curve that supports it"""
 
     def approximateBSpline(self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = 'C2', /):
@@ -6228,7 +6228,7 @@ class BSplineCurve2d(Part.Curve2d):
         for a given 3D tolerance (Tolerance3D).
         If f(t) is the equation of this B-Spline curve, the parametric tolerance
         ensures that:
-        |t1-t0| < UTolerance =""==> |f(t1)-f(t0)| < Tolerance3D"""
+        |t1-t0| < UTolerance ===> |f(t1)-f(t0)| < Tolerance3D"""
 
     def getWeight(self, arg1: int, /):
         """Get a weight of the B-Spline curve."""
@@ -6464,7 +6464,7 @@ class BezierCurve2d(Part.Curve2d):
         for a given 3D tolerance (Tolerance3D).
         If f(t) is the equation of this Bezier curve, the parametric tolerance
         ensures that:
-        |t1-t0| < UTolerance =""==> |f(t1)-f(t0)| < Tolerance3D"""
+        |t1-t0| < UTolerance ===> |f(t1)-f(t0)| < Tolerance3D"""
 
     def getWeight(self, arg1: int, /):
         """Get a weight of the Bezier curve."""
@@ -6720,277 +6720,6 @@ class UnifySameDomain(FreeCAD.PyObjectBase):
 
     def shape(self):
         """Gives the resulting shape"""
-
-
-# AppPartPy.cpp
-def open(string: str, /):
-    """open(string) -- Create a new document and load the file into the document."""
-
-
-def insert(string: str, string1: str, /):
-    """insert(string,string) -- Insert the file into the given document."""
-
-
-def export(list: object, string: str, /):
-    """export(list,string) -- Export a list of objects into a single file."""
-
-
-def read(string: str, /):
-    """read(string) -- Load the file and return the shape."""
-
-
-def show(shape: Part.TopoShape, string: str = None, /):
-    """show(shape,[string]) -- Add the shape to the active document or create one if no document exists."""
-
-
-def getFacets(shape: object, /):
-    """getFacets(shape): simplified mesh generation"""
-
-
-def makeCompound(list: object, /):
-    """makeCompound(list) -- Create a compound out of a list of shapes."""
-
-
-def makeShell(list: object, /):
-    """makeShell(list) -- Create a shell out of a list of faces."""
-
-
-def makeFace(list_of_shapes_or_compound: object, maker_class_name: str, /):
-    """makeFace(list_of_shapes_or_compound, maker_class_name) -- Create a face (faces) using facemaker class.
-    maker_class_name is a string like 'Part::FaceMakerSimple'."""
-
-
-def makeFilledFace(arg1: object, arg2: Part.TopoShape = None, /):
-    """makeFilledFace(list) -- Create a face out of a list of edges."""
-
-
-def makeSolid(shape: Part.TopoShape, /):
-    """makeSolid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created."""
-
-
-def makePlane(length: float, width: float, pnt: FreeCAD.Vector = None, dirZ: FreeCAD.Vector = None, dirX: FreeCAD.Vector = None, /):
-    """makePlane(length,width,[pnt,dirZ,dirX]) -- Make a plane
-    By default pnt=Vector(0,0,0) and dirZ=Vector(0,0,1), dirX is ignored in this case"""
-
-
-def makeBox(length: float, width: float, height: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, /):
-    """makeBox(length,width,height,[pnt,dir]) -- Make a box located
-    in pnt with the dimensions (length,width,height)
-    By default pnt=Vector(0,0,0) and dir=Vector(0,0,1)"""
-
-
-def makeWedge(arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, arg6: float, arg7: float, arg8: float, arg9: float, arg10: float, arg11: FreeCAD.Vector = None, arg12: FreeCAD.Vector = None, /):
-    """makeWedge(xmin, ymin, zmin, z2min, x2min,
-    xmax, ymax, zmax, z2max, x2max,[pnt,dir])
-     -- Make a wedge located in pnt
-    By default pnt=Vector(0,0,0) and dir=Vector(0,0,1)"""
-
-
-def makeLine(startpnt: object, endpnt: object, /):
-    """makeLine(startpnt,endpnt) -- Make a line between two points
-
-    Args:
-        startpnt (Vector or tuple): Vector or 3 element tuple 
-            containing the x,y and z coordinates of the start point,
-            i.e. (x1,y1,z1).
-        endpnt (Vector or tuple): Vector or 3 element tuple 
-            containing the x,y and z coordinates of the start point,
-            i.e. (x1,y1,z1).
-
-    Returns:
-        Edge: Part.Edge object
-    """
-
-
-def makePolygon(arg1: object, arg2: bool = None, /):
-    """makePolygon(pntslist) -- Make a polygon from a list of points
-
-    Args:
-        pntslist (list(Vector)): list of Vectors representing the 
-            points of the polygon.
-
-    Returns:
-        Wire: Part.Wire object. If the last point in the list is 
-            not the same as the first point, the Wire will not be 
-            closed and cannot be used to create a face.
-    """
-
-
-def makeCircle(radius: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle1: float = None, angle2: float = None, /):
-    """makeCircle(radius,[pnt,dir,angle1,angle2]) -- Make a circle with a given radius
-    By default pnt=Vector(0,0,0), dir=Vector(0,0,1), angle1=0 and angle2=360"""
-
-
-def makeSphere(radius: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle1: float = None, angle2: float = None, angle3: float = None, /):
-    """makeSphere(radius,[pnt, dir, angle1,angle2,angle3]) -- Make a sphere with a given radius
-    By default pnt=Vector(0,0,0), dir=Vector(0,0,1), angle1=0, angle2=90 and angle3=360"""
-
-
-def makeCylinder(radius: float, height: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle: float = None, /):
-    """makeCylinder(radius,height,[pnt,dir,angle]) -- Make a cylinder with a given radius and height
-    By default pnt=Vector(0,0,0),dir=Vector(0,0,1) and angle=360"""
-
-
-def makeCone(radius1: float, radius2: float, height: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle: float = None, /):
-    """makeCone(radius1,radius2,height,[pnt,dir,angle]) -- Make a cone with given radii and height
-    By default pnt=Vector(0,0,0), dir=Vector(0,0,1) and angle=360"""
-
-
-def makeTorus(radius1: float, radius2: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle1: float = None, angle2: float = None, angle: float = None, /):
-    """makeTorus(radius1,radius2,[pnt,dir,angle1,angle2,angle]) -- Make a torus with a given radii and angles
-    By default pnt=Vector(0,0,0),dir=Vector(0,0,1),angle1=0,angle1=360 and angle=360"""
-
-
-def makeHelix(arg1: float, arg2: float, arg3: float, arg4: float = None, arg5: bool = None, arg6: bool = None, /):
-    """makeHelix(pitch,height,radius,[angle]) -- Make a helix with a given pitch, height and radius
-    By default a cylindrical surface is used to create the helix. If the fourth parameter is set
-    (the apex given in degree) a conical surface is used instead"""
-
-
-def makeLongHelix(pitch: float, height: float, radius: float, angle: float = None, hand: bool = None, /):
-    """makeLongHelix(pitch,height,radius,[angle],[hand]) -- Make a (multi-edge) helix with a given pitch, height and radius
-    By default a cylindrical surface is used to create the helix. If the fourth parameter is set
-    (the apex given in degree) a conical surface is used instead."""
-
-
-def makeThread(pitch: float, depth: float, height: float, radius: float, /):
-    """makeThread(pitch,depth,height,radius) -- Make a thread with a given pitch, depth, height and radius"""
-
-
-@typing.overload
-def makeRevolution(Curve_or_Edge: Part.Geometry, vmin: float = None, vmax: float = None, angle: float = None, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, shapetype: type = None, /): ...
-
-
-@typing.overload
-def makeRevolution(Curve_or_Edge: Part.TopoShape, vmin: float = None, vmax: float = None, angle: float = None, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, shapetype: type = None, /):
-    """makeRevolution(Curve or Edge,[vmin,vmax,angle,pnt,dir,shapetype]) -- Make a revolved shape
-    by rotating the curve or a portion of it around an axis given by (pnt,dir).
-    By default vmin/vmax=bounds of the curve, angle=360, pnt=Vector(0,0,0),
-    dir=Vector(0,0,1) and shapetype=Part.Solid"""
-
-
-def makeRuledSurface(Edge_Wire: Part.TopoShape, Edge_Wire1: Part.TopoShape, /):
-    """makeRuledSurface(Edge|Wire,Edge|Wire) -- Make a ruled surface
-    Create a ruled surface out of two edges or wires. If wires are used thenthese must have the same number of edges."""
-
-
-def makeTube(edge: Part.TopoShape, radius: float, continuity: str = None, max_degree: int = None, max_segments: int = None, /):
-    """makeTube(edge,radius,[continuity,max degree,max segments]) -- Create a tube.
-    continuity is a string which must be 'C0','C1','C2','C3','CN','G1' or 'G1',"""
-
-
-def makeSweepSurface(arg1: Part.TopoShape, arg2: Part.TopoShape, arg3: float = None, arg4: int = None, /):
-    """makeSweepSurface(edge(path),edge(profile),[float]) -- Create a profile along a path."""
-
-
-def makeLoft(list_of_wires: object, solid: bool = False, ruled: bool = False, closed: bool = False, maxDegree: int = 5, /):
-    """makeLoft(list of wires,[solid=False,ruled=False,closed=False,maxDegree=5]) -- Create a loft shape."""
-
-
-def makeWireString(string: object, fontdir: str, fontfile: str, height: float, track: float = None, /):
-    """makeWireString(string,fontdir,fontfile,height,[track]) -- Make list of wires in the form of a string's characters."""
-
-
-def makeSplitShape(shape: Part.TopoShape, list_of_shape_pairs: object, check_Interior: bool = True, /):
-    """makeSplitShape(shape, list of shape pairs,[check Interior=True]) -> two lists of shapes.
-    The following shape pairs are supported:
-    * Wire, Face
-    * Edge, Face
-    * Compound, Face
-    * Edge, Edge
-    * The face must be part of the specified shape and the edge, wire or compound must
-    lie on the face.
-    Output:
-    The first list contains the faces that are the left of the projected wires.
-    The second list contains the left part on the shape.
-
-    Example:
-    face = ...
-    edges = ...
-    split = [(edges[0],face),(edges[1],face)]
-    r = Part.makeSplitShape(face, split)
-    Part.show(r[0][0])
-    Part.show(r[1][0])
-    """
-
-
-def exportUnits(string: str = None, /):
-    """exportUnits([string=MM|M|INCH|FT|MI|KM|MIL|UM|CM|UIN]) -- Set units for exporting STEP/IGES files and returns the units."""
-
-
-@typing.overload
-def setStaticValue(string: str, string_int_float: str, /): ...
-
-
-@typing.overload
-def setStaticValue(string: str, string_int_float: object, /):
-    """setStaticValue(string,string|int|float) -- Set a name to a value The value can be a string, int or float."""
-
-
-def cast_to_shape(shape: Part.TopoShape, /):
-    """cast_to_shape(shape) -- Cast to the actual shape type"""
-
-
-def getSortedClusters(list_of_edges: object, /):
-    """getSortedClusters(list of edges) -- Helper method to sort and cluster a variety of edges"""
-
-
-def __sortEdges__(list_of_edges: object, /):
-    """__sortEdges__(list of edges) -- list of edges
-    Helper method to sort an unsorted list of edges so that afterwards
-    the start and end vertex of two consecutive edges are geometrically coincident.
-    It returns a single list of edges and the algorithm stops after the first set of
-    connected edges which means that the output list can be smaller than the input list.
-    The sorted list can be used to create a Wire."""
-
-
-def sortEdges(list_of_edges: object, /):
-    """sortEdges(list of edges) -- list of lists of edges
-    It does basically the same as __sortEdges__ but sorts all input edges and thus returns
-    a list of lists of edges"""
-
-
-def __toPythonOCC__(shape: Part.TopoShape, /):
-    """__toPythonOCC__(shape) -- Helper method to convert an internal shape to pythonocc shape"""
-
-
-def __fromPythonOCC__(occ: object, /):
-    """__fromPythonOCC__(occ) -- Helper method to convert a pythonocc shape to an internal shape"""
-
-
-def clearShapeCache():
-    """clearShapeCache() -- Clears internal shape cache"""
-
-
-def splitSubname(subname: str, /):
-    """splitSubname(subname) -> list(sub,mapped,subElement)
-    Split the given subname into a list
-
-    sub: subname without any sub-element reference
-    mapped: mapped element name, or '' if none
-    subElement: old style element name, or '' if none"""
-
-
-def joinSubname(sub: str, mapped: str, subElement: str, /):
-    """joinSubname(sub,mapped,subElement) -> subname
-    """
-
-
-def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matrix = None, needSubElement: object = None, transform: object = None, retType: int = None, noElementMap: object = None, refine: object = None):
-    """getShape(obj,subname=None,mat=None,needSubElement=False,transform=True,retType=0):
-    Obtain the the TopoShape of a given object with SubName reference
-
-    * obj: the input object
-    * subname: dot separated sub-object reference
-    * mat: the current transformation matrix
-    * needSubElement: if False, ignore the sub-element (e.g. Face1, Edge1) reference in 'subname'
-    * transform: if False, then skip obj's transformation. Use this if mat already include obj's
-                 transformation matrix
-    * retType: 0: return TopoShape,
-               1: return (shape,subObj,mat), where subObj is the object referenced in 'subname',
-                  and 'mat' is the accumulated transformation matrix of that sub-object.
-               2: same as 1, but make sure 'subObj' is resolved if it is a link.
-    * refine: refine the returned shape"""
 
 
 # AttacherTexts.cpp

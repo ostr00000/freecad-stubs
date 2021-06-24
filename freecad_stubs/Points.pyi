@@ -1,5 +1,4 @@
 import FreeCAD
-import Points
 
 
 # PointsPy.xml
@@ -53,20 +52,3 @@ class PointKernel(FreeCAD.ComplexGeoData):
 
     def writeInventor(self):
         """Write the points in OpenInventor format to a string."""
-
-
-# AppPointsPy.cpp
-def open(arg1: str, /):
-    """&Module::open"""
-
-
-def insert(arg1: str, arg2: str, /):
-    """&Module::importer"""
-
-
-def export(arg1: object, arg2: str, /):
-    """&Module::exporter"""
-
-
-def show(points: Points.PointKernel, string: str = None, /):
-    """show(points,[string]) -- Add the points to the active document or create one if no document exists."""

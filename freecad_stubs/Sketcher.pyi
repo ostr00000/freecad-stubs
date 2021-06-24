@@ -815,12 +815,3 @@ class GeometryFacade(FreeCAD.BaseClass):
     @typing.overload
     def translate(self, arg1: tuple, /):
         """Translates this geometric object"""
-
-
-# AppSketcherPy.cpp
-def open(arg1: str, /):
-    """&Module::open"""
-
-
-def insert(arg1: str, arg2: str, /):
-    """&Module::insert"""

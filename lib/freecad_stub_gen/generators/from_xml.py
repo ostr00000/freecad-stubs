@@ -1,3 +1,4 @@
+import inspect
 import xml.etree.ElementTree as ET
 from distutils.util import strtobool
 from pathlib import Path
@@ -12,6 +13,9 @@ from freecad_stub_gen.stub_container import StubContainer
 
 
 class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
+    """Generate class defined in xml file.
+    Argument types are extracted from code."""
+
     def __init__(self, filePath: Path, sourceDir: Path = SOURCE_DIR):
         super().__init__(filePath, sourceDir)
         self.currentNode = None
@@ -73,4 +77,35 @@ class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
             ret += self.getProperty('Proxy', 'object', readOnly=False)
         elif className == 'GroupExtension':
             ret += self.getProperty('Group', 'list[DocumentObject]', readOnly=False)
+        elif className == 'Workbench':
+            ret += workbenchBody + '\n\n'
         return ret
+
+
+workbenchBody = inspect.cleandoc("""
+    MenuText = ""
+    ToolTip = ""
+    
+    def Initialize(self):
+        raise NotImplementedError
+    
+    def ContextMenu(self, recipient): ...
+    
+    def appendToolbar(self, name, cmds): ...
+    
+    def removeToolbar(self, name): ...
+    
+    def appendCommandbar(self, name, cmds): ...
+    
+    def removeCommandbar(self, name): ...
+    
+    def appendMenu(self, name, cmds): ...
+    
+    def removeMenu(self, name): ...
+    
+    def appendContextMenu(self, name, cmds): ...
+    
+    def removeContextMenu(self, name): ...
+    
+    def GetClassName(self): ...
+""")

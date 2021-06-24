@@ -6,6 +6,7 @@ from typing import Optional
 from xml.etree.ElementTree import ParseError
 
 from freecad_stub_gen.config import INDENT_SIZE, SOURCE_DIR
+from freecad_stub_gen.stub_container import StubContainer
 
 _REG_COMMENT_REM = re.compile(
     r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"',
@@ -49,10 +50,18 @@ class BaseGenerator:
     def indent(block, distance=1, indentSize=INDENT_SIZE):
         return textwrap.indent(block, ' ' * distance * indentSize)
 
+    REG_REMOVE_NEW_LINE = re.compile(r'\\n"\s*"')
+    REG_WHITESPACE_WITH_APOSTROPHE = re.compile(r'"\s*"')
+
     @classmethod
     def _genDocFromStr(cls, docs: Optional[str]) -> Optional[str]:
         if docs is None:
             return None
+
+        docs = cls.REG_REMOVE_NEW_LINE.sub('\n', docs)
+        docs = cls.REG_WHITESPACE_WITH_APOSTROPHE.sub('', docs)
+        docs = docs.replace('\\n', '\n').replace('\\"', '"')
+
         return f'"""{docs}"""\n'
 
     @classmethod
@@ -60,11 +69,5 @@ class BaseGenerator:
         if docs := node.find("./Documentation//UserDocu").text:
             return docs
 
-    @property
-    def parentXml(self) -> Optional[Path]:
-        if self.currentNode is None:
-            return
-
-        fatherInclude = self.currentNode.attrib['FatherInclude'].replace('/', '.')
-        parentFile = (self.sourceDir / fatherInclude).with_suffix('.xml')
-        return parentFile
+    def getStub(self) -> Optional[StubContainer]:
+        raise NotImplementedError

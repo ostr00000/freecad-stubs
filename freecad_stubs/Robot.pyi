@@ -180,8 +180,3 @@ class Trajectory(FreeCAD.Persistence):
 # RobotObjectPy.xml
 class RobotObject(FreeCAD.DocumentObject):
     """Robot document object"""
-
-
-# AppRobot.cpp
-def simulateToFile(Robot: Robot.Robot6Axis, Trajectory: Robot.Trajectory, TickSize: float, FileName: str, /):
-    """simulateToFile(Robot,Trajectory,TickSize,FileName) - runs the simulation and write the result to a file."""

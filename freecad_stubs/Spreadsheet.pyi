@@ -134,8 +134,3 @@ class PropertyColumnWidths(FreeCAD.Persistence):
 # PropertySheetPy.xml
 class PropertySheet(FreeCAD.Persistence):
     """Internal spreadsheet object"""
-
-
-# AppSpreadsheetGui.cpp
-def open(arg1: str, arg2: str = None, /):
-    """&Module::open"""
