@@ -14,13 +14,16 @@ def addSelection(arg1: FreeCAD.DocumentObject, arg2: str = None, arg3: float = N
 
 @typing.overload
 def addSelection(arg1: FreeCAD.DocumentObject, arg2: object, arg3: bool = None, /):
-    """addSelection(object,[string,float,float,float]) -- Add an object to the selection
+    """Add an object to the selection
+    addSelection(object,[string,float,float,float]
+    --
     where string is the sub-element name and the three floats represent a 3d point"""
 
 
 def updateSelection(show: object, object: FreeCAD.DocumentObject, string: str = None, /):
-    """updateSelection(show,object,[string]) -- update an object in the selection
-    where string is the sub-element name and the three floats represent a 3d point"""
+    """update an object in the selection
+    updateSelection(show,object,[string])
+    --where string is the sub-element name and the three floats represent a 3d point"""
 
 
 @typing.overload
@@ -29,41 +32,50 @@ def removeSelection(arg1: str, arg2: str, arg3: str = None, /): ...
 
 @typing.overload
 def removeSelection(arg1: FreeCAD.DocumentObject, arg2: str = None, /):
-    """removeSelection(object) -- Remove an object from the selection"""
+    """Remove an object from the selectionremoveSelection(object)"""
 
 
 def clearSelection(docName: str = '', clearPreSelect: bool = True, /):
-    """clearSelection(docName='',clearPreSelect=True) -- Clear the selection
+    """Clear the selection
+    clearSelection(docName='',clearPreSelect=True)
+    --
     Clear the selection to the given document name. If no document is
     given the complete selection is cleared."""
 
 
 def isSelected(arg1: FreeCAD.DocumentObject, arg2: str = None, arg3: object = None, /):
-    """isSelected(object,resolve=True) -- Check if a given object is selected"""
+    """Check if a given object is selected
+    isSelected(object,resolve=True)"""
 
 
 def setPreselection(obj: FreeCAD.DocumentObject, subname: str = None, x: float = None, y: float = None, z: float = None, tp: int = None):
-    """setPreselection() -- Set preselected object"""
+    """Set preselected object
+    setPreselection()"""
 
 
 def getPreselection():
-    """getPreselection() -- Get preselected object"""
+    """Get preselected object
+    getPreselection()"""
 
 
 def clearPreselection():
-    """clearPreselection() -- Clear the preselection"""
+    """Clear the preselection
+    clearPreselection()"""
 
 
 def countObjectsOfType(string: str, string1: str = None, resolve: int = 1, /):
-    """countObjectsOfType(string, [string],[resolve=1]) -- Get the number of selected objects
+    """Get the number of selected objects
+    countObjectsOfType(string, [string],[resolve=1])
+    --
     The first argument defines the object type e.g. "Part::Feature" and the
     second argumeht defines the document name. If no document name is given the
     currently active document is used"""
 
 
 def getSelection(docName: str = '', resolve: int = 1, single: object = False, /):
-    """getSelection(docName='',resolve=1,single=False) -- Return a list of selected objects
-
+    """Return a list of selected objects
+    getSelection(docName='',resolve=1,single=False)
+    --
     docName - document name. Empty string means the active document, and '*' means all document
     resolve - whether to resolve the subname references.
               0: do not resolve, 1: resolve, 2: resolve with element map
@@ -71,42 +83,46 @@ def getSelection(docName: str = '', resolve: int = 1, single: object = False, /)
 
 
 def getPickedList(docName: str = '', /):
-    """getPickedList(docName='') -- Return a list of objects under the last mouse click
-
+    """Return a list of objects under the last mouse click
+    getPickedList(docName='')
+    --
     docName - document name. Empty string means the active document, and '*' means all document"""
 
 
 def enablePickedList(boolean: object = None, /):
-    """enablePickedList(boolean) -- Enable/disable pick list"""
+    """Enable/disable pick list
+    enablePickedList(boolean)"""
 
 
 def getCompleteSelection(resolve: int = 1, /):
-    """getCompleteSelection(resolve=1) -- Return a list of selected objects of all documents."""
+    """Return a list of selected objects of all documents.
+    getCompleteSelection(resolve=1)"""
 
 
 def getSelectionEx(docName: str = '', resolve: int = 1, single: object = False, /):
-    """getSelectionEx(docName='',resolve=1, single=False) -- Return a list of SelectionObjects
-
+    """Return a list of SelectionObjects
+    getSelectionEx(docName='',resolve=1, single=False)
+    --
     docName - document name. Empty string means the active document, and '*' means all document
     resolve - whether to resolve the subname references.
               0: do not resolve, 1: resolve, 2: resolve with element map
     single - only return if there is only one selection
-
     The SelectionObjects contain a variety of information about the selection, e.g. sub-element names."""
 
 
 def getSelectionObject(doc: str, obj: str, sub: str, arg: tuple = None, /):
-    """getSelectionObject(doc,obj,sub,(x,y,z)) -- Return a SelectionObject"""
+    """Return a SelectionObject
+    getSelectionObject(doc,obj,sub,(x,y,z))"""
 
 
 def addObserver(Object: object, resolve: int = 1, /):
-    """addObserver(Object, resolve=1) -- Install an observer
-    """
+    """Install an observer
+    addObserver(Object, resolve=1)"""
 
 
 def removeObserver(Object: object, /):
-    """removeObserver(Object) -- Uninstall an observer
-    """
+    """Uninstall an observer
+    removeObserver(Object)"""
 
 
 @typing.overload
@@ -115,7 +131,9 @@ def addSelectionGate(String_Filter_Gate: str, resolve: int = 1, /): ...
 
 @typing.overload
 def addSelectionGate(String_Filter_Gate: object, resolve: int = 1, /):
-    """addSelectionGate(String|Filter|Gate, resolve=1) -- activate the selection gate.
+    """activate the selection gate.
+    addSelectionGate(String|Filter|Gate, resolve=1)
+    --
     The selection gate will prohibit all selections which do not match
     the given selection filter string.
      Examples strings are:
@@ -135,35 +153,39 @@ def addSelectionGate(String_Filter_Gate: object, resolve: int = 1, /):
 
 
 def removeSelectionGate():
-    """removeSelectionGate() -- remove the active selection gate
-    """
+    """remove the active selection gate
+    removeSelectionGate()"""
 
 
 def setVisible(visible: object = None, /):
-    """setVisible(visible=None) -- set visibility of all selection items
+    """set visibility of all selection items
+    setVisible(visible=None)
+    --
     If 'visible' is None, then toggle visibility"""
 
 
 def pushSelStack(clearForward: object = True, overwrite: object = False, /):
-    """pushSelStack(clearForward=True, overwrite=False) -- push current selection to stack
-
+    """push current selection to stack
+    pushSelStack(clearForward=True, overwrite=False)
+    --
     clearForward: whether to clear the forward selection stack.
     overwrite: overwrite the top back selection stack with current selection."""
 
 
 def hasSelection(docName: str = '', resolve: object = False, /):
-    """hasSelection(docName='', resolve=False) -- check if there is any selection
-    """
+    """check if there is any selection
+    hasSelection(docName='', resolve=False)"""
 
 
 def hasSubSelection(docName: str = '', subElement: bool = False, /):
-    """hasSubSelection(docName='',subElement=False) -- check if there is any selection with subname
-    """
+    """check if there is any selection with subname
+    hasSubSelection(docName='',subElement=False)"""
 
 
 def getSelectionFromStack(docName: str = '', resolve: int = 1, index: int = 0, /):
-    """getSelectionFromStack(docName='',resolve=1,index=0) -- Return a list of SelectionObjects from selection stack
-
+    """Return a list of SelectionObjects from selection stack
+    getSelectionFromStack(docName='',resolve=1,index=0)
+    --
     docName - document name. Empty string means the active document, and '*' means all document
     resolve - whether to resolve the subname references.
               0: do not resolve, 1: resolve, 2: resolve with element map

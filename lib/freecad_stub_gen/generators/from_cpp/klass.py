@@ -8,9 +8,6 @@ from freecad_stub_gen.generators.method.function_finder import findFunctionCall
 logger = logging.getLogger(__name__)
 
 
-# TODO P2 add DocumentObserverPython
-
-
 class FreecadStubGeneratorFromCppClass(FreecadStubGeneratorFromCpp):
     """Generate class from cpp code with methods."""
     REG_INIT_TYPE = re.compile(r'::init_type\([^{;]*{')
@@ -22,18 +19,18 @@ class FreecadStubGeneratorFromCppClass(FreecadStubGeneratorFromCpp):
         for match in self.REG_INIT_TYPE.finditer(self.impContent):
             funcCall = findFunctionCall(self.impContent, match.span()[0])
 
-            gen = self._findFunctionCallsGen(funcCall)
-            result = ''.join(self._genAllMethods(gen, isStatic=True))
-            if not result:
-                continue
-            content = self.indent(result)
-
             classMatch = self.REG_CLASS_NAME.search(funcCall)
             if classMatch:
                 className = classMatch.group(1).replace('.', '_')
             else:
                 logger.debug(f'Cannot find function name in {self.baseGenFilePath}')
                 continue  # it is a template
+
+            gen = self._findFunctionCallsGen(funcCall)
+            result = ''.join(self._genAllMethods(gen, firstArgName='self'))
+            if not result:
+                continue
+            content = self.indent(result)
 
             if docsMatch := self.REG_CLASS_DOC.search(funcCall):
                 docs = self.indent(self._genDocFromStr(docsMatch.group(1)) + '\n')

@@ -17,7 +17,7 @@ class FreecadStubGeneratorFromCppFunctions(FreecadStubGeneratorFromCpp):
 
     def _genStub(self) -> Iterable[str]:
         it = self._findArrayGen()
-        methods = self._genAllMethods(it, isStatic=False, functionSpacing=2)
+        methods = self._genAllMethods(it, functionSpacing=2)
         yield from methods
 
     REG_METHOD_DEF = re.compile(r'PyMethodDef(?!\s*\*)')

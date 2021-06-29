@@ -610,6 +610,54 @@ class FeaturePathCompound(FreeCAD.DocumentObject):
         """Remove an object from the group"""
 
 
+# AppPathPy.cpp
+def write(object: object, filename: str, /):
+    """write(object,filename): Exports a given path object to a GCode file"""
+
+
+def read(filename: str, document: str = None, /):
+    """read(filename,[document]): Imports a GCode file into the given document"""
+
+
+def show(path: Path.Toolpath, string: str = None, /):
+    """show(path,[string]): Add the path to the active document or create one if no document exists"""
+
+
+def fromShape(Shape: object, /):
+    """fromShape(Shape): Returns a Path object from a Part Shape (deprecated - use fromShapes() instead)"""
+
+
+def fromShapes(shapes: object, start: FreeCAD.Vector = None, return_end: object = None):
+    """fromShapes(shapes, start=Vector(), return_end=False" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_PATH) ")
+
+    Returns a Path object from a list of shapes
+
+    * shapes: input list of shapes.
+
+    * start (Vector()): feed start position, and also serves as a hint of path entry.
+
+    * return_end (False): if True, returns tuple (path, endPosition).
+    "
+                PARAM_PY_DOC(ARG, AREA_PARAMS_PATH)"""
+
+
+def sortWires(shapes: object, start: FreeCAD.Vector = None):
+    """sortWires(shapes, start=Vector(), "
+                PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_ARC_PLANE)
+                PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_SORT) ")
+
+    Returns (wires,end), where 'wires' is sorted across Z value and with optimized travel distance,
+    and 'end' is the ending position of the whole wires. If arc_plane==1, it returns (wires,end,arc_plane),
+    where arc_plane is the found plane if any, or unchanged.
+
+    * shapes: input shape list
+
+    * start (Vector()): optional start position.
+    "
+                PARAM_PY_DOC(ARG, AREA_PARAMS_ARC_PLANE)
+                PARAM_PY_DOC(ARG, AREA_PARAMS_SORT)"""
+
+
 # AreaPyImp.cpp
 def setDefaultParams():
     """setDefaultParams(key=value...):

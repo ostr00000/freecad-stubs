@@ -76,18 +76,22 @@ class FreecadStubGeneratorFromCpp(FormatFinder, ABC):
     def _genStub(self) -> Iterable:
         raise NotImplementedError
 
-    def _genAllMethods(self, it: Iterable[Method], isStatic: bool,
+    def _genAllMethods(self, it: Iterable[Method], firstArgName='',
                        functionSpacing: int = 1) -> Iterable[str]:
         methodNameToMethod: DefaultDict[str, list[Method]] = defaultdict(list)
         for method in it:
             methodNameToMethod[method.pythonMethodName].append(method)
 
         for methods in methodNameToMethod.values():
+            if firstArgName:
+                for m in methods:
+                    m.pythonArgs = f'{firstArgName}{", " if m.pythonArgs else ""}{m.pythonArgs}'
+
             docContent = next((met.doc for met in methods if met.doc is not None), None)
             uniqueMethods = list({str(m): m for m in methods}.values())
             yield self.convertMethodToStr(
                 methods[0].pythonMethodName, uniqueMethods,
-                docContent, isStatic=isStatic, functionSpacing=functionSpacing)
+                docContent, functionSpacing=functionSpacing)
 
     def _genMethodWithArgs(self, method: Method) -> Iterable[Method]:
         if method.doc is None:

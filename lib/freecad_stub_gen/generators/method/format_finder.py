@@ -89,7 +89,15 @@ class FormatFinder(FunctionFinder, ABC):
 
         spacing = '\n' * functionSpacing
         returnType = f' -> {rt}' if (rt := self._getReturnType(methodName)) else ''
-        pattern = f'{static}{classic}{overload}def {methodName}({{args}}){returnType}:{{docs}}{spacing}'
+        pattern = (
+            f'{static}'
+            f'{classic}'
+            f'{overload}'
+            f'def {methodName}({{args}}){returnType}:'
+            f'{{docs}}'
+            f'{spacing}'
+        )
+
         for arg in args[:-1]:
             ret += pattern.format(args=arg, docs=' ...\n')
 

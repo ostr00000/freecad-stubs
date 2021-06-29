@@ -2,38 +2,44 @@
 class Control:
     """Control for task dialogs"""
 
-    @staticmethod
-    def showDialog(arg1: object, /):
-        """showDialog()"""
+    def showDialog(self, dialog: object, /):
+        """show the given dialog in the task panel
+        showDialog(dialog)
+        --
+        if a task is already active a RuntimeError is raised"""
 
-    @staticmethod
-    def activeDialog():
-        """activeDialog()"""
+    def activeDialog(self):
+        """check if a dialog is active in the task panel
+        activeDialog() --> bool"""
 
-    @staticmethod
-    def closeDialog():
-        """closeDialog()"""
+    def closeDialog(self):
+        """close the active dialog
+        closeDialog()"""
 
-    @staticmethod
-    def addTaskWatcher(arg1: object, /):
-        """addTaskWatcher()"""
+    def addTaskWatcher(self, TaskWatcher_list: object, /):
+        """install a (list of) TaskWatcher
+        addTaskWatcher(TaskWatcher | list)"""
 
-    @staticmethod
-    def clearTaskWatcher():
-        """clearTaskWatcher()"""
+    def clearTaskWatcher(self):
+        """remove all TaskWatchers
+        clearTaskWatcher()"""
 
-    @staticmethod
-    def isAllowedAlterDocument():
-        """isAllowedAlterDocument()"""
+    def isAllowedAlterDocument(self):
+        """return the permission to alter the current Document
+        isAllowedAlterDocument() --> bool"""
 
-    @staticmethod
-    def isAllowedAlterView():
-        """isAllowedAlterView()"""
+    def isAllowedAlterView(self):
+        """return the permission to alter the current View
+        isAllowedAlterView() --> bool"""
 
-    @staticmethod
-    def isAllowedAlterSelection():
-        """isAllowedAlterSelection()"""
+    def isAllowedAlterSelection(self):
+        """return the permission to alter the current Selection
+        isAllowedAlterSelection() --> bool"""
 
-    @staticmethod
-    def showTaskView():
-        """showTaskView()"""
+    def showTaskView(self):
+        """show the Task panel
+        showTaskView()"""
+
+    def showModelView(self):
+        """show the Model panel
+        showModelView()"""

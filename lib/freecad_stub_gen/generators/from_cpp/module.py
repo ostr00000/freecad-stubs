@@ -44,6 +44,6 @@ class FreecadStubGeneratorFromCppModule(FreecadStubGeneratorFromCpp):
             moduleInitBody = findFunctionCall(self.impContent, end)
 
             gen = self._findFunctionCallsGen(moduleInitBody)
-            if result := ''.join(self._genAllMethods(gen, isStatic=False, functionSpacing=2)):
+            if result := ''.join(self._genAllMethods(gen, functionSpacing=2)):
                 self._modName = match.group(1)
                 yield result

@@ -33,11 +33,14 @@ class StubContainer:
         else:
             self.content = self.content or other.content
 
-        for s in other.subContainers.values():
-            self.subContainers[s.name] += s
+        for name, cont in other.subContainers.items():
+            self.subContainers[name] += cont
 
-        for s in other.siblingContainers.values():
-            self.siblingContainers[s.name] += s
+        for name, cont in other.siblingContainers.items():
+            if name == self.name:  # this is not sibling but it is the same stub
+                self.__add__(cont)
+            else:
+                self.siblingContainers[name] += cont
 
         return self
 
@@ -112,3 +115,8 @@ class StubContainer:
         self.content = self.content.rstrip() + '\n'
         with open(savePath.with_suffix('.pyi'), 'w') as file:
             file.write(str(self))
+
+    def moveSubContainersFrom(self, other: 'StubContainer'):
+        for name, cont in other.subContainers.items():
+            self.subContainers[name] += cont
+        other.subContainers.clear()
