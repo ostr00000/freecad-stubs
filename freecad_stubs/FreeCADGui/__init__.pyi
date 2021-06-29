@@ -1,13 +1,41 @@
 import typing
 
+from FreeCADGui.TaskDialogPython import Control
 import FreeCAD
 import FreeCADGui
 import FreeCADGui.Selection
+import FreeCADTemplates
 
 
 # WorkbenchPy.xml
 class Workbench(FreeCAD.BaseClass):
     """This is the base class for workbenches"""
+
+    MenuText = ""
+    ToolTip = ""
+
+    def Initialize(self):
+        raise NotImplementedError
+
+    def ContextMenu(self, recipient): ...
+
+    def appendToolbar(self, name, cmds): ...
+
+    def removeToolbar(self, name): ...
+
+    def appendCommandbar(self, name, cmds): ...
+
+    def removeCommandbar(self, name): ...
+
+    def appendMenu(self, name, cmds): ...
+
+    def removeMenu(self, name): ...
+
+    def appendContextMenu(self, name, cmds): ...
+
+    def removeContextMenu(self, name): ...
+
+    def GetClassName(self): ...
 
     def activate(self):
         """Activate this workbench"""
@@ -130,11 +158,17 @@ class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
     """This is the ViewProvider base class"""
 
     @property
-    def Document(self) -> object:
+    def Proxy(self) -> FreeCADTemplates.ViewProxyPython: ...
+
+    @Proxy.setter
+    def Proxy(self, value: FreeCADTemplates.ViewProxyPython): ...
+
+    @property
+    def Document(self) -> FreeCADGui.Document:
         """Return the document the view provider is part of"""
 
     @property
-    def Object(self) -> object:
+    def Object(self) -> FreeCAD.DocumentObject:
         """Return the associated data object"""
 
     def update(self):
@@ -297,430 +331,416 @@ def getSoDBVersion():
 
 
 # View3DPy.cpp
-def message(arg1: str, /):
-    """message()"""
+class View3DInventorPy:
+    """Python binding class for the Inventor viewer class"""
 
+    def message(self, arg1: str, /):
+        """message()"""
 
-def fitAll(arg1: float = None, /):
-    """fitAll()"""
+    def fitAll(self, arg1: float = None, /):
+        """fitAll()"""
 
+    def viewBottom(self):
+        """viewBottom()"""
 
-def viewBottom():
-    """viewBottom()"""
+    def viewFront(self):
+        """viewFront()"""
 
+    def viewLeft(self):
+        """viewLeft()"""
 
-def viewFront():
-    """viewFront()"""
+    def viewRear(self):
+        """viewRear()"""
 
+    def viewRight(self):
+        """viewRight()"""
 
-def viewLeft():
-    """viewLeft()"""
+    def viewTop(self):
+        """viewTop()"""
 
+    def viewAxometric(self):
+        """viewAxonometric()"""
 
-def viewRear():
-    """viewRear()"""
+    def viewAxonometric(self):
+        """viewAxonometric()"""
 
+    def viewIsometric(self):
+        """viewIsometric()"""
 
-def viewRight():
-    """viewRight()"""
+    def viewDimetric(self):
+        """viewDimetric()"""
 
+    def viewTrimetric(self):
+        """viewTrimetric()"""
 
-def viewTop():
-    """viewTop()"""
+    def viewDefaultOrientation(self, arg1: str = None, /):
+        """viewDefaultOrientation()"""
 
+    def viewRotateLeft(self):
+        """viewRotateLeft()"""
 
-def viewAxometric():
-    """viewAxonometric()"""
+    def viewRotateRight(self):
+        """viewRotateRight()"""
 
+    def zoomIn(self):
+        """zoomIn()"""
 
-def viewAxonometric():
-    """viewAxonometric()"""
+    def zoomOut(self):
+        """zoomOut()"""
 
+    def viewPosition(self, arg1: FreeCAD.Placement = None, arg2: int = None, arg3: int = None, /):
+        """viewPosition()"""
 
-def viewIsometric():
-    """viewIsometric()"""
+    def startAnimating(self, arg1: float, arg2: float, arg3: float, arg4: float, /):
+        """startAnimating()"""
 
+    def stopAnimating(self):
+        """stopAnimating()"""
 
-def viewDimetric():
-    """viewDimetric()"""
+    def setAnimationEnabled(self, arg1: int, /):
+        """setAnimationEnabled()"""
 
+    def isAnimationEnabled(self):
+        """isAnimationEnabled()"""
 
-def viewTrimetric():
-    """viewTrimetric()"""
+    def dump(self, arg1: str, /):
+        """dump()"""
 
+    def dumpNode(self, node: object, /):
+        """dumpNode(node)"""
 
-def viewDefaultOrientation(arg1: str = None, /):
-    """viewDefaultOrientation()"""
+    @typing.overload
+    def setStereoType(self, arg1: int, /): ...
 
+    @typing.overload
+    def setStereoType(self, arg1: str, /):
+        """setStereoType()"""
 
-def viewRotateLeft():
-    """viewRotateLeft()"""
+    def getStereoType(self):
+        """getStereoType()"""
 
+    def listStereoTypes(self):
+        """listStereoTypes()"""
 
-def viewRotateRight():
-    """viewRotateRight()"""
+    def saveImage(self, arg1: str, arg2: int = None, arg3: int = None, arg4: str = None, arg5: str = None, /):
+        """saveImage()"""
 
+    def saveVectorGraphic(self, arg1: str, arg2: int = None, arg3: str = None, /):
+        """saveVectorGraphic()"""
 
-def zoomIn():
-    """zoomIn()"""
+    def getCamera(self):
+        """getCamera()"""
 
+    def getCameraNode(self):
+        """getCameraNode()"""
 
-def zoomOut():
-    """zoomOut()"""
+    def getViewDirection(self):
+        """getViewDirection() --> tuple of integers
+        returns the direction vector the view is currently pointing at as tuple with xyz values
+        """
 
+    def setViewDirection(self, tuple: object, /):
+        """setViewDirection(tuple) --> None
+        Sets the direction the view is pointing at. The direction must be given as tuple with
+        three coordinates xyz"""
 
-def viewPosition(arg1: FreeCAD.Placement = None, arg2: int = None, arg3: int = None, /):
-    """viewPosition()"""
+    def setCamera(self, arg1: str, /):
+        """setCamera()"""
 
+    def setCameraOrientation(self, arg1: object, arg2: bool = None, /):
+        """setCameraOrientation()"""
 
-def startAnimating(arg1: float, arg2: float, arg3: float, arg4: float, /):
-    """startAnimating()"""
+    def getCameraOrientation(self):
+        """getCameraOrientation()"""
 
+    def getCameraType(self):
+        """getCameraType()"""
 
-def stopAnimating():
-    """stopAnimating()"""
+    @typing.overload
+    def setCameraType(self, arg1: int, /): ...
 
+    @typing.overload
+    def setCameraType(self, arg1: str, /):
+        """setCameraType()"""
 
-def setAnimationEnabled(arg1: int, /):
-    """setAnimationEnabled()"""
+    def listCameraTypes(self):
+        """listCameraTypes()"""
 
+    def getCursorPos(self):
+        """getCursorPos() -> tuple of integers
 
-def isAnimationEnabled():
-    """isAnimationEnabled()"""
+        Return the current cursor position relative to the coordinate system of the
+        viewport region.
+        """
 
+    def getObjectInfo(self, tuple_int_int_: object, pick_radius: float = None, /):
+        """getObjectInfo(tuple(int,int), [pick_radius]) -> dictionary or None
 
-def dump(arg1: str, /):
-    """dump()"""
+        Return a dictionary with the name of document, object and component. The
+        dictionary also contains the coordinates of the appropriate 3d point of
+        the underlying geometry in the scenegraph.
+        If no geometry was found 'None' is returned, instead.
+        """
 
+    def getObjectsInfo(self, tuple_int_int_: object, pick_radius: float = None, /):
+        """getObjectsInfo(tuple(int,int), [pick_radius]) -> dictionary or None
 
-def dumpNode(node: object, /):
-    """dumpNode(node)"""
+        Does the same as getObjectInfo() but returns a list of dictionaries or None.
+        """
 
+    def getSize(self):
+        """getSize()"""
 
-@typing.overload
-def setStereoType(arg1: int, /): ...
+    def getPoint(self, arg1: int, arg2: int, /):
+        """getPoint(pixel coords (as integer)) -> 3D vector
 
+        Return the according 3D point on the focal plane to the given 2D point (in
+        pixel coordinates).
+        """
 
-@typing.overload
-def setStereoType(arg1: str, /):
-    """setStereoType()"""
+    def getPointOnScreen(self, arg: FreeCAD.Vector, /):
+        """getPointOnScreen(3D vector) -> pixel coords (as integer)
 
+        Return the projected 3D point (in pixel coordinates).
+        """
 
-def getStereoType():
-    """getStereoType()"""
+    def addEventCallback(self, arg1: str, arg2: object, /):
+        """addEventCallback()"""
 
+    def removeEventCallback(self, arg1: str, arg2: object, /):
+        """removeEventCallback()"""
 
-def listStereoTypes():
-    """listStereoTypes()"""
+    def setAnnotation(self, arg1: str, arg2: str, /):
+        """setAnnotation()"""
 
+    def removeAnnotation(self, arg1: str, /):
+        """removeAnnotation()"""
 
-def saveImage(arg1: str, arg2: int = None, arg3: int = None, arg4: str = None, arg5: str = None, /):
-    """saveImage()"""
+    def getSceneGraph(self):
+        """getSceneGraph()"""
 
+    def getViewer(self):
+        """getViewer()"""
 
-def saveVectorGraphic(arg1: str, arg2: int = None, arg3: str = None, /):
-    """saveVectorGraphic()"""
+    def addEventCallbackPivy(self, arg1: object, arg2: object, arg3: int = None, /):
+        """addEventCallbackPivy()"""
 
+    def removeEventCallbackPivy(self, arg1: object, arg2: object, arg3: int = None, /):
+        """removeEventCallbackPivy()"""
 
-def getCamera():
-    """getCamera()"""
+    def addEventCallbackSWIG(self, arg1: object, arg2: object, arg3: int = None, /):
+        """Deprecated -- use addEventCallbackPivy()"""
 
+    def removeEventCallbackSWIG(self, arg1: object, arg2: object, arg3: int = None, /):
+        """Deprecated -- use removeEventCallbackPivy()"""
 
-def getCameraNode():
-    """getCameraNode()"""
+    def listNavigationTypes(self):
+        """listNavigationTypes()"""
 
+    def getNavigationType(self):
+        """getNavigationType()"""
 
-def getViewDirection():
-    """getViewDirection() --> tuple of integers
-    returns the direction vector the view is currently pointing at as tuple with xyz values
-    """
+    def setNavigationType(self, arg1: str, /):
+        """setNavigationType()"""
 
+    def setAxisCross(self, arg1: int, /):
+        """switch the big axis-cross on and off"""
 
-def setViewDirection(tuple: object, /):
-    """setViewDirection(tuple) --> None
-    Sets the direction the view is pointing at. The direction must be given as tuple with
-    three coordinates xyz"""
+    def hasAxisCross(self):
+        """check if the big axis-cross is on or off()"""
 
+    def addDraggerCallback(self, SoDragger: object, String_CallbackType: str, function: object, /):
+        """addDraggerCallback(SoDragger, String CallbackType, function)
+        Add a DraggerCalback function to the coin node
+        Possibles types :
+        'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'
+        """
 
-def setCamera(arg1: str, /):
-    """setCamera()"""
+    def removeDraggerCallback(self, SoDragger: object, String_CallbackType: str, function: object, /):
+        """removeDraggerCallback(SoDragger, String CallbackType, function)
+        Remove the DraggerCalback function from the coin node
+        Possibles types :
+        'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'
+        """
 
+    def setActiveObject(self, name: str, object: FreeCAD.DocumentObject, /):
+        """setActiveObject(name,object)
+        add or set a new active object"""
 
-def setCameraOrientation(arg1: object, arg2: bool = None, /):
-    """setCameraOrientation()"""
+    def getActiveObject(self, name: str, /):
+        """getActiveObject(name)
+        returns the active object for the given type"""
 
+    def getViewProvidersOfType(self, name: str, /):
+        """getViewProvidersOfType(name)
+        returns a list of view providers for the given type"""
 
-def getCameraOrientation():
-    """getCameraOrientation()"""
+    def redraw(self):
+        """redraw(): renders the scene on screen (useful for animations)"""
 
-
-def getCameraType():
-    """getCameraType()"""
-
-
-@typing.overload
-def setCameraType(arg1: int, /): ...
-
-
-@typing.overload
-def setCameraType(arg1: str, /):
-    """setCameraType()"""
-
-
-def listCameraTypes():
-    """listCameraTypes()"""
-
-
-def getCursorPos():
-    """getCursorPos() -> tuple of integers
-
-    Return the current cursor position relative to the coordinate system of the
-    viewport region.
-    """
-
-
-def getObjectInfo(tuple_int_int_: object, pick_radius: float = None, /):
-    """getObjectInfo(tuple(int,int), [pick_radius]) -> dictionary or None
-
-    Return a dictionary with the name of document, object and component. The
-    dictionary also contains the coordinates of the appropriate 3d point of
-    the underlying geometry in the scenegraph.
-    If no geometry was found 'None' is returned, instead.
-    """
-
-
-def getObjectsInfo(tuple_int_int_: object, pick_radius: float = None, /):
-    """getObjectsInfo(tuple(int,int), [pick_radius]) -> dictionary or None
-
-    Does the same as getObjectInfo() but returns a list of dictionaries or None.
-    """
-
-
-def getSize():
-    """getSize()"""
-
-
-def getPoint(arg1: int, arg2: int, /):
-    """getPoint(pixel coords (as integer)) -> 3D vector
-
-    Return the according 3D point on the focal plane to the given 2D point (in
-    pixel coordinates).
-    """
-
-
-def getPointOnScreen(arg: FreeCAD.Vector, /):
-    """getPointOnScreen(3D vector) -> pixel coords (as integer)
-
-    Return the projected 3D point (in pixel coordinates).
-    """
-
-
-def addEventCallback(arg1: str, arg2: object, /):
-    """addEventCallback()"""
-
-
-def removeEventCallback(arg1: str, arg2: object, /):
-    """removeEventCallback()"""
-
-
-def setAnnotation(arg1: str, arg2: str, /):
-    """setAnnotation()"""
-
-
-def removeAnnotation(arg1: str, /):
-    """removeAnnotation()"""
-
-
-def getSceneGraph():
-    """getSceneGraph()"""
-
-
-def getViewer():
-    """getViewer()"""
-
-
-def addEventCallbackPivy(arg1: object, arg2: object, arg3: int = None, /):
-    """addEventCallbackPivy()"""
-
-
-def removeEventCallbackPivy(arg1: object, arg2: object, arg3: int = None, /):
-    """removeEventCallbackPivy()"""
-
-
-def addEventCallbackSWIG(arg1: object, arg2: object, arg3: int = None, /):
-    """Deprecated -- use addEventCallbackPivy()"""
-
-
-def removeEventCallbackSWIG(arg1: object, arg2: object, arg3: int = None, /):
-    """Deprecated -- use removeEventCallbackPivy()"""
-
-
-def listNavigationTypes():
-    """listNavigationTypes()"""
-
-
-def getNavigationType():
-    """getNavigationType()"""
-
-
-def setNavigationType(arg1: str, /):
-    """setNavigationType()"""
-
-
-def setAxisCross(arg1: int, /):
-    """switch the big axis-cross on and off"""
-
-
-def hasAxisCross():
-    """check if the big axis-cross is on or off()"""
-
-
-def addDraggerCallback(SoDragger: object, String_CallbackType: str, function: object, /):
-    """addDraggerCallback(SoDragger, String CallbackType, function)
-    Add a DraggerCalback function to the coin node
-    Possibles types :
-    'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'
-    """
-
-
-def removeDraggerCallback(SoDragger: object, String_CallbackType: str, function: object, /):
-    """removeDraggerCallback(SoDragger, String CallbackType, function)
-    Remove the DraggerCalback function from the coin node
-    Possibles types :
-    'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'
-    """
-
-
-def setActiveObject(name: str, object: FreeCAD.DocumentObject, /):
-    """setActiveObject(name,object)
-    add or set a new active object"""
-
-
-def getActiveObject(name: str, /):
-    """getActiveObject(name)
-    returns the active object for the given type"""
-
-
-def getViewProvidersOfType(name: str, /):
-    """getViewProvidersOfType(name)
-    returns a list of view providers for the given type"""
-
-
-def redraw():
-    """redraw(): renders the scene on screen (useful for animations)"""
-
-
-def boxZoom(XMin: int, YMin: int, XMax: int, YMax: int):
-    """boxZoom()"""
+    def boxZoom(self, XMin: int, YMin: int, XMax: int, YMax: int):
+        """boxZoom()"""
 
 
 # WidgetFactory.cpp
-@typing.overload
-def load(string, QWidget_parent = None): ...
+class UiLoader:
+    """UiLoader to create widgets"""
+
+    @typing.overload
+    def load(self, string, QWidget_parent = None): ...
+
+    @typing.overload
+    def load(self, QIODevice, QWidget_parent = None):
+        """load(string, QWidget parent=None) -> QWidget
+        load(QIODevice, QWidget parent=None) -> QWidget"""
+
+    def createWidget(self):
+        """createWidget()"""
 
 
-@typing.overload
-def load(QIODevice, QWidget_parent = None):
-    """load(string, QWidget parent=None) -> QWidget
-    load(QIODevice, QWidget parent=None) -> QWidget"""
+class PyResource:
+    """PyResource"""
 
+    def value(self, arg1: str, arg2: str, /): ...
 
-def createWidget():
-    """createWidget()"""
-
-
-def value(arg1: str, arg2: str, /):
-    """&PyResource::value"""
-
-
-def setValue(arg1: str, arg2: str, arg3: object, /):
-    """&PyResource::setValue"""
+    def setValue(self, arg1: str, arg2: str, arg3: object, /): ...
 
 
 # PythonConsolePy.cpp
-def isatty():
-    """isatty()"""
+class PythonStdout:
+    """Redirection of stdout to FreeCAD's Python console window"""
+
+    def isatty(self):
+        """isatty()"""
+
+    def write(self):
+        """write()"""
+
+    def flush(self):
+        """flush()"""
 
 
-def write():
-    """write()"""
+class PythonStderr:
+    """Redirection of stdout to FreeCAD's Python console window"""
+
+    def isatty(self):
+        """isatty()"""
+
+    def write(self):
+        """write()"""
+
+    def flush(self):
+        """flush()"""
 
 
-def flush():
-    """flush()"""
+class OutputStdout:
+    """Redirection of stdout to FreeCAD's output window"""
+
+    def isatty(self):
+        """isatty()"""
+
+    def write(self):
+        """write()"""
+
+    def flush(self):
+        """flush()"""
 
 
-def readline():
-    """readline()"""
+class OutputStderr:
+    """Redirection of stdout to FreeCAD's output window"""
+
+    def isatty(self):
+        """isatty()"""
+
+    def write(self):
+        """write()"""
+
+    def flush(self):
+        """flush()"""
+
+
+class PythonStdin:
+    """Redirection of stdin to FreeCAD to open an input dialog"""
+
+    def readline(self):
+        """readline()"""
 
 
 # SplitView3DInventor.cpp
-def fitAll():
-    """fitAll()"""
+class AbstractSplitViewPy:
+    """Python binding class for the Inventor viewer class"""
 
+    def fitAll(self):
+        """fitAll()"""
 
-def viewBottom():
-    """viewBottom()"""
+    def viewBottom(self):
+        """viewBottom()"""
 
+    def viewFront(self):
+        """viewFront()"""
 
-def viewFront():
-    """viewFront()"""
+    def viewLeft(self):
+        """viewLeft()"""
 
+    def viewRear(self):
+        """viewRear()"""
 
-def viewLeft():
-    """viewLeft()"""
+    def viewRight(self):
+        """viewRight()"""
 
+    def viewTop(self):
+        """viewTop()"""
 
-def viewRear():
-    """viewRear()"""
+    def viewAxometric(self):
+        """viewAxometric()"""
 
+    def viewIsometric(self):
+        """viewIsometric()"""
 
-def viewRight():
-    """viewRight()"""
+    def getViewer(self, index: int, /):
+        """getViewer(index)"""
 
-
-def viewTop():
-    """viewTop()"""
-
-
-def viewAxometric():
-    """viewAxometric()"""
-
-
-def viewIsometric():
-    """viewIsometric()"""
-
-
-def getViewer(index: int, /):
-    """getViewer(index)"""
-
-
-def close():
-    """close()"""
+    def close(self):
+        """close()"""
 
 
 # SelectionFilter.cpp
-def match():
-    """Check if the current selection matches the filter"""
+class SelectionFilter:
+    """Filter for certain selection
+    Example strings are:
+    "SELECT Part::Feature SUBELEMENT Edge",
+    "SELECT Part::Feature", 
+    "SELECT Part::Feature COUNT 1..5"
+    """
 
+    def match(self):
+        """Check if the current selection matches the filter"""
 
-def result():
-    """If match() returns True then with result() you get a list of the matching objects"""
+    def result(self):
+        """If match() returns True then with result() you get a list of the matching objects"""
 
+    def test(self, Feature: FreeCAD.DocumentObject, SubName: str = '', /):
+        """test(Feature, SubName='')
+        Test if a given object is described in the filter.
+        If SubName is not empty the sub-element gets also tested."""
 
-def test(Feature: FreeCAD.DocumentObject, SubName: str = '', /):
-    """test(Feature, SubName='')
-    Test if a given object is described in the filter.
-    If SubName is not empty the sub-element gets also tested."""
-
-
-def setFilter(arg1: str, /):
-    """Set a new selection filter"""
+    def setFilter(self, arg1: str, /):
+        """Set a new selection filter"""
 
 
 # PythonDebugger.cpp
-def write(arg1: str, /):
-    """write to stdout"""
+class PythonDebugStdout:
+    """Redirection of stdout to FreeCAD's Python debugger window"""
+
+    def write(self, arg1: str, /):
+        """write to stdout"""
+
+
+class PythonDebugStderr:
+    """Redirection of stderr to FreeCAD's Python debugger window"""
+
+    def write(self, arg1: str, /):
+        """write to stderr"""
 
 
 # ApplicationPy.cpp
@@ -813,7 +833,7 @@ def setLocale(arg1: str, /):
     """getLocale(string) -> None
 
     Sets the locale used by FreeCAD. You can set it by
-    top-level domain (e.g. \"de\") or the language name (e.g. \"German\")"""
+    top-level domain (e.g. "de") or the language name (e.g. "German")"""
 
 
 def supportedLocales():
@@ -999,119 +1019,72 @@ def removeDocumentObserver(arg1: object, /):
 
 
 # View3DViewerPy.cpp
-def getSoRenderManager():
-    """getSoRenderManager() -> SoRenderManager
-    Returns the render manager which is used to handle everything related to
-    rendering the scene graph. It can be used to get full control over the
-    render process
-    """
+class View3DInventorViewerPy:
+    """Python binding class for the 3D viewer class"""
 
+    def getSoRenderManager(self):
+        """getSoRenderManager() -> SoRenderManager
+        Returns the render manager which is used to handle everything related to
+        rendering the scene graph. It can be used to get full control over the
+        render process
+        """
 
-def getSoEventManager():
-    """getSoEventManager() -> SoEventManager
-    Returns the event manager which is used to handle everything event related in
-    the viewer. It can be used to change the event processing. This must however be
-    done very carefully to not change the user interaction in an unpredictable manner.
-    """
+    def getSoEventManager(self):
+        """getSoEventManager() -> SoEventManager
+        Returns the event manager which is used to handle everything event related in
+        the viewer. It can be used to change the event processing. This must however be
+        done very carefully to not change the user interaction in an unpredictable manner.
+        """
 
+    def getSceneGraph(self):
+        """getSceneGraph() -> SoNode"""
 
-def getSceneGraph():
-    """getSceneGraph() -> SoNode"""
+    def setSceneGraph(self, SoNode: object, /):
+        """setSceneGraph(SoNode)"""
 
+    def seekToPoint(self, tuple: object, /):
+        """seekToPoint(tuple) -> None
+        Initiate a seek action towards the 3D intersection of the scene and the
+        ray from the screen coordinate's point and in the same direction as the
+        camera is pointing. If the tuple has two entries it is interpreted as the
+        screen coordinates xy and the intersection point with the scene is
+        calculated. If three entries are given it is interpreted as the intersection
+        point xyz and the seek is done towards this point"""
 
-def setSceneGraph(SoNode: object, /):
-    """setSceneGraph(SoNode)"""
+    def setFocalDistance(self, float: float, /):
+        """setFocalDistance(float) -> None
+        """
 
+    def getFocalDistance(self):
+        """getFocalDistance() -> float
+        """
 
-def seekToPoint(tuple: object, /):
-    """seekToPoint(tuple) -> None
-    Initiate a seek action towards the 3D intersection of the scene and the
-    ray from the screen coordinate's point and in the same direction as the
-    camera is pointing. If the tuple has two entries it is interpreted as the
-    screen coordinates xy and the intersection point with the scene is
-    calculated. If three entries are given it is interpreted as the intersection
-    point xyz and the seek is done towards this point"""
+    def getPoint(self, x: int, y: int, /):
+        """getPoint(x, y) -> Base::Vector(x,y,z)"""
 
+    def getPickRadius(self):
+        """getPickRadius(): returns radius of confusion in pixels for picking objects on screen (selection)."""
 
-def setFocalDistance(float: float, /):
-    """setFocalDistance(float) -> None
-    """
+    def setPickRadius(self, new_radius: float, /):
+        """setPickRadius(new_radius): sets radius of confusion in pixels for picking objects on screen (selection)."""
 
+    def setRedirectToSceneGraph(self, bool: bool, /):
+        """setRedirectToSceneGraph(bool): enables or disables to redirect events directly to the scene graph."""
 
-def getFocalDistance():
-    """getFocalDistance() -> float
-    """
+    def isRedirectedToSceneGraph(self):
+        """isRedirectedToSceneGraph() -> bool: check whether event redirection is enabled."""
 
+    def setEnabledNaviCube(self, bool: bool, /):
+        """setEnabledNaviCube(bool): enables or disables the navi cube of the viewer."""
 
-def getPoint(x: int, y: int, /):
-    """getPoint(x, y) -> Base::Vector(x,y,z)"""
+    def isEnabledNaviCube(self):
+        """isEnabledNaviCube() -> bool: check whether the navi cube is enabled."""
 
-
-def getPickRadius():
-    """getPickRadius(): returns radius of confusion in pixels for picking objects on screen (selection)."""
-
-
-def setPickRadius(new_radius: float, /):
-    """setPickRadius(new_radius): sets radius of confusion in pixels for picking objects on screen (selection)."""
-
-
-def setRedirectToSceneGraph(bool: bool, /):
-    """setRedirectToSceneGraph(bool): enables or disables to redirect events directly to the scene graph."""
-
-
-def isRedirectedToSceneGraph():
-    """isRedirectedToSceneGraph() -> bool: check whether event redirection is enabled."""
-
-
-def setEnabledNaviCube(bool: bool, /):
-    """setEnabledNaviCube(bool): enables or disables the navi cube of the viewer."""
-
-
-def isEnabledNaviCube():
-    """isEnabledNaviCube() -> bool: check whether the navi cube is enabled."""
-
-
-def setNaviCubeCorner(int: int, /):
-    """setNaviCubeCorner(int): sets the corner where to show the navi cube:
-    0=top left, 1=top right, 2=bottom left, 3=bottom right"""
-
-
-# TaskDialogPython.cpp
-def showDialog():
-    """showDialog()"""
-
-
-def activeDialog():
-    """activeDialog()"""
-
-
-def closeDialog():
-    """closeDialog()"""
-
-
-def addTaskWatcher():
-    """addTaskWatcher()"""
-
-
-def clearTaskWatcher():
-    """clearTaskWatcher()"""
-
-
-def isAllowedAlterDocument():
-    """isAllowedAlterDocument()"""
-
-
-def isAllowedAlterView():
-    """isAllowedAlterView()"""
-
-
-def isAllowedAlterSelection():
-    """isAllowedAlterSelection()"""
-
-
-def showTaskView():
-    """showTaskView()"""
+    def setNaviCubeCorner(self, int: int, /):
+        """setNaviCubeCorner(int): sets the corner where to show the navi cube:
+        0=top left, 1=top right, 2=bottom left, 3=bottom right"""
 
 
 Workbench: FreeCADGui.Workbench
 ActiveDocument: Document
+Control = Control  # hack to show this module in current module hints

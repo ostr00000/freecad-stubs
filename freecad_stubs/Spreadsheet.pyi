@@ -119,8 +119,3 @@ class Sheet(FreeCAD.DocumentObject):
 
     def splitCell(self, arg1: str, /):
         """Split a previously merged cell"""
-
-
-# AppSpreadsheetGui.cpp
-def open(arg1: str, arg2: str = None, /):
-    """&Module::open"""

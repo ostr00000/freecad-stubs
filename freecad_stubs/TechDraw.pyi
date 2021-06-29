@@ -178,16 +178,3 @@ def writeDXFPage(page: object, filename: str, /):
 
 def findCentroid(shape: object, direction: object, /):
     """vector = findCentroid(shape,direction): finds geometric centroid of shape looking in direction."""
-
-
-# AppTechDrawGuiPy.cpp
-def export(arg1: object, arg2: str, /):
-    """TechDraw hook for FC Gui exporter."""
-
-
-def exportPageAsPdf(DrawPageObject: object, FilePath: str, /):
-    """exportPageAsPdf(DrawPageObject,FilePath) -- print page as Pdf to file."""
-
-
-def exportPageAsSvg(DrawPageObject: object, FilePath: str, /):
-    """exportPageAsSvg(DrawPageObject,FilePath) -- print page as Svg to file."""

@@ -54,20 +54,3 @@ def writeDXFObject(objects: list, filename_: str, version: int = None, usePolyli
 @typing.overload
 def writeDXFObject(objects: FreeCAD.DocumentObject, filename_: str, version: int = None, usePolyline: object = None, optionSource: str = None, /):
     """writeDXFObject([objects],filename [,version,usePolyline,optionSource]): Exports DocumentObject(s) to a DXF file."""
-
-
-# AppImportGuiPy.cpp
-def open(string):
-    """open(string) -- Open the file and create a new document."""
-
-
-def insert(string: str, string1: str = None, /):
-    """insert(string,string) -- Insert the file into the given document."""
-
-
-def export(list: object, string: str, /):
-    """export(list,string) -- Export a list of objects into a single file."""
-
-
-def ocaf(string: str, /):
-    """ocaf(string) -- Browse the ocaf structure."""

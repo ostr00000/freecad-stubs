@@ -26,16 +26,3 @@ def removeSvgTags(string: str, /):
 def projectToSVG(topoShape: Part.TopoShape, direction: FreeCAD.Vector = None, type: str = None, tolerance: float = None, vStyle: object = None, v0Style: object = None, v1Style: object = None, hStyle: object = None, h0Style: object = None, h1Style: object = None):
     """string = projectToSVG(TopoShape[, App.Vector direction, string type, float tolerance, dict vStyle, dict v0Style, dict v1Style, dict hStyle, dict h0Style, dict h1Style])
      -- Project a shape and return the SVG representation as string."""
-
-
-# AppDrawingGuiPy.cpp
-def open(arg1: str, /):
-    """&Module::open"""
-
-
-def insert(arg1: str, arg2: str = None, /):
-    """&Module::importer"""
-
-
-def export(arg1: object, arg2: str, /):
-    """&Module::exporter"""

@@ -1,68 +1,45 @@
 # UnitTestPy.cpp
-def clearErrorList():
-    """clearErrorList"""
+class TestGui_UnitTest:
+    """About TestGui.UnitTest"""
 
+    def clearErrorList(self):
+        """clearErrorList"""
 
-def insertError(arg1: str, arg2: str, /):
-    """insertError"""
+    def insertError(self, arg1: str, arg2: str, /):
+        """insertError"""
 
+    def setUnitTest(self, arg1: str, /):
+        """setUnitTest"""
 
-def setUnitTest(arg1: str, /):
-    """setUnitTest"""
+    def getUnitTest(self):
+        """getUnitTest"""
 
+    def setStatusText(self, arg1: str, /):
+        """setStatusText"""
 
-def getUnitTest():
-    """getUnitTest"""
+    def setProgressFraction(self, arg1: float, arg2: str = None, /):
+        """setProgressFraction"""
 
+    def errorDialog(self, arg1: str, arg2: str, /):
+        """errorDialog"""
 
-def setStatusText(arg1: str, /):
-    """setStatusText"""
+    def setRunCount(self, arg1: int, /):
+        """setRunCount"""
 
+    def setFailCount(self, arg1: int, /):
+        """setFailCount"""
 
-def setProgressFraction(arg1: float, arg2: str = None, /):
-    """setProgressFraction"""
+    def setErrorCount(self, arg1: int, /):
+        """setErrorCount"""
 
+    def setRemainCount(self, arg1: int, /):
+        """setRemainCount"""
 
-def errorDialog(arg1: str, arg2: str, /):
-    """errorDialog"""
+    def updateGUI(self):
+        """updateGUI"""
 
+    def addUnitTest(self, arg1: str, /):
+        """addUnitTest"""
 
-def setRunCount(arg1: int, /):
-    """setRunCount"""
-
-
-def setFailCount(arg1: int, /):
-    """setFailCount"""
-
-
-def setErrorCount(arg1: int, /):
-    """setErrorCount"""
-
-
-def setRemainCount(arg1: int, /):
-    """setRemainCount"""
-
-
-def updateGUI():
-    """updateGUI"""
-
-
-def addUnitTest(arg1: str, /):
-    """addUnitTest"""
-
-
-def clearUnitTests():
-    """clearUnitTests"""
-
-
-# AppTestGui.cpp
-def UnitTest():
-    """UnitTest"""
-
-
-def setTest(arg1: str = None, /):
-    """setTest"""
-
-
-def addTest(arg1: str = None, /):
-    """addTest"""
+    def clearUnitTests(self):
+        """clearUnitTests"""
