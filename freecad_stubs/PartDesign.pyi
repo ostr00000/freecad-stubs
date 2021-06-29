@@ -26,11 +26,6 @@ class Feature(Part.Feature):
     """This is the father of all PartDesign object classes"""
 
 
-# AppPartDesignPy.cpp
-def makeFilletArc(arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: FreeCAD.Vector, arg4: FreeCAD.Vector, arg5: float, arg6: int, /):
-    """makeFilletArc(...) -- Fillet arc."""
-
-
 # ViewProviderPy.xml
 class ViewProvider(FreeCADGui.ViewProviderDocumentObject):
     """This is the father of all PartDesign ViewProvider classes"""

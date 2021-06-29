@@ -347,9 +347,7 @@ class Sketch(FreeCAD.Persistence):
 
 
 # AppSketcherPy.cpp
-def open(arg1: str, /):
-    """&Module::open"""
+def open(arg1: str, /): ...
 
 
-def insert(arg1: str, arg2: str, /):
-    """&Module::insert"""
+def insert(arg1: str, arg2: str, /): ...

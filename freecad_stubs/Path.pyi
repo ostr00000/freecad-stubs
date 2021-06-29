@@ -37,11 +37,11 @@ class Command(FreeCAD.Persistence):
     def Parameters(self, value: dict): ...
 
     @property
-    def Placement(self) -> object:
+    def Placement(self) -> FreeCAD.Placement:
         """The coordinates of the endpoint of the command"""
 
     @Placement.setter
-    def Placement(self, value: object): ...
+    def Placement(self, value: FreeCAD.Placement): ...
 
     def setFromGCode(self, arg1: str, /):
         """toGCode(): returns a GCode representation of the command"""
@@ -55,14 +55,18 @@ class Command(FreeCAD.Persistence):
 
 # AreaPy.xml
 class Area(FreeCAD.BaseClass):
-    """FreeCAD python wrapper of libarea\n
-    Path.Area(key=value ...)\n
+    """FreeCAD python wrapper of libarea
+
+    Path.Area(key=value ...)
+
     The constructor accepts the same parameters as setParams(...) to configure the object
     All arguments are optional."""
 
     def __init__(self, key):
-        """FreeCAD python wrapper of libarea\n
-        Path.Area(key=value ...)\n
+        """FreeCAD python wrapper of libarea
+
+        Path.Area(key=value ...)
+
         The constructor accepts the same parameters as setParams(...) to configure the object
         All arguments are optional."""
 
@@ -87,9 +91,13 @@ class Area(FreeCAD.BaseClass):
         """Get current algorithm parameters as a dictionary."""
 
     def getShape(self, index: int = -1, rebuild: object = False):
-        """getShape(index=-1,rebuild=False): Return the resulting shape\n
-        \n* index (-1): the index of the section. -1 means all sections. No effect on planar shape.\n
-        \n* rebuild: clean the internal cache and rebuild"""
+        """getShape(index=-1,rebuild=False): Return the resulting shape
+
+
+        * index (-1): the index of the section. -1 means all sections. No effect on planar shape.
+
+
+        * rebuild: clean the internal cache and rebuild"""
 
     def makeOffset(self, index: int = None): ...
 
@@ -100,7 +108,8 @@ class Area(FreeCAD.BaseClass):
     def setParams(self): ...
 
     def setPlane(self, shape: Part.TopoShape, /):
-        """setPlane(shape): Set the working plane.\n
+        """setPlane(shape): Set the working plane.
+
         The supplied shape does not need to be planar. Area will try to find planar
         sub-shape (face, wire or edge). If more than one planar sub-shape is found, it
         will prefer the top plane parallel to XY0 plane. If no working plane are set,
@@ -226,7 +235,8 @@ class FeatureArea(FreeCAD.DocumentObject):
         """Return a copy of the encapsulated Python Area object."""
 
     def setParams(self):
-        """setParams(key=value...): Convenient function to configure this feature.\n
+        """setParams(key=value...): Convenient function to configure this feature.
+
         Same usage as Path.Area.setParams(). This function stores the parameters in the properties."""
 
 
@@ -308,16 +318,3 @@ def getParamsDesc(as_string: object = False):
     """getParamsDesc(as_string=False): Returns a list of supported parameters and their descriptions.
 
     * as_string: if False, then return a dictionary of documents of all supported parameters."""
-
-
-# AppPathGuiPy.cpp
-def open(filename: str, /):
-    """open(filename): Opens a GCode file as a new document"""
-
-
-def insert(filename: str, docname: str = None, /):
-    """insert(filename,docname): Imports a given GCode file into the given document"""
-
-
-def export(objectslist: object, filename: str, /):
-    """export(objectslist,filename): Exports a given list of Path objects to a GCode file"""

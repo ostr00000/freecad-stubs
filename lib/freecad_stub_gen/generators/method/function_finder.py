@@ -1,5 +1,6 @@
 import logging
 import re
+from abc import ABC
 from itertools import islice
 from pathlib import Path
 from typing import Optional
@@ -9,7 +10,7 @@ from freecad_stub_gen.generators.base import BaseGenerator
 logger = logging.getLogger(__name__)
 
 
-class FunctionFinder(BaseGenerator):
+class FunctionFinder(BaseGenerator, ABC):
     def findFunctionBody(self, funcName: str, className: str = '',
                          parentXmlPath: Path = None) -> Optional[str]:
         if res := self._findFunction(funcName, className):

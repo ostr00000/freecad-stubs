@@ -1914,7 +1914,7 @@ class BSplineCurve(Part.Curve):
         for a given 3D tolerance (Tolerance3D).
         If f(t) is the equation of this B-Spline curve, the parametric tolerance
         ensures that:
-        |t1-t0| < UTolerance =""==> |f(t1)-f(t0)| < Tolerance3D"""
+        |t1-t0| < UTolerance ===> |f(t1)-f(t0)| < Tolerance3D"""
 
     def getWeight(self, arg1: int, /):
         """Get a weight of the B-Spline curve."""
@@ -3999,7 +3999,7 @@ class BezierCurve(Part.Curve):
         for a given 3D tolerance (Tolerance3D).
         If f(t) is the equation of this Bezier curve, the parametric tolerance
         ensures that:
-        |t1-t0| < UTolerance =""==> |f(t1)-f(t0)| < Tolerance3D"""
+        |t1-t0| < UTolerance ===> |f(t1)-f(t0)| < Tolerance3D"""
 
     def getWeight(self, arg1: int, /):
         """Get a weight of the Bezier curve."""
@@ -5617,7 +5617,7 @@ class BSplineCurve2d(Part.Curve2d):
         for a given 3D tolerance (Tolerance3D).
         If f(t) is the equation of this B-Spline curve, the parametric tolerance
         ensures that:
-        |t1-t0| < UTolerance =""==> |f(t1)-f(t0)| < Tolerance3D"""
+        |t1-t0| < UTolerance ===> |f(t1)-f(t0)| < Tolerance3D"""
 
     def getWeight(self, arg1: int, /):
         """Get a weight of the B-Spline curve."""
@@ -5853,7 +5853,7 @@ class BezierCurve2d(Part.Curve2d):
         for a given 3D tolerance (Tolerance3D).
         If f(t) is the equation of this Bezier curve, the parametric tolerance
         ensures that:
-        |t1-t0| < UTolerance =""==> |f(t1)-f(t0)| < Tolerance3D"""
+        |t1-t0| < UTolerance ===> |f(t1)-f(t0)| < Tolerance3D"""
 
     def getWeight(self, arg1: int, /):
         """Get a weight of the Bezier curve."""

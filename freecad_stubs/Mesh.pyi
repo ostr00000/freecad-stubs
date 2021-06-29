@@ -151,14 +151,14 @@ class Feature(FreeCAD.GeoFeature):
     """The Mesh::Feature class handles meshes.
     The Mesh.MeshFeature() function is for internal use only and cannot be used to create instances of this class.
     Therefore you must have a reference to a document, e.g. 'd' then you can create an instance with
-    d.addObject(\"Mesh::Feature\").
+    d.addObject("Mesh::Feature").
     			"""
 
     def __init__(self):
         """The Mesh::Feature class handles meshes.
         The Mesh.MeshFeature() function is for internal use only and cannot be used to create instances of this class.
         Therefore you must have a reference to a document, e.g. 'd' then you can create an instance with
-        d.addObject(\"Mesh::Feature\").
+        d.addObject("Mesh::Feature").
         			"""
 
     def fixDegenerations(self, arg1: float = None, /):
@@ -208,7 +208,7 @@ class MeshObject(FreeCAD.ComplexGeoData):
       m = Mesh.Mesh()
       ... # Manipulate the mesh
       d = FreeCAD.activeDocument() # Get a reference to the actie document
-      f = d.addObject(\"Mesh::Feature\", \"Mesh\") # Create a mesh feature
+      f = d.addObject("Mesh::Feature", "Mesh") # Create a mesh feature
       f.Mesh = m # Assign the mesh object to the internal property
       d.recompute()"""
 
@@ -224,7 +224,7 @@ class MeshObject(FreeCAD.ComplexGeoData):
           m = Mesh.Mesh()
           ... # Manipulate the mesh
           d = FreeCAD.activeDocument() # Get a reference to the actie document
-          f = d.addObject(\"Mesh::Feature\", \"Mesh\") # Create a mesh feature
+          f = d.addObject("Mesh::Feature", "Mesh") # Create a mesh feature
           f.Mesh = m # Assign the mesh object to the internal property
           d.recompute()"""
 

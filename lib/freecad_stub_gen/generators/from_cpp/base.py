@@ -1,11 +1,10 @@
 import dataclasses
 import logging
 import re
+from abc import ABC
 from collections import defaultdict
 from itertools import chain
 from typing import Any, Iterable, DefaultDict, Optional
-
-from more_itertools import islice_extended
 
 from freecad_stub_gen.generators.method.arg_suit_merger import mergeArgSuitesGen
 from freecad_stub_gen.generators.method.doc_string import generateArgSuitFromDocstring
@@ -35,12 +34,13 @@ class Method:
 
         self.pythonMethodName = self.args[0]
         self.cClass, self.cFunction = self._parsePointer(self.args[1])
-        try:
-            self.doc = re.sub(
-                self.REG_WHITESPACE_WITH_APOSTROPHE, '', self.args[-1]
-            ).replace('\\n', '\n')
-        except IndexError:
-            pass
+        if len(self.args) > 2:
+            try:
+                self.doc = re.sub(
+                    self.REG_WHITESPACE_WITH_APOSTROPHE, '', self.args[-1]
+                ).replace('\\n', '\n')
+            except IndexError:
+                pass
 
     REG_POINTER = re.compile(r'(?:\w+::)*?(?:(?P<class>\w+)::)?\b(?P<func>\w+)\b\W*$')
 
@@ -67,44 +67,38 @@ class PyMethodDef(Method):
         self.flags = self.args[2]
 
 
-class FreecadStubGeneratorFromMethods(FormatFinder):
-
+class FreecadStubGeneratorFromCpp(FormatFinder, ABC):
     def getStub(self) -> Optional[StubContainer]:
-        if result := ''.join(self._genAllMethods()).rstrip():
+        if result := ''.join(self._genStub()).rstrip():
             header = f'# {self.baseGenFilePath.name}\n'
             return StubContainer(header + result + '\n\n', self.requiredImports)
 
-    def _genAllMethods(self) -> Iterable[str]:
+    def _genStub(self) -> Iterable:
+        raise NotImplementedError
+
+    def _genAllMethods(self, it: Iterable[Method], firstArgName='',
+                       functionSpacing: int = 1) -> Iterable[str]:
         methodNameToMethod: DefaultDict[str, list[Method]] = defaultdict(list)
-        for method in chain(self._findArrayGen(), self._findFunctionCallsGen()):
+        for method in it:
             methodNameToMethod[method.pythonMethodName].append(method)
 
         for methods in methodNameToMethod.values():
-            docContent = next((met.doc for met in methods), None)
+            if firstArgName:
+                for m in methods:
+                    m.pythonArgs = f'{firstArgName}{", " if m.pythonArgs else ""}{m.pythonArgs}'
+
+            docContent = next((met.doc for met in methods if met.doc is not None), None)
             uniqueMethods = list({str(m): m for m in methods}.values())
             yield self.convertMethodToStr(
                 methods[0].pythonMethodName, uniqueMethods,
-                docContent, functionSpacing=2)
-
-    REG_METHOD_DEF = re.compile(r'PyMethodDef(?!\s*\*)')
-
-    def _findArrayGen(self) -> Iterable[Method]:
-        """Based on https://docs.python.org/3/c-api/structures.html#c.PyMethodDef"""
-        for match in self.REG_METHOD_DEF.finditer(self.impContent):
-            start, end = match.span()
-            arrayStr = findFunctionCall(self.impContent, start)
-            arrayStrStartPos = arrayStr.find('{') + 1
-
-            for arrayElemText in islice_extended(generateExpressionUntilChar(
-                    arrayStr, arrayStrStartPos, ',', bracketL='{', bracketR='}'), -1):
-                arrayElemStartPos = arrayElemText.find('{') + 1
-                method = PyMethodDef(list(
-                    generateExpressionUntilChar(arrayElemText, arrayElemStartPos, ',')))
-                yield from self._genMethodWithArgs(method)
+                docContent, functionSpacing=functionSpacing)
 
     def _genMethodWithArgs(self, method: Method) -> Iterable[Method]:
-        docSuites = list(generateArgSuitFromDocstring(
-            method.pythonMethodName, method.doc))
+        if method.doc is None:
+            docSuites = []
+        else:
+            docSuites = list(generateArgSuitFromDocstring(
+                method.pythonMethodName, method.doc))
         codeSuites = list(self.generateArgFromCode(method.cFunction, method.cClass))
 
         yielded = False
@@ -122,14 +116,14 @@ class FreecadStubGeneratorFromMethods(FormatFinder):
     REG_VARGS_METHOD = re.compile('add_varargs_method')
     REG_KEYWORD_METHOD = re.compile('add_keyword_method')
 
-    def _findFunctionCallsGen(self) -> Iterable[Method]:
+    def _findFunctionCallsGen(self, content: str) -> Iterable[Method]:
         for match in chain(
-                self.REG_NOARGS_METHOD.finditer(self.impContent),
-                self.REG_VARGS_METHOD.finditer(self.impContent),
-                self.REG_KEYWORD_METHOD.finditer(self.impContent),
+                self.REG_NOARGS_METHOD.finditer(content),
+                self.REG_VARGS_METHOD.finditer(content),
+                self.REG_KEYWORD_METHOD.finditer(content),
         ):
             funcCall = findFunctionCall(
-                self.impContent, match.span()[0], bracketL='(', bracketR=')')
+                content, match.span()[0], bracketL='(', bracketR=')')
             funcCallStartPos = funcCall.find('(') + 1
             method = Method(list(generateExpressionUntilChar(
                 funcCall, funcCallStartPos, splitChar=',')))

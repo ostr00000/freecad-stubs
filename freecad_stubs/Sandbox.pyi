@@ -11,13 +11,18 @@ def DocumentObjectProtector(DocumentObject: FreeCAD.DocumentObject, /):
 
 
 # DocumentProtectorPy.cpp
-def addObject(type: str, name: str = None, /):
-    """addObject(type,name)"""
+class DocumentProtectorPy:
+    """Python binding class for the document protector class"""
+
+    def addObject(self, type: str, name: str = None, /):
+        """addObject(type,name)"""
+
+    def recompute(self):
+        """recompute()"""
 
 
-def recompute():
-    """recompute()"""
+class DocumentObjectProtectorPy:
+    """Python binding class for the document object protector class"""
 
-
-def purgeTouched():
-    """purgeTouched()"""
+    def purgeTouched(self):
+        """purgeTouched()"""

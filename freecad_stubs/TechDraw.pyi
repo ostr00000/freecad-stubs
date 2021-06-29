@@ -146,12 +146,3 @@ def viewPartAsDxf(DrawViewPart: object, /):
 
 def viewPartAsSvg(DrawViewPart: object, /):
     """string = viewPartAsSvg(DrawViewPart) -- Return the edges of a DrawViewPart in Svg format."""
-
-
-# AppTechDrawGuiPy.cpp
-def exportPageAsPdf(DrawPageObject: object, FilePath: str, /):
-    """exportPageAsPdf(DrawPageObject,FilePath) -- print page as Pdf to file."""
-
-
-def exportPageAsSvg(DrawPageObject: object, FilePath: str, /):
-    """exportPageAsSvg(DrawPageObject,FilePath) -- print page as Svg to file."""

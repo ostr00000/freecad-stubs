@@ -56,16 +56,13 @@ class PointKernel(FreeCAD.ComplexGeoData):
 
 
 # AppPointsPy.cpp
-def open(arg1: str, /):
-    """&Module::open"""
+def open(arg1: str, /): ...
 
 
-def insert(arg1: str, arg2: str, /):
-    """&Module::importer"""
+def insert(arg1: str, arg2: str, /): ...
 
 
-def export(arg1: object, arg2: str, /):
-    """&Module::exporter"""
+def export(arg1: object, arg2: str, /): ...
 
 
 def show(points: Points.PointKernel, string: str = None, /):

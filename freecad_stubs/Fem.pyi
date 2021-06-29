@@ -247,141 +247,155 @@ def show(shape: Fem.FemMesh, string: str = None, /):
 
 
 # HypothesisPy.cpp
-def setLibName(String):
-    """setLibName(String)"""
+class StdMeshers_Arithmetic1D:
+    """StdMeshers_Arithmetic1D"""
 
+    def setLength(self):
+        """setLength()"""
 
-def getLibName():
-    """String getLibName()"""
+    def getLength(self, arg1: int, /):
+        """getLength()"""
 
 
-def setParameters(String):
-    """setParameters(String)"""
+class StdMeshers_AutomaticLength:
+    """StdMeshers_AutomaticLength"""
 
+    def setFineness(self):
+        """setFineness()"""
 
-def getParameters():
-    """String getParameters()"""
+    def getFineness(self):
+        """getFineness()"""
 
+    def getLength(self):
+        """getLength()"""
 
-def setLastParameters():
-    """setLastParameters(String)"""
 
+class StdMeshers_MaxLength:
+    """StdMeshers_MaxLength"""
 
-def getLastParameters():
-    """String getLastParameters()"""
+    def setLength(self):
+        """setLength()"""
 
+    def getLength(self):
+        """getLength()"""
 
-def clearParameters():
-    """clearParameters()"""
+    def havePreestimatedLength(self):
+        """havePreestimatedLength()"""
 
+    def getPreestimatedLength(self):
+        """getPreestimatedLength()"""
 
-def isAuxiliary():
-    """Bool isAuxiliary()"""
+    def setPreestimatedLength(self):
+        """setPreestimatedLength()"""
 
+    def setUsePreestimatedLength(self):
+        """setUsePreestimatedLength()"""
 
-def setParametersByMesh(Mesh: Fem.FemMesh, Shape: Part.TopoShape, /):
-    """setParametersByMesh(Mesh,Shape)"""
+    def getUsePreestimatedLength(self):
+        """getUsePreestimatedLength()"""
 
 
-def setLength():
-    """setLength()"""
+class StdMeshers_LocalLength:
+    """StdMeshers_LocalLength"""
 
+    def setLength(self):
+        """setLength()"""
 
-@typing.overload
-def getLength(arg1: int, /): ...
+    def getLength(self):
+        """getLength()"""
 
+    def setPrecision(self):
+        """setPrecision()"""
 
-@typing.overload
-def getLength():
-    """getLength()"""
+    def getPrecision(self):
+        """getPrecision()"""
 
 
-def setFineness():
-    """setFineness()"""
+class StdMeshers_MaxElementArea:
+    """StdMeshers_MaxElementArea"""
 
+    def setMaxArea(self):
+        """setMaxArea()"""
 
-def getFineness():
-    """getFineness()"""
+    def getMaxArea(self):
+        """getMaxArea()"""
 
 
-def havePreestimatedLength():
-    """havePreestimatedLength()"""
+class StdMeshers_Deflection1D:
+    """StdMeshers_Deflection1D"""
 
+    def setDeflection(self):
+        """setDeflection()"""
 
-def getPreestimatedLength():
-    """getPreestimatedLength()"""
 
+class StdMeshers_StartEndLength:
+    """StdMeshers_StartEndLength"""
 
-def setPreestimatedLength():
-    """setPreestimatedLength()"""
+    def setLength(self):
+        """setLength()"""
 
+    def getLength(self):
+        """getLength()"""
 
-def setUsePreestimatedLength():
-    """setUsePreestimatedLength()"""
 
+class StdMeshers_SegmentLengthAroundVertex:
+    """StdMeshers_SegmentLengthAroundVertex"""
 
-def getUsePreestimatedLength():
-    """getUsePreestimatedLength()"""
+    def setLength(self):
+        """setLength()"""
 
+    def getLength(self):
+        """getLength()"""
 
-def setPrecision():
-    """setPrecision()"""
 
+class StdMeshers_NumberOfSegments:
+    """StdMeshers_NumberOfSegments"""
 
-def getPrecision():
-    """getPrecision()"""
+    def setNumberOfSegments(self):
+        """setNumberOfSegments()"""
 
+    def getNumberOfSegments(self):
+        """getNumberOfSegments()"""
 
-def setMaxArea():
-    """setMaxArea()"""
 
+class StdMeshers_NumberOfLayers:
+    """StdMeshers_NumberOfLayers"""
 
-def getMaxArea():
-    """getMaxArea()"""
+    def setNumberOfLayers(self):
+        """setNumberOfLayers()"""
 
+    def getNumberOfLayers(self):
+        """getNumberOfLayers()"""
 
-def setDeflection():
-    """setDeflection()"""
 
+class StdMeshers_MaxElementVolume:
+    """StdMeshers_MaxElementVolume"""
 
-def setNumberOfSegments():
-    """setNumberOfSegments()"""
+    def setMaxVolume(self):
+        """setMaxVolume()"""
 
+    def getMaxVolume(self):
+        """getMaxVolume()"""
 
-def getNumberOfSegments():
-    """getNumberOfSegments()"""
 
+class StdMeshers_LengthFromEdges:
+    """StdMeshers_LengthFromEdges"""
 
-def setNumberOfLayers():
-    """setNumberOfLayers()"""
+    def setMode(self):
+        """setMode()"""
 
+    def getMode(self):
+        """getMode()"""
 
-def getNumberOfLayers():
-    """getNumberOfLayers()"""
 
+class StdMeshers_LayerDistribution:
+    """StdMeshers_LayerDistribution"""
 
-def setMaxVolume():
-    """setMaxVolume()"""
+    def setLayerDistribution(self):
+        """setLayerDistribution()"""
 
-
-def getMaxVolume():
-    """getMaxVolume()"""
-
-
-def setMode():
-    """setMode()"""
-
-
-def getMode():
-    """getMode()"""
-
-
-def setLayerDistribution():
-    """setLayerDistribution()"""
-
-
-def getLayerDistribution():
-    """getLayerDistribution()"""
+    def getLayerDistribution(self):
+        """getLayerDistribution()"""
 
 
 # ViewProviderFemMeshPy.xml
@@ -426,20 +440,3 @@ class ViewProviderFemMesh(FreeCADGui.ViewProviderDocumentObject):
         """Sets mesh node colors using element list and value list."""
 
     def setNodeDisplacementByVectors(self, arg1: list, arg2: list, /): ...
-
-
-# AppFemGuiPy.cpp
-def setActiveAnalysis(AnalysisObject: FreeCAD.DocumentObject = None, /):
-    """setActiveAnalysis(AnalysisObject) -- Set the Analysis object in work."""
-
-
-def getActiveAnalysis():
-    """getActiveAnalysis() -- Returns the Analysis object in work."""
-
-
-def open(arg1: str, arg2: str = None, /):
-    """open(string) -- Opens an Abaqus file in a text editor."""
-
-
-def insert(string: str, string1: str = None, /):
-    """insert(string,string) -- Opens an Abaqus file in a text editor."""
