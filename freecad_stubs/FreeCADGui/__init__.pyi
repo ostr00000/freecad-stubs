@@ -756,21 +756,17 @@ class Document(FreeCAD.Persistence):
 class MDIViewPy:
     """Python binding class for the MDI view class"""
 
-    @staticmethod
-    def message(arg1: str, /):
+    def message(self, arg1: str, /):
         """message()"""
 
-    @staticmethod
-    def fitAll():
+    def fitAll(self):
         """fitAll()"""
 
-    @staticmethod
-    def setActiveObject(name: str, object: object = None, subname: str = None, /):
+    def setActiveObject(self, name: str, object: object = None, subname: str = None, /):
         """setActiveObject(name,object,subname=None)
         add or set a new active object"""
 
-    @staticmethod
-    def getActiveObject(name: str, resolve: object = True, /):
+    def getActiveObject(self, name: str, resolve: object = True, /):
         """getActiveObject(name,resolve=True)
         returns the active object for the given type"""
 
@@ -799,60 +795,46 @@ def getSoDBVersion():
 class View3DInventorPy:
     """Python binding class for the Inventor viewer class"""
 
-    @staticmethod
-    def message(arg1: str, /):
+    def message(self, arg1: str, /):
         """message()"""
 
-    @staticmethod
-    def fitAll(arg1: float = None, /):
+    def fitAll(self, arg1: float = None, /):
         """fitAll()"""
 
-    @staticmethod
-    def viewBottom():
+    def viewBottom(self):
         """viewBottom()"""
 
-    @staticmethod
-    def viewFront():
+    def viewFront(self):
         """viewFront()"""
 
-    @staticmethod
-    def viewLeft():
+    def viewLeft(self):
         """viewLeft()"""
 
-    @staticmethod
-    def viewRear():
+    def viewRear(self):
         """viewRear()"""
 
-    @staticmethod
-    def viewRight():
+    def viewRight(self):
         """viewRight()"""
 
-    @staticmethod
-    def viewTop():
+    def viewTop(self):
         """viewTop()"""
 
-    @staticmethod
-    def viewAxometric():
+    def viewAxometric(self):
         """viewAxonometric()"""
 
-    @staticmethod
-    def viewAxonometric():
+    def viewAxonometric(self):
         """viewAxonometric()"""
 
-    @staticmethod
-    def viewIsometric():
+    def viewIsometric(self):
         """viewIsometric()"""
 
-    @staticmethod
-    def viewDimetric():
+    def viewDimetric(self):
         """viewDimetric()"""
 
-    @staticmethod
-    def viewTrimetric():
+    def viewTrimetric(self):
         """viewTrimetric()"""
 
-    @staticmethod
-    def viewDefaultOrientation(ori_str: str = '', scale: float = -1.0, /):
+    def viewDefaultOrientation(self, ori_str: str = '', scale: float = -1.0, /):
         """viewDefaultOrientation(ori_str = '', scale = -1.0): sets camera rotation to a predefined one, 
         and camera position and zoom to show certain amount of model space. 
         ori_string can be 'Top', 'Bottom', 'Front', 'Rear', 'Left', 'Right', 
@@ -863,134 +845,104 @@ class View3DInventorPy:
         viewport. If zero, scaling is not done. If negative, the value is 
         fetched from Parameters."""
 
-    @staticmethod
-    def viewRotateLeft():
+    def viewRotateLeft(self):
         """viewRotateLeft()"""
 
-    @staticmethod
-    def viewRotateRight():
+    def viewRotateRight(self):
         """viewRotateRight()"""
 
-    @staticmethod
-    def zoomIn():
+    def zoomIn(self):
         """zoomIn()"""
 
-    @staticmethod
-    def zoomOut():
+    def zoomOut(self):
         """zoomOut()"""
 
-    @staticmethod
-    def viewPosition(arg1: FreeCAD.Placement = None, arg2: int = None, arg3: int = None, /):
+    def viewPosition(self, arg1: FreeCAD.Placement = None, arg2: int = None, arg3: int = None, /):
         """viewPosition()"""
 
-    @staticmethod
-    def startAnimating(arg1: float, arg2: float, arg3: float, arg4: float, /):
+    def startAnimating(self, arg1: float, arg2: float, arg3: float, arg4: float, /):
         """startAnimating()"""
 
-    @staticmethod
-    def stopAnimating():
+    def stopAnimating(self):
         """stopAnimating()"""
 
-    @staticmethod
-    def setAnimationEnabled(arg1: int, /):
+    def setAnimationEnabled(self, arg1: int, /):
         """setAnimationEnabled()"""
 
-    @staticmethod
-    def isAnimationEnabled():
+    def isAnimationEnabled(self):
         """isAnimationEnabled()"""
 
-    @staticmethod
-    def dump(filename: str, onlyVisible: object = False, /):
+    def dump(self, filename: str, onlyVisible: object = False, /):
         """dump(filename, [onlyVisible=False])"""
 
-    @staticmethod
-    def dumpNode(node: object, /):
+    def dumpNode(self, node: object, /):
         """dumpNode(node)"""
 
-    @staticmethod
     @typing.overload
-    def setStereoType(arg1: int, /): ...
+    def setStereoType(self, arg1: int, /): ...
 
-    @staticmethod
     @typing.overload
-    def setStereoType(arg1: str, /):
+    def setStereoType(self, arg1: str, /):
         """setStereoType()"""
 
-    @staticmethod
-    def getStereoType():
+    def getStereoType(self):
         """getStereoType()"""
 
-    @staticmethod
-    def listStereoTypes():
+    def listStereoTypes(self):
         """listStereoTypes()"""
 
-    @staticmethod
-    def saveImage(arg1: str, arg2: int = None, arg3: int = None, arg4: str = None, arg5: str = None, arg6: int = None, /):
+    def saveImage(self, arg1: str, arg2: int = None, arg3: int = None, arg4: str = None, arg5: str = None, arg6: int = None, /):
         """saveImage()"""
 
-    @staticmethod
-    def saveVectorGraphic(arg1: str, arg2: int = None, arg3: str = None, /):
+    def saveVectorGraphic(self, arg1: str, arg2: int = None, arg3: str = None, /):
         """saveVectorGraphic()"""
 
-    @staticmethod
-    def getCamera():
+    def getCamera(self):
         """getCamera()"""
 
-    @staticmethod
-    def getCameraNode():
+    def getCameraNode(self):
         """getCameraNode()"""
 
-    @staticmethod
-    def getViewDirection():
+    def getViewDirection(self):
         """getViewDirection() --> tuple of integers
         returns the direction vector the view is currently pointing at as tuple with xyz values
         """
 
-    @staticmethod
-    def setViewDirection(tuple: object, /):
+    def setViewDirection(self, tuple: object, /):
         """setViewDirection(tuple) --> None
         Sets the direction the view is pointing at. The direction must be given as tuple with
         three coordinates xyz"""
 
-    @staticmethod
-    def setCamera(arg1: str, /):
+    def setCamera(self, arg1: str, /):
         """setCamera()"""
 
-    @staticmethod
-    def setCameraOrientation(arg1: object, arg2: bool = None, /):
+    def setCameraOrientation(self, arg1: object, arg2: bool = None, /):
         """setCameraOrientation()"""
 
-    @staticmethod
-    def getCameraOrientation():
+    def getCameraOrientation(self):
         """getCameraOrientation()"""
 
-    @staticmethod
-    def getCameraType():
+    def getCameraType(self):
         """getCameraType()"""
 
-    @staticmethod
     @typing.overload
-    def setCameraType(arg1: int, /): ...
+    def setCameraType(self, arg1: int, /): ...
 
-    @staticmethod
     @typing.overload
-    def setCameraType(arg1: str, /):
+    def setCameraType(self, arg1: str, /):
         """setCameraType()"""
 
-    @staticmethod
-    def listCameraTypes():
+    def listCameraTypes(self):
         """listCameraTypes()"""
 
-    @staticmethod
-    def getCursorPos():
+    def getCursorPos(self):
         """getCursorPos() -> tuple of integers
 
         Return the current cursor position relative to the coordinate system of the
         viewport region.
         """
 
-    @staticmethod
-    def getObjectInfo(tuple_int_int_: object, pick_radius: float = None, /):
+    def getObjectInfo(self, tuple_int_int_: object, pick_radius: float = None, /):
         """getObjectInfo(tuple(int,int), [pick_radius]) -> dictionary or None
 
         Return a dictionary with the name of document, object and component. The
@@ -999,146 +951,116 @@ class View3DInventorPy:
         If no geometry was found 'None' is returned, instead.
         """
 
-    @staticmethod
-    def getObjectsInfo(tuple_int_int_: object, pick_radius: float = None, /):
+    def getObjectsInfo(self, tuple_int_int_: object, pick_radius: float = None, /):
         """getObjectsInfo(tuple(int,int), [pick_radius]) -> dictionary or None
 
         Does the same as getObjectInfo() but returns a list of dictionaries or None.
         """
 
-    @staticmethod
-    def getSize():
+    def getSize(self):
         """getSize()"""
 
-    @staticmethod
-    def getPoint(arg1: int, arg2: int, /):
+    def getPoint(self, arg1: int, arg2: int, /):
         """getPoint(pixel coords (as integer)) -> 3D vector
 
         Return the according 3D point on the focal plane to the given 2D point (in
         pixel coordinates).
         """
 
-    @staticmethod
-    def getPointOnScreen(arg: FreeCAD.Vector, /):
+    def getPointOnScreen(self, arg: FreeCAD.Vector, /):
         """getPointOnScreen(3D vector) -> pixel coords (as integer)
 
         Return the projected 3D point (in pixel coordinates).
         """
 
-    @staticmethod
-    def addEventCallback(arg1: str, arg2: object, /):
+    def addEventCallback(self, arg1: str, arg2: object, /):
         """addEventCallback()"""
 
-    @staticmethod
-    def removeEventCallback(arg1: str, arg2: object, /):
+    def removeEventCallback(self, arg1: str, arg2: object, /):
         """removeEventCallback()"""
 
-    @staticmethod
-    def setAnnotation(arg1: str, arg2: str, /):
+    def setAnnotation(self, arg1: str, arg2: str, /):
         """setAnnotation()"""
 
-    @staticmethod
-    def removeAnnotation(arg1: str, /):
+    def removeAnnotation(self, arg1: str, /):
         """removeAnnotation()"""
 
-    @staticmethod
-    def getSceneGraph():
+    def getSceneGraph(self):
         """getSceneGraph()"""
 
-    @staticmethod
-    def getViewer():
+    def getViewer(self):
         """getViewer()"""
 
-    @staticmethod
-    def addEventCallbackPivy(arg1: object, arg2: object, arg3: int = None, /):
+    def addEventCallbackPivy(self, arg1: object, arg2: object, arg3: int = None, /):
         """addEventCallbackPivy()"""
 
-    @staticmethod
-    def removeEventCallbackPivy(arg1: object, arg2: object, arg3: int = None, /):
+    def removeEventCallbackPivy(self, arg1: object, arg2: object, arg3: int = None, /):
         """removeEventCallbackPivy()"""
 
-    @staticmethod
-    def addEventCallbackSWIG(arg1: object, arg2: object, arg3: int = None, /):
+    def addEventCallbackSWIG(self, arg1: object, arg2: object, arg3: int = None, /):
         """Deprecated -- use addEventCallbackPivy()"""
 
-    @staticmethod
-    def removeEventCallbackSWIG(arg1: object, arg2: object, arg3: int = None, /):
+    def removeEventCallbackSWIG(self, arg1: object, arg2: object, arg3: int = None, /):
         """Deprecated -- use removeEventCallbackPivy()"""
 
-    @staticmethod
-    def listNavigationTypes():
+    def listNavigationTypes(self):
         """listNavigationTypes()"""
 
-    @staticmethod
-    def getNavigationType():
+    def getNavigationType(self):
         """getNavigationType()"""
 
-    @staticmethod
-    def setNavigationType(arg1: str, /):
+    def setNavigationType(self, arg1: str, /):
         """setNavigationType()"""
 
-    @staticmethod
-    def setAxisCross(arg1: int, /):
+    def setAxisCross(self, arg1: int, /):
         """switch the big axis-cross on and off"""
 
-    @staticmethod
-    def hasAxisCross():
+    def hasAxisCross(self):
         """check if the big axis-cross is on or off()"""
 
-    @staticmethod
-    def addDraggerCallback(SoDragger: object, String_CallbackType: str, function: object, /):
+    def addDraggerCallback(self, SoDragger: object, String_CallbackType: str, function: object, /):
         """addDraggerCallback(SoDragger, String CallbackType, function)
         Add a DraggerCalback function to the coin node
         Possibles types :
         'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'
         """
 
-    @staticmethod
-    def removeDraggerCallback(SoDragger: object, String_CallbackType: str, function: object, /):
+    def removeDraggerCallback(self, SoDragger: object, String_CallbackType: str, function: object, /):
         """removeDraggerCallback(SoDragger, String CallbackType, function)
         Remove the DraggerCalback function from the coin node
         Possibles types :
         'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'
         """
 
-    @staticmethod
-    def setActiveObject(name: str, object: object = None, subname: str = None, /):
+    def setActiveObject(self, name: str, object: object = None, subname: str = None, /):
         """setActiveObject(name,object,subname=None)
         add or set a new active object"""
 
-    @staticmethod
-    def getActiveObject(name: str, resolve: object = True, /):
+    def getActiveObject(self, name: str, resolve: object = True, /):
         """getActiveObject(name,resolve=True)
         returns the active object for the given type"""
 
-    @staticmethod
-    def getViewProvidersOfType(name: str, /):
+    def getViewProvidersOfType(self, name: str, /):
         """getViewProvidersOfType(name)
         returns a list of view providers for the given type"""
 
-    @staticmethod
-    def redraw():
+    def redraw(self):
         """redraw(): renders the scene on screen (useful for animations)"""
 
-    @staticmethod
-    def setName(str: str, /):
+    def setName(self, str: str, /):
         """setName(str): sets a name to this viewer
         The name sets the widget's windowTitle and appears on the viewer tab"""
 
-    @staticmethod
-    def hasClippingPlane():
+    def hasClippingPlane(self):
         """hasClippingPlane(): check whether this clipping plane is active"""
 
-    @staticmethod
-    def graphicsView():
+    def graphicsView(self):
         """graphicsView(): Access this view as QGraphicsView"""
 
-    @staticmethod
-    def boxZoom(XMin: int, YMin: int, XMax: int, YMax: int):
+    def boxZoom(self, XMin: int, YMin: int, XMax: int, YMax: int):
         """boxZoom()"""
 
-    @staticmethod
-    def toggleClippingPlane(toggle: int = None, beforeEditing: object = None, noManip: object = None, pla: FreeCAD.Placement = None):
+    def toggleClippingPlane(self, toggle: int = None, beforeEditing: object = None, noManip: object = None, pla: FreeCAD.Placement = None):
         """toggleClippingPlane(toggle=-1, beforeEditing=False, noManip=True, pla=App.Placement()
         Toggle a global clipping plane
 
@@ -1152,101 +1074,83 @@ class View3DInventorPy:
 class UiLoader:
     """UiLoader to create widgets"""
 
-    @staticmethod
     @typing.overload
-    def load(string, QWidget_parent = None): ...
+    def load(self, string, QWidget_parent = None): ...
 
-    @staticmethod
     @typing.overload
-    def load(QIODevice, QWidget_parent = None):
+    def load(self, QIODevice, QWidget_parent = None):
         """load(string, QWidget parent=None) -> QWidget
         load(QIODevice, QWidget parent=None) -> QWidget"""
 
-    @staticmethod
-    def createWidget():
+    def createWidget(self):
         """createWidget()"""
 
 
 class PyResource:
     """PyResource"""
 
-    @staticmethod
-    def value(arg1: str, arg2: str, /): ...
+    def value(self, arg1: str, arg2: str, /): ...
 
-    @staticmethod
-    def setValue(arg1: str, arg2: str, arg3: object, /): ...
+    def setValue(self, arg1: str, arg2: str, arg3: object, /): ...
 
 
 # PythonConsolePy.cpp
 class PythonStdout:
     """Redirection of stdout to FreeCAD's Python console window"""
 
-    @staticmethod
-    def isatty():
+    def isatty(self):
         """isatty()"""
 
-    @staticmethod
-    def write():
+    def write(self):
         """write()"""
 
-    @staticmethod
-    def flush():
+    def flush(self):
         """flush()"""
 
 
 class PythonStderr:
     """Redirection of stdout to FreeCAD's Python console window"""
 
-    @staticmethod
-    def isatty():
+    def isatty(self):
         """isatty()"""
 
-    @staticmethod
-    def write():
+    def write(self):
         """write()"""
 
-    @staticmethod
-    def flush():
+    def flush(self):
         """flush()"""
 
 
 class OutputStdout:
     """Redirection of stdout to FreeCAD's output window"""
 
-    @staticmethod
-    def isatty():
+    def isatty(self):
         """isatty()"""
 
-    @staticmethod
-    def write():
+    def write(self):
         """write()"""
 
-    @staticmethod
-    def flush():
+    def flush(self):
         """flush()"""
 
 
 class OutputStderr:
     """Redirection of stdout to FreeCAD's output window"""
 
-    @staticmethod
-    def isatty():
+    def isatty(self):
         """isatty()"""
 
-    @staticmethod
-    def write():
+    def write(self):
         """write()"""
 
-    @staticmethod
-    def flush():
+    def flush(self):
         """flush()"""
 
 
 class PythonStdin:
     """Redirection of stdin to FreeCAD to open an input dialog"""
 
-    @staticmethod
-    def readline():
+    def readline(self):
         """readline()"""
 
 
@@ -1254,48 +1158,37 @@ class PythonStdin:
 class AbstractSplitViewPy:
     """Python binding class for the Inventor viewer class"""
 
-    @staticmethod
-    def fitAll():
+    def fitAll(self):
         """fitAll()"""
 
-    @staticmethod
-    def viewBottom():
+    def viewBottom(self):
         """viewBottom()"""
 
-    @staticmethod
-    def viewFront():
+    def viewFront(self):
         """viewFront()"""
 
-    @staticmethod
-    def viewLeft():
+    def viewLeft(self):
         """viewLeft()"""
 
-    @staticmethod
-    def viewRear():
+    def viewRear(self):
         """viewRear()"""
 
-    @staticmethod
-    def viewRight():
+    def viewRight(self):
         """viewRight()"""
 
-    @staticmethod
-    def viewTop():
+    def viewTop(self):
         """viewTop()"""
 
-    @staticmethod
-    def viewAxometric():
+    def viewAxometric(self):
         """viewAxometric()"""
 
-    @staticmethod
-    def viewIsometric():
+    def viewIsometric(self):
         """viewIsometric()"""
 
-    @staticmethod
-    def getViewer(index: int, /):
+    def getViewer(self, index: int, /):
         """getViewer(index)"""
 
-    @staticmethod
-    def close():
+    def close(self):
         """close()"""
 
 
@@ -1308,22 +1201,18 @@ class SelectionFilter:
     "SELECT Part::Feature COUNT 1..5"
     """
 
-    @staticmethod
-    def match():
+    def match(self):
         """Check if the current selection matches the filter"""
 
-    @staticmethod
-    def result():
+    def result(self):
         """If match() returns True then with result() you get a list of the matching objects"""
 
-    @staticmethod
-    def test(Feature: FreeCAD.DocumentObject, SubName: str = '', /):
+    def test(self, Feature: FreeCAD.DocumentObject, SubName: str = '', /):
         """test(Feature, SubName='')
         Test if a given object is described in the filter.
         If SubName is not empty the sub-element gets also tested."""
 
-    @staticmethod
-    def setFilter(arg1: str, /):
+    def setFilter(self, arg1: str, /):
         """Set a new selection filter"""
 
 
@@ -1331,16 +1220,14 @@ class SelectionFilter:
 class PythonDebugStdout:
     """Redirection of stdout to FreeCAD's Python debugger window"""
 
-    @staticmethod
-    def write(arg1: str, /):
+    def write(self, arg1: str, /):
         """write to stdout"""
 
 
 class PythonDebugStderr:
     """Redirection of stderr to FreeCAD's Python debugger window"""
 
-    @staticmethod
-    def write(arg1: str, /):
+    def write(self, arg1: str, /):
         """write to stderr"""
 
 
@@ -1642,28 +1529,22 @@ def coinRemoveAllChildren(arg1: object, /):
 class ExpressionBinding:
     """Python interface class for ExpressionBinding"""
 
-    @staticmethod
-    def bind(arg1: FreeCAD.DocumentObject, arg2: str, /):
+    def bind(self, arg1: FreeCAD.DocumentObject, arg2: str, /):
         """Bind with an expression"""
 
-    @staticmethod
-    def isBound():
+    def isBound(self):
         """Check if already bound with an expression"""
 
-    @staticmethod
-    def apply(arg1: str, /):
+    def apply(self, arg1: str, /):
         """apply"""
 
-    @staticmethod
-    def hasExpression():
+    def hasExpression(self):
         """hasExpression"""
 
-    @staticmethod
-    def autoApply():
+    def autoApply(self):
         """autoApply"""
 
-    @staticmethod
-    def setAutoApply(arg1: bool, /):
+    def setAutoApply(self, arg1: bool, /):
         """setAutoApply"""
 
 
@@ -1671,32 +1552,27 @@ class ExpressionBinding:
 class View3DInventorViewerPy:
     """Python binding class for the 3D viewer class"""
 
-    @staticmethod
-    def getSoRenderManager():
+    def getSoRenderManager(self):
         """getSoRenderManager() -> SoRenderManager
         Returns the render manager which is used to handle everything related to
         rendering the scene graph. It can be used to get full control over the
         render process
         """
 
-    @staticmethod
-    def getSoEventManager():
+    def getSoEventManager(self):
         """getSoEventManager() -> SoEventManager
         Returns the event manager which is used to handle everything event related in
         the viewer. It can be used to change the event processing. This must however be
         done very carefully to not change the user interaction in an unpredictable manner.
         """
 
-    @staticmethod
-    def getSceneGraph():
+    def getSceneGraph(self):
         """getSceneGraph() -> SoNode"""
 
-    @staticmethod
-    def setSceneGraph(SoNode: object, /):
+    def setSceneGraph(self, SoNode: object, /):
         """setSceneGraph(SoNode)"""
 
-    @staticmethod
-    def seekToPoint(tuple: object, /):
+    def seekToPoint(self, tuple: object, /):
         """seekToPoint(tuple) -> None
         Initiate a seek action towards the 3D intersection of the scene and the
         ray from the screen coordinate's point and in the same direction as the
@@ -1705,62 +1581,49 @@ class View3DInventorViewerPy:
         calculated. If three entries are given it is interpreted as the intersection
         point xyz and the seek is done towards this point"""
 
-    @staticmethod
-    def setFocalDistance(float: float, /):
+    def setFocalDistance(self, float: float, /):
         """setFocalDistance(float) -> None
         """
 
-    @staticmethod
-    def getFocalDistance():
+    def getFocalDistance(self):
         """getFocalDistance() -> float
         """
 
-    @staticmethod
-    def getPoint(x: int, y: int, /):
+    def getPoint(self, x: int, y: int, /):
         """getPoint(x, y) -> Base::Vector(x,y,z)"""
 
-    @staticmethod
-    def getPickRadius():
+    def getPickRadius(self):
         """getPickRadius(): returns radius of confusion in pixels for picking objects on screen (selection)."""
 
-    @staticmethod
-    def setPickRadius(new_radius: float, /):
+    def setPickRadius(self, new_radius: float, /):
         """setPickRadius(new_radius): sets radius of confusion in pixels for picking objects on screen (selection)."""
 
-    @staticmethod
-    def setupEditingRoot(arg1: object = None, arg2: FreeCAD.Matrix = None, /):
+    def setupEditingRoot(self, arg1: object = None, arg2: FreeCAD.Matrix = None, /):
         """setupEditingRoot(matrix=None): setup the editing ViewProvider's root node.
         All child coin nodes of the current editing ViewProvider will be transferred to
         an internal editing node of this viewer, with a new transformation node specified
         by 'matrix'. All ViewProviderLink to the editing ViewProvider will be temporary
         hidden. Call resetEditingRoot() to restore everything back to normal"""
 
-    @staticmethod
-    def resetEditingRoot(updateLinks: object = True, /):
+    def resetEditingRoot(self, updateLinks: object = True, /):
         """resetEditingRoot(updateLinks=True): restore the editing ViewProvider's root node"""
 
-    @staticmethod
-    def setBackgroundColor(r: float, g: float, b: float, /):
+    def setBackgroundColor(self, r: float, g: float, b: float, /):
         """setBackgroundColor(r,g,b): sets the background color of the current viewer."""
 
-    @staticmethod
-    def setRedirectToSceneGraph(bool: bool, /):
+    def setRedirectToSceneGraph(self, bool: bool, /):
         """setRedirectToSceneGraph(bool): enables or disables to redirect events directly to the scene graph."""
 
-    @staticmethod
-    def isRedirectedToSceneGraph():
+    def isRedirectedToSceneGraph(self):
         """isRedirectedToSceneGraph() -> bool: check whether event redirection is enabled."""
 
-    @staticmethod
-    def setEnabledNaviCube(bool: bool, /):
+    def setEnabledNaviCube(self, bool: bool, /):
         """setEnabledNaviCube(bool): enables or disables the navi cube of the viewer."""
 
-    @staticmethod
-    def isEnabledNaviCube():
+    def isEnabledNaviCube(self):
         """isEnabledNaviCube() -> bool: check whether the navi cube is enabled."""
 
-    @staticmethod
-    def setNaviCubeCorner(int: int, /):
+    def setNaviCubeCorner(self, int: int, /):
         """setNaviCubeCorner(int): sets the corner where to show the navi cube:
         0=top left, 1=top right, 2=bottom left, 3=bottom right"""
 

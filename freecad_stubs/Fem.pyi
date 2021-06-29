@@ -289,184 +289,151 @@ def show(shape: Fem.FemMesh, string: str = None, /):
 class StdMeshers_Arithmetic1D:
     """StdMeshers_Arithmetic1D"""
 
-    @staticmethod
-    def setLength():
+    def setLength(self):
         """setLength()"""
 
-    @staticmethod
-    def getLength(arg1: int, /):
+    def getLength(self, arg1: int, /):
         """getLength()"""
 
 
 class StdMeshers_AutomaticLength:
     """StdMeshers_AutomaticLength"""
 
-    @staticmethod
-    def setFineness():
+    def setFineness(self):
         """setFineness()"""
 
-    @staticmethod
-    def getFineness():
+    def getFineness(self):
         """getFineness()"""
 
-    @staticmethod
-    def getLength():
+    def getLength(self):
         """getLength()"""
 
 
 class StdMeshers_MaxLength:
     """StdMeshers_MaxLength"""
 
-    @staticmethod
-    def setLength():
+    def setLength(self):
         """setLength()"""
 
-    @staticmethod
-    def getLength():
+    def getLength(self):
         """getLength()"""
 
-    @staticmethod
-    def havePreestimatedLength():
+    def havePreestimatedLength(self):
         """havePreestimatedLength()"""
 
-    @staticmethod
-    def getPreestimatedLength():
+    def getPreestimatedLength(self):
         """getPreestimatedLength()"""
 
-    @staticmethod
-    def setPreestimatedLength():
+    def setPreestimatedLength(self):
         """setPreestimatedLength()"""
 
-    @staticmethod
-    def setUsePreestimatedLength():
+    def setUsePreestimatedLength(self):
         """setUsePreestimatedLength()"""
 
-    @staticmethod
-    def getUsePreestimatedLength():
+    def getUsePreestimatedLength(self):
         """getUsePreestimatedLength()"""
 
 
 class StdMeshers_LocalLength:
     """StdMeshers_LocalLength"""
 
-    @staticmethod
-    def setLength():
+    def setLength(self):
         """setLength()"""
 
-    @staticmethod
-    def getLength():
+    def getLength(self):
         """getLength()"""
 
-    @staticmethod
-    def setPrecision():
+    def setPrecision(self):
         """setPrecision()"""
 
-    @staticmethod
-    def getPrecision():
+    def getPrecision(self):
         """getPrecision()"""
 
 
 class StdMeshers_MaxElementArea:
     """StdMeshers_MaxElementArea"""
 
-    @staticmethod
-    def setMaxArea():
+    def setMaxArea(self):
         """setMaxArea()"""
 
-    @staticmethod
-    def getMaxArea():
+    def getMaxArea(self):
         """getMaxArea()"""
 
 
 class StdMeshers_Deflection1D:
     """StdMeshers_Deflection1D"""
 
-    @staticmethod
-    def setDeflection():
+    def setDeflection(self):
         """setDeflection()"""
 
 
 class StdMeshers_StartEndLength:
     """StdMeshers_StartEndLength"""
 
-    @staticmethod
-    def setLength():
+    def setLength(self):
         """setLength()"""
 
-    @staticmethod
-    def getLength():
+    def getLength(self):
         """getLength()"""
 
 
 class StdMeshers_SegmentLengthAroundVertex:
     """StdMeshers_SegmentLengthAroundVertex"""
 
-    @staticmethod
-    def setLength():
+    def setLength(self):
         """setLength()"""
 
-    @staticmethod
-    def getLength():
+    def getLength(self):
         """getLength()"""
 
 
 class StdMeshers_NumberOfSegments:
     """StdMeshers_NumberOfSegments"""
 
-    @staticmethod
-    def setNumberOfSegments():
+    def setNumberOfSegments(self):
         """setNumberOfSegments()"""
 
-    @staticmethod
-    def getNumberOfSegments():
+    def getNumberOfSegments(self):
         """getNumberOfSegments()"""
 
 
 class StdMeshers_NumberOfLayers:
     """StdMeshers_NumberOfLayers"""
 
-    @staticmethod
-    def setNumberOfLayers():
+    def setNumberOfLayers(self):
         """setNumberOfLayers()"""
 
-    @staticmethod
-    def getNumberOfLayers():
+    def getNumberOfLayers(self):
         """getNumberOfLayers()"""
 
 
 class StdMeshers_MaxElementVolume:
     """StdMeshers_MaxElementVolume"""
 
-    @staticmethod
-    def setMaxVolume():
+    def setMaxVolume(self):
         """setMaxVolume()"""
 
-    @staticmethod
-    def getMaxVolume():
+    def getMaxVolume(self):
         """getMaxVolume()"""
 
 
 class StdMeshers_LengthFromEdges:
     """StdMeshers_LengthFromEdges"""
 
-    @staticmethod
-    def setMode():
+    def setMode(self):
         """setMode()"""
 
-    @staticmethod
-    def getMode():
+    def getMode(self):
         """getMode()"""
 
 
 class StdMeshers_LayerDistribution:
     """StdMeshers_LayerDistribution"""
 
-    @staticmethod
-    def setLayerDistribution():
+    def setLayerDistribution(self):
         """setLayerDistribution()"""
 
-    @staticmethod
-    def getLayerDistribution():
+    def getLayerDistribution(self):
         """getLayerDistribution()"""
 
 

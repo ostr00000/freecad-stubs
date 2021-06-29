@@ -18,6 +18,5 @@ def registerServerFirewall(callable_string_: object, /):
 class BrowserView:
     """Python interface class to BrowserView"""
 
-    @staticmethod
-    def setHtml(arg1: str, arg2: str = None, /):
+    def setHtml(self, arg1: str, arg2: str = None, /):
         """setHtml(str)"""

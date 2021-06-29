@@ -1,5 +1,5 @@
 import dataclasses
-from typing import Iterator
+from typing import Iterator, Union
 
 from freecad_stub_gen.generators.method.types_converter import Arg, PositionalOnlyArg, \
     KeyWorldOnlyArg
@@ -10,7 +10,7 @@ def mergeArgSuitesGen(codeSuites: list[list[Arg]], docSuites: list[list[Arg]],
     if len(codeSuites) == len(docSuites) == 0:
         return  # function does not exist neither in code nor xml
 
-    retVal = []
+    retVal: list[Union[str, Arg]] = []
     if firstArgumentName:
         retVal.append(firstArgumentName)
 

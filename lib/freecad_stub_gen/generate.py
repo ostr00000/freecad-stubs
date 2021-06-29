@@ -46,14 +46,21 @@ def _genModule(moduleName: str, modulePath: Path, sourcePath=SOURCE_DIR):
 def generateFreeCadStubs(sourcePath=SOURCE_DIR, targetPath=TARGET_DIR):
     rootStub = StubContainer()
 
-    freeCADStub = StubContainer('class PyObjectBase(object): ...\n\n')
-    freeCADStub += _genModule('FreeCAD', sourcePath / 'Base', sourcePath)
+    freeCADStub = StubContainer('class PyObjectBase(object): ...\n\n', name='FreeCAD')
+    freeCADBase = _genModule('Base', sourcePath / 'Base', sourcePath)
+    freeCADStub.moveSubContainersFrom(freeCADBase)
+    freeCADStub /= freeCADBase
+
     freeCADStub += _genModule('FreeCAD', sourcePath / 'App', sourcePath)
     freeCADStub += StubContainer('GuiUp: typing.Literal[0, 1]', {'typing'})
     freeCADStub += StubContainer('Gui = FreeCADGui', {'FreeCADGui'})
     freeCADStub += StubContainer('ActiveDocument: Document')
     freeCADStub += StubContainer(requiredImports={
-        'FreeCAD.Console', 'FreeCAD.__Translate__ as Qt', 'FreeCAD.UnitsApiPy as Units'})
+        'FreeCAD.Console',
+        'FreeCAD.__Translate__ as Qt',
+        'FreeCAD.UnitsApiPy as Units',
+        'FreeCAD.Base',
+        'from FreeCAD.Base import *'})
     rootStub @= freeCADStub
 
     freeCADGuiStub = _genModule('FreeCADGui', sourcePath / 'Gui')

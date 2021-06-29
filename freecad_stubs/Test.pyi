@@ -2,58 +2,44 @@
 class TestGui_UnitTest:
     """About TestGui.UnitTest"""
 
-    @staticmethod
-    def clearErrorList():
+    def clearErrorList(self):
         """clearErrorList"""
 
-    @staticmethod
-    def insertError(arg1: str, arg2: str, /):
+    def insertError(self, arg1: str, arg2: str, /):
         """insertError"""
 
-    @staticmethod
-    def setUnitTest(arg1: str, /):
+    def setUnitTest(self, arg1: str, /):
         """setUnitTest"""
 
-    @staticmethod
-    def getUnitTest():
+    def getUnitTest(self):
         """getUnitTest"""
 
-    @staticmethod
-    def setStatusText(arg1: str, /):
+    def setStatusText(self, arg1: str, /):
         """setStatusText"""
 
-    @staticmethod
-    def setProgressFraction(arg1: float, arg2: str = None, /):
+    def setProgressFraction(self, arg1: float, arg2: str = None, /):
         """setProgressFraction"""
 
-    @staticmethod
-    def errorDialog(arg1: str, arg2: str, /):
+    def errorDialog(self, arg1: str, arg2: str, /):
         """errorDialog"""
 
-    @staticmethod
-    def setRunCount(arg1: int, /):
+    def setRunCount(self, arg1: int, /):
         """setRunCount"""
 
-    @staticmethod
-    def setFailCount(arg1: int, /):
+    def setFailCount(self, arg1: int, /):
         """setFailCount"""
 
-    @staticmethod
-    def setErrorCount(arg1: int, /):
+    def setErrorCount(self, arg1: int, /):
         """setErrorCount"""
 
-    @staticmethod
-    def setRemainCount(arg1: int, /):
+    def setRemainCount(self, arg1: int, /):
         """setRemainCount"""
 
-    @staticmethod
-    def updateGUI():
+    def updateGUI(self):
         """updateGUI"""
 
-    @staticmethod
-    def addUnitTest(arg1: str, /):
+    def addUnitTest(self, arg1: str, /):
         """addUnitTest"""
 
-    @staticmethod
-    def clearUnitTests():
+    def clearUnitTests(self):
         """clearUnitTests"""
