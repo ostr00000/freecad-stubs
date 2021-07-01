@@ -57,6 +57,17 @@ class PropertyGenerator(BaseGenerator, ABC):
             elif propertyName == 'Object':
                 pythonType = 'FreeCAD.DocumentObject'
 
+        elif className == 'Document':
+            if propertyName == 'ActiveObject':
+                pythonType = 'typing.Optional[FreeCAD.DocumentObject]'
+            elif propertyName == 'ActiveView':
+                pythonType = 'FreeCADGui.View3DInventorPy'
+            elif propertyName == 'Document':
+                if 'Gui' in str(self.baseGenFilePath):
+                    pythonType = 'FreeCAD.Document'
+                else:
+                    pythonType = 'FreeCADGui.Document'
+
         elif className == 'Placement':
             if propertyName == 'Base':
                 pythonType = 'FreeCAD.Vector'
