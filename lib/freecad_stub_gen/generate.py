@@ -67,9 +67,10 @@ def generateFreeCadStubs(sourcePath=SOURCE_DIR, targetPath=TARGET_DIR):
     freeCADGuiStub += StubContainer('Workbench: FreeCADGui.Workbench')
     freeCADGuiStub += StubContainer('ActiveDocument: Document')
     freeCADGuiStub += StubContainer(
-        'Control = Control  # hack to show this module in current module hints')
+        'Control = ControlClass()  # hack to show this module in current module hints')
     freeCADGuiStub += StubContainer(requiredImports={
-        'FreeCADGui.Selection', 'from FreeCADGui.TaskDialogPython import Control'})
+        'FreeCADGui.Selection',
+        'from FreeCADGui.TaskDialogPython import Control as ControlClass'})
     rootStub @= freeCADGuiStub
 
     for mod in (sourcePath / 'Mod').iterdir():
