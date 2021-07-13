@@ -1,6 +1,6 @@
 import typing
 
-from FreeCADGui.TaskDialogPython import Control
+from FreeCADGui.TaskDialogPython import Control as ControlClass
 import FreeCAD
 import FreeCADGui
 import FreeCADGui.Selection
@@ -1630,4 +1630,4 @@ class View3DInventorViewerPy:
 
 Workbench: FreeCADGui.Workbench
 ActiveDocument: Document
-Control = Control  # hack to show this module in current module hints
+Control = ControlClass()  # hack to show this module in current module hints

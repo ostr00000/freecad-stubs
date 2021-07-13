@@ -271,21 +271,21 @@ class Rotation(FreeCAD.PyObjectBase):
     def Angle(self, value: float): ...
 
     @property
-    def Axis(self) -> object:
+    def Axis(self) -> FreeCAD.Vector:
         """The rotation axis of the quaternion"""
 
     @Axis.setter
-    def Axis(self, value: object): ...
+    def Axis(self, value: FreeCAD.Vector): ...
 
     @property
-    def Q(self) -> tuple:
+    def Q(self) -> tuple[float, float, float, float]:
         """The rotation elements (as quaternion)"""
 
     @Q.setter
-    def Q(self, value: tuple): ...
+    def Q(self, value: tuple[float, float, float, float]): ...
 
     @property
-    def RawAxis(self) -> object:
+    def RawAxis(self) -> FreeCAD.Vector:
         """The rotation axis without normalization"""
 
     def invert(self):
@@ -1457,11 +1457,11 @@ class Matrix(FreeCAD.PyObjectBase):
 # CoordinateSystemPy.xml
 class CoordinateSystem(FreeCAD.PyObjectBase):
     @property
-    def Axis(self) -> object:
+    def Axis(self) -> FreeCAD.Vector:
         """Set or get axis"""
 
     @Axis.setter
-    def Axis(self, value: object): ...
+    def Axis(self, value: FreeCAD.Vector): ...
 
     @property
     def Position(self) -> object:
