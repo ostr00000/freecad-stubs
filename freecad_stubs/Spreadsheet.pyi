@@ -1,3 +1,5 @@
+import typing
+
 import FreeCAD
 
 
@@ -71,7 +73,17 @@ class Sheet(FreeCAD.DocumentObject):
     def setAlias(self, arg1: str, arg2: object, /):
         """Set alias for cell address"""
 
-    def setAlignment(self, arg1: str, arg2: object, arg3: str = None, /):
+    @typing.overload
+    def setAlignment(self, arg1: str, arg2: object, arg3: str = None, /): ...
+
+    @typing.overload
+    def setAlignment(self, arg1: str, /): ...
+
+    @typing.overload
+    def setAlignment(self, arg1: str, arg2: object, /): ...
+
+    @typing.overload
+    def setAlignment(self, arg1: str, arg2: int, /):
         """Set alignment of the cell"""
 
     def setBackground(self, arg1: str, arg2: object, /):
@@ -89,7 +101,20 @@ class Sheet(FreeCAD.DocumentObject):
     def setRowHeight(self, arg1: str, arg2: int, /):
         """Set given spreadsheet row to given height"""
 
-    def setStyle(self, arg1: str, arg2: object, arg3: str = None, /):
+    @typing.overload
+    def setStyle(self, arg1: str, arg2: object, arg3: str = None, /): ...
+
+    @typing.overload
+    def setStyle(self, arg1: str, /): ...
+
+    @typing.overload
+    def setStyle(self, arg1: str, arg2: str, /): ...
+
+    @typing.overload
+    def setStyle(self, arg1: str, arg2: object, /): ...
+
+    @typing.overload
+    def setStyle(self, arg1: str, arg2: int, /):
         """Set style of the cell"""
 
     def splitCell(self, arg1: str, /):
@@ -109,11 +134,3 @@ class PropertyColumnWidths(FreeCAD.Persistence):
 # PropertySheetPy.xml
 class PropertySheet(FreeCAD.Persistence):
     """Internal spreadsheet object"""
-
-
-# SpreadsheetViewPy.xml
-class SheetView(FreeCAD.PyObjectBase):
-    """SpreadsheetView object"""
-
-    def getSheet(self):
-        """returns the sheet being displayed"""

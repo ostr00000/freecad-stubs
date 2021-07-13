@@ -43,7 +43,6 @@ class PropertyGenerator(BaseGenerator, ABC):
         className = getSimpleClassName(self.currentNode)
         if className == 'DocumentObject' and propertyName == 'ViewObject':
             pythonType = 'typing.Optional[FreeCADGui.ViewProviderDocumentObject]'
-            self.requiredImports.add('typing')
 
         elif className == 'DocumentObject' and pythonType == 'list':
             if propertyName == 'Parents':
@@ -57,6 +56,17 @@ class PropertyGenerator(BaseGenerator, ABC):
             elif propertyName == 'Object':
                 pythonType = 'FreeCAD.DocumentObject'
 
+        elif className == 'Document':
+            if propertyName == 'ActiveObject':
+                pythonType = 'typing.Optional[FreeCAD.DocumentObject]'
+            elif propertyName == 'ActiveView':
+                pythonType = 'FreeCADGui.View3DInventorPy'
+            elif propertyName == 'Document':
+                if 'Gui' in str(self.baseGenFilePath):
+                    pythonType = 'FreeCAD.Document'
+                else:
+                    pythonType = 'FreeCADGui.Document'
+
         elif className == 'Placement':
             if propertyName == 'Base':
                 pythonType = 'FreeCAD.Vector'
@@ -67,7 +77,13 @@ class PropertyGenerator(BaseGenerator, ABC):
             pythonType = 'FreeCAD.Matrix'
         elif propertyName == 'Rotation':
             pythonType = 'FreeCAD.Rotation'
+        elif propertyName in ('Axis', 'RawAxis'):
+            pythonType = 'FreeCAD.Vector'
+        elif propertyName == 'Q':
+            pythonType = 'tuple[float, float, float, float]'
 
+        if 'typing' in pythonType:
+            self.requiredImports.add('typing')
         return pythonType
 
 

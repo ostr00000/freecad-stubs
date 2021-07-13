@@ -709,7 +709,7 @@ def minimumVolumeOrientedBox(seq_Base_Vector_: object, /):
     """
 
 
-def export(objectList: object, filename: str, tolerance: float = 0.1, exportAmfCompressed: bool = True):
+def export(objects: object, filename: str, tolerance: float = 0.1, exportAmfCompressed: bool = True):
     """export(objects, filename, [tolerance=0.1, exportAmfCompressed=True])
     Export a list of objects into a single file identified by filename.
     tolerance is in mm and specifies the maximum acceptable deviation

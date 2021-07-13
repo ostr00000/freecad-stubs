@@ -462,9 +462,6 @@ class SketchObject(Part.Part2DObject):
                   relatively to the current one.
                 """
 
-    def removeAxesAlignment(self, arg1: object, /):
-        """modifies constraints so that the shape is not forced to be aligned with axes."""
-
     def renameConstraint(self, arg1: int, arg2: str, /):
         """Rename a constraint of the sketch"""
 
@@ -501,9 +498,6 @@ class SketchObject(Part.Part2DObject):
 
     def solve(self):
         """solve the actual set of geometry and constraints"""
-
-    def split(self, arg1: int, arg2: FreeCAD.Vector, /):
-        """split a curve with a given id at a given reference point"""
 
     def toggleActive(self, arg1: int, /):
         """toggle the active status of constraint (enforced or not)"""

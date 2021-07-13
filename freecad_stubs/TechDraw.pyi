@@ -493,11 +493,3 @@ def makeDistanceDim3d(arg1: object, arg2: object, arg3: object, arg4: object, /)
 
 def makeGeomHatch(face: object, patScale: float = None, patName: str = None, patFile: str = None, /):
     """makeGeomHatch(face, [patScale], [patName], [patFile]) -- draw a geom hatch on a given face, using optionally the given scale (default 1) and a given pattern name (ex. Diamond) and .pat file (the default pattern name and/or .pat files set in preferences are used if none are given). Returns a Part compound shape."""
-
-
-# MDIViewPagePy.xml
-class MDIViewPage(FreeCAD.PyObjectBase):
-    """MDIViewPage object"""
-
-    def getPage(self):
-        """returns the page being displayed"""

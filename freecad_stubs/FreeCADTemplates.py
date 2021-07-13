@@ -4,30 +4,148 @@ This module has templates for some python object used in FreeCAD.
 The ideal solution would use optional protocol,
 but at the moment there is such feature in Python
 https://www.python.org/dev/peps/pep-0544/#support-optional-protocol-members
-"""
+
+Find regex:
+^\s*FC_PY_ELEMENT\((\w+)\)[^\S\n]*\\?
+Replace:
+    def $1(self):\n        \"\"\"May be implemented in python\"\"\""""
 import typing
 
 import FreeCAD
 import FreeCADGui
 
 
-class ProxyPython:
+# FeaturePython.cpp
+class _FeaturePythonGeneral:
+    def onBeforeChangeLabel(self, obj: FreeCAD.DocumentObject, newLabel: str) -> str:
+        """FreeCAD call this function if present"""
+
+    def getViewProviderName(self, obj: FreeCAD.DocumentObject) -> str:
+        """FreeCAD call this function if present"""
+
+    def getSubObject(self, obj: FreeCAD.DocumentObject, subName: str,
+                     num: typing.Literal[1, 2], matrix: FreeCAD.Matrix,
+                     transform: bool, depth: int
+                     ) -> typing.Union[
+        None,
+        tuple[
+            typing.Optional[FreeCAD.DocumentObject],
+            FreeCAD.Matrix,
+        ],
+        tuple[
+            typing.Optional[FreeCAD.DocumentObject],
+            FreeCAD.Matrix,
+            typing.Any,
+        ],
+    ]:
+        """FreeCAD call this function if present"""
+
+    def getSubObjects(self, obj: FreeCAD.DocumentObject, reason: int
+                      ) -> typing.Optional[typing.Sequence[str]]:
+        """FreeCAD call this function if present"""
+
+    def getLinkedObject(self, obj: FreeCAD.DocumentObject, recurse: bool,
+                        matrix: FreeCAD.Matrix, transform: bool, depth: int
+                        ) -> typing.Union[
+        None,
+        tuple[
+            typing.Optional[FreeCAD.DocumentObject],
+            FreeCAD.Matrix,
+        ],
+    ]:
+        """FreeCAD call this function if present"""
+
+    def canLinkProperties(self, obj: FreeCAD.DocumentObject) -> bool:
+        """FreeCAD call this function if present"""
+
+    def allowDuplicateLabel(self, obj: FreeCAD.DocumentObject) -> bool:
+        """FreeCAD call this function if present"""
+
+    def redirectSubName(self, obj: FreeCAD.DocumentObject, ss: str,
+                        topParent: typing.Union[FreeCAD.DocumentObject, object],
+                        child: typing.Union[FreeCAD.DocumentObject, object]
+                        ) -> typing.Optional[str]:
+        """FreeCAD call this function if present"""
+
+    def canLoadPartial(self, obj: FreeCAD.DocumentObject) -> int:
+        """FreeCAD call this function if present"""
+
+    def hasChildElement(self, obj: FreeCAD.DocumentObject) -> bool:
+        """FreeCAD call this function if present"""
+
+    def isElementVisible(self, obj: FreeCAD.DocumentObject, element: str) -> int:
+        """FreeCAD call this function if present"""
+
+    def setElementVisible(self, obj: FreeCAD.DocumentObject, element: str,
+                          visible: bool) -> int:
+        """FreeCAD call this function if present"""
+
+
+class _FeaturePython(_FeaturePythonGeneral):
+    def execute(self, obj: FreeCAD.DocumentObject):
+        """FreeCAD call this function if present"""
+
+    def mustExecute(self, obj: FreeCAD.DocumentObject) -> bool:
+        """FreeCAD call this function if present"""
+
+    def onBeforeChange(self, obj: FreeCAD.DocumentObject, propertyName: str):
+        """FreeCAD call this function if present"""
+
+    def onChanged(self, obj: FreeCAD.DocumentObject, propertyName: str):
+        """FreeCAD call this function if present"""
+
+    def onDocumentRestored(self, obj: FreeCAD.DocumentObject):
+        """FreeCAD call this function if present"""
+
+
+class ProxyPython(_FeaturePython):
+    def attach(self, obj: FreeCAD.DocumentObject):
+        """FreeCAD call this function if present"""
+
+    def __getstate__(self):
+        """FreeCAD call this function if present"""
+
+    def __setstate__(self, value):
+        """FreeCAD call this function if present"""
+
+
+class _FeaturePythonObj(_FeaturePythonGeneral):
+    def execute(self):
+        """FreeCAD call this function if present"""
+
+    def mustExecute(self) -> bool:
+        """FreeCAD call this function if present"""
+
+    def onBeforeChange(self, propertyName: str):
+        """FreeCAD call this function if present"""
+
+    def onChanged(self, propertyName: str):
+        """FreeCAD call this function if present"""
+
+    def onDocumentRestored(self):
+        """FreeCAD call this function if present"""
+
+
+class ProxyPythonObj(_FeaturePythonObj):
+    """This is the same as ProxyPython, but has __object__ attribute.
+    All method will be called without additional argument."""
     __object__: FreeCAD.DocumentObject = None
 
     def attach(self, obj: FreeCAD.DocumentObject):
-        """Should be implemented in python"""
+        """FreeCAD call this function if present"""
 
     def __getstate__(self):
-        """Should be implemented in python"""
+        """FreeCAD call this function if present"""
 
     def __setstate__(self, value):
-        """Should be implemented in python"""
+        """FreeCAD call this function if present"""
 
 
 class ViewProxyPython:
     __vobject__: FreeCADGui.ViewProviderDocumentObject = None
 
 
+# Gui/Command.cpp
 class ResourceDict(typing.TypedDict, total=False):
     CmdType: str
     Pixmap: str
@@ -40,13 +158,13 @@ class ResourceDict(typing.TypedDict, total=False):
 
 class CommandPython:
     def GetResources(self) -> ResourceDict:
-        """Should be implemented in python"""
+        """FreeCAD call this function if present"""
 
     def IsActive(self) -> bool:
-        """Should be implemented in python"""
+        """FreeCAD call this function if present"""
 
     def Activated(self):
-        """Should be implemented in python"""
+        """FreeCAD call this function if present"""
 
 
 class CheckAbleDict(ResourceDict):
@@ -55,148 +173,144 @@ class CheckAbleDict(ResourceDict):
 
 class CheckAbleCommandPython(CommandPython):
     def GetResources(self) -> CheckAbleDict:
-        """Should be implemented in python"""
+        """FreeCAD call this function if present"""
 
     def Activated(self, checked: bool = None):
-        """Should be implemented in python"""
+        """FreeCAD call this function if present"""
 
 
+# Gui/DocumentObserverPython.cpp
 class DocumentObserverGui:
     """This is template class. You should copy it to your code."""
 
-    def CreatedDocument(self, doc: FreeCADGui.Document):
-        """Should be implemented in python"""
+    def slotCreatedDocument(self, doc: FreeCADGui.Document):
+        """FreeCAD call this function if present"""
 
-    def DeletedDocument(self, doc: FreeCADGui.Document):
-        """Should be implemented in python"""
+    def slotDeletedDocument(self, doc: FreeCADGui.Document):
+        """FreeCAD call this function if present"""
 
-    def RelabelDocument(self, doc: FreeCADGui.Document):
-        """Should be implemented in python"""
+    def slotRelabelDocument(self, doc: FreeCADGui.Document):
+        """FreeCAD call this function if present"""
 
-    def RenameDocument(self, doc: FreeCADGui.Document):
-        """Should be implemented in python"""
+    def slotRenameDocument(self, doc: FreeCADGui.Document):
+        """FreeCAD call this function if present"""
 
-    def ActivateDocument(self, doc: FreeCADGui.Document):
-        """Should be implemented in python"""
+    def slotActivateDocument(self, doc: FreeCADGui.Document):
+        """FreeCAD call this function if present"""
 
-    def CreatedObject(self,
-                      viewProvider: FreeCADGui.ViewProviderDocumentObject):
-        """Should be implemented in python"""
+    def slotCreatedObject(self, viewProvider: FreeCADGui.ViewProviderDocumentObject):
+        """FreeCAD call this function if present"""
 
-    def DeletedObject(self,
-                      viewProvider: FreeCADGui.ViewProviderDocumentObject):
-        """Should be implemented in python"""
+    def slotDeletedObject(self, viewProvider: FreeCADGui.ViewProviderDocumentObject):
+        """FreeCAD call this function if present"""
 
-    def BeforeChangeObject(self,
-                           viewProvider: FreeCADGui.ViewProviderDocumentObject,
-                           propContainerName: str):
-        """Should be implemented in python"""
+    def slotBeforeChangeObject(self, viewProvider: FreeCADGui.ViewProviderDocumentObject,
+                               propContainerName: str):
+        """FreeCAD call this function if present"""
 
-    def ChangedObject(self, viewProvider: FreeCADGui.ViewProviderDocumentObject,
-                      propContainerName: str):
-        """Should be implemented in python"""
+    def slotChangedObject(self, viewProvider: FreeCADGui.ViewProviderDocumentObject,
+                          propContainerName: str):
+        """FreeCAD call this function if present"""
 
-    def InEdit(self, viewProvider: FreeCADGui.ViewProviderDocumentObject):
-        """Should be implemented in python"""
+    def slotInEdit(self, viewProvider: FreeCADGui.ViewProviderDocumentObject):
+        """FreeCAD call this function if present"""
 
-    def ResetEdit(self, viewProvider: FreeCADGui.ViewProviderDocumentObject):
-        """Should be implemented in python"""
+    def slotResetEdit(self, viewProvider: FreeCADGui.ViewProviderDocumentObject):
+        """FreeCAD call this function if present"""
 
 
+# App/DocumentObserverPython.cpp
 class DocumentObserverApp:
     """This is template class. You should copy it to your code."""
 
-    def CreatedDocument(self, doc: FreeCAD.Document):
-        """Should be implemented in python"""
+    def slotCreatedDocument(self, doc: FreeCAD.Document):
+        """FreeCAD call this function if present"""
 
-    def DeletedDocument(self, doc: FreeCAD.Document):
-        """Should be implemented in python"""
+    def slotDeletedDocument(self, doc: FreeCAD.Document):
+        """FreeCAD call this function if present"""
 
-    def RelabelDocument(self, doc: FreeCAD.Document):
-        """Should be implemented in python"""
+    def slotRelabelDocument(self, doc: FreeCAD.Document):
+        """FreeCAD call this function if present"""
 
-    def ActivateDocument(self, doc: FreeCAD.Document):
-        """Should be implemented in python"""
+    def slotActivateDocument(self, doc: FreeCAD.Document):
+        """FreeCAD call this function if present"""
 
-    def UndoDocument(self, doc: FreeCAD.Document):
-        """Should be implemented in python"""
+    def slotUndoDocument(self, doc: FreeCAD.Document):
+        """FreeCAD call this function if present"""
 
-    def RedoDocument(self, doc: FreeCAD.Document):
-        """Should be implemented in python"""
+    def slotRedoDocument(self, doc: FreeCAD.Document):
+        """FreeCAD call this function if present"""
 
-    def BeforeChangeDocument(self, doc: FreeCAD.Document, propContainerName: str):
-        """Should be implemented in python"""
+    def slotBeforeChangeDocument(self, doc: FreeCAD.Document, propContainerName: str):
+        """FreeCAD call this function if present"""
 
-    def ChangedDocument(self, obj: FreeCAD.DocumentObject, propContainerName: str):
-        """Should be implemented in python"""
+    def slotChangedDocument(self, obj: FreeCAD.DocumentObject, propContainerName: str):
+        """FreeCAD call this function if present"""
 
-    def CreatedObject(self, obj: FreeCAD.DocumentObject):
-        """Should be implemented in python"""
+    def slotCreatedObject(self, obj: FreeCAD.DocumentObject):
+        """FreeCAD call this function if present"""
 
-    def DeletedObject(self, obj: FreeCAD.DocumentObject):
-        """Should be implemented in python"""
+    def slotDeletedObject(self, obj: FreeCAD.DocumentObject):
+        """FreeCAD call this function if present"""
 
-    def BeforeChangeObject(self, obj: FreeCAD.DocumentObject,
-                           propContainerName: str):
-        """Should be implemented in python"""
+    def slotBeforeChangeObject(self, obj: FreeCAD.DocumentObject, propContainerName: str):
+        """FreeCAD call this function if present"""
 
-    def ChangedObject(self, obj: FreeCAD.DocumentObject, propContainerName: str):
-        """Should be implemented in python"""
+    def slotChangedObject(self, obj: FreeCAD.DocumentObject, propContainerName: str):
+        """FreeCAD call this function if present"""
 
-    def RecomputedObject(self, obj: FreeCAD.DocumentObject):
-        """Should be implemented in python"""
+    def slotRecomputedObject(self, obj: FreeCAD.DocumentObject):
+        """FreeCAD call this function if present"""
 
-    def BeforeRecomputeDocument(self, doc: FreeCAD.Document):
-        """Should be implemented in python"""
+    def slotBeforeRecomputeDocument(self, doc: FreeCAD.Document):
+        """FreeCAD call this function if present"""
 
-    def RecomputedDocument(self, doc: FreeCAD.Document):
-        """Should be implemented in python"""
+    def slotRecomputedDocument(self, doc: FreeCAD.Document):
+        """FreeCAD call this function if present"""
 
-    def OpenTransaction(self, doc: FreeCAD.Document, name: str):
-        """Should be implemented in python"""
+    def slotOpenTransaction(self, doc: FreeCAD.Document, name: str):
+        """FreeCAD call this function if present"""
 
-    def CommitTransaction(self, doc: FreeCAD.Document):
-        """Should be implemented in python"""
+    def slotCommitTransaction(self, doc: FreeCAD.Document):
+        """FreeCAD call this function if present"""
 
-    def AbortTransaction(self, doc: FreeCAD.Document):
-        """Should be implemented in python"""
+    def slotAbortTransaction(self, doc: FreeCAD.Document):
+        """FreeCAD call this function if present"""
 
-    def Undo(self):
-        """Should be implemented in python"""
+    def slotUndo(self):
+        """FreeCAD call this function if present"""
 
-    def Redo(self):
-        """Should be implemented in python"""
+    def slotRedo(self):
+        """FreeCAD call this function if present"""
 
-    def BeforeCloseTransaction(self, abort: bool):
-        """Should be implemented in python"""
+    def slotBeforeCloseTransaction(self, abort: bool):
+        """FreeCAD call this function if present"""
 
-    def CloseTransaction(self, abort: bool):
-        """Should be implemented in python"""
+    def slotCloseTransaction(self, abort: bool):
+        """FreeCAD call this function if present"""
 
-    def StartSaveDocument(self, doc: FreeCAD.Document, fileName: str):
-        """Should be implemented in python"""
+    def slotStartSaveDocument(self, doc: FreeCAD.Document, fileName: str):
+        """FreeCAD call this function if present"""
 
-    def FinishSaveDocument(self, doc: FreeCAD.Document, fileName: str):
-        """Should be implemented in python"""
+    def slotFinishSaveDocument(self, doc: FreeCAD.Document, fileName: str):
+        """FreeCAD call this function if present"""
 
-    def AppendDynamicProperty(self, propContainer: FreeCAD.PropertyContainer,
-                              propContainerName: str):
-        """Should be implemented in python"""
+    def slotAppendDynamicProperty(self, propContainer: FreeCAD.PropertyContainer,
+                                  propContainerName: str):
+        """FreeCAD call this function if present"""
 
-    def RemoveDynamicProperty(self, propContainer: FreeCAD.PropertyContainer,
-                              propContainerName: str):
-        """Should be implemented in python"""
+    def slotRemoveDynamicProperty(self, propContainer: FreeCAD.PropertyContainer,
+                                  propContainerName: str):
+        """FreeCAD call this function if present"""
 
-    def ChangePropertyEditor(self, propContainer: FreeCAD.PropertyContainer,
-                             propContainerName: str):
-        """Should be implemented in python"""
+    def slotChangePropertyEditor(self, propContainer: FreeCAD.PropertyContainer,
+                                 propContainerName: str):
+        """FreeCAD call this function if present"""
 
-    def BeforeAddingDynamicExtension(self,
-                                     extension: FreeCAD.ExtensionContainer,
-                                     extensionName: str):
-        """Should be implemented in python"""
+    def slotBeforeAddingDynamicExtension(self, extension: FreeCAD.ExtensionContainer,
+                                         extensionName: str):
+        """FreeCAD call this function if present"""
 
-    def AddedDynamicExtension(self,
-                              extension: FreeCAD.ExtensionContainer,
-                              extensionName: str):
-        """Should be implemented in python"""
+    def slotAddedDynamicExtension(self, extension: FreeCAD.ExtensionContainer,
+                                  extensionName: str):
+        """FreeCAD call this function if present"""
