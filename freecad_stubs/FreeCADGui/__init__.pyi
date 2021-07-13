@@ -1,6 +1,6 @@
 import typing
 
-from FreeCADGui.TaskDialogPython import Control
+from FreeCADGui.TaskDialogPython import Control as ControlClass
 import FreeCAD
 import FreeCADGui
 import FreeCADGui.Selection
@@ -236,21 +236,21 @@ class Document(FreeCAD.Persistence):
     """This is a Document class"""
 
     @property
-    def ActiveObject(self) -> object:
+    def ActiveObject(self) -> typing.Optional[FreeCAD.DocumentObject]:
         """The active object of the document"""
 
     @ActiveObject.setter
-    def ActiveObject(self, value: object): ...
+    def ActiveObject(self, value: typing.Optional[FreeCAD.DocumentObject]): ...
 
     @property
-    def ActiveView(self) -> object:
+    def ActiveView(self) -> FreeCADGui.View3DInventorPy:
         """The active view of the document"""
 
     @ActiveView.setter
-    def ActiveView(self, value: object): ...
+    def ActiveView(self, value: FreeCADGui.View3DInventorPy): ...
 
     @property
-    def Document(self) -> object:
+    def Document(self) -> FreeCAD.Document:
         """The related App document to this Gui document"""
 
     @property
@@ -1026,4 +1026,4 @@ class View3DInventorViewerPy:
 
 Workbench: FreeCADGui.Workbench
 ActiveDocument: Document
-Control = Control  # hack to show this module in current module hints
+Control = ControlClass()  # hack to show this module in current module hints
