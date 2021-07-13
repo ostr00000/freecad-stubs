@@ -278,7 +278,7 @@ class Document(FreeCAD.PropertyContainer):
     """This is a Document class"""
 
     @property
-    def ActiveObject(self) -> object:
+    def ActiveObject(self) -> typing.Optional[FreeCAD.DocumentObject]:
         """The active object of the document"""
 
     @property

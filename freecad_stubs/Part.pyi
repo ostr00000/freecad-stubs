@@ -98,11 +98,11 @@ class Cylinder(Part.GeometrySurface):
         			"""
 
     @property
-    def Axis(self) -> object:
+    def Axis(self) -> FreeCAD.Vector:
         """The axis direction of the cylinder"""
 
     @Axis.setter
-    def Axis(self, value: object): ...
+    def Axis(self, value: FreeCAD.Vector): ...
 
     @property
     def Center(self) -> object:
@@ -728,11 +728,11 @@ class Plane(Part.GeometrySurface):
         """
 
     @property
-    def Axis(self) -> object:
+    def Axis(self) -> FreeCAD.Vector:
         """Returns the axis of this plane."""
 
     @Axis.setter
-    def Axis(self, value: object): ...
+    def Axis(self, value: FreeCAD.Vector): ...
 
     @property
     def Position(self) -> object:
@@ -2222,11 +2222,11 @@ class Sphere(Part.GeometrySurface):
         """Compute the area of the sphere."""
 
     @property
-    def Axis(self) -> object:
+    def Axis(self) -> FreeCAD.Vector:
         """The axis direction of the circle"""
 
     @Axis.setter
-    def Axis(self, value: object): ...
+    def Axis(self, value: FreeCAD.Vector): ...
 
     @property
     def Center(self) -> object:
@@ -2608,11 +2608,11 @@ class Conic(Part.Curve):
     def AngleXU(self, value: float): ...
 
     @property
-    def Axis(self) -> object:
+    def Axis(self) -> FreeCAD.Vector:
         """The axis direction of the circle"""
 
     @Axis.setter
-    def Axis(self, value: object): ...
+    def Axis(self, value: FreeCAD.Vector): ...
 
     @property
     def Center(self) -> object:
@@ -4489,11 +4489,11 @@ class Cone(Part.GeometrySurface):
         """Compute the apex of the cone."""
 
     @property
-    def Axis(self) -> object:
+    def Axis(self) -> FreeCAD.Vector:
         """The axis direction of the cone"""
 
     @Axis.setter
-    def Axis(self, value: object): ...
+    def Axis(self, value: FreeCAD.Vector): ...
 
     @property
     def Center(self) -> object:
@@ -4535,11 +4535,11 @@ class Toroid(Part.GeometrySurface):
         """Compute the area of the toroid."""
 
     @property
-    def Axis(self) -> object:
+    def Axis(self) -> FreeCAD.Vector:
         """The axis direction of the toroid"""
 
     @Axis.setter
-    def Axis(self, value: object): ...
+    def Axis(self, value: FreeCAD.Vector): ...
 
     @property
     def Center(self) -> object:
@@ -4883,11 +4883,11 @@ class ArcOfConic(Part.TrimmedCurve):
     def AngleXU(self, value: float): ...
 
     @property
-    def Axis(self) -> object:
+    def Axis(self) -> FreeCAD.Vector:
         """The axis direction of the conic"""
 
     @Axis.setter
-    def Axis(self, value: object): ...
+    def Axis(self, value: FreeCAD.Vector): ...
 
     @property
     def Center(self) -> object:
