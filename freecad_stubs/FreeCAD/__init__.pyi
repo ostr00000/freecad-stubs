@@ -997,7 +997,7 @@ def closeDocument(string: str, /):
     Close the document with a given name."""
 
 
-def activeDocument():
+def activeDocument() -> FreeCAD.Document:
     """activeDocument() -> object or None
 
     Return the active document or None if there is no one."""

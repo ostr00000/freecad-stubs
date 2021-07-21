@@ -107,4 +107,12 @@ class FormatFinder(FunctionFinder, ABC):
         return ret
 
     def _getReturnType(self, methodName: str) -> Optional[str]:
-        pass
+        ret = None
+        if methodName == 'activeDocument':
+            if 'App' in self.baseGenFilePath.parts:
+                ret = 'FreeCAD.Document'
+            elif 'Gui' in self.baseGenFilePath.parts:
+                ret = 'FreeCADGui.Document'
+            else:
+                logger.warning(f'Unexpected function type in file {self.baseGenFilePath}')
+        return ret

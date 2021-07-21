@@ -1,5 +1,6 @@
 """
 This module has templates for some python object used in FreeCAD.
+Do not import these classes rather copy required methods.
 
 The ideal solution would use optional protocol,
 but at the moment there is such feature in Python
@@ -11,12 +12,24 @@ Replace:
     def $1(self):\n        \"\"\"May be implemented in python\"\"\""""
 import typing
 
+from qtpy.QtGui import QIcon
+from qtpy.QtWidgets import QMenu
+
 import FreeCAD
 import FreeCADGui
 
 
 # FeaturePython.cpp
-class _FeaturePythonGeneral:
+class _ProxyPythonGeneral:
+    def attach(self, obj: FreeCAD.DocumentObject):
+        """FreeCAD call this function if present"""
+
+    def __getstate__(self):
+        """FreeCAD call this function if present"""
+
+    def __setstate__(self, value):
+        """FreeCAD call this function if present"""
+
     def onBeforeChangeLabel(self, obj: FreeCAD.DocumentObject, newLabel: str) -> str:
         """FreeCAD call this function if present"""
 
@@ -81,7 +94,7 @@ class _FeaturePythonGeneral:
         """FreeCAD call this function if present"""
 
 
-class _FeaturePython(_FeaturePythonGeneral):
+class ProxyPython(_ProxyPythonGeneral):
     def execute(self, obj: FreeCAD.DocumentObject):
         """FreeCAD call this function if present"""
 
@@ -98,18 +111,13 @@ class _FeaturePython(_FeaturePythonGeneral):
         """FreeCAD call this function if present"""
 
 
-class ProxyPython(_FeaturePython):
-    def attach(self, obj: FreeCAD.DocumentObject):
-        """FreeCAD call this function if present"""
+class ProxyPythonObj(_ProxyPythonGeneral):
+    """
+    This is the same as ProxyPython, but has __object__ attribute.
+    Methods defined in this class are called without object argument.
+    """
+    __object__: FreeCAD.DocumentObject = None
 
-    def __getstate__(self):
-        """FreeCAD call this function if present"""
-
-    def __setstate__(self, value):
-        """FreeCAD call this function if present"""
-
-
-class _FeaturePythonObj(_FeaturePythonGeneral):
     def execute(self):
         """FreeCAD call this function if present"""
 
@@ -126,23 +134,194 @@ class _FeaturePythonObj(_FeaturePythonGeneral):
         """FreeCAD call this function if present"""
 
 
-class ProxyPythonObj(_FeaturePythonObj):
-    """This is the same as ProxyPython, but has __object__ attribute.
-    All method will be called without additional argument."""
-    __object__: FreeCAD.DocumentObject = None
-
-    def attach(self, obj: FreeCAD.DocumentObject):
-        """FreeCAD call this function if present"""
-
-    def __getstate__(self):
-        """FreeCAD call this function if present"""
-
-    def __setstate__(self, value):
-        """FreeCAD call this function if present"""
+SoPickedPoint = typing.Annotated[typing.Any, 'pivy.coin.SoPickedPoint']
+SoDetail = typing.Annotated[typing.Any, 'pivy.coin.SoDetail']
+SoFullPath = typing.Annotated[typing.Any, 'pivy.coin.SoFullPath']
 
 
-class ViewProxyPython:
-    __vobject__: FreeCADGui.ViewProviderDocumentObject = None
+class _ViewProviderPythonGeneral:
+
+    def getIcon(self) -> typing.Union[None, str, QIcon]:
+        """May be implemented in python"""
+
+    def claimChildren(self) -> typing.Sequence[FreeCAD.DocumentObject]:
+        """May be implemented in python"""
+
+    def useNewSelectionModel(self) -> bool:
+        """May be implemented in python"""
+
+    def getElementPicked(self, pivyObj: SoPickedPoint) -> typing.Optional[str]:
+        """May be implemented in python"""
+
+    def getElement(self, pivyObj: SoDetail) -> str:
+        """May be implemented in python"""
+
+    def getDetail(self, name: str) -> SoDetail:
+        """May be implemented in python"""
+
+    def getDetailPath(self, name: str, pivyObj: SoFullPath, append: bool
+                      ) -> typing.Union[bool, SoDetail]:
+        """May be implemented in python"""
+
+    def getSelectionShape(self):  # not redirected
+        """May be implemented in python"""
+
+    def setEditViewer(self, viewObj: FreeCADGui.ViewProviderDocumentObject,
+                      viewer: FreeCADGui.View3DInventorViewerPy, modNum: int) -> bool:
+        """May be implemented in python"""
+
+    def unsetEditViewer(self, viewObj: FreeCADGui.ViewProviderDocumentObject,
+                        viewer: FreeCADGui.View3DInventorViewerPy) -> bool:
+        """May be implemented in python"""
+
+    def startRestoring(self):  # not redirected
+        """May be implemented in python"""
+
+    def finishRestoring(self):
+        """May be implemented in python"""
+
+    def canDelete(self, obj: FreeCAD.DocumentObject) -> bool:
+        """May be implemented in python"""
+
+    def isShow(self) -> bool:
+        """May be implemented in python"""
+
+    def getDefaultDisplayMode(self) -> str:
+        """May be implemented in python"""
+
+    def setDisplayMode(self, modeName: str) -> str:
+        """May be implemented in python"""
+
+    def canRemoveChildrenFromRoot(self) -> bool:
+        """May be implemented in python"""
+
+    def canDragObjects(self) -> bool:
+        """May be implemented in python"""
+
+    def canDragObject(self, obj: FreeCAD.DocumentObject) -> bool:
+        """May be implemented in python"""
+
+    def canDropObjects(self) -> bool:
+        """May be implemented in python"""
+
+    def canDropObject(self, obj: FreeCAD.DocumentObject) -> bool:
+        """May be implemented in python"""
+
+    def canDragAndDropObject(self, obj: FreeCAD.DocumentObject) -> bool:
+        """May be implemented in python"""
+
+    def canDropObjectEx(self, obj: FreeCAD.DocumentObject,
+                        owner: typing.Optional[FreeCAD.DocumentObject],
+                        subName: str,
+                        elements: tuple[str],
+                        ) -> bool:
+        """May be implemented in python"""
+
+    def dropObjectEx(self, viewObj: FreeCADGui.ViewProviderDocumentObject,
+                     obj: FreeCAD.DocumentObject,
+                     owner: typing.Union[FreeCAD.DocumentObject, object],
+                     subName: str,
+                     elements: tuple[str],
+                     ) -> typing.Optional[str]:
+        """May be implemented in python"""
+
+    def canAddToSceneGraph(self) -> bool:
+        """May be implemented in python"""
+
+    def getDropPrefix(self) -> typing.Optional[str]:
+        """May be implemented in python"""
+
+    def replaceObject(self, oldObj: FreeCAD.DocumentObject, newObj: FreeCAD.DocumentObject) -> bool:
+        """May be implemented in python"""
+
+    def getLinkedViewProvider(self, recursive: bool) -> typing.Union[
+        None,
+        FreeCADGui.ViewProviderDocumentObject,
+        tuple[FreeCADGui.ViewProviderDocumentObject, str]
+    ]:
+        """May be implemented in python"""
+
+
+class ViewProviderPython(_ViewProviderPythonGeneral):
+    def setEdit(self, viewObj: FreeCADGui.ViewProviderDocumentObject,
+                modNum: int) -> typing.Optional[bool]:
+        """May be implemented in python"""
+
+    def unsetEdit(self, viewObj: FreeCADGui.ViewProviderDocumentObject,
+                  modNum: int) -> typing.Optional[bool]:
+        """May be implemented in python"""
+
+    def doubleClicked(self, viewObj: FreeCADGui.ViewProviderDocumentObject) -> bool:
+        """May be implemented in python"""
+
+    def setupContextMenu(self, viewObj: FreeCADGui.ViewProviderDocumentObject, menu: QMenu) -> bool:
+        """May be implemented in python"""
+
+    def attach(self, viewObj: FreeCADGui.ViewProviderDocumentObject):
+        """May be implemented in python"""
+
+    def updateData(self, viewObj: FreeCADGui.ViewProviderDocumentObject, propertyName: str):
+        """May be implemented in python"""
+
+    def onChanged(self, viewObj: FreeCADGui.ViewProviderDocumentObject, propertyName: str):
+        """May be implemented in python"""
+
+    def onDelete(self, viewObj: FreeCADGui.ViewProviderDocumentObject,
+                 sub: tuple[str, ...]) -> bool:
+        """May be implemented in python"""
+
+    def getDisplayModes(self, viewObj: FreeCADGui.ViewProviderDocumentObject
+                        ) -> typing.Sequence[str]:
+        """May be implemented in python"""
+
+    def dragObject(self, viewObj: FreeCADGui.ViewProviderDocumentObject,
+                   obj: FreeCAD.DocumentObject):
+        """May be implemented in python"""
+
+    def dropObject(self, viewObj: FreeCADGui.ViewProviderDocumentObject,
+                   obj: FreeCAD.DocumentObject):
+        """May be implemented in python"""
+
+
+class ViewProviderPythonObj(_ViewProviderPythonGeneral):
+    """
+    This is the same as ViewProviderPython, but object must have  __object__ attribute.
+    Methods defined in this class are called without view object argument.
+    """
+    __vobject__: FreeCADGui.ViewProviderDocumentObject
+
+    def setEdit(self, modNum: int) -> typing.Optional[bool]:
+        """May be implemented in python"""
+
+    def unsetEdit(self, modNum: int) -> typing.Optional[bool]:
+        """May be implemented in python"""
+
+    def doubleClicked(self) -> bool:
+        """May be implemented in python"""
+
+    def setupContextMenu(self, menu: QMenu) -> bool:
+        """May be implemented in python"""
+
+    def attach(self):
+        """May be implemented in python"""
+
+    def updateData(self, propertyName: str):
+        """May be implemented in python"""
+
+    def onChanged(self, propertyName: str):
+        """May be implemented in python"""
+
+    def onDelete(self, sub: tuple[str, ...]) -> bool:
+        """May be implemented in python"""
+
+    def getDisplayModes(self) -> typing.Sequence[str]:
+        """May be implemented in python"""
+
+    def dragObject(self, obj: FreeCAD.DocumentObject):
+        """May be implemented in python"""
+
+    def dropObject(self, obj: FreeCAD.DocumentObject):
+        """May be implemented in python"""
 
 
 # Gui/Command.cpp

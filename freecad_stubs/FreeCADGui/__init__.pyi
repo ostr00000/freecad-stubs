@@ -1408,7 +1408,7 @@ def export(arg1: object, arg2: str, /):
     """save scene to Inventor or VRML file"""
 
 
-def activeDocument():
+def activeDocument() -> FreeCADGui.Document:
     """activeDocument() -> object or None
 
     Return the active document or None if no one exists"""
