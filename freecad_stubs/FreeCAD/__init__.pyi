@@ -119,7 +119,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     def Proxy(self, value: FreeCADTemplates.ProxyPython): ...
 
     @property
-    def Document(self) -> object:
+    def Document(self) -> FreeCAD.Document:
         """Return the document this object is part of"""
 
     @property
@@ -1097,6 +1097,14 @@ def checkAbort():
     trigger a BaseExceptionFreeCADAbort exception."""
 
 
+App = FreeCAD
+Log = FreeCAD.Console.PrintLog
+Msg = FreeCAD.Console.PrintMessage
+Err = FreeCAD.Console.PrintError
+Wrn = FreeCAD.Console.PrintWarning
+# be careful with following variables -
+# some of them are set in FreeCADGui (GuiUp after InitApplications),
+# so may not exist when accessible until FreeCADGuiInit is initialized - use `getattr`
 GuiUp: typing.Literal[0, 1]
 Gui = FreeCADGui
 ActiveDocument: Document

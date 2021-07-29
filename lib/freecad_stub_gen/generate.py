@@ -52,6 +52,15 @@ def generateFreeCadStubs(sourcePath=SOURCE_DIR, targetPath=TARGET_DIR):
     freeCADStub /= freeCADBase
 
     freeCADStub += _genModule('FreeCAD', sourcePath / 'App', sourcePath)
+    freeCADStub += """
+App = FreeCAD
+Log = FreeCAD.Console.PrintLog
+Msg = FreeCAD.Console.PrintMessage
+Err = FreeCAD.Console.PrintError
+Wrn = FreeCAD.Console.PrintWarning
+# be careful with following variables -
+# some of them are set in FreeCADGui (GuiUp after InitApplications),
+# so may not exist when accessible until FreeCADGuiInit is initialized - use `getattr`"""
     freeCADStub += StubContainer('GuiUp: typing.Literal[0, 1]', {'typing'})
     freeCADStub += StubContainer('Gui = FreeCADGui', {'FreeCADGui'})
     freeCADStub += StubContainer('ActiveDocument: Document')
