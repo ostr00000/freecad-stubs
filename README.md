@@ -62,4 +62,4 @@ Checkout to desired branch and copy folder `/freecad_stubs`.
     ```shell
     pytohn freecad-stubs/lib/freecad_stub_gen/__main__.py
     ```
-   Recommended python version: `3.10`.
+   Required python version: `>=3.10`.
