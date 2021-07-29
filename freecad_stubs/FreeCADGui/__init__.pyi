@@ -572,7 +572,7 @@ class SelectionObject(FreeCAD.BaseClass):
     """This class represents selections made by the user. It holds information about the object, document and sub-element of the selection."""
 
     @property
-    def Document(self) -> object:
+    def Document(self) -> FreeCADGui.Document:
         """Document of the selected object"""
 
     @property
@@ -643,7 +643,7 @@ class Document(FreeCAD.Persistence):
     def ActiveView(self, value: FreeCADGui.View3DInventorPy): ...
 
     @property
-    def Document(self) -> FreeCAD.Document:
+    def Document(self) -> FreeCADGui.Document:
         """The related App document to this Gui document"""
 
     @property

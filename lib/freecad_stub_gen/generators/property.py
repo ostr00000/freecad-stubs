@@ -44,11 +44,23 @@ class PropertyGenerator(BaseGenerator, ABC):
         if className == 'DocumentObject' and propertyName == 'ViewObject':
             pythonType = 'typing.Optional[FreeCADGui.ViewProviderDocumentObject]'
 
-        elif className == 'DocumentObject' and pythonType == 'list':
+        elif className == 'DocumentObject':
             if propertyName == 'Parents':
                 pythonType = 'list[tuple[FreeCAD.DocumentObject, str]]'
-            else:
+            elif propertyName == 'Document':
+                pythonType = 'FreeCAD.Document'
+            elif propertyName in (
+                    'InList', 'InListRecursive', 'OutList', 'OutListRecursive'):
                 pythonType = 'list[FreeCAD.DocumentObject]'
+            elif propertyName == 'State':
+                pythonType = 'list[typing.Literal["Touched", "Invalid", "Recompute", ' \
+                             '"Recompute2", "Restore", "Expanded", "Partial", ' \
+                             '"Importing", "Up-to-date"]]'
+        elif propertyName == 'Document':
+            if 'Gui' in str(self.baseGenFilePath):
+                pythonType = 'FreeCADGui.Document'
+            else:
+                pythonType = 'FreeCAD.Document'
 
         elif className == 'ViewProviderDocumentObject':
             if propertyName == 'Document':

@@ -171,7 +171,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         """Indicate if the object is being removed"""
 
     @property
-    def State(self) -> list[FreeCAD.DocumentObject]:
+    def State(self) -> list[typing.Literal["Touched", "Invalid", "Recompute", "Recompute2", "Restore", "Expanded", "Partial", "Importing", "Up-to-date"]]:
         """State of the object in the document"""
 
     @property
