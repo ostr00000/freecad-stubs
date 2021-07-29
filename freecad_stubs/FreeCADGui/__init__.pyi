@@ -643,7 +643,7 @@ class Document(FreeCAD.Persistence):
     def ActiveView(self, value: FreeCADGui.View3DInventorPy): ...
 
     @property
-    def Document(self) -> FreeCADGui.Document:
+    def Document(self) -> FreeCAD.Document:
         """The related App document to this Gui document"""
 
     @property

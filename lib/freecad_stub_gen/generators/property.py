@@ -39,60 +39,55 @@ class PropertyGenerator(BaseGenerator, ABC):
                 self.requiredImports.add('typing')
         return pythonType
 
+    @property
+    def isGuiFile(self) -> bool:
+        return 'Gui' in str(self.baseGenFilePath)
+
     def __getReturnTypeForSpecialCase(self, propertyName: str, pythonType: str):
         className = getSimpleClassName(self.currentNode)
-        if className == 'DocumentObject' and propertyName == 'ViewObject':
-            pythonType = 'typing.Optional[FreeCADGui.ViewProviderDocumentObject]'
 
-        elif className == 'DocumentObject':
-            if propertyName == 'Parents':
+        match className, propertyName:
+            case 'DocumentObject', 'ViewObject':
+                pythonType = 'typing.Optional[FreeCADGui.ViewProviderDocumentObject]'
+            case 'DocumentObject', 'Parents':
                 pythonType = 'list[tuple[FreeCAD.DocumentObject, str]]'
-            elif propertyName == 'Document':
+            case 'DocumentObject', 'Document':
                 pythonType = 'FreeCAD.Document'
-            elif propertyName in (
-                    'InList', 'InListRecursive', 'OutList', 'OutListRecursive'):
+            case 'DocumentObject', ('InList' | 'InListRecursive' | 'OutList' | 'OutListRecursive'):
                 pythonType = 'list[FreeCAD.DocumentObject]'
-            elif propertyName == 'State':
+            case 'DocumentObject', 'State':
                 pythonType = 'list[typing.Literal["Touched", "Invalid", "Recompute", ' \
                              '"Recompute2", "Restore", "Expanded", "Partial", ' \
                              '"Importing", "Up-to-date"]]'
-        elif propertyName == 'Document':
-            if 'Gui' in str(self.baseGenFilePath):
-                pythonType = 'FreeCADGui.Document'
-            else:
-                pythonType = 'FreeCAD.Document'
 
-        elif className == 'ViewProviderDocumentObject':
-            if propertyName == 'Document':
+            case 'Document', 'ActiveObject':
+                pythonType = 'typing.Optional[FreeCAD.DocumentObject]'
+            case 'Document', 'ActiveView':
+                pythonType = 'FreeCADGui.View3DInventorPy'
+            case 'Document', 'Document':  # here is reversed
+                pythonType = 'FreeCAD.Document' if self.isGuiFile else 'FreeCADGui.Document'
+
+            case 'ViewProviderDocumentObject', 'Document':
                 pythonType = 'FreeCADGui.Document'
-            elif propertyName == 'Object':
+            case 'ViewProviderDocumentObject', 'Object':
                 pythonType = 'FreeCAD.DocumentObject'
 
-        elif className == 'Document':
-            if propertyName == 'ActiveObject':
-                pythonType = 'typing.Optional[FreeCAD.DocumentObject]'
-            elif propertyName == 'ActiveView':
-                pythonType = 'FreeCADGui.View3DInventorPy'
-            elif propertyName == 'Document':
-                if 'Gui' in str(self.baseGenFilePath):
-                    pythonType = 'FreeCAD.Document'
-                else:
-                    pythonType = 'FreeCADGui.Document'
-
-        elif className == 'Placement':
-            if propertyName == 'Base':
+            case 'Placement', 'Base':
                 pythonType = 'FreeCAD.Vector'
 
-        if propertyName == 'Placement':
-            pythonType = 'FreeCAD.Placement'
-        elif propertyName == 'Matrix':
-            pythonType = 'FreeCAD.Matrix'
-        elif propertyName == 'Rotation':
-            pythonType = 'FreeCAD.Rotation'
-        elif propertyName in ('Axis', 'RawAxis'):
-            pythonType = 'FreeCAD.Vector'
-        elif propertyName == 'Q':
-            pythonType = 'tuple[float, float, float, float]'
+            case _, 'Document':
+                pythonType = 'FreeCADGui.Document' if self.isGuiFile else 'FreeCAD.Document'
+
+            case _, 'Placement':
+                pythonType = 'FreeCAD.Placement'
+            case _, 'Matrix':
+                pythonType = 'FreeCAD.Matrix'
+            case _, 'Rotation':
+                pythonType = 'FreeCAD.Rotation'
+            case _, ('Axis' | 'RawAxis'):
+                pythonType = 'FreeCAD.Vector'
+            case _, 'Q':
+                pythonType = 'tuple[float, float, float, float]'
 
         if 'typing' in pythonType:
             self.requiredImports.add('typing')
