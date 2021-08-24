@@ -63,7 +63,7 @@ Wrn = FreeCAD.Console.PrintWarning
 # so may not exist when accessible until FreeCADGuiInit is initialized - use `getattr`"""
     freeCADStub += StubContainer('GuiUp: typing.Literal[0, 1]', {'typing'})
     freeCADStub += StubContainer('Gui = FreeCADGui', {'FreeCADGui'})
-    freeCADStub += StubContainer('ActiveDocument: Document')
+    freeCADStub += StubContainer('ActiveDocument: FreeCAD.Document')
     freeCADStub += StubContainer(requiredImports={
         'FreeCAD.Console',
         'FreeCAD.__Translate__ as Qt',
@@ -74,7 +74,7 @@ Wrn = FreeCAD.Console.PrintWarning
 
     freeCADGuiStub = _genModule('FreeCADGui', sourcePath / 'Gui')
     freeCADGuiStub += StubContainer('Workbench: FreeCADGui.Workbench')
-    freeCADGuiStub += StubContainer('ActiveDocument: Document')
+    freeCADGuiStub += StubContainer('ActiveDocument: FreeCADGui.Document')
     freeCADGuiStub += StubContainer(
         'Control = ControlClass()  # hack to show this module in current module hints')
     freeCADGuiStub += StubContainer(requiredImports={
