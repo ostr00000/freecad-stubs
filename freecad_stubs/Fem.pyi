@@ -133,7 +133,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
                             Notice that the elements have to be in the mesh.
                         """
 
-    def addHypothesis(self, arg1: object, arg2: Part.TopoShape = None, /):
+    def addHypothesis(self, arg1: object, arg2: Part.Shape = None, /):
         """Add hypothesis"""
 
     @typing.overload
@@ -159,7 +159,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
     def copy(self):
         """Make a copy of this FEM mesh."""
 
-    def getEdgesByEdge(self, arg1: Part.TopoShape, /):
+    def getEdgesByEdge(self, arg1: Part.Edge, /):
         """Return a list of edge IDs which belong to a TopoEdge"""
 
     def getElementNodes(self, arg1: int, /):
@@ -168,7 +168,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
     def getElementType(self, arg1: int, /):
         """Return the element type of a given ID"""
 
-    def getFacesByFace(self, arg1: Part.TopoShape, /):
+    def getFacesByFace(self, arg1: Part.Face, /):
         """Return a list of face IDs which belong to a TopoFace"""
 
     def getGroupElementType(self, arg1: int, /):
@@ -186,22 +186,22 @@ class FemMesh(FreeCAD.ComplexGeoData):
     def getNodeById(self, arg1: int, /):
         """Get the node position vector by a Node-ID"""
 
-    def getNodesByEdge(self, arg1: Part.TopoShape, /):
+    def getNodesByEdge(self, arg1: Part.Edge, /):
         """Return a list of node IDs which belong to a TopoEdge"""
 
-    def getNodesByFace(self, arg1: Part.TopoShape, /):
+    def getNodesByFace(self, arg1: Part.Face, /):
         """Return a list of node IDs which belong to a TopoFace"""
 
-    def getNodesBySolid(self, arg1: Part.TopoShape, /):
+    def getNodesBySolid(self, arg1: Part.Solid, /):
         """Return a list of node IDs which belong to a TopoSolid"""
 
-    def getNodesByVertex(self, arg1: Part.TopoShape, /):
+    def getNodesByVertex(self, arg1: Part.Vertex, /):
         """Return a list of node IDs which belong to a TopoVertex"""
 
-    def getVolumesByFace(self, arg1: Part.TopoShape, /):
+    def getVolumesByFace(self, arg1: Part.Face, /):
         """Return a dict of volume IDs and face IDs which belong to a TopoFace"""
 
-    def getccxVolumesByFace(self, arg1: Part.TopoShape, /):
+    def getccxVolumesByFace(self, arg1: Part.Face, /):
         """Return a dict of volume IDs and ccx face numbers which belong to a TopoFace"""
 
     def read(self, file_endingToExportTo: str, /):
@@ -216,7 +216,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
                             Returns boolean.
                         """
 
-    def setShape(self, arg1: Part.TopoShape, /):
+    def setShape(self, arg1: Part.Shape, /):
         """Set the Part shape to mesh"""
 
     def setStandardHypotheses(self):

@@ -31,7 +31,7 @@ def writeDXFShape(arg1: list, arg2: str, arg3: int = None, arg4: object = None, 
 
 
 @typing.overload
-def writeDXFShape(arg1: Part.TopoShape, arg2: str, arg3: int = None, arg4: object = None, arg5: str = None, /):
+def writeDXFShape(arg1: Part.Shape, arg2: str, arg3: int = None, arg4: object = None, arg5: str = None, /):
     """writeDXFShape([shape],filename [version,usePolyline,optionSource]): Exports Shape(s) to a DXF file."""
 
 

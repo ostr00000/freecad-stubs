@@ -1107,4 +1107,4 @@ Wrn = FreeCAD.Console.PrintWarning
 # so may not exist when accessible until FreeCADGuiInit is initialized - use `getattr`
 GuiUp: typing.Literal[0, 1]
 Gui = FreeCADGui
-ActiveDocument: Document
+ActiveDocument: FreeCAD.Document

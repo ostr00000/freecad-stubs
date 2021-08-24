@@ -1629,5 +1629,5 @@ class View3DInventorViewerPy:
 
 
 Workbench: FreeCADGui.Workbench
-ActiveDocument: Document
+ActiveDocument: FreeCADGui.Document
 Control = ControlClass()  # hack to show this module in current module hints

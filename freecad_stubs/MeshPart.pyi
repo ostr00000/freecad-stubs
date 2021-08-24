@@ -6,7 +6,7 @@ import Part
 
 
 # AppMeshPartPy.cpp
-def loftOnCurve(curve: Part.TopoShape, poly: object, upVector: typing.Sequence[float, float, float], MaxSize: float, /):
+def loftOnCurve(curve: Part.Shape, poly: object, upVector: typing.Sequence[float, float, float], MaxSize: float, /):
     """Creates a mesh loft based on a curve and an up vector
 
     loftOnCurve(curve, poly, upVector, MaxSize)
@@ -19,7 +19,7 @@ def loftOnCurve(curve: Part.TopoShape, poly: object, upVector: typing.Sequence[f
     """
 
 
-def findSectionParameters(Edge: Part.TopoShape, Mesh: Mesh.MeshObject, Vector: FreeCAD.Vector, /):
+def findSectionParameters(Edge: Part.Edge, Mesh: Mesh.MeshObject, Vector: FreeCAD.Vector, /):
     """Find the parameters of the edge where when projecting the corresponding point
     will lie on an edge of the mesh
 
@@ -44,11 +44,11 @@ def wireFromMesh(arg1: Mesh.MeshObject, /):
 
 
 @typing.overload
-def projectShapeOnMesh(Shape: Part.TopoShape, Mesh: Mesh.MeshObject, MaxDistance: float): ...
+def projectShapeOnMesh(Shape: Part.Shape, Mesh: Mesh.MeshObject, MaxDistance: float): ...
 
 
 @typing.overload
-def projectShapeOnMesh(Shape: Part.TopoShape, Mesh: Mesh.MeshObject, Direction: FreeCAD.Vector): ...
+def projectShapeOnMesh(Shape: Part.Shape, Mesh: Mesh.MeshObject, Direction: FreeCAD.Vector): ...
 
 
 @typing.overload
@@ -66,27 +66,27 @@ def projectShapeOnMesh(Polygons: object, Mesh: Mesh.MeshObject, Direction: FreeC
 
 
 @typing.overload
-def meshFromShape(Shape: Part.TopoShape, /): ...
+def meshFromShape(Shape: Part.Shape, /): ...
 
 
 @typing.overload
-def meshFromShape(Shape: Part.TopoShape, MaxLength: float): ...
+def meshFromShape(Shape: Part.Shape, MaxLength: float): ...
 
 
 @typing.overload
-def meshFromShape(Shape: Part.TopoShape, MaxArea: float): ...
+def meshFromShape(Shape: Part.Shape, MaxArea: float): ...
 
 
 @typing.overload
-def meshFromShape(Shape: Part.TopoShape, LocalLength: float): ...
+def meshFromShape(Shape: Part.Shape, LocalLength: float): ...
 
 
 @typing.overload
-def meshFromShape(Shape: Part.TopoShape, Deflection: float): ...
+def meshFromShape(Shape: Part.Shape, Deflection: float): ...
 
 
 @typing.overload
-def meshFromShape(Shape: Part.TopoShape, MinLength: float, MaxLength: float):
+def meshFromShape(Shape: Part.Shape, MinLength: float, MaxLength: float):
     """Create surface mesh from shape
 
     Multiple signatures are available:

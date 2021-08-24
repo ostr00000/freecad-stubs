@@ -326,11 +326,11 @@ class Area(FreeCAD.BaseClass):
 
     def makePocket(self, index: int = None): ...
 
-    def makeSections(self, heights: object = None, plane: Part.TopoShape = None): ...
+    def makeSections(self, heights: object = None, plane: Part.Shape = None): ...
 
     def setParams(self): ...
 
-    def setPlane(self, shape: Part.TopoShape, /):
+    def setPlane(self, shape: Part.Shape, /):
         """setPlane(shape): Set the working plane.
 
         The supplied shape does not need to be planar. Area will try to find planar

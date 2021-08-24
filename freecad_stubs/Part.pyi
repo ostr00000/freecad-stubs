@@ -5,7 +5,7 @@ import Part
 
 
 # TopoShapeVertexPy.xml
-class TopoShape(Part.TopoShape):
+class Vertex(Part.Shape):
     """TopoShapeVertex is the OpenCasCade topological vertex wrapper"""
 
     @typing.overload
@@ -24,7 +24,7 @@ class TopoShape(Part.TopoShape):
     def __init__(self, arg1: Part.Point, /): ...
 
     @typing.overload
-    def __init__(self, arg1: Part.TopoShape, /):
+    def __init__(self, arg1: Part.Shape, /):
         """TopoShapeVertex is the OpenCasCade topological vertex wrapper"""
 
     @property
@@ -234,7 +234,7 @@ class AttachEngine(FreeCAD.BaseClass):
     def getRefTypeInfo(self, type: str, /):
         """getRefTypeInfo(type): returns information (dict) on shape type. Keys:'UserFriendlyName', 'TypeIndex', 'Rank'. Rank is the number of times reftype can be downgraded, before it becomes 'Any'."""
 
-    def getRefTypeOfShape(self, shape: Part.TopoShape, /):
+    def getRefTypeOfShape(self, shape: Part.Shape, /):
         """getRefTypeOfShape(shape): returns shape type as interpreted by AttachEngine. Returns a string."""
 
     def isFittingRefType(self, type_shape: str, type_needed: str, /):
@@ -369,14 +369,10 @@ class Ellipse(Part.Conic):
 
 
 # TopoShapeSolidPy.xml
-class TopoShape(Part.TopoShape):
+class Solid(Part.Shape):
     """Part.Solid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created."""
 
-    @typing.overload
-    def __init__(self): ...
-
-    @typing.overload
-    def __init__(self, arg1: Part.TopoShape, /):
+    def __init__(self, shape: Part.Shape, /):
         """Part.Solid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created."""
 
     @property
@@ -780,20 +776,20 @@ class Plane(Part.GeometrySurface):
 
 
 # TopoShapeFacePy.xml
-class TopoShape(Part.TopoShape):
+class Face(Part.Shape):
     """TopoShapeFace is the OpenCasCade topological face wrapper"""
 
     @typing.overload
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, arg1: Part.TopoShape, /): ...
+    def __init__(self, arg1: Part.Shape, /): ...
 
     @typing.overload
-    def __init__(self, arg1: Part.TopoShape, arg2: Part.TopoShape, /): ...
+    def __init__(self, arg1: Part.Face, arg2: Part.Wire, /): ...
 
     @typing.overload
-    def __init__(self, arg1: Part.GeometrySurface, arg2: Part.TopoShape, /): ...
+    def __init__(self, arg1: Part.GeometrySurface, arg2: Part.Wire, /): ...
 
     @typing.overload
     def __init__(self, arg1: Part.Geometry, arg2: list = None, /): ...
@@ -874,7 +870,7 @@ class TopoShape(Part.TopoShape):
         """The outer wire of this face
         deprecated -- please use OuterWire"""
 
-    def addWire(self, wire: Part.TopoShape, /):
+    def addWire(self, wire: Part.Wire, /):
         """Adds a wire to the face.
         addWire(wire)
                         """
@@ -884,7 +880,7 @@ class TopoShape(Part.TopoShape):
         curvatureAt(u,v) -> Float
                         """
 
-    def curveOnSurface(self, Edge: Part.TopoShape, /):
+    def curveOnSurface(self, Edge: Part.Edge, /):
         """Returns the curve associated to the edge in the parametric space of the face.
         curveOnSurface(Edge) -> (curve, min, max) or None
         --
@@ -957,10 +953,10 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
     """Describes a portion of a circle"""
 
     @typing.overload
-    def add(self, Profile: Part.TopoShape, WithContact: bool = False, WithCorrection: bool = False): ...
+    def add(self, Profile: Part.Shape, WithContact: bool = False, WithCorrection: bool = False): ...
 
     @typing.overload
-    def add(self, Profile: Part.TopoShape, Location: Part.TopoShape, WithContact: bool = False, WithCorrection: bool = False):
+    def add(self, Profile: Part.Shape, Location: Part.Vertex, WithContact: bool = False, WithCorrection: bool = False):
         """
         					add(shape Profile, bool WithContact=False, bool WithCorrection=False)
         					add(shape Profile, vertex Location, bool WithContact=False, bool WithCorrection=False)
@@ -982,7 +978,7 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
         					Returns the Shape of the bottom of the sweep.
         				"""
 
-    def generated(self, shape_S: Part.TopoShape, /):
+    def generated(self, shape_S: Part.Shape, /):
         """
         					generated(shape S)
         					Returns a list of new shapes generated from the shape S by the shell-generating algorithm.
@@ -1012,17 +1008,17 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
         					Transforms the sweeping Shell in Solid. If a propfile is not closed returns False.
         				"""
 
-    def remove(self, shape_Profile: Part.TopoShape, /):
+    def remove(self, shape_Profile: Part.Shape, /):
         """
         					remove(shape Profile)
         					Removes the section Profile from this framework.
         				"""
 
     @typing.overload
-    def setAuxiliarySpine(self, wire: Part.TopoShape, CurvilinearEquivalence: bool, TypeOfContact: int, /): ...
+    def setAuxiliarySpine(self, wire: Part.Shape, CurvilinearEquivalence: bool, TypeOfContact: int, /): ...
 
     @typing.overload
-    def setAuxiliarySpine(self, wire: Part.TopoShape, CurvilinearEquivalence: bool, TypeOfContact: bool, /):
+    def setAuxiliarySpine(self, wire: Part.Shape, CurvilinearEquivalence: bool, TypeOfContact: bool, /):
         """
         					setAuxiliarySpine(wire, CurvilinearEquivalence, TypeOfContact)
         					Sets an auxiliary spine to define the Normal.
@@ -1075,7 +1071,7 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
         					Define the maximum number of spans in V-direction on resulting surface.
         				"""
 
-    def setSpineSupport(self, shape: Part.TopoShape, /):
+    def setSpineSupport(self, shape: Part.Shape, /):
         """
         					setSpineSupport(shape)
         					Sets support to the spine to define the BiNormal of the trihedron, like the normal to the surfaces.
@@ -1118,7 +1114,7 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
 
 
 # TopoShapeCompSolidPy.xml
-class TopoShape(Part.TopoShape):
+class CompSolid(Part.Shape):
     """TopoShapeCompSolid is the OpenCasCade topological compound solid wrapper"""
 
     @typing.overload
@@ -1128,7 +1124,7 @@ class TopoShape(Part.TopoShape):
     def __init__(self, arg1: object, /):
         """TopoShapeCompSolid is the OpenCasCade topological compound solid wrapper"""
 
-    def add(self, solid: Part.TopoShape, /):
+    def add(self, solid: Part.Solid, /):
         """Add a solid to the compound.
         add(solid)
                 """
@@ -1176,7 +1172,7 @@ class Parabola(Part.Conic):
 
 
 # TopoShapePy.xml
-class TopoShape(FreeCAD.ComplexGeoData):
+class Shape(FreeCAD.ComplexGeoData):
     """TopoShape is the OpenCasCade topological shape wrapper.
     Sub-elements such as vertices, edges or faces are accessible as:
     * Vertex#, where # is in range(1, number of vertices)
@@ -1249,7 +1245,7 @@ class TopoShape(FreeCAD.ComplexGeoData):
     def Wires(self) -> list:
         """List of wires in this shape."""
 
-    def ancestorsOfType(self, shape: Part.TopoShape, shape_type: type, /):
+    def ancestorsOfType(self, shape: Part.Shape, shape_type: type, /):
         """For a sub-shape of this shape get its ancestors of a type.
         ancestorsOfType(shape, shape type) -> list
                 """
@@ -1282,10 +1278,10 @@ class TopoShape(FreeCAD.ComplexGeoData):
         """
 
     @typing.overload
-    def common(self, tool: Part.TopoShape, /): ...
+    def common(self, tool: Part.Shape, /): ...
 
     @typing.overload
-    def common(self, arg: Part.TopoShape, tolerance: float, /): ...
+    def common(self, arg: Part.Shape, tolerance: float, /): ...
 
     @typing.overload
     def common(self, arg: object, tolerance: float = 0.0, /):
@@ -1323,10 +1319,10 @@ class TopoShape(FreeCAD.ComplexGeoData):
                 """
 
     @typing.overload
-    def cut(self, tool: Part.TopoShape, /): ...
+    def cut(self, tool: Part.Shape, /): ...
 
     @typing.overload
-    def cut(self, arg: Part.TopoShape, tolerance: float, /): ...
+    def cut(self, arg: Part.Shape, tolerance: float, /): ...
 
     @typing.overload
     def cut(self, arg: object, tolerance: float = 0.0, /):
@@ -1348,7 +1344,7 @@ class TopoShape(FreeCAD.ComplexGeoData):
         --
         The parameter is a list of faces."""
 
-    def distToShape(self, shape: Part.TopoShape, /):
+    def distToShape(self, shape: Part.Shape, /):
         """Find the minimum distance to another shape.
         distToShape(shape) -> (dist, vectors, infos)
         --
@@ -1439,10 +1435,10 @@ class TopoShape(FreeCAD.ComplexGeoData):
                 """
 
     @typing.overload
-    def fuse(self, tool: Part.TopoShape, /): ...
+    def fuse(self, tool: Part.Shape, /): ...
 
     @typing.overload
-    def fuse(self, arg: Part.TopoShape, tolerance: float, /): ...
+    def fuse(self, arg: Part.Shape, tolerance: float, /): ...
 
     @typing.overload
     def fuse(self, arg: object, tolerance: float = 0.0, /):
@@ -1564,12 +1560,12 @@ class TopoShape(FreeCAD.ComplexGeoData):
         If the shape is an edge it returns True if its vertices are the same.
         """
 
-    def isCoplanar(self, shape: Part.TopoShape, tol: float = None, /):
+    def isCoplanar(self, shape: Part.Shape, tol: float = None, /):
         """Checks if this shape is coplanar with the given shape.
         isCoplanar(shape,tol=None) -> bool
                 """
 
-    def isEqual(self, shape: Part.TopoShape, /):
+    def isEqual(self, shape: Part.Shape, /):
         """Checks if both shapes are equal.
                 This means geometry, placement and orientation are equal.
         isEqual(shape) -> bool
@@ -1591,13 +1587,13 @@ class TopoShape(FreeCAD.ComplexGeoData):
         """Checks if the shape is null.
         isNull() -> bool"""
 
-    def isPartner(self, shape: Part.TopoShape, /):
+    def isPartner(self, shape: Part.Shape, /):
         """Checks if both shapes share the same geometry.
         Placement and orientation may differ.
         isPartner(shape) -> bool
                 """
 
-    def isSame(self, shape: Part.TopoShape, /):
+    def isSame(self, shape: Part.Shape, /):
         """Checks if both shapes share the same geometry
                 and placement. Orientation may differ.
         isSame(shape) -> bool
@@ -1701,12 +1697,12 @@ class TopoShape(FreeCAD.ComplexGeoData):
 
         Returns: result of offsetting."""
 
-    def makeParallelProjection(self, shape: Part.TopoShape, dir: FreeCAD.Vector, /):
+    def makeParallelProjection(self, shape: Part.Shape, dir: FreeCAD.Vector, /):
         """Parallel projection of an edge or wire on this shape
         makeParallelProjection(shape, dir) -> Shape
                 """
 
-    def makePerspectiveProjection(self, shape: Part.TopoShape, pnt: FreeCAD.Vector, /):
+    def makePerspectiveProjection(self, shape: Part.Shape, pnt: FreeCAD.Vector, /):
         """Perspective projection of an edge or wire on this shape
         makePerspectiveProjection(shape, pnt) -> Shape
                 """
@@ -1764,7 +1760,7 @@ class TopoShape(FreeCAD.ComplexGeoData):
         nullify()
                 """
 
-    def oldFuse(self, tool: Part.TopoShape, /):
+    def oldFuse(self, tool: Part.Shape, /):
         """Union of this and a given topo shape (old algorithm).
         oldFuse(tool) -> Shape
                 """
@@ -1786,7 +1782,7 @@ class TopoShape(FreeCAD.ComplexGeoData):
         project(shapeList) -> Shape
                 """
 
-    def proximity(self, shape: Part.TopoShape, tolerance: float = None, /):
+    def proximity(self, shape: Part.Shape, tolerance: float = None, /):
         """Returns two lists of Face indexes for the Faces involved in the intersection.
         proximity(shape,[tolerance]) -> (selfFaces, shapeFaces)
                 """
@@ -1919,10 +1915,10 @@ class TopoShape(FreeCAD.ComplexGeoData):
                   """
 
     @typing.overload
-    def section(self, tool: Part.TopoShape, approximation: bool = False, /): ...
+    def section(self, tool: Part.Shape, approximation: bool = False, /): ...
 
     @typing.overload
-    def section(self, arg: Part.TopoShape, tolerance: float, approximation: bool = False, /): ...
+    def section(self, arg: Part.Shape, tolerance: float, approximation: bool = False, /): ...
 
     @typing.overload
     def section(self, arg: object, tolerance: float = 0.0, approximation: bool = False, /):
@@ -2511,7 +2507,7 @@ class Sphere(Part.GeometrySurface):
 
 
 # TopoShapeCompoundPy.xml
-class TopoShape(Part.TopoShape):
+class Compound(Part.Shape):
     """Create a compound out of a list of shapes"""
 
     @typing.overload
@@ -2521,7 +2517,7 @@ class TopoShape(Part.TopoShape):
     def __init__(self, arg1: object, /):
         """Create a compound out of a list of shapes"""
 
-    def add(self, shape: Part.TopoShape, /):
+    def add(self, shape: Part.Shape, /):
         """Add a shape to the compound.
         add(shape)
                 """
@@ -2535,14 +2531,14 @@ class TopoShape(Part.TopoShape):
 
 
 # TopoShapeWirePy.xml
-class TopoShape(Part.TopoShape):
+class Wire(Part.Shape):
     """TopoShapeWire is the OpenCasCade topological wire wrapper"""
 
     @typing.overload
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, arg1: Part.TopoShape, /): ...
+    def __init__(self, arg1: Part.Shape, /): ...
 
     @typing.overload
     def __init__(self, arg1: object, /):
@@ -2608,7 +2604,7 @@ class TopoShape(Part.TopoShape):
          current system; i.e. the moments of inertia about the
          three axes of the Cartesian coordinate system."""
 
-    def add(self, edge: Part.TopoShape, /):
+    def add(self, edge: Part.Shape, /):
         """Add an edge to the wire
         add(edge)
                         """
@@ -2704,14 +2700,14 @@ class TopoShape(Part.TopoShape):
         Part.show(s)
                 """
 
-    def fixWire(self, face: Part.TopoShape = None, tolerance: float = None, /):
+    def fixWire(self, face: Part.Face = None, tolerance: float = None, /):
         """Fix wire
         fixWire([face, tolerance])
         --
         A face and a tolerance can optionally be supplied to the algorithm:
                         """
 
-    def makeHomogenousWires(self, wire: Part.TopoShape, /):
+    def makeHomogenousWires(self, wire: Part.Wire, /):
         """Make this and the given wire homogeneous to have the same number of edges
         makeHomogenousWires(wire) -> Wire
                     """
@@ -2719,7 +2715,7 @@ class TopoShape(Part.TopoShape):
     def makeOffset(self, arg1: float, /):
         """Offset the shape by a given amount. DEPRECATED - use makeOffset2D instead."""
 
-    def makePipe(self, profile: Part.TopoShape, /):
+    def makePipe(self, profile: Part.Shape, /):
         """Make a pipe by sweeping along a wire.
         makePipe(profile) -> Shape
                 """
@@ -2816,7 +2812,7 @@ class Point(Part.Geometry):
 
 
 # TopoShapeShellPy.xml
-class TopoShape(Part.TopoShape):
+class Shell(Part.Shape):
     """Create a shell out of a list of faces"""
 
     @typing.overload
@@ -2874,7 +2870,7 @@ class TopoShape(Part.TopoShape):
          current system; i.e. the moments of inertia about the
          three axes of the Cartesian coordinate system."""
 
-    def add(self, face: Part.TopoShape, /):
+    def add(self, face: Part.Face, /):
         """Add a face to the shell.
         add(face)
                 """
@@ -3790,7 +3786,7 @@ class GeometrySurface(Part.Geometry):
 
 
 # TopoShapeEdgePy.xml
-class TopoShape(Part.TopoShape):
+class Edge(Part.Shape):
     """TopoShapeEdge is the OpenCasCade topological edge wrapper"""
 
     @typing.overload
@@ -3800,10 +3796,10 @@ class TopoShape(Part.TopoShape):
     def __init__(self, arg1: Part.Geometry, arg2: float = None, arg3: float = None, /): ...
 
     @typing.overload
-    def __init__(self, arg1: Part.TopoShape, /): ...
+    def __init__(self, arg1: Part.Shape, /): ...
 
     @typing.overload
-    def __init__(self, arg1: Part.TopoShape, arg2: Part.TopoShape, /):
+    def __init__(self, arg1: Part.Vertex, arg2: Part.Vertex, /):
         """TopoShapeEdge is the OpenCasCade topological edge wrapper"""
 
     @property
@@ -4167,7 +4163,7 @@ class TopoShape(Part.TopoShape):
                 given position along its cartesian length.
                 """
 
-    def isSeam(self, Face: Part.TopoShape, /):
+    def isSeam(self, Face: Part.Face, /):
         """Checks whether the edge is a seam edge.
         isSeam(Face)
                   """
@@ -4222,12 +4218,12 @@ class TopoShape(Part.TopoShape):
                location along its length (or extrapolated length)
                   """
 
-    def parameterAt(self, arg1: Part.TopoShape, arg2: Part.TopoShape = None, /):
+    def parameterAt(self, arg1: Part.Vertex, arg2: Part.Face = None, /):
         """Get the parameter at the given vertex if lying on the edge
         parameterAt(Vertex) -> Float
                     """
 
-    def parameters(self, face: Part.TopoShape = None, /):
+    def parameters(self, face: Part.Face = None, /):
         """Get the list of parameters of the tessellation of an edge.
         parameters([face]) -> list
         --
@@ -5112,22 +5108,22 @@ class BRepOffsetAPI_MakeFilling(FreeCAD.PyObjectBase):
                       """
 
     @typing.overload
-    def add(self, Constraint: Part.TopoShape, Order: int, IsBound: bool = True): ...
+    def add(self, Constraint: Part.Edge, Order: int, IsBound: bool = True): ...
 
     @typing.overload
-    def add(self, Constraint: Part.TopoShape, Support: Part.TopoShape, Order: int, IsBound: bool = True): ...
+    def add(self, Constraint: Part.Edge, Support: Part.Face, Order: int, IsBound: bool = True): ...
 
     @typing.overload
-    def add(self, U: float, V: float, Support: Part.TopoShape, Order: int): ...
+    def add(self, U: float, V: float, Support: Part.Face, Order: int): ...
 
     @typing.overload
-    def add(self, Support: Part.TopoShape, Order: int): ...
+    def add(self, Support: Part.Face, Order: int): ...
 
     @typing.overload
     def add(self, Point: FreeCAD.Vector): ...
 
     @typing.overload
-    def add(self, Constraint: Part.TopoShape, Support: Part.TopoShape, Order: int, IsBound: bool = None):
+    def add(self, Constraint: Part.Edge, Support: Part.Face, Order: int, IsBound: bool = None):
         """
                           add(Edge, Order, IsBound=True)
                           add(Edge, Support, Order, IsBound=True)
@@ -5143,7 +5139,7 @@ class BRepOffsetAPI_MakeFilling(FreeCAD.PyObjectBase):
     def isDone(self):
         """Tests whether computation of the filling plate has been completed."""
 
-    def loadInitSurface(self, face: Part.TopoShape, /):
+    def loadInitSurface(self, face: Part.Face, /):
         """
                           loadInitSurface(face)
                           Loads the initial surface.
@@ -5785,10 +5781,10 @@ class Curve2d(Part.Geometry2d):
     def toShape(self, arg1: Part.GeometrySurface, arg2: float, arg3: float, /): ...
 
     @typing.overload
-    def toShape(self, arg1: Part.TopoShape, /): ...
+    def toShape(self, arg1: Part.Face, /): ...
 
     @typing.overload
-    def toShape(self, arg1: Part.TopoShape, arg2: float, arg3: float, /):
+    def toShape(self, arg1: Part.Face, arg2: float, arg3: float, /):
         """Return the shape for the geometry."""
 
     def value(self, arg1: float, /):
@@ -6801,10 +6797,10 @@ class MakePrism(FreeCAD.PyObjectBase):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, Sbase: Part.TopoShape, Pbase: Part.TopoShape, Skface: Part.TopoShape, Direction: FreeCAD.Vector, Fuse: int, Modify: bool):
+    def __init__(self, Sbase: Part.Shape, Pbase: Part.Shape, Skface: Part.Face, Direction: FreeCAD.Vector, Fuse: int, Modify: bool):
         """Describes functions to build prism features."""
 
-    def add(self, Edge: Part.TopoShape, Face: Part.TopoShape):
+    def add(self, Edge: Part.Edge, Face: Part.Face):
         """
         Indicates that the edge will slide on the face.
         Raises ConstructionError if the  face does not belong to the
@@ -6821,7 +6817,7 @@ class MakePrism(FreeCAD.PyObjectBase):
         Returns the list of curves S parallel to the axis of the prism.
                     """
 
-    def init(self, Sbase: Part.TopoShape, Pbase: Part.TopoShape, Skface: Part.TopoShape, Direction: FreeCAD.Vector, Fuse: int, Modify: bool):
+    def init(self, Sbase: Part.Shape, Pbase: Part.Shape, Skface: Part.Face, Direction: FreeCAD.Vector, Fuse: int, Modify: bool):
         """
         Initializes this algorithm for building prisms along surfaces.
         A face Pbase is selected in the shape Sbase
@@ -6837,15 +6833,15 @@ class MakePrism(FreeCAD.PyObjectBase):
                     """
 
     @typing.overload
-    def perform(self, From: Part.TopoShape, Until: Part.TopoShape): ...
+    def perform(self, From: Part.Shape, Until: Part.Shape): ...
 
     @typing.overload
-    def perform(self, Until: Part.TopoShape): ...
+    def perform(self, Until: Part.Shape): ...
 
     @typing.overload
     def perform(self, Length: float): ...
 
-    def performFromEnd(self, arg1: Part.TopoShape, /):
+    def performFromEnd(self, arg1: Part.Shape, /):
         """
         Realizes a semi-infinite prism, limited by the face Funtil.
                     """
@@ -6861,7 +6857,7 @@ class MakePrism(FreeCAD.PyObjectBase):
         position of the prism base. All other faces extend infinitely.
                     """
 
-    def performUntilHeight(self, arg1: Part.TopoShape, arg2: float, /):
+    def performUntilHeight(self, arg1: Part.Shape, arg2: float, /):
         """
         Assigns both a limiting shape, Until from TopoDS_Shape
         and a height, Length at which to stop generation of the prism feature.
@@ -6875,7 +6871,7 @@ class MakePrism(FreeCAD.PyObjectBase):
 class UnifySameDomain(FreeCAD.PyObjectBase):
     """This tool tries to unify faces and edges of the shape which lie on the same geometry."""
 
-    def __init__(self, Shape: Part.TopoShape, UnifyEdges: bool = None, UnifyFaces: bool = None, ConcatBSplines: bool = None):
+    def __init__(self, Shape: Part.Shape, UnifyEdges: bool = None, UnifyFaces: bool = None, ConcatBSplines: bool = None):
         """This tool tries to unify faces and edges of the shape which lie on the same geometry."""
 
     def allowInternalEdges(self, arg1: bool, /):
@@ -6887,10 +6883,10 @@ class UnifySameDomain(FreeCAD.PyObjectBase):
     def build(self):
         """Performs unification and builds the resulting shape"""
 
-    def initialize(self, Shape: Part.TopoShape, UnifyEdges: bool = None, UnifyFaces: bool = None, ConcatBSplines: bool = None):
+    def initialize(self, Shape: Part.Shape, UnifyEdges: bool = None, UnifyFaces: bool = None, ConcatBSplines: bool = None):
         """Initializes with a shape and necessary flags"""
 
-    def keepShape(self, arg1: Part.TopoShape, /):
+    def keepShape(self, arg1: Part.Shape, /):
         """Sets the shape for avoid merging of the faces/edges."""
 
     def keepShapes(self, arg1: object, /):
@@ -6929,7 +6925,7 @@ def read(string: str, /):
     """read(string) -- Load the file and return the shape."""
 
 
-def show(shape: Part.TopoShape, string: str = None, /):
+def show(shape: Part.Shape, string: str = None, /):
     """show(shape,[string]) -- Add the shape to the active document or create one if no document exists."""
 
 
@@ -6950,11 +6946,11 @@ def makeFace(list_of_shapes_or_compound: object, maker_class_name: str, /):
     maker_class_name is a string like 'Part::FaceMakerSimple'."""
 
 
-def makeFilledFace(arg1: object, arg2: Part.TopoShape = None, /):
+def makeFilledFace(arg1: object, arg2: Part.Face = None, /):
     """makeFilledFace(list) -- Create a face out of a list of edges."""
 
 
-def makeSolid(shape: Part.TopoShape, /):
+def makeSolid(shape: Part.Shape, /):
     """makeSolid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created."""
 
 
@@ -7052,14 +7048,14 @@ def makeRevolution(Curve_or_Edge: Part.Geometry, vmin: float = None, vmax: float
 
 
 @typing.overload
-def makeRevolution(Curve_or_Edge: Part.TopoShape, vmin: float = None, vmax: float = None, angle: float = None, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, shapetype: type = None, /):
+def makeRevolution(Curve_or_Edge: Part.Shape, vmin: float = None, vmax: float = None, angle: float = None, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, shapetype: type = None, /):
     """makeRevolution(Curve or Edge,[vmin,vmax,angle,pnt,dir,shapetype]) -- Make a revolved shape
     by rotating the curve or a portion of it around an axis given by (pnt,dir).
     By default vmin/vmax=bounds of the curve, angle=360, pnt=Vector(0,0,0),
     dir=Vector(0,0,1) and shapetype=Part.Solid"""
 
 
-def makeRuledSurface(Edge_Wire: Part.TopoShape, Edge_Wire1: Part.TopoShape, /):
+def makeRuledSurface(Edge_Wire: Part.Shape, Edge_Wire1: Part.Shape, /):
     """makeRuledSurface(Edge|Wire,Edge|Wire) -- Make a ruled surface
     Create a ruled surface out of two edges or wires. If wires are used thenthese must have the same number of edges."""
 
@@ -7069,12 +7065,12 @@ def makeShellFromWires(Wires: object, /):
     The wires must have the same number of edges."""
 
 
-def makeTube(edge: Part.TopoShape, radius: float, continuity: str = None, max_degree: int = None, max_segments: int = None, /):
+def makeTube(edge: Part.Shape, radius: float, continuity: str = None, max_degree: int = None, max_segments: int = None, /):
     """makeTube(edge,radius,[continuity,max degree,max segments]) -- Create a tube.
     continuity is a string which must be 'C0','C1','C2','C3','CN','G1' or 'G1',"""
 
 
-def makeSweepSurface(arg1: Part.TopoShape, arg2: Part.TopoShape, arg3: float = None, arg4: int = None, /):
+def makeSweepSurface(arg1: Part.Shape, arg2: Part.Shape, arg3: float = None, arg4: int = None, /):
     """makeSweepSurface(edge(path),edge(profile),[float]) -- Create a profile along a path."""
 
 
@@ -7086,7 +7082,7 @@ def makeWireString(string: object, fontdir: str, fontfile: str, height: float, t
     """makeWireString(string,fontdir,fontfile,height,[track]) -- Make list of wires in the form of a string's characters."""
 
 
-def makeSplitShape(shape: Part.TopoShape, list_of_shape_pairs: object, check_Interior: bool = True, /):
+def makeSplitShape(shape: Part.Shape, list_of_shape_pairs: object, check_Interior: bool = True, /):
     """makeSplitShape(shape, list of shape pairs,[check Interior=True]) -> two lists of shapes.
     The following shape pairs are supported:
     * Wire, Face
@@ -7122,7 +7118,7 @@ def setStaticValue(string: str, string_int_float: object, /):
     """setStaticValue(string,string|int|float) -- Set a name to a value The value can be a string, int or float."""
 
 
-def cast_to_shape(shape: Part.TopoShape, /):
+def cast_to_shape(shape: Part.Shape, /):
     """cast_to_shape(shape) -- Cast to the actual shape type"""
 
 
@@ -7145,7 +7141,7 @@ def sortEdges(list_of_edges: object, /):
     a list of lists of edges"""
 
 
-def __toPythonOCC__(shape: Part.TopoShape, /):
+def __toPythonOCC__(shape: Part.Shape, /):
     """__toPythonOCC__(shape) -- Helper method to convert an internal shape to pythonocc shape"""
 
 

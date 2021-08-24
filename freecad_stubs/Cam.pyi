@@ -23,15 +23,15 @@ def createTestApproximate():
     """1"""
 
 
-def offset(arg1: Part.TopoShape, arg2: float, /):
+def offset(arg1: Part.Shape, arg2: float, /):
     """1"""
 
 
-def tesselateShape(arg1: Part.TopoShape, arg2: float, /):
+def tesselateShape(arg1: Part.Shape, arg2: float, /):
     """1"""
 
 
-def tess_shape(arg1: Part.TopoShape, arg2: float, /):
+def tess_shape(arg1: Part.Shape, arg2: float, /):
     """1"""
 
 
@@ -39,15 +39,15 @@ def createPlane(arg1: float, /):
     """1"""
 
 
-def best_fit_test(arg1: Part.TopoShape, /):
+def best_fit_test(arg1: Part.Shape, /):
     """1"""
 
 
-def best_fit_complete(arg1: Mesh.MeshObject, arg2: Part.TopoShape, /):
+def best_fit_complete(arg1: Mesh.MeshObject, arg2: Part.Shape, /):
     """1"""
 
 
-def best_fit_coarse(arg1: Part.TopoShape, /):
+def best_fit_coarse(arg1: Part.Shape, /):
     """1"""
 
 
@@ -55,7 +55,7 @@ def createBox(arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, a
     """1"""
 
 
-def spring_back(arg1: Mesh.MeshObject, arg2: Part.TopoShape, /):
+def spring_back(arg1: Mesh.MeshObject, arg2: Part.Shape, /):
     """1"""
 
 
