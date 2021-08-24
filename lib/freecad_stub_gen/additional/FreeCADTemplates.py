@@ -12,6 +12,8 @@ Replace:
     def $1(self):\n        \"\"\"May be implemented in python\"\"\""""
 import typing
 
+from PyQt5.QtWidgets import QDialogButtonBox
+from qtpy.QtCore import QObject
 from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import QMenu
 
@@ -493,3 +495,73 @@ class DocumentObserverApp:
     def slotAddedDynamicExtension(self, extension: FreeCAD.ExtensionContainer,
                                   extensionName: str):
         """FreeCAD call this function if present"""
+
+
+class TaskDialog:
+    def open(self):
+        """
+        FreeCAD call this function if present.
+        It is called by the framework when the dialog is opened.
+        """
+
+    def clicked(self, i: int):
+        """
+        FreeCAD call this function if present.
+        It is called by the framework if a button is clicked which has no accept or reject role.
+        """
+
+    def accept(self) -> bool:
+        """
+        FreeCAD call this function if present.
+        It is called by the framework if the dialog is accepted (Ok).
+        """
+
+    def reject(self) -> bool:
+        """
+        FreeCAD call this function if present.
+        It is called by the framework if the dialog is rejected (Cancel).
+        """
+
+    def helpRequested(self):
+        """
+        FreeCAD call this function if present.
+        It is called by the framework if the user press the help button.
+        """
+
+    def getStandardButtons(self) -> int:
+        """FreeCAD call this function if present"""
+
+    def modifyStandardButtons(self, buttonBox: QDialogButtonBox):
+        """FreeCAD call this function if present"""
+
+    def isAllowedAlterDocument(self) -> bool:
+        """
+        FreeCAD call this function if present.
+        Indicates whether this task dialog allows other commands to modify
+        the document while it is open.
+        """
+
+    def isAllowedAlterView(self) -> bool:
+        """
+        FreeCAD call this function if present.
+        Indicates whether this task dialog allows other commands to modify
+        the 3d view while it is open.
+        """
+
+    def isAllowedAlterSelection(self) -> bool:
+        """
+        FreeCAD call this function if present.
+        Indicates whether this task dialog allows other commands to modify
+        the selection while it is open.
+        """
+
+    def needsFullSpace(self) -> bool:
+        """FreeCAD call this function if present"""
+
+
+class TaskDialogPythonUi(TaskDialog):
+    ui: str
+
+
+class TaskDialogPythonForm(TaskDialog):
+    form: typing.Union[list[QObject], QObject]
