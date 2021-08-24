@@ -41,14 +41,32 @@ def genTypeForStem(stem: str, namespace: str = None):
         return f'{module}.{twin}'
 
 
+_renamedTypes = {
+    # these types are renamed in code
+    # https://github.com/FreeCAD/FreeCAD/blob/8ac722c1e89ef530564293efd30987db09017e12/src/Mod/Part/App/AppPart.cpp#L226
+    'TopoShapePy': 'Part.Shape',
+    'TopoShapeVertexPy': 'Part.Vertex',
+    'TopoShapeWirePy': 'Part.Wire',
+    'TopoShapeEdgePy': 'Part.Edge',
+    'TopoShapeSolidPy': 'Part.Solid',
+    'TopoShapeFacePy': 'Part.Face',
+    'TopoShapeCompoundPy': 'Part.Compound',
+    'TopoShapeCompSolidPy': 'Part.CompSolid',
+    'TopoShapeShellPy': 'Part.Shell',
+}
+
+
 def genClassName(currentNode: ET.Element) -> str:
     """Based on
     https://github.com/FreeCAD/FreeCAD/blob/8ac722c1e89ef530564293efd30987db09017e12/src/Tools/generateTemplates/templateClassPyExport.py#L279
     """
-    if not (name := currentNode.attrib.get('PythonName')):
-        name = currentNode.attrib['Twin']
+    if name := currentNode.attrib.get('PythonName'):
+        return name
 
-    return name
+    if name := _renamedTypes.get(currentNode.attrib['Name']):
+        return name
+
+    return currentNode.attrib['Twin']
 
 
 def getSimpleClassName(currentNode: ET.Element) -> str:
