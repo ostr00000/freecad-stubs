@@ -83,9 +83,14 @@ Wrn = FreeCAD.Console.PrintWarning
     rootStub @= freeCADGuiStub
 
     for mod in (sourcePath / 'Mod').iterdir():
+        if mod.name in ('Test',):
+            continue
+
         ms = _genModule(mod.name, mod / 'App', sourcePath)
         ms += _genModule(mod.name, mod / 'Gui', sourcePath)
         rootStub @= ms
+
+    rootStub.makeSiblingContainersAsPackage()
 
     shutil.rmtree(targetPath, ignore_errors=True)
     targetPath.mkdir(parents=True, exist_ok=True)
@@ -94,6 +99,11 @@ Wrn = FreeCAD.Console.PrintWarning
 
     for additionalModule in additionalPath.glob('[!_]*.py'):
         shutil.copy(additionalModule, targetPath / additionalModule.name)
+
+    for stubPackage in targetPath.iterdir():
+        if stubPackage.is_dir():
+            stubPackage.rename(stubPackage.with_name(stubPackage.name + '-stubs'))
+
 
 # TODO P4 preprocess and remove macros
 # https://www.tutorialspoint.com/cplusplus/cpp_preprocessor.htm

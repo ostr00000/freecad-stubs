@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Optional
 from xml.etree.ElementTree import ParseError
 
-from freecad_stub_gen.config import INDENT_SIZE, SOURCE_DIR
+from freecad_stub_gen.config import SOURCE_DIR
 from freecad_stub_gen.stub_container import StubContainer
 
 _REG_COMMENT_REM = re.compile(
@@ -47,7 +47,7 @@ class BaseGenerator:
         self.impContent = commentRemover(impPath.read_text())
 
     @staticmethod
-    def indent(block, distance=1, indentSize=INDENT_SIZE):
+    def indent(block, distance=1, indentSize=4):
         return textwrap.indent(block, ' ' * distance * indentSize)
 
     REG_REMOVE_NEW_LINE = re.compile(r'\\n"\s*"')

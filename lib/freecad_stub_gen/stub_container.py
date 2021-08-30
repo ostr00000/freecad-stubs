@@ -102,17 +102,19 @@ class StubContainer:
 
         savePath = targetPath / self.name
         if self.subContainers:
-            savePath.mkdir(parents=True, exist_ok=True)
             for sc in self.subContainers.values():
                 sc.save(savePath)
+
+            if savePath.exists():
+                (savePath / '__init__.pyi').touch()
+
             savePath = savePath / '__init__'
 
         if not self.content:
-            if self.subContainers:
-                savePath.with_suffix('.pyi').touch()
             return
 
         self.content = self.content.rstrip() + '\n'
+        savePath.parent.mkdir(parents=True, exist_ok=True)
         with open(savePath.with_suffix('.pyi'), 'w') as file:
             file.write(str(self))
 
@@ -120,3 +122,8 @@ class StubContainer:
         for name, cont in other.subContainers.items():
             self.subContainers[name] += cont
         other.subContainers.clear()
+
+    def makeSiblingContainersAsPackage(self):
+        for sc in self.siblingContainers.values():
+            sc /= StubContainer()
+            sc.makeSiblingContainersAsPackage()
