@@ -1,4 +1,9 @@
 # freecad-stubs
+[![PyPI version](https://img.shields.io/pypi/v/freecad-stubs)](https://pypi.org/project/freecad-stubs/)
+[![GitHub license](https://img.shields.io/github/license/ostr00000/freecad-stubs)](https://github.com/ostr00000/freecad-stubs/blob/main/LICENSE)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/freecad-stubs)](https://pypi.python.org/pypi/freecad-stubs/)
+
+
 Python stubs generated from FreeCAD source code.
 
 ### Stub source
@@ -13,6 +18,12 @@ There are also many special cases
 therefore not all object are correctly mapped.
 Moreover, some of C function has errors - invalid types, missing arguments 
 (you can see more these errors if you change logger flag in configuration file `freecad-stubs/lib/freecad_stub_gen/config.py`) 
+
+### Install stubs
+You can install all stubs for freeCAD packages by running:
+```bash
+python -m pip install freecad-stubs 
+```
 
 ### Adding stubs to python path
 There are a lot of possible methods. This is only example: 

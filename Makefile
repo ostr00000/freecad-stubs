@@ -23,3 +23,14 @@ prepare_freecad:
 
 clean_env:
 	rm -r $(ENV_NAME)
+
+
+prepare_build:
+	$(PYTHON_ENV) -m pip install --upgrade pip
+	$(PYTHON_ENV) -m pip install --upgrade build
+	$(PYTHON_ENV) -m pip install --upgrade twine
+
+build_and_upload:
+	rm -rf ./dist
+	$(PYTHON_ENV) -m build
+	$(PYTHON_ENV) -m twine upload dist/*
