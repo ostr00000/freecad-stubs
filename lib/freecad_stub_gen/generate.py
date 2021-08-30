@@ -97,13 +97,14 @@ Wrn = FreeCAD.Console.PrintWarning
     (targetPath / '__init__.pyi').touch(exist_ok=True)
     rootStub.save(targetPath)
 
-    for additionalModule in additionalPath.glob('[!_]*.py'):
-        shutil.copy(additionalModule, targetPath / additionalModule.name)
-
     for stubPackage in targetPath.iterdir():
         if stubPackage.is_dir():
             stubPackage.rename(stubPackage.with_name(stubPackage.name + '-stubs'))
 
+    for additionalPackage in additionalPath.glob('[!_]*.py'):
+        targetAdditionalPackage = targetPath / additionalPackage.stem
+        targetAdditionalPackage.mkdir()
+        shutil.copy(additionalPackage, targetAdditionalPackage / '__init__.py')
 
 # TODO P4 preprocess and remove macros
 # https://www.tutorialspoint.com/cplusplus/cpp_preprocessor.htm
