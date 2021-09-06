@@ -7,16 +7,16 @@ from freecad_stub_gen.module_map import moduleNamespace
 logger = logging.getLogger(__name__)
 
 
-def genBaseClasses(currentNode: ET.Element) -> tuple[str, ...]:
-    return genFatherClass(currentNode),
+def getBaseClasses(currentNode: ET.Element) -> tuple[str, ...]:
+    return getFatherClass(currentNode),
 
 
-def genFatherClass(currentNode: ET.Element) -> str:
+def getFatherClass(currentNode: ET.Element) -> str:
     fatherNamespace: str = currentNode.attrib['FatherNamespace']
     fatherName: str = currentNode.attrib['Father']
 
     if len(moduleNamespace.stemToPaths[fatherName]) == 1:
-        return genTypeForStem(fatherName, fatherNamespace)
+        return getTypeForStem(fatherName, fatherNamespace)
     else:
         fatherTwin = fatherName.removesuffix('Py')
         fatherModule = moduleNamespace.convertNamespaceToModule(fatherNamespace)
@@ -24,7 +24,7 @@ def genFatherClass(currentNode: ET.Element) -> str:
         return name
 
 
-def genTypeForStem(stem: str, namespace: str = None):
+def getTypeForStem(stem: str, namespace: str = None):
     if namespace is None:
         namespace = moduleNamespace.getNamespaceForStem(stem)
 
@@ -32,7 +32,7 @@ def genTypeForStem(stem: str, namespace: str = None):
     root = ET.parse(pathType).getroot()
     exportElement = root.find('PythonExport')
     assert exportElement
-    twin = genClassName(exportElement)
+    twin = getClassName(exportElement)
 
     if '.' in twin:
         return twin
@@ -44,6 +44,11 @@ def genTypeForStem(stem: str, namespace: str = None):
 _renamedTypes = {
     # these types are renamed in code
     # https://github.com/FreeCAD/FreeCAD/blob/8ac722c1e89ef530564293efd30987db09017e12/src/Mod/Part/App/AppPart.cpp#L226
+    # regex to find non matching names:
+    # Base::Interpreter\(\).addType\(\&\w+::(\w+)Py\s*::Type,\s*\w+,"(?!\1")
+
+    'TypePy': 'FreeCAD.TypeId',
+    'MeshFeaturePy': 'Mesh.Feature',
     'TopoShapePy': 'Part.Shape',
     'TopoShapeVertexPy': 'Part.Vertex',
     'TopoShapeWirePy': 'Part.Wire',
@@ -53,10 +58,13 @@ _renamedTypes = {
     'TopoShapeCompoundPy': 'Part.Compound',
     'TopoShapeCompSolidPy': 'Part.CompSolid',
     'TopoShapeShellPy': 'Part.Shell',
+    'PartFeaturePy': 'Part.Feature',
+    'BRepOffsetAPI_MakePipeShellPy': 'Part.MakePipeShell',
+    'BRepOffsetAPI_MakeFillingPy': 'Part.MakeFilling',
 }
 
 
-def genClassName(currentNode: ET.Element) -> str:
+def getClassName(currentNode: ET.Element) -> str:
     """Based on
     https://github.com/FreeCAD/FreeCAD/blob/8ac722c1e89ef530564293efd30987db09017e12/src/Tools/generateTemplates/templateClassPyExport.py#L279
     """
@@ -70,7 +78,7 @@ def genClassName(currentNode: ET.Element) -> str:
 
 
 def getSimpleClassName(currentNode: ET.Element) -> str:
-    className = genClassName(currentNode)
+    className = getClassName(currentNode)
     return className[className.rfind('.') + 1:]
 
 

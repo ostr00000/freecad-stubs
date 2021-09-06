@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 from typing import Iterator, Optional, Any
 
 from freecad_stub_gen.generators.method.function_finder import generateExpressionUntilChar
-from freecad_stub_gen.generators.names import genTypeForStem, getShortModuleFormat
+from freecad_stub_gen.generators.names import getTypeForStem, getShortModuleFormat
 
 logger = logging.getLogger(__name__)
 
@@ -167,7 +167,7 @@ class TypesConverter:
         if '::' in pTypePy:
             namespace, pTypePy = pTypePy.split('::')
 
-        fullTypeName = genTypeForStem(pTypePy, namespace)
+        fullTypeName = getTypeForStem(pTypePy, namespace)
         # the correct solution is below
         # module = fullTypeName[:fullTypeName.rfind('.')]
         # self.requiredImports.add(module)

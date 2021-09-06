@@ -546,10 +546,47 @@ class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
     """This is the ViewProvider base class"""
 
     @property
+    def DisplayMode(self) -> typing.Optional[int]:
+        """Set the display mode"""
+
+    @DisplayMode.setter
+    def DisplayMode(self, value: typing.Optional[int]): ...
+
+    @property
     def Proxy(self) -> FreeCADTemplates.ViewProviderPython: ...
 
     @Proxy.setter
     def Proxy(self, value: FreeCADTemplates.ViewProviderPython): ...
+
+    @property
+    def OnTopWhenSelected(self) -> typing.Union[int, typing.Literal["Disabled", "Enabled", "Object", "Element"]]:
+        """Enabled: Display the object on top of any other object when selected
+        Object: On top only if the whole object is selected
+        Element: On top only if some sub-element of the object is selected"""
+
+    @OnTopWhenSelected.setter
+    def OnTopWhenSelected(self, value: typing.Union[int, typing.Literal["Disabled", "Enabled", "Object", "Element"]]): ...
+
+    @property
+    def SelectionStyle(self) -> typing.Union[int, typing.Literal["Shape", "BoundBox"]]:
+        """Set the object selection style"""
+
+    @SelectionStyle.setter
+    def SelectionStyle(self, value: typing.Union[int, typing.Literal["Shape", "BoundBox"]]): ...
+
+    @property
+    def ShowInTree(self) -> bool:
+        """Show the object in the tree view"""
+
+    @ShowInTree.setter
+    def ShowInTree(self, value: bool): ...
+
+    @property
+    def Visibility(self) -> bool:
+        """Show the object in the 3d view"""
+
+    @Visibility.setter
+    def Visibility(self, value: bool): ...
 
     @property
     def Document(self) -> FreeCADGui.Document:
@@ -1504,6 +1541,24 @@ def removeDocumentObserver(arg1: object, /):
     """removeDocumentObserver() -> None
 
     Remove an added document observer."""
+
+
+def listUserEditModes():
+    """listUserEditModes() -> list
+
+    List available user edit modes"""
+
+
+def getUserEditMode():
+    """getUserEditMode() -> string
+
+    Get current user edit mode"""
+
+
+def setUserEditMode(string: str, /):
+    """setUserEditMode(string=mode) -> Bool
+
+    Set user edit mode to 'mode', returns True if exists, false otherwise"""
 
 
 def reload(name: str, /):

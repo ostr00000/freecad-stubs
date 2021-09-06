@@ -210,6 +210,8 @@ class Rotation(FreeCAD.PyObjectBase):
     				-- a Vector (axis) and a float (angle)
     				-- two Vectors (rotation from/to vector)
     				-- three floats (Euler angles) as yaw-pitch-roll in XY'Z'' convention
+                    -- one string and three floats (Euler angles) as euler rotation 
+                       of a given type. Call toEulerSequence() for supported sequence types.
     				-- four floats (Quaternion) where the quaternion is specified as:
     				   q=xi+yj+zk+w, i.e. the last parameter is the real part
     				-- three vectors that define rotated axes directions + an optional
@@ -237,6 +239,9 @@ class Rotation(FreeCAD.PyObjectBase):
     def __init__(self, arg1: float, arg2: float, arg3: float, /): ...
 
     @typing.overload
+    def __init__(self, arg1: str, arg2: float, arg3: float, arg4: float, /): ...
+
+    @typing.overload
     def __init__(self, arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, arg6: float, arg7: float, arg8: float, arg9: float, arg10: float, arg11: float, arg12: float, arg13: float, arg14: float, arg15: float, arg16: float, /): ...
 
     @typing.overload
@@ -255,6 +260,8 @@ class Rotation(FreeCAD.PyObjectBase):
         				-- a Vector (axis) and a float (angle)
         				-- two Vectors (rotation from/to vector)
         				-- three floats (Euler angles) as yaw-pitch-roll in XY'Z'' convention
+                        -- one string and three floats (Euler angles) as euler rotation 
+                           of a given type. Call toEulerSequence() for supported sequence types.
         				-- four floats (Quaternion) where the quaternion is specified as:
         				   q=xi+yj+zk+w, i.e. the last parameter is the real part
         				-- three vectors that define rotated axes directions + an optional
@@ -339,9 +346,16 @@ class Rotation(FreeCAD.PyObjectBase):
 
     def toEuler(self):
         """
-        					toEuler(Vector) -> list
+        					toEuler() -> list
         					Get the Euler angles of this rotation
         					as yaw-pitch-roll in XY'Z'' convention
+        				"""
+
+    def toEulerAngles(self, seq: str = '', /):
+        """
+        					toEulerAngles(seq='') -> list
+                            Get the Euler angles in a given sequence for this rotation.
+                            Call this function without arguments to output all possible values of 'seq'.
         				"""
 
     def toMatrix(self):
@@ -1524,7 +1538,7 @@ class CoordinateSystem(FreeCAD.PyObjectBase):
 
 
 # TypePy.xml
-class BaseType(FreeCAD.PyObjectBase):
+class TypeId(FreeCAD.PyObjectBase):
     """This is the Type class"""
 
     @property
@@ -1563,7 +1577,7 @@ class BaseType(FreeCAD.PyObjectBase):
 
     @staticmethod
     @typing.overload
-    def getAllDerivedFrom(arg0: FreeCAD.BaseType, /):
+    def getAllDerivedFrom(arg0: FreeCAD.TypeId, /):
         """Returns all descendants"""
 
     @staticmethod
@@ -1584,7 +1598,7 @@ class BaseType(FreeCAD.PyObjectBase):
     def isDerivedFrom(self, arg1: str, /): ...
 
     @typing.overload
-    def isDerivedFrom(self, arg1: FreeCAD.BaseType, /):
+    def isDerivedFrom(self, arg1: FreeCAD.TypeId, /):
         """Returns true if given type is a father"""
 
 
