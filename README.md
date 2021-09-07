@@ -74,3 +74,28 @@ Checkout to desired branch and copy folder `/freecad_stubs`.
     pytohn freecad-stubs/lib/freecad_stub_gen/__main__.py
     ```
    Required python version: `>=3.10`.
+
+
+### Progress
+
+#### Stub source
+- [x] generate class stub (xml files):
+  - [x] property in xml,
+  - [ ] dynamic property added in cpp,
+  - [x] method (+ static/class method),
+  - [x] rich comparison (ex. `__eq__` method),
+  - [x] number protocol (ex. `__add__` method),
+- [x] generate class stub (cpp files):
+  - [x] dynamically added in `init_type()`,
+- [x] generate functions stub (cpp files):
+  - [x] declared in `PyMethodDef` array,
+  - [x] dynamically added in module constructor (subclass `Py::ExtensionModule`),
+
+#### Stub quality
+- [x] found class/function/method name,
+- [x] copy docstring (+ generate property docstring),
+- [x] guess argument names from docstrings,
+- [x] found function/method argument types based on [c-api](https://docs.python.org/3/c-api/arg.html),
+- [ ] function/method return type,
+- [ ] property return type,
+- [ ] add comment "safe to import" for importable object,
