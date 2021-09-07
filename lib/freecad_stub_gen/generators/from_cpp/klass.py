@@ -12,12 +12,11 @@ class FreecadStubGeneratorFromCppClass(FreecadStubGeneratorFromCpp):
     """Generate class from cpp code with methods."""
     REG_INIT_TYPE = re.compile(r'::init_type\([^{;]*{')
     REG_CLASS_NAME = re.compile(r'behaviors\(\)\.name\(\s*"([\w.]+)"\s*\);')
-    REG_CLASS_NAME_ALT = re.compile(r'behaviors\(\)\.name\(\s*"([\w.]+)"\s*\);')
     REG_CLASS_DOC = re.compile(r'behaviors\(\).doc\("((?:[^"\\]*(?:\\.)?(?:"\s*")?)+)"\);')
 
     def _genStub(self) -> Iterable[str]:
         for match in self.REG_INIT_TYPE.finditer(self.impContent):
-            funcCall = findFunctionCall(self.impContent, match.span()[0])
+            funcCall = findFunctionCall(self.impContent, match.start())
 
             classMatch = self.REG_CLASS_NAME.search(funcCall)
             if classMatch:
@@ -33,7 +32,7 @@ class FreecadStubGeneratorFromCppClass(FreecadStubGeneratorFromCpp):
             content = self.indent(result)
 
             if docsMatch := self.REG_CLASS_DOC.search(funcCall):
-                docs = self.indent(self._genDocFromStr(docsMatch.group(1)) + '\n')
+                docs = self.indent(self._getDocFromStr(docsMatch.group(1)) + '\n')
             else:
                 docs = ''
 

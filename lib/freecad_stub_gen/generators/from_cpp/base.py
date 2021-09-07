@@ -123,7 +123,7 @@ class FreecadStubGeneratorFromCpp(FormatFinder, ABC):
                 self.REG_KEYWORD_METHOD.finditer(content),
         ):
             funcCall = findFunctionCall(
-                content, match.span()[0], bracketL='(', bracketR=')')
+                content, match.start(), bracketL='(', bracketR=')')
             funcCallStartPos = funcCall.find('(') + 1
             method = Method(list(generateExpressionUntilChar(
                 funcCall, funcCallStartPos, splitChar=',')))

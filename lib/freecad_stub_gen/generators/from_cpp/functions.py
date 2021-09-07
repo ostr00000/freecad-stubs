@@ -25,8 +25,7 @@ class FreecadStubGeneratorFromCppFunctions(FreecadStubGeneratorFromCpp):
     def _findArrayGen(self) -> Iterable[Method]:
         """Based on https://docs.python.org/3/c-api/structures.html#c.PyMethodDef"""
         for match in self.REG_METHOD_DEF.finditer(self.impContent):
-            start, end = match.span()
-            arrayStr = findFunctionCall(self.impContent, start)
+            arrayStr = findFunctionCall(self.impContent, match.start())
             arrayStrStartPos = arrayStr.find('{') + 1
 
             for arrayElemText in islice_extended(generateExpressionUntilChar(

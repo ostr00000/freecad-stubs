@@ -39,8 +39,7 @@ class FunctionFinder(BaseGenerator, ABC):
                 fr'Py::Object {funcName}\s*\([^)]*\)',
         ):
             if match := re.search(searchRegex, self.impContent):
-                fnSygStart, fnSygEnd = match.span()
-                return findFunctionCall(self.impContent, fnSygEnd)
+                return findFunctionCall(self.impContent, match.end())
 
 
 def findFunctionCall(text: str, bodyStart: int, bracketL='{', bracketR='}'):

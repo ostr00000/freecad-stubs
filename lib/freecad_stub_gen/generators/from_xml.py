@@ -38,7 +38,7 @@ class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
         baseClasses = ', '.join(self.genBaseClasses())
         className = getSimpleClassName(self.currentNode)
         classStr = f"class {className}({baseClasses}):\n"
-        if doc := self._genDocFromStr(self._getDocFromNode(self.currentNode)):
+        if doc := self._getDocFromStr(self._getDocFromNode(self.currentNode)):
             classStr += self.indent(doc)
             classStr += '\n'
         classStr += self.indent(self.genInit())

@@ -18,7 +18,7 @@ class PropertyGenerator(BaseGenerator, ABC):
 
     def getProperty(self, name: str, pythonType: str = '', docs: str = '', readOnly=True):
         if docs:
-            docs = '\n' + self.indent(self._genDocFromStr(docs))
+            docs = '\n' + self.indent(self._getDocFromStr(docs))
         else:
             docs = ' ...\n'
 

@@ -45,7 +45,7 @@ class FormatFinder(FunctionFinder, ABC):
     def _baseParse(self, functionBody: str, pattern: Pattern,
                    formatStrPosition: int, minSize: int, onlyPositional: bool, argNumStart: int):
         for match in re.finditer(pattern, functionBody):
-            funStart, _endOFFormat = match.span()
+            funStart = match.start()
             funCall = findFunctionCall(functionBody, funStart, bracketL='(', bracketR=')')
             tc = TypesConverter(funCall, self.currentNode, self.requiredImports,
                                 onlyPositional, formatStrPosition, argNumStart,
@@ -102,7 +102,7 @@ class FormatFinder(FunctionFinder, ABC):
             ret += pattern.format(args=arg, docs=' ...\n')
 
         # last signature should have docstring
-        doc = f'\n{self.indent(self._genDocFromStr(docsText))}' if docsText else ' ...\n'
+        doc = f'\n{self.indent(self._getDocFromStr(docsText))}' if docsText else ' ...\n'
         ret += pattern.format(args=args[-1], docs=doc)
         return ret
 

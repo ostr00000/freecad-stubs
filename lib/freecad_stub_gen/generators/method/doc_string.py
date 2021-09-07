@@ -11,8 +11,7 @@ from freecad_stub_gen.generators.names import validatePythonValue
 
 def generateArgSuitFromDocstring(name: str, docString: str, argNumStart: int = 0):
     for match in re.finditer(fr'{name}\((.*?)\):?', docString):
-        funStart, _funEnd = match.span()
-        funCall = findFunctionCall(docString, funStart, bracketL='(', bracketR=')')
+        funCall = findFunctionCall(docString, match.start(), bracketL='(', bracketR=')')
         funCall = funCall.removeprefix(name).removeprefix('(').removesuffix(')')
         yield list(_argSuiteGen(funCall, argNumStart))
 

@@ -40,8 +40,7 @@ class FreecadStubGeneratorFromCppModule(FreecadStubGeneratorFromCpp):
 
     def _genModules(self) -> Iterable[str]:
         for match in self.REG_MODULE_INIT.finditer(self.impContent):
-            start, end = match.span()
-            moduleInitBody = findFunctionCall(self.impContent, end)
+            moduleInitBody = findFunctionCall(self.impContent, match.end())
 
             gen = self._findFunctionCallsGen(moduleInitBody)
             if result := ''.join(self._genAllMethods(gen, functionSpacing=2)):

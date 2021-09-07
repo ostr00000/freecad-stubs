@@ -31,7 +31,7 @@ class BaseGenerator:
     def safeCreate(cls, *args, **kwargs):
         try:
             return cls(*args, **kwargs)
-        except(FileNotFoundError, UnicodeDecodeError, ParseError):
+        except(FileNotFoundError, ParseError):
             return None
 
     def __init__(self, filePath: Path, sourceDir: Path = SOURCE_DIR):
@@ -44,7 +44,11 @@ class BaseGenerator:
         if not impPath.exists():  # special case for PyObjectBase
             impPath = filePath.with_suffix('.cpp')
 
-        self.impContent = commentRemover(impPath.read_text())
+        try:
+            content = impPath.read_text()
+        except UnicodeDecodeError:
+            content = impPath.read_text('iso8859-1')
+        self.impContent = commentRemover(content)
 
     @staticmethod
     def indent(block, distance=1, indentSize=4):
@@ -54,15 +58,17 @@ class BaseGenerator:
     REG_WHITESPACE_WITH_APOSTROPHE = re.compile(r'"\s*"')
 
     @classmethod
-    def _genDocFromStr(cls, docs: Optional[str]) -> Optional[str]:
-        if docs is None:
-            return None
-
+    def prepareDocs(cls, docs: str) -> str:
         docs = cls.REG_REMOVE_NEW_LINE.sub('\n', docs)
         docs = cls.REG_WHITESPACE_WITH_APOSTROPHE.sub('', docs)
         docs = docs.replace('\\n', '\n').replace('\\"', '"')
+        return docs
 
-        return f'"""{docs}"""\n'
+    @classmethod
+    def _getDocFromStr(cls, docs: Optional[str]) -> Optional[str]:
+        if docs is None:
+            return None
+        return f'"""{cls.prepareDocs(docs)}"""\n'
 
     @classmethod
     def _getDocFromNode(cls, node: ET.Element) -> Optional[str]:
