@@ -48,6 +48,8 @@ class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
 
         for attributeNode in sorted(self.currentNode.findall('Attribute'), key=self._nodeSort):
             classStr += self.indent(self.getAttributes(attributeNode))
+        for dynamicProperty in sorted(self.genDynamicProperties()):
+            classStr += self.indent(dynamicProperty)
 
         for methodNode in sorted(self.currentNode.findall('Methode'), key=self._nodeSort):
             classStr += self.indent(self.genMethod(methodNode))
@@ -73,29 +75,12 @@ class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
     def getCodeForSpecialCase(self, className: str) -> str:
         ret = ''
         if className == 'DocumentObject':
-            ret += self.getProperty('Label', 'str', readOnly=False)
             ret += self.getProperty('Proxy', 'FreeCADTemplates.ProxyPython', readOnly=False)
             self.requiredImports.add('FreeCADTemplates')
 
         elif className == 'ViewProviderDocumentObject':
-            ret += self.getProperty(
-                'DisplayMode', 'typing.Optional[int]', docs="Set the display mode", readOnly=False)
             ret += self.getProperty('Proxy', 'FreeCADTemplates.ViewProviderPython', readOnly=False)
             self.requiredImports.add('FreeCADTemplates')
-            ret += self.getProperty(
-                'OnTopWhenSelected',
-                'typing.Union[int, typing.Literal["Disabled", "Enabled", "Object", "Element"]]',
-                "Enabled: Display the object on top of any other object when selected\n"
-                "Object: On top only if the whole object is selected\n"
-                "Element: On top only if some sub-element of the object is selected",
-                readOnly=False)
-            ret += self.getProperty(
-                'SelectionStyle', 'typing.Union[int, typing.Literal["Shape", "BoundBox"]]',
-                docs="Set the object selection style", readOnly=False)
-            ret += self.getProperty(
-                'ShowInTree', 'bool', docs="Show the object in the tree view", readOnly=False)
-            ret += self.getProperty(
-                'Visibility', 'bool', docs="Show the object in the 3d view", readOnly=False)
 
         elif className == 'GroupExtension':
             ret += self.getProperty('Group', 'list[DocumentObject]', readOnly=False)
