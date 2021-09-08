@@ -380,6 +380,106 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
     def UseCenterballDragger(self) -> bool:
         """Get/set dragger type"""
 
+    @property
+    def ChildViewProvider(self) -> str:
+        """
+        Property TypeId: App::PropertyPersistentObject.
+        """
+
+    @ChildViewProvider.setter
+    def ChildViewProvider(self, value: str): ...
+
+    @property
+    def DrawStyle(self) -> typing.Literal['None', 'Solid', 'Dashed', 'Dotted', 'Dashdot']:
+        """
+        Property group:  Link.
+        Property TypeId: App::PropertyEnumeration.
+        .
+        """
+
+    @DrawStyle.setter
+    def DrawStyle(self, value: typing.Literal['None', 'Solid', 'Dashed', 'Dotted', 'Dashdot']): ...
+
+    @property
+    def LineWidth(self) -> float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]:
+        """
+        Property group:  Link.
+        Property TypeId: App::PropertyFloatConstraint.
+        .
+        """
+
+    @LineWidth.setter
+    def LineWidth(self, value: float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]): ...
+
+    @property
+    def MaterialList(self) -> dict[int, FreeCAD.Material] | typing.Iterable[FreeCAD.Material] | typing.Sequence[FreeCAD.Material]:
+        """
+        Property TypeId: App::PropertyMaterialList.
+        """
+
+    @MaterialList.setter
+    def MaterialList(self, value: dict[int, FreeCAD.Material] | typing.Iterable[FreeCAD.Material] | typing.Sequence[FreeCAD.Material]): ...
+
+    @property
+    def OverrideColorList(self) -> dict[int, tuple[float, float, float] | tuple[float, float, float, float] | int] | typing.Iterable[tuple[float, float, float] | tuple[float, float, float, float] | int] | typing.Sequence[tuple[float, float, float] | tuple[float, float, float, float] | int]:
+        """
+        Property TypeId: App::PropertyColorList.
+        """
+
+    @OverrideColorList.setter
+    def OverrideColorList(self, value: dict[int, tuple[float, float, float] | tuple[float, float, float, float] | int] | typing.Iterable[tuple[float, float, float] | tuple[float, float, float, float] | int] | typing.Sequence[tuple[float, float, float] | tuple[float, float, float, float] | int]): ...
+
+    @property
+    def OverrideMaterial(self) -> int | bool:
+        """
+        Property group:  Link.
+        Property TypeId: App::PropertyBool.
+        Override linked object's material.
+        """
+
+    @OverrideMaterial.setter
+    def OverrideMaterial(self, value: int | bool): ...
+
+    @property
+    def OverrideMaterialList(self) -> dict[int, int | bool] | typing.Iterable[int | bool] | typing.Sequence[int | bool]:
+        """
+        Property TypeId: App::PropertyBoolList.
+        """
+
+    @OverrideMaterialList.setter
+    def OverrideMaterialList(self, value: dict[int, int | bool] | typing.Iterable[int | bool] | typing.Sequence[int | bool]): ...
+
+    @property
+    def PointSize(self) -> float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]:
+        """
+        Property group:  Link.
+        Property TypeId: App::PropertyFloatConstraint.
+        .
+        """
+
+    @PointSize.setter
+    def PointSize(self, value: float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]): ...
+
+    @property
+    def Selectable(self) -> int | bool:
+        """
+        Property group:  Link.
+        Property TypeId: App::PropertyBool.
+        """
+
+    @Selectable.setter
+    def Selectable(self, value: int | bool): ...
+
+    @property
+    def ShapeMaterial(self) -> FreeCAD.Material:
+        """
+        Property group:  Link.
+        Property TypeId: App::PropertyMaterial.
+        """
+
+    @ShapeMaterial.setter
+    def ShapeMaterial(self, value: FreeCAD.Material): ...
+
 
 # ViewProviderExtensionPy.xml
 class ViewProviderExtension(FreeCAD.Extension):
@@ -546,47 +646,10 @@ class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
     """This is the ViewProvider base class"""
 
     @property
-    def DisplayMode(self) -> typing.Optional[int]:
-        """Set the display mode"""
-
-    @DisplayMode.setter
-    def DisplayMode(self, value: typing.Optional[int]): ...
-
-    @property
     def Proxy(self) -> FreeCADTemplates.ViewProviderPython: ...
 
     @Proxy.setter
     def Proxy(self, value: FreeCADTemplates.ViewProviderPython): ...
-
-    @property
-    def OnTopWhenSelected(self) -> typing.Union[int, typing.Literal["Disabled", "Enabled", "Object", "Element"]]:
-        """Enabled: Display the object on top of any other object when selected
-        Object: On top only if the whole object is selected
-        Element: On top only if some sub-element of the object is selected"""
-
-    @OnTopWhenSelected.setter
-    def OnTopWhenSelected(self, value: typing.Union[int, typing.Literal["Disabled", "Enabled", "Object", "Element"]]): ...
-
-    @property
-    def SelectionStyle(self) -> typing.Union[int, typing.Literal["Shape", "BoundBox"]]:
-        """Set the object selection style"""
-
-    @SelectionStyle.setter
-    def SelectionStyle(self, value: typing.Union[int, typing.Literal["Shape", "BoundBox"]]): ...
-
-    @property
-    def ShowInTree(self) -> bool:
-        """Show the object in the tree view"""
-
-    @ShowInTree.setter
-    def ShowInTree(self, value: bool): ...
-
-    @property
-    def Visibility(self) -> bool:
-        """Show the object in the 3d view"""
-
-    @Visibility.setter
-    def Visibility(self, value: bool): ...
 
     @property
     def Document(self) -> FreeCADGui.Document:
@@ -599,6 +662,63 @@ class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
     @property
     def Object(self) -> FreeCAD.DocumentObject:
         """Set/Get the associated data object"""
+
+    @property
+    def DisplayMode(self):
+        """
+        Property group: Display Options.
+        Property TypeId: App::PropertyEnumeration.
+        Set the display mode.
+        """
+
+    @DisplayMode.setter
+    def DisplayMode(self, value): ...
+
+    @property
+    def OnTopWhenSelected(self) -> typing.Literal['Disabled', 'Enabled', 'Object', 'Element']:
+        """
+        Property group: Selection.
+        Property TypeId: App::PropertyEnumeration.
+        Enabled: Display the object on top of any other object when selected
+        Object: On top only if the whole object is selected
+        Element: On top only if some sub-element of the object is selected.
+        """
+
+    @OnTopWhenSelected.setter
+    def OnTopWhenSelected(self, value: typing.Literal['Disabled', 'Enabled', 'Object', 'Element']): ...
+
+    @property
+    def SelectionStyle(self) -> typing.Literal['Shape', 'BoundBox']:
+        """
+        Property group: Selection.
+        Property TypeId: App::PropertyEnumeration.
+        Set the object selection style.
+        """
+
+    @SelectionStyle.setter
+    def SelectionStyle(self, value: typing.Literal['Shape', 'BoundBox']): ...
+
+    @property
+    def ShowInTree(self) -> int | bool:
+        """
+        Property group: Display Options.
+        Property TypeId: App::PropertyBool.
+        Show the object in the tree view.
+        """
+
+    @ShowInTree.setter
+    def ShowInTree(self, value: int | bool): ...
+
+    @property
+    def Visibility(self) -> int | bool:
+        """
+        Property group: Display Options.
+        Property TypeId: App::PropertyBool.
+        Show the object in the 3d view.
+        """
+
+    @Visibility.setter
+    def Visibility(self, value: int | bool): ...
 
     def update(self):
         """Update the view representation of the object"""

@@ -243,6 +243,40 @@ class FemMesh(FreeCAD.ComplexGeoData):
 class FemPostPipeline(FreeCAD.GeoFeature):
     """The FemPostPipeline class."""
 
+    @property
+    def Filter(self) -> dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]:
+        """
+        Property group: Pipeline.
+        Property TypeId: App::PropertyLinkList.
+        The filter used in this pipeline.
+        """
+
+    @Filter.setter
+    def Filter(self, value: dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]): ...
+
+    @property
+    def Functions(self) -> FreeCAD.DocumentObject | None:
+        """
+        [Prop_Hidden] Property won't appear in the editor.
+        Property group: Pipeline.
+        Property TypeId: App::PropertyLink.
+        The function provider which groups all pipeline functions.
+        """
+
+    @Functions.setter
+    def Functions(self, value: FreeCAD.DocumentObject | None): ...
+
+    @property
+    def Mode(self) -> typing.Literal['Serial', 'Parallel']:
+        """
+        Property group: Pipeline.
+        Property TypeId: App::PropertyEnumeration.
+        Selects the pipeline data transition mode. In serial, every filtergets the output of the previous one as input. In parallel, everyfilter gets the pipeline source as input.
+        """
+
+    @Mode.setter
+    def Mode(self, value: typing.Literal['Serial', 'Parallel']): ...
+
     def getLastPostObject(self):
         """Get the last post-processing object"""
 
@@ -472,6 +506,60 @@ class ViewProviderFemMesh(FreeCADGui.ViewProviderDocumentObject):
     @property
     def VisibleElementFaces(self) -> list:
         """List of elements and faces which are actually shown. These are all surface faces of the mesh."""
+
+    @property
+    def BackfaceCulling(self) -> int | bool:
+        """
+        Property TypeId: App::PropertyBool.
+        """
+
+    @BackfaceCulling.setter
+    def BackfaceCulling(self, value: int | bool): ...
+
+    @property
+    def LineWidth(self) -> float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]:
+        """
+        Property TypeId: App::PropertyFloatConstraint.
+        """
+
+    @LineWidth.setter
+    def LineWidth(self, value: float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]): ...
+
+    @property
+    def MaxFacesShowInner(self) -> int:
+        """
+        Property TypeId: App::PropertyInteger.
+        """
+
+    @MaxFacesShowInner.setter
+    def MaxFacesShowInner(self, value: int): ...
+
+    @property
+    def PointColor(self) -> tuple[float, float, float] | tuple[float, float, float, float] | int:
+        """
+        Property TypeId: App::PropertyColor.
+        """
+
+    @PointColor.setter
+    def PointColor(self, value: tuple[float, float, float] | tuple[float, float, float, float] | int): ...
+
+    @property
+    def PointSize(self) -> float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]:
+        """
+        Property TypeId: App::PropertyFloatConstraint.
+        """
+
+    @PointSize.setter
+    def PointSize(self, value: float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]): ...
+
+    @property
+    def ShowInner(self) -> int | bool:
+        """
+        Property TypeId: App::PropertyBool.
+        """
+
+    @ShowInner.setter
+    def ShowInner(self, value: int | bool): ...
 
     def applyDisplacement(self, arg1: float, /): ...
 

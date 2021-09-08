@@ -181,6 +181,165 @@ class Trajectory(FreeCAD.Persistence):
 class RobotObject(FreeCAD.DocumentObject):
     """Robot document object"""
 
+    @property
+    def Axis1(self):
+        """
+        Property group: Robot kinematic.
+        Axis 1 angle of the robot in degre.
+        """
+
+    @Axis1.setter
+    def Axis1(self, value): ...
+
+    @property
+    def Axis2(self):
+        """
+        Property group: Robot kinematic.
+        Axis 2 angle of the robot in degre.
+        """
+
+    @Axis2.setter
+    def Axis2(self, value): ...
+
+    @property
+    def Axis3(self):
+        """
+        Property group: Robot kinematic.
+        Axis 3 angle of the robot in degre.
+        """
+
+    @Axis3.setter
+    def Axis3(self, value): ...
+
+    @property
+    def Axis4(self):
+        """
+        Property group: Robot kinematic.
+        Axis 4 angle of the robot in degre.
+        """
+
+    @Axis4.setter
+    def Axis4(self, value): ...
+
+    @property
+    def Axis5(self):
+        """
+        Property group: Robot kinematic.
+        Axis 5 angle of the robot in degre.
+        """
+
+    @Axis5.setter
+    def Axis5(self, value): ...
+
+    @property
+    def Axis6(self):
+        """
+        Property group: Robot kinematic.
+        Axis 6 angle of the robot in degre.
+        """
+
+    @Axis6.setter
+    def Axis6(self, value): ...
+
+    @property
+    def Base(self):
+        """
+        Property group: Robot kinematic.
+        Property TypeId: App::PropertyPlacement.
+        Actual base frame of the robot.
+        """
+
+    @Base.setter
+    def Base(self, value): ...
+
+    @property
+    def Error(self) -> str:
+        """
+        Property group: Robot kinematic.
+        Property TypeId: App::PropertyString.
+        Robot error while moving.
+        """
+
+    @Error.setter
+    def Error(self, value: str): ...
+
+    @property
+    def Home(self) -> dict[int, float | int] | typing.Iterable[float | int] | typing.Sequence[float | int]:
+        """
+        Property group: Robot kinematic.
+        Property TypeId: App::PropertyFloatList.
+        Axis position for home.
+        """
+
+    @Home.setter
+    def Home(self, value: dict[int, float | int] | typing.Iterable[float | int] | typing.Sequence[float | int]): ...
+
+    @property
+    def RobotKinematicFile(self):
+        """
+        Property group: Robot definition.
+        Property TypeId: App::PropertyFileIncluded.
+        Included file with kinematic definition of the robot Axis.
+        """
+
+    @RobotKinematicFile.setter
+    def RobotKinematicFile(self, value): ...
+
+    @property
+    def RobotVrmlFile(self):
+        """
+        Property group: Robot definition.
+        Property TypeId: App::PropertyFileIncluded.
+        Included file with the VRML representation of the robot.
+        """
+
+    @RobotVrmlFile.setter
+    def RobotVrmlFile(self, value): ...
+
+    @property
+    def Tcp(self):
+        """
+        Property group: Robot kinematic.
+        Property TypeId: App::PropertyPlacement.
+        Tcp of the robot.
+        """
+
+    @Tcp.setter
+    def Tcp(self, value): ...
+
+    @property
+    def Tool(self):
+        """
+        Property group: Robot kinematic.
+        Property TypeId: App::PropertyPlacement.
+        Tool frame of the robot (Tool).
+        """
+
+    @Tool.setter
+    def Tool(self, value): ...
+
+    @property
+    def ToolBase(self):
+        """
+        Property group: Robot definition.
+        Property TypeId: App::PropertyPlacement.
+        Defines where to connect the ToolShape.
+        """
+
+    @ToolBase.setter
+    def ToolBase(self, value): ...
+
+    @property
+    def ToolShape(self) -> FreeCAD.DocumentObject | None:
+        """
+        Property group: Robot definition.
+        Property TypeId: App::PropertyLink.
+        Link to the Shape is used as Tool.
+        """
+
+    @ToolShape.setter
+    def ToolShape(self, value: FreeCAD.DocumentObject | None): ...
+
 
 # AppRobot.cpp
 def simulateToFile(Robot: Robot.Robot6Axis, Trajectory: Robot.Trajectory, TickSize: float, FileName: str, /):

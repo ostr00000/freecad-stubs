@@ -2433,6 +2433,15 @@ class ArcOfParabola(Part.ArcOfConic):
 class Feature(FreeCAD.GeoFeature):
     """This is the father of all shape object classes"""
 
+    @property
+    def Shape(self):
+        """
+        Property TypeId: PropertyPartShape.
+        """
+
+    @Shape.setter
+    def Shape(self, value): ...
+
 
 # TrimmedCurvePy.xml
 class TrimmedCurve(Part.BoundedCurve):
@@ -5022,6 +5031,72 @@ class AttachExtension(FreeCAD.DocumentObjectExtension):
     def Attacher(self) -> object:
         """AttachEngine object driving this AttachableObject. Returns a copy."""
 
+    @property
+    def AttacherType(self) -> str:
+        """
+        Property group: Attachment.
+        Property TypeId: App::PropertyString.
+        Class name of attach engine object driving the attachment.
+        """
+
+    @AttacherType.setter
+    def AttacherType(self, value: str): ...
+
+    @property
+    def AttachmentOffset(self):
+        """
+        Property group: Attachment.
+        Property TypeId: App::PropertyPlacement.
+        Extra placement to apply in addition to attachment (in local coordinates).
+        """
+
+    @AttachmentOffset.setter
+    def AttachmentOffset(self, value): ...
+
+    @property
+    def MapMode(self):
+        """
+        Property group: Attachment.
+        Property TypeId: App::PropertyEnumeration.
+        Mode of attachment to other object.
+        """
+
+    @MapMode.setter
+    def MapMode(self, value): ...
+
+    @property
+    def MapPathParameter(self) -> float | int:
+        """
+        Property group: Attachment.
+        Property TypeId: App::PropertyFloat.
+        Sets point of curve to map the sketch to. 0..1 = start..end.
+        """
+
+    @MapPathParameter.setter
+    def MapPathParameter(self, value: float | int): ...
+
+    @property
+    def MapReversed(self) -> int | bool:
+        """
+        Property group: Attachment.
+        Property TypeId: App::PropertyBool.
+        Reverse Z direction (flip sketch upside down).
+        """
+
+    @MapReversed.setter
+    def MapReversed(self, value: int | bool): ...
+
+    @property
+    def Support(self) -> dict[int, FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Iterable[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Sequence[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None]:
+        """
+        Property group: Attachment.
+        Property TypeId: App::PropertyLinkSubList.
+        Support of the 2D geometry.
+        """
+
+    @Support.setter
+    def Support(self, value: dict[int, FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Iterable[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Sequence[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None]): ...
+
     def changeAttacherType(self, typename: str, /):
         """changeAttacherType(typename): Changes Attacher class of this object.
         typename: string. The following are accepted so far:
@@ -5407,6 +5482,24 @@ class BezierSurface(Part.GeometrySurface):
 # BodyBasePy.xml
 class BodyBase(Part.Feature):
     """Base class of all Body objects"""
+
+    @property
+    def BaseFeature(self) -> FreeCAD.DocumentObject | None:
+        """
+        Property TypeId: App::PropertyLink.
+        """
+
+    @BaseFeature.setter
+    def BaseFeature(self, value: FreeCAD.DocumentObject | None): ...
+
+    @property
+    def Tip(self) -> FreeCAD.DocumentObject | None:
+        """
+        Property TypeId: App::PropertyLink.
+        """
+
+    @Tip.setter
+    def Tip(self, value: FreeCAD.DocumentObject | None): ...
 
 
 # ArcOfConicPy.xml

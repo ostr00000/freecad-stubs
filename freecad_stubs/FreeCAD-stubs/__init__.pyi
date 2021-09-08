@@ -81,6 +81,16 @@ class DocumentObjectGroup(FreeCAD.DocumentObject):
 class GeoFeature(FreeCAD.DocumentObject):
     """This class does the whole placement and position handling"""
 
+    @property
+    def Placement(self):
+        """
+        [Prop_NoRecompute] Modified property doesn't touch its container for recompute.
+        Property TypeId: PropertyPlacement.
+        """
+
+    @Placement.setter
+    def Placement(self, value): ...
+
     def getGlobalPlacement(self):
         """Returns the placement of the object in the global coordinate space, respecting all stacked relationships. 
                           Note: This function is not available during recompute, as there the placements of parents can change 
@@ -105,12 +115,6 @@ class GeoFeature(FreeCAD.DocumentObject):
 # DocumentObjectPy.xml
 class DocumentObject(FreeCAD.ExtensionContainer):
     """This is the father of all classes handled by the document"""
-
-    @property
-    def Label(self) -> str: ...
-
-    @Label.setter
-    def Label(self, value: str): ...
 
     @property
     def Proxy(self) -> FreeCADTemplates.ProxyPython: ...
@@ -178,6 +182,51 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     def ViewObject(self) -> typing.Optional[FreeCADGui.ViewProviderDocumentObject]:
         """If the GUI is loaded the associated view provider is returned
         or None if the GUI is not up"""
+
+    @property
+    def ExpressionEngine(self):
+        """
+        [Prop_Hidden] Property won't appear in the editor.
+        Property group: Base.
+        Property TypeId: PropertyExpressionEngine.
+        Property expressions.
+        """
+
+    @ExpressionEngine.setter
+    def ExpressionEngine(self, value): ...
+
+    @property
+    def Label(self) -> str:
+        """
+        [Prop_Output] Modified property doesn't touch its parent container.
+        Property group: Base.
+        Property TypeId: PropertyString.
+        User name of the object (UTF8).
+        """
+
+    @Label.setter
+    def Label(self, value: str): ...
+
+    @property
+    def Label2(self) -> str:
+        """
+        [Prop_Hidden] Property won't appear in the editor.
+        Property group: Base.
+        Property TypeId: PropertyString.
+        User description of the object (UTF8).
+        """
+
+    @Label2.setter
+    def Label2(self, value: str): ...
+
+    @property
+    def Visibility(self) -> int | bool:
+        """
+        Property TypeId: PropertyBool.
+        """
+
+    @Visibility.setter
+    def Visibility(self, value: int | bool): ...
 
     def addProperty(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, arg5: int = None, arg6: bool = None, arg7: bool = None, /):
         """
@@ -340,6 +389,40 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
     def LinkedChildren(self) -> list:
         """Return a flattened (in case grouped by plain group) list of linked children"""
 
+    @property
+    def _ChildCache(self):
+        """
+        [Prop_ReadOnly] Property is read-only in the editor.
+        [Prop_Hidden] Property won't appear in the editor.
+        [Prop_NoPersist] Property won't be saved to file at all.
+        Property group:  Link.
+        Property TypeId: PropertyLinkList.
+        """
+
+    @property
+    def _LinkOwner(self) -> int:
+        """
+        [Prop_Hidden] Property won't appear in the editor.
+        [Prop_Output] Modified property doesn't touch its parent container.
+        Property group:  Link.
+        Property TypeId: PropertyInteger.
+        """
+
+    @_LinkOwner.setter
+    def _LinkOwner(self, value: int): ...
+
+    @property
+    def _LinkTouched(self) -> int | bool:
+        """
+        [Prop_Hidden] Property won't appear in the editor.
+        [Prop_NoPersist] Property won't be saved to file at all.
+        Property group:  Link.
+        Property TypeId: PropertyBool.
+        """
+
+    @_LinkTouched.setter
+    def _LinkTouched(self, value: int | bool): ...
+
     def cacheChildLabel(self, enable: object = True, /):
         """
         cacheChildLabel(enable=True): enable/disable child label cache
@@ -445,6 +528,84 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
 # PartPy.xml
 class Part(FreeCAD.GeoFeature):
     """This class handles document objects in Part"""
+
+    @property
+    def Color(self) -> tuple[float, float, float] | tuple[float, float, float, float] | int:
+        """
+        Property TypeId: App::PropertyColor.
+        """
+
+    @Color.setter
+    def Color(self, value: tuple[float, float, float] | tuple[float, float, float, float] | int): ...
+
+    @property
+    def Id(self) -> str:
+        """
+        Property TypeId: App::PropertyString.
+        ID (Part-Number) of the Item.
+        """
+
+    @Id.setter
+    def Id(self, value: str): ...
+
+    @property
+    def License(self) -> str:
+        """
+        Property TypeId: App::PropertyString.
+        License string of the Item.
+        """
+
+    @License.setter
+    def License(self, value: str): ...
+
+    @property
+    def LicenseURL(self) -> str:
+        """
+        Property TypeId: App::PropertyString.
+        URL to the license text/contract.
+        """
+
+    @LicenseURL.setter
+    def LicenseURL(self, value: str): ...
+
+    @property
+    def Material(self) -> dict[str, str]:
+        """
+        Property TypeId: App::PropertyMap.
+        Map with material properties.
+        """
+
+    @Material.setter
+    def Material(self, value: dict[str, str]): ...
+
+    @property
+    def Meta(self) -> dict[str, str]:
+        """
+        Property TypeId: App::PropertyMap.
+        Map with additional meta information.
+        """
+
+    @Meta.setter
+    def Meta(self, value: dict[str, str]): ...
+
+    @property
+    def Type(self) -> str:
+        """
+        Property TypeId: PropertyString.
+        """
+
+    @Type.setter
+    def Type(self, value: str): ...
+
+    @property
+    def Uid(self) -> str:
+        """
+        Property TypeId: App::PropertyUUID.
+        UUID of the Item.
+        """
+
+    @Uid.setter
+    def Uid(self, value: str): ...
 
 
 # DocumentObjectExtensionPy.xml
@@ -618,6 +779,197 @@ class Document(FreeCAD.PropertyContainer):
     @property
     def UndoRedoMemSize(self) -> int:
         """The size of the Undo stack in byte"""
+
+    @property
+    def Comment(self) -> str:
+        """
+        Property TypeId: PropertyString.
+        Additional tag to save a comment.
+        """
+
+    @Comment.setter
+    def Comment(self, value: str): ...
+
+    @property
+    def Company(self) -> str:
+        """
+        Property TypeId: PropertyString.
+        Additional tag to save the name of the company.
+        """
+
+    @Company.setter
+    def Company(self, value: str): ...
+
+    @property
+    def CreatedBy(self) -> str:
+        """
+        Property TypeId: PropertyString.
+        The creator of the document.
+        """
+
+    @CreatedBy.setter
+    def CreatedBy(self, value: str): ...
+
+    @property
+    def CreationDate(self) -> str:
+        """
+        [Prop_ReadOnly] Property is read-only in the editor.
+        Property TypeId: PropertyString.
+        Date of creation.
+        """
+
+    @property
+    def FileName(self) -> str:
+        """
+        [Prop_ReadOnly] Property is read-only in the editor.
+        [Prop_Transient] Property content won't be saved to file, but still saves name, type and status.
+        Property TypeId: PropertyString.
+        The path to the file where the document is saved to.
+        """
+
+    @property
+    def Id(self) -> str:
+        """
+        Property TypeId: PropertyString.
+        ID of the document.
+        """
+
+    @Id.setter
+    def Id(self, value: str): ...
+
+    @property
+    def Label(self) -> str:
+        """
+        Property TypeId: PropertyString.
+        The name of the document.
+        """
+
+    @Label.setter
+    def Label(self, value: str): ...
+
+    @property
+    def LastModifiedBy(self) -> str:
+        """
+        Property TypeId: PropertyString.
+        """
+
+    @LastModifiedBy.setter
+    def LastModifiedBy(self, value: str): ...
+
+    @property
+    def LastModifiedDate(self) -> str:
+        """
+        [Prop_ReadOnly] Property is read-only in the editor.
+        Property TypeId: PropertyString.
+        Date of last modification.
+        """
+
+    @property
+    def License(self) -> str:
+        """
+        Property TypeId: App::PropertyString.
+        License string of the Item.
+        """
+
+    @License.setter
+    def License(self, value: str): ...
+
+    @property
+    def License(self) -> str:
+        """
+        Property TypeId: App::PropertyString.
+        License string of the Item.
+        """
+
+    @License.setter
+    def License(self, value: str): ...
+
+    @property
+    def LicenseURL(self) -> str:
+        """
+        Property TypeId: App::PropertyString.
+        URL to the license text/contract.
+        """
+
+    @LicenseURL.setter
+    def LicenseURL(self, value: str): ...
+
+    @property
+    def LicenseURL(self) -> str:
+        """
+        Property TypeId: App::PropertyString.
+        URL to the license text/contract.
+        """
+
+    @LicenseURL.setter
+    def LicenseURL(self, value: str): ...
+
+    @property
+    def Material(self) -> dict[str, str]:
+        """
+        Property TypeId: App::PropertyMap.
+        Map with material properties.
+        """
+
+    @Material.setter
+    def Material(self, value: dict[str, str]): ...
+
+    @property
+    def Meta(self) -> dict[str, str]:
+        """
+        Property TypeId: App::PropertyMap.
+        Map with additional meta information.
+        """
+
+    @Meta.setter
+    def Meta(self, value: dict[str, str]): ...
+
+    @property
+    def ShowHidden(self) -> int | bool:
+        """
+        Property TypeId: PropertyBool.
+        Whether to show hidden object items in the tree view.
+        """
+
+    @ShowHidden.setter
+    def ShowHidden(self, value: int | bool): ...
+
+    @property
+    def Tip(self):
+        """
+        [Prop_Transient] Property content won't be saved to file, but still saves name, type and status.
+        Property TypeId: PropertyLink.
+        Link of the tip object of the document.
+        """
+
+    @Tip.setter
+    def Tip(self, value): ...
+
+    @property
+    def TipName(self) -> str:
+        """
+        [Prop_ReadOnly] Property is read-only in the editor.
+        [Prop_Hidden] Property won't appear in the editor.
+        Property TypeId: PropertyString.
+        Link of the tip object of the document.
+        """
+
+    @property
+    def TransientDir(self) -> str:
+        """
+        [Prop_ReadOnly] Property is read-only in the editor.
+        [Prop_Transient] Property content won't be saved to file, but still saves name, type and status.
+        Property TypeId: PropertyString.
+        Transient directory, where the files live while the document is open.
+        """
+
+    @property
+    def Uid(self):
+        """
+        [Prop_ReadOnly] Property is read-only in the editor.
+        Property TypeId: PropertyUUID.
+        UUID of the document.
+        """
 
     def abortTransaction(self):
         """Abort an Undo/Redo transaction (rollback)"""

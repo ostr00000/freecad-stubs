@@ -12,7 +12,7 @@ Replace:
     def $1(self):\n        \"\"\"May be implemented in python\"\"\""""
 import typing
 
-from PyQt5.QtWidgets import QDialogButtonBox
+from qtpy.QtWidgets import QDialogButtonBox
 from qtpy.QtCore import QObject
 from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import QMenu

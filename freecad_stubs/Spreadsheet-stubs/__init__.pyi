@@ -5,6 +5,50 @@ import FreeCAD
 class Sheet(FreeCAD.DocumentObject):
     """With this object you can manipulate spreadsheets"""
 
+    @property
+    def cells(self):
+        """
+        [Prop_Hidden] Property won't appear in the editor.
+        Property group: Spreadsheet.
+        Property TypeId: PropertySheet.
+        Cell contents.
+        """
+
+    @cells.setter
+    def cells(self, value): ...
+
+    @property
+    def columnWidths(self):
+        """
+        [Prop_ReadOnly] Property is read-only in the editor.
+        [Prop_Hidden] Property won't appear in the editor.
+        [Prop_Output] Modified property doesn't touch its parent container.
+        Property group: Spreadsheet.
+        Property TypeId: PropertyColumnWidths.
+        Column widths.
+        """
+
+    @property
+    def rowHeights(self):
+        """
+        [Prop_ReadOnly] Property is read-only in the editor.
+        [Prop_Hidden] Property won't appear in the editor.
+        Property group: Spreadsheet.
+        Property TypeId: PropertyRowHeights.
+        Row heights.
+        """
+
+    @property
+    def rowHeights(self):
+        """
+        [Prop_ReadOnly] Property is read-only in the editor.
+        [Prop_Hidden] Property won't appear in the editor.
+        [Prop_Output] Modified property doesn't touch its parent container.
+        Property group: Spreadsheet.
+        Property TypeId: PropertyRowHeights.
+        Row heights.
+        """
+
     def clear(self, arg1: str, arg2: bool = None, /):
         """Clear a cell"""
 

@@ -156,6 +156,15 @@ class Constraint(FreeCAD.Persistence):
 class SketchObjectSF(Part.Part2DObject):
     """With this objects you can handle sketches"""
 
+    @property
+    def SketchFlatFile(self):
+        """
+        SketchFlat file (*.skf) which defines this sketch.
+        """
+
+    @SketchFlatFile.setter
+    def SketchFlatFile(self, value): ...
+
 
 # SketchObjectPy.xml
 class SketchObject(Part.Part2DObject):
@@ -225,6 +234,50 @@ class SketchObject(Part.Part2DObject):
         """
                         returns a list of vertices positions.
                     """
+
+    @property
+    def Constraints(self) -> dict[int, int] | typing.Iterable[int] | typing.Sequence[int]:
+        """
+        Property group: Sketch.
+        Property TypeId: Sketcher::PropertyConstraintList.
+        Sketch constraints.
+        """
+
+    @Constraints.setter
+    def Constraints(self, value: dict[int, int] | typing.Iterable[int] | typing.Sequence[int]): ...
+
+    @property
+    def ExternalGeometry(self):
+        """
+        Property group: Sketch.
+        Property TypeId: ::PropertyLinkSubList.
+        Sketch external geometry.
+        """
+
+    @ExternalGeometry.setter
+    def ExternalGeometry(self, value): ...
+
+    @property
+    def FullyConstrained(self) -> int | bool:
+        """
+        [Prop_ReadOnly] Property is read-only in the editor.
+        [Prop_Hidden] Property won't appear in the editor.
+        [Prop_Output] Modified property doesn't touch its parent container.
+        Property group: Sketch.
+        Property TypeId: ::PropertyBool.
+        Sketch is fully constrained.
+        """
+
+    @property
+    def Geometry(self):
+        """
+        Property group: Sketch.
+        Property TypeId: ::PropertyGeometryList.
+        Sketch geometry.
+        """
+
+    @Geometry.setter
+    def Geometry(self, value): ...
 
     def DeleteUnusedInternalGeometry(self, arg1: int, /):
         """Deprecated -- use deleteUnusedInternalGeometry"""

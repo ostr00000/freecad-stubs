@@ -544,6 +544,24 @@ class FeatureArea(FreeCAD.DocumentObject):
     @WorkPlane.setter
     def WorkPlane(self, value: object): ...
 
+    @property
+    def Sources(self) -> dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]:
+        """
+        Property TypeId: App::PropertyLinkList.
+        """
+
+    @Sources.setter
+    def Sources(self, value: dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]): ...
+
+    @property
+    def WorkPlane(self):
+        """
+        Property TypeId: Part::PropertyPartShape.
+        """
+
+    @WorkPlane.setter
+    def WorkPlane(self, value): ...
+
     def getArea(self):
         """Return a copy of the encapsulated Python Area object."""
 
