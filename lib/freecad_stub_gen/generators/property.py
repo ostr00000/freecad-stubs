@@ -5,9 +5,10 @@ import xml.etree.ElementTree as ET
 from abc import ABC
 from dataclasses import dataclass, field
 from distutils.util import strtobool
+from functools import cached_property
 from itertools import chain
 from pathlib import Path
-from typing import Iterable, ClassVar, Literal
+from typing import Iterable, ClassVar, Literal, Optional
 
 from freecad_stub_gen.generators.base import BaseGenerator, commentRemover
 from freecad_stub_gen.generators.method.function_finder import findFunctionCall, \
@@ -44,14 +45,14 @@ class PropertyMacro:
     _docs: str = ''
     type: PropertyType = PropertyType.Prop_None
 
-    body: str = field(default='', repr=False)
-    content: str = field(default='', repr=False)
-    _pythonType: str = 'Enum'
+    constructorBody: str = field(default='', repr=False)
+    cppContent: str = field(default='', repr=False)
+    classDeclarationBodies: list[str] = field(default_factory=list, repr=False)
 
     def __post_init__(self):
         self._docs = self._convertRawText(self._docs, isSentence=True)
         self.group = self._convertRawText(self.group)
-        self._convertTypes()
+        self._convertPropertyTypes()
 
     REG_PATTERN_GROUP_CHAR = r'char\s*\*\s*{}\s*=\s*\"([^"]+)"'
 
@@ -65,7 +66,7 @@ class PropertyMacro:
                     newVal = newVal + '.'
             case val if 'group' in val:
                 reg = self.REG_PATTERN_GROUP_CHAR.format(val)
-                if match := re.search(reg, self.body):
+                if match := re.search(reg, self.constructorBody):
                     newVal = match.group(1)
                 else:
                     raise ValueError(f"Cannot find value for variable: {val}")
@@ -73,7 +74,7 @@ class PropertyMacro:
                 raise ValueError(unexpectedVal)
         return newVal
 
-    def _convertTypes(self):
+    def _convertPropertyTypes(self):
         newTypes = self._rawType \
             .replace('\n', '') \
             .replace(' ', '') \
@@ -88,24 +89,20 @@ class PropertyMacro:
 
     @property
     def docs(self):
-        result = ''
-        count = 0
+        result = '\n'
 
         for p in PropertyType:
             if p & self.type:
-                count += 1
                 result += f'[{p.name}] {p.description}.\n'
 
         if self.group:
-            count += 1
             result += f'Property group: {self.group}.\n'
 
-        if self._docs:
-            count += 1
-            result += self._docs
+        if self.TypeId:
+            result += f'Property TypeId: {self.TypeId}.\n'
 
-        if count > 1:
-            result = '\n' + result + '\n'
+        if self._docs:
+            result += self._docs + '\n'
 
         return result
 
@@ -113,21 +110,133 @@ class PropertyMacro:
     def readOnly(self):
         return bool(self.type & PropertyType.Prop_ReadOnly)
 
+    @property
+    def pythonSetType(self) -> str:
+        if not (typeId := self.TypeId):
+            return ''
+
+        constraint = '{t} | tuple[{t}, {t}, {t}, {t}]'
+        match typeId, typeId.lower():
+            case _, listProp if 'list' in listProp:
+                container = 'dict[int, {t}] | typing.Iterable[{t}] | typing.Sequence[{t}]'
+            case _, listProp if 'set' in listProp:
+                container = 'typing.Sequence[{t}] | {t}'
+            case (_, constraintProp) if 'constraint' in constraintProp:
+                container = constraint
+            case ("App::PropertyPercent", _):
+                container = constraint
+            case _:
+                container = '{t}'
+
+        match typeId, typeId.lower():
+            case 'App::PropertyEnumeration', _:
+                return self._getEnumType()
+
+            case (("App::PropertyQuantity" | "App::PropertyDistance" | "App::PropertyFrequency"
+                   | "App::PropertySpeed" | "App::PropertyAcceleration"), _):
+                innerType = 'str | float | FreeCAD.Quantity | FreeCAD.Unit'
+
+            case (("App::PropertyQuantityConstraint" | "App::PropertyLength" | "App::PropertyArea"
+                   | "App::PropertyVolume" | "App::PropertyAngle" | "App::PropertyPressure"
+                   | "App::PropertyForce" | "App::PropertyVacuumPermittivity"), _):
+                innerType = 'str | float | FreeCAD.Quantity'
+
+            case "App::PropertyPercent", _:
+                innerType = 'int'
+
+            case ("App::PropertyFloatConstraint" | "App::PropertyPrecision"), _:
+                innerType = 'float | tuple[float, float, float, float]'
+
+            case "App::PropertyMap", _:
+                return 'dict[str, str]'
+
+            case "App::PropertyStringList", _:
+                innerType = 'str | bytes'
+
+            case ("App::PropertyPersistentObject" | "App::PropertyUUID" | "App::PropertyFont"
+                  | "App::PropertyFile"), _:
+                return 'str'
+
+            case (("App::PropertyLink" | "App::PropertyLinkChild" | "App::PropertyLinkGlobal" |
+                   "App::PropertyLinkHidden" | "App::PropertyLinkList" |
+                   "App::PropertyPlacementLink"), _):
+                innerType = 'FreeCAD.DocumentObject | None'
+
+            case (("App::PropertyLinkSub" | "App::PropertyLinkSubChild"
+                   | "App::PropertyLinkSubGlobal" | "App::PropertyLinkSubHidden"
+                   | "App::PropertyLinkListChild" | "App::PropertyLinkListGlobal"
+                   | "App::PropertyLinkListHidden" | "App::PropertyLinkSubList"
+                   | "App::PropertyLinkSubListChild" | "App::PropertyLinkSubListGlobal"
+                   | "App::PropertyLinkSubListHidden" | "App::PropertyXLink"
+                   | "App::PropertyXLinkSub" | "App::PropertyXLinkSubList"
+                   | "App::PropertyXLinkList" | "App::PropertyXLinkContainer"), _):
+                partResult = '{t} | tuple[{t}, {s}] | list[{t} | {s}] | None'
+                innerType = partResult.format(
+                    t='FreeCAD.DocumentObject', s='str | typing.Sequence[str]')
+
+            case "App::PropertyMatrix", _:
+                partResult = 'FreeCAD.Matrix | tuple[{t}]'
+                innerType = partResult.format(t=', '.join('float' for _ in range(16)))
+
+            case ("App::PropertyVector" | "App::PropertyVectorDistance" | "App::PropertyPosition"
+                  | "App::PropertyDirection" | "App::PropertyVectorList"), _:
+                partResult = 'FreeCAD.Vector | tuple[{t}, {t}, {t}]'
+                innerType = partResult.format(t='float | int')
+
+            case "App::PropertyPlacement":
+                innerType = 'FreeCAD.Matrix | FreeCAD.Placement'
+
+            case ("App::PropertyColor" | "App::PropertyColorList"), _:
+                partResult = 'tuple[{t}, {t}, {t}] | tuple[{t}, {t}, {t}, {t}] | int'
+                innerType = partResult.format(t='float')
+
+            case ("App::PropertyMaterial" | "App::PropertyMaterialList"), _:
+                innerType = 'FreeCAD.Material'
+
+            case "App::PropertyPath":
+                innerType = 'Path.Path'  # TODO fix Path (ToolPath)
+
+            case "App::PropertyFileIncluded":
+                partResult = '{t} | tuple[{t} {t}]'
+                innerType = partResult.format(t='str | bytes | io.IOBase')
+
+            case "App::PropertyPythonObject":
+                innerType = 'object'
+
+            case _, low if 'bool' in low:
+                innerType = 'int | bool'
+            case _, low if 'float' in low:
+                innerType = 'float | int'
+            case _, low if 'int' in low:
+                innerType = 'int'
+            case _, low if 'string' in low:
+                innerType = 'str'
+            case _:
+                return ''
+
+        return container.format(t=innerType)
+
+    REG_PATTERN_PROP_DECL = r'([\w:]+)\s*{}\s*;'
+
+    @cached_property
+    def TypeId(self) -> Optional[str]:
+        # TODO P3 find declaration in parent
+        reg = self.REG_PATTERN_PROP_DECL.format(self.name)
+        for classDecBody in self.classDeclarationBodies:
+            if match := re.search(reg, classDecBody):
+                return match.group(1)
+
     REG_PATTERN_ENUM_VAR_NAME = r'{}\.setEnums\(\s*(\w+)\s*\)'
     REG_PATTERN_ENUM_ARRAY = r'{}\s*\[\s*]\s*=\s*([^;]+)'
 
-    @property
-    def pythonType(self):
-        if self._pythonType != 'Enum':
-            return self._pythonType
-
+    def _getEnumType(self) -> str:
         reg = self.REG_PATTERN_ENUM_VAR_NAME.format(self.name)
-        if varNameMatch := re.search(reg, self.body):
+        if varNameMatch := re.search(reg, self.constructorBody):
             reg = self.REG_PATTERN_ENUM_ARRAY.format(varNameMatch.group(1))
 
-            if match := re.search(reg, self.body):
+            if match := re.search(reg, self.constructorBody):
                 literalsRaw = match.group(1)
-            elif match := re.search(reg, self.content):
+            elif match := re.search(reg, self.cppContent):
                 literalsRaw = match.group(1)
             else:
                 raise ValueError("Cannot find enum variable")
@@ -150,7 +259,7 @@ class PropertyGenerator(BaseGenerator, ABC):
         readOnly = strtobool(node.attrib.get('ReadOnly', 'True'))
 
         pythonType = self.__getReturnTypeForSpecialCase(name, pythonType)
-        return self.getProperty(name, pythonType, docs, readOnly)
+        return self.getProperty(name, pythonType, pythonType, docs, readOnly)
 
     def __findType(self, node: ET.Element):
         pythonType = None
@@ -215,21 +324,23 @@ class PropertyGenerator(BaseGenerator, ABC):
     def isGuiFile(self) -> bool:
         return 'Gui' in str(self.baseGenFilePath)
 
-    def getProperty(self, name: str, pythonType: str = '', docs: str = '', readOnly=True):
+    def getProperty(self, name: str, pythonGetType: str = '', pythonSetType: str = '',
+                    docs: str = '', readOnly=True):
         if docs:
             docs = '\n' + self.indent(self._getDocFromStr(docs))
         else:
             docs = ' ...\n'
 
-        retType = f' -> {pythonType}' if pythonType else ''
+        retType = f' -> {pythonGetType}' if pythonGetType else ''
         prop = f'@property\ndef {name}(self){retType}:{docs}\n'
 
         if not readOnly:
-            valueType = f': {pythonType}' if pythonType else ''
+            valueType = f': {pythonSetType}' if pythonSetType else ''
             prop += f'@{name}.setter\ndef {name}(self, value{valueType}): ...\n\n'
 
-        if 'typing' in pythonType:
-            self.requiredImports.add('typing')
+        for importName in ('typing', 'os', 'FreeCAD', 'FreeCADGui'):
+            if importName in (pythonSetType.split('.') + pythonGetType.split('.')):
+                self.requiredImports.add(importName)
 
         return prop
 
@@ -238,12 +349,21 @@ class PropertyGenerator(BaseGenerator, ABC):
     REG_DYNAMIC_PROPERTY_EXP = re.compile(r'\bEXTENSION_ADD_PROPERTY\(')
     REG_DYNAMIC_PROPERTY_EXP_TYPE = re.compile(r'\bEXTENSION_ADD_PROPERTY_TYPE\(')
 
+    REG_PATTERN_CLASS_DEC = r'class .* {}[^{{]*'
+
     def genDynamicProperties(self) -> Iterable[str]:
         twinName = self.currentNode.attrib.get('Twin')
         assert twinName is not None, f"'Twin' not found in {self.baseGenFilePath}"
 
         if not (cppIncludeContent := self.getIncludeContent('.cpp')):
             return
+
+        # there may be few separated declarations (ex. DocumentObject)
+        hIncludeContent = self.getIncludeContent('.h')
+        reg = re.compile(self.REG_PATTERN_CLASS_DEC.format(twinName))
+        classDeclarationBodies = [
+            findFunctionCall(hIncludeContent, classMatch.start())
+            for classMatch in re.finditer(reg, hIncludeContent)]
 
         for match in re.finditer(f'{twinName}::{twinName}', cppIncludeContent):
             constructorBody = findFunctionCall(cppIncludeContent, match.start())
@@ -258,12 +378,13 @@ class PropertyGenerator(BaseGenerator, ABC):
                 macroCallStartPos = macroBody.find('(') + 1
                 macroArgs = [exp.strip() for exp in generateExpressionUntilChar(
                     macroBody, expStart=macroCallStartPos, splitChar=',')]
-                pm = PropertyMacro(*macroArgs, body=constructorBody, content=cppIncludeContent)
+
+                pm = PropertyMacro(
+                    *macroArgs, constructorBody=constructorBody,
+                    cppContent=cppIncludeContent, classDeclarationBodies=classDeclarationBodies)
                 print(pm)
-                # TODO P2 support enums values as literals
-                # TODO P2 support return types = get from .h file
                 yield self.getProperty(
-                    pm.name, pythonType=pm.pythonType,
+                    pm.name, pythonSetType=pm.pythonSetType, pythonGetType=pm.pythonSetType,
                     docs=pm.docs, readOnly=pm.readOnly)
 
             # We assume that they may be more than one constructor,

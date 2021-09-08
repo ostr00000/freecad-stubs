@@ -75,15 +75,18 @@ class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
     def getCodeForSpecialCase(self, className: str) -> str:
         ret = ''
         if className == 'DocumentObject':
-            ret += self.getProperty('Proxy', 'FreeCADTemplates.ProxyPython', readOnly=False)
+            ret += self.getProperty('Proxy', 'FreeCADTemplates.ProxyPython',
+                                    'FreeCADTemplates.ProxyPython', readOnly=False)
             self.requiredImports.add('FreeCADTemplates')
 
         elif className == 'ViewProviderDocumentObject':
-            ret += self.getProperty('Proxy', 'FreeCADTemplates.ViewProviderPython', readOnly=False)
+            ret += self.getProperty('Proxy', 'FreeCADTemplates.ViewProviderPython',
+                                    'FreeCADTemplates.ViewProviderPython', readOnly=False)
             self.requiredImports.add('FreeCADTemplates')
 
         elif className == 'GroupExtension':
-            ret += self.getProperty('Group', 'list[DocumentObject]', readOnly=False)
+            ret += self.getProperty('Group', 'list[DocumentObject]',
+                                    'list[DocumentObject]', readOnly=False)
 
         elif className == 'Workbench':
             ret += workbenchBody + '\n\n'

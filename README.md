@@ -81,7 +81,7 @@ Checkout to desired branch and copy folder `/freecad_stubs`.
 #### Stub source
 - [x] generate class stub (xml files):
   - [x] property in xml,
-  - [ ] dynamic property added in cpp,
+  - [x] dynamic property added in cpp,
   - [x] method (+ static/class method),
   - [x] rich comparison (ex. `__eq__` method),
   - [x] number protocol (ex. `__add__` method),
@@ -97,5 +97,6 @@ Checkout to desired branch and copy folder `/freecad_stubs`.
 - [x] guess argument names from docstrings,
 - [x] found function/method argument types based on [c-api](https://docs.python.org/3/c-api/arg.html),
 - [ ] function/method return type,
-- [ ] property return type,
+- [ ] property getter type,
+- [x] property setter type,
 - [ ] add comment "safe to import" for importable object,
