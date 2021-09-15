@@ -153,11 +153,3 @@ class PropertyColumnWidths(FreeCAD.Persistence):
 # PropertySheetPy.xml
 class PropertySheet(FreeCAD.Persistence):
     """Internal spreadsheet object"""
-
-
-# SpreadsheetViewPy.xml
-class SheetView(FreeCAD.PyObjectBase):
-    """SpreadsheetView object"""
-
-    def getSheet(self):
-        """returns the sheet being displayed"""

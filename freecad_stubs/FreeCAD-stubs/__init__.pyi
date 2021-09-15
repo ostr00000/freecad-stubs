@@ -4,13 +4,134 @@ from FreeCAD.Base import *
 import FreeCAD
 import FreeCAD.Base
 import FreeCAD.Console
+import FreeCAD.Qt as Qt
 import FreeCAD.UnitsApiPy as Units
-import FreeCAD.__Translate__ as Qt
 import FreeCADGui
 import FreeCADTemplates
 
 
 class PyObjectBase(object): ...
+
+
+# ParameterPy.cpp
+class ParameterGrp:
+    """Python interface class to set parameters"""
+
+    def GetGroup(self, str: str, /):
+        """GetGroup(str)"""
+
+    def GetGroups(self):
+        """GetGroups()"""
+
+    def RemGroup(self, str: str, /):
+        """RemGroup(str)"""
+
+    def HasGroup(self, str: str, /):
+        """HasGroup(str)"""
+
+    def IsEmpty(self):
+        """IsEmpty()"""
+
+    def Clear(self):
+        """Clear()"""
+
+    def Attach(self, arg1: object, /):
+        """Attach()"""
+
+    def Detach(self, arg1: object, /):
+        """Detach()"""
+
+    def Notify(self, arg1: str, /):
+        """Notify()"""
+
+    def NotifyAll(self):
+        """NotifyAll()"""
+
+    def SetBool(self, arg1: str, arg2: int, /):
+        """SetBool()"""
+
+    def GetBool(self, arg1: str, arg2: int = None, /):
+        """GetBool()"""
+
+    def GetBools(self, arg1: str = None, /):
+        """GetBools()"""
+
+    def RemBool(self, arg1: str, /):
+        """RemBool()"""
+
+    def SetInt(self, arg1: str, arg2: int, /):
+        """SetInt()"""
+
+    def GetInt(self, arg1: str, arg2: int = None, /):
+        """GetInt()"""
+
+    def GetInts(self, arg1: str = None, /):
+        """GetInts()"""
+
+    def RemInt(self, arg1: str, /):
+        """RemInt()"""
+
+    def SetUnsigned(self, arg1: str, arg2: int, /):
+        """SetUnsigned()"""
+
+    def GetUnsigned(self, arg1: str, arg2: int = None, /):
+        """GetUnsigned()"""
+
+    def GetUnsigneds(self, arg1: str = None, /):
+        """GetUnsigneds()"""
+
+    def RemUnsigned(self, arg1: str, /):
+        """RemUnsigned()"""
+
+    def SetFloat(self, arg1: str, arg2: float, /):
+        """SetFloat()"""
+
+    def GetFloat(self, arg1: str, arg2: float = None, /):
+        """GetFloat()"""
+
+    def GetFloats(self, arg1: str = None, /):
+        """GetFloats()"""
+
+    def RemFloat(self, arg1: str, /):
+        """RemFloat()"""
+
+    def SetString(self, arg1: str, arg2: str, /):
+        """SetString()"""
+
+    def GetString(self, arg1: str, arg2: str = None, /):
+        """GetString()"""
+
+    def GetStrings(self, arg1: str = None, /):
+        """GetStrings()"""
+
+    def RemString(self, arg1: str, /):
+        """RemString()"""
+
+    def Import(self, arg1: str, /):
+        """Import()"""
+
+    def Insert(self, arg1: str, /):
+        """Insert()"""
+
+    def Export(self, arg1: str, /):
+        """Export()"""
+
+    def GetContents(self):
+        """GetContents()"""
+
+
+# Sequencer.cpp
+class ProgressIndicator:
+    """Progress indicator"""
+
+    def start(self, string: str, int: int, /):
+        """start(string,int)"""
+
+    def next(self, arg1: int = None, /):
+        """next()"""
+
+    def stop(self):
+        """stop()"""
 
 
 # MaterialPy.xml
@@ -1447,6 +1568,7 @@ def checkAbort():
     There is an active sequencer during document restore and recomputation. User may
     abort the operation by pressing the ESC key. Once detected, this function will
     trigger a BaseExceptionFreeCADAbort exception."""
+
 
 
 App = FreeCAD
