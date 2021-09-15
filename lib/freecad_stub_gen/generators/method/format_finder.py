@@ -1,6 +1,7 @@
 import logging
 import re
 from abc import ABC
+from functools import cached_property
 from pathlib import Path
 from re import Pattern
 from typing import Optional
@@ -8,6 +9,7 @@ from typing import Optional
 from freecad_stub_gen.generators.method.function_finder import FunctionFinder, findFunctionCall, \
     generateExpressionUntilChar
 from freecad_stub_gen.generators.method.types_converter import TypesConverter
+from freecad_stub_gen.util import indent, formatDocstring
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +19,7 @@ class FormatFinder(FunctionFinder, ABC):
     REG_TUP_KW = re.compile(r'PyArg_ParseTupleAndKeywords\s*\(')
 
     def generateArgFromCode(self, functionName: str, className: str = '', *, argNumStart=1):
-        if not (funBody := self.findFunctionBody(functionName, className, self.parentXml)):
+        if not (funBody := self.findFunctionBody(functionName, className)):
             return
 
         yield from self.__findParseTuple(funBody, argNumStart)
@@ -25,8 +27,8 @@ class FormatFinder(FunctionFinder, ABC):
         # TODO P5 PyArg_UnpackTuple
         # https://docs.python.org/3/c-api/arg.html#c.PyArg_UnpackTuple
 
-    @property
-    def parentXml(self) -> Optional[Path]:
+    @cached_property
+    def parentXmlPath(self) -> Optional[Path]:
         if self.currentNode is None:
             return
 
@@ -70,7 +72,7 @@ class FormatFinder(FunctionFinder, ABC):
             args = list(tc.convertFormatToTypes(kwargsList))
             yield args
 
-    def convertMethodToStr(self, methodName: str, args: list, docsText: str = None,
+    def convertMethodToStr(self, methodName: str, args: list, rawDocstring: str = None,
                            isClassic=False, isStatic=False, functionSpacing=1) -> str:
         """Element of args must implement __str__ method."""
         ret = ''
@@ -102,7 +104,7 @@ class FormatFinder(FunctionFinder, ABC):
             ret += pattern.format(args=arg, docs=' ...\n')
 
         # last signature should have docstring
-        doc = f'\n{self.indent(self._getDocFromStr(docsText))}' if docsText else ' ...\n'
+        doc = f'\n{indent(formatDocstring(rawDocstring))}' if rawDocstring else ' ...\n'
         ret += pattern.format(args=args[-1], docs=doc)
         return ret
 

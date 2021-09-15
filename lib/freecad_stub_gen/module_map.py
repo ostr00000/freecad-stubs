@@ -22,27 +22,25 @@ class _ModuleNamespace:
         for file in genXmlFiles(sourcePath):
             self.stemToPaths[file.stem].append(file)
 
-    def getNamespaceForStem(self, name: str) -> str:
-        possiblePaths = self.stemToPaths[name]
-        assert len(possiblePaths) > 0
-        if len(possiblePaths) > 1:
-            paths = [p.relative_to(self.sourcePath) for p in possiblePaths]
-            logger.warning(f'There is more than one possible {paths=}')
-
-        path = possiblePaths[0]
-        if 'Mod' in str(path):
-            return path.parent.parent.name
-        else:
-            return path.parent.name
-
-    def __contains__(self, item: str):
-        return item in self.stemToPaths
+    def getFileForStem(self, stem: str, namespace: str = ''):
+        match self.stemToPaths[stem]:
+            case []:
+                assert False, f"There is no path for {stem=}"
+            case [onlyOnePath]:
+                return onlyOnePath
+            case manyPaths if any(namespace in str(pathWithNamespace := p) for p in manyPaths):
+                return pathWithNamespace
+            case [anyPath, *_] as possiblePaths:
+                paths = [p.relative_to(self.sourcePath) for p in possiblePaths]
+                logger.warning(f'There is more than one possible {paths=}')
+                return anyPath
 
     NAMESPACE_TO_MODULE = {
         'Base': 'FreeCAD',
         'App': 'FreeCAD',
         'Gui': 'FreeCADGui',
         'Data': 'FreeCAD',
+        'Attacher': 'Part',
     }
 
     def convertNamespaceToModule(self, namespace: str):

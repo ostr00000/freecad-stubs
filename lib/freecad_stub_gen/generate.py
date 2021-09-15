@@ -8,19 +8,18 @@ from freecad_stub_gen.generators.from_cpp.functions import FreecadStubGeneratorF
 from freecad_stub_gen.generators.from_cpp.klass import FreecadStubGeneratorFromCppClass
 from freecad_stub_gen.generators.from_cpp.module import FreecadStubGeneratorFromCppModule
 from freecad_stub_gen.generators.from_xml import FreecadStubGeneratorFromXML
-from freecad_stub_gen.module_map import genXmlFiles, genPyCppFiles
-from freecad_stub_gen.stub_container import StubContainer
+from freecad_stub_gen.module_container import Module
+from freecad_stub_gen.module_map import genPyCppFiles, genXmlFiles
 
 logger = logging.getLogger(__name__)
 
 
-def _genModule(moduleName: str, modulePath: Path, sourcePath=SOURCE_DIR):
-    moduleStub = StubContainer(name=moduleName)
-
+def _genModule(sourcesRoot: Module, modulePath: Path, sourcePath=SOURCE_DIR,
+               moduleName='', subModuleName=''):
     for xmlPath in genXmlFiles(modulePath):
         if not (tg := FreecadStubGeneratorFromXML.safeCreate(xmlPath, sourcePath)):
             continue
-        moduleStub += tg.getStub()
+        tg.getStub(sourcesRoot, moduleName, submodule=subModuleName)
 
     for cppPath in genPyCppFiles(modulePath):
         for cl in (FreecadStubGeneratorFromCppFunctions,
@@ -29,30 +28,29 @@ def _genModule(moduleName: str, modulePath: Path, sourcePath=SOURCE_DIR):
             if not (mg := cl.safeCreate(cppPath, sourcePath)):
                 continue
 
-            if stub := mg.getStub():
+            match cppPath.stem:
                 # this is special case when we create separate module
-                sp = ('Selection', 'Console', 'Translate',
-                      'UnitsApiPy', 'TaskDialogPython')
-                if cppPath.stem in sp:
-                    subCon = StubContainer(name=cppPath.stem)
-                    subCon += stub
-                    moduleStub /= subCon
-                else:
-                    moduleStub += stub
+                case 'Translate':
+                    curModuleName = f'{moduleName}.Qt'
+                case ('Selection' | 'Console' | 'UnitsApiPy' | 'TaskDialogPython') as stem:
+                    curModuleName = f'{moduleName}.{stem}'
+                case _:
+                    curModuleName = moduleName
 
-    return moduleStub
+            mg.getStub(sourcesRoot, curModuleName)
 
 
 def generateFreeCadStubs(sourcePath=SOURCE_DIR, targetPath=TARGET_DIR):
-    rootStub = StubContainer()
+    sourcesRoot = Module()
 
-    freeCADStub = StubContainer('class PyObjectBase(object): ...\n\n', name='FreeCAD')
-    freeCADBase = _genModule('Base', sourcePath / 'Base', sourcePath)
-    freeCADStub.moveSubContainersFrom(freeCADBase)
-    freeCADStub /= freeCADBase
+    freeCad = sourcesRoot['FreeCAD']
+    freeCad += 'class PyObjectBase(object): ...\n\n\n'
 
-    freeCADStub += _genModule('FreeCAD', sourcePath / 'App', sourcePath)
-    freeCADStub += """
+    _genModule(sourcesRoot, sourcePath / 'Base', sourcePath,
+               moduleName='FreeCAD', subModuleName='Base')
+    _genModule(sourcesRoot, sourcePath / 'App', sourcePath,
+               moduleName='FreeCAD')
+    freeCad += """
 App = FreeCAD
 Log = FreeCAD.Console.PrintLog
 Msg = FreeCAD.Console.PrintMessage
@@ -61,41 +59,40 @@ Wrn = FreeCAD.Console.PrintWarning
 # be careful with following variables -
 # some of them are set in FreeCADGui (GuiUp after InitApplications),
 # so may not exist when accessible until FreeCADGuiInit is initialized - use `getattr`"""
-    freeCADStub += StubContainer('GuiUp: typing.Literal[0, 1]', {'typing'})
-    freeCADStub += StubContainer('Gui = FreeCADGui', {'FreeCADGui'})
-    freeCADStub += StubContainer('ActiveDocument: FreeCAD.Document')
-    freeCADStub += StubContainer(requiredImports={
+    freeCad += 'GuiUp: typing.Literal[0, 1]'
+    freeCad.imports.add('typing')
+    freeCad += 'Gui = FreeCADGui'
+    freeCad.imports.add('FreeCADGui')
+    freeCad += 'ActiveDocument: FreeCAD.Document'
+    freeCad.imports.update((
         'FreeCAD.Console',
-        'FreeCAD.__Translate__ as Qt',
+        'FreeCAD.Qt as Qt',
         'FreeCAD.UnitsApiPy as Units',
         'FreeCAD.Base',
-        'from FreeCAD.Base import *'})
-    rootStub @= freeCADStub
+        'from FreeCAD.Base import *'))
 
-    freeCADGuiStub = _genModule('FreeCADGui', sourcePath / 'Gui')
-    freeCADGuiStub += StubContainer('Workbench: FreeCADGui.Workbench')
-    freeCADGuiStub += StubContainer('ActiveDocument: FreeCADGui.Document')
-    freeCADGuiStub += StubContainer(
-        'Control = ControlClass()  # hack to show this module in current module hints')
-    freeCADGuiStub += StubContainer(requiredImports={
+    _genModule(sourcesRoot, sourcePath / 'Gui', sourcePath, moduleName='FreeCADGui')
+    freeCadGui = sourcesRoot['FreeCADGui']
+    freeCadGui += 'Workbench: FreeCADGui.Workbench'
+    freeCadGui += 'ActiveDocument: FreeCADGui.Document'
+    freeCadGui += 'Control = ControlClass()  # hack to show this module in current module hints'
+    freeCadGui.imports.update((
         'FreeCADGui.Selection',
-        'from FreeCADGui.TaskDialogPython import Control as ControlClass'})
-    rootStub @= freeCADGuiStub
+        'from FreeCADGui.TaskDialogPython import Control as ControlClass'))
 
     for mod in (sourcePath / 'Mod').iterdir():
         if mod.name in ('Test',):
             continue
 
-        ms = _genModule(mod.name, mod / 'App', sourcePath)
-        ms += _genModule(mod.name, mod / 'Gui', sourcePath)
-        rootStub @= ms
+        _genModule(sourcesRoot, mod / 'App', sourcePath, moduleName=mod.name)
+        _genModule(sourcesRoot, mod / 'Gui', sourcePath, moduleName=mod.name)
 
-    rootStub.makeSiblingContainersAsPackage()
+    sourcesRoot.setSubModulesAsPackage()
 
     shutil.rmtree(targetPath, ignore_errors=True)
     targetPath.mkdir(parents=True, exist_ok=True)
     (targetPath / '__init__.pyi').touch(exist_ok=True)
-    rootStub.save(targetPath)
+    sourcesRoot.save(targetPath)
 
     for stubPackage in targetPath.iterdir():
         if stubPackage.is_dir():
@@ -108,3 +105,4 @@ Wrn = FreeCAD.Console.PrintWarning
 
 # TODO P4 preprocess and remove macros
 # https://www.tutorialspoint.com/cplusplus/cpp_preprocessor.htm
+# TODO P3 find direct types and add comment - Base::Interpreter().addType

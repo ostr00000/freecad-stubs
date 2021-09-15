@@ -8,7 +8,8 @@ from freecad_stub_gen.generators.method.arg_suit_merger import mergeArgSuitesGen
 from freecad_stub_gen.generators.method.doc_string import generateArgSuitFromDocstring
 from freecad_stub_gen.generators.method.format_finder import FormatFinder
 from freecad_stub_gen.generators.method.types_converter import Arg
-from freecad_stub_gen.generators.names import getSimpleClassName
+from freecad_stub_gen.generators.names import getClassNameFromNode
+from freecad_stub_gen.util import getDocFromNode
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +17,7 @@ logger = logging.getLogger(__name__)
 class MethodGenerator(FormatFinder, ABC):
     def genInit(self) -> str:
         # maybe should check self.currentNode.attrib['Constructor']
-        className = getSimpleClassName(self.currentNode)
+        className = getClassNameFromNode(self.currentNode)
         return self.genMethod(self.currentNode, cName='PyInit',
                               docName=className, pythonName='__init__')
 
@@ -33,7 +34,7 @@ class MethodGenerator(FormatFinder, ABC):
             cName, docName, node, firstArgumentName))
         sigArgs = list(uniqueArgs.keys())
         return self.convertMethodToStr(
-            pythonName, sigArgs, self._getDocFromNode(node), classic, static)
+            pythonName, sigArgs, getDocFromNode(node), classic, static)
 
     @classmethod
     def _firstArgumentName(cls, isStaticMethod: bool, isClassMethod: bool) -> str:

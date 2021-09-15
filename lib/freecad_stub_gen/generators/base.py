@@ -1,29 +1,9 @@
-import re
-import textwrap
-import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import Optional
 from xml.etree.ElementTree import ParseError
 
 from freecad_stub_gen.config import SOURCE_DIR
-from freecad_stub_gen.stub_container import StubContainer
-
-_REG_COMMENT_REM = re.compile(
-    r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"',
-    re.DOTALL | re.MULTILINE)
-
-
-def _replacer(match):
-    s = match.group(0)
-    if s.startswith('/'):
-        return " "  # note: a space and not an empty string
-    else:
-        return s
-
-
-def commentRemover(text):
-    """Based on https://stackoverflow.com/a/241506"""
-    return re.sub(_REG_COMMENT_REM, _replacer, text)
+from freecad_stub_gen.module_container import Module
+from freecad_stub_gen.util import readContent
 
 
 class BaseGenerator:
@@ -38,42 +18,15 @@ class BaseGenerator:
         self.sourceDir = sourceDir
         self.baseGenFilePath = filePath
         self.requiredImports = set()
-        self.currentNode: Optional[ET.Element] = None
+        self.currentNode = None  # TODO refactor P2 delete
 
         impPath = filePath.with_stem(filePath.stem + 'Imp').with_suffix('.cpp')
         if not impPath.exists():  # special case for PyObjectBase
             impPath = filePath.with_suffix('.cpp')
 
-        try:
-            content = impPath.read_text()
-        except UnicodeDecodeError:
-            content = impPath.read_text('iso8859-1')
-        self.impContent = commentRemover(content)
+        self.impContent = readContent(impPath)
 
-    @staticmethod
-    def indent(block, distance=1, indentSize=4):
-        return textwrap.indent(block, ' ' * distance * indentSize)
-
-    REG_REMOVE_NEW_LINE = re.compile(r'\\n"\s*"')
-    REG_WHITESPACE_WITH_APOSTROPHE = re.compile(r'"\s*"')
-
-    @classmethod
-    def prepareDocs(cls, docs: str) -> str:
-        docs = cls.REG_REMOVE_NEW_LINE.sub('\n', docs)
-        docs = cls.REG_WHITESPACE_WITH_APOSTROPHE.sub('', docs)
-        docs = docs.replace('\\n', '\n').replace('\\"', '"')
-        return docs
-
-    @classmethod
-    def _getDocFromStr(cls, docs: Optional[str]) -> Optional[str]:
-        if docs is None:
-            return None
-        return f'"""{cls.prepareDocs(docs)}"""\n'
-
-    @classmethod
-    def _getDocFromNode(cls, node: ET.Element) -> Optional[str]:
-        if docs := node.find("./Documentation//UserDocu").text:
-            return docs
-
-    def getStub(self) -> Optional[StubContainer]:
+    def getStub(self, mod: Module, moduleName: str):
+        """An argument `moduleName` may be optionally used
+        if the generator cannot determine correct package."""
         raise NotImplementedError

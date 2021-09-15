@@ -6,10 +6,11 @@ from typing import Optional
 
 from freecad_stub_gen.config import SOURCE_DIR
 from freecad_stub_gen.generators.method.method import MethodGenerator
-from freecad_stub_gen.generators.names import getBaseClasses, getSimpleClassName, \
-    getShortModuleFormat
+from freecad_stub_gen.generators.names import getFatherClassWithModules, getModuleName, \
+    getClassWithModulesFromNode, getClassName
 from freecad_stub_gen.generators.property import PropertyGenerator
-from freecad_stub_gen.stub_container import StubContainer
+from freecad_stub_gen.module_container import Module
+from freecad_stub_gen.util import indent, formatDocstring, getDocFromNode
 
 
 class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
@@ -18,59 +19,63 @@ class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
 
     def __init__(self, filePath: Path, sourceDir: Path = SOURCE_DIR):
         super().__init__(filePath, sourceDir)
-        self.currentNode = None
+        self.currentNode: Optional[ET.Element] = None
 
-    def getStub(self) -> Optional[StubContainer]:
+    def getStub(self, mod: Module, moduleName, submodule=''):
         header = f'# {self.baseGenFilePath.name}\n'
-        content = '\n'.join(self._parseFile())
-        return StubContainer(header + content, self.requiredImports)
 
-    def _parseFile(self) -> str:
         tree = ET.parse(self.baseGenFilePath)
-        root = tree.getroot()
-
-        for child in root:
+        for child in tree.getroot():
             if child.tag == 'PythonExport':
                 self.currentNode = child
-                yield self.genClass()
+                content, classNameWithModules = self._getClassContent()
 
-    def genClass(self):
+                modName = getModuleName(classNameWithModules)
+                if submodule:
+                    modName = f'{modName}.{submodule}'
+
+                curMod = mod[modName]
+                curMod.update(Module(header + content + '\n', self.requiredImports))
+                self.requiredImports.clear()
+
+    def _getClassContent(self):
         baseClasses = ', '.join(self.genBaseClasses())
-        className = getSimpleClassName(self.currentNode)
+        classNameWithModules = getClassWithModulesFromNode(self.currentNode)
+        className = getClassName(classNameWithModules)
         classStr = f"class {className}({baseClasses}):\n"
-        if doc := self._getDocFromStr(self._getDocFromNode(self.currentNode)):
-            classStr += self.indent(doc)
+
+        if doc := getDocFromNode(self.currentNode):
+            classStr += indent(formatDocstring(doc))
             classStr += '\n'
-        classStr += self.indent(self.genInit())
+        classStr += indent(self.genInit())
 
         if specialCaseCode := self.getCodeForSpecialCase(className):
-            classStr += self.indent(specialCaseCode)
+            classStr += indent(specialCaseCode)
 
         for attributeNode in sorted(self.currentNode.findall('Attribute'), key=self._nodeSort):
-            classStr += self.indent(self.getAttributes(attributeNode))
+            classStr += indent(self.getAttributes(attributeNode))
         for dynamicProperty in sorted(self.genDynamicProperties()):
-            classStr += self.indent(dynamicProperty)
+            classStr += indent(dynamicProperty)
 
         for methodNode in sorted(self.currentNode.findall('Methode'), key=self._nodeSort):
-            classStr += self.indent(self.genMethod(methodNode))
+            classStr += indent(self.genMethod(methodNode))
 
         if strtobool(self.currentNode.attrib.get('RichCompare', 'False')):
-            classStr += self.indent(self.genRichCompare())
+            classStr += indent(self.genRichCompare())
         if strtobool(self.currentNode.attrib.get('NumberProtocol', 'False')):
-            classStr += self.indent(self.genNumberProtocol(className))
+            classStr += indent(self.genNumberProtocol(className))
 
-        return classStr
+        return classStr, classNameWithModules
 
     @staticmethod
     def _nodeSort(node: ET.Element):
         return node.attrib['Name']
 
     def genBaseClasses(self):
-        for base in getBaseClasses(self.currentNode):
-            # self.requiredImports.add(base[:base.rfind('.')])
-            module, base = getShortModuleFormat(base)  # workaround
-            self.requiredImports.add(module)
-            yield base
+        """Only one class is available in xml as a father."""
+        fatherModuleAndClass = getFatherClassWithModules(self.currentNode)
+        self.requiredImports.add(getModuleName(fatherModuleAndClass))
+        yield fatherModuleAndClass
 
     def getCodeForSpecialCase(self, className: str) -> str:
         ret = ''

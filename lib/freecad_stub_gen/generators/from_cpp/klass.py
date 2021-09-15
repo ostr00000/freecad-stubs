@@ -4,6 +4,7 @@ from typing import Iterable
 
 from freecad_stub_gen.generators.from_cpp.base import FreecadStubGeneratorFromCpp
 from freecad_stub_gen.generators.method.function_finder import findFunctionCall
+from freecad_stub_gen.util import indent, formatDocstring
 
 logger = logging.getLogger(__name__)
 
@@ -29,10 +30,10 @@ class FreecadStubGeneratorFromCppClass(FreecadStubGeneratorFromCpp):
             result = ''.join(self._genAllMethods(gen, firstArgName='self'))
             if not result:
                 continue
-            content = self.indent(result)
+            content = indent(result)
 
             if docsMatch := self.REG_CLASS_DOC.search(funcCall):
-                docs = self.indent(self._getDocFromStr(docsMatch.group(1)) + '\n')
+                docs = indent(formatDocstring(docsMatch.group(1)) + '\n')
             else:
                 docs = ''
 

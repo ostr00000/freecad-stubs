@@ -3,20 +3,16 @@ from collections import defaultdict
 from operator import itemgetter
 
 from freecad_stub_gen.additional import additionalPath
-from freecad_stub_gen.generators.base import commentRemover, BaseGenerator
+from freecad_stub_gen.util import indent, readContent
 from freecad_stub_gen.module_map import genPyCppFiles
 
 initType = re.compile(r'(\w[\w: ]+?)\s*::init\(\)')
 
 
 def generateTypes():
-    prefixToTypes: dict[str, set[tuple[str, str]]] = defaultdict(set)
+    prefixToTypes: defaultdict[str, set[tuple[str, str]]] = defaultdict(set)
     for filePath in genPyCppFiles():
-        with open(filePath) as file:
-            try:
-                fileContent = commentRemover(file.read())
-            except UnicodeDecodeError:
-                continue
+        fileContent = readContent(filePath)
 
         for match in initType.finditer(fileContent):
             originalType = match.group(1).replace(' ', '')
@@ -38,7 +34,7 @@ def generateTypes():
         klassText = f'class {prefix}:\n'
         body = '\n'.join(f"{name} = '{originalType}'"
                          for name, originalType in sorted(typeNames))
-        typeText += klassText + BaseGenerator.indent(body) + '\n\n\n'
+        typeText += klassText + indent(body) + '\n\n\n'
 
     typeText = typeText.rstrip() + '\n'
 

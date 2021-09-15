@@ -11,8 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class FunctionFinder(BaseGenerator, ABC):
-    def findFunctionBody(self, funcName: str, className: str = '',
-                         parentXmlPath: Path = None) -> Optional[str]:
+    def findFunctionBody(self, funcName: str, className: str = '') -> Optional[str]:
         if res := self._findFunction(funcName, className):
             return res
 
@@ -20,17 +19,21 @@ class FunctionFinder(BaseGenerator, ABC):
         if res := self._findFunction(redirectedName, className):
             return res
 
-        if parentXmlPath is None:
+        if self.parentXmlPath is None:
             return
 
-        if not (baseClass := type(self).safeCreate(parentXmlPath)):
+        if not (baseClass := type(self).safeCreate(self.parentXmlPath)):
             if funcName == 'PyInit':
                 pass  # skip implicit constructor - probably inherited from PyObject
             else:
-                logger.error(f"Cannot find {parentXmlPath=} for {self.baseGenFilePath=}")
+                logger.error(f"Cannot find {self.parentXmlPath=} for {self.baseGenFilePath=}")
             return
 
         return baseClass.findFunctionBody(funcName, className)
+
+    @property
+    def parentXmlPath(self) -> Optional[Path]:
+        return None
 
     def _findFunction(self, funcName: str, className: str = '') -> Optional[str]:
         for searchRegex in (

@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 from typing import Iterator, Optional, Any
 
 from freecad_stub_gen.generators.method.function_finder import generateExpressionUntilChar
-from freecad_stub_gen.generators.names import getTypeForStem, getShortModuleFormat
+from freecad_stub_gen.generators.names import getClassWithModulesFromPointer, getModuleName
 
 logger = logging.getLogger(__name__)
 
@@ -62,6 +62,12 @@ class TypesConverter:
         self.argumentStrings = list(generateExpressionUntilChar(sub, sub.find('(') + 1, ','))
         self._removeMacros()
 
+    # start with quotation mark as group 1: (["'])
+    # then match text that ends with same quotation mark as in group 1
+    # - skip escaped quotation mark from group 1: .*?(?!\\\1)\1)
+    # as 'text' (?P<text> )
+    # and do not consume it: (?= )
+    # then founded again group named 'text' (?P=text)
     REG_STRING = re.compile(r"""(["'])(?=(?P<text>.*?(?!\\\1)\1))(?P=text)""")
     _FORBIDDEN_MACROS = ['PARAM_REF', 'PARAM_FARG', 'AREA_PARAMS_OPCODE']
 
@@ -156,27 +162,13 @@ class TypesConverter:
         pointerArg = pointerArg.removeprefix('&').removeprefix('(').removesuffix(')')
 
         if pointerArg.endswith('::Type'):
-            return self._convertCustomClass(pointerArg)
+            classWithModules = getClassWithModulesFromPointer(pointerArg)
+            self.requiredImports.add(getModuleName(classWithModules))
+            return classWithModules
         elif pointerArg.startswith('Py'):
             return cTypeToPythonType[pointerArg]
         else:
             logger.error(f"Unknown pointer kind {pointerArg=}")
-
-    def _convertCustomClass(self, pointerArg: str) -> Optional[str]:
-        namespace, pTypePy = None, pointerArg.removesuffix('::Type')
-        if '::' in pTypePy:
-            namespace, pTypePy = pTypePy.split('::')
-
-        fullTypeName = getTypeForStem(pTypePy, namespace)
-        # the correct solution is below
-        # module = fullTypeName[:fullTypeName.rfind('.')]
-        # self.requiredImports.add(module)
-        # return fullTypeName
-        # but at this moment submodules are not supported
-
-        module, modWithClass = getShortModuleFormat(fullTypeName)
-        self.requiredImports.add(module)
-        return modWithClass
 
     def _parseSequence(self, sequence: str) -> tuple[int, str, int]:
         """:return realArguments, type, skipSize"""

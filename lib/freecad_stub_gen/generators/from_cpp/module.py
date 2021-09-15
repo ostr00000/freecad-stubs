@@ -2,11 +2,9 @@ import re
 from collections.abc import Iterable
 from typing import Optional
 
-import more_itertools
-
 from freecad_stub_gen.generators.from_cpp.base import FreecadStubGeneratorFromCpp
 from freecad_stub_gen.generators.method.function_finder import findFunctionCall
-from freecad_stub_gen.stub_container import StubContainer
+from freecad_stub_gen.module_container import Module
 
 
 class FreecadStubGeneratorFromCppModule(FreecadStubGeneratorFromCpp):
@@ -18,27 +16,20 @@ class FreecadStubGeneratorFromCppModule(FreecadStubGeneratorFromCpp):
 
     REG_MODULE_INIT = re.compile(r'Py::ExtensionModule<\w+>\("(\w+)"\)')
 
-    def getStub(self) -> Optional[StubContainer]:
-        hasStub, gen = more_itertools.spy(self._genStub())
-        if not hasStub:
-            return
+    def getStub(self, mod: Module, moduleName: str):
+        header = f'# {self.baseGenFilePath.name}\n'
 
-        mainStub = StubContainer()
-        for st in gen:
-            mainStub @= st
-        return mainStub
-
-    def _genStub(self) -> Iterable[StubContainer]:
-        for result in self._genModules():
-            if result := result.rstrip():
-                header = f'# {self.baseGenFilePath.name}\n'
+        for result in self._genStub():
+            if result.rstrip():
+                # we prefer name with more details
+                curModName = moduleName if '.' in moduleName else self._modName
                 assert self._modName
-                yield StubContainer(
-                    header + result + '\n\n',
-                    self.requiredImports, name=self._modName)
+
+                mod[curModName].update(Module(
+                    header + result, self.requiredImports))
                 self.requiredImports = set()
 
-    def _genModules(self) -> Iterable[str]:
+    def _genStub(self) -> Iterable[str]:
         for match in self.REG_MODULE_INIT.finditer(self.impContent):
             moduleInitBody = findFunctionCall(self.impContent, match.end())
 

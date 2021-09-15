@@ -4,7 +4,7 @@ import re
 from abc import ABC
 from collections import defaultdict
 from itertools import chain
-from typing import Any, Iterable, DefaultDict, Optional
+from typing import Any, Iterable, DefaultDict
 
 from freecad_stub_gen.generators.method.arg_suit_merger import mergeArgSuitesGen
 from freecad_stub_gen.generators.method.doc_string import generateArgSuitFromDocstring
@@ -12,7 +12,7 @@ from freecad_stub_gen.generators.method.format_finder import FormatFinder
 from freecad_stub_gen.generators.method.function_finder import findFunctionCall, \
     generateExpressionUntilChar
 from freecad_stub_gen.logger import LEVEL_CODE
-from freecad_stub_gen.stub_container import StubContainer
+from freecad_stub_gen.module_container import Module
 
 logger = logging.getLogger(__name__)
 
@@ -68,12 +68,13 @@ class PyMethodDef(Method):
 
 
 class FreecadStubGeneratorFromCpp(FormatFinder, ABC):
-    def getStub(self) -> Optional[StubContainer]:
-        if result := ''.join(self._genStub()).rstrip():
+    def getStub(self, mod: Module, moduleName: str):
+        if (result := ''.join(self._genStub())).rstrip():
             header = f'# {self.baseGenFilePath.name}\n'
-            return StubContainer(header + result + '\n\n', self.requiredImports)
+            newMod = Module(header + result, self.requiredImports)
+            mod[moduleName].update(newMod)
 
-    def _genStub(self) -> Iterable:
+    def _genStub(self) -> Iterable[str]:
         raise NotImplementedError
 
     def _genAllMethods(self, it: Iterable[Method], firstArgName='',

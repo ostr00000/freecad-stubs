@@ -8,12 +8,13 @@ from distutils.util import strtobool
 from functools import cached_property
 from itertools import chain
 from pathlib import Path
-from typing import Iterable, ClassVar, Literal, Optional
+from typing import Iterable, Literal, Optional
 
-from freecad_stub_gen.generators.base import BaseGenerator, commentRemover
+from freecad_stub_gen.util import indent, prepareDocs, formatDocstring, getDocFromNode, readContent
+from freecad_stub_gen.generators.base import BaseGenerator
 from freecad_stub_gen.generators.method.function_finder import findFunctionCall, \
     generateExpressionUntilChar
-from freecad_stub_gen.generators.names import getSimpleClassName
+from freecad_stub_gen.generators.names import getClassNameFromNode
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +38,6 @@ class PropertyType(enum.Flag):
 
 @dataclass
 class PropertyMacro:
-    defaultSet: ClassVar = set()
     name: str
     default: str
     group: str = ''
@@ -60,8 +60,8 @@ class PropertyMacro:
         match rawText:
             case 'nullptr' | '0' | '':
                 newVal = ''
-            case val if isinstance(val, str) and val.startswith('"') and val.endswith('"'):
-                newVal = BaseGenerator.prepareDocs(val.removeprefix('"').removesuffix('"'))
+            case str(val) if val.startswith('"') and val.endswith('"'):
+                newVal = prepareDocs(val.removeprefix('"').removesuffix('"'))
                 if isSentence and not newVal.endswith('.'):
                     newVal = newVal + '.'
             case val if 'group' in val:
@@ -255,7 +255,7 @@ class PropertyGenerator(BaseGenerator, ABC):
     def getAttributes(self, node: ET.Element):
         name = node.attrib["Name"]
         pythonType = self.__findType(node)
-        docs = self._getDocFromNode(node)
+        docs = getDocFromNode(node)
         readOnly = strtobool(node.attrib.get('ReadOnly', 'True'))
 
         pythonType = self.__getReturnTypeForSpecialCase(name, pythonType)
@@ -271,7 +271,7 @@ class PropertyGenerator(BaseGenerator, ABC):
         return pythonType
 
     def __getReturnTypeForSpecialCase(self, propertyName: str, pythonType: str):
-        className = getSimpleClassName(self.currentNode)
+        className = getClassNameFromNode(self.currentNode)
 
         match className, propertyName:
             case 'DocumentObject', 'ViewObject':
@@ -327,7 +327,7 @@ class PropertyGenerator(BaseGenerator, ABC):
     def getProperty(self, name: str, pythonGetType: str = '', pythonSetType: str = '',
                     docs: str = '', readOnly=True):
         if docs:
-            docs = '\n' + self.indent(self._getDocFromStr(docs))
+            docs = '\n' + indent(formatDocstring(docs))
         else:
             docs = ' ...\n'
 
@@ -382,7 +382,7 @@ class PropertyGenerator(BaseGenerator, ABC):
                 pm = PropertyMacro(
                     *macroArgs, constructorBody=constructorBody,
                     cppContent=cppIncludeContent, classDeclarationBodies=classDeclarationBodies)
-                print(pm)
+                # print(pm)
                 yield self.getProperty(
                     pm.name, pythonSetType=pm.pythonSetType, pythonGetType=pm.pythonSetType,
                     docs=pm.docs, readOnly=pm.readOnly)
@@ -403,8 +403,7 @@ class PropertyGenerator(BaseGenerator, ABC):
         for p in (pathFromSrc, pathFromLocal):
             for ext in (extension, Path(inc).suffix):
                 try:
-                    content = p.with_suffix(ext).read_text()
-                    return commentRemover(content)
+                    return readContent(p.with_suffix(ext))
                 except FileNotFoundError:
                     pass
 
