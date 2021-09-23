@@ -4,7 +4,8 @@ import Points
 
 # PointsPy.xml
 class Points(FreeCAD.ComplexGeoData):
-    """Points() -- Create an empty points object.
+    """This class can be imported.
+    Points() -- Create an empty points object.
 
     This class allows one to manipulate the Points object by adding new points, deleting facets, importing from an STL file,
     transforming and much more.

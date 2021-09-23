@@ -6,7 +6,8 @@ import Part
 
 # TopoShapeVertexPy.xml
 class Vertex(Part.Shape):
-    """TopoShapeVertex is the OpenCasCade topological vertex wrapper"""
+    """This class can be imported.
+    TopoShapeVertex is the OpenCasCade topological vertex wrapper"""
 
     @typing.overload
     def __init__(self): ...
@@ -50,7 +51,8 @@ class Vertex(Part.Shape):
 
 # CylinderPy.xml
 class Cylinder(Part.GeometrySurface):
-    """Describes a cylinder in 3D space
+    """This class can be imported.
+    Describes a cylinder in 3D space
     				To create a cylinder there are several ways:
     				Part.Cylinder()
     					Creates a default cylinder with center (0,0,0) and radius 1
@@ -124,7 +126,8 @@ class Cylinder(Part.GeometrySurface):
 
 # GeometryBoolExtensionPy.xml
 class GeometryBoolExtension(Part.GeometryExtension):
-    """A GeometryExtension extending geometry objects with a boolean."""
+    """This class can be imported.
+    A GeometryExtension extending geometry objects with a boolean."""
 
     @typing.overload
     def __init__(self): ...
@@ -148,7 +151,8 @@ class GeometryBoolExtension(Part.GeometryExtension):
 
 # AttachEnginePy.xml
 class AttachEngine(FreeCAD.BaseClass):
-    """AttachEngine abstract class - the functionality of AttachableObject, but outside of DocumentObject"""
+    """This class can be imported.
+    AttachEngine abstract class - the functionality of AttachableObject, but outside of DocumentObject"""
 
     @typing.overload
     def __init__(self): ...
@@ -283,7 +287,8 @@ class AttachEngine(FreeCAD.BaseClass):
 
 # EllipsePy.xml
 class Ellipse(Part.Conic):
-    """Describes an ellipse in 3D space
+    """This class can be imported.
+    Describes an ellipse in 3D space
     				To create an ellipse there are several ways:
     				Part.Ellipse()
     					Creates an ellipse with major radius 2 and minor radius 1 with the
@@ -370,7 +375,8 @@ class Ellipse(Part.Conic):
 
 # TopoShapeSolidPy.xml
 class Solid(Part.Shape):
-    """Part.Solid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created."""
+    """This class can be imported.
+    Part.Solid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created."""
 
     def __init__(self, shape: Part.Shape, /):
         """Part.Solid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created."""
@@ -483,7 +489,8 @@ class BoundedCurve(Part.Curve):
 
 # HyperbolaPy.xml
 class Hyperbola(Part.Conic):
-    """Describes an hyperbola in 3D space
+    """This class can be imported.
+    Describes an hyperbola in 3D space
     				To create a hyperbola there are several ways:
     				Part.Hyperbola()
     					Creates an hyperbola with major radius 2 and minor radius 1 with the
@@ -570,6 +577,9 @@ class Hyperbola(Part.Conic):
 
 # PlateSurfacePy.xml
 class PlateSurface(Part.GeometrySurface):
+    """This class can be imported.
+    """
+
     def __init__(self, Surface: Part.Geometry = None, Points: object = None, Curves: object = None, Degree: int = None, NbPtsOnCur: int = None, NbIter: int = None, Tol2d: float = None, Tol3d: float = None, TolAng: float = None, TolCurv: float = None, Anisotropie: bool = None): ...
 
     def makeApprox(self, Tol3d: float = None, MaxSegments: int = None, MaxDegree: int = None, MaxDistance: float = None, CritOrder: int = None, Continuity: str = None, EnlargeCoeff: float = None):
@@ -578,6 +588,9 @@ class PlateSurface(Part.GeometrySurface):
 
 # OffsetCurvePy.xml
 class OffsetCurve(Part.Curve):
+    """This class can be imported.
+    """
+
     def __init__(self, arg1: Part.Geometry, arg2: float, arg3: FreeCAD.Vector, /): ...
 
     @property
@@ -601,7 +614,8 @@ class OffsetCurve(Part.Curve):
 
 # CirclePy.xml
 class Circle(Part.Conic):
-    """Describes a circle in 3D space
+    """This class can be imported.
+    Describes a circle in 3D space
     To create a circle there are several ways:
     Part.Circle()
         Creates a default circle with center (0,0,0) and radius 1
@@ -661,7 +675,8 @@ class Circle(Part.Conic):
 
 # ArcPy.xml
 class Arc(Part.TrimmedCurve):
-    """Describes a portion of a curve"""
+    """This class can be imported.
+    Describes a portion of a curve"""
 
     @typing.overload
     def __init__(self, arg1: Part.Circle, arg2: float, arg3: float, arg4: bool = None, /): ...
@@ -682,6 +697,9 @@ class Arc(Part.TrimmedCurve):
 
 # OffsetSurfacePy.xml
 class OffsetSurface(Part.GeometrySurface):
+    """This class can be imported.
+    """
+
     def __init__(self, arg1: Part.Geometry, arg2: float, /): ...
 
     @property
@@ -699,7 +717,8 @@ class OffsetSurface(Part.GeometrySurface):
 
 # PlanePy.xml
 class Plane(Part.GeometrySurface):
-    """Describes an infinite plane
+    """This class can be imported.
+    Describes an infinite plane
     To create a plane there are several ways:
     Part.Plane()
         Creates a default plane with base (0,0,0) and normal (0,0,1)
@@ -777,7 +796,8 @@ class Plane(Part.GeometrySurface):
 
 # TopoShapeFacePy.xml
 class Face(Part.Shape):
-    """TopoShapeFace is the OpenCasCade topological face wrapper"""
+    """This class can be imported.
+    TopoShapeFace is the OpenCasCade topological face wrapper"""
 
     @typing.overload
     def __init__(self): ...
@@ -1115,7 +1135,8 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
 
 # TopoShapeCompSolidPy.xml
 class CompSolid(Part.Shape):
-    """TopoShapeCompSolid is the OpenCasCade topological compound solid wrapper"""
+    """This class can be imported.
+    TopoShapeCompSolid is the OpenCasCade topological compound solid wrapper"""
 
     @typing.overload
     def __init__(self): ...
@@ -1132,7 +1153,8 @@ class CompSolid(Part.Shape):
 
 # ParabolaPy.xml
 class Parabola(Part.Conic):
-    """Describes a parabola in 3D space"""
+    """This class can be imported.
+    Describes a parabola in 3D space"""
 
     @typing.overload
     def __init__(self): ...
@@ -1173,7 +1195,8 @@ class Parabola(Part.Conic):
 
 # TopoShapePy.xml
 class Shape(FreeCAD.ComplexGeoData):
-    """TopoShape is the OpenCasCade topological shape wrapper.
+    """This class can be imported.
+    TopoShape is the OpenCasCade topological shape wrapper.
     Sub-elements such as vertices, edges or faces are accessible as:
     * Vertex#, where # is in range(1, number of vertices)
     * Edge#, where # is in range(1, number of edges)
@@ -2015,7 +2038,8 @@ class Shape(FreeCAD.ComplexGeoData):
 
 # ArcOfHyperbolaPy.xml
 class ArcOfHyperbola(Part.ArcOfConic):
-    """Describes a portion of an hyperbola"""
+    """This class can be imported.
+    Describes a portion of an hyperbola"""
 
     def __init__(self, arg1: Part.Hyperbola, arg2: float, arg3: float, arg4: bool = None, /):
         """Describes a portion of an hyperbola"""
@@ -2041,7 +2065,8 @@ class ArcOfHyperbola(Part.ArcOfConic):
 
 # BSplineCurvePy.xml
 class BSplineCurve(Part.BoundedCurve):
-    """Describes a B-Spline curve in 3D space"""
+    """This class can be imported.
+    Describes a B-Spline curve in 3D space"""
 
     def __init__(self):
         """Describes a B-Spline curve in 3D space"""
@@ -2412,7 +2437,8 @@ class BSplineCurve(Part.BoundedCurve):
 
 # ArcOfParabolaPy.xml
 class ArcOfParabola(Part.ArcOfConic):
-    """Describes a portion of an parabola"""
+    """This class can be imported.
+    Describes a portion of an parabola"""
 
     def __init__(self, arg1: Part.Parabola, arg2: float, arg3: float, arg4: bool = None, /):
         """Describes a portion of an parabola"""
@@ -2431,7 +2457,8 @@ class ArcOfParabola(Part.ArcOfConic):
 
 # PartFeaturePy.xml
 class Feature(FreeCAD.GeoFeature):
-    """This is the father of all shape object classes"""
+    """This class can be imported.
+    This is the father of all shape object classes"""
 
     @property
     def Shape(self):
@@ -2457,7 +2484,8 @@ class TrimmedCurve(Part.BoundedCurve):
 
 # ArcOfCirclePy.xml
 class ArcOfCircle(Part.ArcOfConic):
-    """Describes a portion of a circle"""
+    """This class can be imported.
+    Describes a portion of a circle"""
 
     @typing.overload
     def __init__(self, arg1: Part.Circle, arg2: float, arg3: float, arg4: bool = None, /): ...
@@ -2480,7 +2508,8 @@ class ArcOfCircle(Part.ArcOfConic):
 
 # SpherePy.xml
 class Sphere(Part.GeometrySurface):
-    """Describes a sphere in 3D space"""
+    """This class can be imported.
+    Describes a sphere in 3D space"""
 
     def __init__(self):
         """Describes a sphere in 3D space"""
@@ -2517,7 +2546,8 @@ class Sphere(Part.GeometrySurface):
 
 # TopoShapeCompoundPy.xml
 class Compound(Part.Shape):
-    """Create a compound out of a list of shapes"""
+    """This class can be imported.
+    Create a compound out of a list of shapes"""
 
     @typing.overload
     def __init__(self): ...
@@ -2541,7 +2571,8 @@ class Compound(Part.Shape):
 
 # TopoShapeWirePy.xml
 class Wire(Part.Shape):
-    """TopoShapeWire is the OpenCasCade topological wire wrapper"""
+    """This class can be imported.
+    TopoShapeWire is the OpenCasCade topological wire wrapper"""
 
     @typing.overload
     def __init__(self): ...
@@ -2739,7 +2770,8 @@ class Wire(Part.Shape):
 
 # SurfaceOfExtrusionPy.xml
 class SurfaceOfExtrusion(Part.GeometrySurface):
-    """Describes a surface of linear extrusion"""
+    """This class can be imported.
+    Describes a surface of linear extrusion"""
 
     def __init__(self, arg1: Part.Geometry, arg2: FreeCAD.Vector, /):
         """Describes a surface of linear extrusion"""
@@ -2759,7 +2791,8 @@ class SurfaceOfExtrusion(Part.GeometrySurface):
 
 # PointPy.xml
 class Point(Part.Geometry):
-    """Describes a point
+    """This class can be imported.
+    Describes a point
     To create a point there are several ways:
     Part.Point()
         Creates a default point
@@ -2822,7 +2855,8 @@ class Point(Part.Geometry):
 
 # TopoShapeShellPy.xml
 class Shell(Part.Shape):
-    """Create a shell out of a list of faces"""
+    """This class can be imported.
+    Create a shell out of a list of faces"""
 
     @typing.overload
     def __init__(self): ...
@@ -2902,7 +2936,8 @@ class Shell(Part.Shape):
 
 # ConicPy.xml
 class Conic(Part.Curve):
-    """Describes an abstract conic in 3d space"""
+    """This class can be imported.
+    Describes an abstract conic in 3d space"""
 
     @property
     def AngleXU(self) -> float:
@@ -2959,7 +2994,8 @@ class Conic(Part.Curve):
 
 # GeometryIntExtensionPy.xml
 class GeometryIntExtension(Part.GeometryExtension):
-    """A GeometryExtension extending geometry objects with an int."""
+    """This class can be imported.
+    A GeometryExtension extending geometry objects with an int."""
 
     @typing.overload
     def __init__(self): ...
@@ -2983,7 +3019,8 @@ class GeometryIntExtension(Part.GeometryExtension):
 
 # BSplineSurfacePy.xml
 class BSplineSurface(Part.GeometrySurface):
-    """Describes a B-Spline surface in 3D space"""
+    """This class can be imported.
+    Describes a B-Spline surface in 3D space"""
 
     @property
     def FirstUKnotIndex(self) -> object:
@@ -3564,7 +3601,8 @@ class BSplineSurface(Part.GeometrySurface):
 
 # RectangularTrimmedSurfacePy.xml
 class RectangularTrimmedSurface(Part.GeometrySurface):
-    """Describes a portion of a surface (a patch) limited by two values of the
+    """This class can be imported.
+    Describes a portion of a surface (a patch) limited by two values of the
     u parameter in the u parametric direction, and two values of the v parameter in the v parametric
     direction. The domain of the trimmed surface must be within the domain of the surface being trimmed.
 
@@ -3602,7 +3640,8 @@ class RectangularTrimmedSurface(Part.GeometrySurface):
 
 # LinePy.xml
 class Line(Part.Curve):
-    """Describes an infinite line
+    """This class can be imported.
+    Describes an infinite line
     To create a line there are several ways:
     Part.Line()
         Creates a default line
@@ -3796,7 +3835,8 @@ class GeometrySurface(Part.Geometry):
 
 # TopoShapeEdgePy.xml
 class Edge(Part.Shape):
-    """TopoShapeEdge is the OpenCasCade topological edge wrapper"""
+    """This class can be imported.
+    TopoShapeEdge is the OpenCasCade topological edge wrapper"""
 
     @typing.overload
     def __init__(self): ...
@@ -4346,7 +4386,8 @@ class Edge(Part.Shape):
 
 # BezierCurvePy.xml
 class BezierCurve(Part.BoundedCurve):
-    """
+    """This class can be imported.
+
     				Describes a rational or non-rational Bezier curve:
     				-- a non-rational Bezier curve is defined by a table of poles (also called control points)
     				-- a rational Bezier curve is defined by a table of poles with varying weights
@@ -4477,7 +4518,8 @@ class BezierCurve(Part.BoundedCurve):
 
 # GeometryStringExtensionPy.xml
 class GeometryStringExtension(Part.GeometryExtension):
-    """A GeometryExtension extending geometry objects with a string."""
+    """This class can be imported.
+    A GeometryExtension extending geometry objects with a string."""
 
     @typing.overload
     def __init__(self): ...
@@ -4501,7 +4543,8 @@ class GeometryStringExtension(Part.GeometryExtension):
 
 # GeometryDoubleExtensionPy.xml
 class GeometryDoubleExtension(Part.GeometryExtension):
-    """A GeometryExtension extending geometry objects with a double."""
+    """This class can be imported.
+    A GeometryExtension extending geometry objects with a double."""
 
     @typing.overload
     def __init__(self): ...
@@ -4525,7 +4568,8 @@ class GeometryDoubleExtension(Part.GeometryExtension):
 
 # SurfaceOfRevolutionPy.xml
 class SurfaceOfRevolution(Part.GeometrySurface):
-    """Describes a surface of revolution"""
+    """This class can be imported.
+    Describes a surface of revolution"""
 
     def __init__(self, arg1: Part.Geometry, arg2: FreeCAD.Vector, arg3: FreeCAD.Vector, /):
         """Describes a surface of revolution"""
@@ -4551,7 +4595,8 @@ class SurfaceOfRevolution(Part.GeometrySurface):
 
 # LineSegmentPy.xml
 class LineSegment(Part.TrimmedCurve):
-    """Describes a line segment
+    """This class can be imported.
+    Describes a line segment
     To create a line segment there are several ways:
     Part.LineSegment()
         Creates a default line segment
@@ -4879,7 +4924,8 @@ class Curve(Part.Geometry):
 
 # ConePy.xml
 class Cone(Part.GeometrySurface):
-    """Describes a cone in 3D space
+    """This class can be imported.
+    Describes a cone in 3D space
     				To create a cone there are several ways:
     				Part.Cone()
     				    Creates a default cone with radius 1
@@ -4981,7 +5027,8 @@ class Cone(Part.GeometrySurface):
 
 # ToroidPy.xml
 class Toroid(Part.GeometrySurface):
-    """Describes a toroid in 3D space"""
+    """This class can be imported.
+    Describes a toroid in 3D space"""
 
     def __init__(self):
         """Describes a toroid in 3D space"""
@@ -5113,12 +5160,14 @@ class AttachExtension(FreeCAD.DocumentObjectExtension):
 
 # Part2DObjectPy.xml
 class Part2DObject(Part.Feature):
-    """This object represents a 2D Shape in a 3D World"""
+    """This class can be imported.
+    This object represents a 2D Shape in a 3D World"""
 
 
 # ArcOfEllipsePy.xml
 class ArcOfEllipse(Part.ArcOfConic):
-    """Describes a portion of an ellipse"""
+    """This class can be imported.
+    Describes a portion of an ellipse"""
 
     def __init__(self, arg1: Part.Ellipse, arg2: float, arg3: float, arg4: bool = None, /):
         """Describes a portion of an ellipse"""
@@ -5247,7 +5296,8 @@ class BRepOffsetAPI_MakeFilling(FreeCAD.PyObjectBase):
 
 # BezierSurfacePy.xml
 class BezierSurface(Part.GeometrySurface):
-    """Describes a rational or non-rational Bezier surface
+    """This class can be imported.
+    Describes a rational or non-rational Bezier surface
     				-- A non-rational Bezier surface is defined by a table of poles (also known as control points).
     				-- A rational Bezier surface is defined by a table of poles with varying associated weights.
     			"""
@@ -5481,7 +5531,8 @@ class BezierSurface(Part.GeometrySurface):
 
 # BodyBasePy.xml
 class BodyBase(Part.Feature):
-    """Base class of all Body objects"""
+    """This class can be imported.
+    Base class of all Body objects"""
 
     @property
     def BaseFeature(self) -> FreeCAD.DocumentObject | None:
@@ -5504,7 +5555,8 @@ class BodyBase(Part.Feature):
 
 # ArcOfConicPy.xml
 class ArcOfConic(Part.TrimmedCurve):
-    """Describes a portion of a conic"""
+    """This class can be imported.
+    Describes a portion of a conic"""
 
     @property
     def AngleXU(self) -> float:

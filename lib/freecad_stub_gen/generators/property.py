@@ -328,8 +328,8 @@ class PropertyGenerator(BaseGenerator, ABC):
 
     def getProperty(self, name: str, pythonGetType: str = '', pythonSetType: str = '',
                     docs: str = '', readOnly=True):
-        if docs:
-            docs = '\n' + indent(formatDocstring(docs))
+        if docs and (formattedDocs := formatDocstring(docs)):
+            docs = '\n' + indent(formattedDocs)
         else:
             docs = ' ...\n'
 

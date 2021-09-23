@@ -45,7 +45,10 @@ class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
         className = getClassName(classNameWithModules)
         classStr = f"class {className}({baseClasses}):\n"
 
-        if doc := getDocFromNode(self.currentNode):
+        doc = getDocFromNode(self.currentNode)
+        if importableMap.isImportable(classNameWithModules):
+            doc = "This class can be imported.\n" + (doc or '')
+        if doc:
             classStr += indent(formatDocstring(doc))
             classStr += '\n'
         classStr += indent(self.genInit())

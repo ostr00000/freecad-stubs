@@ -136,7 +136,8 @@ class ProgressIndicator:
 
 # MaterialPy.xml
 class Material(FreeCAD.PyObjectBase):
-    """This is the Material class"""
+    """This class can be imported.
+    This is the Material class"""
 
     def __init__(self, DiffuseColor: object = None, AmbientColor: object = None, SpecularColor: object = None, EmissiveColor: object = None, Shininess: object = None, Transparency: object = None):
         """This is the Material class"""
@@ -195,12 +196,14 @@ class Material(FreeCAD.PyObjectBase):
 
 # DocumentObjectGroupPy.xml
 class DocumentObjectGroup(FreeCAD.DocumentObject):
-    """This class handles document objects in group"""
+    """This class can be imported.
+    This class handles document objects in group"""
 
 
 # GeoFeaturePy.xml
 class GeoFeature(FreeCAD.DocumentObject):
-    """This class does the whole placement and position handling"""
+    """This class can be imported.
+    This class does the whole placement and position handling"""
 
     @property
     def Placement(self):
@@ -235,7 +238,8 @@ class GeoFeature(FreeCAD.DocumentObject):
 
 # DocumentObjectPy.xml
 class DocumentObject(FreeCAD.ExtensionContainer):
-    """This is the father of all classes handled by the document"""
+    """This class can be imported.
+    This is the father of all classes handled by the document"""
 
     @property
     def Proxy(self) -> FreeCADTemplates.ProxyPython: ...
@@ -505,7 +509,8 @@ class DocumentObject(FreeCAD.ExtensionContainer):
 
 # LinkBaseExtensionPy.xml
 class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
-    """Link extension base class"""
+    """This class can be imported.
+    Link extension base class"""
 
     @property
     def LinkedChildren(self) -> list:
@@ -649,7 +654,8 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
 
 # PartPy.xml
 class Part(FreeCAD.GeoFeature):
-    """This class handles document objects in Part"""
+    """This class can be imported.
+    This class handles document objects in Part"""
 
     @property
     def Color(self) -> tuple[float, float, float] | tuple[float, float, float, float] | int:
@@ -732,12 +738,14 @@ class Part(FreeCAD.GeoFeature):
 
 # DocumentObjectExtensionPy.xml
 class DocumentObjectExtension(FreeCAD.Extension):
-    """Base class for all document object extensions"""
+    """This class can be imported.
+    Base class for all document object extensions"""
 
 
 # GroupExtensionPy.xml
 class GroupExtension(FreeCAD.DocumentObjectExtension):
-    """Extension class which allows grouping of document objects"""
+    """This class can be imported.
+    Extension class which allows grouping of document objects"""
 
     @property
     def Group(self) -> list[DocumentObject]: ...
@@ -779,22 +787,26 @@ class GroupExtension(FreeCAD.DocumentObjectExtension):
 
 # ExtensionPy.xml
 class Extension(FreeCAD.PyObjectBase):
-    """Base class for all extensions"""
+    """This class can be imported.
+    Base class for all extensions"""
 
 
 # GeoFeatureGroupExtensionPy.xml
 class GeoFeatureGroupExtension(FreeCAD.GroupExtension):
-    """This class handles placeable group of document objects"""
+    """This class can be imported.
+    This class handles placeable group of document objects"""
 
 
 # OriginGroupExtensionPy.xml
 class OriginGroupExtension(FreeCAD.GeoFeatureGroupExtension):
-    """This class handles placable group of document objects with an Origin"""
+    """This class can be imported.
+    This class handles placable group of document objects with an Origin"""
 
 
 # ExtensionContainerPy.xml
 class ExtensionContainer(FreeCAD.PropertyContainer):
-    """Base class for all objects which can be extended"""
+    """This class can be imported.
+    Base class for all objects which can be extended"""
 
     def addExtension(self, arg1: str, arg2: object = None, /):
         """Adds an extension to the object. Requires the string identifier for the python extension as argument"""
@@ -805,7 +817,8 @@ class ExtensionContainer(FreeCAD.PropertyContainer):
 
 # DocumentPy.xml
 class Document(FreeCAD.PropertyContainer):
-    """This is a Document class"""
+    """This class can be imported.
+    This is a Document class"""
 
     @property
     def ActiveObject(self) -> typing.Optional[FreeCAD.DocumentObject]:
@@ -1233,7 +1246,8 @@ class Document(FreeCAD.PropertyContainer):
 
 # PropertyContainerPy.xml
 class PropertyContainer(FreeCAD.Persistence):
-    """This is a Persistence class"""
+    """This class can be imported.
+    This is a Persistence class"""
 
     @property
     def PropertiesList(self) -> list:

@@ -6,7 +6,8 @@ import Part
 
 # SketchGeometryExtensionPy.xml
 class SketchGeometryExtension(Part.GeometryExtension):
-    """Describes a SketchGeometryExtension"""
+    """This class can be imported.
+    Describes a SketchGeometryExtension"""
 
     @typing.overload
     def __init__(self): ...
@@ -58,7 +59,8 @@ class SketchGeometryExtension(Part.GeometryExtension):
 
 # ConstraintPy.xml
 class Constraint(FreeCAD.Persistence):
-    """With this object you can handle sketches"""
+    """This class can be imported.
+    With this object you can handle sketches"""
 
     @typing.overload
     def __init__(self): ...
@@ -576,7 +578,8 @@ class SketchObject(Part.Part2DObject):
 
 # SketchPy.xml
 class Sketch(FreeCAD.Persistence):
-    """With this objects you can handle constraint sketches"""
+    """This class can be imported.
+    With this objects you can handle constraint sketches"""
 
     @property
     def Conflicts(self) -> tuple:
@@ -626,7 +629,8 @@ class Sketch(FreeCAD.Persistence):
 
 # ExternalGeometryFacadePy.xml
 class ExternalGeometryFacade(FreeCAD.BaseClass):
-    """Describes a GeometryFacade"""
+    """This class can be imported.
+    Describes a GeometryFacade"""
 
     def __init__(self, arg1: Part.Geometry, /):
         """Describes a GeometryFacade"""
@@ -745,7 +749,8 @@ class ExternalGeometryFacade(FreeCAD.BaseClass):
 
 # ExternalGeometryExtensionPy.xml
 class ExternalGeometryExtension(Part.GeometryExtension):
-    """Describes a ExternalGeometryExtension"""
+    """This class can be imported.
+    Describes a ExternalGeometryExtension"""
 
     def __init__(self):
         """Describes a ExternalGeometryExtension"""
@@ -768,7 +773,8 @@ class ExternalGeometryExtension(Part.GeometryExtension):
 
 # GeometryFacadePy.xml
 class GeometryFacade(FreeCAD.BaseClass):
-    """Describes a GeometryFacade"""
+    """This class can be imported.
+    Describes a GeometryFacade"""
 
     def __init__(self, arg1: Part.Geometry, /):
         """Describes a GeometryFacade"""

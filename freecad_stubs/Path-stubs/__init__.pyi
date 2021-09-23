@@ -7,7 +7,8 @@ import Path
 
 # ToolPy.xml
 class Tool(FreeCAD.Persistence):
-    """The Tool objects holds the properties of a CNC tool.
+    """This class can be imported.
+    The Tool objects holds the properties of a CNC tool.
     optional attributes:
       name: a user-defined name for this tool
       tooltype: Drill, CenterDrill, CounterSink, CounterBore, Reamer, Tap, EndMill, SlotCutter, BallEndMill, ChamferMill, CornerRound, Engraver or Undefined
@@ -122,7 +123,8 @@ class Tool(FreeCAD.Persistence):
 
 # VoronoiEdgePy.xml
 class VoronoiEdge(FreeCAD.BaseClass):
-    """Edge of a Voronoi diagram"""
+    """This class can be imported.
+    Edge of a Voronoi diagram"""
 
     def __init__(self):
         """Edge of a Voronoi diagram"""
@@ -184,7 +186,8 @@ class VoronoiEdge(FreeCAD.BaseClass):
 
 # VoronoiCellPy.xml
 class VoronoiCell(FreeCAD.BaseClass):
-    """Cell of a Voronoi diagram"""
+    """This class can be imported.
+    Cell of a Voronoi diagram"""
 
     def __init__(self):
         """Cell of a Voronoi diagram"""
@@ -230,7 +233,8 @@ class VoronoiCell(FreeCAD.BaseClass):
 
 # CommandPy.xml
 class Command(FreeCAD.Persistence):
-    """Command([name],[parameters]): Represents a basic Gcode command
+    """This class can be imported.
+    Command([name],[parameters]): Represents a basic Gcode command
     name (optional) is the name of the command, ex. G1
     parameters (optional) is a dictionary containing string:number 
     pairs, or a placement, or a vector"""
@@ -278,7 +282,8 @@ class Command(FreeCAD.Persistence):
 
 # AreaPy.xml
 class Area(FreeCAD.BaseClass):
-    """FreeCAD python wrapper of libarea
+    """This class can be imported.
+    FreeCAD python wrapper of libarea
 
     Path.Area(key=value ...)
 
@@ -342,7 +347,8 @@ class Area(FreeCAD.BaseClass):
 
 # PathPy.xml
 class Path(FreeCAD.Persistence):
-    """Path([commands]): Represents a basic Gcode path
+    """This class can be imported.
+    Path([commands]): Represents a basic Gcode path
     commands (optional) is a list of Path commands"""
 
     @typing.overload
@@ -409,7 +415,8 @@ class Path(FreeCAD.Persistence):
 
 # TooltablePy.xml
 class Tooltable(FreeCAD.Persistence):
-    """The Tooltable object holds a table of CNC tools"""
+    """This class can be imported.
+    The Tooltable object holds a table of CNC tools"""
 
     @typing.overload
     def __init__(self): ...
@@ -473,7 +480,8 @@ class Tooltable(FreeCAD.Persistence):
 
 # VoronoiPy.xml
 class Voronoi(FreeCAD.BaseClass):
-    """Voronoi([segments]): Create voronoi for given collection of line segments"""
+    """This class can be imported.
+    Voronoi([segments]): Create voronoi for given collection of line segments"""
 
     def __init__(self, segments: float = None, /):
         """Voronoi([segments]): Create voronoi for given collection of line segments"""
@@ -573,7 +581,8 @@ class FeatureArea(FreeCAD.DocumentObject):
 
 # VoronoiVertexPy.xml
 class VoronoiVertex(FreeCAD.BaseClass):
-    """Vertex of a Voronoi diagram"""
+    """This class can be imported.
+    Vertex of a Voronoi diagram"""
 
     def __init__(self):
         """Vertex of a Voronoi diagram"""

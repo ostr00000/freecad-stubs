@@ -6,7 +6,8 @@ import Robot
 
 # WaypointPy.xml
 class Waypoint(FreeCAD.Persistence):
-    """Waypoint class"""
+    """This class can be imported.
+    Waypoint class"""
 
     def __init__(self, Pos: FreeCAD.Placement, type: str = None, name: str = None, vel: object = None, cont: int = None, tool: int = None, base: int = None, acc: object = None):
         """Waypoint class"""
@@ -67,7 +68,8 @@ class Waypoint(FreeCAD.Persistence):
 
 # Robot6AxisPy.xml
 class Robot6Axis(FreeCAD.Persistence):
-    """Robot6Axis class"""
+    """This class can be imported.
+    Robot6Axis class"""
 
     @property
     def Axis1(self) -> float:
@@ -128,7 +130,8 @@ class Robot6Axis(FreeCAD.Persistence):
 
 # TrajectoryPy.xml
 class Trajectory(FreeCAD.Persistence):
-    """Trajectory class"""
+    """This class can be imported.
+    Trajectory class"""
 
     def __init__(self, arg1: list = None, /):
         """Trajectory class"""

@@ -6,7 +6,8 @@ import Mesh
 
 # FacetPy.xml
 class Facet(FreeCAD.PyObjectBase):
-    """Facet in mesh
+    """This class can be imported.
+    Facet in mesh
     This is a facet in a MeshObject. You can get it by e.g. iterating a
     mesh. The facet has a connection to its mesh and allows therefore
     topological operations. It is also possible to create an unbounded facet e.g. to create
@@ -100,7 +101,8 @@ class Facet(FreeCAD.PyObjectBase):
 
 # MeshPointPy.xml
 class MeshPoint(FreeCAD.PyObjectBase):
-    """ Point in mesh
+    """This class can be imported.
+     Point in mesh
     This is a point in a MeshObject. You can get it by e.g. iterating a
     mesh. The point has a connection to its mesh and allows therefore 
     topological operations. It is also possible to create an unbounded mesh point e.g. to create
@@ -176,7 +178,8 @@ class MeshPoint(FreeCAD.PyObjectBase):
 
 # MeshFeaturePy.xml
 class Feature(FreeCAD.GeoFeature):
-    """The Mesh::Feature class handles meshes.
+    """This class can be imported.
+    The Mesh::Feature class handles meshes.
     The Mesh.MeshFeature() function is for internal use only and cannot be used to create instances of this class.
     Therefore you must have a reference to a document, e.g. 'd' then you can create an instance with
     d.addObject("Mesh::Feature").
@@ -236,7 +239,8 @@ class Feature(FreeCAD.GeoFeature):
 
 # MeshPy.xml
 class Mesh(FreeCAD.ComplexGeoData):
-    """Mesh() -- Create an empty mesh object.
+    """This class can be imported.
+    Mesh() -- Create an empty mesh object.
 
     This class allows one to manipulate the mesh object by adding new facets, deleting facets, importing from an STL file,
     transforming the mesh and much more.

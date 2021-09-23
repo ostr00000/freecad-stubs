@@ -5,7 +5,8 @@ import FreeCAD
 
 # VectorPy.xml
 class Vector(FreeCAD.PyObjectBase):
-    """This class represents a 3D float vector"""
+    """This class can be imported.
+    This class represents a 3D float vector"""
 
     @typing.overload
     def __init__(self, arg1: float = None, arg2: float = None, arg3: float = None, /): ...
@@ -202,7 +203,8 @@ class Vector(FreeCAD.PyObjectBase):
 
 # RotationPy.xml
 class Rotation(FreeCAD.PyObjectBase):
-    """
+    """This class can be imported.
+
     				A Rotation using a quaternion.
     				The Rotation object can be created by:
     				-- an empty parameter list
@@ -441,7 +443,8 @@ class Persistence(FreeCAD.BaseClass):
 
 # BoundBoxPy.xml
 class BoundBox(FreeCAD.PyObjectBase):
-    """Bound box class
+    """This class can be imported.
+    Bound box class
     A bounding box is an orthographic cube which is a way to describe outer boundaries.
     You get a bounding box from a lot of 3D types. It is often used to check if a 3D
     entity lies in the range of another object. Checking for bounding interference first
@@ -652,7 +655,8 @@ class BoundBox(FreeCAD.PyObjectBase):
 
 # PlacementPy.xml
 class Placement(FreeCAD.PyObjectBase):
-    """Placement
+    """This class can be imported.
+    Placement
     A placement defines an orientation (rotation) and a position (base) in 3D space.
     It is used when no scaling or other distortion is needed.
 
@@ -864,7 +868,8 @@ class Placement(FreeCAD.PyObjectBase):
 
 # UnitPy.xml
 class Unit(FreeCAD.PyObjectBase):
-    """
+    """This class can be imported.
+
      Unit
      defines a unit type, calculate and compare.
 
@@ -976,7 +981,8 @@ class Unit(FreeCAD.PyObjectBase):
 
 # QuantityPy.xml
 class Quantity(FreeCAD.PyObjectBase):
-    """Quantity
+    """This class can be imported.
+    Quantity
     defined by a value and a unit.
 
     The following constructors are supported:
@@ -1172,7 +1178,8 @@ class BaseClass(FreeCAD.PyObjectBase):
 
 # MatrixPy.xml
 class Matrix(FreeCAD.PyObjectBase):
-    """A 4x4 Matrix"""
+    """This class can be imported.
+    A 4x4 Matrix"""
 
     @typing.overload
     def __init__(self, arg1: float = None, arg2: float = None, arg3: float = None, arg4: float = None, arg5: float = None, arg6: float = None, arg7: float = None, arg8: float = None, arg9: float = None, arg10: float = None, arg11: float = None, arg12: float = None, arg13: float = None, arg14: float = None, arg15: float = None, arg16: float = None, /): ...
@@ -1470,6 +1477,9 @@ class Matrix(FreeCAD.PyObjectBase):
 
 # CoordinateSystemPy.xml
 class CoordinateSystem(FreeCAD.PyObjectBase):
+    """This class can be imported.
+    """
+
     @property
     def Axis(self) -> FreeCAD.Vector:
         """Set or get axis"""
@@ -1539,7 +1549,8 @@ class CoordinateSystem(FreeCAD.PyObjectBase):
 
 # TypePy.xml
 class TypeId(FreeCAD.PyObjectBase):
-    """This is the Type class"""
+    """This class can be imported.
+    This is the Type class"""
 
     @property
     def Key(self) -> int:
@@ -1604,7 +1615,8 @@ class TypeId(FreeCAD.PyObjectBase):
 
 # AxisPy.xml
 class Axis(FreeCAD.PyObjectBase):
-    """Axis
+    """This class can be imported.
+    Axis
     An defines a direction and a position (base) in 3D space.
 
     The following constructors are supported:

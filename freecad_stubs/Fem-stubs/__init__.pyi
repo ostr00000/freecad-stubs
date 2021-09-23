@@ -7,7 +7,8 @@ import Part
 
 # FemMeshPy.xml
 class FemMesh(FreeCAD.ComplexGeoData):
-    """FemMesh class"""
+    """This class can be imported.
+    FemMesh class"""
 
     def __init__(self, arg1: object = None, /):
         """FemMesh class"""

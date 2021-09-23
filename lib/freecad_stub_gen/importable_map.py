@@ -1,4 +1,5 @@
 import re
+from collections import defaultdict
 from dataclasses import dataclass
 from functools import cached_property
 
@@ -49,22 +50,24 @@ class ImportableClassMap(dict[str, str]):
     # Base::Interpreter\(\).addType\(\&\w+::(\w+)Py\s*::Type,\s*\w+,"(?!\1")
 
     def __init__(self):
-        self.dup = set()
+        self.dup = defaultdict(set)
         # remove duplicated keys - not all classes have namespace
         super().__init__(self._filterDuplicatedKeys(self._genTypes()))
         for duplicatedKey in self.dup:
             del self[duplicatedKey]
 
     def isImportable(self, className: str):
-        return className in self or className in self.dup
+        return className in self.values() \
+               or any(className in duplicatedSet for duplicatedSet in self.dup.values())
 
     def _filterDuplicatedKeys(self, it):
-        seen = set()
+        seen = {}
         for key, val in it:
             if key in seen:
-                self.dup.add(key)
+                self.dup[key].add(seen[key])
+                self.dup[key].add(val)
             else:
-                seen.add(key)
+                seen[key] = val
 
             yield key, val
 
