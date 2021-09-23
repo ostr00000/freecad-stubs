@@ -235,7 +235,7 @@ class Feature(FreeCAD.GeoFeature):
 
 
 # MeshPy.xml
-class MeshObject(FreeCAD.ComplexGeoData):
+class Mesh(FreeCAD.ComplexGeoData):
     """Mesh() -- Create an empty mesh object.
 
     This class allows one to manipulate the mesh object by adding new facets, deleting facets, importing from an STL file,
@@ -322,7 +322,7 @@ class MeshObject(FreeCAD.ComplexGeoData):
     def addFacets(self, arg1: tuple, arg2: bool = None, /):
         """Add a list of facets to the mesh"""
 
-    def addMesh(self, arg1: Mesh.MeshObject, /):
+    def addMesh(self, arg1: Mesh.Mesh, /):
         """Combine this mesh with another mesh."""
 
     def clear(self):
@@ -377,7 +377,7 @@ class MeshObject(FreeCAD.ComplexGeoData):
         					mesh.decimate(0.5, 0.9) # reduction by up to 90 percent
         				"""
 
-    def difference(self, arg1: Mesh.MeshObject, /):
+    def difference(self, arg1: Mesh.Mesh, /):
         """Difference of this and the given mesh object."""
 
     def fillupHoles(self, arg1: int, arg2: int = None, arg3: float = None, /):
@@ -495,13 +495,13 @@ class MeshObject(FreeCAD.ComplexGeoData):
     def hasSelfIntersections(self):
         """Check if the mesh intersects itself"""
 
-    def inner(self, arg1: Mesh.MeshObject, /):
+    def inner(self, arg1: Mesh.Mesh, /):
         """Get the part inside of the intersection"""
 
     def insertVertex(self, arg1: int, arg2: FreeCAD.Vector, /):
         """Insert a vertex into a facet"""
 
-    def intersect(self, arg1: Mesh.MeshObject, /):
+    def intersect(self, arg1: Mesh.Mesh, /):
         """Intersection of this and the given mesh object."""
 
     def isSolid(self):
@@ -538,7 +538,7 @@ class MeshObject(FreeCAD.ComplexGeoData):
     def optimizeTopology(self, arg1: float = None, /):
         """Optimize the edges to get nicer facets"""
 
-    def outer(self, arg1: Mesh.MeshObject, /):
+    def outer(self, arg1: Mesh.Mesh, /):
         """Get the part outside the intersection"""
 
     def printInfo(self):
@@ -592,6 +592,11 @@ class MeshObject(FreeCAD.ComplexGeoData):
     def rotate(self, arg1: float, arg2: float, arg3: float, /):
         """Apply a rotation to the mesh"""
 
+    def section(self, Mesh: Mesh.Mesh, ConnectLines: bool = True, MinDist: float = 0.0001):
+        """Get the section curves of this and the given mesh object.
+        lines = mesh.section(mesh2, [ConnectLines=True, MinDist=0.0001])
+                        """
+
     def setPoint(self, int: int, Vector: FreeCAD.Vector, /):
         """
         					setPoint(int, Vector)
@@ -633,7 +638,7 @@ class MeshObject(FreeCAD.ComplexGeoData):
         The argument int is the mode: 0=inner, 1=outer
         				"""
 
-    def unite(self, arg1: Mesh.MeshObject, /):
+    def unite(self, arg1: Mesh.Mesh, /):
         """Union of this and the given mesh object."""
 
     @typing.overload
@@ -665,7 +670,7 @@ def insert(string_mesh: str, string: str = None, /):
     Load or insert a mesh into the given or active document."""
 
 
-def show(shape: Mesh.MeshObject, string: str = None, /):
+def show(shape: Mesh.Mesh, string: str = None, /):
     """show(shape,[string]) -- Add the mesh to the active document or create one if no document exists."""
 
 

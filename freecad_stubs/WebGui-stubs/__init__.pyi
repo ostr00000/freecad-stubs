@@ -2,14 +2,14 @@
 def openBrowser(arg1: str, /): ...
 
 
-def openBrowserHTML(arg1: str, arg2: str, arg3: str = None, /): ...
+def openBrowserHTML(arg1: str, arg2: str, arg3: str = None, arg4: str = None, /): ...
 
 
 def openBrowserWindow(arg1: str = None, /): ...
 
 
-def open(string: str, /):
-    """open(string)
+def open(arg1: str, /):
+    """open(htmlcode,baseurl,[title,iconpath])
     Load a local (X)HTML file."""
 
 

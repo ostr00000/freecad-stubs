@@ -65,9 +65,9 @@ class TypesConverter:
     # start with quotation mark as group 1: (["'])
     # then match text that ends with same quotation mark as in group 1
     # - skip escaped quotation mark from group 1: .*?(?!\\\1)\1)
-    # as 'text' (?P<text> )
+    # as 'text': (?P<text> )
     # and do not consume it: (?= )
-    # then founded again group named 'text' (?P=text)
+    # then find again a group named 'text': (?P=text)
     REG_STRING = re.compile(r"""(["'])(?=(?P<text>.*?(?!\\\1)\1))(?P=text)""")
     _FORBIDDEN_MACROS = ['PARAM_REF', 'PARAM_FARG', 'AREA_PARAMS_OPCODE']
 

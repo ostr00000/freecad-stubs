@@ -3,7 +3,7 @@ import Points
 
 
 # PointsPy.xml
-class PointKernel(FreeCAD.ComplexGeoData):
+class Points(FreeCAD.ComplexGeoData):
     """Points() -- Create an empty points object.
 
     This class allows one to manipulate the Points object by adding new points, deleting facets, importing from an STL file,
@@ -65,5 +65,5 @@ def insert(arg1: str, arg2: str, /): ...
 def export(arg1: object, arg2: str, /): ...
 
 
-def show(points: Points.PointKernel, string: str = None, /):
+def show(points: Points.Points, string: str = None, /):
     """show(points,[string]) -- Add the points to the active document or create one if no document exists."""

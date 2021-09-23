@@ -305,6 +305,8 @@ class PropertyGenerator(BaseGenerator, ABC):
             case _, 'Document':
                 pythonType = 'FreeCADGui.Document' if self.isGuiFile else 'FreeCAD.Document'
 
+            case _, 'BoundBox':
+                pythonType = 'FreeCAD.BoundBox'
             case _, 'Placement':
                 pythonType = 'FreeCAD.Placement'
             case _, 'Matrix':

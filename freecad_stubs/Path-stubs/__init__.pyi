@@ -341,20 +341,20 @@ class Area(FreeCAD.BaseClass):
 
 
 # PathPy.xml
-class Toolpath(FreeCAD.Persistence):
+class Path(FreeCAD.Persistence):
     """Path([commands]): Represents a basic Gcode path
     commands (optional) is a list of Path commands"""
 
     @typing.overload
-    def __init__(self, arg1: list = None, /): ...
+    def __init__(self, commands: list = None, /): ...
 
     @typing.overload
-    def __init__(self, arg1: str = None, /):
+    def __init__(self, commands: str = None, /):
         """Path([commands]): Represents a basic Gcode path
         commands (optional) is a list of Path commands"""
 
     @property
-    def BoundBox(self) -> object:
+    def BoundBox(self) -> FreeCAD.BoundBox:
         """the extent of this path"""
 
     @property
@@ -637,7 +637,7 @@ def read(filename: str, document: str = None, /):
     """read(filename,[document]): Imports a GCode file into the given document"""
 
 
-def show(path: Path.Toolpath, string: str = None, /):
+def show(path: Path.Path, string: str = None, /):
     """show(path,[string]): Add the path to the active document or create one if no document exists"""
 
 

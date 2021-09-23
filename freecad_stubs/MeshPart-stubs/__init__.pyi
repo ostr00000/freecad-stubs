@@ -19,7 +19,7 @@ def loftOnCurve(curve: Part.Shape, poly: object, upVector: typing.Sequence[float
     """
 
 
-def findSectionParameters(Edge: Part.Edge, Mesh: Mesh.MeshObject, Vector: FreeCAD.Vector, /):
+def findSectionParameters(Edge: Part.Edge, Mesh: Mesh.Mesh, Vector: FreeCAD.Vector, /):
     """Find the parameters of the edge where when projecting the corresponding point
     will lie on an edge of the mesh
 
@@ -27,32 +27,32 @@ def findSectionParameters(Edge: Part.Edge, Mesh: Mesh.MeshObject, Vector: FreeCA
     """
 
 
-def projectPointsOnMesh(list_of_points: object, Mesh: Mesh.MeshObject, Vector: FreeCAD.Vector, float: float = None, /):
+def projectPointsOnMesh(list_of_points: object, Mesh: Mesh.Mesh, Vector: FreeCAD.Vector, float: float = None, /):
     """Projects points onto a mesh with a given direction
     and tolerance.projectPointsOnMesh(list of points, Mesh, Vector, [float]) -> list of points
     """
 
 
-def wireFromSegment(arg1: Mesh.MeshObject, arg2: list, /):
+def wireFromSegment(arg1: Mesh.Mesh, arg2: list, /):
     """Create wire(s) from boundary of a mesh segment
     """
 
 
-def wireFromMesh(arg1: Mesh.MeshObject, /):
+def wireFromMesh(arg1: Mesh.Mesh, /):
     """Create wire(s) from boundary of a mesh
     """
 
 
 @typing.overload
-def projectShapeOnMesh(Shape: Part.Shape, Mesh: Mesh.MeshObject, MaxDistance: float): ...
+def projectShapeOnMesh(Shape: Part.Shape, Mesh: Mesh.Mesh, MaxDistance: float): ...
 
 
 @typing.overload
-def projectShapeOnMesh(Shape: Part.Shape, Mesh: Mesh.MeshObject, Direction: FreeCAD.Vector): ...
+def projectShapeOnMesh(Shape: Part.Shape, Mesh: Mesh.Mesh, Direction: FreeCAD.Vector): ...
 
 
 @typing.overload
-def projectShapeOnMesh(Polygons: object, Mesh: Mesh.MeshObject, Direction: FreeCAD.Vector):
+def projectShapeOnMesh(Polygons: object, Mesh: Mesh.Mesh, Direction: FreeCAD.Vector):
     """Projects a shape onto a mesh with a given maximum distance
     projectShapeOnMesh(Shape, Mesh, float) -> polygon
     or projects the shape in a given direction

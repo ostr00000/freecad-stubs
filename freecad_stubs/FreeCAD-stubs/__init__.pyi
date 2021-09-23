@@ -362,7 +362,8 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     def enforceRecompute(self):
         """Mark the object for recompute"""
 
-    def evalExpression(self, arg1: str, /):
+    @classmethod
+    def evalExpression(cls, arg1: str, /):
         """Evaluate an expression"""
 
     def getLinkedObject(self, recursive: object = True, matrix: object = None, transform: object = True, depth: int = 0):
@@ -1327,7 +1328,7 @@ class ComplexGeoData(FreeCAD.Persistence):
     """Father of all complex geometric data types"""
 
     @property
-    def BoundBox(self) -> object:
+    def BoundBox(self) -> FreeCAD.BoundBox:
         """Get the BoundBox of the object"""
 
     @property

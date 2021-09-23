@@ -2,7 +2,7 @@ import FreeCAD
 
 
 # SpreadsheetViewPy.xml
-class SheetView(FreeCAD.PyObjectBase):
+class SpreadsheetView(FreeCAD.PyObjectBase):
     """SpreadsheetView object"""
 
     def getSheet(self):

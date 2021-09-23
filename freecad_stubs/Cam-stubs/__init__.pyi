@@ -43,7 +43,7 @@ def best_fit_test(arg1: Part.Shape, /):
     """1"""
 
 
-def best_fit_complete(arg1: Mesh.MeshObject, arg2: Part.Shape, /):
+def best_fit_complete(arg1: Mesh.Mesh, arg2: Part.Shape, /):
     """1"""
 
 
@@ -55,11 +55,11 @@ def createBox(arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, a
     """1"""
 
 
-def spring_back(arg1: Mesh.MeshObject, arg2: Part.Shape, /):
+def spring_back(arg1: Mesh.Mesh, arg2: Part.Shape, /):
     """1"""
 
 
-def useMesh(MeshObject: Mesh.MeshObject, /):
+def useMesh(MeshObject: Mesh.Mesh, /):
     """useMesh(MeshObject) -- Shows the usage of Mesh objects from the Mesh Module."""
 
 

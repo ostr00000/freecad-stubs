@@ -63,7 +63,7 @@ def getClassWithModulesFromNode(currentNode: ET.Element) -> str:
 
     namespace = currentNode.attrib.get('Namespace')
     namespace = moduleNamespace.convertNamespaceToModule(namespace)
-    twin = currentNode.attrib.get('Twin')
+    twin = currentNode.attrib.get('Name').removesuffix('Py')
     return f'{namespace}.{twin}'
 
 

@@ -560,7 +560,7 @@ class Command(FreeCAD.PyObjectBase):
 
 
 # PythonWorkbenchPy.xml
-class PythonBaseWorkbench(FreeCADGui.Workbench):
+class PythonWorkbench(FreeCADGui.Workbench):
     """This class handles document objects in group"""
 
     def appendCommandbar(self, arg1: str, arg2: object, /):
@@ -1228,6 +1228,15 @@ class View3DInventorPy:
 
 
 # WidgetFactory.cpp
+class PyResource:
+    """PyResource"""
+
+    def value(self, arg1: str, arg2: str, /): ...
+
+    def setValue(self, arg1: str, arg2: str, arg3: object, /): ...
+
+
+# UiLoader.cpp
 class UiLoader:
     """UiLoader to create widgets"""
 
@@ -1241,14 +1250,6 @@ class UiLoader:
 
     def createWidget(self):
         """createWidget()"""
-
-
-class PyResource:
-    """PyResource"""
-
-    def value(self, arg1: str, arg2: str, /): ...
-
-    def setValue(self, arg1: str, arg2: str, arg3: object, /): ...
 
 
 # PythonConsolePy.cpp

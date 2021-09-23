@@ -8,39 +8,39 @@ def approxSurface(Points: object, UDegree: int = None, VDegree: int = None, NbUP
     Iterations=5,Correction=True,PatchFactor=1.0)"""
 
 
-def triangulate(Points: Points.PointKernel, SearchRadius: float, Mu: float = None, KSearch: int = None, Normals: object = None):
+def triangulate(Points: Points.Points, SearchRadius: float, Mu: float = None, KSearch: int = None, Normals: object = None):
     """triangulate(PointKernel,searchRadius[,mu=2.5])."""
 
 
-def poissonReconstruction(Points: Points.PointKernel, KSearch: int = None, OctreeDepth: int = None, SolverDivide: int = None, SamplesPerNode: float = None, Normals: object = None):
+def poissonReconstruction(Points: Points.Points, KSearch: int = None, OctreeDepth: int = None, SolverDivide: int = None, SamplesPerNode: float = None, Normals: object = None):
     """poissonReconstruction(PointKernel)."""
 
 
-def viewTriangulation(Points: Points.PointKernel, Width: int = None, Height: int = None):
+def viewTriangulation(Points: Points.Points, Width: int = None, Height: int = None):
     """viewTriangulation(PointKernel, width, height)."""
 
 
-def gridProjection(Points: Points.PointKernel, KSearch: int = None, Normals: object = None):
+def gridProjection(Points: Points.Points, KSearch: int = None, Normals: object = None):
     """gridProjection(PointKernel)."""
 
 
-def marchingCubesRBF(Points: Points.PointKernel, KSearch: int = None, Normals: object = None):
+def marchingCubesRBF(Points: Points.Points, KSearch: int = None, Normals: object = None):
     """marchingCubesRBF(PointKernel)."""
 
 
-def marchingCubesHoppe(Points: Points.PointKernel, KSearch: int = None, Normals: object = None):
+def marchingCubesHoppe(Points: Points.Points, KSearch: int = None, Normals: object = None):
     """marchingCubesHoppe(PointKernel)."""
 
 
-def fitBSpline(Points: Points.PointKernel, Degree: int = None, Refinement: int = None, Iterations: int = None, InteriorSmoothness: float = None, InteriorWeight: float = None, BoundarySmoothness: float = None, BoundaryWeight: float = None):
+def fitBSpline(Points: Points.Points, Degree: int = None, Refinement: int = None, Iterations: int = None, InteriorSmoothness: float = None, InteriorWeight: float = None, BoundarySmoothness: float = None, BoundaryWeight: float = None):
     """fitBSpline(PointKernel)."""
 
 
-def filterVoxelGrid(Points: Points.PointKernel, DimX: float, DimY: float = None, DimZ: float = None):
+def filterVoxelGrid(Points: Points.Points, DimX: float, DimY: float = None, DimZ: float = None):
     """filterVoxelGrid(dim)."""
 
 
-def normalEstimation(Points: Points.PointKernel, KSearch: int = 0, SearchRadius: float = 0):
+def normalEstimation(Points: Points.Points, KSearch: int = 0, SearchRadius: float = 0):
     """normalEstimation(Points,[KSearch=0, SearchRadius=0]) -> Normals
     KSearch is an int and used to search the k-nearest neighbours in
     the k-d tree. Alternatively, SearchRadius (a float) can be used
@@ -60,13 +60,13 @@ def normalEstimation(Points: Points.PointKernel, KSearch: int = 0, SearchRadius:
     """
 
 
-def regionGrowingSegmentation(Points: Points.PointKernel, KSearch: int = None, Normals: object = None):
+def regionGrowingSegmentation(Points: Points.Points, KSearch: int = None, Normals: object = None):
     """regionGrowingSegmentation()."""
 
 
-def featureSegmentation(Points: Points.PointKernel, KSearch: int = None):
+def featureSegmentation(Points: Points.Points, KSearch: int = None):
     """featureSegmentation()."""
 
 
-def sampleConsensus(SacModel: str, Points: Points.PointKernel, Normals: object = None):
+def sampleConsensus(SacModel: str, Points: Points.Points, Normals: object = None):
     """sampleConsensus()."""
