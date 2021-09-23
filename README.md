@@ -99,4 +99,4 @@ Checkout to desired branch and copy folder `/freecad_stubs`.
 - [ ] function/method return type,
 - [ ] property getter type,
 - [x] property setter type,
-- [ ] add comment "safe to import" for importable object,
+- [x] add comment "This class can be imported" for importable classes,
