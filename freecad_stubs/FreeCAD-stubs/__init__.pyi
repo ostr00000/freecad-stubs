@@ -122,7 +122,10 @@ class ParameterGrp:
 
 # Sequencer.cpp
 class ProgressIndicator:
-    """Progress indicator"""
+    """
+    This class can be imported.
+    Progress indicator
+    """
 
     def start(self, string: str, int: int, /):
         """start(string,int)"""

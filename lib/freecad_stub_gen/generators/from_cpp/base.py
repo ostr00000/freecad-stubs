@@ -69,12 +69,12 @@ class PyMethodDef(Method):
 
 class FreecadStubGeneratorFromCpp(FormatFinder, ABC):
     def getStub(self, mod: Module, moduleName: str):
-        if (result := ''.join(self._genStub())).rstrip():
+        if (result := ''.join(self._genStub(moduleName))).rstrip():
             header = f'# {self.baseGenFilePath.name}\n'
             newMod = Module(header + result, self.requiredImports)
             mod[moduleName].update(newMod)
 
-    def _genStub(self) -> Iterable[str]:
+    def _genStub(self, moduleName: str) -> Iterable[str]:
         raise NotImplementedError
 
     def _genAllMethods(self, it: Iterable[Method], firstArgName='',

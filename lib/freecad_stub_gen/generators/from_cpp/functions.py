@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 class FreecadStubGeneratorFromCppFunctions(FreecadStubGeneratorFromCpp):
     """Generate functions from cpp code defined in array."""
 
-    def _genStub(self) -> Iterable[str]:
+    def _genStub(self, moduleName: str) -> Iterable[str]:
         it = self._findArrayGen()
         methods = self._genAllMethods(it, functionSpacing=2)
         yield from methods

@@ -103,6 +103,6 @@ Wrn = FreeCAD.Console.PrintWarning
         targetAdditionalPackage.mkdir()
         shutil.copy(additionalPackage, targetAdditionalPackage / '__init__.py')
 
+# TODO P3 add exceptions
 # TODO P4 preprocess and remove macros
 # https://www.tutorialspoint.com/cplusplus/cpp_preprocessor.htm
-# TODO P3 find direct types and add comment - Base::Interpreter().addType

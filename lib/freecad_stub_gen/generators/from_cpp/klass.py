@@ -4,6 +4,7 @@ from typing import Iterable
 
 from freecad_stub_gen.generators.from_cpp.base import FreecadStubGeneratorFromCpp
 from freecad_stub_gen.generators.method.function_finder import findFunctionCall
+from freecad_stub_gen.importable_map import importableMap
 from freecad_stub_gen.util import indent, formatDocstring
 
 logger = logging.getLogger(__name__)
@@ -15,7 +16,7 @@ class FreecadStubGeneratorFromCppClass(FreecadStubGeneratorFromCpp):
     REG_CLASS_NAME = re.compile(r'behaviors\(\)\.name\(\s*"([\w.]+)"\s*\);')
     REG_CLASS_DOC = re.compile(r'behaviors\(\).doc\("((?:[^"\\]*(?:\\.)?(?:"\s*")?)+)"\);')
 
-    def _genStub(self) -> Iterable[str]:
+    def _genStub(self, moduleName: str) -> Iterable[str]:
         for match in self.REG_INIT_TYPE.finditer(self.impContent):
             funcCall = findFunctionCall(self.impContent, match.start())
 
@@ -32,9 +33,13 @@ class FreecadStubGeneratorFromCppClass(FreecadStubGeneratorFromCpp):
                 continue
             content = indent(result)
 
+            doc = ''
+            fullClassName = f'{moduleName}.{className}'
+            if importableMap.isImportable(fullClassName):
+                doc = "This class can be imported.\n"
             if docsMatch := self.REG_CLASS_DOC.search(funcCall):
-                docs = indent(formatDocstring(docsMatch.group(1)) + '\n')
-            else:
-                docs = ''
+                doc += docsMatch.group(1)
+            if doc and (preparedDocs := formatDocstring(doc)):
+                doc = indent(preparedDocs)
 
-            yield f"class {className}:\n{docs}{content}\n"
+            yield f"class {className}:\n{doc}\n{content}\n"

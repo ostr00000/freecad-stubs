@@ -19,7 +19,7 @@ class FreecadStubGeneratorFromCppModule(FreecadStubGeneratorFromCpp):
     def getStub(self, mod: Module, moduleName: str):
         header = f'# {self.baseGenFilePath.name}\n'
 
-        for result in self._genStub():
+        for result in self._genStub(moduleName):
             if result.rstrip():
                 # we prefer name with more details
                 curModName = moduleName if '.' in moduleName else self._modName
@@ -29,7 +29,7 @@ class FreecadStubGeneratorFromCppModule(FreecadStubGeneratorFromCpp):
                     header + result, self.requiredImports))
                 self.requiredImports = set()
 
-    def _genStub(self) -> Iterable[str]:
+    def _genStub(self, moduleName: str) -> Iterable[str]:
         for match in self.REG_MODULE_INIT.finditer(self.impContent):
             moduleInitBody = findFunctionCall(self.impContent, match.end())
 
