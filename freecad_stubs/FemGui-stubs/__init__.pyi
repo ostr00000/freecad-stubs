@@ -40,54 +40,42 @@ class ViewProviderFemMesh(FreeCADGui.ViewProviderDocumentObject):
 
     @property
     def BackfaceCulling(self) -> int | bool:
-        """
-        Property TypeId: App::PropertyBool.
-        """
+        """Property TypeId: App::PropertyBool."""
 
     @BackfaceCulling.setter
     def BackfaceCulling(self, value: int | bool): ...
 
     @property
     def LineWidth(self) -> float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]:
-        """
-        Property TypeId: App::PropertyFloatConstraint.
-        """
+        """Property TypeId: App::PropertyFloatConstraint."""
 
     @LineWidth.setter
     def LineWidth(self, value: float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]): ...
 
     @property
     def MaxFacesShowInner(self) -> int:
-        """
-        Property TypeId: App::PropertyInteger.
-        """
+        """Property TypeId: App::PropertyInteger."""
 
     @MaxFacesShowInner.setter
     def MaxFacesShowInner(self, value: int): ...
 
     @property
     def PointColor(self) -> tuple[float, float, float] | tuple[float, float, float, float] | int:
-        """
-        Property TypeId: App::PropertyColor.
-        """
+        """Property TypeId: App::PropertyColor."""
 
     @PointColor.setter
     def PointColor(self, value: tuple[float, float, float] | tuple[float, float, float, float] | int): ...
 
     @property
     def PointSize(self) -> float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]:
-        """
-        Property TypeId: App::PropertyFloatConstraint.
-        """
+        """Property TypeId: App::PropertyFloatConstraint."""
 
     @PointSize.setter
     def PointSize(self, value: float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]): ...
 
     @property
     def ShowInner(self) -> int | bool:
-        """
-        Property TypeId: App::PropertyBool.
-        """
+        """Property TypeId: App::PropertyBool."""
 
     @ShowInner.setter
     def ShowInner(self, value: int | bool): ...

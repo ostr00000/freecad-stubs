@@ -7,7 +7,8 @@ import Part
 
 # AppMeshPartPy.cpp
 def loftOnCurve(curve: Part.Shape, poly: object, upVector: typing.Sequence[float, float, float], MaxSize: float, /):
-    """Creates a mesh loft based on a curve and an up vector
+    """
+    Creates a mesh loft based on a curve and an up vector
 
     loftOnCurve(curve, poly, upVector, MaxSize)
 
@@ -20,7 +21,8 @@ def loftOnCurve(curve: Part.Shape, poly: object, upVector: typing.Sequence[float
 
 
 def findSectionParameters(Edge: Part.Edge, Mesh: Mesh.Mesh, Vector: FreeCAD.Vector, /):
-    """Find the parameters of the edge where when projecting the corresponding point
+    """
+    Find the parameters of the edge where when projecting the corresponding point
     will lie on an edge of the mesh
 
     findSectionParameters(Edge, Mesh, Vector) -> list
@@ -28,19 +30,18 @@ def findSectionParameters(Edge: Part.Edge, Mesh: Mesh.Mesh, Vector: FreeCAD.Vect
 
 
 def projectPointsOnMesh(list_of_points: object, Mesh: Mesh.Mesh, Vector: FreeCAD.Vector, float: float = None, /):
-    """Projects points onto a mesh with a given direction
+    """
+    Projects points onto a mesh with a given direction
     and tolerance.projectPointsOnMesh(list of points, Mesh, Vector, [float]) -> list of points
     """
 
 
 def wireFromSegment(arg1: Mesh.Mesh, arg2: list, /):
-    """Create wire(s) from boundary of a mesh segment
-    """
+    """Create wire(s) from boundary of a mesh segment"""
 
 
 def wireFromMesh(arg1: Mesh.Mesh, /):
-    """Create wire(s) from boundary of a mesh
-    """
+    """Create wire(s) from boundary of a mesh"""
 
 
 @typing.overload
@@ -53,7 +54,8 @@ def projectShapeOnMesh(Shape: Part.Shape, Mesh: Mesh.Mesh, Direction: FreeCAD.Ve
 
 @typing.overload
 def projectShapeOnMesh(Polygons: object, Mesh: Mesh.Mesh, Direction: FreeCAD.Vector):
-    """Projects a shape onto a mesh with a given maximum distance
+    """
+    Projects a shape onto a mesh with a given maximum distance
     projectShapeOnMesh(Shape, Mesh, float) -> polygon
     or projects the shape in a given direction
 
@@ -87,7 +89,8 @@ def meshFromShape(Shape: Part.Shape, Deflection: float): ...
 
 @typing.overload
 def meshFromShape(Shape: Part.Shape, MinLength: float, MaxLength: float):
-    """Create surface mesh from shape
+    """
+    Create surface mesh from shape
 
     Multiple signatures are available:
 

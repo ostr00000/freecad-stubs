@@ -85,7 +85,7 @@ class LinkView(FreeCAD.BaseClass):
         """Get/set the child element visibility"""
 
     def getBoundBox(self, vobj: object, /):
-        """getBoundBox(vobj=None): get the bounding box. """
+        """getBoundBox(vobj=None): get the bounding box."""
 
     def getChildren(self):
         """Get children view objects"""
@@ -95,10 +95,10 @@ class LinkView(FreeCAD.BaseClass):
         getDetailPath(element): get the 3d path an detail of an element.
 
         Return a tuple(path,detail) for the coin3D SoPath and SoDetail of the element
-                        """
+        """
 
     def getElementPicked(self, pickPoint: object, /):
-        """getElementPicked(pickPoint): get the element under a 3d pick point. """
+        """getElementPicked(pickPoint): get the element under a 3d pick point."""
 
     def reset(self):
         """Reset the link view and clear the links"""
@@ -116,7 +116,7 @@ class LinkView(FreeCAD.BaseClass):
            0: override transformation and visibility, 
            1: override visibility, 
            2: override none.
-                        """
+        """
 
     def setLink(self, object: object, subname: object = None, /):
         """
@@ -132,7 +132,7 @@ class LinkView(FreeCAD.BaseClass):
                  or sub elements (e.g. Face1, Edge2) belonging to the linked object.
                  The sub-name must end with a '.' if it is referencing an sub-object,
                  or else it is considered a sub-element reference.
-                        """
+        """
 
     def setMaterial(self, Material: object, /):
         """
@@ -147,7 +147,7 @@ class LinkView(FreeCAD.BaseClass):
         If material is None, then the material is unset. If the material of an element
         is unset, it defaults to the override material of the linked object, if there
         is one
-                        """
+        """
 
     def setTransform(self, matrix: object, /):
         """
@@ -158,7 +158,7 @@ class LinkView(FreeCAD.BaseClass):
 
         setTransform({index:matrix,...}): set transformation for elements of the link
                                           array/group by index
-                        """
+        """
 
     def setType(self, type: int, sublink: object = True, /):
         """
@@ -172,7 +172,7 @@ class LinkView(FreeCAD.BaseClass):
 
         sublink: auto delegate to the sub-object references in the link, if there is
                  one and only one.
-                        """
+        """
 
 
 # ViewProviderPy.xml
@@ -228,50 +228,55 @@ class ViewProvider(FreeCAD.ExtensionContainer):
     def SwitchNode(self, value: object): ...
 
     def addDisplayMode(self, arg1: object, arg2: str, /):
-        """Add a new display mode to the view provider
-        """
+        """Add a new display mode to the view provider"""
 
     def addProperty(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, arg5: int = None, arg6: bool = None, arg7: bool = None, /):
-        """Add a generic property.
+        """
+        Add a generic property.
         addProperty(string, string)
         --
         The first argument specifies the type, the second the name of the property.
-                        """
+        """
 
     def canDragAndDropObject(self, obj: FreeCAD.DocumentObject, /):
-        """Check whether the child object can be removed from other parent and added here by drag and drop
+        """
+        Check whether the child object can be removed from other parent and added here by drag and drop
         canDragAndDropObject(obj)
         """
 
     def canDragObject(self, obj: object = None, /):
-        """check whether the child object can be removed by dragging
+        """
+        check whether the child object can be removed by dragging
         canDragObject(obj=None)
         """
 
     def canDropObject(self, arg1: object = None, arg2: object = None, arg3: str = None, arg4: object = None, /):
-        """check whether the child object can be added by dropping
+        """
+        check whether the child object can be added by dropping
         canDropObject(obj=None,owner=None,subname=None)
         """
 
     def claimChildren(self):
-        """Returns list of objects that are to be grouped in tree under this object.
-        """
+        """Returns list of objects that are to be grouped in tree under this object."""
 
     def doubleClicked(self):
-        """Trigger double clicking the corresponding tree item of this view object
-        """
+        """Trigger double clicking the corresponding tree item of this view object"""
 
     def dragObject(self, obj: FreeCAD.DocumentObject, /):
-        """remove a child object by dropping
+        """
+        remove a child object by dropping
         dragObject(obj)
         """
 
     def dropObject(self, arg1: FreeCAD.DocumentObject, arg2: object = None, arg3: str = None, arg4: object = None, /):
-        """add a child object by dropping
-        dropObject(obj,owner=None,subname=None)"""
+        """
+        add a child object by dropping
+        dropObject(obj,owner=None,subname=None)
+        """
 
     def getBoundingBox(self, subname: str = None, transform: object = True, view: object = None, /):
-        """obtain the bounding box of this view object
+        """
+        obtain the bounding box of this view object
         getBoundingBox(subname=None, transform=True, view=None)
         --
         subname: the optional subname referring a sub-object
@@ -280,7 +285,8 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         """
 
     def getDetailPath(self, subname: str, path: object, append: object = True, /):
-        """return Coin detail and path of an subelement
+        """
+        return Coin detail and path of an subelement
         getDetailPath(subname,path,append=True)
         --
         subelement: dot separated string reference to the sub element
@@ -290,29 +296,26 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         """
 
     def getElementColors(self, elementName: str = None, /):
-        """
-        getElementColors(elementName=None) -> dict(elementName:color)
-                        """
+        """getElementColors(elementName=None) -> dict(elementName:color)"""
 
     def getElementPicked(self, pickPoint: object, /):
-        """return the picked subelement
+        """
+        return the picked subelement
         getElementPicked(pickPoint)
         """
 
     def hide(self):
-        """Hide the object
-        """
+        """Hide the object"""
 
     def isVisible(self):
-        """Check if the object is visible
-        """
+        """Check if the object is visible"""
 
     def listDisplayModes(self):
-        """Show a list of all display modes
-        """
+        """Show a list of all display modes"""
 
     def partialRender(self, sub: object = None, clear: object = False, /):
-        """render only part of the object
+        """
+        render only part of the object
         partialRender(sub=None,clear=False)
         --
         sub: string or list of string refer to the subelement. If it is None then reset the partial rendering.
@@ -320,14 +323,16 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         """
 
     def removeProperty(self, string: str, /):
-        """Remove a generic property.
+        """
+        Remove a generic property.
         removeProperty(string)
         --
         Note, you can only remove user-defined properties, not built-in ones.
-                        """
+        """
 
     def replaceObject(self, oldObj: FreeCAD.DocumentObject, newObj: FreeCAD.DocumentObject, /):
-        """replace a child object
+        """
+        replace a child object
         replaceObject(oldObj, newObj) -> Int
         --
         Returns 1 if succeeded, 0 if not found, -1 if not supported
@@ -338,30 +343,26 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         setElementColors(colors): set element colors
         --
         colors: color dictionary of type elementName:(r,g,b,a)
-                        """
+        """
 
     @typing.overload
     def setTransformation(self, arg1: FreeCAD.Matrix, /): ...
 
     @typing.overload
     def setTransformation(self, arg1: FreeCAD.Placement, /):
-        """Set a transformation on the Inventor node
-        """
+        """Set a transformation on the Inventor node"""
 
     def show(self):
-        """Show the object
-        """
+        """Show the object"""
 
     def signalChangeIcon(self):
         """Trigger icon changed signal"""
 
     def supportedProperties(self):
-        """A list of supported property types
-        """
+        """A list of supported property types"""
 
     def toString(self):
-        """Return a string representation of the Inventor node
-        """
+        """Return a string representation of the Inventor node"""
 
 
 # ViewProviderLinkPy.xml
@@ -382,9 +383,7 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
 
     @property
     def ChildViewProvider(self) -> str:
-        """
-        Property TypeId: App::PropertyPersistentObject.
-        """
+        """Property TypeId: App::PropertyPersistentObject."""
 
     @ChildViewProvider.setter
     def ChildViewProvider(self, value: str): ...
@@ -392,7 +391,7 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
     @property
     def DrawStyle(self) -> typing.Literal['None', 'Solid', 'Dashed', 'Dotted', 'Dashdot']:
         """
-        Property group:  Link.
+        Property group: Link.
         Property TypeId: App::PropertyEnumeration.
         .
         """
@@ -403,7 +402,7 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
     @property
     def LineWidth(self) -> float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]:
         """
-        Property group:  Link.
+        Property group: Link.
         Property TypeId: App::PropertyFloatConstraint.
         .
         """
@@ -413,18 +412,14 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
 
     @property
     def MaterialList(self) -> dict[int, FreeCAD.Material] | typing.Iterable[FreeCAD.Material] | typing.Sequence[FreeCAD.Material]:
-        """
-        Property TypeId: App::PropertyMaterialList.
-        """
+        """Property TypeId: App::PropertyMaterialList."""
 
     @MaterialList.setter
     def MaterialList(self, value: dict[int, FreeCAD.Material] | typing.Iterable[FreeCAD.Material] | typing.Sequence[FreeCAD.Material]): ...
 
     @property
     def OverrideColorList(self) -> dict[int, tuple[float, float, float] | tuple[float, float, float, float] | int] | typing.Iterable[tuple[float, float, float] | tuple[float, float, float, float] | int] | typing.Sequence[tuple[float, float, float] | tuple[float, float, float, float] | int]:
-        """
-        Property TypeId: App::PropertyColorList.
-        """
+        """Property TypeId: App::PropertyColorList."""
 
     @OverrideColorList.setter
     def OverrideColorList(self, value: dict[int, tuple[float, float, float] | tuple[float, float, float, float] | int] | typing.Iterable[tuple[float, float, float] | tuple[float, float, float, float] | int] | typing.Sequence[tuple[float, float, float] | tuple[float, float, float, float] | int]): ...
@@ -432,7 +427,7 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
     @property
     def OverrideMaterial(self) -> int | bool:
         """
-        Property group:  Link.
+        Property group: Link.
         Property TypeId: App::PropertyBool.
         Override linked object's material.
         """
@@ -442,9 +437,7 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
 
     @property
     def OverrideMaterialList(self) -> dict[int, int | bool] | typing.Iterable[int | bool] | typing.Sequence[int | bool]:
-        """
-        Property TypeId: App::PropertyBoolList.
-        """
+        """Property TypeId: App::PropertyBoolList."""
 
     @OverrideMaterialList.setter
     def OverrideMaterialList(self, value: dict[int, int | bool] | typing.Iterable[int | bool] | typing.Sequence[int | bool]): ...
@@ -452,7 +445,7 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
     @property
     def PointSize(self) -> float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]:
         """
-        Property group:  Link.
+        Property group: Link.
         Property TypeId: App::PropertyFloatConstraint.
         .
         """
@@ -463,7 +456,7 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
     @property
     def Selectable(self) -> int | bool:
         """
-        Property group:  Link.
+        Property group: Link.
         Property TypeId: App::PropertyBool.
         """
 
@@ -473,7 +466,7 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
     @property
     def ShapeMaterial(self) -> FreeCAD.Material:
         """
-        Property group:  Link.
+        Property group: Link.
         Property TypeId: App::PropertyMaterial.
         """
 
@@ -498,63 +491,75 @@ class Command(FreeCAD.PyObjectBase):
 
     @staticmethod
     def get(string: str, /):
-        """Get a given command by name or None if it doesn't exist.
+        """
+        Get a given command by name or None if it doesn't exist.
         get(string) -> Command
         """
 
     def getAction(self):
-        """Return the associated QAction object.
-        getAction() -> list of QAction"""
+        """
+        Return the associated QAction object.
+        getAction() -> list of QAction
+        """
 
     def getInfo(self):
-        """Return information about this command.
+        """
+        Return information about this command.
         getInfo() -> list of strings
         --
         Usage: menuText, tooltipText, whatsThisText, statustipText, pixmapText, shortcutText.
         """
 
     def getShortcut(self):
-        """Returns string representing shortcut key accelerator for command.
+        """
+        Returns string representing shortcut key accelerator for command.
         getShortcut() -> string
         """
 
     def isActive(self):
-        """Returns True if the command is active, False otherwise.
+        """
+        Returns True if the command is active, False otherwise.
         isActive() -> bool
         """
 
     @staticmethod
     def listAll():
-        """Returns the name of all commands.
+        """
+        Returns the name of all commands.
         listAll() -> list of strings
         """
 
     @staticmethod
     def listByShortcut(string: str, bool_bUseRegExp: int = False, /):
-        """Returns a list of all commands, filtered by shortcut.
+        """
+        Returns a list of all commands, filtered by shortcut.
         listByShortcut(string, bool bUseRegExp=False) -> list of strings
         --
         Shortcuts are converted to uppercase and spaces removed prior to comparison.
         """
 
     def resetShortcut(self):
-        """Resets shortcut for given command back to the default, returns bool True for success.
+        """
+        Resets shortcut for given command back to the default, returns bool True for success.
         resetShortcut() -> bool
         """
 
     def run(self, arg1: int = None, /):
-        """Runs the given command.
+        """
+        Runs the given command.
         run() -> None
         """
 
     def setShortcut(self, string: str, /):
-        """Sets shortcut for given command, returns bool True for success.
+        """
+        Sets shortcut for given command, returns bool True for success.
         setShortcut(string) -> bool
         """
 
     @staticmethod
     def update():
-        """Update active status of all commands.
+        """
+        Update active status of all commands.
         update() -> None
         """
 
@@ -607,7 +612,7 @@ class AxisOrigin(FreeCAD.BaseClass):
         'XY': xy plane
         'XZ': xz plane
         'YZ': yz plane
-                        """
+        """
 
     @property
     def LineWidth(self) -> float:
@@ -635,7 +640,7 @@ class AxisOrigin(FreeCAD.BaseClass):
 
         subelement: dot separated string reference to the sub element
         pPath: output coin path leading to the returned element detail
-                        """
+        """
 
     def getElementPicked(self, pickPoint: object, /):
         """getElementPicked(pickPoint): return the picked subelement"""
@@ -679,9 +684,11 @@ class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
         """
         Property group: Selection.
         Property TypeId: App::PropertyEnumeration.
+
         Enabled: Display the object on top of any other object when selected
         Object: On top only if the whole object is selected
-        Element: On top only if some sub-element of the object is selected.
+        Element: On top only if some sub-element of the object is selected
+        .
         """
 
     @OnTopWhenSelected.setter
@@ -769,12 +776,14 @@ class SelectionObject(FreeCAD.BaseClass):
         """Type name of the selected object"""
 
     def isObjectTypeOf(self, type: str, /):
-        """Test for a certain father class.
+        """
+        Test for a certain father class.
         isObjectTypeOf(type) -> Bool
         """
 
     def remove(self):
-        """Remove this selection item from the selection.
+        """
+        Remove this selection item from the selection.
         remove() -> None
         --
         This object becomes invalid.
@@ -830,46 +839,56 @@ class Document(FreeCAD.Persistence):
         """deprecated -- use ActiveView"""
 
     def addAnnotation(self, AnnoName: str, FileName: str, ModName: str = None, /):
-        """Add an Inventor object
+        """
+        Add an Inventor object
         addAnnotation(AnnoName,FileName,[ModName]) -> None
         """
 
     def getInEdit(self):
-        """Returns the current object in edit mode or None if there is no such object
+        """
+        Returns the current object in edit mode or None if there is no such object
         getInEdit() -> Object or None
         """
 
     def getObject(self, Name: str, /):
-        """Return the object with the given name
-        getObject(Name) -> Object or None"""
+        """
+        Return the object with the given name
+        getObject(Name) -> Object or None
+        """
 
     def hide(self, arg1: str, /):
-        """Hide the object
+        """
+        Hide the object
         hide() -> None
         """
 
     def mdiViewsOfType(self, type: str, /):
-        """Return a list if mdi views of a given type
+        """
+        Return a list if mdi views of a given type
         mdiViewsOfType(type) -> list of MDIView
         """
 
     def mergeProject(self, filename: str, /):
-        """Merges this document with another project file
+        """
+        Merges this document with another project file
         mergeProject(filename) -> None
         """
 
     def resetEdit(self):
-        """Reset (end) the current editing.
+        """
+        Reset (end) the current editing.
         resetEdit() -> None
-                """
+        """
 
     def scrollToTreeItem(self, ViewObject: FreeCADGui.ViewProviderDocumentObject, /):
-        """scroll the tree view to the item of a view object
+        """
+        scroll the tree view to the item of a view object
         scrollToTreeItem(ViewObject) -> None
         """
 
     def sendMsgToViews(self, msg: str, /):
-        """Send a message to all views of the document
+        """
+        Send a message to all views of the document
         sendMsgToViews(msg) -> None
         """
 
@@ -878,33 +897,40 @@ class Document(FreeCAD.Persistence):
 
     @typing.overload
     def setEdit(self, String_Name_ViewProvider_DocumentObject_: object, mod: int = None, subname: str = None, /):
-        """Set the given object in edit mode.
+        """
+        Set the given object in edit mode.
         setEdit([String:Name|ViewProvider|DocumentObject]|,mod,subname=None) -> Bool
         """
 
     def setPos(self, arg1: str, arg2: FreeCAD.Matrix, /):
-        """Set the position
-        setPos(matrix) -> None"""
+        """
+        Set the position
+        setPos(matrix) -> None
+        """
 
     def show(self, arg1: str, /):
-        """Show the object
+        """
+        Show the object
         show() -> None
         """
 
     def toggleInSceneGraph(self, ViewObject: FreeCADGui.ViewProvider, /):
-        """Add or remove view object from scene graph of all views depending on its canAddToSceneGraph()
+        """
+        Add or remove view object from scene graph of all views depending on its canAddToSceneGraph()
         toggleInSceneGraph(ViewObject) -> None
         """
 
     def toggleTreeItem(self, arg1: FreeCAD.DocumentObject, arg2: int = None, arg3: str = None, /):
-        """Change TreeItem of a document object.
+        """
+        Change TreeItem of a document object.
         toggleTreeItem(DocObject,[flag=0]) -> None
         --
         flag can be 0:Toggle, 1:Collaps, 2:Expand
         """
 
     def update(self):
-        """Update the view representations of all objects
+        """
+        Update the view representations of all objects
         update() -> None
         """
 
@@ -920,32 +946,42 @@ class MDIViewPy:
         """fitAll()"""
 
     def setActiveObject(self, name: str, object: object = None, subname: str = None, /):
-        """setActiveObject(name,object,subname=None)
-        add or set a new active object"""
+        """
+        setActiveObject(name,object,subname=None)
+        add or set a new active object
+        """
 
     def getActiveObject(self, name: str, resolve: object = True, /):
-        """getActiveObject(name,resolve=True)
-        returns the active object for the given type"""
+        """
+        getActiveObject(name,resolve=True)
+        returns the active object for the given type
+        """
 
 
 # Application.cpp
 def subgraphFromObject(object: FreeCAD.DocumentObject, /):
-    """subgraphFromObject(object) -> Node
+    """
+    subgraphFromObject(object) -> Node
 
-    Return the Inventor subgraph to an object"""
+    Return the Inventor subgraph to an object
+    """
 
 
 def exportSubgraph(Node: object, File_or_Buffer: object, Format: str = 'VRML', /):
-    """exportSubgraph(Node, File or Buffer, [Format='VRML']) -> None
+    """
+    exportSubgraph(Node, File or Buffer, [Format='VRML']) -> None
 
-    Exports the sub-graph in the requested formatThe format string can be VRML or IV"""
+    Exports the sub-graph in the requested formatThe format string can be VRML or IV
+    """
 
 
 def getSoDBVersion():
-    """getSoDBVersion() -> String
+    """
+    getSoDBVersion() -> String
 
     Return a text string containing the name
-    of the Coin library and version information"""
+    of the Coin library and version information
+    """
 
 
 # View3DPy.cpp
@@ -992,7 +1028,8 @@ class View3DInventorPy:
         """viewTrimetric()"""
 
     def viewDefaultOrientation(self, ori_str: str = '', scale: float = -1.0, /):
-        """viewDefaultOrientation(ori_str = '', scale = -1.0): sets camera rotation to a predefined one, 
+        """
+        viewDefaultOrientation(ori_str = '', scale = -1.0): sets camera rotation to a predefined one, 
         and camera position and zoom to show certain amount of model space. 
         ori_string can be 'Top', 'Bottom', 'Front', 'Rear', 'Left', 'Right', 
         'Isometric', 'Dimetric', 'Trimetric', 'Custom'. If empty, the value is 
@@ -1000,7 +1037,8 @@ class View3DInventorPy:
         scale sets distance from camera to origin, and height of the screen in 
         model space, so that a sphere of diameter <scale> fits the height of the
         viewport. If zero, scaling is not done. If negative, the value is 
-        fetched from Parameters."""
+        fetched from Parameters.
+        """
 
     def viewRotateLeft(self):
         """viewRotateLeft()"""
@@ -1061,14 +1099,17 @@ class View3DInventorPy:
         """getCameraNode()"""
 
     def getViewDirection(self):
-        """getViewDirection() --> tuple of integers
+        """
+        getViewDirection() --> tuple of integers
         returns the direction vector the view is currently pointing at as tuple with xyz values
         """
 
     def setViewDirection(self, tuple: object, /):
-        """setViewDirection(tuple) --> None
+        """
+        setViewDirection(tuple) --> None
         Sets the direction the view is pointing at. The direction must be given as tuple with
-        three coordinates xyz"""
+        three coordinates xyz
+        """
 
     def setCamera(self, arg1: str, /):
         """setCamera()"""
@@ -1093,14 +1134,16 @@ class View3DInventorPy:
         """listCameraTypes()"""
 
     def getCursorPos(self):
-        """getCursorPos() -> tuple of integers
+        """
+        getCursorPos() -> tuple of integers
 
         Return the current cursor position relative to the coordinate system of the
         viewport region.
         """
 
     def getObjectInfo(self, tuple_int_int_: object, pick_radius: float = None, /):
-        """getObjectInfo(tuple(int,int), [pick_radius]) -> dictionary or None
+        """
+        getObjectInfo(tuple(int,int), [pick_radius]) -> dictionary or None
 
         Return a dictionary with the name of document, object and component. The
         dictionary also contains the coordinates of the appropriate 3d point of
@@ -1109,7 +1152,8 @@ class View3DInventorPy:
         """
 
     def getObjectsInfo(self, tuple_int_int_: object, pick_radius: float = None, /):
-        """getObjectsInfo(tuple(int,int), [pick_radius]) -> dictionary or None
+        """
+        getObjectsInfo(tuple(int,int), [pick_radius]) -> dictionary or None
 
         Does the same as getObjectInfo() but returns a list of dictionaries or None.
         """
@@ -1118,14 +1162,16 @@ class View3DInventorPy:
         """getSize()"""
 
     def getPoint(self, arg1: int, arg2: int, /):
-        """getPoint(pixel coords (as integer)) -> 3D vector
+        """
+        getPoint(pixel coords (as integer)) -> 3D vector
 
         Return the according 3D point on the focal plane to the given 2D point (in
         pixel coordinates).
         """
 
     def getPointOnScreen(self, arg: FreeCAD.Vector, /):
-        """getPointOnScreen(3D vector) -> pixel coords (as integer)
+        """
+        getPointOnScreen(3D vector) -> pixel coords (as integer)
 
         Return the projected 3D point (in pixel coordinates).
         """
@@ -1176,37 +1222,47 @@ class View3DInventorPy:
         """check if the big axis-cross is on or off()"""
 
     def addDraggerCallback(self, SoDragger: object, String_CallbackType: str, function: object, /):
-        """addDraggerCallback(SoDragger, String CallbackType, function)
+        """
+        addDraggerCallback(SoDragger, String CallbackType, function)
         Add a DraggerCalback function to the coin node
         Possibles types :
         'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'
         """
 
     def removeDraggerCallback(self, SoDragger: object, String_CallbackType: str, function: object, /):
-        """removeDraggerCallback(SoDragger, String CallbackType, function)
+        """
+        removeDraggerCallback(SoDragger, String CallbackType, function)
         Remove the DraggerCalback function from the coin node
         Possibles types :
         'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'
         """
 
     def setActiveObject(self, name: str, object: object = None, subname: str = None, /):
-        """setActiveObject(name,object,subname=None)
-        add or set a new active object"""
+        """
+        setActiveObject(name,object,subname=None)
+        add or set a new active object
+        """
 
     def getActiveObject(self, name: str, resolve: object = True, /):
-        """getActiveObject(name,resolve=True)
-        returns the active object for the given type"""
+        """
+        getActiveObject(name,resolve=True)
+        returns the active object for the given type
+        """
 
     def getViewProvidersOfType(self, name: str, /):
-        """getViewProvidersOfType(name)
-        returns a list of view providers for the given type"""
+        """
+        getViewProvidersOfType(name)
+        returns a list of view providers for the given type
+        """
 
     def redraw(self):
         """redraw(): renders the scene on screen (useful for animations)"""
 
     def setName(self, str: str, /):
-        """setName(str): sets a name to this viewer
-        The name sets the widget's windowTitle and appears on the viewer tab"""
+        """
+        setName(str): sets a name to this viewer
+        The name sets the widget's windowTitle and appears on the viewer tab
+        """
 
     def hasClippingPlane(self):
         """hasClippingPlane(): check whether this clipping plane is active"""
@@ -1218,13 +1274,15 @@ class View3DInventorPy:
         """boxZoom()"""
 
     def toggleClippingPlane(self, toggle: int = None, beforeEditing: object = None, noManip: object = None, pla: FreeCAD.Placement = None):
-        """toggleClippingPlane(toggle=-1, beforeEditing=False, noManip=True, pla=App.Placement()
+        """
+        toggleClippingPlane(toggle=-1, beforeEditing=False, noManip=True, pla=App.Placement()
         Toggle a global clipping plane
 
         toggle: -1 toggle, 1 show, 0 hide
         beforeEditing: whether to insert the clipping node before or after editing root node
         noManip: whether to create a manipulator
-        pla: clipping plane placement"""
+        pla: clipping plane placement
+        """
 
 
 # WidgetFactory.cpp
@@ -1245,8 +1303,10 @@ class UiLoader:
 
     @typing.overload
     def load(self, QIODevice, QWidget_parent = None):
-        """load(string, QWidget parent=None) -> QWidget
-        load(QIODevice, QWidget parent=None) -> QWidget"""
+        """
+        load(string, QWidget parent=None) -> QWidget
+        load(QIODevice, QWidget parent=None) -> QWidget
+        """
 
     def createWidget(self):
         """createWidget()"""
@@ -1352,7 +1412,8 @@ class AbstractSplitViewPy:
 
 # SelectionFilter.cpp
 class SelectionFilter:
-    """Filter for certain selection
+    """
+    Filter for certain selection
     Example strings are:
     "SELECT Part::Feature SUBELEMENT Edge",
     "SELECT Part::Feature", 
@@ -1366,9 +1427,11 @@ class SelectionFilter:
         """If match() returns True then with result() you get a list of the matching objects"""
 
     def test(self, Feature: FreeCAD.DocumentObject, SubName: str = '', /):
-        """test(Feature, SubName='')
+        """
+        test(Feature, SubName='')
         Test if a given object is described in the filter.
-        If SubName is not empty the sub-element gets also tested."""
+        If SubName is not empty the sub-element gets also tested.
+        """
 
     def setFilter(self, arg1: str, /):
         """Set a new selection filter"""
@@ -1391,113 +1454,149 @@ class PythonDebugStderr:
 
 # ApplicationPy.cpp
 def activateWorkbench(string: str, /):
-    """activateWorkbench(string) -> None
+    """
+    activateWorkbench(string) -> None
 
-    Activate the workbench by name"""
+    Activate the workbench by name
+    """
 
 
 def addWorkbench(arg1: object, /):
-    """addWorkbench(string, object) -> None
+    """
+    addWorkbench(string, object) -> None
 
-    Add a workbench under a defined name."""
+    Add a workbench under a defined name.
+    """
 
 
 def removeWorkbench(string: str, /):
-    """removeWorkbench(string) -> None
+    """
+    removeWorkbench(string) -> None
 
-    Remove the workbench with name"""
+    Remove the workbench with name
+    """
 
 
 def getWorkbench(string: str, /):
-    """getWorkbench(string) -> object
+    """
+    getWorkbench(string) -> object
 
-    Get the workbench by its name"""
+    Get the workbench by its name
+    """
 
 
 def listWorkbenches():
-    """listWorkbenches() -> list
+    """
+    listWorkbenches() -> list
 
-    Show a list of all workbenches"""
+    Show a list of all workbenches
+    """
 
 
 def activeWorkbench():
-    """activeWorkbench() -> object
+    """
+    activeWorkbench() -> object
 
-    Return the active workbench object"""
+    Return the active workbench object
+    """
 
 
 def addResourcePath(string: str, /):
-    """addResourcePath(string) -> None
+    """
+    addResourcePath(string) -> None
 
     Add a new path to the system where to find resource files
-    like icons or localization files"""
+    like icons or localization files
+    """
 
 
 def addLanguagePath(string: str, /):
-    """addLanguagePath(string) -> None
+    """
+    addLanguagePath(string) -> None
 
-    Add a new path to the system where to find language files"""
+    Add a new path to the system where to find language files
+    """
 
 
 def addIconPath(string: str, /):
-    """addIconPath(string) -> None
+    """
+    addIconPath(string) -> None
 
-    Add a new path to the system where to find icon files"""
+    Add a new path to the system where to find icon files
+    """
 
 
 def addIcon(arg1: str, arg2: str, arg3: str = None, /):
-    """addIcon(string, string or list) -> None
+    """
+    addIcon(string, string or list) -> None
 
-    Add an icon as file name or in XPM format to the system"""
+    Add an icon as file name or in XPM format to the system
+    """
 
 
 def getIcon(string: str, /):
-    """getIcon(string) -> QIcon
+    """
+    getIcon(string) -> QIcon
 
-    Get an icon in the system"""
+    Get an icon in the system
+    """
 
 
 def isIconCached(String: str, /):
-    """isIconCached(String) -> Bool
+    """
+    isIconCached(String) -> Bool
 
-    Check if an icon with the given name is cached"""
+    Check if an icon with the given name is cached
+    """
 
 
 def getMainWindow():
-    """getMainWindow() -> QMainWindow
+    """
+    getMainWindow() -> QMainWindow
 
-    Return the main window instance"""
+    Return the main window instance
+    """
 
 
 def updateGui():
-    """updateGui() -> None
+    """
+    updateGui() -> None
 
-    Update the main window and all its windows"""
+    Update the main window and all its windows
+    """
 
 
 def updateLocale():
-    """updateLocale() -> None
+    """
+    updateLocale() -> None
 
-    Update the localization"""
+    Update the localization
+    """
 
 
 def getLocale():
-    """getLocale() -> string
+    """
+    getLocale() -> string
 
-    Returns the locale currently used by FreeCAD"""
+    Returns the locale currently used by FreeCAD
+    """
 
 
 def setLocale(arg1: str, /):
-    """getLocale(string) -> None
+    """
+    getLocale(string) -> None
 
     Sets the locale used by FreeCAD. You can set it by
-    top-level domain (e.g. "de") or the language name (e.g. "German")"""
+    top-level domain (e.g. "de") or the language name (e.g. "German")
+    """
 
 
 def supportedLocales():
-    """supportedLocales() -> dict
+    """
+    supportedLocales() -> dict
 
-    Returns a dict of all supported languages/top-level domains"""
+    Returns a dict of all supported languages/top-level domains
+    """
 
 
 def createDialog(string: str, /):
@@ -1510,20 +1609,26 @@ def addPreferencePage(string: str, string1: str, /): ...
 
 @typing.overload
 def addPreferencePage(string: type, string1: str, /):
-    """addPreferencePage(string,string) -- Add a UI form to the
-    preferences dialog. The first argument specifies the file nameand the second specifies the group name"""
+    """
+    addPreferencePage(string,string) -- Add a UI form to the
+    preferences dialog. The first argument specifies the file nameand the second specifies the group name
+    """
 
 
 def addCommand(arg1: str, arg2: object, arg3: str = None, /):
-    """addCommand(string, object) -> None
+    """
+    addCommand(string, object) -> None
 
-    Add a command object"""
+    Add a command object
+    """
 
 
 def runCommand(arg1: str, arg2: int = None, /):
-    """runCommand(string) -> None
+    """
+    runCommand(string) -> None
 
-    Run command with name"""
+    Run command with name
+    """
 
 
 def SendMsgToActiveView(arg1: str, arg2: bool = None, /):
@@ -1543,15 +1648,19 @@ def show(arg1: str, /):
 
 
 def hideObject(object: FreeCAD.DocumentObject, /):
-    """hideObject(object) -> None
+    """
+    hideObject(object) -> None
 
-    Hide the view provider to the given object"""
+    Hide the view provider to the given object
+    """
 
 
 def showObject(object: FreeCAD.DocumentObject, /):
-    """showObject(object) -> None
+    """
+    showObject(object) -> None
 
-    Show the view provider to the given object"""
+    Show the view provider to the given object
+    """
 
 
 def open(arg1: str, /):
@@ -1567,9 +1676,11 @@ def export(arg1: object, arg2: str, /):
 
 
 def activeDocument() -> FreeCADGui.Document:
-    """activeDocument() -> object or None
+    """
+    activeDocument() -> object or None
 
-    Return the active document or None if no one exists"""
+    Return the active document or None if no one exists
+    """
 
 
 @typing.overload
@@ -1578,27 +1689,35 @@ def setActiveDocument(string_or_App_Document: str, /): ...
 
 @typing.overload
 def setActiveDocument(string_or_App_Document: FreeCAD.Document, /):
-    """setActiveDocument(string or App.Document) -> None
+    """
+    setActiveDocument(string or App.Document) -> None
 
-    Activate the specified document"""
+    Activate the specified document
+    """
 
 
 def activeView(typename: str = None, /):
-    """activeView(typename=None) -> object or None
+    """
+    activeView(typename=None) -> object or None
 
-    Return the active view of the active document or None if no one exists"""
+    Return the active view of the active document or None if no one exists
+    """
 
 
 def activateView(arg1: str, arg2: bool, /):
-    """activateView(type)
+    """
+    activateView(type)
 
-    Activate a view of the given type of the active document"""
+    Activate a view of the given type of the active document
+    """
 
 
 def editDocument():
-    """editDocument() -> object or None
+    """
+    editDocument() -> object or None
 
-    Return the current editing document or None if no one exists"""
+    Return the current editing document or None if no one exists
+    """
 
 
 @typing.overload
@@ -1607,45 +1726,59 @@ def getDocument(string: str, /): ...
 
 @typing.overload
 def getDocument(string: FreeCAD.Document, /):
-    """getDocument(string) -> object
+    """
+    getDocument(string) -> object
 
-    Get a document by its name"""
+    Get a document by its name
+    """
 
 
 def doCommand(string: str, /):
-    """doCommand(string) -> None
+    """
+    doCommand(string) -> None
 
-    Prints the given string in the python console and runs it"""
+    Prints the given string in the python console and runs it
+    """
 
 
 def doCommandGui(string: str, /):
-    """doCommandGui(string) -> None
+    """
+    doCommandGui(string) -> None
 
-    Prints the given string in the python console and runs it but doesn't record it in macros"""
+    Prints the given string in the python console and runs it but doesn't record it in macros
+    """
 
 
 def addModule(string: str, /):
-    """addModule(string) -> None
+    """
+    addModule(string) -> None
 
-    Prints the given module import only once in the macro recording"""
+    Prints the given module import only once in the macro recording
+    """
 
 
 def showDownloads():
-    """showDownloads() -> None
+    """
+    showDownloads() -> None
 
-    Shows the downloads manager window"""
+    Shows the downloads manager window
+    """
 
 
 def showPreferences(string: str = None, int: int = None, /):
-    """showPreferences([string,int]) -> None
+    """
+    showPreferences([string,int]) -> None
 
-    Shows the preferences window. If string and int are provided, the given page index in the given group is shown."""
+    Shows the preferences window. If string and int are provided, the given page index in the given group is shown.
+    """
 
 
 def createViewer(arg1: int = None, arg2: str = None, /):
-    """createViewer([int]) -> View3DInventor/SplitView3DInventor
+    """
+    createViewer([int]) -> View3DInventor/SplitView3DInventor
 
-    shows and returns a viewer. If the integer argument is given and > 1: -> splitViewer"""
+    shows and returns a viewer. If the integer argument is given and > 1: -> splitViewer
+    """
 
 
 def getMarkerIndex(arg1: str = None, arg2: int = None, /):
@@ -1653,48 +1786,62 @@ def getMarkerIndex(arg1: str = None, arg2: int = None, /):
 
 
 def addDocumentObserver(arg1: object, /):
-    """addDocumentObserver() -> None
+    """
+    addDocumentObserver() -> None
 
-    Add an observer to get notified about changes on documents."""
+    Add an observer to get notified about changes on documents.
+    """
 
 
 def removeDocumentObserver(arg1: object, /):
-    """removeDocumentObserver() -> None
+    """
+    removeDocumentObserver() -> None
 
-    Remove an added document observer."""
+    Remove an added document observer.
+    """
 
 
 def listUserEditModes():
-    """listUserEditModes() -> list
+    """
+    listUserEditModes() -> list
 
-    List available user edit modes"""
+    List available user edit modes
+    """
 
 
 def getUserEditMode():
-    """getUserEditMode() -> string
+    """
+    getUserEditMode() -> string
 
-    Get current user edit mode"""
+    Get current user edit mode
+    """
 
 
 def setUserEditMode(string: str, /):
-    """setUserEditMode(string=mode) -> Bool
+    """
+    setUserEditMode(string=mode) -> Bool
 
-    Set user edit mode to 'mode', returns True if exists, false otherwise"""
+    Set user edit mode to 'mode', returns True if exists, false otherwise
+    """
 
 
 def reload(name: str, /):
-    """reload(name) -> doc
+    """
+    reload(name) -> doc
 
-    Reload a partial opened document"""
+    Reload a partial opened document
+    """
 
 
 def loadFile(string: str, string1: str = None, /):
-    """loadFile(string=filename,[string=module]) -> None
+    """
+    loadFile(string=filename,[string=module]) -> None
 
     Loads an arbitrary file by delegating to the given Python module:
     * If no module is given it will be determined by the file extension.
     * If more than one module can load a file the first one will be taken.
-    * If no module exists to load the file an exception will be raised."""
+    * If no module exists to load the file an exception will be raised.
+    """
 
 
 def coinRemoveAllChildren(arg1: object, /):
@@ -1729,14 +1876,16 @@ class View3DInventorViewerPy:
     """Python binding class for the 3D viewer class"""
 
     def getSoRenderManager(self):
-        """getSoRenderManager() -> SoRenderManager
+        """
+        getSoRenderManager() -> SoRenderManager
         Returns the render manager which is used to handle everything related to
         rendering the scene graph. It can be used to get full control over the
         render process
         """
 
     def getSoEventManager(self):
-        """getSoEventManager() -> SoEventManager
+        """
+        getSoEventManager() -> SoEventManager
         Returns the event manager which is used to handle everything event related in
         the viewer. It can be used to change the event processing. This must however be
         done very carefully to not change the user interaction in an unpredictable manner.
@@ -1749,21 +1898,21 @@ class View3DInventorViewerPy:
         """setSceneGraph(SoNode)"""
 
     def seekToPoint(self, tuple: object, /):
-        """seekToPoint(tuple) -> None
+        """
+        seekToPoint(tuple) -> None
         Initiate a seek action towards the 3D intersection of the scene and the
         ray from the screen coordinate's point and in the same direction as the
         camera is pointing. If the tuple has two entries it is interpreted as the
         screen coordinates xy and the intersection point with the scene is
         calculated. If three entries are given it is interpreted as the intersection
-        point xyz and the seek is done towards this point"""
+        point xyz and the seek is done towards this point
+        """
 
     def setFocalDistance(self, float: float, /):
-        """setFocalDistance(float) -> None
-        """
+        """setFocalDistance(float) -> None"""
 
     def getFocalDistance(self):
-        """getFocalDistance() -> float
-        """
+        """getFocalDistance() -> float"""
 
     def getPoint(self, x: int, y: int, /):
         """getPoint(x, y) -> Base::Vector(x,y,z)"""
@@ -1775,11 +1924,13 @@ class View3DInventorViewerPy:
         """setPickRadius(new_radius): sets radius of confusion in pixels for picking objects on screen (selection)."""
 
     def setupEditingRoot(self, arg1: object = None, arg2: FreeCAD.Matrix = None, /):
-        """setupEditingRoot(matrix=None): setup the editing ViewProvider's root node.
+        """
+        setupEditingRoot(matrix=None): setup the editing ViewProvider's root node.
         All child coin nodes of the current editing ViewProvider will be transferred to
         an internal editing node of this viewer, with a new transformation node specified
         by 'matrix'. All ViewProviderLink to the editing ViewProvider will be temporary
-        hidden. Call resetEditingRoot() to restore everything back to normal"""
+        hidden. Call resetEditingRoot() to restore everything back to normal
+        """
 
     def resetEditingRoot(self, updateLinks: object = True, /):
         """resetEditingRoot(updateLinks=True): restore the editing ViewProvider's root node"""
@@ -1800,8 +1951,10 @@ class View3DInventorViewerPy:
         """isEnabledNaviCube() -> bool: check whether the navi cube is enabled."""
 
     def setNaviCubeCorner(self, int: int, /):
-        """setNaviCubeCorner(int): sets the corner where to show the navi cube:
-        0=top left, 1=top right, 2=bottom left, 3=bottom right"""
+        """
+        setNaviCubeCorner(int): sets the corner where to show the navi cube:
+        0=top left, 1=top right, 2=bottom left, 3=bottom right
+        """
 
 
 Workbench: FreeCADGui.Workbench

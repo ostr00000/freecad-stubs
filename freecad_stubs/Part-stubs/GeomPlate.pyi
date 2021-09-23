@@ -26,9 +26,10 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
         """Returns the curve constraint of order"""
 
     def curves2d(self):
-        """Extracts the array of curves on the plate surface which
+        """
+        Extracts the array of curves on the plate surface which
                 correspond to the curve constraints set in add()
-                """
+        """
 
     def disc2dContour(self, arg1: int, /): ...
 
@@ -41,7 +42,7 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
         """Tests whether computation of the plate has been completed"""
 
     def loadInitSurface(self, arg1: Part.GeometrySurface, /):
-        """ Loads the initial surface"""
+        """Loads the initial surface"""
 
     def order(self):
         """Returns the order of the curves in the array returned by curves2d"""
@@ -58,7 +59,7 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
     def setNbBounds(self, arg1: int, /): ...
 
     def surfInit(self):
-        """ Returns the initial surface"""
+        """Returns the initial surface"""
 
     def surface(self):
         """Returns the plate surface"""
@@ -82,30 +83,35 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
 
     @property
     def NbPoints(self) -> int:
-        """The number of points on the curve used as a
+        """
+        The number of points on the curve used as a
         constraint. The default setting is 10. This parameter
         affects computation time, which increases by the cube of
-        the number of points."""
+        the number of points.
+        """
 
     def G0Criterion(self, arg1: float, /):
-        """Returns the G0 criterion at the parametric point U on
+        """
+        Returns the G0 criterion at the parametric point U on
         the curve. This is the greatest distance allowed between
         the constraint and the target surface at U.
-                """
+        """
 
     def G1Criterion(self, arg1: float, /):
-        """Returns the G1 criterion at the parametric point U on
+        """
+        Returns the G1 criterion at the parametric point U on
         the curve. This is the greatest angle allowed between
         the constraint and the target surface at U.
         Raises an exception if  the  curve  is  not  on  a  surface.
-                """
+        """
 
     def G2Criterion(self, arg1: float, /):
-        """Returns the G2 criterion at the parametric point U on
+        """
+        Returns the G2 criterion at the parametric point U on
         the curve. This is the greatest difference in curvature
         allowed between the constraint and the target surface at U.
         Raises an exception if  the  curve  is  not  on  a  surface.
-                """
+        """
 
     def curve2dOnSurf(self): ...
 
@@ -119,10 +125,11 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
     def setCurve2dOnSurf(self, arg1: Part.Geom2d.Curve2d, /): ...
 
     def setOrder(self, arg1: int, /):
-        """Allows you to set the order of continuity required for
+        """
+        Allows you to set the order of continuity required for
         the constraints: G0, G1, and G2, controlled
         respectively by G0Criterion G1Criterion and G2Criterion.
-                """
+        """
 
     def setProjectedCurve(self, arg1: Part.Geom2d.Curve2d, arg2: float, arg3: float, /): ...
 
@@ -135,24 +142,27 @@ class PointConstraintPy(FreeCAD.PyObjectBase):
         """Defines points as constraints to be used to deform a surface"""
 
     def G0Criterion(self):
-        """Returns the G0 criterion at the parametric point U on
+        """
+        Returns the G0 criterion at the parametric point U on
         the curve. This is the greatest distance allowed between
         the constraint and the target surface at U.
-                """
+        """
 
     def G1Criterion(self):
-        """Returns the G1 criterion at the parametric point U on
+        """
+        Returns the G1 criterion at the parametric point U on
         the curve. This is the greatest angle allowed between
         the constraint and the target surface at U.
         Raises an exception if  the  curve  is  not  on  a  surface.
-                """
+        """
 
     def G2Criterion(self):
-        """Returns the G2 criterion at the parametric point U on
+        """
+        Returns the G2 criterion at the parametric point U on
         the curve. This is the greatest difference in curvature
         allowed between the constraint and the target surface at U.
         Raises an exception if  the  curve  is  not  on  a  surface.
-                """
+        """
 
     def hasPnt2dOnSurf(self): ...
 
@@ -162,27 +172,30 @@ class PointConstraintPy(FreeCAD.PyObjectBase):
     def pnt2dOnSurf(self): ...
 
     def setG0Criterion(self, arg1: float, /):
-        """Allows you to set the G0 criterion. This is the law
+        """
+        Allows you to set the G0 criterion. This is the law
         defining the greatest distance allowed between the
         constraint and the target surface for each point of the
         constraint. If this criterion is not set, TolDist, the
         distance tolerance from the constructor, is used.
-                """
+        """
 
     def setG1Criterion(self, arg1: float, /):
-        """Allows you to set the G1 criterion. This is the law
+        """
+        Allows you to set the G1 criterion. This is the law
         defining the greatest angle allowed between the
         constraint and the target surface. If this criterion is not
         set, TolAng, the angular tolerance from the constructor, is used.
         Raises an exception if  the  curve  is  not  on  a  surface
-                """
+        """
 
     def setG2Criterion(self, arg1: float, /): ...
 
     def setOrder(self, arg1: int, /):
-        """Allows you to set the order of continuity required for
+        """
+        Allows you to set the order of continuity required for
         the constraints: G0, G1, and G2, controlled
         respectively by G0Criterion G1Criterion and G2Criterion.
-                """
+        """
 
     def setPnt2dOnSurf(self, arg1: float, arg2: float, /): ...

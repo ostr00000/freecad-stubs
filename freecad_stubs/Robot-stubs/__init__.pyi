@@ -6,8 +6,10 @@ import Robot
 
 # WaypointPy.xml
 class Waypoint(FreeCAD.Persistence):
-    """This class can be imported.
-    Waypoint class"""
+    """
+    This class can be imported.
+    Waypoint class
+    """
 
     def __init__(self, Pos: FreeCAD.Placement, type: str = None, name: str = None, vel: object = None, cont: int = None, tool: int = None, base: int = None, acc: object = None):
         """Waypoint class"""
@@ -56,7 +58,8 @@ class Waypoint(FreeCAD.Persistence):
 
     @property
     def Velocity(self) -> float:
-        """Control the velocity to the next waypoint in the trajectory
+        """
+        Control the velocity to the next waypoint in the trajectory
         In Case of PTP 0-100% Axis speed
         In Case of LIN m/s
         In Case of WAIT s wait time
@@ -68,8 +71,10 @@ class Waypoint(FreeCAD.Persistence):
 
 # Robot6AxisPy.xml
 class Robot6Axis(FreeCAD.Persistence):
-    """This class can be imported.
-    Robot6Axis class"""
+    """
+    This class can be imported.
+    Robot6Axis class
+    """
 
     @property
     def Axis1(self) -> float:
@@ -130,8 +135,10 @@ class Robot6Axis(FreeCAD.Persistence):
 
 # TrajectoryPy.xml
 class Trajectory(FreeCAD.Persistence):
-    """This class can be imported.
-    Trajectory class"""
+    """
+    This class can be imported.
+    Trajectory class
+    """
 
     def __init__(self, arg1: list = None, /):
         """Trajectory class"""
@@ -153,9 +160,9 @@ class Trajectory(FreeCAD.Persistence):
 
     def deleteLast(self, n: int = None, /):
         """
-                  deleteLast(n) - delete n waypoints at the end
+        deleteLast(n) - delete n waypoints at the end
                   deleteLast()  - delete the last waypoint
-                """
+        """
 
     @typing.overload
     def insertWaypoints(self, arg1: FreeCAD.Placement, /): ...
@@ -165,19 +172,13 @@ class Trajectory(FreeCAD.Persistence):
 
     @typing.overload
     def insertWaypoints(self, arg1: list, /):
-        """
-        				  adds one or a list of waypoint to the end of the trajectory
-        			  """
+        """adds one or a list of waypoint to the end of the trajectory"""
 
     def position(self, arg1: float, /):
-        """
-        				  returns a Frame to a given time in the trajectory
-        			  """
+        """returns a Frame to a given time in the trajectory"""
 
     def velocity(self, arg1: float, /):
-        """
-                  returns the velocity to a given time in the trajectory
-                """
+        """returns the velocity to a given time in the trajectory"""
 
 
 # RobotObjectPy.xml

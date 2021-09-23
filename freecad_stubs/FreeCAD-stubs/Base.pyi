@@ -5,8 +5,10 @@ import FreeCAD
 
 # VectorPy.xml
 class Vector(FreeCAD.PyObjectBase):
-    """This class can be imported.
-    This class represents a 3D float vector"""
+    """
+    This class can be imported.
+    This class represents a 3D float vector
+    """
 
     @typing.overload
     def __init__(self, arg1: float = None, arg2: float = None, arg3: float = None, /): ...
@@ -20,137 +22,158 @@ class Vector(FreeCAD.PyObjectBase):
 
     @property
     def Length(self) -> float:
-        """Length([Float]) -> Float
+        """
+        Length([Float]) -> Float
         						  gets or sets the length of this vector
-        				"""
+        """
 
     @Length.setter
     def Length(self, value: float): ...
 
     @property
     def x(self) -> float:
-        """x([Float]) -> Float
+        """
+        x([Float]) -> Float
         						  gets or sets the X component of this vector
-        				"""
+        """
 
     @x.setter
     def x(self, value: float): ...
 
     @property
     def y(self) -> float:
-        """y([Float]) -> Float
+        """
+        y([Float]) -> Float
         						  gets or sets the Y component of this vector
-        				"""
+        """
 
     @y.setter
     def y(self, value: float): ...
 
     @property
     def z(self) -> float:
-        """z([Float]) -> Float
+        """
+        z([Float]) -> Float
         						  gets or sets the Z component of this vector
-        				"""
+        """
 
     @z.setter
     def z(self, value: float): ...
 
     def __reduce__(self):
-        """__reduce__()
+        """
+        __reduce__()
                               Serialization of Vector objects
-                    """
+        """
 
     def add(self, Vector: FreeCAD.Vector, /):
-        """add(Vector)
+        """
+        add(Vector)
         					      returns the sum of this and another vector
-        				"""
+        """
 
     def cross(self, Vector: FreeCAD.Vector, /):
-        """cross(Vector)
+        """
+        cross(Vector)
         					      returns the cross product between this and another vector
-        				"""
+        """
 
     def distanceToLine(self, Vector: object, Vector2: object, /):
-        """distanceToLine(Vector,Vector)
+        """
+        distanceToLine(Vector,Vector)
         						  returns the distance between this vector and a line defined by
         						  a base point and a direction
-        				"""
+        """
 
     def distanceToLineSegment(self, Vector: object, Vector2: object, /):
-        """distanceToLineSegment(Vector,Vector)
+        """
+        distanceToLineSegment(Vector,Vector)
         						  returns the distance between this vector and a line segment defined by
         						  a base point and a direction
-        				"""
+        """
 
     def distanceToPlane(self, Vector: object, Vector2: object, /):
-        """distanceToPlane(Vector,Vector)
+        """
+        distanceToPlane(Vector,Vector)
         						  returns the distance between this vector and a plane defined by
         						  a base point and a normal
-        				"""
+        """
 
     def distanceToPoint(self, Vector: FreeCAD.Vector, /):
         """
-        					distanceToPoint(Vector)
+        distanceToPoint(Vector)
         					returns the distance to another point
-        				"""
+        """
 
     def dot(self, Vector: FreeCAD.Vector, /):
-        """dot(Vector)
+        """
+        dot(Vector)
         						  returns the dot product of the this vector with another one
-        				"""
+        """
 
     def getAngle(self, Vector: FreeCAD.Vector, /):
-        """getAngle(Vector)
+        """
+        getAngle(Vector)
         					      returns the angle in radians between this and another vector
-        				"""
+        """
 
     def isEqual(self, Vector: FreeCAD.Vector, tolerance: float, /):
-        """isEqual(Vector, tolerance) -> Boolean
+        """
+        isEqual(Vector, tolerance) -> Boolean
                                   If the distance to the given point is less or equal to the tolerance
                                   bith points are considered equal.
-                        """
+        """
 
     def isOnLineSegment(self, Vector: object, Vector2: object, /):
-        """isOnLineSegment(Vector, Vector)
+        """
+        isOnLineSegment(Vector, Vector)
         					      checks if Vector is on a line segment
-        				"""
+        """
 
     def multiply(self, Float: float, /):
-        """multiply(Float)
+        """
+        multiply(Float)
         					      multiplies (scales) this vector by a single factor
-        				"""
+        """
 
     def negative(self):
-        """negative()
+        """
+        negative()
         					      returns the negative (opposite) of this vector
-        				"""
+        """
 
     def normalize(self):
-        """normalize()
+        """
+        normalize()
         						  normalizes the vector to the length of 1.0
-        				"""
+        """
 
     def projectToLine(self, Vector_pnt: object, Vector_vec: object, /):
-        """projectToLine(Vector pnt,Vector vec)
+        """
+        projectToLine(Vector pnt,Vector vec)
         						  Projects the point 'pnt' on a line that goes through the origin with the direction vector 'vec'.
         						  The result is the vector from point 'pnt' to the projected point.
         						  NOTE: The result does not depend on the vector instance 'self'.
         						  NOTE: This method modifies the vector instance 'self'.
-        				"""
+        """
 
     def projectToPlane(self, Vector: object, Vector2: object, /):
-        """projectToPlane(Vector,Vector)
+        """
+        projectToPlane(Vector,Vector)
         						  projects the vector on a plane defined by a base point and a normal
-        				"""
+        """
 
     def scale(self, Float: float, Float2: float, Float3: float, /):
-        """scale(Float,Float,Float)
+        """
+        scale(Float,Float,Float)
         					      scales (multiplies) this vector by a factor
-        			    """
+        """
 
     def sub(self, Vector: FreeCAD.Vector, /):
-        """sub(Vector)
+        """
+        sub(Vector)
         					      returns the difference of this and another vector
-        				"""
+        """
 
     def __eq__(self, other) -> bool: ...
 
@@ -203,7 +226,8 @@ class Vector(FreeCAD.PyObjectBase):
 
 # RotationPy.xml
 class Rotation(FreeCAD.PyObjectBase):
-    """This class can be imported.
+    """
+    This class can be imported.
 
     				A Rotation using a quaternion.
     				The Rotation object can be created by:
@@ -220,7 +244,7 @@ class Rotation(FreeCAD.PyObjectBase):
     				   3-characher string of capital letters 'X', 'Y', 'Z' that sets the
     				   order of importance of the axes (e.g., 'ZXY' means z direction is
     				   followed strictly, x is used but corrected if necessary, y is ignored).
-    			"""
+    """
 
     @typing.overload
     def __init__(self): ...
@@ -255,7 +279,7 @@ class Rotation(FreeCAD.PyObjectBase):
     @typing.overload
     def __init__(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: FreeCAD.Vector, arg4: str = None, /):
         """
-        				A Rotation using a quaternion.
+        A Rotation using a quaternion.
         				The Rotation object can be created by:
         				-- an empty parameter list
         				-- a Rotation object
@@ -270,7 +294,7 @@ class Rotation(FreeCAD.PyObjectBase):
         				   3-characher string of capital letters 'X', 'Y', 'Z' that sets the
         				   order of importance of the axes (e.g., 'ZXY' means z direction is
         				   followed strictly, x is used but corrected if necessary, y is ignored).
-        			"""
+        """
 
     @property
     def Angle(self) -> float:
@@ -299,72 +323,72 @@ class Rotation(FreeCAD.PyObjectBase):
 
     def invert(self):
         """
-                            invert() -> None
+        invert() -> None
                             Sets the rotation to its inverse
-        				"""
+        """
 
     def inverted(self):
         """
-                            inverted() -> Rotation
+        inverted() -> Rotation
                             Returns the inverse of the rotation
-                        """
+        """
 
     def isIdentity(self):
         """
-                            isIdentity() -> Bool
+        isIdentity() -> Bool
                             returns True if the rotation equals the unity matrix
-                        """
+        """
 
     def isNull(self):
         """
-        					isNull() -> Bool
+        isNull() -> Bool
                             returns True if all Q values are zero
-        				"""
+        """
 
     def isSame(self, Rotation: FreeCAD.Rotation, tolerance: float = 0, /):
         """
-                            isSame(Rotation, [tolerance=0])
+        isSame(Rotation, [tolerance=0])
                             Checks if the two quaternions perform the same rotation.
                             Optionally, a tolerance value greater than zero can be passed.
-                        """
+        """
 
     def multVec(self, Vector: FreeCAD.Vector, /):
         """
-        					multVec(Vector) -> Vector
+        multVec(Vector) -> Vector
         					Compute the transformed vector using the rotation
-        				"""
+        """
 
     def multiply(self, Rotation: FreeCAD.Rotation, /):
         """
-        					multiply(Rotation)
+        multiply(Rotation)
         					Multiply this quaternion with another quaternion
-        				"""
+        """
 
     def slerp(self, Rotation: FreeCAD.Rotation, Float: float, /):
         """
-        					slerp(Rotation, Float) -> Rotation
+        slerp(Rotation, Float) -> Rotation
         					Spherical linear interpolation of this and a given rotation. The float must be in the range of 0 and 1
-        				"""
+        """
 
     def toEuler(self):
         """
-        					toEuler() -> list
+        toEuler() -> list
         					Get the Euler angles of this rotation
         					as yaw-pitch-roll in XY'Z'' convention
-        				"""
+        """
 
     def toEulerAngles(self, seq: str = '', /):
         """
-        					toEulerAngles(seq='') -> list
+        toEulerAngles(seq='') -> list
                             Get the Euler angles in a given sequence for this rotation.
                             Call this function without arguments to output all possible values of 'seq'.
-        				"""
+        """
 
     def toMatrix(self):
         """
-        					toMatrix()
+        toMatrix()
         					convert the rotation to a matrix representation
-        				"""
+        """
 
     def __eq__(self, other) -> bool: ...
 
@@ -428,22 +452,25 @@ class Persistence(FreeCAD.BaseClass):
         """Memory size of the object in byte"""
 
     def dumpContent(self, Compression: int = 1-9):
-        """Dumps the content of the object, both the XML representation as well as the additional datafiles  
+        """
+        Dumps the content of the object, both the XML representation as well as the additional datafiles  
         required, into a byte representation. It will be returned as byte array.
         dumpContent() -- returns a byte array with full content
         dumpContent(Compression=1-9) -- Sets the data compression from 0 (no) to 9 (max)
-                        """
+        """
 
     def restoreContent(self, buffer: object, /):
-        """Restore the content of the object from a byte representation as stored by "dumpContent".
+        """
+        Restore the content of the object from a byte representation as stored by "dumpContent".
         It could be restored from any python object implementing the buffer protocol.
         restoreContent(buffer) -- restores from the given byte array
-                        """
+        """
 
 
 # BoundBoxPy.xml
 class BoundBox(FreeCAD.PyObjectBase):
-    """This class can be imported.
+    """
+    This class can be imported.
     Bound box class
     A bounding box is an orthographic cube which is a way to describe outer boundaries.
     You get a bounding box from a lot of 3D types. It is often used to check if a 3D
@@ -455,7 +482,7 @@ class BoundBox(FreeCAD.PyObjectBase):
     App.BoundBox(Tuple, Tuple)
     App.BoundBox(Vector, Vector)
     App.BoundBox(BoundBox)
-    	  """
+    """
 
     @typing.overload
     def __init__(self, Xmin: float, Ymin: float = None, Zmin: float = None, Xmax: float = None, Ymax: float = None, Zmax: float = None, /): ...
@@ -474,7 +501,8 @@ class BoundBox(FreeCAD.PyObjectBase):
 
     @typing.overload
     def __init__(self, BoundBox: FreeCAD.BoundBox, /):
-        """Bound box class
+        """
+        Bound box class
         A bounding box is an orthographic cube which is a way to describe outer boundaries.
         You get a bounding box from a lot of 3D types. It is often used to check if a 3D
         entity lies in the range of another object. Checking for bounding interference first
@@ -485,7 +513,7 @@ class BoundBox(FreeCAD.PyObjectBase):
         App.BoundBox(Tuple, Tuple)
         App.BoundBox(Vector, Vector)
         App.BoundBox(BoundBox)
-        	  """
+        """
 
     @property
     def Center(self) -> object:
@@ -557,55 +585,67 @@ class BoundBox(FreeCAD.PyObjectBase):
 
     @typing.overload
     def add(self, BoundBox: FreeCAD.BoundBox, /):
-        """method add(BoundBox)
-        Add (enlarge) the given BoundBox"""
+        """
+        method add(BoundBox)
+        Add (enlarge) the given BoundBox
+        """
 
     @typing.overload
     def closestPoint(self, Vector: tuple, /): ...
 
     @typing.overload
     def closestPoint(self, Vector: FreeCAD.Vector, /):
-        """method closestPoint(Vector)
+        """
+        method closestPoint(Vector)
         Get the closest point of the bounding box to the given point
-                """
+        """
 
     def enlarge(self, Float: float, /):
-        """method enlarge(Float)
+        """
+        method enlarge(Float)
         Enlarge the BoundBox by the given value in each direction.
-        A negative value shrinks the box."""
+        A negative value shrinks the box.
+        """
 
     def getEdge(self, Int: int, /):
-        """method getEdge(Int)
+        """
+        method getEdge(Int)
         Get the edge points of the given index. The index must be in the range of [0,11]
-                """
+        """
 
     def getIntersectionPoint(self, Vector_Base: FreeCAD.Vector, Vector_Dir: FreeCAD.Vector, float_epsilon: float = 0.0001, /):
-        """method Vector getIntersectionPoint(Vector Base, Vector Dir, [float epsilon=0.0001])
+        """
+        method Vector getIntersectionPoint(Vector Base, Vector Dir, [float epsilon=0.0001])
         Calculate the intersection point of a line with the BoundBox
         The Base point must lie inside the bounding box, if not an
         exception is thrown.
-        			  """
+        """
 
     def getPoint(self, Int: int, /):
-        """method getPoint(Int)
+        """
+        method getPoint(Int)
         Get the point of the given index. The index must be in the range of [0,7]
-                """
+        """
 
     def intersect(self, BoundBox_Vector_Base: FreeCAD.Vector, Vector_Dir: FreeCAD.Vector, /):
-        """method intersect(BoundBox|Vector Base, Vector Dir)
+        """
+        method intersect(BoundBox|Vector Base, Vector Dir)
         Checks if the given object intersects with the BoundBox. That can be:
         - Another BoundBox
         - A line, specified by Base and Dir
-        		"""
+        """
 
     def intersected(self, BoundBox: FreeCAD.BoundBox, /):
-        """method intersected(BoundBox)
+        """
+        method intersected(BoundBox)
         Returns the intersection of this and the given bounding box.
-        		"""
+        """
 
     def isCutPlane(self, Vector_Base: FreeCAD.Vector, Vector_Normal: FreeCAD.Vector, /):
-        """method bool isCutPlane(Vector Base, Vector Normal)
-        Check if the plane specified by Base and Normal intersects (cuts) the BoundBox"""
+        """
+        method bool isCutPlane(Vector Base, Vector Normal)
+        Check if the plane specified by Base and Normal intersects (cuts) the BoundBox
+        """
 
     @typing.overload
     def isInside(self, Vector_Base_BoundBox_box: tuple, /): ...
@@ -616,46 +656,55 @@ class BoundBox(FreeCAD.PyObjectBase):
     @typing.overload
     def isInside(self, Vector_Base_BoundBox_box: FreeCAD.BoundBox, /):
         """
-        					method bool isInside(Vector Base|BoundBox box)
+        method bool isInside(Vector Base|BoundBox box)
         Check if the point or bounding box is inside this bounding box
-        				"""
+        """
 
     def isValid(self):
-        """method isValid()
-        Checks if the bounding box is valid"""
+        """
+        method isValid()
+        Checks if the bounding box is valid
+        """
 
     @typing.overload
     def move(self, Vector: tuple, /): ...
 
     @typing.overload
     def move(self, Vector: FreeCAD.Vector, /):
-        """ method move(Vector)
+        """
+        method move(Vector)
         Move the BoundBox by the given vector
-        			  """
+        """
 
     def scale(self, x: float, y: float, z: float, /):
-        """ method scale(x,y,z)
+        """
+        method scale(x,y,z)
         Scale the BoundBox by the given values in x, y and z
-        			  """
+        """
 
     def setVoid(self):
-        """method setVoid()
-        Invalidate the bounding box"""
+        """
+        method setVoid()
+        Invalidate the bounding box
+        """
 
     def transformed(self, Matrix: FreeCAD.Matrix, /):
-        """ method transformed(Matrix)
+        """
+        method transformed(Matrix)
         Return a new bounding box with the transformed corner of this bounding box
-        			  """
+        """
 
     def united(self, BoundBox: FreeCAD.BoundBox, /):
-        """method united(BoundBox)
+        """
+        method united(BoundBox)
         Returns the union of this and the given bounding box.
-        		"""
+        """
 
 
 # PlacementPy.xml
 class Placement(FreeCAD.PyObjectBase):
-    """This class can be imported.
+    """
+    This class can be imported.
     Placement
     A placement defines an orientation (rotation) and a position (base) in 3D space.
     It is used when no scaling or other distortion is needed.
@@ -667,7 +716,7 @@ class Placement(FreeCAD.PyObjectBase):
     Placement(Base, Rotation) -- define position and rotation
     Placement(Base, Rotation,Center) -- define position and rotation with center
     Placement(Base, Axis, Angle) -- define position and rotation
-    		"""
+    """
 
     @typing.overload
     def __init__(self): ...
@@ -698,7 +747,8 @@ class Placement(FreeCAD.PyObjectBase):
 
     @typing.overload
     def __init__(self, Base: FreeCAD.Vector, Axis: FreeCAD.Rotation, Angle: FreeCAD.Vector, /):
-        """Placement
+        """
+        Placement
         A placement defines an orientation (rotation) and a position (base) in 3D space.
         It is used when no scaling or other distortion is needed.
 
@@ -709,7 +759,7 @@ class Placement(FreeCAD.PyObjectBase):
         Placement(Base, Rotation) -- define position and rotation
         Placement(Base, Rotation,Center) -- define position and rotation with center
         Placement(Base, Axis, Angle) -- define position and rotation
-        		"""
+        """
 
     @property
     def Base(self) -> FreeCAD.Vector:
@@ -734,78 +784,78 @@ class Placement(FreeCAD.PyObjectBase):
 
     def copy(self):
         """
-                            copy()
+        copy()
                             Returns a copy of this Placement
-                        """
+        """
 
     def inverse(self):
         """
-        					inverse() -> Placement
+        inverse() -> Placement
         					compute the inverse placement
-        				"""
+        """
 
     def isIdentity(self):
         """
-                            isIdentity() -> Bool
+        isIdentity() -> Bool
         					returns True if the placement has no displacement and no rotation
-        				"""
+        """
 
     def move(self, Vector: FreeCAD.Vector, /):
         """
-        					move(Vector) 
+        move(Vector) 
         					Move the placement along the vector
-        				"""
+        """
 
     def multVec(self, arg1: FreeCAD.Vector, /):
         """
-        					multVector(Vector) -> Vector
+        multVector(Vector) -> Vector
         					Compute the transformed vector using the placement
-        				"""
+        """
 
     def multiply(self, Placement: FreeCAD.Placement, /):
         """
-        					multiply(Placement)
+        multiply(Placement)
         					Multiply this placement with another placement
-        				"""
+        """
 
     def pow(self, t: float, shorten: bool = True, /):
         """
-        					pow(t, shorten = true): raise this placement to real power using ScLERP interpolation.
+        pow(t, shorten = true): raise this placement to real power using ScLERP interpolation.
                             If 'shorten' is true, ensures rotation quaternion is net positive, to make the path shorter.
                             Also available as ** operator.
-        				"""
+        """
 
     def rotate(self, center: object, axis: object, degree: float, /):
         """
-                        rotate(center,axis,degree) - rotate the current placement around center and axis with degree
+        rotate(center,axis,degree) - rotate the current placement around center and axis with degree
                         This method is compatible with TopoShape.rotate()
-                    """
+        """
 
     def sclerp(self, placement2: FreeCAD.Placement, t: float, shorten: bool = True, /):
         """
-                            sclerp(placement2, t, shorten = True): interpolate between self and placement2.
+        sclerp(placement2, t, shorten = True): interpolate between self and placement2.
                             Interpolation is a continuous motion along a helical path, made of equal transforms if discretized.
                             t = 0.0 - return self. t = 1.0 - return placement2. t can also be outside of 0..1 range, for extrapolation.
                             If quaternions of rotations of the two placements differ in sign, the interpolation will 
                              take a long path. If 'shorten' is true, the signs are harmonized before interpolation, and the 
                              interpolation takes the shorter path.
-        				"""
+        """
 
     def slerp(self, arg1: FreeCAD.Placement, arg2: float, /):
         """
-        					slerp(placement2, t, shorten = True): interpolate between self and placement2.
+        slerp(placement2, t, shorten = True): interpolate between self and placement2.
                             This function performs independent interpolation of rotation and movement.
                             Result of such interpolation might be not what application expects, thus this
                             tool might be considered for simple cases or for interpolating between small intervals.
                     
                             For more complex cases you better use the advanced sclerp() function.
-        				"""
+        """
 
     def toMatrix(self):
         """
-        					toMatrix()
+        toMatrix()
         					convert the placement to a matrix representation
-        				"""
+        """
 
     @typing.overload
     def translate(self, Vector): ...
@@ -813,9 +863,9 @@ class Placement(FreeCAD.PyObjectBase):
     @typing.overload
     def translate(self):
         """
-        					translate(Vector) 
+        translate(Vector) 
         					alias to move(), to be compatible with TopoShape.translate()
-        				"""
+        """
 
     def __eq__(self, other) -> bool: ...
 
@@ -868,7 +918,8 @@ class Placement(FreeCAD.PyObjectBase):
 
 # UnitPy.xml
 class Unit(FreeCAD.PyObjectBase):
-    """This class can be imported.
+    """
+    This class can be imported.
 
      Unit
      defines a unit type, calculate and compare.
@@ -879,7 +930,7 @@ class Unit(FreeCAD.PyObjectBase):
      Unit(Quantity)                -- copy unit from Quantity
      Unit(Unit)                    -- copy constructor
      Unit(string)                  -- parse the string for units
-            """
+    """
 
     @typing.overload
     def __init__(self, i1: int = None, i2: int = None, i3: int = None, i4: int = None, i5: int = None, i6: int = None, i7: int = None, i8: int = None, /): ...
@@ -911,7 +962,7 @@ class Unit(FreeCAD.PyObjectBase):
     @typing.overload
     def __init__(self, string: str, /):
         """
-         Unit
+        Unit
          defines a unit type, calculate and compare.
 
          The following constructors are supported:
@@ -920,7 +971,7 @@ class Unit(FreeCAD.PyObjectBase):
          Unit(Quantity)                -- copy unit from Quantity
          Unit(Unit)                    -- copy constructor
          Unit(string)                  -- parse the string for units
-                """
+        """
 
     @property
     def Signature(self) -> tuple:
@@ -981,7 +1032,8 @@ class Unit(FreeCAD.PyObjectBase):
 
 # QuantityPy.xml
 class Quantity(FreeCAD.PyObjectBase):
-    """This class can be imported.
+    """
+    This class can be imported.
     Quantity
     defined by a value and a unit.
 
@@ -991,7 +1043,7 @@ class Quantity(FreeCAD.PyObjectBase):
     Quantity(Value,Unit) -- empty constructor
     Quantity(Quantity) -- copy constructor
     Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
-    		"""
+    """
 
     @typing.overload
     def __init__(self, Value: FreeCAD.Quantity, /): ...
@@ -1016,7 +1068,8 @@ class Quantity(FreeCAD.PyObjectBase):
 
     @typing.overload
     def __init__(self, string: str, /):
-        """Quantity
+        """
+        Quantity
         defined by a value and a unit.
 
         The following constructors are supported:
@@ -1025,7 +1078,7 @@ class Quantity(FreeCAD.PyObjectBase):
         Quantity(Value,Unit) -- empty constructor
         Quantity(Quantity) -- copy constructor
         Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
-        		"""
+        """
 
     @property
     def Format(self) -> dict:
@@ -1091,7 +1144,7 @@ class Quantity(FreeCAD.PyObjectBase):
     @typing.overload
     def getValueAs(self, Unit_0_1_0_0_0_0_0_0_: str, /):
         """
-                  returns a floating point value as the provided unit
+        returns a floating point value as the provided unit
 
                   Following parameters are allowed:
                   getValueAs('m/s')  # unit string to parse
@@ -1099,14 +1152,14 @@ class Quantity(FreeCAD.PyObjectBase):
                   getValueAs(FreeCAD.Units.Pascal) # predefined standard units 
                   getValueAs(Qantity('N/m^2')) # a quantity
                   getValueAs(Unit(0,1,0,0,0,0,0,0)) # a unit
-                """
+        """
 
     def toStr(self, decimals: int = None, /):
         """
-                  toStr([decimals])
+        toStr([decimals])
                   returns a string representation rounded to number of decimals. If no decimals are specified then
                   the internal precision is used
-                """
+        """
 
     def __eq__(self, other) -> bool: ...
 
@@ -1178,8 +1231,10 @@ class BaseClass(FreeCAD.PyObjectBase):
 
 # MatrixPy.xml
 class Matrix(FreeCAD.PyObjectBase):
-    """This class can be imported.
-    A 4x4 Matrix"""
+    """
+    This class can be imported.
+    A 4x4 Matrix
+    """
 
     @typing.overload
     def __init__(self, arg1: float = None, arg2: float = None, arg3: float = None, arg4: float = None, arg5: float = None, arg6: float = None, arg7: float = None, arg8: float = None, arg9: float = None, arg10: float = None, arg11: float = None, arg12: float = None, arg13: float = None, arg14: float = None, arg15: float = None, arg16: float = None, /): ...
@@ -1311,31 +1366,31 @@ class Matrix(FreeCAD.PyObjectBase):
         """
         analyze() -> string
         Analyzes the type of transformation.
-                """
+        """
 
     def determinant(self):
         """
         determinant() -> Float
         Compute the determinant of the matrix
-                """
+        """
 
     def hasScale(self, tol: float = None, /):
         """
         hasScale(tol=None)
         Return 0 is no scale factor, 1 for uniform scaling, -1 for non-uniform scaling.
-                """
+        """
 
     def inverse(self):
         """
         inverse() -> Matrix
         Compute the inverse matrix, if possible
-                """
+        """
 
     def invert(self):
         """
         invert() -> None
         Compute the inverse matrix, if possible
-                """
+        """
 
     def isOrthogonal(self, Float: float = None, /):
         """
@@ -1343,7 +1398,7 @@ class Matrix(FreeCAD.PyObjectBase):
         Checks if the matrix is orthogonal, i.e. M * M^T = k*I and returns
         the multiple of the identity matrix. If it's not orthogonal 0 is returned.
         As argument you can set a tolerance which by default is 1.0e-6.
-                """
+        """
 
     @typing.overload
     def move(self, Vector: tuple, /): ...
@@ -1353,13 +1408,13 @@ class Matrix(FreeCAD.PyObjectBase):
         """
         move(Vector)
         Move the matrix along the vector
-                """
+        """
 
     def multVec(self, Vector: FreeCAD.Vector, /):
         """
         multVec(Vector) -> Vector
         Compute the transformed vector using the matrix
-                """
+        """
 
     @typing.overload
     def multiply(self, Matrix_Vector: FreeCAD.Matrix, /): ...
@@ -1369,7 +1424,7 @@ class Matrix(FreeCAD.PyObjectBase):
         """
         multiply(Matrix|Vector)
         Multiply a matrix or vector with this matrix
-                """
+        """
 
     @typing.overload
     def rotateX(self, float: FreeCAD.Quantity, /): ...
@@ -1400,13 +1455,13 @@ class Matrix(FreeCAD.PyObjectBase):
         """
         scale(Vector)
         Scale the matrix with the vector
-                """
+        """
 
     def submatrix(self, int: int, /):
         """
         submatrix(int) -> Matrix
         Get the sub-matrix. The parameter must be in the range [1,4].
-                """
+        """
 
     def transform(self, Vector: FreeCAD.Vector, Matrix: FreeCAD.Matrix, /):
         """transform(Vector,Matrix) - return the dot product of the two vectors"""
@@ -1414,14 +1469,14 @@ class Matrix(FreeCAD.PyObjectBase):
     def transpose(self):
         """
         transpose() -> None
-        Transpose the matrix. 
-                """
+        Transpose the matrix.
+        """
 
     def transposed(self):
         """
         transposed() -> Matrix
         Returns a transposed copy of this matrix.
-                """
+        """
 
     def unity(self):
         """unity() - make this matrix to unity"""
@@ -1477,8 +1532,7 @@ class Matrix(FreeCAD.PyObjectBase):
 
 # CoordinateSystemPy.xml
 class CoordinateSystem(FreeCAD.PyObjectBase):
-    """This class can be imported.
-    """
+    """This class can be imported."""
 
     @property
     def Axis(self) -> FreeCAD.Vector:
@@ -1516,41 +1570,50 @@ class CoordinateSystem(FreeCAD.PyObjectBase):
     def ZDirection(self, value: object): ...
 
     def displacement(self, CoordinateSystem: FreeCAD.CoordinateSystem, /):
-        """displacement(CoordinateSystem)
-        Computes the placement from this to the passed coordinate system"""
+        """
+        displacement(CoordinateSystem)
+        Computes the placement from this to the passed coordinate system
+        """
 
     @typing.overload
     def setAxes(self, Axis_or_Vector_z: FreeCAD.Axis, Vector_x: FreeCAD.Vector, /): ...
 
     @typing.overload
     def setAxes(self, Axis_or_Vector_z: FreeCAD.Vector, Vector_x: FreeCAD.Vector, /):
-        """setAxes(Axis or Vector z, Vector x)
-        Set axis or z direction and x direction"""
+        """
+        setAxes(Axis or Vector z, Vector x)
+        Set axis or z direction and x direction
+        """
 
     def setPlacement(self, arg1: FreeCAD.Placement, /):
-        """setPlacment(Placement)
+        """
+        setPlacment(Placement)
         Set placement to the coordinate system.
-                """
+        """
 
     @typing.overload
     def transform(self, Rotation_or_Placement: FreeCAD.Placement, /): ...
 
     @typing.overload
     def transform(self, Rotation_or_Placement: FreeCAD.Rotation, /):
-        """transform(Rotation or Placement)
+        """
+        transform(Rotation or Placement)
         Applies the rotation or placement on this coordinate system
-                """
+        """
 
     def transformTo(self, Vector: FreeCAD.Vector, /):
-        """transformTo(Vector)
+        """
+        transformTo(Vector)
         Computes the coordinates of the point in coordinates of this system
-                """
+        """
 
 
 # TypePy.xml
 class TypeId(FreeCAD.PyObjectBase):
-    """This class can be imported.
-    This is the Type class"""
+    """
+    This class can be imported.
+    This is the Type class
+    """
 
     @property
     def Key(self) -> int:
@@ -1615,7 +1678,8 @@ class TypeId(FreeCAD.PyObjectBase):
 
 # AxisPy.xml
 class Axis(FreeCAD.PyObjectBase):
-    """This class can be imported.
+    """
+    This class can be imported.
     Axis
     An defines a direction and a position (base) in 3D space.
 
@@ -1623,7 +1687,7 @@ class Axis(FreeCAD.PyObjectBase):
     Axis() -- empty constructor
     Axis(Axis) -- copy constructor
     Axis(Base, Direction) -- define position and direction
-    		"""
+    """
 
     @typing.overload
     def __init__(self): ...
@@ -1633,14 +1697,15 @@ class Axis(FreeCAD.PyObjectBase):
 
     @typing.overload
     def __init__(self, Base: FreeCAD.Vector, Direction: object, /):
-        """Axis
+        """
+        Axis
         An defines a direction and a position (base) in 3D space.
 
         The following constructors are supported:
         Axis() -- empty constructor
         Axis(Axis) -- copy constructor
         Axis(Base, Direction) -- define position and direction
-        		"""
+        """
 
     @property
     def Base(self) -> object:
@@ -1658,24 +1723,24 @@ class Axis(FreeCAD.PyObjectBase):
 
     def copy(self):
         """
-                            copy()
+        copy()
                             Returns a copy of this Axis
-                        """
+        """
 
     def move(self, Vector: FreeCAD.Vector, /):
         """
-        					move(Vector)
+        move(Vector)
         					Move the axis base along the vector
-        				"""
+        """
 
     def multiply(self, Placement: FreeCAD.Placement, /):
         """
-        					multiply(Placement)
+        multiply(Placement)
         					Multiply this axis with a placement
-        				"""
+        """
 
     def reversed(self):
         """
-        					reversed() -> Axis
+        reversed() -> Axis
         					compute the reversed axis
-        				"""
+        """

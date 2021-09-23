@@ -3,8 +3,10 @@ import FreeCAD
 
 # MeasurementPy.xml
 class Measurement(FreeCAD.BaseClass):
-    """This class can be imported.
-    Make a measurement"""
+    """
+    This class can be imported.
+    Make a measurement
+    """
 
     def addReference3D(self, arg1: str, arg2: str, /):
         """add a geometric reference"""

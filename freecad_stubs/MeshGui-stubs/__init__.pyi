@@ -34,8 +34,10 @@ class ViewProviderMesh(FreeCADGui.ViewProviderDocumentObject):
         """
         Property group: Object Style.
         Property TypeId: App::PropertyEnumeration.
+
         Set if the illumination comes from two sides
          or one side in the 3D view.
+        .
         """
 
     @Lighting.setter
@@ -103,9 +105,10 @@ class ViewProviderMesh(FreeCADGui.ViewProviderDocumentObject):
         """Clear the selection"""
 
     def highlightSegments(self, arg1: object, /):
-        """Highlights the segments of a mesh with a given list of colors.
+        """
+        Highlights the segments of a mesh with a given list of colors.
         The number of elements of this list must be equal to the number of mesh segments.
-                        """
+        """
 
     def invertSelection(self):
         """Invert the selection"""

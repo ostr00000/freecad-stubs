@@ -7,8 +7,10 @@ import Part
 
 # FemMeshPy.xml
 class FemMesh(FreeCAD.ComplexGeoData):
-    """This class can be imported.
-    FemMesh class"""
+    """
+    This class can be imported.
+    FemMesh class
+    """
 
     def __init__(self, arg1: object = None, /):
         """FemMesh class"""
@@ -116,22 +118,24 @@ class FemMesh(FreeCAD.ComplexGeoData):
         """Add a face by setting three node indices."""
 
     def addGroup(self, name: str, typestring: str, id: int = None, /):
-        """Add a group to mesh with specific name and type
+        """
+        Add a group to mesh with specific name and type
                             addGroup(name, typestring, [id])
                             name: string
                             typestring: "All", "Node", "Edge", "Face", "Volume", "0DElement", "Ball"
                             id: int
                             Optional id is used to force specific id for group, but does
                             not work, yet.
-                        """
+        """
 
     def addGroupElements(self, groupid: int, list_of_elements: list, /):
-        """Add a tuple of ElementIDs to a given group ID
+        """
+        Add a tuple of ElementIDs to a given group ID
                             addGroupElements(groupid, list_of_elements)
                             groupid: int
                             list_of_elements: list of int
                             Notice that the elements have to be in the mesh.
-                        """
+        """
 
     def addHypothesis(self, arg1: object, arg2: Part.Shape = None, /):
         """Add hypothesis"""
@@ -205,16 +209,19 @@ class FemMesh(FreeCAD.ComplexGeoData):
         """Return a dict of volume IDs and ccx face numbers which belong to a TopoFace"""
 
     def read(self, file_endingToExportTo: str, /):
-        """Read in a various FEM mesh file formats.
+        """
+        Read in a various FEM mesh file formats.
                             read(file.endingToExportTo)
-                            supported formats: DAT, INP, MED, STL, UNV, VTK, Z88"""
+                            supported formats: DAT, INP, MED, STL, UNV, VTK, Z88
+        """
 
     def removeGroup(self, groupid: int, /):
-        """Remove a group with a given group ID
+        """
+        Remove a group with a given group ID
                             removeGroup(groupid)
                             groupid: int
                             Returns boolean.
-                        """
+        """
 
     def setShape(self, arg1: Part.Shape, /):
         """Set the Part shape to mesh"""
@@ -226,17 +233,19 @@ class FemMesh(FreeCAD.ComplexGeoData):
         """Use a Placement object to perform a translation or rotation"""
 
     def write(self, file_endingToExportTo: str, /):
-        """Write out various FEM mesh file formats.
+        """
+        Write out various FEM mesh file formats.
                             write(file.endingToExportTo)
                             supported formats: BDF, DAT, INP, MED, STL, UNV, VTK, Z88
-                        """
+        """
 
     def writeABAQUS(self, file: str, int_elemParam: int, bool_groupParam: bool, /):
-        """Write out as ABAQUS inp
+        """
+        Write out as ABAQUS inp
                             writeABAQUS(file, int elemParam, bool groupParam)
                             elemParam: 0 = all elements, 1 = highest elements only, 2 = FEM elements only (only edges not belonging to faces and faces not belonging to volumes)
                             groupParam: true = write group data, false = do not write group data
-                        """
+        """
 
 
 # FemPostPipelinePy.xml

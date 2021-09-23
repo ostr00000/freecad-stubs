@@ -9,10 +9,14 @@ def openBrowserWindow(arg1: str = None, /): ...
 
 
 def open(arg1: str, /):
-    """open(htmlcode,baseurl,[title,iconpath])
-    Load a local (X)HTML file."""
+    """
+    open(htmlcode,baseurl,[title,iconpath])
+    Load a local (X)HTML file.
+    """
 
 
 def insert(string: str, /):
-    """insert(string)
-    Load a local (X)HTML file."""
+    """
+    insert(string)
+    Load a local (X)HTML file.
+    """

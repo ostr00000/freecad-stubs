@@ -7,45 +7,33 @@ import Part.Geom2d
 
 # Curve2dPy.xml
 class Curve2d(Part.Geom2d.Geometry2d):
-    """
-                    The abstract class Geom2dCurve is the root class of all curve objects.
-    			"""
+    """The abstract class Geom2dCurve is the root class of all curve objects."""
 
     @property
     def Closed(self) -> bool:
-        """
-                            Returns true if the curve is closed.
-                        """
+        """Returns true if the curve is closed."""
 
     @property
     def Continuity(self) -> str:
-        """
-        					Returns the global continuity of the curve.
-        				"""
+        """Returns the global continuity of the curve."""
 
     @property
     def FirstParameter(self) -> float:
-        """
-        					Returns the value of the first parameter.
-        				"""
+        """Returns the value of the first parameter."""
 
     @property
     def LastParameter(self) -> float:
-        """
-        					Returns the value of the last parameter.
-        				"""
+        """Returns the value of the last parameter."""
 
     @property
     def Periodic(self) -> bool:
-        """
-                            Returns true if the curve is periodic.
-                        """
+        """Returns true if the curve is periodic."""
 
     def approximateBSpline(self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = 'C2', /):
         """
-        					Approximates a curve of any type to a B-Spline curve
+        Approximates a curve of any type to a B-Spline curve
         					approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -> B-Spline curve
-        				"""
+        """
 
     def centerOfCurvature(self, float_pos: float, /):
         """Vector = centerOfCurvature(float pos) - Get the center of curvature at the given parameter [First|Last] if defined"""
@@ -67,7 +55,8 @@ class Curve2d(Part.Geom2d.Geometry2d):
 
     @typing.overload
     def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None):
-        """Discretizes the curve and returns a list of points.
+        """
+        Discretizes the curve and returns a list of points.
         The function accepts keywords as argument:
         discretize(Number=n) => gives a list of 'n' equidistant points
         discretize(QuasiNumber=n) => gives a list of 'n' quasi equidistant points (is faster than the method above)
@@ -101,24 +90,28 @@ class Curve2d(Part.Geom2d.Geometry2d):
         """
 
     def intersectCC(self, arg1: Part.Geom2d.Curve2d, arg2: float = None, /):
-        """
-                            Returns all intersection points between this curve and the given curve.
-                        """
+        """Returns all intersection points between this curve and the given curve."""
 
     def length(self, uMin: float = None, uMax: float = None, Tol: float = None, /):
-        """Computes the length of a curve
-        length([uMin,uMax,Tol]) -> Float"""
+        """
+        Computes the length of a curve
+        length([uMin,uMax,Tol]) -> Float
+        """
 
     def normal(self, pos: float, /):
         """Vector = normal(pos) - Get the normal vector at the given parameter [First|Last] if defined"""
 
     def parameter(self, arg1: object, /):
-        """Returns the parameter on the curve
-        of the nearest orthogonal projection of the point."""
+        """
+        Returns the parameter on the curve
+        of the nearest orthogonal projection of the point.
+        """
 
     def parameterAtDistance(self, abscissa: float, startingParameter: float = None, /):
-        """Returns the parameter on the curve of a point at the given distance from a starting parameter. 
-        parameterAtDistance([abscissa, startingParameter]) -> Float the"""
+        """
+        Returns the parameter on the curve of a point at the given distance from a starting parameter. 
+        parameterAtDistance([abscissa, startingParameter]) -> Float the
+        """
 
     def reverse(self):
         """Changes the direction of parametrization of the curve."""
@@ -128,9 +121,9 @@ class Curve2d(Part.Geom2d.Geometry2d):
 
     def toBSpline(self, Float: float = None, Float2: float = None, /):
         """
-        					Converts a curve of any type (only part from First to Last)
+        Converts a curve of any type (only part from First to Last)
         					toBSpline([Float=First, Float=Last]) -> B-Spline curve
-        				"""
+        """
 
     @typing.overload
     def toShape(self): ...
@@ -188,12 +181,12 @@ class ArcOfConic2d(Part.Geom2d.Curve2d):
     @property
     def Eccentricity(self) -> float:
         """
-                    returns the eccentricity value of the conic e.
+        returns the eccentricity value of the conic e.
                     e = 0 for a circle
                     0 < e < 1 for an ellipse  (e = 0 if MajorRadius = MinorRadius)
                     e > 1 for a hyperbola
                     e = 1 for a parabola
-                    """
+        """
 
     @property
     def Location(self) -> object:
@@ -224,12 +217,12 @@ class Conic2d(Part.Geom2d.Curve2d):
     @property
     def Eccentricity(self) -> float:
         """
-                    returns the eccentricity value of the conic e.
+        returns the eccentricity value of the conic e.
                     e = 0 for a circle
                     0 < e < 1 for an ellipse  (e = 0 if MajorRadius = MinorRadius)
                     e > 1 for a hyperbola
                     e = 1 for a parabola
-                    """
+        """
 
     @property
     def Location(self) -> object:
@@ -255,10 +248,12 @@ class Conic2d(Part.Geom2d.Curve2d):
 
 # Geometry2dPy.xml
 class Geometry2d(FreeCAD.PyObjectBase):
-    """The abstract class Geometry for 2D space is the root class of all geometric objects.
+    """
+    The abstract class Geometry for 2D space is the root class of all geometric objects.
     It describes the common behavior of these objects when:
     - applying geometric transformations to objects, and
-    - constructing objects by geometric transformation (including copying)."""
+    - constructing objects by geometric transformation (including copying).
+    """
 
     def copy(self):
         """Create a copy of this geometry"""
@@ -285,7 +280,8 @@ class Geometry2d(FreeCAD.PyObjectBase):
 
 # Circle2dPy.xml
 class Circle2d(Part.Geom2d.Conic2d):
-    """Describes a circle in 3D space
+    """
+    Describes a circle in 3D space
     To create a circle there are several ways:
     Part.Geom2d.Circle2d()
         Creates a default circle with center (0,0) and radius 1
@@ -301,7 +297,7 @@ class Circle2d(Part.Geom2d.Conic2d):
 
     Part.Geom2d.Circle2d(Point1,Point2,Point3)
         Creates a circle defined by three non-linear points
-       """
+    """
 
     @typing.overload
     def __init__(self): ...
@@ -317,7 +313,8 @@ class Circle2d(Part.Geom2d.Conic2d):
 
     @typing.overload
     def __init__(self, Point1: object, Point2: object, Point3: object):
-        """Describes a circle in 3D space
+        """
+        Describes a circle in 3D space
         To create a circle there are several ways:
         Part.Geom2d.Circle2d()
             Creates a default circle with center (0,0) and radius 1
@@ -333,7 +330,7 @@ class Circle2d(Part.Geom2d.Conic2d):
 
         Part.Geom2d.Circle2d(Point1,Point2,Point3)
             Creates a circle defined by three non-linear points
-           """
+        """
 
     @property
     def Radius(self) -> float:
@@ -364,7 +361,8 @@ class ArcOfParabola2d(Part.Geom2d.ArcOfConic2d):
 
 # Line2dSegmentPy.xml
 class Line2dSegment(Part.Geom2d.Curve2d):
-    """Describes a line segment in 2D space
+    """
+    Describes a line segment in 2D space
     To create a line there are several ways:
     Part.Geom2d.Line2dSegment()
         Creates a default line
@@ -373,7 +371,8 @@ class Line2dSegment(Part.Geom2d.Curve2d):
         Creates a copy of the given line
 
     Part.Geom2d.Line2dSegment(Point1,Point2)
-        Creates a line that goes through two given points"""
+        Creates a line that goes through two given points
+    """
 
     @typing.overload
     def __init__(self): ...
@@ -383,7 +382,8 @@ class Line2dSegment(Part.Geom2d.Curve2d):
 
     @typing.overload
     def __init__(self, Point1: object, Point2: object, /):
-        """Describes a line segment in 2D space
+        """
+        Describes a line segment in 2D space
         To create a line there are several ways:
         Part.Geom2d.Line2dSegment()
             Creates a default line
@@ -392,7 +392,8 @@ class Line2dSegment(Part.Geom2d.Curve2d):
             Creates a copy of the given line
 
         Part.Geom2d.Line2dSegment(Point1,Point2)
-            Creates a line that goes through two given points"""
+            Creates a line that goes through two given points
+        """
 
     @property
     def EndPoint(self) -> object:
@@ -414,7 +415,8 @@ class Line2dSegment(Part.Geom2d.Curve2d):
 
 # Ellipse2dPy.xml
 class Ellipse2d(Part.Geom2d.Conic2d):
-    """Describes an ellipse in 2D space
+    """
+    Describes an ellipse in 2D space
     				To create an ellipse there are several ways:
                     Part.Geom2d.Ellipse2d()
     					Creates an ellipse with major radius 2 and minor radius 1 with the
@@ -432,7 +434,7 @@ class Ellipse2d(Part.Geom2d.Conic2d):
                     Part.Geom2d.Ellipse2d(Center,MajorRadius,MinorRadius)
     					Creates an ellipse with major and minor radii MajorRadius and
                         MinorRadius
-    			"""
+    """
 
     @typing.overload
     def __init__(self): ...
@@ -445,7 +447,8 @@ class Ellipse2d(Part.Geom2d.Conic2d):
 
     @typing.overload
     def __init__(self, Center: object, MajorRadius: float, MinorRadius: float):
-        """Describes an ellipse in 2D space
+        """
+        Describes an ellipse in 2D space
         				To create an ellipse there are several ways:
                         Part.Geom2d.Ellipse2d()
         					Creates an ellipse with major radius 2 and minor radius 1 with the
@@ -463,7 +466,7 @@ class Ellipse2d(Part.Geom2d.Conic2d):
                         Part.Geom2d.Ellipse2d(Center,MajorRadius,MinorRadius)
         					Creates an ellipse with major and minor radii MajorRadius and
                             MinorRadius
-        			"""
+        """
 
     @property
     def Focal(self) -> float:
@@ -471,14 +474,17 @@ class Ellipse2d(Part.Geom2d.Conic2d):
 
     @property
     def Focus1(self) -> object:
-        """The first focus is on the positive side of the major axis of the ellipse;
-        the second focus is on the negative side."""
+        """
+        The first focus is on the positive side of the major axis of the ellipse;
+        the second focus is on the negative side.
+        """
 
     @property
     def Focus2(self) -> object:
-        """The first focus is on the positive side of the major axis of the ellipse;
+        """
+        The first focus is on the positive side of the major axis of the ellipse;
         the second focus is on the negative side.
-        					"""
+        """
 
     @property
     def MajorRadius(self) -> float:
@@ -546,7 +552,8 @@ class ArcOfHyperbola2d(Part.Geom2d.ArcOfConic2d):
 
 # Hyperbola2dPy.xml
 class Hyperbola2d(Part.Geom2d.Conic2d):
-    """Describes a hyperbola in 2D space
+    """
+    Describes a hyperbola in 2D space
                     To create a hyperbola there are several ways:
                     Part.Geom2d.Hyperbola2d()
                         Creates a hyperbola with major radius 2 and minor radius 1 with the
@@ -564,7 +571,7 @@ class Hyperbola2d(Part.Geom2d.Conic2d):
                     Part.Geom2d.Hyperbola2d(Center,MajorRadius,MinorRadius)
                         Creates a hyperbola with major and minor radii MajorRadius and
                         MinorRadius and located at Center
-    			"""
+    """
 
     @typing.overload
     def __init__(self): ...
@@ -577,7 +584,8 @@ class Hyperbola2d(Part.Geom2d.Conic2d):
 
     @typing.overload
     def __init__(self, Center: object, MajorRadius: float, MinorRadius: float):
-        """Describes a hyperbola in 2D space
+        """
+        Describes a hyperbola in 2D space
                         To create a hyperbola there are several ways:
                         Part.Geom2d.Hyperbola2d()
                             Creates a hyperbola with major radius 2 and minor radius 1 with the
@@ -595,7 +603,7 @@ class Hyperbola2d(Part.Geom2d.Conic2d):
                         Part.Geom2d.Hyperbola2d(Center,MajorRadius,MinorRadius)
                             Creates a hyperbola with major and minor radii MajorRadius and
                             MinorRadius and located at Center
-        			"""
+        """
 
     @property
     def Focal(self) -> float:
@@ -603,14 +611,17 @@ class Hyperbola2d(Part.Geom2d.Conic2d):
 
     @property
     def Focus1(self) -> object:
-        """The first focus is on the positive side of the major axis of the hyperbola;
-        the second focus is on the negative side."""
+        """
+        The first focus is on the positive side of the major axis of the hyperbola;
+        the second focus is on the negative side.
+        """
 
     @property
     def Focus2(self) -> object:
-        """The first focus is on the positive side of the major axis of the hyperbola;
+        """
+        The first focus is on the positive side of the major axis of the hyperbola;
         the second focus is on the negative side.
-        					"""
+        """
 
     @property
     def MajorRadius(self) -> float:
@@ -644,9 +655,11 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
 
     @property
     def FirstUKnotIndex(self) -> object:
-        """Returns the index in the knot array of the knot
+        """
+        Returns the index in the knot array of the knot
         corresponding to the first or last parameter
-        of this B-Spline curve."""
+        of this B-Spline curve.
+        """
 
     @property
     def KnotSequence(self) -> list:
@@ -654,25 +667,26 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
 
     @property
     def LastUKnotIndex(self) -> object:
-        """Returns the index in the knot array of the knot
+        """
+        Returns the index in the knot array of the knot
         corresponding to the first or last parameter
-        of this B-Spline curve."""
+        of this B-Spline curve.
+        """
 
     @property
     def MaxDegree(self) -> int:
-        """Returns the value of the maximum polynomial degree of any
-        B-Spline curve curve. This value is 25."""
+        """
+        Returns the value of the maximum polynomial degree of any
+        B-Spline curve curve. This value is 25.
+        """
 
     @property
     def NbKnots(self) -> int:
-        """
-        					Returns the number of knots of this B-Spline curve.
-        				"""
+        """Returns the number of knots of this B-Spline curve."""
 
     @property
     def NbPoles(self) -> int:
-        """Returns the number of poles of this B-Spline curve.
-        				"""
+        """Returns the number of poles of this B-Spline curve."""
 
     @property
     def StartPoint(self) -> object:
@@ -680,7 +694,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
 
     def approximate(self, Points: object, DegMax: int = None, Continuity: str = None, Tolerance: float = None, DegMin: int = None, ParamType: str = None, Parameters: object = None, LengthWeight: float = None, CurvatureWeight: float = None, TorsionWeight: float = None):
         """
-        					Replaces this B-Spline curve by approximating a set of points.
+        Replaces this B-Spline curve by approximating a set of points.
         					The function accepts keywords as arguments.
 
         					approximate2(Points = list_of_points)
@@ -708,16 +722,14 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
 
         					Note : Continuity of the spline defaults to C2. However, it may not be applied if
         					it conflicts with other parameters ( especially DegMax ).
-        				"""
+        """
 
     def buildFromPoles(self, arg1: object, arg2: bool = None, arg3: int = None, arg4: bool = None, /):
-        """
-        					Builds a B-Spline by a list of poles.
-        				"""
+        """Builds a B-Spline by a list of poles."""
 
     def buildFromPolesMultsKnots(self, poles: object, mults: object = None, knots: object = None, periodic: bool = None, degree: int = None, weights: object = None):
         """
-        				Builds a B-Spline by a lists of Poles, Mults, Knots.
+        Builds a B-Spline by a lists of Poles, Mults, Knots.
         				arguments: poles (sequence of Base.Vector), [mults , knots, periodic, degree, weights (sequence of float), CheckRational]
 
         				Examples:
@@ -740,7 +752,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         				r=Part.BSplineCurve()
         				r.buildFromPolesMultsKnots(poles,(1,1,1,1,1),(0,0.25,0.5,0.75,1),True,2,(1,0.8,0.7,0.2))
         				Part.show(r.toShape())
-        			"""
+        """
 
     @typing.overload
     def getCardinalSplineTangents(self, Points: object, Parameter: float): ...
@@ -756,13 +768,13 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         """Get all knots of the B-Spline curve."""
 
     def getMultiplicities(self):
-        """
-        					Returns the multiplicities table M of the knots of this B-Spline curve.
-        				"""
+        """Returns the multiplicities table M of the knots of this B-Spline curve."""
 
     def getMultiplicity(self, arg1: int, /):
-        """Returns the multiplicity of the knot of index
-        from the knots table of this B-Spline curve."""
+        """
+        Returns the multiplicity of the knot of index
+        from the knots table of this B-Spline curve.
+        """
 
     def getPole(self, arg1: int, /):
         """Get a pole of the B-Spline curve."""
@@ -774,11 +786,13 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         """Returns the table of poles and weights in homogeneous coordinates."""
 
     def getResolution(self, arg1: float, /):
-        """Computes for this B-Spline curve the parametric tolerance (UTolerance)
+        """
+        Computes for this B-Spline curve the parametric tolerance (UTolerance)
         for a given 3D tolerance (Tolerance3D).
         If f(t) is the equation of this B-Spline curve, the parametric tolerance
         ensures that:
-        |t1-t0| < UTolerance ===> |f(t1)-f(t0)| < Tolerance3D"""
+        |t1-t0| < UTolerance ===> |f(t1)-f(t0)| < Tolerance3D
+        """
 
     def getWeight(self, arg1: int, /):
         """Get a weight of the B-Spline curve."""
@@ -787,40 +801,43 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         """Get all weights of the B-Spline curve."""
 
     def increaseDegree(self, arg1: int, /):
-        """increase(Int=Degree)
+        """
+        increase(Int=Degree)
         Increases the degree of this B-Spline curve to Degree.
         As a result, the poles, weights and multiplicities tables
         are modified; the knots table is not changed. Nothing is
-        done if Degree is less than or equal to the current degree."""
+        done if Degree is less than or equal to the current degree.
+        """
 
     def increaseMultiplicity(self, int_start: int, int_end: int, int_mult: int = None, /):
         """
-        				increaseMultiplicity(int index, int mult)
+        increaseMultiplicity(int index, int mult)
         				increaseMultiplicity(int start, int end, int mult)
         				Increases multiplicity of knots up to mult.
 
         				index: the index of a knot to modify (1-based)
         				start, end: index range of knots to modify.
         				If mult is lower or equal to the current multiplicity nothing is done. If mult is higher than the degree the degree is used.
-        				"""
+        """
 
     def incrementMultiplicity(self, int_start: int, int_end: int, int_mult: int, /):
         """
-        				incrementMultiplicity(int start, int end, int mult)
+        incrementMultiplicity(int start, int end, int mult)
         				Raises multiplicity of knots by mult.
 
         				start, end: index range of knots to modify.
-        				"""
+        """
 
     def insertKnot(self, u: float, mult: int = 1, tol: float = 0.0, /):
         """
-        				insertKnot(u, mult = 1, tol = 0.0)
+        insertKnot(u, mult = 1, tol = 0.0)
         				Inserts a knot value in the sequence of knots. If u is an existing knot the
-        				multiplicity is increased by mult. """
+        				multiplicity is increased by mult.
+        """
 
     def insertKnots(self, list_of_floats: object, list_of_ints: object, tol: float = 0.0, bool_add: bool = True, /):
         """
-        				insertKnots(list_of_floats, list_of_ints, tol = 0.0, bool_add = True)
+        insertKnots(list_of_floats, list_of_ints, tol = 0.0, bool_add = True)
         				Inserts a set of knots values in the sequence of knots.
 
         				For each u = list_of_floats[i], mult = list_of_ints[i]
@@ -834,11 +851,11 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         				is limited to the degree.
 
         				The tolerance criterion for knots equality is the max of Epsilon(U) and ParametricTolerance.
-        				"""
+        """
 
     def interpolate(self, Points: object, PeriodicFlag: bool = None, Tolerance: float = None, InitialTangent: object = None, FinalTangent: object = None, Tangents: object = None, TangentFlags: object = None, Parameters: object = None):
         """
-        					Replaces this B-Spline curve by interpolating a set of points.
+        Replaces this B-Spline curve by interpolating a set of points.
         					The function accepts keywords as arguments.
 
         					interpolate(Points = list_of_points)
@@ -868,53 +885,52 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
 
         					Note : Continuity of the spline defaults to C2. However, if periodic, or tangents
         					are supplied, the continuity will drop to C1.
-        				"""
+        """
 
     def isClosed(self):
         """
-        					Returns true if the distance between the start point and end point of
+        Returns true if the distance between the start point and end point of
         					this B-Spline curve is less than or equal to gp::Resolution().
-        				"""
+        """
 
     def isPeriodic(self):
         """Returns true if this BSpline curve is periodic."""
 
     def isRational(self):
         """
-        					Returns true if this B-Spline curve is rational.
+        Returns true if this B-Spline curve is rational.
         					A B-Spline curve is rational if, at the time of construction,
         					the weight table has been initialized.
-        				"""
+        """
 
     def join(self, arg1: Part.Geom2d.BSplineCurve2d, /):
-        """
-        					Build a new spline by joining this and a second spline.
-        				"""
+        """Build a new spline by joining this and a second spline."""
 
     def makeC1Continuous(self, arg1: float = None, /):
         """
-        					makeC1Continuous(tol = 1e-6, ang_tol = 1e-7)
+        makeC1Continuous(tol = 1e-6, ang_tol = 1e-7)
         					Reduces as far as possible the multiplicities of the knots of this BSpline
         					(keeping the geometry). It returns a new BSpline, which could still be C0.
         					tol is a geometrical tolerance.
         					The tol_ang is angular tolerance, in radians. It sets tolerable angle mismatch
         					of the tangents on the left and on the right to decide if the curve is G1 or
         					not at a given point.
-        				"""
+        """
 
     def movePoint(self, U: float, P: object, Index1: int, Index2: int, /):
         """
-        				movePoint(U, P, Index1, Index2)
+        movePoint(U, P, Index1, Index2)
         				Moves the point of parameter U of this B-Spline curve to P.
         Index1 and Index2 are the indexes in the table of poles of this B-Spline curve
         of the first and last poles designated to be moved.
 
         Returns: (FirstModifiedPole, LastModifiedPole). They are the indexes of the
-        first and last poles which are effectively modified."""
+        first and last poles which are effectively modified.
+        """
 
     def removeKnot(self, Index: int, M: int, tol: float, /):
         """
-        					removeKnot(Index, M, tol)
+        removeKnot(Index, M, tol)
 
         					Reduces the multiplicity of the knot of index Index to M.
         					If M is equal to 0, the knot is removed.
@@ -928,12 +944,13 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
 
         					A low tolerance is used to prevent modification of the curve.
         					A high tolerance is used to 'smooth' the curve.
-        				"""
+        """
 
     def segment(self, u1: float, u2: float, /):
         """
-        					segment(u1,u2)
-        					Modifies this B-Spline curve by segmenting it."""
+        segment(u1,u2)
+        					Modifies this B-Spline curve by segmenting it.
+        """
 
     def setKnot(self, arg1: int, arg2: float, arg3: int = None, /):
         """Set a knot of the B-Spline curve."""
@@ -942,48 +959,54 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         """Set knots of the B-Spline curve."""
 
     def setNotPeriodic(self):
-        """Changes this B-Spline curve into a non-periodic curve.
-        If this curve is already non-periodic, it is not modified."""
+        """
+        Changes this B-Spline curve into a non-periodic curve.
+        If this curve is already non-periodic, it is not modified.
+        """
 
     def setOrigin(self, arg1: int, /):
-        """Assigns the knot of index Index in the knots table
+        """
+        Assigns the knot of index Index in the knots table
         as the origin of this periodic B-Spline curve. As a consequence,
-        the knots and poles tables are modified."""
+        the knots and poles tables are modified.
+        """
 
     def setPeriodic(self):
         """Changes this B-Spline curve into a periodic curve."""
 
     def setPole(self, arg1: int, arg2: object, arg3: float = None, /):
-        """Modifies this B-Spline curve by assigning P
-        to the pole of index Index in the poles table."""
+        """
+        Modifies this B-Spline curve by assigning P
+        to the pole of index Index in the poles table.
+        """
 
     def setWeight(self, arg1: int, arg2: float, /):
         """Set a weight of the B-Spline curve."""
 
     def toBezier(self):
-        """
-        					Build a list of Bezier splines.
-        				"""
+        """Build a list of Bezier splines."""
 
     def toBiArcs(self, tolerance: float, /):
         """
-        					Build a list of arcs and lines to approximate the B-spline.
+        Build a list of arcs and lines to approximate the B-spline.
         					toBiArcs(tolerance) -> list.
-        				"""
+        """
 
 
 # BezierCurve2dPy.xml
 class BezierCurve2d(Part.Geom2d.Curve2d):
     """
-                    Describes a rational or non-rational Bezier curve in 2d space:
+    Describes a rational or non-rational Bezier curve in 2d space:
     				-- a non-rational Bezier curve is defined by a table of poles (also called control points)
     				-- a rational Bezier curve is defined by a table of poles with varying weights
-    			"""
+    """
 
     @property
     def Degree(self) -> int:
-        """Returns the polynomial degree of this Bezier curve,
-        which is equal to the number of poles minus 1."""
+        """
+        Returns the polynomial degree of this Bezier curve,
+        which is equal to the number of poles minus 1.
+        """
 
     @property
     def EndPoint(self) -> object:
@@ -991,13 +1014,14 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
 
     @property
     def MaxDegree(self) -> int:
-        """Returns the value of the maximum polynomial degree of any
-        Bezier curve curve. This value is 25."""
+        """
+        Returns the value of the maximum polynomial degree of any
+        Bezier curve curve. This value is 25.
+        """
 
     @property
     def NbPoles(self) -> int:
-        """Returns the number of poles of this Bezier curve.
-        				"""
+        """Returns the number of poles of this Bezier curve."""
 
     @property
     def StartPoint(self) -> object:
@@ -1010,11 +1034,13 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
         """Get all poles of the Bezier curve."""
 
     def getResolution(self, arg1: float, /):
-        """Computes for this Bezier curve the parametric tolerance (UTolerance)
+        """
+        Computes for this Bezier curve the parametric tolerance (UTolerance)
         for a given 3D tolerance (Tolerance3D).
         If f(t) is the equation of this Bezier curve, the parametric tolerance
         ensures that:
-        |t1-t0| < UTolerance ===> |f(t1)-f(t0)| < Tolerance3D"""
+        |t1-t0| < UTolerance ===> |f(t1)-f(t0)| < Tolerance3D
+        """
 
     def getWeight(self, arg1: int, /):
         """Get a weight of the Bezier curve."""
@@ -1023,9 +1049,11 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
         """Get all weights of the Bezier curve."""
 
     def increase(self, Int: int, /):
-        """increase(Int=Degree)
+        """
+        increase(Int=Degree)
         Increases the degree of this Bezier curve to Degree.
-        As a result, the poles and weights tables are modified."""
+        As a result, the poles and weights tables are modified.
+        """
 
     def insertPoleAfter(self, arg1: int, arg2: object, arg3: float = None, /):
         """Inserts after the pole of index."""
@@ -1034,9 +1062,10 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
         """Inserts before the pole of index."""
 
     def isClosed(self):
-        """Returns true if the distance between the start point and end point of
+        """
+        Returns true if the distance between the start point and end point of
         					this Bezier curve is less than or equal to gp::Resolution().
-        				"""
+        """
 
     def isPeriodic(self):
         """Returns false."""
@@ -1045,8 +1074,10 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
         """Returns false if the weights of all the poles of this Bezier curve are equal."""
 
     def removePole(self, arg1: int, /):
-        """Removes the pole of index Index from the table of poles of this Bezier curve.
-        If this Bezier curve is rational, it can become non-rational."""
+        """
+        Removes the pole of index Index from the table of poles of this Bezier curve.
+        If this Bezier curve is rational, it can become non-rational.
+        """
 
     def segment(self, arg1: float, arg2: float, /):
         """Modifies this Bezier curve by segmenting it."""
@@ -1067,15 +1098,11 @@ class OffsetCurve2d(Part.Geom2d.Curve2d):
 
     @property
     def BasisCurve(self) -> object:
-        """
-        					Sets or gets the basic curve.
-        				"""
+        """Sets or gets the basic curve."""
 
     @property
     def OffsetValue(self) -> float:
-        """
-        					Sets or gets the offset value to offset the underlying curve.
-        				"""
+        """Sets or gets the offset value to offset the underlying curve."""
 
 
 # Parabola2dPy.xml
@@ -1087,28 +1114,34 @@ class Parabola2d(Part.Geom2d.Conic2d):
 
     @property
     def Focal(self) -> float:
-        """The focal distance is the distance between
-        the apex and the focus of the parabola."""
+        """
+        The focal distance is the distance between
+        the apex and the focus of the parabola.
+        """
 
     @Focal.setter
     def Focal(self, value: float): ...
 
     @property
     def Focus(self) -> object:
-        """The focus is on the positive side of the
-        'X Axis' of the local coordinate system of the parabola."""
+        """
+        The focus is on the positive side of the
+        'X Axis' of the local coordinate system of the parabola.
+        """
 
     @property
     def Parameter(self) -> float:
-        """Compute the parameter of this parabola
+        """
+        Compute the parameter of this parabola
         which is the distance between its focus
         and its directrix. This distance is twice the focal length.
-        				"""
+        """
 
 
 # Line2dPy.xml
 class Line2d(Part.Geom2d.Curve2d):
-    """Describes an infinite line in 2D space
+    """
+    Describes an infinite line in 2D space
     To create a line there are several ways:
     Part.Geom2d.Line2d()
         Creates a default line
@@ -1117,7 +1150,8 @@ class Line2d(Part.Geom2d.Curve2d):
         Creates a copy of the given line
 
     Part.Geom2d.Line2d(Point,Dir)
-        Creates a line that goes through two given points"""
+        Creates a line that goes through two given points
+    """
 
     @typing.overload
     def __init__(self): ...
@@ -1127,7 +1161,8 @@ class Line2d(Part.Geom2d.Curve2d):
 
     @typing.overload
     def __init__(self, Point: object, Dir: object, /):
-        """Describes an infinite line in 2D space
+        """
+        Describes an infinite line in 2D space
         To create a line there are several ways:
         Part.Geom2d.Line2d()
             Creates a default line
@@ -1136,7 +1171,8 @@ class Line2d(Part.Geom2d.Curve2d):
             Creates a copy of the given line
 
         Part.Geom2d.Line2d(Point,Dir)
-            Creates a line that goes through two given points"""
+            Creates a line that goes through two given points
+        """
 
     @property
     def Direction(self) -> object:

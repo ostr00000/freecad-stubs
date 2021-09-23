@@ -18,12 +18,20 @@ def prepareDocs(docs: str) -> str:
     docs = _REG_REMOVE_NEW_LINE.sub('\n', docs)
     docs = _REG_WHITESPACE_WITH_APOSTROPHE.sub('', docs)
     docs = docs.replace('\\n', '\n').replace('\\"', '"')
+
+    docs = docs.strip()
+    if docs.count('\n'):
+        if not docs.startswith('\n'):
+            docs = '\n' + docs
+        if not docs.endswith('\n'):
+            docs = docs + '\n'
+
     return docs
 
 
 def formatDocstring(docs: str | None) -> str | None:
-    if docs:
-        return f'"""{prepareDocs(docs)}"""\n'
+    if docs and (preparedDocs := prepareDocs(docs)):
+        return f'"""{preparedDocs}"""\n'
 
 
 def getDocFromNode(node: ET.Element) -> str | None:

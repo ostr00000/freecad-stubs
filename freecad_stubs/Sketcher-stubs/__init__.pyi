@@ -6,8 +6,10 @@ import Part
 
 # SketchGeometryExtensionPy.xml
 class SketchGeometryExtension(Part.GeometryExtension):
-    """This class can be imported.
-    Describes a SketchGeometryExtension"""
+    """
+    This class can be imported.
+    Describes a SketchGeometryExtension
+    """
 
     @typing.overload
     def __init__(self): ...
@@ -18,9 +20,7 @@ class SketchGeometryExtension(Part.GeometryExtension):
 
     @property
     def Blocked(self) -> bool:
-        """
-                        Sets/returns whether the geometry is blocked or not.
-                    """
+        """Sets/returns whether the geometry is blocked or not."""
 
     @Blocked.setter
     def Blocked(self, value: bool): ...
@@ -34,18 +34,14 @@ class SketchGeometryExtension(Part.GeometryExtension):
 
     @property
     def Id(self) -> int:
-        """
-                        Returns the Id of the SketchGeometryExtension.
-                    """
+        """Returns the Id of the SketchGeometryExtension."""
 
     @Id.setter
     def Id(self, value: int): ...
 
     @property
     def InternalType(self) -> str:
-        """
-                        Returns the Id of the SketchGeometryExtension.
-                    """
+        """Returns the Id of the SketchGeometryExtension."""
 
     @InternalType.setter
     def InternalType(self, value: str): ...
@@ -59,8 +55,10 @@ class SketchGeometryExtension(Part.GeometryExtension):
 
 # ConstraintPy.xml
 class Constraint(FreeCAD.Persistence):
-    """This class can be imported.
-    With this object you can handle sketches"""
+    """
+    This class can be imported.
+    With this object you can handle sketches
+    """
 
     @typing.overload
     def __init__(self): ...
@@ -160,9 +158,7 @@ class SketchObjectSF(Part.Part2DObject):
 
     @property
     def SketchFlatFile(self):
-        """
-        SketchFlat file (*.skf) which defines this sketch.
-        """
+        """SketchFlat file (*.skf) which defines this sketch."""
 
     @SketchFlatFile.setter
     def SketchFlatFile(self, value): ...
@@ -174,9 +170,7 @@ class SketchObject(Part.Part2DObject):
 
     @property
     def AxisCount(self) -> int:
-        """
-                  Return the number of construction lines in the sketch which can be used as axes
-                """
+        """Return the number of construction lines in the sketch which can be used as axes"""
 
     @property
     def ConstraintCount(self) -> int:
@@ -188,54 +182,42 @@ class SketchObject(Part.Part2DObject):
 
     @property
     def GeometryFacadeList(self) -> list:
-        """
-                  Return a list of GeometryFacade objects corresponding to the PropertyGeometryList
-                """
+        """Return a list of GeometryFacade objects corresponding to the PropertyGeometryList"""
 
     @GeometryFacadeList.setter
     def GeometryFacadeList(self, value: list): ...
 
     @property
     def MissingLineEqualityConstraints(self) -> list:
-        """
-                        returns a list of (First FirstPos Second SecondPos) tuples with all the detected line segment equality constraints.
-                    """
+        """returns a list of (First FirstPos Second SecondPos) tuples with all the detected line segment equality constraints."""
 
     @MissingLineEqualityConstraints.setter
     def MissingLineEqualityConstraints(self, value: list): ...
 
     @property
     def MissingPointOnPointConstraints(self) -> list:
-        """
-                        returns a list of (First FirstPos Second SecondPos Type) tuples with all the detected endpoint constraints.
-                    """
+        """returns a list of (First FirstPos Second SecondPos Type) tuples with all the detected endpoint constraints."""
 
     @MissingPointOnPointConstraints.setter
     def MissingPointOnPointConstraints(self, value: list): ...
 
     @property
     def MissingRadiusConstraints(self) -> list:
-        """
-                        returns a list of (First FirstPos Second SecondPos) tuples with all the detected radius constraints.
-                    """
+        """returns a list of (First FirstPos Second SecondPos) tuples with all the detected radius constraints."""
 
     @MissingRadiusConstraints.setter
     def MissingRadiusConstraints(self, value: list): ...
 
     @property
     def MissingVerticalHorizontalConstraints(self) -> list:
-        """
-                        returns a list of (First FirstPos Second SecondPos Type) tuples with all the detected vertical/horizontal constraints.
-                    """
+        """returns a list of (First FirstPos Second SecondPos Type) tuples with all the detected vertical/horizontal constraints."""
 
     @MissingVerticalHorizontalConstraints.setter
     def MissingVerticalHorizontalConstraints(self, value: list): ...
 
     @property
     def OpenVertices(self) -> list:
-        """
-                        returns a list of vertices positions.
-                    """
+        """returns a list of vertices positions."""
 
     @property
     def Constraints(self) -> dict[int, int] | typing.Iterable[int] | typing.Sequence[int]:
@@ -314,43 +296,39 @@ class SketchObject(Part.Part2DObject):
 
     def analyseMissingPointOnPointCoincident(self, arg1: float = None, /):
         """
-                        Analyses the already detected Missing Point On Point Constraints to detect endpoint tagency/perpendicular.
+        Analyses the already detected Missing Point On Point Constraints to detect endpoint tagency/perpendicular.
                         The result may be retrieved or applied using the corresponding Get / Make methods.
-                    """
+        """
 
     def autoRemoveRedundants(self, arg1: bool = None, /):
-        """
-                        Removes constraints currently detected as redundant by the solver. If the argument is True, then the geometry is updated after solving.
-                    """
+        """Removes constraints currently detected as redundant by the solver. If the argument is True, then the geometry is updated after solving."""
 
     def autoconstraint(self, arg1: float = None, arg2: float = None, arg3: bool = None, /):
-        """
-                        Automatic sketch constraining algorithm.
-                    """
+        """Automatic sketch constraining algorithm."""
 
     def calculateAngleViaPoint(self, GeoId1: int, GeoId2: int, px: float, py: float, /):
         """
-                  calculateAngleViaPoint(GeoId1, GeoId2, px, py) - calculates angle between
+        calculateAngleViaPoint(GeoId1, GeoId2, px, py) - calculates angle between
                   curves identified by GeoId1 and GeoId2 at point (x,y). The point must be
                   on intersection of the curves, otherwise the result may be useless (except
                   line-to-line, where (0,0) is OK). Returned value is in radians.
-                """
+        """
 
     def calculateConstraintError(self, index: int, /):
         """
-                  calculateConstraintError(index) - calculates the error function of the
+        calculateConstraintError(index) - calculates the error function of the
                   constraint identified by its index and returns the signed error value.
                   The error value roughly corresponds to by how much the constraint is
                   violated. If the constraint internally has more than one error function,
                   the returned value is RMS of all errors (sign is lost in this case).
-                """
+        """
 
     def carbonCopy(self, arg1: str, arg2: bool = None, /):
         """copy another sketch's geometry and constraints"""
 
     def changeConstraintsLocking(self, bLock: int, /):
         """
-                  changeConstraintsLocking(bLock) - locks or unlocks all tangent and
+        changeConstraintsLocking(bLock) - locks or unlocks all tangent and
                   perpendicular constraints. (Constraint locking prevents it from
                   flipping to another valid configuration, when e.g. external geometry
                   is updated from outside.) The sketch solve is not triggered by the
@@ -360,7 +338,7 @@ class SketchObject(Part.Part2DObject):
                   The bLock argument specifies, what to do. If true, all constraints
                   are unlocked and locked again. If false, all tangent and perp.
                   constraints are unlocked.
-                """
+        """
 
     def convertToNURBS(self, arg1: int, /):
         """Approximates the given geometry with a B-Spline"""
@@ -394,21 +372,21 @@ class SketchObject(Part.Part2DObject):
 
     def detectMissingEqualityConstraints(self, arg1: float = None, /):
         """
-                        Detects Missing Equality Constraints. The Detect step just identifies possible missing constraints.
+        Detects Missing Equality Constraints. The Detect step just identifies possible missing constraints.
                         The result may be retrieved or applied using the corresponding Get / Make methods.
-                    """
+        """
 
     def detectMissingPointOnPointConstraints(self, arg1: float = None, arg2: bool = None, /):
         """
-                        Detects Missing Point On Point Constraints. The Detect step just identifies possible missing constraints.
+        Detects Missing Point On Point Constraints. The Detect step just identifies possible missing constraints.
                         The result may be retrieved or applied using the corresponding Get / Make methods.
-                    """
+        """
 
     def detectMissingVerticalHorizontalConstraints(self, arg1: float = None, /):
         """
-                        Detects Missing Horizontal/Vertical Constraints. The Detect step just identifies possible missing constraints.
+        Detects Missing Horizontal/Vertical Constraints. The Detect step just identifies possible missing constraints.
                         The result may be retrieved or applied using the corresponding Get / Make methods.
-                    """
+        """
 
     def exposeInternalGeometry(self, arg1: int, /):
         """Exposes all internal geometry of an object supporting internal geometry"""
@@ -427,9 +405,7 @@ class SketchObject(Part.Part2DObject):
         """Get the constraint status (enforced or not)"""
 
     def getAxis(self, arg1: int, /):
-        """
-                  return an axis based on the corresponding construction line
-                """
+        """return an axis based on the corresponding construction line"""
 
     def getConstruction(self, arg1: int, /):
         """returns the construction mode of a geometry"""
@@ -445,30 +421,26 @@ class SketchObject(Part.Part2DObject):
         """Get the Driving status of a datum constraint"""
 
     def getGeoVertexIndex(self, index: int, /):
-        """
-                  (geoId, posId) = getGeoVertexIndex(index) - retrieve the GeoId and PosId of a point in the sketch
-                """
+        """(geoId, posId) = getGeoVertexIndex(index) - retrieve the GeoId and PosId of a point in the sketch"""
 
     def getGeometryId(self, arg1: int, /):
         """gets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId"""
 
     def getGeometryWithDependentParameters(self):
         """
-                        getGeometryWithDependentParameters - returns a list of geoid posid pairs
+        getGeometryWithDependentParameters - returns a list of geoid posid pairs
                         with all the geometry element edges and vertices which the solver regards
                         as being dependent on other parameters.
-                    """
+        """
 
     def getIndexByName(self, arg1: str, /):
         """
         Get the index of the constraint by name.
         If there is no such constraint an exception is raised.
-                """
+        """
 
     def getPoint(self, GeoIndex: int, PointPos: int, /):
-        """
-                  getPoint(GeoIndex,PointPos) - retrieve the vector of a point in the sketch
-                """
+        """getPoint(GeoIndex,PointPos) - retrieve the vector of a point in the sketch"""
 
     def getVirtualSpace(self, arg1: int, /):
         """Get the VirtualSpace status of a constraint"""
@@ -478,25 +450,19 @@ class SketchObject(Part.Part2DObject):
 
     def isPointOnCurve(self, arg1: int, arg2: float, arg3: float, /):
         """
-                  isPointOnObject(GeoIdCurve, float x, float y) - tests if the point (x,y)
+        isPointOnObject(GeoIdCurve, float x, float y) - tests if the point (x,y)
                   geometrically lies on a curve (e.g. ellipse). It treats lines as infinite,
                   arcs as full circles/ellipses/etc. Returns boolean value.
-                """
+        """
 
     def makeMissingEquality(self, arg1: bool = None, /):
-        """
-                        Applies the detected / set Equality constraints. If the argument is True, then solving and redundant removal is done after each individual addition.
-                    """
+        """Applies the detected / set Equality constraints. If the argument is True, then solving and redundant removal is done after each individual addition."""
 
     def makeMissingPointOnPointCoincident(self, arg1: bool = None, /):
-        """
-                        Applies the detected / set Point On Point coincident constraints. If the argument is True, then solving and redundant removal is done after each individual addition.
-                    """
+        """Applies the detected / set Point On Point coincident constraints. If the argument is True, then solving and redundant removal is done after each individual addition."""
 
     def makeMissingVerticalHorizontal(self, arg1: bool = None, /):
-        """
-                        Applies the detected / set Vertical/Horizontal constraints. If the argument is True, then solving and redundant removal is done after each individual addition.
-                    """
+        """Applies the detected / set Vertical/Horizontal constraints. If the argument is True, then solving and redundant removal is done after each individual addition."""
 
     def modifyBSplineKnotMultiplicity(self, arg1: int, arg2: int, arg3: int = None, /):
         """Increases or reduces the given BSpline knot multiplicity"""
@@ -506,7 +472,7 @@ class SketchObject(Part.Part2DObject):
 
     def movePoint(self, GeoIndex: int, PointPos: int, Vector: FreeCAD.Vector, relative: int = None, /):
         """
-                  movePoint(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
+        movePoint(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
                   to another location.
                   It moves the specified point (or curve) to the given location by adding some
                   temporary weak constraints and solve the sketch.
@@ -515,7 +481,7 @@ class SketchObject(Part.Part2DObject):
                   the sketch.
                   The argument 'relative', if present, states if the new location is given
                   relatively to the current one.
-                """
+        """
 
     def removeAxesAlignment(self, arg1: object, /):
         """modifies constraints so that the shape is not forced to be aligned with axes."""
@@ -578,8 +544,10 @@ class SketchObject(Part.Part2DObject):
 
 # SketchPy.xml
 class Sketch(FreeCAD.Persistence):
-    """This class can be imported.
-    With this objects you can handle constraint sketches"""
+    """
+    This class can be imported.
+    With this objects you can handle constraint sketches
+    """
 
     @property
     def Conflicts(self) -> tuple:
@@ -612,7 +580,7 @@ class Sketch(FreeCAD.Persistence):
 
     def movePoint(self, GeoIndex: int, PointPos: int, Vector: FreeCAD.Vector, relative: int = None, /):
         """
-                  movePoint(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
+        movePoint(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
                   to another location.
                   It moves the specified point (or curve) to the given location by adding some
                   temporary weak constraints and solve the sketch.
@@ -621,7 +589,7 @@ class Sketch(FreeCAD.Persistence):
                   the sketch.
                   The argument 'relative', if present, states if the new location is given
                   relatively to the current one.
-                """
+        """
 
     def solve(self):
         """solve the actual set of geometry and constraints"""
@@ -629,17 +597,17 @@ class Sketch(FreeCAD.Persistence):
 
 # ExternalGeometryFacadePy.xml
 class ExternalGeometryFacade(FreeCAD.BaseClass):
-    """This class can be imported.
-    Describes a GeometryFacade"""
+    """
+    This class can be imported.
+    Describes a GeometryFacade
+    """
 
     def __init__(self, arg1: Part.Geometry, /):
         """Describes a GeometryFacade"""
 
     @property
     def Blocked(self) -> bool:
-        """
-                        Sets/returns whether the geometry is blocked or not.
-                    """
+        """Sets/returns whether the geometry is blocked or not."""
 
     @Blocked.setter
     def Blocked(self, value: bool): ...
@@ -660,27 +628,21 @@ class ExternalGeometryFacade(FreeCAD.BaseClass):
 
     @property
     def Id(self) -> int:
-        """
-                        Sets/returns the Internal Alignment Type of the Geometry.
-                    """
+        """Sets/returns the Internal Alignment Type of the Geometry."""
 
     @Id.setter
     def Id(self, value: int): ...
 
     @property
     def InternalType(self) -> str:
-        """
-                        Sets/returns the Internal Alignment Type of the Geometry.
-                    """
+        """Sets/returns the Internal Alignment Type of the Geometry."""
 
     @InternalType.setter
     def InternalType(self, value: str): ...
 
     @property
     def Ref(self) -> str:
-        """
-                        Returns the reference string of this external geometry.
-                    """
+        """Returns the reference string of this external geometry."""
 
     @Ref.setter
     def Ref(self, value: str): ...
@@ -749,17 +711,17 @@ class ExternalGeometryFacade(FreeCAD.BaseClass):
 
 # ExternalGeometryExtensionPy.xml
 class ExternalGeometryExtension(Part.GeometryExtension):
-    """This class can be imported.
-    Describes a ExternalGeometryExtension"""
+    """
+    This class can be imported.
+    Describes a ExternalGeometryExtension
+    """
 
     def __init__(self):
         """Describes a ExternalGeometryExtension"""
 
     @property
     def Ref(self) -> str:
-        """
-                        returns the reference string of this external geometry.
-                    """
+        """returns the reference string of this external geometry."""
 
     @Ref.setter
     def Ref(self, value: str): ...
@@ -773,17 +735,17 @@ class ExternalGeometryExtension(Part.GeometryExtension):
 
 # GeometryFacadePy.xml
 class GeometryFacade(FreeCAD.BaseClass):
-    """This class can be imported.
-    Describes a GeometryFacade"""
+    """
+    This class can be imported.
+    Describes a GeometryFacade
+    """
 
     def __init__(self, arg1: Part.Geometry, /):
         """Describes a GeometryFacade"""
 
     @property
     def Blocked(self) -> bool:
-        """
-                        Sets/returns whether the geometry is blocked or not.
-                    """
+        """Sets/returns whether the geometry is blocked or not."""
 
     @Blocked.setter
     def Blocked(self, value: bool): ...
@@ -804,18 +766,14 @@ class GeometryFacade(FreeCAD.BaseClass):
 
     @property
     def Id(self) -> int:
-        """
-                        Sets/returns the Id of the SketchGeometryExtension.
-                    """
+        """Sets/returns the Id of the SketchGeometryExtension."""
 
     @Id.setter
     def Id(self, value: int): ...
 
     @property
     def InternalType(self) -> str:
-        """
-                        Sets/returns the Internal Alignment Type of the Geometry.
-                    """
+        """Sets/returns the Internal Alignment Type of the Geometry."""
 
     @InternalType.setter
     def InternalType(self, value: str): ...

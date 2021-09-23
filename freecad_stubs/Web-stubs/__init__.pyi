@@ -4,10 +4,12 @@ def startServer(address: str = None, port: int = 0, /):
 
 
 def waitForConnection(address: str = None, port: int = 0, timeout: int = 0, /):
-    """waitForConnection(address=127.0.0.1,port=0,timeout=0)
+    """
+    waitForConnection(address=127.0.0.1,port=0,timeout=0)
     Start a server, wait for connection and close server.
     Its use is disadvised in a the GUI version, since it will
-    stop responding until the function returns."""
+    stop responding until the function returns.
+    """
 
 
 def registerServerFirewall(callable_string_: object, /):

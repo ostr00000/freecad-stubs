@@ -136,8 +136,10 @@ class ProgressIndicator:
 
 # MaterialPy.xml
 class Material(FreeCAD.PyObjectBase):
-    """This class can be imported.
-    This is the Material class"""
+    """
+    This class can be imported.
+    This is the Material class
+    """
 
     def __init__(self, DiffuseColor: object = None, AmbientColor: object = None, SpecularColor: object = None, EmissiveColor: object = None, Shininess: object = None, Transparency: object = None):
         """This is the Material class"""
@@ -191,19 +193,23 @@ class Material(FreeCAD.PyObjectBase):
         The material must be one of the following values:
         Brass, Bronze, Copper, Gold, Pewter, Plaster, Plastic, Silver, Steel, Stone, Shiny plastic,
         Satin, Metalized, Neon GNC, Chrome, Aluminium, Obsidian, Neon PHC, Jade, Ruby or Emerald.
-        			"""
+        """
 
 
 # DocumentObjectGroupPy.xml
 class DocumentObjectGroup(FreeCAD.DocumentObject):
-    """This class can be imported.
-    This class handles document objects in group"""
+    """
+    This class can be imported.
+    This class handles document objects in group
+    """
 
 
 # GeoFeaturePy.xml
 class GeoFeature(FreeCAD.DocumentObject):
-    """This class can be imported.
-    This class does the whole placement and position handling"""
+    """
+    This class can be imported.
+    This class does the whole placement and position handling
+    """
 
     @property
     def Placement(self):
@@ -216,18 +222,23 @@ class GeoFeature(FreeCAD.DocumentObject):
     def Placement(self, value): ...
 
     def getGlobalPlacement(self):
-        """Returns the placement of the object in the global coordinate space, respecting all stacked relationships. 
+        """
+        Returns the placement of the object in the global coordinate space, respecting all stacked relationships. 
                           Note: This function is not available during recompute, as there the placements of parents can change 
-                          after the execution of this object, rendering the result wrong."""
+                          after the execution of this object, rendering the result wrong.
+        """
 
     def getPropertyNameOfGeometry(self):
-        """Returns the property name of the actual geometry or None.
+        """
+        Returns the property name of the actual geometry or None.
         For example for a part object it returns the value Shape,
         for a mesh the value Mesh and so on.
-        If an object has no such property then None is returned."""
+        If an object has no such property then None is returned.
+        """
 
     def getPropertyOfGeometry(self):
-        """Returns the property of the actual geometry or None.
+        """
+        Returns the property of the actual geometry or None.
         For example for a part object it returns its Shape property,
         for a mesh its Mesh property and so on.
         If an object has no such property then None is returned.
@@ -238,8 +249,10 @@ class GeoFeature(FreeCAD.DocumentObject):
 
 # DocumentObjectPy.xml
 class DocumentObject(FreeCAD.ExtensionContainer):
-    """This class can be imported.
-    This is the father of all classes handled by the document"""
+    """
+    This class can be imported.
+    This is the father of all classes handled by the document
+    """
 
     @property
     def Proxy(self) -> FreeCADTemplates.ProxyPython: ...
@@ -305,8 +318,10 @@ class DocumentObject(FreeCAD.ExtensionContainer):
 
     @property
     def ViewObject(self) -> typing.Optional[FreeCADGui.ViewProviderDocumentObject]:
-        """If the GUI is loaded the associated view provider is returned
-        or None if the GUI is not up"""
+        """
+        If the GUI is loaded the associated view provider is returned
+        or None if the GUI is not up
+        """
 
     @property
     def ExpressionEngine(self):
@@ -346,19 +361,17 @@ class DocumentObject(FreeCAD.ExtensionContainer):
 
     @property
     def Visibility(self) -> int | bool:
-        """
-        Property TypeId: PropertyBool.
-        """
+        """Property TypeId: PropertyBool."""
 
     @Visibility.setter
     def Visibility(self, value: int | bool): ...
 
     def addProperty(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, arg5: int = None, arg6: bool = None, arg7: bool = None, /):
         """
-                            addProperty(string, string) -- Add a generic property.
+        addProperty(string, string) -- Add a generic property.
                             The first argument specifies the type, the second the
                             name of the property.
-                        """
+        """
 
     def adjustRelativeLinks(self, parent: FreeCAD.DocumentObject, recursive: object = True, /):
         """adjustRelativeLinks(parent,recursive=True) -- auto correct potential cyclic dependencies"""
@@ -384,23 +397,28 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         containing the accumulated transformation matrix
 
         * depth: current recursive depth
-                        """
+        """
 
     def getParentGeoFeatureGroup(self):
-        """Returns the GeoFeatureGroup, and hence the local coordinate system, the object 
+        """
+        Returns the GeoFeatureGroup, and hence the local coordinate system, the object 
                                   is in or None if it is not part of a group. Note that an object can only be 
-                                  in a single group, hence only a single return value."""
+                                  in a single group, hence only a single return value.
+        """
 
     def getParentGroup(self):
-        """Returns the group the object is in or None if it is not part of a group. 
+        """
+        Returns the group the object is in or None if it is not part of a group. 
                                   Note that an object can only be in a single group, hence only a single return 
-                                  value."""
+                                  value.
+        """
 
     def getPathsByOutList(self, arg1: FreeCAD.DocumentObject, /):
         """Get all paths from this object to another object following the OutList."""
 
     def getStatusString(self):
-        """Returns the status of the object as string.
+        """
+        Returns the status of the object as string.
         If the object is invalid its error description will be returned.
         If the object is valid but touched then 'Touched' will be returned,
         'Valid' otherwise.
@@ -433,14 +451,14 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         * transform: whether to transform the sub object using this object's placement
 
         * depth: current recursive depth
-                        """
+        """
 
     def getSubObjectList(self, subname: str, /):
         """
         getSubObjectList(subname)
 
         Return a list of objects referenced by a given subname including this object
-                        """
+        """
 
     def getSubObjects(self, reason: int = 0, /):
         """getSubObjects(reason=0): Return subname reference of all sub-objects"""
@@ -452,7 +470,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         """
         isElementVisible(element): Check if a child element is visible
         Return -1 if element visibility is not supported or element not found, 0 if invisible, or else 1
-                        """
+        """
 
     def isValid(self):
         """Returns True if the object is valid, False otherwise"""
@@ -465,9 +483,9 @@ class DocumentObject(FreeCAD.ExtensionContainer):
 
     def removeProperty(self, string: str, /):
         """
-                            removeProperty(string) -- Remove a generic property.
+        removeProperty(string) -- Remove a generic property.
                             Note, you can only remove user-defined properties but not built-in ones.
-                        """
+        """
 
     def resolve(self, subname: str, /):
         """
@@ -478,7 +496,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         'subobj', and 'elementName' is the name of the subobj, which can be used
         to call parent.isElementVisible/setElementVisible(). 'subElement' is the
         non-object sub-element name if any.
-                        """
+        """
 
     def resolveSubElement(self, subname: str, append: object = None, type: int = None, /):
         """
@@ -489,13 +507,13 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         type: 0: normal, 1: for import, 2: for export
 
         Return tuple(obj,newElementName,oldElementName)
-                        """
+        """
 
     def setElementVisible(self, element: str, visible: object = None, /):
         """
         setElementVisible(element,visible): Set the visibility of a child element
         Return -1 if element visibility is not supported, 0 if element not found, 1 if success
-                        """
+        """
 
     def setExpression(self, arg1: str, arg2: object, arg3: str = None, /):
         """Register an expression for a property"""
@@ -509,8 +527,10 @@ class DocumentObject(FreeCAD.ExtensionContainer):
 
 # LinkBaseExtensionPy.xml
 class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
-    """This class can be imported.
-    Link extension base class"""
+    """
+    This class can be imported.
+    Link extension base class
+    """
 
     @property
     def LinkedChildren(self) -> list:
@@ -522,7 +542,7 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
         [Prop_ReadOnly] Property is read-only in the editor.
         [Prop_Hidden] Property won't appear in the editor.
         [Prop_NoPersist] Property won't be saved to file at all.
-        Property group:  Link.
+        Property group: Link.
         Property TypeId: PropertyLinkList.
         """
 
@@ -531,7 +551,7 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
         """
         [Prop_Hidden] Property won't appear in the editor.
         [Prop_Output] Modified property doesn't touch its parent container.
-        Property group:  Link.
+        Property group: Link.
         Property TypeId: PropertyInteger.
         """
 
@@ -543,7 +563,7 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
         """
         [Prop_Hidden] Property won't appear in the editor.
         [Prop_NoPersist] Property won't be saved to file at all.
-        Property group:  Link.
+        Property group: Link.
         Property TypeId: PropertyBool.
         """
 
@@ -556,7 +576,7 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
 
         The cache is not updated on child label change for performance reason. You must
         call this function on any child label change
-                """
+        """
 
     @typing.overload
     def configLinkProperty(self, key, arg): ...
@@ -584,27 +604,27 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
 
         If 'val' is omitted, i.e. calling configLinkProperty(key,...), then
         it is assumed the the actually property name is the same as 'key'
-                """
+        """
 
     def expandSubname(self, subname: str, /):
         """
         expandSubname(subname) -> string
 
         Return an expanded subname in case it references an object inside a linked plain group
-                """
+        """
 
     def flattenSubname(self, subname: str, /):
         """
         flattenSubname(subname) -> string
 
         Return a flattened subname in case it references an object inside a linked plain group
-                """
+        """
 
     def getLinkExtProperty(self, name: str, /):
-        """getLinkExtProperty(name): return the property value by its predefined name """
+        """getLinkExtProperty(name): return the property value by its predefined name"""
 
     def getLinkExtPropertyName(self, name: str, /):
-        """getLinkExtPropertyName(name): lookup the property name by its predefined name """
+        """getLinkExtPropertyName(name): lookup the property name by its predefined name"""
 
     @typing.overload
     def getLinkPropertyInfo(self): ...
@@ -626,7 +646,7 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
         getLinkPropertyInfo(index): return (name,type,doc) of a specific property
 
         getLinkPropertyInfo(name): return (type,doc) of a specific property
-                """
+        """
 
     @typing.overload
     def setLink(self, obj, subName = None, subElements = None): ...
@@ -649,19 +669,19 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
         subName (String): Dot separated object path. 
 
         subElements (String|tuple(String)): non-object sub-elements, e.g. Face1, Edge2.
-                """
+        """
 
 
 # PartPy.xml
 class Part(FreeCAD.GeoFeature):
-    """This class can be imported.
-    This class handles document objects in Part"""
+    """
+    This class can be imported.
+    This class handles document objects in Part
+    """
 
     @property
     def Color(self) -> tuple[float, float, float] | tuple[float, float, float, float] | int:
-        """
-        Property TypeId: App::PropertyColor.
-        """
+        """Property TypeId: App::PropertyColor."""
 
     @Color.setter
     def Color(self, value: tuple[float, float, float] | tuple[float, float, float, float] | int): ...
@@ -718,9 +738,7 @@ class Part(FreeCAD.GeoFeature):
 
     @property
     def Type(self) -> str:
-        """
-        Property TypeId: PropertyString.
-        """
+        """Property TypeId: PropertyString."""
 
     @Type.setter
     def Type(self, value: str): ...
@@ -738,14 +756,18 @@ class Part(FreeCAD.GeoFeature):
 
 # DocumentObjectExtensionPy.xml
 class DocumentObjectExtension(FreeCAD.Extension):
-    """This class can be imported.
-    Base class for all document object extensions"""
+    """
+    This class can be imported.
+    Base class for all document object extensions
+    """
 
 
 # GroupExtensionPy.xml
 class GroupExtension(FreeCAD.DocumentObjectExtension):
-    """This class can be imported.
-    Extension class which allows grouping of document objects"""
+    """
+    This class can be imported.
+    Extension class which allows grouping of document objects
+    """
 
     @property
     def Group(self) -> list[DocumentObject]: ...
@@ -763,11 +785,12 @@ class GroupExtension(FreeCAD.DocumentObjectExtension):
         """Return the object with the given name"""
 
     def hasObject(self, obj: FreeCAD.DocumentObject, recursive: object = False, /):
-        """hasObject(obj, recursive=false)
+        """
+        hasObject(obj, recursive=false)
                         Checks if the group has a given object
                         @param obj        the object to check for.
                         @param recursive  if true check also if the obj is child of some sub group (default is false).
-                    """
+        """
 
     def newObject(self, arg1: str, arg2: str = None, /):
         """Create and add an object with given type and name to the group"""
@@ -787,26 +810,34 @@ class GroupExtension(FreeCAD.DocumentObjectExtension):
 
 # ExtensionPy.xml
 class Extension(FreeCAD.PyObjectBase):
-    """This class can be imported.
-    Base class for all extensions"""
+    """
+    This class can be imported.
+    Base class for all extensions
+    """
 
 
 # GeoFeatureGroupExtensionPy.xml
 class GeoFeatureGroupExtension(FreeCAD.GroupExtension):
-    """This class can be imported.
-    This class handles placeable group of document objects"""
+    """
+    This class can be imported.
+    This class handles placeable group of document objects
+    """
 
 
 # OriginGroupExtensionPy.xml
 class OriginGroupExtension(FreeCAD.GeoFeatureGroupExtension):
-    """This class can be imported.
-    This class handles placable group of document objects with an Origin"""
+    """
+    This class can be imported.
+    This class handles placable group of document objects with an Origin
+    """
 
 
 # ExtensionContainerPy.xml
 class ExtensionContainer(FreeCAD.PropertyContainer):
-    """This class can be imported.
-    Base class for all objects which can be extended"""
+    """
+    This class can be imported.
+    Base class for all objects which can be extended
+    """
 
     def addExtension(self, arg1: str, arg2: object = None, /):
         """Adds an extension to the object. Requires the string identifier for the python extension as argument"""
@@ -817,8 +848,10 @@ class ExtensionContainer(FreeCAD.PropertyContainer):
 
 # DocumentPy.xml
 class Document(FreeCAD.PropertyContainer):
-    """This class can be imported.
-    This is a Document class"""
+    """
+    This class can be imported.
+    This is a Document class
+    """
 
     @property
     def ActiveObject(self) -> typing.Optional[FreeCAD.DocumentObject]:
@@ -984,9 +1017,7 @@ class Document(FreeCAD.PropertyContainer):
 
     @property
     def LastModifiedBy(self) -> str:
-        """
-        Property TypeId: PropertyString.
-        """
+        """Property TypeId: PropertyString."""
 
     @LastModifiedBy.setter
     def LastModifiedBy(self, value: str): ...
@@ -1110,7 +1141,8 @@ class Document(FreeCAD.PropertyContainer):
         """Abort an Undo/Redo transaction (rollback)"""
 
     def addObject(self, type: str, name: str = None, objProxy: object = None, viewProxy: object = None, attach: object = False, viewType: str = None):
-        """addObject(type, name=None, objProxy=None, viewProxy=None, attach=False, viewType=None)
+        """
+        addObject(type, name=None, objProxy=None, viewProxy=None, attach=False, viewType=None)
 
         Add an object to document
 
@@ -1121,7 +1153,8 @@ class Document(FreeCAD.PropertyContainer):
         attach (Boolean): if True, then bind the document object first before adding to the document
                 to allow Python code to override view provider type. Once bound, and before adding to
                 the document, it will try to call Python binding object's attach(obj) method.
-        viewType (String): override the view provider type directly, only effective when attach is False."""
+        viewType (String): override the view provider type directly, only effective when attach is False.
+        """
 
     def clearUndos(self):
         """Clear the undo stack of the document"""
@@ -1138,15 +1171,17 @@ class Document(FreeCAD.PropertyContainer):
         with_dependencies: if True, all internal dependent objects are copied too.
         return_all: if True, return all copied objects, or else return only the copied
                     object corresponding to the input objects.
-                  """
+        """
 
     def exportGraphviz(self, arg1: str = None, /):
         """Export the dependencies of the objects as graph"""
 
     def findObjects(self, Type: str = None, Name: str = None, Label: str = None):
-        """findObjects([Type=string], [Name=string], [Label=string]) -> list
+        """
+        findObjects([Type=string], [Name=string], [Label=string]) -> list
         Return a list of objects that match the specified type, name or label.
-        Name and label support regular expressions. All parameters are optional."""
+        Name and label support regular expressions. All parameters are optional.
+        """
 
     def getDependentDocuments(self, sort: object = True, /):
         """
@@ -1155,7 +1190,7 @@ class Document(FreeCAD.PropertyContainer):
         Returns a list of documents that this document directly or indirectly links to including itself.
 
         sort: whether to topologically sort the return list
-                      """
+        """
 
     def getLinksTo(self, obj: object = None, options: int = 0, maxCount: int = 0, /):
         """
@@ -1163,7 +1198,7 @@ class Document(FreeCAD.PropertyContainer):
 
         options: 1: recursive, 2: check link array. Options can combine.
         maxCount: to limit the number of links returned
-                    """
+        """
 
     @typing.overload
     def getObject(self, arg1: str, /): ...
@@ -1173,8 +1208,10 @@ class Document(FreeCAD.PropertyContainer):
         """Return the object with the given name"""
 
     def getObjectsByLabel(self, arg1: str, /):
-        """Return the objects with the given label name.
-        NOTE: It's possible that several objects have the same label name."""
+        """
+        Return the objects with the given label name.
+        NOTE: It's possible that several objects have the same label name.
+        """
 
     def getTempFileName(self, arg1: object, /):
         """Returns a file name with path in the temp directory of the document."""
@@ -1189,7 +1226,7 @@ class Document(FreeCAD.PropertyContainer):
 
         If no object is given as input, it import all externally linked
         object of this document.
-                  """
+        """
 
     def load(self, arg1: str, /):
         """Load the document from the given path"""
@@ -1204,17 +1241,18 @@ class Document(FreeCAD.PropertyContainer):
               
         object: can either a single object or sequence of objects
         with_dependencies: if True, all internal dependent objects are copied too.
-                """
+        """
 
     def openTransaction(self, name: object = None, /):
-        """openTransaction(name) - Open a new Undo/Redo transaction.
+        """
+        openTransaction(name) - Open a new Undo/Redo transaction.
 
         This function no long creates a new transaction, but calls
         FreeCAD.setActiveTransaction(name) instead, which will auto creates a
         transaction with the given name when any change happed in any opened document.
         If more than one document is changed, all newly created transactions will have
         the same internal ID and will be undo/redo together.
-                  """
+        """
 
     def recompute(self, arg1: object = None, arg2: bool = None, arg3: bool = None, /):
         """recompute(objs=None): Recompute the document and returns the amount of recomputed features"""
@@ -1246,29 +1284,33 @@ class Document(FreeCAD.PropertyContainer):
 
 # PropertyContainerPy.xml
 class PropertyContainer(FreeCAD.Persistence):
-    """This class can be imported.
-    This is a Persistence class"""
+    """
+    This class can be imported.
+    This is a Persistence class
+    """
 
     @property
     def PropertiesList(self) -> list:
         """A list of all property names"""
 
     def dumpPropertyContent(self, Property: str, Compression: int = 1-9):
-        """Dumps the content of the property, both the XML representation as well as the additional datafiles  
+        """
+        Dumps the content of the property, both the XML representation as well as the additional datafiles  
         required, into a byte representation. It will be returned as byte array.
         dumpPropertyContent(propertyname) -- returns a byte array with full content
         dumpPropertyContent(propertyname, [Compression=1-9]) -- Sets the data compression from 0 (no) to 9 (max)
-                        """
+        """
 
     def getDocumentationOfProperty(self, arg1: str, /):
         """Return the documentation string of the property of this class."""
 
     def getEditorMode(self, arg1: str, /):
-        """Get the behaviour of the property in the property editor.
+        """
+        Get the behaviour of the property in the property editor.
         It returns a list of strings with the current mode. If the list is empty there are no special restrictions.
         If the list contains 'ReadOnly' then the item appears in the property editor but is disabled.
         If the list contains 'Hidden' then the item even doesn't appear in the property editor.
-                        """
+        """
 
     def getEnumerationsOfProperty(self, arg1: str, /):
         """Return all enumeration strings of the property of this class or None if not a PropertyEnumeration."""
@@ -1288,7 +1330,7 @@ class PropertyContainer(FreeCAD.Persistence):
                        1: raise exception if not found or the property 
                           does not belong to this container
                        2: return a tuple(owner,property_value)
-                """
+        """
 
     def getPropertyStatus(self, name: str = '', /):
         """
@@ -1296,7 +1338,7 @@ class PropertyContainer(FreeCAD.Persistence):
 
         name(String): property name. If name is empty, return a list of supported
         text names of the status.
-                        """
+        """
 
     def getPropertyTouchList(self, arg1: str, /):
         """Return a list of index of touched values for list type properties."""
@@ -1305,24 +1347,26 @@ class PropertyContainer(FreeCAD.Persistence):
         """Returns the C++ class name of a named property."""
 
     def getTypeOfProperty(self, arg1: str, /):
-        """Return the type of a named property. This can be (Hidden,ReadOnly,Output) or any combination. """
+        """Return the type of a named property. This can be (Hidden,ReadOnly,Output) or any combination."""
 
     def restorePropertyContent(self, propertyname: str, buffer: object, /):
-        """Restore the content of given property from a byte representation as stored by "dumpContent".
+        """
+        Restore the content of given property from a byte representation as stored by "dumpContent".
         It could be restored from any python object implementing the buffer protocol.
         restorePropertyContent(propertyname, buffer) -- restores from the given byte array
-                        """
+        """
 
     @typing.overload
     def setEditorMode(self, arg1: str, arg2: int, /): ...
 
     @typing.overload
     def setEditorMode(self, arg1: str, arg2: object, /):
-        """Set the behaviour of the property in the property editor.
+        """
+        Set the behaviour of the property in the property editor.
         0 - default behaviour
         1 - item is ready-only
         2 - item is hidden
-                        """
+        """
 
     def setPropertyStatus(self, name: str, val: object, /):
         """
@@ -1334,7 +1378,7 @@ class PropertyContainer(FreeCAD.Persistence):
         values. Call getPropertyStatus() to get a list of supported text value.
         If the text start with '-' or the integer value is negative, then the
         status is cleared.
-                        """
+        """
 
 
 # ComplexGeoDataPy.xml
@@ -1373,8 +1417,10 @@ def ParamGet(arg1: str, /):
 
 
 def saveParameter(config: str = 'User parameter', /):
-    """saveParameter(config='User parameter') -> None
-    Save parameter set to file. The default set is 'User parameter'"""
+    """
+    saveParameter(config='User parameter') -> None
+    Save parameter set to file. The default set is 'User parameter'
+    """
 
 
 def Version():
@@ -1434,8 +1480,10 @@ def getUserAppDataDir():
 
 
 def getUserMacroDir(bool: bool = False, /):
-    """getUserMacroDir(bool=False) -> stringGet the directory of the user's macro directory
-    If parameter is False (the default) it returns the standard path in theuser's home directory, otherwise it returns the user-defined path."""
+    """
+    getUserMacroDir(bool=False) -> stringGet the directory of the user's macro directory
+    If parameter is False (the default) it returns the standard path in theuser's home directory, otherwise it returns the user-defined path.
+    """
 
 
 def getHelpDir():
@@ -1447,12 +1495,14 @@ def getHomePath():
 
 
 def loadFile(arg1: str, arg2: str = None, arg3: str = None, /):
-    """loadFile(string=filename,[string=module]) -> None
+    """
+    loadFile(string=filename,[string=module]) -> None
 
     Loads an arbitrary file by delegating to the given Python module:
     * If no module is given it will be determined by the file extension.
     * If more than one module can load a file the first one will be taken.
-    * If no module exists to load the file an exception will be raised."""
+    * If no module exists to load the file an exception will be raised.
+    """
 
 
 def open(name: str, hidden: object = None):
@@ -1460,71 +1510,91 @@ def open(name: str, hidden: object = None):
 
 
 def openDocument(name: str, hidden: object = False):
-    """openDocument(filepath,hidden=False) -> object
+    """
+    openDocument(filepath,hidden=False) -> object
     Create a document and load the project file into the document.
 
     filepath: file path to an existing file. If the file doesn't exist
               or the file cannot be loaded an I/O exception is thrown.
               In this case the document is kept alive.
-    hidden: whether to hide document 3D view."""
+    hidden: whether to hide document 3D view.
+    """
 
 
 def newDocument(name: str = None, label: str = None, hidden: object = False, temp: object = False):
-    """newDocument(name, label=None, hidden=False, temp=False) -> object
+    """
+    newDocument(name, label=None, hidden=False, temp=False) -> object
     Create a new document with a given name.
 
     name: unique document name which is checked automatically.
     label: optional user changeable label for the document.
     hidden: whether to hide document 3D view.
-    temp: mark the document as temporary so that it will not be saved"""
+    temp: mark the document as temporary so that it will not be saved
+    """
 
 
 def closeDocument(string: str, /):
-    """closeDocument(string) -> None
+    """
+    closeDocument(string) -> None
 
-    Close the document with a given name."""
+    Close the document with a given name.
+    """
 
 
 def activeDocument() -> FreeCAD.Document:
-    """activeDocument() -> object or None
+    """
+    activeDocument() -> object or None
 
-    Return the active document or None if there is no one."""
+    Return the active document or None if there is no one.
+    """
 
 
 def setActiveDocument(arg1: str, /):
-    """setActiveDocement(string) -> None
+    """
+    setActiveDocement(string) -> None
 
-    Set the active document by its name."""
+    Set the active document by its name.
+    """
 
 
 def getDocument(string: str, /):
-    """getDocument(string) -> object
+    """
+    getDocument(string) -> object
 
     Get a document by its name or raise an exception
-    if there is no document with the given name."""
+    if there is no document with the given name.
+    """
 
 
 def listDocuments(sort: object = False, /):
-    """listDocuments(sort=False) -> list
+    """
+    listDocuments(sort=False) -> list
 
-    Return a list of names of all documents, optionally sort in dependency order."""
+    Return a list of names of all documents, optionally sort in dependency order.
+    """
 
 
 def addDocumentObserver(arg1: object, /):
-    """addDocumentObserver() -> None
+    """
+    addDocumentObserver() -> None
 
-    Add an observer to get notified about changes on documents."""
+    Add an observer to get notified about changes on documents.
+    """
 
 
 def removeDocumentObserver(arg1: object, /):
-    """removeDocumentObserver() -> None
+    """
+    removeDocumentObserver() -> None
 
-    Remove an added document observer."""
+    Remove an added document observer.
+    """
 
 
 def setLogLevel(tag: str, level: object, /):
-    """setLogLevel(tag, level) -- Set the log level for a string tag.
-    'level' can either be string 'Log', 'Msg', 'Wrn', 'Error', or an integer value"""
+    """
+    setLogLevel(tag, level) -- Set the log level for a string tag.
+    'level' can either be string 'Log', 'Msg', 'Wrn', 'Error', or an integer value
+    """
 
 
 def getLogLevel(tag: str, /):
@@ -1536,7 +1606,8 @@ def checkLinkDepth(depth: int, /):
 
 
 def getLinksTo(obj: object = None, options: int = 0, maxCount: int = 0, /):
-    """getLinksTo(obj,options=0,maxCount=0) -- return the objects linked to 'obj'
+    """
+    getLinksTo(obj,options=0,maxCount=0) -- return the objects linked to 'obj'
 
     options: 1: recursive, 2: check link array. Options can combine.
     maxCount: to limit the number of links returned
@@ -1544,16 +1615,19 @@ def getLinksTo(obj: object = None, options: int = 0, maxCount: int = 0, /):
 
 
 def getDependentObjects(arg1: object, arg2: int = None, /):
-    """getDependentObjects(obj|[obj,...], options=0)
+    """
+    getDependentObjects(obj|[obj,...], options=0)
     Return a list of dependent objects including the given objects.
 
     options: can have the following bit flags,
              1: to sort the list in topological order.
-             2: to exclude dependency of Link type object."""
+             2: to exclude dependency of Link type object.
+    """
 
 
 def setActiveTransaction(name: str, persist: object = False, /):
-    """setActiveTransaction(name, persist=False) -- setup active transaction with the given name
+    """
+    setActiveTransaction(name, persist=False) -- setup active transaction with the given name
 
     name: the transaction name
     persist(False): by default, if the calling code is inside any invocation of a command, it
@@ -1561,7 +1635,8 @@ def setActiveTransaction(name: str, persist: object = False, /):
                     disable auto closing, set persist=True
     Returns the transaction ID for the active transaction. An application-wide
     active transaction causes any document changes to open a transaction with
-    the given name and ID."""
+    the given name and ID.
+    """
 
 
 def getActiveTransaction():
@@ -1577,12 +1652,14 @@ def isRestoring():
 
 
 def checkAbort():
-    """checkAbort() -- check for user abort in length operation.
+    """
+    checkAbort() -- check for user abort in length operation.
 
     This only works if there is an active sequencer (or ProgressIndicator in Python).
     There is an active sequencer during document restore and recomputation. User may
     abort the operation by pressing the ESC key. Once detected, this function will
-    trigger a BaseExceptionFreeCADAbort exception."""
+    trigger a BaseExceptionFreeCADAbort exception.
+    """
 
 
 

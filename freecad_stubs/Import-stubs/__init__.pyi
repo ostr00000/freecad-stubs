@@ -6,20 +6,23 @@ import Part
 
 # StepShapePy.xml
 class StepShape(FreeCAD.PyObjectBase):
-    """This class can be imported.
+    """
+    This class can be imported.
     StepShape in Import
-    This class gives a interface to retrieve TopoShapes out of an loaded STEP file of any kind. 
-    		"""
+    This class gives a interface to retrieve TopoShapes out of an loaded STEP file of any kind.
+    """
 
     def __init__(self, arg1: str, /):
-        """StepShape in Import
-        This class gives a interface to retrieve TopoShapes out of an loaded STEP file of any kind. 
-        		"""
+        """
+        StepShape in Import
+        This class gives a interface to retrieve TopoShapes out of an loaded STEP file of any kind.
+        """
 
     def read(self):
-        """method read()
+        """
+        method read()
         Read a STEP file into memory and make it accessible
-        			  """
+        """
 
 
 # AppImportPy.cpp

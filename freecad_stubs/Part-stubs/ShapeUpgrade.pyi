@@ -10,10 +10,12 @@ class UnifySameDomain(FreeCAD.PyObjectBase):
         """This tool tries to unify faces and edges of the shape which lie on the same geometry."""
 
     def allowInternalEdges(self, arg1: bool, /):
-        """Sets the flag defining whether it is allowed to create
+        """
+        Sets the flag defining whether it is allowed to create
         internal edges inside merged faces in the case of non-manifold
         topology. Without this flag merging through multi connected edge
-        is forbidden. Default value is false."""
+        is forbidden. Default value is false.
+        """
 
     def build(self):
         """Performs unification and builds the resulting shape"""
@@ -34,10 +36,12 @@ class UnifySameDomain(FreeCAD.PyObjectBase):
         """Sets the linear tolerance"""
 
     def setSafeInputMode(self, arg1: bool, /):
-        """Sets the flag defining the behavior of the algorithm regarding
+        """
+        Sets the flag defining the behavior of the algorithm regarding
         modification of input shape.
         If this flag is equal to True then the input (original) shape can't be
-        modified during modification process. Default value is true."""
+        modified during modification process. Default value is true.
+        """
 
     def shape(self):
         """Gives the resulting shape"""

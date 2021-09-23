@@ -4,21 +4,21 @@ import Points
 
 # PointsPy.xml
 class Points(FreeCAD.ComplexGeoData):
-    """This class can be imported.
+    """
+    This class can be imported.
     Points() -- Create an empty points object.
 
     This class allows one to manipulate the Points object by adding new points, deleting facets, importing from an STL file,
     transforming and much more.
-
-          """
+    """
 
     def __init__(self, arg1: object = None, /):
-        """Points() -- Create an empty points object.
+        """
+        Points() -- Create an empty points object.
 
         This class allows one to manipulate the Points object by adding new points, deleting facets, importing from an STL file,
         transforming and much more.
-
-              """
+        """
 
     @property
     def CountPoints(self) -> int:
@@ -26,13 +26,13 @@ class Points(FreeCAD.ComplexGeoData):
 
     @property
     def Points(self) -> list:
-        """A collection of points
+        """
+        A collection of points
         With this attribute it is possible to get access to the points of the object
 
         for p in pnt.Points:
         	print p
-
-        				"""
+        """
 
     def addPoints(self, arg1: object, /):
         """add one or more (list of) points to the object"""

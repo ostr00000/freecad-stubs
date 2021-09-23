@@ -7,7 +7,8 @@ import Path
 
 # ToolPy.xml
 class Tool(FreeCAD.Persistence):
-    """This class can be imported.
+    """
+    This class can be imported.
     The Tool objects holds the properties of a CNC tool.
     optional attributes:
       name: a user-defined name for this tool
@@ -18,7 +19,8 @@ class Tool(FreeCAD.Persistence):
       flatRadius
       cornerRadius
       cuttingEdgeAngle
-      cuttingEdgeHeight"""
+      cuttingEdgeHeight
+    """
 
     @typing.overload
     def __init__(self, arg1: dict, /): ...
@@ -28,7 +30,8 @@ class Tool(FreeCAD.Persistence):
 
     @typing.overload
     def __init__(self, name: str = None, tooltype: str = None, material: str = None, diameter: object = None, lengthOffset: object = None, flatRadius: object = None, cornerRadius: object = None, cuttingEdgeAngle: object = None, cuttingEdgeHeight: object = None):
-        """The Tool objects holds the properties of a CNC tool.
+        """
+        The Tool objects holds the properties of a CNC tool.
         optional attributes:
           name: a user-defined name for this tool
           tooltype: Drill, CenterDrill, CounterSink, CounterBore, Reamer, Tap, EndMill, SlotCutter, BallEndMill, ChamferMill, CornerRound, Engraver or Undefined
@@ -38,7 +41,8 @@ class Tool(FreeCAD.Persistence):
           flatRadius
           cornerRadius
           cuttingEdgeAngle
-          cuttingEdgeHeight"""
+          cuttingEdgeHeight
+        """
 
     @property
     def CornerRadius(self) -> float:
@@ -84,8 +88,10 @@ class Tool(FreeCAD.Persistence):
 
     @property
     def Material(self) -> str:
-        """the material of this tool: Steel, Carbide, HighSpeedSteel,
-        HighCarbonToolSteel CastAlloy, Ceramics, Diamond, Sialon or Undefined"""
+        """
+        the material of this tool: Steel, Carbide, HighSpeedSteel,
+        HighCarbonToolSteel CastAlloy, Ceramics, Diamond, Sialon or Undefined
+        """
 
     @Material.setter
     def Material(self, value: str): ...
@@ -99,8 +105,10 @@ class Tool(FreeCAD.Persistence):
 
     @property
     def ToolType(self) -> str:
-        """the type of this tool: Drill, CenterDrill, CounterSink, CounterBore, Reamer, Tap,
-        EndMill, SlotCutter, BallEndMill, ChamferMill, CornerRound, Engraver or Undefined"""
+        """
+        the type of this tool: Drill, CenterDrill, CounterSink, CounterBore, Reamer, Tap,
+        EndMill, SlotCutter, BallEndMill, ChamferMill, CornerRound, Engraver or Undefined
+        """
 
     @ToolType.setter
     def ToolType(self, value: str): ...
@@ -123,8 +131,10 @@ class Tool(FreeCAD.Persistence):
 
 # VoronoiEdgePy.xml
 class VoronoiEdge(FreeCAD.BaseClass):
-    """This class can be imported.
-    Edge of a Voronoi diagram"""
+    """
+    This class can be imported.
+    Edge of a Voronoi diagram
+    """
 
     def __init__(self):
         """Edge of a Voronoi diagram"""
@@ -186,8 +196,10 @@ class VoronoiEdge(FreeCAD.BaseClass):
 
 # VoronoiCellPy.xml
 class VoronoiCell(FreeCAD.BaseClass):
-    """This class can be imported.
-    Cell of a Voronoi diagram"""
+    """
+    This class can be imported.
+    Cell of a Voronoi diagram
+    """
 
     def __init__(self):
         """Cell of a Voronoi diagram"""
@@ -233,21 +245,25 @@ class VoronoiCell(FreeCAD.BaseClass):
 
 # CommandPy.xml
 class Command(FreeCAD.Persistence):
-    """This class can be imported.
+    """
+    This class can be imported.
     Command([name],[parameters]): Represents a basic Gcode command
     name (optional) is the name of the command, ex. G1
     parameters (optional) is a dictionary containing string:number 
-    pairs, or a placement, or a vector"""
+    pairs, or a placement, or a vector
+    """
 
     @typing.overload
     def __init__(self, name: str = None, parameters: dict = None): ...
 
     @typing.overload
     def __init__(self, name: str = None, parameters: FreeCAD.Placement = None):
-        """Command([name],[parameters]): Represents a basic Gcode command
+        """
+        Command([name],[parameters]): Represents a basic Gcode command
         name (optional) is the name of the command, ex. G1
         parameters (optional) is a dictionary containing string:number 
-        pairs, or a placement, or a vector"""
+        pairs, or a placement, or a vector
+        """
 
     @property
     def Name(self) -> str:
@@ -282,21 +298,25 @@ class Command(FreeCAD.Persistence):
 
 # AreaPy.xml
 class Area(FreeCAD.BaseClass):
-    """This class can be imported.
+    """
+    This class can be imported.
     FreeCAD python wrapper of libarea
 
     Path.Area(key=value ...)
 
     The constructor accepts the same parameters as setParams(...) to configure the object
-    All arguments are optional."""
+    All arguments are optional.
+    """
 
     def __init__(self, key):
-        """FreeCAD python wrapper of libarea
+        """
+        FreeCAD python wrapper of libarea
 
         Path.Area(key=value ...)
 
         The constructor accepts the same parameters as setParams(...) to configure the object
-        All arguments are optional."""
+        All arguments are optional.
+        """
 
     @property
     def Sections(self) -> list:
@@ -319,13 +339,15 @@ class Area(FreeCAD.BaseClass):
         """Get current algorithm parameters as a dictionary."""
 
     def getShape(self, index: int = -1, rebuild: object = False):
-        """getShape(index=-1,rebuild=False): Return the resulting shape
+        """
+        getShape(index=-1,rebuild=False): Return the resulting shape
 
 
         * index (-1): the index of the section. -1 means all sections. No effect on planar shape.
 
 
-        * rebuild: clean the internal cache and rebuild"""
+        * rebuild: clean the internal cache and rebuild
+        """
 
     def makeOffset(self, index: int = None): ...
 
@@ -336,28 +358,34 @@ class Area(FreeCAD.BaseClass):
     def setParams(self): ...
 
     def setPlane(self, shape: Part.Shape, /):
-        """setPlane(shape): Set the working plane.
+        """
+        setPlane(shape): Set the working plane.
 
         The supplied shape does not need to be planar. Area will try to find planar
         sub-shape (face, wire or edge). If more than one planar sub-shape is found, it
         will prefer the top plane parallel to XY0 plane. If no working plane are set,
         Area will try to find a working plane from the added children shape using the
-        same algorithm"""
+        same algorithm
+        """
 
 
 # PathPy.xml
 class Path(FreeCAD.Persistence):
-    """This class can be imported.
+    """
+    This class can be imported.
     Path([commands]): Represents a basic Gcode path
-    commands (optional) is a list of Path commands"""
+    commands (optional) is a list of Path commands
+    """
 
     @typing.overload
     def __init__(self, commands: list = None, /): ...
 
     @typing.overload
     def __init__(self, commands: str = None, /):
-        """Path([commands]): Represents a basic Gcode path
-        commands (optional) is a list of Path commands"""
+        """
+        Path([commands]): Represents a basic Gcode path
+        commands (optional) is a list of Path commands
+        """
 
     @property
     def BoundBox(self) -> FreeCAD.BoundBox:
@@ -396,15 +424,19 @@ class Path(FreeCAD.Persistence):
         """returns a copy of this path"""
 
     def deleteCommand(self, int: int = None, /):
-        """deleteCommand([int]):
-        deletes the command found at the given position or from the end of the path"""
+        """
+        deleteCommand([int]):
+        deletes the command found at the given position or from the end of the path
+        """
 
     def getCycleTime(self, arg1: float, arg2: float, arg3: float, arg4: float, /):
         """return the cycle time estimation for this path in s"""
 
     def insertCommand(self, Command: Path.Command, int: int = None, /):
-        """insertCommand(Command,[int]):
-        adds a command at the given position or at the end of the path"""
+        """
+        insertCommand(Command,[int]):
+        adds a command at the given position or at the end of the path
+        """
 
     def setFromGCode(self, arg1: str, /):
         """sets the contents of the path from a gcode string"""
@@ -415,8 +447,10 @@ class Path(FreeCAD.Persistence):
 
 # TooltablePy.xml
 class Tooltable(FreeCAD.Persistence):
-    """This class can be imported.
-    The Tooltable object holds a table of CNC tools"""
+    """
+    This class can be imported.
+    The Tooltable object holds a table of CNC tools
+    """
 
     @typing.overload
     def __init__(self): ...
@@ -460,19 +494,25 @@ class Tooltable(FreeCAD.Persistence):
         """returns a copy of this tooltable"""
 
     def deleteTool(self, int: int = None, /):
-        """deleteTool(int):
-        deletes the tool found at the given position"""
+        """
+        deleteTool(int):
+        deletes the tool found at the given position
+        """
 
     def getTool(self, int: int, /):
-        """getTool(int):
-        returns the tool found at the given position, or  None"""
+        """
+        getTool(int):
+        returns the tool found at the given position, or  None
+        """
 
     def setFromTemplate(self, dict: dict, /):
         """setFromTemplate(dict) ... restores receiver from given template attribute dictionary"""
 
     def setTool(self, int: int, tool: Path.Tool, /):
-        """setTool(int,tool):
-        adds a tool at the given position"""
+        """
+        setTool(int,tool):
+        adds a tool at the given position
+        """
 
     def templateAttrs(self):
         """templateAttrs() ... returns a dictionary representing the receivers attributes for a template"""
@@ -480,8 +520,10 @@ class Tooltable(FreeCAD.Persistence):
 
 # VoronoiPy.xml
 class Voronoi(FreeCAD.BaseClass):
-    """This class can be imported.
-    Voronoi([segments]): Create voronoi for given collection of line segments"""
+    """
+    This class can be imported.
+    Voronoi([segments]): Create voronoi for given collection of line segments
+    """
 
     def __init__(self, segments: float = None, /):
         """Voronoi([segments]): Create voronoi for given collection of line segments"""
@@ -554,18 +596,14 @@ class FeatureArea(FreeCAD.DocumentObject):
 
     @property
     def Sources(self) -> dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]:
-        """
-        Property TypeId: App::PropertyLinkList.
-        """
+        """Property TypeId: App::PropertyLinkList."""
 
     @Sources.setter
     def Sources(self, value: dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]): ...
 
     @property
     def WorkPlane(self):
-        """
-        Property TypeId: Part::PropertyPartShape.
-        """
+        """Property TypeId: Part::PropertyPartShape."""
 
     @WorkPlane.setter
     def WorkPlane(self, value): ...
@@ -574,15 +612,19 @@ class FeatureArea(FreeCAD.DocumentObject):
         """Return a copy of the encapsulated Python Area object."""
 
     def setParams(self):
-        """setParams(key=value...): Convenient function to configure this feature.
+        """
+        setParams(key=value...): Convenient function to configure this feature.
 
-        Same usage as Path.Area.setParams(). This function stores the parameters in the properties."""
+        Same usage as Path.Area.setParams(). This function stores the parameters in the properties.
+        """
 
 
 # VoronoiVertexPy.xml
 class VoronoiVertex(FreeCAD.BaseClass):
-    """This class can be imported.
-    Vertex of a Voronoi diagram"""
+    """
+    This class can be imported.
+    Vertex of a Voronoi diagram
+    """
 
     def __init__(self):
         """Vertex of a Voronoi diagram"""
@@ -655,7 +697,8 @@ def fromShape(Shape: object, /):
 
 
 def fromShapes(shapes: object, start: FreeCAD.Vector = None, return_end: object = None):
-    """fromShapes(shapes, start=Vector(), return_end=False" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_PATH) ")
+    """
+    fromShapes(shapes, start=Vector(), return_end=False" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_PATH) ")
 
     Returns a Path object from a list of shapes
 
@@ -665,11 +708,13 @@ def fromShapes(shapes: object, start: FreeCAD.Vector = None, return_end: object 
 
     * return_end (False): if True, returns tuple (path, endPosition).
     "
-                PARAM_PY_DOC(ARG, AREA_PARAMS_PATH)"""
+                PARAM_PY_DOC(ARG, AREA_PARAMS_PATH)
+    """
 
 
 def sortWires(shapes: object, start: FreeCAD.Vector = None):
-    """sortWires(shapes, start=Vector(), "
+    """
+    sortWires(shapes, start=Vector(), "
                 PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_ARC_PLANE)
                 PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_SORT) ")
 
@@ -682,12 +727,14 @@ def sortWires(shapes: object, start: FreeCAD.Vector = None):
     * start (Vector()): optional start position.
     "
                 PARAM_PY_DOC(ARG, AREA_PARAMS_ARC_PLANE)
-                PARAM_PY_DOC(ARG, AREA_PARAMS_SORT)"""
+                PARAM_PY_DOC(ARG, AREA_PARAMS_SORT)
+    """
 
 
 # AreaPyImp.cpp
 def setDefaultParams():
-    """setDefaultParams(key=value...):
+    """
+    setDefaultParams(key=value...):
     Static method to set the default parameters of all following Path.Area, plus the following
     additional parameters.
     """
@@ -701,6 +748,8 @@ def abort(aborting: object = None): ...
 
 
 def getParamsDesc(as_string: object = False):
-    """getParamsDesc(as_string=False): Returns a list of supported parameters and their descriptions.
+    """
+    getParamsDesc(as_string=False): Returns a list of supported parameters and their descriptions.
 
-    * as_string: if False, then return a dictionary of documents of all supported parameters."""
+    * as_string: if False, then return a dictionary of documents of all supported parameters.
+    """

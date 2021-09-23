@@ -11,7 +11,8 @@ class Body(Part.BodyBase):
         """Return the the visible feature of this body"""
 
     def insertObject(self, feature: FreeCAD.DocumentObject, target: object, after: bool = False, /):
-        """insertObject(feature, target, after=False)
+        """
+        insertObject(feature, target, after=False)
                                 Insert the feature into the body after the given feature.
 
                                 @param feature  The feature to insert into the body
@@ -21,7 +22,7 @@ class Body(Part.BodyBase):
                                 @param after    if true insert the feature after the target. Default is false.
 
                                 @note the method doesn't modify the Tip unlike addObject()
-                            """
+        """
 
 
 # FeaturePy.xml
@@ -30,9 +31,7 @@ class Feature(Part.Feature):
 
     @property
     def BaseFeature(self) -> FreeCAD.DocumentObject | None:
-        """
-        Property TypeId: App::PropertyLink.
-        """
+        """Property TypeId: App::PropertyLink."""
 
     @BaseFeature.setter
     def BaseFeature(self, value: FreeCAD.DocumentObject | None): ...

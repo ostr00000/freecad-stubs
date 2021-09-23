@@ -81,9 +81,7 @@ class DrawLeaderLine(TechDraw.DrawView):
 
     @property
     def EndSymbol(self):
-        """
-        Property TypeId: App::PropertyEnumeration.
-        """
+        """Property TypeId: App::PropertyEnumeration."""
 
     @EndSymbol.setter
     def EndSymbol(self, value): ...
@@ -112,9 +110,7 @@ class DrawLeaderLine(TechDraw.DrawView):
 
     @property
     def StartSymbol(self):
-        """
-        Property TypeId: App::PropertyEnumeration.
-        """
+        """Property TypeId: App::PropertyEnumeration."""
 
     @StartSymbol.setter
     def StartSymbol(self, value): ...
@@ -162,8 +158,10 @@ class DrawViewAnnotation(TechDraw.DrawView):
         """
         Property group: Annotation.
         Property TypeId: App::PropertyLength.
+
         Maximum width of the annotation block.
          -1 means no maximum width.
+        .
         """
 
     @MaxWidth.setter
@@ -509,8 +507,10 @@ class DrawTile(FreeCAD.DocumentObject):
         """
         Property group: Tile.
         Property TypeId: App::PropertyIntegerConstraint.
+
         Row in parent object
-         0 for arrow side, -1 for other side.
+         0 for arrow side, -1 for other side
+        .
         """
 
     @TileRow.setter
@@ -605,9 +605,7 @@ class DrawViewDimension(TechDraw.DrawView):
 
     @property
     def MeasureType(self) -> typing.Literal['True', '\n                                                    "Projected']:
-        """
-        Property TypeId: App::PropertyEnumeration.
-        """
+        """Property TypeId: App::PropertyEnumeration."""
 
     @MeasureType.setter
     def MeasureType(self, value: typing.Literal['True', '\n                                                    "Projected']): ...
@@ -617,9 +615,11 @@ class DrawViewDimension(TechDraw.DrawView):
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property TypeId: FormatSpec.
+
         Overtolerance value
         If 'Equal Tolerance' is true this is also
-        the negated value for 'Under Tolerance'.
+        the negated value for 'Under Tolerance'
+        .
         """
 
     @OverTolerance.setter
@@ -658,9 +658,7 @@ class DrawViewDimension(TechDraw.DrawView):
 
     @property
     def Type(self):
-        """
-        Property TypeId: Measure.
-        """
+        """Property TypeId: Measure."""
 
     @Type.setter
     def Type(self, value): ...
@@ -670,9 +668,11 @@ class DrawViewDimension(TechDraw.DrawView):
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property TypeId: FormatSpec.
+
         Undertolerance value
         If 'Equal Tolerance' is true it will be replaced
-        by negative value of 'Over Tolerance'.
+        by negative value of 'Over Tolerance'
+        .
         """
 
     @UnderTolerance.setter
@@ -685,7 +685,7 @@ class DrawViewDimension(TechDraw.DrawView):
         """getArcPoints() - returns list of points for circle/arc Dimension"""
 
     def getArrowPositions(self):
-        """getArrowPositions() - returns list of locations or Dimension Arrowheads. Locations are in unscaled coordinates of parent View """
+        """getArrowPositions() - returns list of locations or Dimension Arrowheads. Locations are in unscaled coordinates of parent View"""
 
     def getLinearPoints(self):
         """getLinearPoints() - returns list of points for linear Dimension"""
@@ -991,9 +991,11 @@ class DrawProjGroup(TechDraw.DrawViewCollection):
         """
         Property group: Distribute.
         Property TypeId: App::PropertyLength.
+
         If AutoDistribute is on, this is the horizontal 
         spacing between the borders of views 
-        (if label width is not wider than the object).
+        (if label width is not wider than the object)
+        .
         """
 
     @spacingX.setter
@@ -1004,8 +1006,10 @@ class DrawProjGroup(TechDraw.DrawViewCollection):
         """
         Property group: Distribute.
         Property TypeId: App::PropertyLength.
+
         If AutoDistribute is on, this is the vertical 
-        spacing between the borders of views.
+        spacing between the borders of views
+        .
         """
 
     @spacingY.setter
@@ -1348,9 +1352,7 @@ class DrawTemplate(FreeCAD.DocumentObject):
 
     @property
     def Orientation(self) -> typing.Literal['Portrait', '\n                                                  "Landscape']:
-        """
-        Property TypeId: App::PropertyEnumeration.
-        """
+        """Property TypeId: App::PropertyEnumeration."""
 
     @Orientation.setter
     def Orientation(self, value: typing.Literal['Portrait', '\n                                                  "Landscape']): ...
@@ -1515,9 +1517,7 @@ class DrawPage(FreeCAD.DocumentObject):
 
     @property
     def ProjectionType(self) -> typing.Literal[' "First Angle', '\n                                                "Third Angle']:
-        """
-        Property TypeId: App::PropertyEnumeration.
-        """
+        """Property TypeId: App::PropertyEnumeration."""
 
     @ProjectionType.setter
     def ProjectionType(self, value: typing.Literal[' "First Angle', '\n                                                "Third Angle']): ...
@@ -1620,9 +1620,7 @@ class DrawProjGroupItem(TechDraw.DrawViewPart):
 
     @property
     def Type(self) -> typing.Literal['Front', '\n                                             "Left', '\n                                             "Right', '\n                                             "Rear', '\n                                             "Top', '\n                                             "Bottom', '\n                                             "FrontTopLeft', '\n                                             "FrontTopRight', '\n                                             "FrontBottomLeft', '\n                                             "FrontBottomRight']:
-        """
-        Property TypeId: App::PropertyEnumeration.
-        """
+        """Property TypeId: App::PropertyEnumeration."""
 
     @Type.setter
     def Type(self, value: typing.Literal['Front', '\n                                             "Left', '\n                                             "Right', '\n                                             "Rear', '\n                                             "Top', '\n                                             "Bottom', '\n                                             "FrontTopLeft', '\n                                             "FrontTopRight', '\n                                             "FrontBottomLeft', '\n                                             "FrontBottomRight']): ...
