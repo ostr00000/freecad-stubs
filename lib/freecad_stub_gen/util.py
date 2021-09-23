@@ -3,6 +3,8 @@ import textwrap
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
+from freecad_stub_gen.config import SOURCE_DIR
+
 
 def indent(block, distance=1, indentSize=4):
     return textwrap.indent(block, ' ' * distance * indentSize)
@@ -54,3 +56,11 @@ def readContent(file: Path):
         content = file.read_text('iso8859-1')
 
     return removeComments(content)
+
+
+def genPyCppFiles(sourcePath: Path = SOURCE_DIR):
+    yield from Path(sourcePath).glob('**/*.cpp')
+
+
+def genXmlFiles(sourcePath: Path = SOURCE_DIR):
+    yield from Path(sourcePath).glob('**/*.xml')

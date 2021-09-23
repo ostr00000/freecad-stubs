@@ -2,6 +2,7 @@ import logging
 import xml.etree.ElementTree as ET
 from typing import Optional
 
+from freecad_stub_gen.importable_map import importableMap
 from freecad_stub_gen.module_map import moduleNamespace
 
 logger = logging.getLogger(__name__)
@@ -24,47 +25,26 @@ def getClassWithModulesFromStem(stem: str, namespace: str):
     return getClassWithModulesFromNode(exportElement)
 
 
-_renamedTypes = {
-    # these types are renamed in code
-    # https://github.com/FreeCAD/FreeCAD/blob/8ac722c1e89ef530564293efd30987db09017e12/src/Mod/Part/App/AppPart.cpp#L226
-    # regex to find non matching names:
-    # Base::Interpreter\(\).addType\(\&\w+::(\w+)Py\s*::Type,\s*\w+,"(?!\1")
-
-    'TypePy': 'FreeCAD.TypeId',
-    'MeshFeaturePy': 'Mesh.Feature',
-    'TopoShapePy': 'Part.Shape',
-    'TopoShapeVertexPy': 'Part.Vertex',
-    'TopoShapeWirePy': 'Part.Wire',
-    'TopoShapeEdgePy': 'Part.Edge',
-    'TopoShapeSolidPy': 'Part.Solid',
-    'TopoShapeFacePy': 'Part.Face',
-    'TopoShapeCompoundPy': 'Part.Compound',
-    'TopoShapeCompSolidPy': 'Part.CompSolid',
-    'TopoShapeShellPy': 'Part.Shell',
-    'PartFeaturePy': 'Part.Feature',
-    'BRepOffsetAPI_MakePipeShellPy': 'Part.MakePipeShell',
-    'BRepOffsetAPI_MakeFillingPy': 'Part.MakeFilling',
-}
-
-
 def getClassWithModulesFromNode(currentNode: ET.Element) -> str:
     """
     Return class name preceded by all modules, ex. `FreeCAD.Vector`.
     Some classes are renamed in c++ code - try them first, then extract based on
     https://github.com/FreeCAD/FreeCAD/blob/8ac722c1e89ef530564293efd30987db09017e12/src/Tools/generateTemplates/templateClassPyExport.py#L279
     """
-    if name := _renamedTypes.get(currentNode.attrib['Name']):
-        assert '.' in name
-        return name
-
     if name := currentNode.attrib.get('PythonName'):
         assert '.' in name
         return name
 
+    if fullName := importableMap.get(currentNode.attrib['Name']):
+        if '.' in fullName:
+            name = getClassName(fullName)
+
+    if not name:
+        name = currentNode.attrib.get('Name').removesuffix('Py')
+
     namespace = currentNode.attrib.get('Namespace')
     namespace = moduleNamespace.convertNamespaceToModule(namespace)
-    twin = currentNode.attrib.get('Name').removesuffix('Py')
-    return f'{namespace}.{twin}'
+    return f'{namespace}.{name}'
 
 
 def getClassNameFromNode(currentNode: ET.Element) -> str:

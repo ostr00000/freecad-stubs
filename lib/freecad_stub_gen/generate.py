@@ -9,7 +9,7 @@ from freecad_stub_gen.generators.from_cpp.klass import FreecadStubGeneratorFromC
 from freecad_stub_gen.generators.from_cpp.module import FreecadStubGeneratorFromCppModule
 from freecad_stub_gen.generators.from_xml import FreecadStubGeneratorFromXML
 from freecad_stub_gen.module_container import Module
-from freecad_stub_gen.module_map import genPyCppFiles, genXmlFiles
+from freecad_stub_gen.util import genPyCppFiles, genXmlFiles
 
 logger = logging.getLogger(__name__)
 

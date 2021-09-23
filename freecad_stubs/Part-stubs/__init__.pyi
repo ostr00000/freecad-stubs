@@ -949,7 +949,7 @@ class Face(Part.Shape):
 
 
 # BRepOffsetAPI_MakePipeShellPy.xml
-class MakePipeShell(FreeCAD.PyObjectBase):
+class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
     """Describes a portion of a circle"""
 
     @typing.overload
@@ -5158,7 +5158,7 @@ class GeometryExtension(FreeCAD.PyObjectBase):
 
 
 # BRepOffsetAPI_MakeFillingPy.xml
-class MakeFilling(FreeCAD.PyObjectBase):
+class BRepOffsetAPI_MakeFilling(FreeCAD.PyObjectBase):
     """N-Side Filling"""
 
     def __init__(self, Degree: int = None, NbPtsOnCur: int = None, NbIter: int = None, MaxDegree: int = None, MaxSegments: int = None, Tol2d: float = None, Tol3d: float = None, TolAng: float = None, TolCurv: float = None, Anisotropy: bool = None):

@@ -3,16 +3,9 @@ from collections import defaultdict
 from pathlib import Path
 
 from freecad_stub_gen.config import SOURCE_DIR
+from freecad_stub_gen.util import genXmlFiles
 
 logger = logging.getLogger(__name__)
-
-
-def genPyCppFiles(sourcePath: Path = SOURCE_DIR):
-    yield from Path(sourcePath).glob('**/*.cpp')
-
-
-def genXmlFiles(sourcePath: Path = SOURCE_DIR):
-    yield from Path(sourcePath).glob('**/*.xml')
 
 
 class _ModuleNamespace:
@@ -47,4 +40,5 @@ class _ModuleNamespace:
         return self.NAMESPACE_TO_MODULE.get(namespace, namespace)
 
 
+__all__ = ['moduleNamespace']
 moduleNamespace = _ModuleNamespace()

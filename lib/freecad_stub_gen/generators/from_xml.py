@@ -9,6 +9,7 @@ from freecad_stub_gen.generators.method.method import MethodGenerator
 from freecad_stub_gen.generators.names import getFatherClassWithModules, getModuleName, \
     getClassWithModulesFromNode, getClassName
 from freecad_stub_gen.generators.property import PropertyGenerator
+from freecad_stub_gen.importable_map import importableMap
 from freecad_stub_gen.module_container import Module
 from freecad_stub_gen.util import indent, formatDocstring, getDocFromNode
 
