@@ -5,7 +5,7 @@ import FreeCAD
 import FreeCAD.Base
 import FreeCAD.Console
 import FreeCAD.Qt as Qt
-import FreeCAD.UnitsApiPy as Units
+import FreeCAD.Units as Units
 import FreeCADGui
 import FreeCADTemplates
 
@@ -200,7 +200,7 @@ class Material(FreeCAD.PyObjectBase):
 
 
 # DocumentObjectGroupPy.xml
-class DocumentObjectGroup(FreeCAD.DocumentObject):
+class DocumentObjectGroup(FreeCAD.DocumentObject, FreeCAD.GroupExtension):
     """
     This class can be imported.
     This class handles document objects in group
@@ -409,7 +409,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
                                   in a single group, hence only a single return value.
         """
 
-    def getParentGroup(self):
+    def getParentGroup(self) -> FreeCAD.DocumentObjectGroup | None:
         """
         Returns the group the object is in or None if it is not part of a group. 
                                   Note that an object can only be in a single group, hence only a single return 

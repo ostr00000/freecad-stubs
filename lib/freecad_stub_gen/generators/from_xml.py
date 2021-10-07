@@ -40,9 +40,9 @@ class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
                 self.requiredImports.clear()
 
     def _getClassContent(self):
-        baseClasses = ', '.join(self.genBaseClasses())
         classNameWithModules = getClassWithModulesFromNode(self.currentNode)
         className = getClassName(classNameWithModules)
+        baseClasses = ', '.join(self.genBaseClasses(classNameWithModules))
         classStr = f"class {className}({baseClasses}):\n"
 
         doc = getDocFromNode(self.currentNode)
@@ -75,11 +75,14 @@ class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
     def _nodeSort(node: ET.Element):
         return node.attrib['Name']
 
-    def genBaseClasses(self):
+    def genBaseClasses(self, classNameWithModules: str):
         """Only one class is available in xml as a father."""
         fatherModuleAndClass = getFatherClassWithModules(self.currentNode)
         self.requiredImports.add(getModuleName(fatherModuleAndClass))
         yield fatherModuleAndClass
+
+        if classNameWithModules == 'FreeCAD.DocumentObjectGroup':
+            yield 'FreeCAD.GroupExtension'
 
     def getCodeForSpecialCase(self, className: str) -> str:
         ret = ''

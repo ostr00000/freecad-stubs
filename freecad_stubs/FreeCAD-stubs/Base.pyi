@@ -1744,3 +1744,11 @@ class Axis(FreeCAD.PyObjectBase):
         reversed() -> Axis
         					compute the reversed axis
         """
+
+
+class FreeCADError(RuntimeError):
+    pass
+
+
+class FreeCADAbort(BaseException):
+    pass

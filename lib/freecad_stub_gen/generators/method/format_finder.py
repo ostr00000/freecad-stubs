@@ -117,4 +117,6 @@ class FormatFinder(FunctionFinder, ABC):
                 ret = 'FreeCADGui.Document'
             else:
                 logger.warning(f'Unexpected function type in file {self.baseGenFilePath}')
+        elif methodName == 'getParentGroup':
+            ret = 'FreeCAD.DocumentObjectGroup | None'
         return ret

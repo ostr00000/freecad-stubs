@@ -1,5 +1,6 @@
 import typing
 
+from FreeCAD.Base import Unit, Quantity
 import FreeCAD
 
 

@@ -1,3 +1,4 @@
+import inspect
 import logging
 import shutil
 from pathlib import Path
@@ -12,6 +13,39 @@ from freecad_stub_gen.module_container import Module
 from freecad_stub_gen.util import genPyCppFiles, genXmlFiles
 
 logger = logging.getLogger(__name__)
+
+
+def addExceptions(sourcesRoot: Module):
+    base = sourcesRoot['FreeCAD.Base']
+    base += inspect.cleandoc("""
+class FreeCADError(RuntimeError):
+    pass
+
+
+class FreeCADAbort(BaseException):
+    pass
+    """) + '\n'
+    part = sourcesRoot['Part']
+    part += inspect.cleandoc("""
+class OCCError(FreeCAD.Base.FreeCADError):
+    pass
+
+
+class OCCDomainError(OCCError):
+    pass
+
+
+class OCCRangeError(OCCDomainError):
+    pass
+
+
+class OCCConstructionError(OCCDomainError):
+    pass
+
+
+class OCCDimensionError(OCCDomainError):
+    pass
+    """) + '\n'
 
 
 def _genModule(sourcesRoot: Module, modulePath: Path, sourcePath=SOURCE_DIR,
@@ -32,7 +66,9 @@ def _genModule(sourcesRoot: Module, modulePath: Path, sourcePath=SOURCE_DIR,
                 # this is special case when we create separate module
                 case 'Translate':
                     curModuleName = f'{moduleName}.Qt'
-                case ('Selection' | 'Console' | 'UnitsApiPy' | 'TaskDialogPython') as stem:
+                case 'UnitsApiPy':
+                    curModuleName = f'{moduleName}.Units'
+                case ('Selection' | 'Console' | 'TaskDialogPython') as stem:
                     curModuleName = f'{moduleName}.{stem}'
                 case _:
                     curModuleName = moduleName
@@ -50,6 +86,7 @@ def generateFreeCadStubs(sourcePath=SOURCE_DIR, targetPath=TARGET_DIR):
                moduleName='FreeCAD', subModuleName='Base')
     _genModule(sourcesRoot, sourcePath / 'App', sourcePath,
                moduleName='FreeCAD')
+
     freeCad += """
 App = FreeCAD
 Log = FreeCAD.Console.PrintLog
@@ -67,7 +104,7 @@ Wrn = FreeCAD.Console.PrintWarning
     freeCad.imports.update((
         'FreeCAD.Console',
         'FreeCAD.Qt as Qt',
-        'FreeCAD.UnitsApiPy as Units',
+        'FreeCAD.Units as Units',
         'FreeCAD.Base',
         'from FreeCAD.Base import *'))
 
@@ -87,6 +124,8 @@ Wrn = FreeCAD.Console.PrintWarning
         _genModule(sourcesRoot, mod / 'App', sourcePath, moduleName=mod.name)
         _genModule(sourcesRoot, mod / 'Gui', sourcePath, moduleName=mod.name)
 
+    addExceptions(sourcesRoot)
+    sourcesRoot['FreeCAD.Units'].imports.add('from FreeCAD.Base import Unit, Quantity')
     sourcesRoot.setSubModulesAsPackage()
 
     shutil.rmtree(targetPath, ignore_errors=True)
@@ -106,3 +145,5 @@ Wrn = FreeCAD.Console.PrintWarning
 # TODO P3 add exceptions
 # TODO P4 preprocess and remove macros
 # https://www.tutorialspoint.com/cplusplus/cpp_preprocessor.htm
+# TODO P3 FreeCAD.Gui.Snapper
+# TODO P2 FreeCAD.Unit
