@@ -609,14 +609,9 @@ class Hyperbola(Part.Conic):
 class PlateSurface(Part.GeometrySurface):
     """This class can be imported."""
 
-    def __init__(self, Surface: Part.Geometry = None, Points: object = None, Curves: object = None,
-                 Degree: int = None, NbPtsOnCur: int = None, NbIter: int = None,
-                 Tol2d: float = None, Tol3d: float = None, TolAng: float = None,
-                 TolCurv: float = None, Anisotropie: bool = None): ...
+    def __init__(self, Surface: Part.Geometry = None, Points: object = None, Curves: object = None, Degree: int = None, NbPtsOnCur: int = None, NbIter: int = None, Tol2d: float = None, Tol3d: float = None, TolAng: float = None, TolCurv: float = None, Anisotropie: bool = None): ...
 
-    def makeApprox(self, Tol3d: float = None, MaxSegments: int = None, MaxDegree: int = None,
-                   MaxDistance: float = None, CritOrder: int = None, Continuity: str = None,
-                   EnlargeCoeff: float = None):
+    def makeApprox(self, Tol3d: float = None, MaxSegments: int = None, MaxDegree: int = None, MaxDistance: float = None, CritOrder: int = None, Continuity: str = None, EnlargeCoeff: float = None):
         """Approximate the plate surface to a B-Spline surface"""
 
 
@@ -1030,8 +1025,7 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
     def add(self, Profile: Part.Shape, WithContact: bool = False, WithCorrection: bool = False): ...
 
     @typing.overload
-    def add(self, Profile: Part.Shape, Location: Part.Vertex, WithContact: bool = False,
-            WithCorrection: bool = False):
+    def add(self, Profile: Part.Shape, Location: Part.Vertex, WithContact: bool = False, WithCorrection: bool = False):
         """
         add(shape Profile, bool WithContact=False, bool WithCorrection=False)
         					add(shape Profile, vertex Location, bool WithContact=False, bool WithCorrection=False)
@@ -1090,12 +1084,10 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
         """
 
     @typing.overload
-    def setAuxiliarySpine(self, wire: Part.Shape, CurvilinearEquivalence: bool, TypeOfContact: int,
-                          /): ...
+    def setAuxiliarySpine(self, wire: Part.Shape, CurvilinearEquivalence: bool, TypeOfContact: int, /): ...
 
     @typing.overload
-    def setAuxiliarySpine(self, wire: Part.Shape, CurvilinearEquivalence: bool, TypeOfContact: bool,
-                          /):
+    def setAuxiliarySpine(self, wire: Part.Shape, CurvilinearEquivalence: bool, TypeOfContact: bool, /):
         """
         setAuxiliarySpine(wire, CurvilinearEquivalence, TypeOfContact)
         					Sets an auxiliary spine to define the Normal.
@@ -1795,8 +1787,7 @@ class Shape(FreeCAD.ComplexGeoData):
         makeFillet(radius1,radius2,edgeList) -> Shape
         """
 
-    def makeOffset2D(self, offset: float, join: int = None, fill: bool = None,
-                     openResult: bool = None, intersection: bool = None):
+    def makeOffset2D(self, offset: float, join: int = None, fill: bool = None, openResult: bool = None, intersection: bool = None):
         """
         makes an offset shape (2d offsetting).
         makeOffset2D(offset, [join = 0, fill = False, openResult = false, intersection =
@@ -1828,9 +1819,7 @@ class Shape(FreeCAD.ComplexGeoData):
         structure follows that of source shape.
         """
 
-    def makeOffsetShape(self, offset: float, tolerance: float, inter: bool = None,
-                        self_inter: bool = None, offsetMode: int = None, join: int = None,
-                        fill: bool = None):
+    def makeOffsetShape(self, offset: float, tolerance: float, inter: bool = None, self_inter: bool = None, offsetMode: int = None, join: int = None, fill: bool = None):
         """
         makes an offset shape (3d offsetting).
         makeOffsetShape(offset, tolerance, [inter = False, self_inter = False,
@@ -1869,7 +1858,7 @@ class Shape(FreeCAD.ComplexGeoData):
         makePerspectiveProjection(shape, pnt) -> Shape
         """
 
-    def makeShapeFromMesh(self, arg: tuple, tolerance: float, /):
+    def makeShapeFromMesh(self, arg1: tuple, arg2: float = None, arg3: bool = None, /):
         """
         Make a compound shape out of mesh data.
         makeShapeFromMesh((vertex,facets),tolerance) -> Shape
@@ -1877,8 +1866,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Note: This should be used for rather small meshes only.
         """
 
-    def makeThickness(self, arg1: object, arg2: float, arg3: float, arg4: bool = None,
-                      arg5: bool = None, arg6: int = None, arg7: int = None, /):
+    def makeThickness(self, arg1: object, arg2: float, arg3: float, arg4: bool = None, arg5: bool = None, arg6: int = None, arg7: int = None, /):
         """
         Hollow a solid according to given thickness and faces.
         makeThickness(List of faces, Offset (Float), Tolerance (Float)) -> Shape
@@ -1939,8 +1927,7 @@ class Shape(FreeCAD.ComplexGeoData):
         oldFuse(tool) -> Shape
         """
 
-    def optimalBoundingBox(self, useTriangulation: bool = True, useShapeTolerance: object = False,
-                           /):
+    def optimalBoundingBox(self, useTriangulation: bool = True, useShapeTolerance: object = False, /):
         """
         Get the optimal bounding box
         optimalBoundingBox([useTriangulation = True, useShapeTolerance = False]) -> bound box
@@ -1972,9 +1959,7 @@ class Shape(FreeCAD.ComplexGeoData):
         read(filename)
         """
 
-    def reflectLines(self, ViewDir: FreeCAD.Vector, ViewPos: FreeCAD.Vector = None,
-                     UpDir: FreeCAD.Vector = None, EdgeType: str = None, Visible: bool = None,
-                     OnShape: bool = None):
+    def reflectLines(self, ViewDir: FreeCAD.Vector, ViewPos: FreeCAD.Vector = None, UpDir: FreeCAD.Vector = None, EdgeType: str = None, Visible: bool = None, OnShape: bool = None):
         """
         Build projection or reflect lines of a shape according to a view direction.
         reflectLines(ViewDir, [ViewPos, UpDir, EdgeType, Visible, OnShape]) -> Shape (Compound of edges)
@@ -2037,8 +2022,7 @@ class Shape(FreeCAD.ComplexGeoData):
     def revolve(self, base: FreeCAD.Vector, direction: FreeCAD.Vector, angle: float = None, /): ...
 
     @typing.overload
-    def revolve(self, Vector_0_0_0_: FreeCAD.Vector, Vector_0_0_1_: FreeCAD.Vector,
-                arg: float = None, /): ...
+    def revolve(self, Vector_0_0_0_: FreeCAD.Vector, Vector_0_0_1_: FreeCAD.Vector, arg: float = None, /): ...
 
     @typing.overload
     def revolve(self, V_0_0_0_: FreeCAD.Vector, V_0_1_0_: FreeCAD.Vector, arg: float = None, /):
@@ -2135,7 +2119,7 @@ class Shape(FreeCAD.ComplexGeoData):
         OCC 6.9.0 or later is required.
         """
 
-    def sewShape(self):
+    def sewShape(self, arg1: float = None, /):
         """
         Sew the shape if there is a gap.
         sewShape()
@@ -2192,8 +2176,7 @@ class Shape(FreeCAD.ComplexGeoData):
         underlying geometry then use the methods translate or rotate.
         """
 
-    def transformShape(self, Matrix: FreeCAD.Matrix, boolean_copy: bool = False,
-                       checkScale: object = False, /):
+    def transformShape(self, Matrix: FreeCAD.Matrix, boolean_copy: bool = False, checkScale: object = False, /):
         """
         Apply transformation on a shape without changing the underlying geometry.
         transformShape(Matrix,[boolean copy=False, checkScale=False]) -> None
@@ -2202,8 +2185,7 @@ class Shape(FreeCAD.ComplexGeoData):
         scaling is detected.
         """
 
-    def transformed(self, matrix: FreeCAD.Matrix, copy: object = False, checkScale: object = False,
-                    op: str = None):
+    def transformed(self, matrix: FreeCAD.Matrix, copy: object = False, checkScale: object = False, op: str = None):
         """
         Create a new transformed shape
         transformed(Matrix,copy=False,checkScale=False,op=None) -> shape
@@ -2221,8 +2203,7 @@ class Shape(FreeCAD.ComplexGeoData):
         translated(vector) -> shape
         """
 
-    def writeInventor(self, Mode: int = None, Deviation: float = None, Angle: float = None,
-                      FaceColors: object = None):
+    def writeInventor(self, Mode: int = None, Deviation: float = None, Angle: float = None, FaceColors: object = None):
         """
         Write the mesh in OpenInventor format to a string.
         writeInventor() -> string
@@ -2322,14 +2303,10 @@ class BSplineCurve(Part.BoundedCurve):
         """
 
     @typing.overload
-    def approximate(self, MaxDegree: int, MaxSegments: int = None, Continuity: str = None,
-                    Tolerance: float = None): ...
+    def approximate(self, MaxDegree: int, MaxSegments: int = None, Continuity: str = None, Tolerance: float = None): ...
 
     @typing.overload
-    def approximate(self, Points: object, DegMax: int = None, Continuity: str = None,
-                    Tolerance: float = None, DegMin: int = None, ParamType: str = None,
-                    Parameters: object = None, LengthWeight: float = None,
-                    CurvatureWeight: float = None, TorsionWeight: float = None):
+    def approximate(self, Points: object, DegMax: int = None, Continuity: str = None, Tolerance: float = None, DegMin: int = None, ParamType: str = None, Parameters: object = None, LengthWeight: float = None, CurvatureWeight: float = None, TorsionWeight: float = None):
         """
         Replaces this B-Spline curve by approximating a set of points.
         					The function accepts keywords as arguments.
@@ -2361,8 +2338,7 @@ class BSplineCurve(Part.BoundedCurve):
         					it conflicts with other parameters ( especially DegMax ).
         """
 
-    def buildFromPoles(self, arg1: object, arg2: bool = None, arg3: int = None, arg4: bool = None,
-                       /):
+    def buildFromPoles(self, arg1: object, arg2: bool = None, arg3: int = None, arg4: bool = None, /):
         """
         Builds a B-Spline by a list of poles.
         					arguments: poles (sequence of Base.Vector), [periodic (default is False), degree (default is 3), interpolate (default is False)]
@@ -2384,9 +2360,7 @@ class BSplineCurve(Part.BoundedCurve):
         					Part.show(n.toShape())
         """
 
-    def buildFromPolesMultsKnots(self, poles: object, mults: object = None, knots: object = None,
-                                 periodic: bool = None, degree: int = None, weights: object = None,
-                                 CheckRational: bool = None):
+    def buildFromPolesMultsKnots(self, poles: object, mults: object = None, knots: object = None, periodic: bool = None, degree: int = None, weights: object = None, CheckRational: bool = None):
         """
         Builds a B-Spline by a lists of Poles, Mults, Knots.
         				arguments: poles (sequence of Base.Vector), [mults , knots, periodic, degree, weights (sequence of float), CheckRational]
@@ -2494,8 +2468,7 @@ class BSplineCurve(Part.BoundedCurve):
         				multiplicity is increased by mult.
         """
 
-    def insertKnots(self, list_of_floats: object, list_of_ints: object, tol: float = 0.0,
-                    bool_add: bool = True, /):
+    def insertKnots(self, list_of_floats: object, list_of_ints: object, tol: float = 0.0, bool_add: bool = True, /):
         """
         insertKnots(list_of_floats, list_of_ints, tol = 0.0, bool_add = True)
         				Inserts a set of knots values in the sequence of knots.
@@ -2513,10 +2486,7 @@ class BSplineCurve(Part.BoundedCurve):
         				The tolerance criterion for knots equality is the max of Epsilon(U) and ParametricTolerance.
         """
 
-    def interpolate(self, Points: object, PeriodicFlag: bool = None, Tolerance: float = None,
-                    InitialTangent: FreeCAD.Vector = None, FinalTangent: FreeCAD.Vector = None,
-                    Tangents: object = None, TangentFlags: object = None, Parameters: object = None,
-                    Scale: bool = None):
+    def interpolate(self, Points: object, PeriodicFlag: bool = None, Tolerance: float = None, InitialTangent: FreeCAD.Vector = None, FinalTangent: FreeCAD.Vector = None, Tangents: object = None, TangentFlags: object = None, Parameters: object = None, Scale: bool = None):
         """
         Replaces this B-Spline curve by interpolating a set of points.
         					The function accepts keywords as arguments.
@@ -2888,8 +2858,7 @@ class Wire(Part.Shape):
         add(edge)
         """
 
-    def approximate(self, Tol2d: float = None, Tol3d: float = 1e-4, MaxSegments: int = 10,
-                    MaxDegree: int = 3):
+    def approximate(self, Tol2d: float = None, Tol3d: float = 1e-4, MaxSegments: int = 10, MaxDegree: int = 3):
         """
         Approximate B-Spline-curve from this wire
         approximate([Tol2d,Tol3d=1e-4,MaxSegments=10,MaxDegree=3]) -> BSpline
@@ -3005,8 +2974,7 @@ class Wire(Part.Shape):
         makePipe(profile) -> Shape
         """
 
-    def makePipeShell(self, shapeList: object, isSolid: bool = False, isFrenet: bool = False,
-                      transition: int = 0, /):
+    def makePipeShell(self, shapeList: object, isSolid: bool = False, isFrenet: bool = False, transition: int = 0, /):
         """
         Make a loft defined by a list of profiles along a wire.
         makePipeShell(shapeList,[isSolid=False,isFrenet=False,transition=0]) -> Shape
@@ -3395,11 +3363,7 @@ class BSplineSurface(Part.GeometrySurface):
         					the v direction.
         """
 
-    def approximate(self, Points: object, DegMin: int = None, DegMax: int = None,
-                    Continuity: int = None, Tolerance: float = None, X0: float = None,
-                    dX: float = None, Y0: float = None, dY: float = None, ParamType: str = None,
-                    LengthWeight: float = None, CurvatureWeight: float = None,
-                    TorsionWeight: float = None):
+    def approximate(self, Points: object, DegMin: int = None, DegMax: int = None, Continuity: int = None, Tolerance: float = None, X0: float = None, dX: float = None, Y0: float = None, dY: float = None, ParamType: str = None, LengthWeight: float = None, CurvatureWeight: float = None, TorsionWeight: float = None):
         """
         Replaces this B-Spline surface by approximating a set of points.
         					This method uses keywords :
@@ -3426,10 +3390,7 @@ class BSplineSurface(Part.GeometrySurface):
     def buildFromNSections(self, arg1: object, arg2: bool = None, /):
         """Builds a B-Spline from a list of control curves"""
 
-    def buildFromPolesMultsKnots(self, poles: object, umults: object, vmults: object,
-                                 uknots: object = None, vknots: object = None,
-                                 uperiodic: bool = None, vperiodic: bool = None,
-                                 udegree: int = None, vdegree: int = None, weights: object = None):
+    def buildFromPolesMultsKnots(self, poles: object, umults: object, vmults: object, uknots: object = None, vknots: object = None, uperiodic: bool = None, vperiodic: bool = None, udegree: int = None, vdegree: int = None, weights: object = None):
         """
         Builds a B-Spline by a lists of Poles, Mults and Knots
         					arguments: poles (sequence of sequence of Base.Vector), umults, vmults, [uknots, vknots, uperiodic, vperiodic, udegree, vdegree, weights (sequence of sequence of float)]
@@ -3562,8 +3523,7 @@ class BSplineSurface(Part.GeometrySurface):
     def insertVKnots(self, arg1: object, arg2: object, arg3: float = None, arg4: bool = None, /):
         """insertUKnote(List of float V, List of float Mult, float Tolerance) - Inserts knots."""
 
-    def interpolate(self, zpoints: object, X0: float = None, dX: float = None, Y0: float = None,
-                    dY: float = None, /):
+    def interpolate(self, zpoints: object, X0: float = None, dX: float = None, Y0: float = None, dY: float = None, /):
         """
         interpolate(points)
         					interpolate(zpoints, X0, dX, Y0, dY)
@@ -3615,8 +3575,7 @@ class BSplineSurface(Part.GeometrySurface):
         					weights are identical
         """
 
-    def movePoint(self, arg1: float, arg2: float, arg3: FreeCAD.Vector, arg4: int, arg5: int,
-                  arg6: int, arg7: int, /):
+    def movePoint(self, arg1: float, arg2: float, arg3: FreeCAD.Vector, arg4: int, arg5: int, arg6: int, arg7: int, /):
         """
         Moves the point of parameters (U, V) of this B-Spline surface to P.
         					UIndex1, UIndex2, VIndex1 and VIndex2 are the indexes in the poles
@@ -3875,12 +3834,10 @@ class RectangularTrimmedSurface(Part.GeometrySurface):
     """
 
     @typing.overload
-    def __init__(self, arg1: Part.GeometrySurface, arg2: float, arg3: float, arg4: float,
-                 arg5: float, arg6: bool = None, arg7: bool = None, /): ...
+    def __init__(self, arg1: Part.GeometrySurface, arg2: float, arg3: float, arg4: float, arg5: float, arg6: bool = None, arg7: bool = None, /): ...
 
     @typing.overload
-    def __init__(self, arg1: Part.GeometrySurface, arg2: float, arg3: float, arg4: bool,
-                 arg5: bool = None, /):
+    def __init__(self, arg1: Part.GeometrySurface, arg2: float, arg3: float, arg4: bool, arg5: bool = None, /):
         """
         Describes a portion of a surface (a patch) limited by two values of the
         u parameter in the u parametric direction, and two values of the v parameter in the v parametric
@@ -4068,9 +4025,7 @@ class GeometrySurface(Part.Geometry):
         Computes the tangent of parameter (u,v) on this geometry
         """
 
-    def toBSpline(self, Tol3d: float = None, UContinuity: str = None, VContinuity: str = None,
-                  MaxDegreeU: int = None, MaxDegreeV: int = None, MaxSegments: int = None,
-                  PrecisCode: int = None):
+    def toBSpline(self, Tol3d: float = None, UContinuity: str = None, VContinuity: str = None, MaxDegreeU: int = None, MaxDegreeV: int = None, MaxSegments: int = None, PrecisCode: int = None):
         """
         Returns a B-Spline representation of this surface. 
         					The optional arguments are:
@@ -4084,9 +4039,11 @@ class GeometrySurface(Part.Geometry):
         					Will raise an exception if surface is infinite in U or V (like planes, cones or cylinders)
         """
 
-    def toShape(self, arg1: float = None, arg2: float = None, arg3: float = None,
-                arg4: float = None, /):
+    def toShape(self, arg1: float = None, arg2: float = None, arg3: float = None, arg4: float = None, /):
         """Return the shape for the geometry."""
+
+    def toShell(self, Bounds: tuple = None, Segment: bool = None):
+        """Make a shell of the surface."""
 
     def uIso(self, arg1: float, /):
         """Builds the U isoparametric curve"""
@@ -5044,8 +5001,7 @@ class Curve(Part.Geometry):
     def Rotation(self) -> FreeCAD.Rotation:
         """Returns a rotation object to describe the orientation for curve that supports it"""
 
-    def approximateBSpline(self, Tolerance: float, MaxSegments: int, MaxDegree: int,
-                           Order: str = 'C2', /):
+    def approximateBSpline(self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = 'C2', /):
         """
         Approximates a curve of any type to a B-Spline curve
         					approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -> B-Spline curve
@@ -5054,9 +5010,7 @@ class Curve(Part.Geometry):
     def centerOfCurvature(self, float_pos: float, /):
         """Vector = centerOfCurvature(float pos) - Get the center of curvature at the given parameter [First|Last] if defined"""
 
-    def continuityWith(self, arg1: Part.Curve, arg2: float = None, arg3: float = None,
-                       arg4: bool = None, arg5: bool = None, arg6: float = None, arg7: float = None,
-                       /):
+    def continuityWith(self, arg1: Part.Curve, arg2: float = None, arg3: float = None, arg4: bool = None, arg5: bool = None, arg6: float = None, arg7: float = None, /):
         """Computes the continuity of two curves"""
 
     def curvature(self, pos: float, /):
@@ -5272,12 +5226,10 @@ class Cone(Part.GeometrySurface):
     def __init__(self, Cone: Part.Cone, Distance: float): ...
 
     @typing.overload
-    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Radius1: float,
-                 Radius2: float): ...
+    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Radius1: float, Radius2: float): ...
 
     @typing.overload
-    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Point3: FreeCAD.Vector,
-                 Point4: FreeCAD.Vector):
+    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Point3: FreeCAD.Vector, Point4: FreeCAD.Vector):
         """
         Describes a cone in 3D space
         				To create a cone there are several ways:
@@ -5451,16 +5403,7 @@ class AttachExtension(FreeCAD.DocumentObjectExtension):
     def MapReversed(self, value: int | bool): ...
 
     @property
-    def Support(self) -> dict[int, FreeCAD.DocumentObject | tuple[
-        FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[
-                                  FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | \
-                         typing.Iterable[FreeCAD.DocumentObject | tuple[
-                             FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[
-                                             FreeCAD.DocumentObject | str | typing.Sequence[
-                                                 str]] | None] | typing.Sequence[
-                             FreeCAD.DocumentObject | tuple[
-                                 FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[
-                                 FreeCAD.DocumentObject | str | typing.Sequence[str]] | None]:
+    def Support(self) -> dict[int, FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Iterable[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Sequence[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None]:
         """
         Property group: Attachment.
         Property TypeId: App::PropertyLinkSubList.
@@ -5468,17 +5411,7 @@ class AttachExtension(FreeCAD.DocumentObjectExtension):
         """
 
     @Support.setter
-    def Support(self, value: dict[int, FreeCAD.DocumentObject | tuple[
-        FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[
-                                      FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] |
-                             typing.Iterable[FreeCAD.DocumentObject | tuple[
-                                 FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[
-                                                 FreeCAD.DocumentObject | str | typing.Sequence[
-                                                     str]] | None] | typing.Sequence[
-                                 FreeCAD.DocumentObject | tuple[
-                                     FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[
-                                     FreeCAD.DocumentObject | str | typing.Sequence[
-                                         str]] | None]): ...
+    def Support(self, value: dict[int, FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Iterable[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Sequence[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None]): ...
 
     def changeAttacherType(self, typename: str, /):
         """
@@ -5554,10 +5487,7 @@ class GeometryExtension(FreeCAD.PyObjectBase):
 class BRepOffsetAPI_MakeFilling(FreeCAD.PyObjectBase):
     """N-Side Filling"""
 
-    def __init__(self, Degree: int = None, NbPtsOnCur: int = None, NbIter: int = None,
-                 MaxDegree: int = None, MaxSegments: int = None, Tol2d: float = None,
-                 Tol3d: float = None, TolAng: float = None, TolCurv: float = None,
-                 Anisotropy: bool = None):
+    def __init__(self, Degree: int = None, NbPtsOnCur: int = None, NbIter: int = None, MaxDegree: int = None, MaxSegments: int = None, Tol2d: float = None, Tol3d: float = None, TolAng: float = None, TolCurv: float = None, Anisotropy: bool = None):
         """N-Side Filling"""
 
     def G0Error(self, int: int = None, /):
@@ -5622,15 +5552,13 @@ class BRepOffsetAPI_MakeFilling(FreeCAD.PyObjectBase):
                           Sets the parameters used to approximate the filling the surface
         """
 
-    def setConstrParam(self, Tol2d: float = 0.00001, Tol3d: float = 0.0001, TolAng: float = 0.01,
-                       TolCurv: float = 0.1):
+    def setConstrParam(self, Tol2d: float = 0.00001, Tol3d: float = 0.0001, TolAng: float = 0.01, TolCurv: float = 0.1):
         """
         setConstrParam(Tol2d=0.00001, Tol3d=0.0001, TolAng=0.01, TolCurv=0.1)
                           Sets the values of Tolerances used to control the constraint.
         """
 
-    def setResolParam(self, Degree: int = 3, NbPtsOnCur: int = 15, NbIter: int = 2,
-                      Anisotropy: bool = False):
+    def setResolParam(self, Degree: int = 3, NbPtsOnCur: int = 15, NbIter: int = 2, Anisotropy: bool = False):
         """
         setResolParam(Degree=3, NbPtsOnCur=15, NbIter=2, Anisotropy=False)
                           Sets the parameters used for resolution.
@@ -5993,16 +5921,14 @@ def makeSolid(shape: Part.Shape, /):
     """makeSolid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created."""
 
 
-def makePlane(length: float, width: float, pnt: FreeCAD.Vector = None, dirZ: FreeCAD.Vector = None,
-              dirX: FreeCAD.Vector = None, /):
+def makePlane(length: float, width: float, pnt: FreeCAD.Vector = None, dirZ: FreeCAD.Vector = None, dirX: FreeCAD.Vector = None, /):
     """
     makePlane(length,width,[pnt,dirZ,dirX]) -- Make a plane
     By default pnt=Vector(0,0,0) and dirZ=Vector(0,0,1), dirX is ignored in this case
     """
 
 
-def makeBox(length: float, width: float, height: float, pnt: FreeCAD.Vector = None,
-            dir: FreeCAD.Vector = None, /):
+def makeBox(length: float, width: float, height: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, /):
     """
     makeBox(length,width,height,[pnt,dir]) -- Make a box located
     in pnt with the dimensions (length,width,height)
@@ -6010,9 +5936,7 @@ def makeBox(length: float, width: float, height: float, pnt: FreeCAD.Vector = No
     """
 
 
-def makeWedge(arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, arg6: float,
-              arg7: float, arg8: float, arg9: float, arg10: float, arg11: FreeCAD.Vector = None,
-              arg12: FreeCAD.Vector = None, /):
+def makeWedge(arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, arg6: float, arg7: float, arg8: float, arg9: float, arg10: float, arg11: FreeCAD.Vector = None, arg12: FreeCAD.Vector = None, /):
     """
     makeWedge(xmin, ymin, zmin, z2min, x2min,
     xmax, ymax, zmax, z2max, x2max,[pnt,dir])
@@ -6053,49 +5977,42 @@ def makePolygon(arg1: object, arg2: bool = None, /):
     """
 
 
-def makeCircle(radius: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None,
-               angle1: float = None, angle2: float = None, /):
+def makeCircle(radius: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle1: float = None, angle2: float = None, /):
     """
     makeCircle(radius,[pnt,dir,angle1,angle2]) -- Make a circle with a given radius
     By default pnt=Vector(0,0,0), dir=Vector(0,0,1), angle1=0 and angle2=360
     """
 
 
-def makeSphere(radius: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None,
-               angle1: float = None, angle2: float = None, angle3: float = None, /):
+def makeSphere(radius: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle1: float = None, angle2: float = None, angle3: float = None, /):
     """
     makeSphere(radius,[pnt, dir, angle1,angle2,angle3]) -- Make a sphere with a given radius
     By default pnt=Vector(0,0,0), dir=Vector(0,0,1), angle1=0, angle2=90 and angle3=360
     """
 
 
-def makeCylinder(radius: float, height: float, pnt: FreeCAD.Vector = None,
-                 dir: FreeCAD.Vector = None, angle: float = None, /):
+def makeCylinder(radius: float, height: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle: float = None, /):
     """
     makeCylinder(radius,height,[pnt,dir,angle]) -- Make a cylinder with a given radius and height
     By default pnt=Vector(0,0,0),dir=Vector(0,0,1) and angle=360
     """
 
 
-def makeCone(radius1: float, radius2: float, height: float, pnt: FreeCAD.Vector = None,
-             dir: FreeCAD.Vector = None, angle: float = None, /):
+def makeCone(radius1: float, radius2: float, height: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle: float = None, /):
     """
     makeCone(radius1,radius2,height,[pnt,dir,angle]) -- Make a cone with given radii and height
     By default pnt=Vector(0,0,0), dir=Vector(0,0,1) and angle=360
     """
 
 
-def makeTorus(radius1: float, radius2: float, pnt: FreeCAD.Vector = None,
-              dir: FreeCAD.Vector = None, angle1: float = None, angle2: float = None,
-              angle: float = None, /):
+def makeTorus(radius1: float, radius2: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle1: float = None, angle2: float = None, angle: float = None, /):
     """
     makeTorus(radius1,radius2,[pnt,dir,angle1,angle2,angle]) -- Make a torus with a given radii and angles
     By default pnt=Vector(0,0,0),dir=Vector(0,0,1),angle1=0,angle1=360 and angle=360
     """
 
 
-def makeHelix(arg1: float, arg2: float, arg3: float, arg4: float = None, arg5: bool = None,
-              arg6: bool = None, /):
+def makeHelix(arg1: float, arg2: float, arg3: float, arg4: float = None, arg5: bool = None, arg6: bool = None, /):
     """
     makeHelix(pitch,height,radius,[angle]) -- Make a helix with a given pitch, height and radius
     By default a cylindrical surface is used to create the helix. If the fourth parameter is set
@@ -6103,8 +6020,7 @@ def makeHelix(arg1: float, arg2: float, arg3: float, arg4: float = None, arg5: b
     """
 
 
-def makeLongHelix(pitch: float, height: float, radius: float, angle: float = None,
-                  hand: bool = None, /):
+def makeLongHelix(pitch: float, height: float, radius: float, angle: float = None, hand: bool = None, /):
     """
     makeLongHelix(pitch,height,radius,[angle],[hand]) -- Make a (multi-edge) helix with a given pitch, height and radius
     By default a cylindrical surface is used to create the helix. If the fourth parameter is set
@@ -6117,15 +6033,11 @@ def makeThread(pitch: float, depth: float, height: float, radius: float, /):
 
 
 @typing.overload
-def makeRevolution(Curve_or_Edge: Part.Geometry, vmin: float = None, vmax: float = None,
-                   angle: float = None, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None,
-                   shapetype: type = None, /): ...
+def makeRevolution(Curve_or_Edge: Part.Geometry, vmin: float = None, vmax: float = None, angle: float = None, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, shapetype: type = None, /): ...
 
 
 @typing.overload
-def makeRevolution(Curve_or_Edge: Part.Shape, vmin: float = None, vmax: float = None,
-                   angle: float = None, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None,
-                   shapetype: type = None, /):
+def makeRevolution(Curve_or_Edge: Part.Shape, vmin: float = None, vmax: float = None, angle: float = None, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, shapetype: type = None, /):
     """
     makeRevolution(Curve or Edge,[vmin,vmax,angle,pnt,dir,shapetype]) -- Make a revolved shape
     by rotating the curve or a portion of it around an axis given by (pnt,dir).
@@ -6148,8 +6060,7 @@ def makeShellFromWires(Wires: object, /):
     """
 
 
-def makeTube(edge: Part.Shape, radius: float, continuity: str = None, max_degree: int = None,
-             max_segments: int = None, /):
+def makeTube(edge: Part.Shape, radius: float, continuity: str = None, max_degree: int = None, max_segments: int = None, /):
     """
     makeTube(edge,radius,[continuity,max degree,max segments]) -- Create a tube.
     continuity is a string which must be 'C0','C1','C2','C3','CN','G1' or 'G1',
@@ -6160,13 +6071,11 @@ def makeSweepSurface(arg1: Part.Shape, arg2: Part.Shape, arg3: float = None, arg
     """makeSweepSurface(edge(path),edge(profile),[float]) -- Create a profile along a path."""
 
 
-def makeLoft(list_of_wires: object, solid: bool = False, ruled: bool = False, closed: bool = False,
-             maxDegree: int = 5, /):
+def makeLoft(list_of_wires: object, solid: bool = False, ruled: bool = False, closed: bool = False, maxDegree: int = 5, /):
     """makeLoft(list of wires,[solid=False,ruled=False,closed=False,maxDegree=5]) -- Create a loft shape."""
 
 
-def makeWireString(string: object, fontdir: str, fontfile: str, height: float, track: float = None,
-                   /):
+def makeWireString(string: object, fontdir: str, fontfile: str, height: float, track: float = None, /):
     """makeWireString(string,fontdir,fontfile,height,[track]) -- Make list of wires in the form of a string's characters."""
 
 
@@ -6261,9 +6170,7 @@ def joinSubname(sub: str, mapped: str, subElement: str, /):
     """joinSubname(sub,mapped,subElement) -> subname"""
 
 
-def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matrix = None,
-             needSubElement: object = None, transform: object = None, retType: int = None,
-             noElementMap: object = None, refine: object = None):
+def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matrix = None, needSubElement: object = None, transform: object = None, retType: int = None, noElementMap: object = None, refine: object = None):
     """
     getShape(obj,subname=None,mat=None,needSubElement=False,transform=True,retType=0):
     Obtain the the TopoShape of a given object with SubName reference

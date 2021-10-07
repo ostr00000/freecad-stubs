@@ -483,6 +483,7 @@ class Mesh:
     HarmonizeNormals = 'Mesh::HarmonizeNormals'
     Import = 'Mesh::Import'
     MeshObject = 'Mesh::MeshObject'
+    MeshSegment = 'Mesh::MeshSegment'
     PropertyCurvatureList = 'Mesh::PropertyCurvatureList'
     PropertyMeshKernel = 'Mesh::PropertyMeshKernel'
     PropertyNormalList = 'Mesh::PropertyNormalList'

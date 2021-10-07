@@ -100,3 +100,4 @@ Checkout to desired branch and copy folder `/freecad_stubs`.
 - [ ] property getter type,
 - [x] property setter type,
 - [x] add comment "This class can be imported" for importable classes,
+- [x] exceptions,

@@ -1393,11 +1393,8 @@ class ComplexGeoData(FreeCAD.Persistence):
         """Get the BoundBox of the object"""
 
     @property
-    def Matrix(self) -> FreeCAD.Matrix:
-        """Get the current transformation of the object as matrix"""
-
-    @Matrix.setter
-    def Matrix(self, value: FreeCAD.Matrix): ...
+    def CenterOfGravity(self) -> object:
+        """Get the center of gravity"""
 
     @property
     def Placement(self) -> FreeCAD.Placement:
@@ -1410,8 +1407,35 @@ class ComplexGeoData(FreeCAD.Persistence):
     def Tag(self) -> int:
         """Geometry Tag"""
 
-    def getFacesFromSubelement(self, arg1: str, arg2: int, /):
+    def applyRotation(self, arg1: FreeCAD.Rotation, /):
+        """Apply an additional rotation to the placement"""
+
+    def applyTranslation(self, arg1: FreeCAD.Vector, /):
+        """Apply an additional translation to the placement"""
+
+    def countSubElements(self, arg1: str, /):
+        """Return the number of elements of a type"""
+
+    def getElementTypes(self):
+        """Return a list of element types"""
+
+    def getFaces(self, arg1: float, /):
+        """Return a tuple of points and triangles with a given accuracy"""
+
+    def getFacesFromSubElement(self, arg1: str, arg2: int, /):
         """Return vertexes and faces from a sub-element"""
+
+    def getLines(self, arg1: float, /):
+        """Return a tuple of points and lines with a given accuracy"""
+
+    def getLinesFromSubElement(self, arg1: str, arg2: int, /):
+        """Return vertexes and lines from a sub-element"""
+
+    def getPoints(self, arg1: float, /):
+        """Return a tuple of points and normals with a given accuracy"""
+
+    def transformGeometry(self, arg1: FreeCAD.Matrix, /):
+        """Apply a transformation to the underlying geometry"""
 
 
 # ApplicationPy.cpp

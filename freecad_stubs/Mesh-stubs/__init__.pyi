@@ -355,6 +355,9 @@ class Mesh(FreeCAD.ComplexGeoData):
     def addMesh(self, arg1: Mesh.Mesh, /):
         """Combine this mesh with another mesh."""
 
+    def addSegment(self, arg1: object, /):
+        """Add a list of facet indices that describes a segment to the mesh"""
+
     def clear(self):
         """Clear the mesh"""
 
@@ -525,6 +528,9 @@ class Mesh(FreeCAD.ComplexGeoData):
     def hasNonUniformOrientedFacets(self):
         """Check if the mesh has facets with inconsistent orientation"""
 
+    def hasPointsOnEdge(self):
+        """Check if points lie on edges"""
+
     def hasPointsOutOfRange(self):
         """Check if the mesh has point indices that are out of range"""
 
@@ -627,6 +633,14 @@ class Mesh(FreeCAD.ComplexGeoData):
 
     def removeNonManifolds(self):
         """Remove non-manifolds"""
+
+    def removePointsOnEdge(self, FillBoundary: bool = False):
+        """
+        removePointsOnEdge(FillBoundary=False)
+        Remove points that lie on edges.
+        If FillBoundary is True then the holes by removing the affected facets
+        will be re-filled.
+        """
 
     def rotate(self, arg1: float, arg2: float, arg3: float, /):
         """Apply a rotation to the mesh"""

@@ -517,7 +517,7 @@ class SketchObject(Part.Part2DObject):
     def setGeometryId(self, arg1: int, arg2: int, /):
         """sets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId"""
 
-    def setVirtualSpace(self, arg1: int, arg2: bool, /):
+    def setVirtualSpace(self, arg1: object, arg2: bool, /):
         """set the VirtualSpace status of a constraint"""
 
     def solve(self):
