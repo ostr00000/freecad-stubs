@@ -3,8 +3,8 @@ from collections import defaultdict
 from dataclasses import dataclass
 from functools import cached_property
 
-from freecad_stub_gen.generators.method.function_finder import generateExpressionUntilChar
-from freecad_stub_gen.module_map import moduleNamespace
+from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
+from freecad_stub_gen.module_namespace import moduleNamespace
 from freecad_stub_gen.util import readContent, genPyCppFiles
 
 

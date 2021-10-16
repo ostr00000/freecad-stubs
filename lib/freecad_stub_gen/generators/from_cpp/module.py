@@ -2,12 +2,12 @@ import re
 from collections.abc import Iterable
 from typing import Optional
 
-from freecad_stub_gen.generators.from_cpp.base import FreecadStubGeneratorFromCpp
-from freecad_stub_gen.generators.method.function_finder import findFunctionCall
+from freecad_stub_gen.generators.from_cpp.base import BaseGeneratorFromCpp
+from freecad_stub_gen.generators.common.cpp_function import findFunctionCall
 from freecad_stub_gen.module_container import Module
 
 
-class FreecadStubGeneratorFromCppModule(FreecadStubGeneratorFromCpp):
+class FreecadStubGeneratorFromCppModule(BaseGeneratorFromCpp):
     """Generate functions from cpp code directly added to module."""
 
     def __init__(self, *args, **kwargs):
@@ -22,8 +22,8 @@ class FreecadStubGeneratorFromCppModule(FreecadStubGeneratorFromCpp):
         for result in self._genStub(moduleName):
             if result.rstrip():
                 # we prefer name with more details
-                curModName = moduleName if '.' in moduleName else self._modName
                 assert self._modName
+                curModName = moduleName if '.' in moduleName else self._modName
 
                 mod[curModName].update(Module(
                     header + result, self.requiredImports))

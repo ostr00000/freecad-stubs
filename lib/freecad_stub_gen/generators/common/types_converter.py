@@ -1,11 +1,10 @@
 import dataclasses
 import logging
 import re
-import xml.etree.ElementTree as ET
 from typing import Iterator, Optional, Any
 
-from freecad_stub_gen.generators.method.function_finder import generateExpressionUntilChar
-from freecad_stub_gen.generators.names import getClassWithModulesFromPointer, getModuleName
+from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
+from freecad_stub_gen.generators.common.names import getClassWithModulesFromPointer, getModuleName
 
 logger = logging.getLogger(__name__)
 
@@ -46,11 +45,10 @@ class InvalidPointerFormat(ValueError):
 class TypesConverter:
     REG_REMOVE_WHITESPACES = re.compile(r'\s+')
 
-    def __init__(self, funCall: str, currentNode: ET.Element, requiredImports: set[str],
-                 onlyPositional: bool, formatStrPosition: int, argNumStart=1, xmlPath=None,
-                 realStartArgNum: int = 2):
+    def __init__(self, funCall: str, requiredImports: set[str],
+                 onlyPositional: bool, formatStrPosition: int, *,
+                 argNumStart=1, realStartArgNum: int = 2, xmlPath=None):
         self.funCall = funCall
-        self.currentNode = currentNode
         self.requiredImports = requiredImports
         self.onlyPositional = onlyPositional
         self.formatStrPosition = formatStrPosition

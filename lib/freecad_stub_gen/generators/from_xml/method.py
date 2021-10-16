@@ -2,20 +2,24 @@ import logging
 import xml.etree.ElementTree as ET
 from abc import ABC
 from distutils.util import strtobool
+from functools import cached_property
+from pathlib import Path
 from typing import Iterator
 
-from freecad_stub_gen.generators.method.arg_suit_merger import mergeArgSuitesGen
-from freecad_stub_gen.generators.method.doc_string import generateArgSuitFromDocstring
-from freecad_stub_gen.generators.method.format_finder import FormatFinder
-from freecad_stub_gen.generators.method.types_converter import Arg
-from freecad_stub_gen.generators.names import getClassNameFromNode
-from freecad_stub_gen.util import getDocFromNode
+from freecad_stub_gen.generators.from_xml.base import BaseXmlGenerator
+from freecad_stub_gen.generators.common.gen_method import MethodGenerator
+from freecad_stub_gen.generators.common.arg_suit_merger import mergeArgSuitesGen
+from freecad_stub_gen.generators.common.doc_string import generateArgSuitFromDocstring, \
+    getDocFromNode
+from freecad_stub_gen.generators.common.names import getClassNameFromNode
+from freecad_stub_gen.generators.common.types_converter import Arg
 
 logger = logging.getLogger(__name__)
 
 
-class MethodGenerator(FormatFinder, ABC):
+class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
     def genInit(self) -> str:
+        """Generate stub for __init__ method."""
         # maybe should check self.currentNode.attrib['Constructor']
         className = getClassNameFromNode(self.currentNode)
         return self.genMethod(self.currentNode, cName='PyInit',
@@ -23,6 +27,7 @@ class MethodGenerator(FormatFinder, ABC):
 
     def genMethod(self, node: ET.Element, cName: str = None,
                   docName: str = None, pythonName: str = None) -> str:
+        """Generate stub for method specified in arguments."""
         cName = cName or node.attrib['Name']
         docName = docName or node.attrib['Name']
         pythonName = pythonName or node.attrib['Name']
@@ -108,3 +113,23 @@ class MethodGenerator(FormatFinder, ABC):
     def _genEmptyMethod(cls, name: str, *args, retType=None) -> str:
         retType = f' -> {retType}' if retType else ''
         return f'def {name}({", ".join(("self",) + args)}){retType}: ...\n\n'
+
+    def findFunctionBody(self, funcName: str, className: str = '') -> str | None:
+        """Override method to search `funcName` also in parent."""
+        if res := super().findFunctionBody(funcName, className):
+            return res
+
+        if not (baseClass := type(self).safeCreate(self.parentXmlPath)):
+            if funcName == 'PyInit':
+                pass  # skip implicit constructor - probably inherited from PyObject
+            else:
+                logger.error(f"Cannot find {self.parentXmlPath=} for {self.baseGenFilePath=}")
+            return
+
+        return baseClass.findFunctionBody(funcName, className)
+
+    @cached_property
+    def parentXmlPath(self) -> Path:
+        fatherInclude = self.currentNode.attrib['FatherInclude'].replace('/', '.')
+        parentFile = (self.sourceDir / fatherInclude).with_suffix('.xml')
+        return parentFile

@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 from typing import Optional
 
 from freecad_stub_gen.importable_map import importableMap
-from freecad_stub_gen.module_map import moduleNamespace
+from freecad_stub_gen.module_namespace import moduleNamespace
 
 logger = logging.getLogger(__name__)
 

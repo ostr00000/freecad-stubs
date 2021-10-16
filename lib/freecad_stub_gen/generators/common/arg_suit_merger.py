@@ -1,7 +1,7 @@
 import dataclasses
 from typing import Iterator, Union
 
-from freecad_stub_gen.generators.method.types_converter import Arg, PositionalOnlyArg, \
+from freecad_stub_gen.generators.common.types_converter import Arg, PositionalOnlyArg, \
     KeyWorldOnlyArg
 
 

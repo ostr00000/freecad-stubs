@@ -8,7 +8,7 @@ from freecad_stub_gen.config import SOURCE_DIR, TARGET_DIR
 from freecad_stub_gen.generators.from_cpp.functions import FreecadStubGeneratorFromCppFunctions
 from freecad_stub_gen.generators.from_cpp.klass import FreecadStubGeneratorFromCppClass
 from freecad_stub_gen.generators.from_cpp.module import FreecadStubGeneratorFromCppModule
-from freecad_stub_gen.generators.from_xml import FreecadStubGeneratorFromXML
+from freecad_stub_gen.generators.from_xml.full import FreecadStubGeneratorFromXML
 from freecad_stub_gen.module_container import Module
 from freecad_stub_gen.util import genPyCppFiles, genXmlFiles
 
@@ -125,7 +125,8 @@ Wrn = FreeCAD.Console.PrintWarning
         _genModule(sourcesRoot, mod / 'Gui', sourcePath, moduleName=mod.name)
 
     addExceptions(sourcesRoot)
-    sourcesRoot['FreeCAD.Units'].imports.add('from FreeCAD.Base import Unit, Quantity')
+    sourcesRoot['FreeCAD.Units'].imports.add(
+        'from FreeCAD.Base import Unit as Unit, Quantity as Quantity')
     sourcesRoot.setSubModulesAsPackage()
 
     shutil.rmtree(targetPath, ignore_errors=True)

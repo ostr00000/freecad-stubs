@@ -2,11 +2,12 @@ import keyword
 import re
 from itertools import count
 from typing import Generator, Iterator
+from xml.etree import ElementTree as ET
 
-from freecad_stub_gen.generators.method.function_finder import generateExpressionUntilChar, \
-    findFunctionCall
-from freecad_stub_gen.generators.method.types_converter import Arg
-from freecad_stub_gen.generators.names import validatePythonValue
+from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
+    generateExpressionUntilChar
+from freecad_stub_gen.generators.common.types_converter import Arg
+from freecad_stub_gen.generators.common.names import validatePythonValue
 
 
 def generateArgSuitFromDocstring(name: str, docString: str, argNumStart: int = 0):
@@ -59,3 +60,34 @@ def _uniqueArgNameGen(argNumStart: int = 1) -> Generator[tuple[str, int], str, N
         else:
             seen.add(name)
         name = yield name, argNum
+
+
+_REG_REMOVE_NEW_LINE = re.compile(r'\\n"\s*"')
+_REG_WHITESPACE_WITH_APOSTROPHE = re.compile(r'"\s*"')
+
+
+def prepareDocs(docs: str) -> str:
+    docs = _REG_REMOVE_NEW_LINE.sub('\n', docs)
+    docs = _REG_WHITESPACE_WITH_APOSTROPHE.sub('', docs)
+    docs = docs.replace('\\n', '\n').replace('\\"', '"')
+
+    docs = docs.strip()
+    if docs.count('\n'):
+        if not docs.startswith('\n'):
+            docs = '\n' + docs
+        if not docs.endswith('\n'):
+            docs = docs + '\n'
+
+    return docs
+
+
+def formatDocstring(docs: str):
+    if preparedDocs := prepareDocs(docs):
+        return f'"""{preparedDocs}"""\n'
+    return ''
+
+
+def getDocFromNode(node: ET.Element) -> str:
+    if docs := node.find("./Documentation//UserDocu").text:
+        return docs
+    return ''

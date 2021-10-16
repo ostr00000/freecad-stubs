@@ -1,20 +1,26 @@
 import inspect
-import xml.etree.ElementTree as ET
 from distutils.util import strtobool
 from pathlib import Path
 from typing import Optional
+from xml.etree import ElementTree as ET
 
 from freecad_stub_gen.config import SOURCE_DIR
-from freecad_stub_gen.generators.method.method import MethodGenerator
-from freecad_stub_gen.generators.names import getFatherClassWithModules, getModuleName, \
-    getClassWithModulesFromNode, getClassName
-from freecad_stub_gen.generators.property import PropertyGenerator
+from freecad_stub_gen.generators.from_xml.dynamic_property import XmlDynamicPropertyGenerator
+from freecad_stub_gen.generators.from_xml.method import XmlMethodGenerator
+from freecad_stub_gen.generators.from_xml.static_property import XmlPropertyGenerator
+from freecad_stub_gen.generators.common.names import getModuleName, getClassWithModulesFromNode, \
+    getClassName, getFatherClassWithModules
 from freecad_stub_gen.importable_map import importableMap
 from freecad_stub_gen.module_container import Module
-from freecad_stub_gen.util import indent, formatDocstring, getDocFromNode
+from freecad_stub_gen.util import indent
+from freecad_stub_gen.generators.common.doc_string import formatDocstring, getDocFromNode
 
 
-class FreecadStubGeneratorFromXML(PropertyGenerator, MethodGenerator):
+class FreecadStubGeneratorFromXML(
+    XmlPropertyGenerator,
+    XmlDynamicPropertyGenerator,
+    XmlMethodGenerator
+):
     """Generate class defined in xml file.
     Argument types are extracted from code."""
 
