@@ -97,7 +97,7 @@ Checkout to desired branch and copy folder `/freecad_stubs`.
 - [x] guess argument names from docstrings,
 - [x] found function/method argument types based on [c-api](https://docs.python.org/3/c-api/arg.html),
 - [ ] function/method return type,
-- [ ] property getter type,
+- [x] property getter type,
 - [x] property setter type,
 - [x] add comment "This class can be imported" for importable classes,
 - [x] exceptions,

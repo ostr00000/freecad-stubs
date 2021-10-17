@@ -9,6 +9,10 @@ import FreeCAD.Units as Units
 import FreeCADGui
 import FreeCADTemplates
 
+_T = typing.TypeVar("_T")
+Triple_t: typing.TypeAlias = tuple[_T, _T, _T]
+Quadruple_t: typing.TypeAlias = tuple[_T, _T, _T, _T]
+
 
 class PyObjectBase(object): ...
 
@@ -215,14 +219,14 @@ class GeoFeature(FreeCAD.DocumentObject):
     """
 
     @property
-    def Placement(self):
+    def Placement(self) -> FreeCAD.Placement:
         """
         [Prop_NoRecompute] Modified property doesn't touch its container for recompute.
-        Property TypeId: PropertyPlacement.
+        Property TypeId: App::PropertyPlacement.
         """
 
     @Placement.setter
-    def Placement(self, value): ...
+    def Placement(self, value: FreeCAD.Matrix | FreeCAD.Placement): ...
 
     def getGlobalPlacement(self):
         """
@@ -327,23 +331,20 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         """
 
     @property
-    def ExpressionEngine(self):
+    def ExpressionEngine(self) -> list[tuple[str, str]]:
         """
         [Prop_Hidden] Property won't appear in the editor.
         Property group: Base.
-        Property TypeId: PropertyExpressionEngine.
+        Property TypeId: App::PropertyExpressionEngine.
         Property expressions.
         """
-
-    @ExpressionEngine.setter
-    def ExpressionEngine(self, value): ...
 
     @property
     def Label(self) -> str:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Base.
-        Property TypeId: PropertyString.
+        Property TypeId: App::PropertyString.
         User name of the object (UTF8).
         """
 
@@ -355,7 +356,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         """
         [Prop_Hidden] Property won't appear in the editor.
         Property group: Base.
-        Property TypeId: PropertyString.
+        Property TypeId: App::PropertyString.
         User description of the object (UTF8).
         """
 
@@ -363,8 +364,8 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     def Label2(self, value: str): ...
 
     @property
-    def Visibility(self) -> int | bool:
-        """Property TypeId: PropertyBool."""
+    def Visibility(self) -> bool:
+        """Property TypeId: App::PropertyBool."""
 
     @Visibility.setter
     def Visibility(self, value: int | bool): ...
@@ -540,13 +541,13 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
         """Return a flattened (in case grouped by plain group) list of linked children"""
 
     @property
-    def _ChildCache(self):
+    def _ChildCache(self) -> list[FreeCAD.DocumentObject | None]:
         """
         [Prop_ReadOnly] Property is read-only in the editor.
         [Prop_Hidden] Property won't appear in the editor.
         [Prop_NoPersist] Property won't be saved to file at all.
         Property group: Link.
-        Property TypeId: PropertyLinkList.
+        Property TypeId: App::PropertyLinkList.
         """
 
     @property
@@ -555,19 +556,19 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
         [Prop_Hidden] Property won't appear in the editor.
         [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Link.
-        Property TypeId: PropertyInteger.
+        Property TypeId: App::PropertyInteger.
         """
 
     @_LinkOwner.setter
     def _LinkOwner(self, value: int): ...
 
     @property
-    def _LinkTouched(self) -> int | bool:
+    def _LinkTouched(self) -> bool:
         """
         [Prop_Hidden] Property won't appear in the editor.
         [Prop_NoPersist] Property won't be saved to file at all.
         Property group: Link.
-        Property TypeId: PropertyBool.
+        Property TypeId: App::PropertyBool.
         """
 
     @_LinkTouched.setter
@@ -683,11 +684,11 @@ class Part(FreeCAD.GeoFeature):
     """
 
     @property
-    def Color(self) -> tuple[float, float, float] | tuple[float, float, float, float] | int:
+    def Color(self) -> tuple[float, float, float, float]:
         """Property TypeId: App::PropertyColor."""
 
     @Color.setter
-    def Color(self, value: tuple[float, float, float] | tuple[float, float, float, float] | int): ...
+    def Color(self, value: Triple_t[float] | Quadruple_t[float] | int): ...
 
     @property
     def Id(self) -> str:
@@ -741,7 +742,7 @@ class Part(FreeCAD.GeoFeature):
 
     @property
     def Type(self) -> str:
-        """Property TypeId: PropertyString."""
+        """Property TypeId: App::PropertyString."""
 
     @Type.setter
     def Type(self, value: str): ...
@@ -817,6 +818,114 @@ class Extension(FreeCAD.PyObjectBase):
     This class can be imported.
     Base class for all extensions
     """
+
+
+# MetadataPy.xml
+class Metadata(FreeCAD.PyObjectBase):
+    """
+    Metadata
+            A Metadata object reads an XML-formatted package metadata file and provides read-only access to its contents.
+
+            A single constructor is supported:
+            Metadata(file) -- Reads the XML file and provides access to the metadata it specifies.
+    """
+
+    @typing.overload
+    def __init__(self, file: str, /): ...
+
+    @typing.overload
+    def __init__(self, file: FreeCAD.Metadata, /):
+        """
+        Metadata
+                A Metadata object reads an XML-formatted package metadata file and provides read-only access to its contents.
+
+                A single constructor is supported:
+                Metadata(file) -- Reads the XML file and provides access to the metadata it specifies.
+        """
+
+    @property
+    def Author(self) -> object:
+        """List of author objects, each with a 'name' and a (potentially empty) 'email' string attribute"""
+
+    @property
+    def Classname(self) -> object:
+        """String: the name of the main Python class this item creates/represents"""
+
+    @property
+    def Conflict(self) -> object:
+        """List of conflicts, format identical to dependencies"""
+
+    @property
+    def Content(self) -> object:
+        """A dictionary of lists of content items: defined recursively, each item is itself a Metadata object -- see package.xml file format documentation for details"""
+
+    @property
+    def Depend(self) -> object:
+        """
+        List of dependencies, as objects with the following attributes:
+                  * package -- Required: must exactly match the contents of the 'name' element in the referenced package's package.xml file
+                  * version_lt -- Optional: The dependency to the package is restricted to versions less than the stated version number
+                  * version_lte -- Optional: The dependency to the package is restricted to versions less or equal than the stated version number
+                  * version_eq -- Optional: The dependency to the package is restricted to a version equal than the stated version number
+                  * version_gte -- Optional: The dependency to the package is restricted to versions greater or equal than the stated version number
+                  * version_gt -- Optional: The dependency to the package is restricted to versions greater than the stated version number
+                  * condition -- Optional: Conditional expression as documented in REP149
+        """
+
+    @property
+    def Description(self) -> object:
+        """String: the description of this item (text only, no markup allowed)"""
+
+    @property
+    def File(self) -> object:
+        """A list of files associated with this item -- the meaning of each file is implementation-defined"""
+
+    @property
+    def Icon(self) -> object:
+        """Relative path to an icon file"""
+
+    @property
+    def License(self) -> object:
+        """List of applicable licenses as objects with 'name' and 'file' string attributes"""
+
+    @property
+    def Maintainer(self) -> object:
+        """List of maintainer objects with 'name' and 'email' string attributes"""
+
+    @property
+    def Name(self) -> object:
+        """String: the name of this item"""
+
+    @property
+    def Replace(self) -> object:
+        """List of things this item is considered by its author to replace: format identical to dependencies"""
+
+    @property
+    def Tag(self) -> object:
+        """List of strings"""
+
+    @property
+    def Url(self) -> object:
+        """
+        List of URLs as objects with 'location' and 'urltype' string attributes, where urltype is one of:
+                  * website
+                  * repository
+                  * bugtracker
+                  * readme
+                  * documentation
+        """
+
+    @property
+    def Version(self) -> object:
+        """String: the version of this item in semantic triplet format"""
+
+    def getGenericMetadata(self, name: str, /):
+        """
+        getGenericMetadata(name)
+                  Get the list of GenericMetadata objects with key 'name'. Generic metadata objects are Python objects with
+                  a string 'contents' and a dictionary of strings, 'attributes'. They represent unrecognized simple XML tags
+                  in the metadata file.
+        """
 
 
 # GeoFeatureGroupExtensionPy.xml
@@ -954,7 +1063,7 @@ class Document(FreeCAD.PropertyContainer):
     @property
     def Comment(self) -> str:
         """
-        Property TypeId: PropertyString.
+        Property TypeId: App::PropertyString.
         Additional tag to save a comment.
         """
 
@@ -964,7 +1073,7 @@ class Document(FreeCAD.PropertyContainer):
     @property
     def Company(self) -> str:
         """
-        Property TypeId: PropertyString.
+        Property TypeId: App::PropertyString.
         Additional tag to save the name of the company.
         """
 
@@ -974,7 +1083,7 @@ class Document(FreeCAD.PropertyContainer):
     @property
     def CreatedBy(self) -> str:
         """
-        Property TypeId: PropertyString.
+        Property TypeId: App::PropertyString.
         The creator of the document.
         """
 
@@ -985,7 +1094,7 @@ class Document(FreeCAD.PropertyContainer):
     def CreationDate(self) -> str:
         """
         [Prop_ReadOnly] Property is read-only in the editor.
-        Property TypeId: PropertyString.
+        Property TypeId: App::PropertyString.
         Date of creation.
         """
 
@@ -994,14 +1103,14 @@ class Document(FreeCAD.PropertyContainer):
         """
         [Prop_ReadOnly] Property is read-only in the editor.
         [Prop_Transient] Property content won't be saved to file, but still saves name, type and status.
-        Property TypeId: PropertyString.
+        Property TypeId: App::PropertyString.
         The path to the file where the document is saved to.
         """
 
     @property
     def Id(self) -> str:
         """
-        Property TypeId: PropertyString.
+        Property TypeId: App::PropertyString.
         ID of the document.
         """
 
@@ -1011,7 +1120,7 @@ class Document(FreeCAD.PropertyContainer):
     @property
     def Label(self) -> str:
         """
-        Property TypeId: PropertyString.
+        Property TypeId: App::PropertyString.
         The name of the document.
         """
 
@@ -1020,7 +1129,7 @@ class Document(FreeCAD.PropertyContainer):
 
     @property
     def LastModifiedBy(self) -> str:
-        """Property TypeId: PropertyString."""
+        """Property TypeId: App::PropertyString."""
 
     @LastModifiedBy.setter
     def LastModifiedBy(self, value: str): ...
@@ -1029,7 +1138,7 @@ class Document(FreeCAD.PropertyContainer):
     def LastModifiedDate(self) -> str:
         """
         [Prop_ReadOnly] Property is read-only in the editor.
-        Property TypeId: PropertyString.
+        Property TypeId: App::PropertyString.
         Date of last modification.
         """
 
@@ -1094,9 +1203,9 @@ class Document(FreeCAD.PropertyContainer):
     def Meta(self, value: dict[str, str]): ...
 
     @property
-    def ShowHidden(self) -> int | bool:
+    def ShowHidden(self) -> bool:
         """
-        Property TypeId: PropertyBool.
+        Property TypeId: App::PropertyBool.
         Whether to show hidden object items in the tree view.
         """
 
@@ -1104,22 +1213,22 @@ class Document(FreeCAD.PropertyContainer):
     def ShowHidden(self, value: int | bool): ...
 
     @property
-    def Tip(self):
+    def Tip(self) -> FreeCAD.DocumentObject | None:
         """
         [Prop_Transient] Property content won't be saved to file, but still saves name, type and status.
-        Property TypeId: PropertyLink.
+        Property TypeId: App::PropertyLink.
         Link of the tip object of the document.
         """
 
     @Tip.setter
-    def Tip(self, value): ...
+    def Tip(self, value: FreeCAD.DocumentObject | None): ...
 
     @property
     def TipName(self) -> str:
         """
         [Prop_ReadOnly] Property is read-only in the editor.
         [Prop_Hidden] Property won't appear in the editor.
-        Property TypeId: PropertyString.
+        Property TypeId: App::PropertyString.
         Link of the tip object of the document.
         """
 
@@ -1128,15 +1237,15 @@ class Document(FreeCAD.PropertyContainer):
         """
         [Prop_ReadOnly] Property is read-only in the editor.
         [Prop_Transient] Property content won't be saved to file, but still saves name, type and status.
-        Property TypeId: PropertyString.
+        Property TypeId: App::PropertyString.
         Transient directory, where the files live while the document is open.
         """
 
     @property
-    def Uid(self):
+    def Uid(self) -> str:
         """
         [Prop_ReadOnly] Property is read-only in the editor.
-        Property TypeId: PropertyUUID.
+        Property TypeId: App::PropertyUUID.
         UUID of the document.
         """
 

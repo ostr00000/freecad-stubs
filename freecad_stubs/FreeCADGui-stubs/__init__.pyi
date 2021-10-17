@@ -6,6 +6,10 @@ import FreeCADGui
 import FreeCADGui.Selection
 import FreeCADTemplates
 
+_T = typing.TypeVar("_T")
+Triple_t: typing.TypeAlias = tuple[_T, _T, _T]
+Quadruple_t: typing.TypeAlias = tuple[_T, _T, _T, _T]
+
 
 # WorkbenchPy.xml
 class Workbench(FreeCAD.BaseClass):
@@ -382,14 +386,14 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
         """Get/set dragger type"""
 
     @property
-    def ChildViewProvider(self) -> str:
+    def ChildViewProvider(self) -> object:
         """Property TypeId: App::PropertyPersistentObject."""
 
     @ChildViewProvider.setter
     def ChildViewProvider(self, value: str): ...
 
     @property
-    def DrawStyle(self) -> typing.Literal['None', 'Solid', 'Dashed', 'Dotted', 'Dashdot']:
+    def DrawStyle(self) -> int:
         """
         Property group: Link.
         Property TypeId: App::PropertyEnumeration.
@@ -400,7 +404,7 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
     def DrawStyle(self, value: typing.Literal['None', 'Solid', 'Dashed', 'Dotted', 'Dashdot']): ...
 
     @property
-    def LineWidth(self) -> float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]:
+    def LineWidth(self) -> float:
         """
         Property group: Link.
         Property TypeId: App::PropertyFloatConstraint.
@@ -408,24 +412,24 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
         """
 
     @LineWidth.setter
-    def LineWidth(self, value: float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]): ...
+    def LineWidth(self, value: float | Quadruple_t[float]): ...
 
     @property
-    def MaterialList(self) -> dict[int, FreeCAD.Material] | typing.Iterable[FreeCAD.Material] | typing.Sequence[FreeCAD.Material]:
+    def MaterialList(self) -> list[tuple[FreeCAD.Material, ...]]:
         """Property TypeId: App::PropertyMaterialList."""
 
     @MaterialList.setter
-    def MaterialList(self, value: dict[int, FreeCAD.Material] | typing.Iterable[FreeCAD.Material] | typing.Sequence[FreeCAD.Material]): ...
+    def MaterialList(self, value: typing.Iterable[FreeCAD.Material] | dict[int, FreeCAD.Material]): ...
 
     @property
-    def OverrideColorList(self) -> dict[int, tuple[float, float, float] | tuple[float, float, float, float] | int] | typing.Iterable[tuple[float, float, float] | tuple[float, float, float, float] | int] | typing.Sequence[tuple[float, float, float] | tuple[float, float, float, float] | int]:
+    def OverrideColorList(self) -> list[tuple[float, float, float, float]]:
         """Property TypeId: App::PropertyColorList."""
 
     @OverrideColorList.setter
-    def OverrideColorList(self, value: dict[int, tuple[float, float, float] | tuple[float, float, float, float] | int] | typing.Iterable[tuple[float, float, float] | tuple[float, float, float, float] | int] | typing.Sequence[tuple[float, float, float] | tuple[float, float, float, float] | int]): ...
+    def OverrideColorList(self, value: typing.Iterable[Triple_t[float] | Quadruple_t[float] | int] | dict[int, Triple_t[float] | Quadruple_t[float] | int]): ...
 
     @property
-    def OverrideMaterial(self) -> int | bool:
+    def OverrideMaterial(self) -> bool:
         """
         Property group: Link.
         Property TypeId: App::PropertyBool.
@@ -436,14 +440,14 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
     def OverrideMaterial(self, value: int | bool): ...
 
     @property
-    def OverrideMaterialList(self) -> dict[int, int | bool] | typing.Iterable[int | bool] | typing.Sequence[int | bool]:
+    def OverrideMaterialList(self) -> tuple[bool, ...]:
         """Property TypeId: App::PropertyBoolList."""
 
     @OverrideMaterialList.setter
-    def OverrideMaterialList(self, value: dict[int, int | bool] | typing.Iterable[int | bool] | typing.Sequence[int | bool]): ...
+    def OverrideMaterialList(self, value: typing.Iterable[int | bool] | dict[int, int | bool]): ...
 
     @property
-    def PointSize(self) -> float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]:
+    def PointSize(self) -> float:
         """
         Property group: Link.
         Property TypeId: App::PropertyFloatConstraint.
@@ -451,10 +455,10 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
         """
 
     @PointSize.setter
-    def PointSize(self, value: float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]): ...
+    def PointSize(self, value: float | Quadruple_t[float]): ...
 
     @property
-    def Selectable(self) -> int | bool:
+    def Selectable(self) -> bool:
         """
         Property group: Link.
         Property TypeId: App::PropertyBool.
@@ -669,7 +673,7 @@ class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
         """Set/Get the associated data object"""
 
     @property
-    def DisplayMode(self):
+    def DisplayMode(self) -> int:
         """
         Property group: Display Options.
         Property TypeId: App::PropertyEnumeration.
@@ -680,7 +684,7 @@ class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
     def DisplayMode(self, value): ...
 
     @property
-    def OnTopWhenSelected(self) -> typing.Literal['Disabled', 'Enabled', 'Object', 'Element']:
+    def OnTopWhenSelected(self) -> int:
         """
         Property group: Selection.
         Property TypeId: App::PropertyEnumeration.
@@ -695,7 +699,7 @@ class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
     def OnTopWhenSelected(self, value: typing.Literal['Disabled', 'Enabled', 'Object', 'Element']): ...
 
     @property
-    def SelectionStyle(self) -> typing.Literal['Shape', 'BoundBox']:
+    def SelectionStyle(self) -> int:
         """
         Property group: Selection.
         Property TypeId: App::PropertyEnumeration.
@@ -706,7 +710,7 @@ class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
     def SelectionStyle(self, value: typing.Literal['Shape', 'BoundBox']): ...
 
     @property
-    def ShowInTree(self) -> int | bool:
+    def ShowInTree(self) -> bool:
         """
         Property group: Display Options.
         Property TypeId: App::PropertyBool.
@@ -717,7 +721,7 @@ class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
     def ShowInTree(self, value: int | bool): ...
 
     @property
-    def Visibility(self) -> int | bool:
+    def Visibility(self) -> bool:
         """
         Property group: Display Options.
         Property TypeId: App::PropertyBool.

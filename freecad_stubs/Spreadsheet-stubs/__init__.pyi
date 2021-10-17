@@ -1,4 +1,5 @@
 import FreeCAD
+import Spreadsheet
 
 
 # SheetPy.xml
@@ -6,46 +7,46 @@ class Sheet(FreeCAD.DocumentObject):
     """With this object you can manipulate spreadsheets"""
 
     @property
-    def cells(self):
+    def cells(self) -> Spreadsheet.Sheet:
         """
         [Prop_Hidden] Property won't appear in the editor.
         Property group: Spreadsheet.
-        Property TypeId: PropertySheet.
+        Property TypeId: Spreadsheet::PropertySheet.
         Cell contents.
         """
 
     @cells.setter
-    def cells(self, value): ...
+    def cells(self, value: Spreadsheet.Sheet): ...
 
     @property
-    def columnWidths(self):
+    def columnWidths(self) -> Spreadsheet.PropertyColumnWidths:
         """
         [Prop_ReadOnly] Property is read-only in the editor.
         [Prop_Hidden] Property won't appear in the editor.
         [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Spreadsheet.
-        Property TypeId: PropertyColumnWidths.
+        Property TypeId: Spreadsheet::PropertyColumnWidths.
         Column widths.
         """
 
     @property
-    def rowHeights(self):
+    def rowHeights(self) -> Spreadsheet.PropertyRowHeights:
         """
         [Prop_ReadOnly] Property is read-only in the editor.
         [Prop_Hidden] Property won't appear in the editor.
         Property group: Spreadsheet.
-        Property TypeId: PropertyRowHeights.
+        Property TypeId: Spreadsheet::PropertyRowHeights.
         Row heights.
         """
 
     @property
-    def rowHeights(self):
+    def rowHeights(self) -> Spreadsheet.PropertyRowHeights:
         """
         [Prop_ReadOnly] Property is read-only in the editor.
         [Prop_Hidden] Property won't appear in the editor.
         [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Spreadsheet.
-        Property TypeId: PropertyRowHeights.
+        Property TypeId: Spreadsheet::PropertyRowHeights.
         Row heights.
         """
 
@@ -58,7 +59,7 @@ class Sheet(FreeCAD.DocumentObject):
     def exportFile(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, /):
         """Export file from spreadsheet"""
 
-    def get(self, arg1: str, /):
+    def get(self, arg1: str, arg2: str = None, /):
         """Get evaluated cell contents"""
 
     def getAlias(self, arg1: str, /):
@@ -103,6 +104,14 @@ class Sheet(FreeCAD.DocumentObject):
     def mergeCells(self, arg1: str, /):
         """Merge given cell area into one cell"""
 
+    def recomputeCells(self, from_: str, to: str = None, /):
+        """
+        recomputeCells(from, to=None)
+
+        Manually recompute cells in the given range with the given order without
+        following depedency order.
+        """
+
     def removeColumns(self, arg1: str, arg2: int, /):
         """Remove a given number of columns from the spreadsheet."""
 
@@ -138,6 +147,9 @@ class Sheet(FreeCAD.DocumentObject):
 
     def splitCell(self, arg1: str, /):
         """Split a previously merged cell"""
+
+    def touchCells(self, from_: str, to: str = None, /):
+        """touchCells(from, to=None): touch cells in the given range"""
 
 
 # PropertyRowHeightsPy.xml

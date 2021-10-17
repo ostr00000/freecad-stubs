@@ -4,6 +4,8 @@ import Fem
 import FreeCAD
 import Part
 
+LinkList_t: typing.TypeAlias = None | FreeCAD.DocumentObject
+
 
 # FemMeshPy.xml
 class FemMesh(FreeCAD.ComplexGeoData):
@@ -253,7 +255,7 @@ class FemPostPipeline(FreeCAD.GeoFeature):
     """The FemPostPipeline class."""
 
     @property
-    def Filter(self) -> dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]:
+    def Filter(self) -> list[FreeCAD.DocumentObject | None]:
         """
         Property group: Pipeline.
         Property TypeId: App::PropertyLinkList.
@@ -261,7 +263,7 @@ class FemPostPipeline(FreeCAD.GeoFeature):
         """
 
     @Filter.setter
-    def Filter(self, value: dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]): ...
+    def Filter(self, value: LinkList_t): ...
 
     @property
     def Functions(self) -> FreeCAD.DocumentObject | None:
@@ -276,7 +278,7 @@ class FemPostPipeline(FreeCAD.GeoFeature):
     def Functions(self, value: FreeCAD.DocumentObject | None): ...
 
     @property
-    def Mode(self) -> typing.Literal['Serial', 'Parallel']:
+    def Mode(self) -> int:
         """
         Property group: Pipeline.
         Property TypeId: App::PropertyEnumeration.

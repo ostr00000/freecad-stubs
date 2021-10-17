@@ -1,7 +1,20 @@
+import io
 import typing
 
 import FreeCAD
 import TechDraw
+
+DocAndStr_t: typing.TypeAlias = tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]
+LinkSub_t: typing.TypeAlias = FreeCAD.DocumentObject | None | tuple[()] | DocAndStr_t
+StrIO_t: typing.TypeAlias = str | bytes | io.IOBase
+_T = typing.TypeVar("_T")
+Quadruple_t: typing.TypeAlias = tuple[_T, _T, _T, _T]
+Triple_t: typing.TypeAlias = tuple[_T, _T, _T]
+LinkList_t: typing.TypeAlias = None | FreeCAD.DocumentObject
+SequenceDoc_t: typing.TypeAlias = tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]
+LinkSubList_t: typing.TypeAlias = typing.Sequence[SequenceDoc_t | FreeCAD.DocumentObject]
+SequenceNone_t: typing.TypeAlias = tuple[None, typing.Any]
+PropX_t: typing.TypeAlias = None | FreeCAD.DocumentObject | SequenceNone_t | SequenceDoc_t
 
 
 # DrawGeomHatchPy.xml
@@ -31,7 +44,7 @@ class DrawGeomHatch(FreeCAD.DocumentObject):
     def NamePattern(self, value: str): ...
 
     @property
-    def PatIncluded(self):
+    def PatIncluded(self) -> str:
         """
         Property group: GeomHatch.
         Property TypeId: App::PropertyFileIncluded.
@@ -39,10 +52,10 @@ class DrawGeomHatch(FreeCAD.DocumentObject):
         """
 
     @PatIncluded.setter
-    def PatIncluded(self, value): ...
+    def PatIncluded(self, value: StrIO_t | tuple[StrIO_t, StrIO_t]): ...
 
     @property
-    def ScalePattern(self) -> float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]:
+    def ScalePattern(self) -> float:
         """
         Property group: GeomHatch.
         Property TypeId: App::PropertyFloatConstraint.
@@ -50,10 +63,10 @@ class DrawGeomHatch(FreeCAD.DocumentObject):
         """
 
     @ScalePattern.setter
-    def ScalePattern(self, value: float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]): ...
+    def ScalePattern(self, value: float | Quadruple_t[float]): ...
 
     @property
-    def Source(self) -> FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None:
+    def Source(self) -> tuple[FreeCAD.DocumentObject, list[str]] | None:
         """
         Property group: GeomHatch.
         Property TypeId: App::PropertyLinkSub.
@@ -61,7 +74,7 @@ class DrawGeomHatch(FreeCAD.DocumentObject):
         """
 
     @Source.setter
-    def Source(self, value: FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None): ...
+    def Source(self, value: LinkSub_t): ...
 
 
 # DrawLeaderLinePy.xml
@@ -69,7 +82,7 @@ class DrawLeaderLine(TechDraw.DrawView):
     """Feature for adding leaders to Technical Drawings"""
 
     @property
-    def AutoHorizontal(self) -> int | bool:
+    def AutoHorizontal(self) -> bool:
         """
         Property group: Leader.
         Property TypeId: App::PropertyBool.
@@ -80,7 +93,7 @@ class DrawLeaderLine(TechDraw.DrawView):
     def AutoHorizontal(self, value: int | bool): ...
 
     @property
-    def EndSymbol(self):
+    def EndSymbol(self) -> int:
         """Property TypeId: App::PropertyEnumeration."""
 
     @EndSymbol.setter
@@ -98,7 +111,7 @@ class DrawLeaderLine(TechDraw.DrawView):
     def LeaderParent(self, value: FreeCAD.DocumentObject | None): ...
 
     @property
-    def Scalable(self) -> int | bool:
+    def Scalable(self) -> bool:
         """
         Property group: Leader.
         Property TypeId: App::PropertyBool.
@@ -109,14 +122,14 @@ class DrawLeaderLine(TechDraw.DrawView):
     def Scalable(self, value: int | bool): ...
 
     @property
-    def StartSymbol(self):
+    def StartSymbol(self) -> int:
         """Property TypeId: App::PropertyEnumeration."""
 
     @StartSymbol.setter
     def StartSymbol(self, value): ...
 
     @property
-    def WayPoints(self) -> dict[int, FreeCAD.Vector | tuple[float | int, float | int, float | int]] | typing.Iterable[FreeCAD.Vector | tuple[float | int, float | int, float | int]] | typing.Sequence[FreeCAD.Vector | tuple[float | int, float | int, float | int]]:
+    def WayPoints(self) -> list[FreeCAD.Vector]:
         """
         Property group: Leader.
         Property TypeId: App::PropertyVectorList.
@@ -124,7 +137,7 @@ class DrawLeaderLine(TechDraw.DrawView):
         """
 
     @WayPoints.setter
-    def WayPoints(self, value: dict[int, FreeCAD.Vector | tuple[float | int, float | int, float | int]] | typing.Iterable[FreeCAD.Vector | tuple[float | int, float | int, float | int]] | typing.Sequence[FreeCAD.Vector | tuple[float | int, float | int, float | int]]): ...
+    def WayPoints(self, value: typing.Iterable[FreeCAD.Vector | Triple_t[float]] | dict[int, FreeCAD.Vector | Triple_t[float]]): ...
 
 
 # DrawViewAnnotationPy.xml
@@ -143,7 +156,7 @@ class DrawViewAnnotation(TechDraw.DrawView):
     def Font(self, value: str): ...
 
     @property
-    def LineSpace(self) -> int | tuple[int, int, int, int]:
+    def LineSpace(self) -> int:
         """
         Property group: Annotation.
         Property TypeId: App::PropertyPercent.
@@ -151,10 +164,10 @@ class DrawViewAnnotation(TechDraw.DrawView):
         """
 
     @LineSpace.setter
-    def LineSpace(self, value: int | tuple[int, int, int, int]): ...
+    def LineSpace(self, value: int): ...
 
     @property
-    def MaxWidth(self) -> str | float | FreeCAD.Quantity:
+    def MaxWidth(self) -> FreeCAD.Quantity:
         """
         Property group: Annotation.
         Property TypeId: App::PropertyLength.
@@ -168,7 +181,7 @@ class DrawViewAnnotation(TechDraw.DrawView):
     def MaxWidth(self, value: str | float | FreeCAD.Quantity): ...
 
     @property
-    def Text(self) -> dict[int, str | bytes] | typing.Iterable[str | bytes] | typing.Sequence[str | bytes]:
+    def Text(self) -> list[str]:
         """
         Property group: Annotation.
         Property TypeId: App::PropertyStringList.
@@ -176,10 +189,10 @@ class DrawViewAnnotation(TechDraw.DrawView):
         """
 
     @Text.setter
-    def Text(self, value: dict[int, str | bytes] | typing.Iterable[str | bytes] | typing.Sequence[str | bytes]): ...
+    def Text(self, value: typing.Iterable[str] | dict[int, str]): ...
 
     @property
-    def TextColor(self) -> tuple[float, float, float] | tuple[float, float, float, float] | int:
+    def TextColor(self) -> tuple[float, float, float, float]:
         """
         Property group: Annotation.
         Property TypeId: App::PropertyColor.
@@ -187,10 +200,10 @@ class DrawViewAnnotation(TechDraw.DrawView):
         """
 
     @TextColor.setter
-    def TextColor(self, value: tuple[float, float, float] | tuple[float, float, float, float] | int): ...
+    def TextColor(self, value: Triple_t[float] | Quadruple_t[float] | int): ...
 
     @property
-    def TextSize(self) -> str | float | FreeCAD.Quantity:
+    def TextSize(self) -> FreeCAD.Quantity:
         """
         Property group: Annotation.
         Property TypeId: App::PropertyLength.
@@ -201,7 +214,7 @@ class DrawViewAnnotation(TechDraw.DrawView):
     def TextSize(self, value: str | float | FreeCAD.Quantity): ...
 
     @property
-    def TextStyle(self) -> typing.Literal['Normal', '\n                                      "Bold', '\n                                      "Italic', '\n                                      "Bold-Italic']:
+    def TextStyle(self) -> int:
         """
         Property group: Annotation.
         Property TypeId: App::PropertyEnumeration.
@@ -209,7 +222,7 @@ class DrawViewAnnotation(TechDraw.DrawView):
         """
 
     @TextStyle.setter
-    def TextStyle(self, value: typing.Literal['Normal', '\n                                      "Bold', '\n                                      "Italic', '\n                                      "Bold-Italic']): ...
+    def TextStyle(self, value: typing.Literal['Normal', 'Bold', 'Italic', 'Bold-Italic']): ...
 
 
 # DrawViewClipPy.xml
@@ -217,7 +230,7 @@ class DrawViewClip(TechDraw.DrawView):
     """Feature for creating and manipulating Technical Drawing Clip Views"""
 
     @property
-    def Height(self) -> str | float | FreeCAD.Quantity:
+    def Height(self) -> FreeCAD.Quantity:
         """
         Property group: Clip Group.
         Property TypeId: App::PropertyLength.
@@ -228,7 +241,7 @@ class DrawViewClip(TechDraw.DrawView):
     def Height(self, value: str | float | FreeCAD.Quantity): ...
 
     @property
-    def ShowFrame(self) -> int | bool:
+    def ShowFrame(self) -> bool:
         """
         Property group: Clip Group.
         Property TypeId: App::PropertyBool.
@@ -239,7 +252,7 @@ class DrawViewClip(TechDraw.DrawView):
     def ShowFrame(self, value: int | bool): ...
 
     @property
-    def Views(self) -> dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]:
+    def Views(self) -> list[FreeCAD.DocumentObject | None]:
         """
         Property group: Clip Group.
         Property TypeId: App::PropertyLinkList.
@@ -247,10 +260,10 @@ class DrawViewClip(TechDraw.DrawView):
         """
 
     @Views.setter
-    def Views(self, value: dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]): ...
+    def Views(self, value: LinkList_t): ...
 
     @property
-    def Width(self) -> str | float | FreeCAD.Quantity:
+    def Width(self) -> FreeCAD.Quantity:
         """
         Property group: Clip Group.
         Property TypeId: App::PropertyLength.
@@ -275,7 +288,7 @@ class DrawViewSymbol(TechDraw.DrawView):
     """Feature for creating and manipulating Drawing SVG Symbol Views"""
 
     @property
-    def EditableTexts(self) -> dict[int, str | bytes] | typing.Iterable[str | bytes] | typing.Sequence[str | bytes]:
+    def EditableTexts(self) -> list[str]:
         """
         Property group: Drawing view.
         Property TypeId: App::PropertyStringList.
@@ -283,7 +296,7 @@ class DrawViewSymbol(TechDraw.DrawView):
         """
 
     @EditableTexts.setter
-    def EditableTexts(self, value: dict[int, str | bytes] | typing.Iterable[str | bytes] | typing.Sequence[str | bytes]): ...
+    def EditableTexts(self, value: typing.Iterable[str] | dict[int, str]): ...
 
     @property
     def Symbol(self) -> str:
@@ -305,7 +318,7 @@ class DrawViewCollection(TechDraw.DrawView):
     """Feature for creating and manipulating Technical Drawing View Collections"""
 
     @property
-    def Views(self) -> dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]:
+    def Views(self) -> list[FreeCAD.DocumentObject | None]:
         """
         Property group: Collection.
         Property TypeId: App::PropertyLinkList.
@@ -313,7 +326,7 @@ class DrawViewCollection(TechDraw.DrawView):
         """
 
     @Views.setter
-    def Views(self, value: dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]): ...
+    def Views(self, value: LinkList_t): ...
 
     def addView(self, DrawView_object: FreeCAD.DocumentObject, /):
         """addView(DrawView object) - Add a new View to this Group. Returns count of views."""
@@ -327,7 +340,7 @@ class CosmeticExtension(FreeCAD.DocumentObjectExtension):
     """This object represents cosmetic features for a DrawViewPart."""
 
     @property
-    def CenterLines(self):
+    def CenterLines(self) -> list[TechDraw.CenterLine]:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Cosmetics.
@@ -336,10 +349,10 @@ class CosmeticExtension(FreeCAD.DocumentObjectExtension):
         """
 
     @CenterLines.setter
-    def CenterLines(self, value): ...
+    def CenterLines(self, value: typing.Iterable[TechDraw.CenterLine] | dict[int, TechDraw.CenterLine]): ...
 
     @property
-    def CosmeticEdges(self):
+    def CosmeticEdges(self) -> list[TechDraw.CosmeticEdge]:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Cosmetics.
@@ -348,10 +361,10 @@ class CosmeticExtension(FreeCAD.DocumentObjectExtension):
         """
 
     @CosmeticEdges.setter
-    def CosmeticEdges(self, value): ...
+    def CosmeticEdges(self, value: typing.Iterable[TechDraw.CosmeticEdge] | dict[int, TechDraw.CosmeticEdge]): ...
 
     @property
-    def CosmeticVertexes(self):
+    def CosmeticVertexes(self) -> list[TechDraw.CosmeticVertex]:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Cosmetics.
@@ -360,10 +373,10 @@ class CosmeticExtension(FreeCAD.DocumentObjectExtension):
         """
 
     @CosmeticVertexes.setter
-    def CosmeticVertexes(self, value): ...
+    def CosmeticVertexes(self, value: typing.Iterable[TechDraw.CosmeticVertex] | dict[int, TechDraw.CosmeticVertex]): ...
 
     @property
-    def GeomFormats(self):
+    def GeomFormats(self) -> list[TechDraw.GeomFormat]:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Cosmetics.
@@ -372,7 +385,7 @@ class CosmeticExtension(FreeCAD.DocumentObjectExtension):
         """
 
     @GeomFormats.setter
-    def GeomFormats(self, value): ...
+    def GeomFormats(self, value: typing.Iterable[TechDraw.GeomFormat] | dict[int, TechDraw.GeomFormat]): ...
 
 
 # DrawViewDimExtentPy.xml
@@ -380,7 +393,7 @@ class DrawViewDimExtent(TechDraw.DrawViewDimension):
     """Feature for creating and manipulating Technical Drawing DimExtents"""
 
     @property
-    def CosmeticTags(self) -> dict[int, str | bytes] | typing.Iterable[str | bytes] | typing.Sequence[str | bytes]:
+    def CosmeticTags(self) -> list[str]:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property TypeId: App::PropertyStringList.
@@ -388,7 +401,7 @@ class DrawViewDimExtent(TechDraw.DrawViewDimension):
         """
 
     @CosmeticTags.setter
-    def CosmeticTags(self, value: dict[int, str | bytes] | typing.Iterable[str | bytes] | typing.Sequence[str | bytes]): ...
+    def CosmeticTags(self, value: typing.Iterable[str] | dict[int, str]): ...
 
     @property
     def DirExtent(self) -> int:
@@ -402,7 +415,7 @@ class DrawViewDimExtent(TechDraw.DrawViewDimension):
     def DirExtent(self, value: int): ...
 
     @property
-    def Source(self) -> dict[int, FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Iterable[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Sequence[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None]:
+    def Source(self) -> list[tuple[FreeCAD.DocumentObject, list[str]]]:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property TypeId: App::PropertyLinkSubList.
@@ -410,10 +423,10 @@ class DrawViewDimExtent(TechDraw.DrawViewDimension):
         """
 
     @Source.setter
-    def Source(self, value: dict[int, FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Iterable[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Sequence[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None]): ...
+    def Source(self, value: LinkSub_t | LinkList_t | LinkSubList_t): ...
 
     @property
-    def Source3d(self) -> dict[int, FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Iterable[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Sequence[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None]:
+    def Source3d(self) -> list[tuple[FreeCAD.DocumentObject, list[str]]]:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property TypeId: App::PropertyLinkSubList.
@@ -421,7 +434,7 @@ class DrawViewDimExtent(TechDraw.DrawViewDimension):
         """
 
     @Source3d.setter
-    def Source3d(self, value: dict[int, FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Iterable[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Sequence[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None]): ...
+    def Source3d(self, value: LinkSub_t | LinkList_t | LinkSubList_t): ...
 
     def tbd(self):
         """tbd() - returns tbd."""
@@ -454,7 +467,7 @@ class DrawRichAnno(TechDraw.DrawView):
     def AnnoText(self, value: str): ...
 
     @property
-    def MaxWidth(self) -> float | int:
+    def MaxWidth(self) -> float:
         """
         Property group: Text Block.
         Property TypeId: App::PropertyFloat.
@@ -462,10 +475,10 @@ class DrawRichAnno(TechDraw.DrawView):
         """
 
     @MaxWidth.setter
-    def MaxWidth(self, value: float | int): ...
+    def MaxWidth(self, value: float): ...
 
     @property
-    def ShowFrame(self) -> int | bool:
+    def ShowFrame(self) -> bool:
         """
         Property group: Text Block.
         Property TypeId: App::PropertyBool.
@@ -503,7 +516,7 @@ class DrawTile(FreeCAD.DocumentObject):
     def TileParent(self, value: FreeCAD.DocumentObject | None): ...
 
     @property
-    def TileRow(self) -> int | tuple[int, int, int, int]:
+    def TileRow(self) -> int:
         """
         Property group: Tile.
         Property TypeId: App::PropertyIntegerConstraint.
@@ -514,7 +527,7 @@ class DrawTile(FreeCAD.DocumentObject):
         """
 
     @TileRow.setter
-    def TileRow(self, value: int | tuple[int, int, int, int]): ...
+    def TileRow(self, value: int | Quadruple_t[int]): ...
 
 
 # DrawViewDimensionPy.xml
@@ -522,7 +535,7 @@ class DrawViewDimension(TechDraw.DrawView):
     """Feature for creating and manipulating Technical Drawing Dimensions"""
 
     @property
-    def Arbitrary(self) -> int | bool:
+    def Arbitrary(self) -> bool:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Format.
@@ -534,7 +547,7 @@ class DrawViewDimension(TechDraw.DrawView):
     def Arbitrary(self, value: int | bool): ...
 
     @property
-    def ArbitraryTolerances(self) -> int | bool:
+    def ArbitraryTolerances(self) -> bool:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Format.
@@ -546,7 +559,7 @@ class DrawViewDimension(TechDraw.DrawView):
     def ArbitraryTolerances(self, value: int | bool): ...
 
     @property
-    def EqualTolerance(self) -> int | bool:
+    def EqualTolerance(self) -> bool:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property TypeId: App::PropertyBool.
@@ -593,7 +606,7 @@ class DrawViewDimension(TechDraw.DrawView):
     def FormatSpecUnderTolerance(self, value: str): ...
 
     @property
-    def Inverted(self) -> int | bool:
+    def Inverted(self) -> bool:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property TypeId: App::PropertyBool.
@@ -604,17 +617,17 @@ class DrawViewDimension(TechDraw.DrawView):
     def Inverted(self, value: int | bool): ...
 
     @property
-    def MeasureType(self) -> typing.Literal['True', '\n                                                    "Projected']:
+    def MeasureType(self) -> int:
         """Property TypeId: App::PropertyEnumeration."""
 
     @MeasureType.setter
-    def MeasureType(self, value: typing.Literal['True', '\n                                                    "Projected']): ...
+    def MeasureType(self, value: typing.Literal['True', 'Projected']): ...
 
     @property
-    def OverTolerance(self):
+    def OverTolerance(self) -> FreeCAD.Quantity:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
-        Property TypeId: FormatSpec.
+        Property TypeId: App::PropertyQuantityConstraint.
 
         Overtolerance value
         If 'Equal Tolerance' is true this is also
@@ -623,30 +636,30 @@ class DrawViewDimension(TechDraw.DrawView):
         """
 
     @OverTolerance.setter
-    def OverTolerance(self, value): ...
+    def OverTolerance(self, value: str | float | FreeCAD.Quantity): ...
 
     @property
-    def References2D(self) -> dict[int, FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Iterable[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Sequence[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None]:
+    def References2D(self) -> list[tuple[FreeCAD.DocumentObject, list[str]]]:
         """
         Property TypeId: App::PropertyLinkSubList.
         Projected Geometry References.
         """
 
     @References2D.setter
-    def References2D(self, value: dict[int, FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Iterable[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Sequence[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None]): ...
+    def References2D(self, value: LinkSub_t | LinkList_t | LinkSubList_t): ...
 
     @property
-    def References3D(self) -> dict[int, FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Iterable[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Sequence[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None]:
+    def References3D(self) -> list[tuple[FreeCAD.DocumentObject, list[str]]]:
         """
         Property TypeId: App::PropertyLinkSubList.
         3D Geometry References.
         """
 
     @References3D.setter
-    def References3D(self, value: dict[int, FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Iterable[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Sequence[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None]): ...
+    def References3D(self, value: LinkSub_t | LinkList_t | LinkSubList_t): ...
 
     @property
-    def TheoreticalExact(self) -> int | bool:
+    def TheoreticalExact(self) -> bool:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property TypeId: App::PropertyBool.
@@ -657,17 +670,17 @@ class DrawViewDimension(TechDraw.DrawView):
     def TheoreticalExact(self, value: int | bool): ...
 
     @property
-    def Type(self):
-        """Property TypeId: Measure."""
+    def Type(self) -> int:
+        """Property TypeId: App::PropertyEnumeration."""
 
     @Type.setter
-    def Type(self, value): ...
+    def Type(self, value: typing.Literal['Distance', 'DistanceX', 'DistanceY', 'DistanceZ', 'Radius', 'Diameter', 'Angle', 'Angle3Pt']): ...
 
     @property
-    def UnderTolerance(self):
+    def UnderTolerance(self) -> FreeCAD.Quantity:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
-        Property TypeId: FormatSpec.
+        Property TypeId: App::PropertyQuantityConstraint.
 
         Undertolerance value
         If 'Equal Tolerance' is true it will be replaced
@@ -676,7 +689,7 @@ class DrawViewDimension(TechDraw.DrawView):
         """
 
     @UnderTolerance.setter
-    def UnderTolerance(self, value): ...
+    def UnderTolerance(self, value: str | float | FreeCAD.Quantity): ...
 
     def getAnglePoints(self):
         """getAnglePoints() - returns list of points for angle Dimension"""
@@ -758,7 +771,7 @@ class DrawView(FreeCAD.DocumentObject):
     def Caption(self, value: str): ...
 
     @property
-    def LockPosition(self) -> int | bool:
+    def LockPosition(self) -> bool:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Base.
@@ -770,7 +783,7 @@ class DrawView(FreeCAD.DocumentObject):
     def LockPosition(self, value: int | bool): ...
 
     @property
-    def Rotation(self) -> str | float | FreeCAD.Quantity:
+    def Rotation(self) -> FreeCAD.Quantity:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Base.
@@ -782,7 +795,7 @@ class DrawView(FreeCAD.DocumentObject):
     def Rotation(self, value: str | float | FreeCAD.Quantity): ...
 
     @property
-    def Scale(self) -> float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]:
+    def Scale(self) -> float:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Base.
@@ -791,10 +804,10 @@ class DrawView(FreeCAD.DocumentObject):
         """
 
     @Scale.setter
-    def Scale(self, value: float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]): ...
+    def Scale(self, value: float | Quadruple_t[float]): ...
 
     @property
-    def ScaleType(self) -> typing.Literal['Page', '\n                                         "Automatic', '\n                                         "Custom']:
+    def ScaleType(self) -> int:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Base.
@@ -803,10 +816,10 @@ class DrawView(FreeCAD.DocumentObject):
         """
 
     @ScaleType.setter
-    def ScaleType(self, value: typing.Literal['Page', '\n                                         "Automatic', '\n                                         "Custom']): ...
+    def ScaleType(self, value: typing.Literal['Page', 'Automatic', 'Custom']): ...
 
     @property
-    def X(self) -> str | float | FreeCAD.Quantity | FreeCAD.Unit:
+    def X(self) -> FreeCAD.Quantity:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         [Prop_NoRecompute] Modified property doesn't touch its container for recompute.
@@ -819,7 +832,7 @@ class DrawView(FreeCAD.DocumentObject):
     def X(self, value: str | float | FreeCAD.Quantity | FreeCAD.Unit): ...
 
     @property
-    def Y(self) -> str | float | FreeCAD.Quantity | FreeCAD.Unit:
+    def Y(self) -> FreeCAD.Quantity:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         [Prop_NoRecompute] Modified property doesn't touch its container for recompute.
@@ -837,7 +850,7 @@ class DrawSVGTemplate(TechDraw.DrawTemplate):
     """Feature for creating and manipulating Technical Drawing SVG Templates"""
 
     @property
-    def PageResult(self):
+    def PageResult(self) -> str:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Template.
@@ -846,7 +859,7 @@ class DrawSVGTemplate(TechDraw.DrawTemplate):
         """
 
     @PageResult.setter
-    def PageResult(self, value): ...
+    def PageResult(self, value: StrIO_t | tuple[StrIO_t, StrIO_t]): ...
 
     @property
     def Template(self) -> str:
@@ -872,7 +885,7 @@ class DrawWeldSymbol(TechDraw.DrawView):
     """Feature for adding welding tiles to leader lines"""
 
     @property
-    def AllAround(self) -> int | bool:
+    def AllAround(self) -> bool:
         """
         Property group: Weld Symbol.
         Property TypeId: App::PropertyBool.
@@ -883,7 +896,7 @@ class DrawWeldSymbol(TechDraw.DrawView):
     def AllAround(self, value: int | bool): ...
 
     @property
-    def AlternatingWeld(self) -> int | bool:
+    def AlternatingWeld(self) -> bool:
         """
         Property group: Weld Symbol.
         Property TypeId: App::PropertyBool.
@@ -894,7 +907,7 @@ class DrawWeldSymbol(TechDraw.DrawView):
     def AlternatingWeld(self, value: int | bool): ...
 
     @property
-    def FieldWeld(self) -> int | bool:
+    def FieldWeld(self) -> bool:
         """
         Property group: Weld Symbol.
         Property TypeId: App::PropertyBool.
@@ -943,7 +956,7 @@ class DrawProjGroup(TechDraw.DrawViewCollection):
     def Anchor(self, value: FreeCAD.DocumentObject | None): ...
 
     @property
-    def AutoDistribute(self) -> int | bool:
+    def AutoDistribute(self) -> bool:
         """
         Property group: Distribute.
         Property TypeId: App::PropertyBool.
@@ -954,7 +967,7 @@ class DrawProjGroup(TechDraw.DrawViewCollection):
     def AutoDistribute(self, value: int | bool): ...
 
     @property
-    def ProjectionType(self) -> typing.Literal['First Angle', '\n                                                    "Third Angle', '\n                                                    "Default']:
+    def ProjectionType(self) -> int:
         """
         Property group: Base.
         Property TypeId: App::PropertyEnumeration.
@@ -962,10 +975,10 @@ class DrawProjGroup(TechDraw.DrawViewCollection):
         """
 
     @ProjectionType.setter
-    def ProjectionType(self, value: typing.Literal['First Angle', '\n                                                    "Third Angle', '\n                                                    "Default']): ...
+    def ProjectionType(self, value: typing.Literal['First Angle', 'Third Angle', 'Default']): ...
 
     @property
-    def Source(self) -> dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]:
+    def Source(self) -> list[FreeCAD.DocumentObject | None]:
         """
         Property group: Base.
         Property TypeId: App::PropertyLinkList.
@@ -973,10 +986,10 @@ class DrawProjGroup(TechDraw.DrawViewCollection):
         """
 
     @Source.setter
-    def Source(self, value: dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]): ...
+    def Source(self, value: LinkList_t): ...
 
     @property
-    def XSource(self) -> dict[int, FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Iterable[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Sequence[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None]:
+    def XSource(self) -> list[tuple[FreeCAD.DocumentObject, list[str]]] | list[FreeCAD.DocumentObject]:
         """
         Property group: Base.
         Property TypeId: App::PropertyXLinkList.
@@ -984,10 +997,10 @@ class DrawProjGroup(TechDraw.DrawViewCollection):
         """
 
     @XSource.setter
-    def XSource(self, value: dict[int, FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Iterable[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Sequence[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None]): ...
+    def XSource(self, value: typing.Iterable[PropX_t] | dict[int, PropX_t]): ...
 
     @property
-    def spacingX(self) -> str | float | FreeCAD.Quantity:
+    def spacingX(self) -> FreeCAD.Quantity:
         """
         Property group: Distribute.
         Property TypeId: App::PropertyLength.
@@ -1002,7 +1015,7 @@ class DrawProjGroup(TechDraw.DrawViewCollection):
     def spacingX(self, value: str | float | FreeCAD.Quantity): ...
 
     @property
-    def spacingY(self) -> str | float | FreeCAD.Quantity:
+    def spacingY(self) -> FreeCAD.Quantity:
         """
         Property group: Distribute.
         Property TypeId: App::PropertyLength.
@@ -1059,7 +1072,7 @@ class DrawViewPart(TechDraw.DrawView):
     """Feature for creating and manipulating Technical Drawing Part Views"""
 
     @property
-    def CoarseView(self) -> int | bool:
+    def CoarseView(self) -> bool:
         """
         Property group: HLR Parameters.
         Property TypeId: App::PropertyBool.
@@ -1070,7 +1083,7 @@ class DrawViewPart(TechDraw.DrawView):
     def CoarseView(self, value: int | bool): ...
 
     @property
-    def Direction(self) -> FreeCAD.Vector | tuple[float | int, float | int, float | int]:
+    def Direction(self) -> FreeCAD.Vector:
         """
         Property group: Projection.
         Property TypeId: App::PropertyVector.
@@ -1078,10 +1091,10 @@ class DrawViewPart(TechDraw.DrawView):
         """
 
     @Direction.setter
-    def Direction(self, value: FreeCAD.Vector | tuple[float | int, float | int, float | int]): ...
+    def Direction(self, value: FreeCAD.Vector | Triple_t[float]): ...
 
     @property
-    def Focus(self) -> str | float | FreeCAD.Quantity | FreeCAD.Unit:
+    def Focus(self) -> FreeCAD.Quantity:
         """
         Property group: Projection.
         Property TypeId: App::PropertyDistance.
@@ -1092,7 +1105,7 @@ class DrawViewPart(TechDraw.DrawView):
     def Focus(self, value: str | float | FreeCAD.Quantity | FreeCAD.Unit): ...
 
     @property
-    def HardHidden(self) -> int | bool:
+    def HardHidden(self) -> bool:
         """
         Property group: HLR Parameters.
         Property TypeId: App::PropertyBool.
@@ -1114,7 +1127,7 @@ class DrawViewPart(TechDraw.DrawView):
     def IsoCount(self, value: int): ...
 
     @property
-    def IsoHidden(self) -> int | bool:
+    def IsoHidden(self) -> bool:
         """
         Property group: HLR Parameters.
         Property TypeId: App::PropertyBool.
@@ -1125,7 +1138,7 @@ class DrawViewPart(TechDraw.DrawView):
     def IsoHidden(self, value: int | bool): ...
 
     @property
-    def IsoVisible(self) -> int | bool:
+    def IsoVisible(self) -> bool:
         """
         Property group: HLR Parameters.
         Property TypeId: App::PropertyBool.
@@ -1136,7 +1149,7 @@ class DrawViewPart(TechDraw.DrawView):
     def IsoVisible(self, value: int | bool): ...
 
     @property
-    def Perspective(self) -> int | bool:
+    def Perspective(self) -> bool:
         """
         Property group: Projection.
         Property TypeId: App::PropertyBool.
@@ -1147,7 +1160,7 @@ class DrawViewPart(TechDraw.DrawView):
     def Perspective(self, value: int | bool): ...
 
     @property
-    def SeamHidden(self) -> int | bool:
+    def SeamHidden(self) -> bool:
         """
         Property group: HLR Parameters.
         Property TypeId: App::PropertyBool.
@@ -1158,7 +1171,7 @@ class DrawViewPart(TechDraw.DrawView):
     def SeamHidden(self, value: int | bool): ...
 
     @property
-    def SeamVisible(self) -> int | bool:
+    def SeamVisible(self) -> bool:
         """
         Property group: HLR Parameters.
         Property TypeId: App::PropertyBool.
@@ -1169,7 +1182,7 @@ class DrawViewPart(TechDraw.DrawView):
     def SeamVisible(self, value: int | bool): ...
 
     @property
-    def SmoothHidden(self) -> int | bool:
+    def SmoothHidden(self) -> bool:
         """
         Property group: HLR Parameters.
         Property TypeId: App::PropertyBool.
@@ -1180,7 +1193,7 @@ class DrawViewPart(TechDraw.DrawView):
     def SmoothHidden(self, value: int | bool): ...
 
     @property
-    def SmoothVisible(self) -> int | bool:
+    def SmoothVisible(self) -> bool:
         """
         Property group: HLR Parameters.
         Property TypeId: App::PropertyBool.
@@ -1191,7 +1204,7 @@ class DrawViewPart(TechDraw.DrawView):
     def SmoothVisible(self, value: int | bool): ...
 
     @property
-    def Source(self) -> dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]:
+    def Source(self) -> list[FreeCAD.DocumentObject | None]:
         """
         Property group: Projection.
         Property TypeId: App::PropertyLinkList.
@@ -1199,10 +1212,10 @@ class DrawViewPart(TechDraw.DrawView):
         """
 
     @Source.setter
-    def Source(self, value: dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]): ...
+    def Source(self, value: LinkList_t): ...
 
     @property
-    def XDirection(self) -> FreeCAD.Vector | tuple[float | int, float | int, float | int]:
+    def XDirection(self) -> FreeCAD.Vector:
         """
         Property group: Projection.
         Property TypeId: App::PropertyVector.
@@ -1210,10 +1223,10 @@ class DrawViewPart(TechDraw.DrawView):
         """
 
     @XDirection.setter
-    def XDirection(self, value: FreeCAD.Vector | tuple[float | int, float | int, float | int]): ...
+    def XDirection(self, value: FreeCAD.Vector | Triple_t[float]): ...
 
     @property
-    def XSource(self) -> dict[int, FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Iterable[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Sequence[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None]:
+    def XSource(self) -> list[tuple[FreeCAD.DocumentObject, list[str]]] | list[FreeCAD.DocumentObject]:
         """
         Property group: Projection.
         Property TypeId: App::PropertyXLinkList.
@@ -1221,7 +1234,7 @@ class DrawViewPart(TechDraw.DrawView):
         """
 
     @XSource.setter
-    def XSource(self, value: dict[int, FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Iterable[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Sequence[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None]): ...
+    def XSource(self, value: typing.Iterable[PropX_t] | dict[int, PropX_t]): ...
 
     def clearCenterLines(self):
         """clearCenterLines() - remove all CenterLines from the View. Returns None."""
@@ -1340,7 +1353,7 @@ class DrawTemplate(FreeCAD.DocumentObject):
     def EditableTexts(self, value: dict[str, str]): ...
 
     @property
-    def Height(self) -> str | float | FreeCAD.Quantity:
+    def Height(self) -> FreeCAD.Quantity:
         """
         Property group: Page Properties.
         Property TypeId: App::PropertyLength.
@@ -1351,14 +1364,14 @@ class DrawTemplate(FreeCAD.DocumentObject):
     def Height(self, value: str | float | FreeCAD.Quantity): ...
 
     @property
-    def Orientation(self) -> typing.Literal['Portrait', '\n                                                  "Landscape']:
+    def Orientation(self) -> int:
         """Property TypeId: App::PropertyEnumeration."""
 
     @Orientation.setter
-    def Orientation(self, value: typing.Literal['Portrait', '\n                                                  "Landscape']): ...
+    def Orientation(self, value: typing.Literal['Portrait', 'Landscape']): ...
 
     @property
-    def Width(self) -> str | float | FreeCAD.Quantity:
+    def Width(self) -> FreeCAD.Quantity:
         """
         Property group: Page Properties.
         Property TypeId: App::PropertyLength.
@@ -1477,7 +1490,7 @@ class DrawTileWeld(TechDraw.DrawTile):
     def SymbolFile(self, value: str): ...
 
     @property
-    def SymbolIncluded(self):
+    def SymbolIncluded(self) -> str:
         """
         Property group: TileWeld.
         Property TypeId: App::PropertyFileIncluded.
@@ -1485,7 +1498,7 @@ class DrawTileWeld(TechDraw.DrawTile):
         """
 
     @SymbolIncluded.setter
-    def SymbolIncluded(self, value): ...
+    def SymbolIncluded(self, value: StrIO_t | tuple[StrIO_t, StrIO_t]): ...
 
 
 # DrawPagePy.xml
@@ -1493,7 +1506,7 @@ class DrawPage(FreeCAD.DocumentObject):
     """Feature for creating and manipulating Technical Drawing Pages"""
 
     @property
-    def KeepUpdated(self) -> int | bool:
+    def KeepUpdated(self) -> bool:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Page.
@@ -1516,14 +1529,14 @@ class DrawPage(FreeCAD.DocumentObject):
     def NextBalloonIndex(self, value: int): ...
 
     @property
-    def ProjectionType(self) -> typing.Literal[' "First Angle', '\n                                                "Third Angle']:
+    def ProjectionType(self) -> int:
         """Property TypeId: App::PropertyEnumeration."""
 
     @ProjectionType.setter
-    def ProjectionType(self, value: typing.Literal[' "First Angle', '\n                                                "Third Angle']): ...
+    def ProjectionType(self, value: typing.Literal['First Angle', 'Third Angle']): ...
 
     @property
-    def Scale(self) -> float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]:
+    def Scale(self) -> float:
         """
         Property group: Page.
         Property TypeId: App::PropertyFloatConstraint.
@@ -1531,7 +1544,7 @@ class DrawPage(FreeCAD.DocumentObject):
         """
 
     @Scale.setter
-    def Scale(self, value: float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]): ...
+    def Scale(self, value: float | Quadruple_t[float]): ...
 
     @property
     def Template(self) -> FreeCAD.DocumentObject | None:
@@ -1545,7 +1558,7 @@ class DrawPage(FreeCAD.DocumentObject):
     def Template(self, value: FreeCAD.DocumentObject | None): ...
 
     @property
-    def Views(self) -> dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]:
+    def Views(self) -> list[FreeCAD.DocumentObject | None]:
         """
         Property group: Page.
         Property TypeId: App::PropertyLinkList.
@@ -1553,7 +1566,7 @@ class DrawPage(FreeCAD.DocumentObject):
         """
 
     @Views.setter
-    def Views(self, value: dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]): ...
+    def Views(self, value: LinkList_t): ...
 
     def addView(self, DrawView: FreeCAD.DocumentObject, /):
         """addView(DrawView) - Add a View to this Page"""
@@ -1581,7 +1594,7 @@ class DrawHatch(FreeCAD.DocumentObject):
     def HatchPattern(self, value: str): ...
 
     @property
-    def Source(self) -> FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None:
+    def Source(self) -> tuple[FreeCAD.DocumentObject, list[str]] | None:
         """
         Property group: Hatch.
         Property TypeId: App::PropertyLinkSub.
@@ -1589,10 +1602,10 @@ class DrawHatch(FreeCAD.DocumentObject):
         """
 
     @Source.setter
-    def Source(self, value: FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None): ...
+    def Source(self, value: LinkSub_t): ...
 
     @property
-    def SvgIncluded(self):
+    def SvgIncluded(self) -> str:
         """
         Property group: Hatch.
         Property TypeId: App::PropertyFileIncluded.
@@ -1600,7 +1613,7 @@ class DrawHatch(FreeCAD.DocumentObject):
         """
 
     @SvgIncluded.setter
-    def SvgIncluded(self, value): ...
+    def SvgIncluded(self, value: StrIO_t | tuple[StrIO_t, StrIO_t]): ...
 
 
 # DrawProjGroupItemPy.xml
@@ -1608,7 +1621,7 @@ class DrawProjGroupItem(TechDraw.DrawViewPart):
     """Feature for creating and manipulating component Views Technical Drawing Projection Groups"""
 
     @property
-    def RotationVector(self) -> FreeCAD.Vector | tuple[float | int, float | int, float | int]:
+    def RotationVector(self) -> FreeCAD.Vector:
         """
         Property group: Base.
         Property TypeId: App::PropertyVector.
@@ -1616,14 +1629,14 @@ class DrawProjGroupItem(TechDraw.DrawViewPart):
         """
 
     @RotationVector.setter
-    def RotationVector(self, value: FreeCAD.Vector | tuple[float | int, float | int, float | int]): ...
+    def RotationVector(self, value: FreeCAD.Vector | Triple_t[float]): ...
 
     @property
-    def Type(self) -> typing.Literal['Front', '\n                                             "Left', '\n                                             "Right', '\n                                             "Rear', '\n                                             "Top', '\n                                             "Bottom', '\n                                             "FrontTopLeft', '\n                                             "FrontTopRight', '\n                                             "FrontBottomLeft', '\n                                             "FrontBottomRight']:
+    def Type(self) -> int:
         """Property TypeId: App::PropertyEnumeration."""
 
     @Type.setter
-    def Type(self, value: typing.Literal['Front', '\n                                             "Left', '\n                                             "Right', '\n                                             "Rear', '\n                                             "Top', '\n                                             "Bottom', '\n                                             "FrontTopLeft', '\n                                             "FrontTopRight', '\n                                             "FrontBottomLeft', '\n                                             "FrontBottomRight']): ...
+    def Type(self, value: typing.Literal['Front', 'Left', 'Right', 'Rear', 'Top', 'Bottom', 'FrontTopLeft', 'FrontTopRight', 'FrontBottomLeft', 'FrontBottomRight']): ...
 
     def autoPosition(self):
         """autoPosition() - Move to AutoDistribute/Unlocked position on Page. Returns none."""

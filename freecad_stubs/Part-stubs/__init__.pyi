@@ -3,6 +3,12 @@ import typing
 import FreeCAD
 import Part
 
+DocAndStr_t: typing.TypeAlias = tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]
+LinkSub_t: typing.TypeAlias = FreeCAD.DocumentObject | None | tuple[()] | DocAndStr_t
+LinkList_t: typing.TypeAlias = None | FreeCAD.DocumentObject
+SequenceDoc_t: typing.TypeAlias = tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]
+LinkSubList_t: typing.TypeAlias = typing.Sequence[SequenceDoc_t | FreeCAD.DocumentObject]
+
 
 # TopoShapeVertexPy.xml
 class Vertex(Part.Shape):
@@ -2656,11 +2662,11 @@ class Feature(FreeCAD.GeoFeature):
     """
 
     @property
-    def Shape(self):
-        """Property TypeId: PropertyPartShape."""
+    def Shape(self) -> Part.Shape:
+        """Property TypeId: Part::PropertyPartShape."""
 
     @Shape.setter
-    def Shape(self, value): ...
+    def Shape(self, value: Part.Shape): ...
 
 
 # TrimmedCurvePy.xml
@@ -5359,7 +5365,7 @@ class AttachExtension(FreeCAD.DocumentObjectExtension):
     def AttacherType(self, value: str): ...
 
     @property
-    def AttachmentOffset(self):
+    def AttachmentOffset(self) -> FreeCAD.Placement:
         """
         Property group: Attachment.
         Property TypeId: App::PropertyPlacement.
@@ -5367,10 +5373,10 @@ class AttachExtension(FreeCAD.DocumentObjectExtension):
         """
 
     @AttachmentOffset.setter
-    def AttachmentOffset(self, value): ...
+    def AttachmentOffset(self, value: FreeCAD.Matrix | FreeCAD.Placement): ...
 
     @property
-    def MapMode(self):
+    def MapMode(self) -> int:
         """
         Property group: Attachment.
         Property TypeId: App::PropertyEnumeration.
@@ -5381,7 +5387,7 @@ class AttachExtension(FreeCAD.DocumentObjectExtension):
     def MapMode(self, value): ...
 
     @property
-    def MapPathParameter(self) -> float | int:
+    def MapPathParameter(self) -> float:
         """
         Property group: Attachment.
         Property TypeId: App::PropertyFloat.
@@ -5389,10 +5395,10 @@ class AttachExtension(FreeCAD.DocumentObjectExtension):
         """
 
     @MapPathParameter.setter
-    def MapPathParameter(self, value: float | int): ...
+    def MapPathParameter(self, value: float): ...
 
     @property
-    def MapReversed(self) -> int | bool:
+    def MapReversed(self) -> bool:
         """
         Property group: Attachment.
         Property TypeId: App::PropertyBool.
@@ -5403,7 +5409,7 @@ class AttachExtension(FreeCAD.DocumentObjectExtension):
     def MapReversed(self, value: int | bool): ...
 
     @property
-    def Support(self) -> dict[int, FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Iterable[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Sequence[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None]:
+    def Support(self) -> list[tuple[FreeCAD.DocumentObject, list[str]]]:
         """
         Property group: Attachment.
         Property TypeId: App::PropertyLinkSubList.
@@ -5411,7 +5417,7 @@ class AttachExtension(FreeCAD.DocumentObjectExtension):
         """
 
     @Support.setter
-    def Support(self, value: dict[int, FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Iterable[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None] | typing.Sequence[FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None]): ...
+    def Support(self, value: LinkSub_t | LinkList_t | LinkSubList_t): ...
 
     def changeAttacherType(self, typename: str, /):
         """

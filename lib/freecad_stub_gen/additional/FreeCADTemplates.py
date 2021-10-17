@@ -1,4 +1,4 @@
-"""
+r"""
 This module has templates for some python object used in FreeCAD.
 Do not import these classes rather copy required methods.
 

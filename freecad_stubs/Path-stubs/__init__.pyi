@@ -4,6 +4,8 @@ import FreeCAD
 import Part
 import Path
 
+LinkList_t: typing.TypeAlias = None | FreeCAD.DocumentObject
+
 
 # ToolPy.xml
 class Tool(FreeCAD.Persistence):
@@ -595,18 +597,18 @@ class FeatureArea(FreeCAD.DocumentObject):
     def WorkPlane(self, value: object): ...
 
     @property
-    def Sources(self) -> dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]:
+    def Sources(self) -> list[FreeCAD.DocumentObject | None]:
         """Property TypeId: App::PropertyLinkList."""
 
     @Sources.setter
-    def Sources(self, value: dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]): ...
+    def Sources(self, value: LinkList_t): ...
 
     @property
-    def WorkPlane(self):
+    def WorkPlane(self) -> Part.Shape:
         """Property TypeId: Part::PropertyPartShape."""
 
     @WorkPlane.setter
-    def WorkPlane(self, value): ...
+    def WorkPlane(self, value: Part.Shape): ...
 
     def getArea(self):
         """Return a copy of the encapsulated Python Area object."""

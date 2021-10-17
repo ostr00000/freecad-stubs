@@ -1,7 +1,10 @@
+import io
 import typing
 
 import FreeCAD
 import Robot
+
+StrIO_t: typing.TypeAlias = str | bytes | io.IOBase
 
 
 # WaypointPy.xml
@@ -246,7 +249,7 @@ class RobotObject(FreeCAD.DocumentObject):
     def Axis6(self, value): ...
 
     @property
-    def Base(self):
+    def Base(self) -> FreeCAD.Placement:
         """
         Property group: Robot kinematic.
         Property TypeId: App::PropertyPlacement.
@@ -254,7 +257,7 @@ class RobotObject(FreeCAD.DocumentObject):
         """
 
     @Base.setter
-    def Base(self, value): ...
+    def Base(self, value: FreeCAD.Matrix | FreeCAD.Placement): ...
 
     @property
     def Error(self) -> str:
@@ -268,7 +271,7 @@ class RobotObject(FreeCAD.DocumentObject):
     def Error(self, value: str): ...
 
     @property
-    def Home(self) -> dict[int, float | int] | typing.Iterable[float | int] | typing.Sequence[float | int]:
+    def Home(self) -> list[float]:
         """
         Property group: Robot kinematic.
         Property TypeId: App::PropertyFloatList.
@@ -276,10 +279,10 @@ class RobotObject(FreeCAD.DocumentObject):
         """
 
     @Home.setter
-    def Home(self, value: dict[int, float | int] | typing.Iterable[float | int] | typing.Sequence[float | int]): ...
+    def Home(self, value: typing.Iterable[float] | dict[int, float]): ...
 
     @property
-    def RobotKinematicFile(self):
+    def RobotKinematicFile(self) -> str:
         """
         Property group: Robot definition.
         Property TypeId: App::PropertyFileIncluded.
@@ -287,10 +290,10 @@ class RobotObject(FreeCAD.DocumentObject):
         """
 
     @RobotKinematicFile.setter
-    def RobotKinematicFile(self, value): ...
+    def RobotKinematicFile(self, value: StrIO_t | tuple[StrIO_t, StrIO_t]): ...
 
     @property
-    def RobotVrmlFile(self):
+    def RobotVrmlFile(self) -> str:
         """
         Property group: Robot definition.
         Property TypeId: App::PropertyFileIncluded.
@@ -298,10 +301,10 @@ class RobotObject(FreeCAD.DocumentObject):
         """
 
     @RobotVrmlFile.setter
-    def RobotVrmlFile(self, value): ...
+    def RobotVrmlFile(self, value: StrIO_t | tuple[StrIO_t, StrIO_t]): ...
 
     @property
-    def Tcp(self):
+    def Tcp(self) -> FreeCAD.Placement:
         """
         Property group: Robot kinematic.
         Property TypeId: App::PropertyPlacement.
@@ -309,10 +312,10 @@ class RobotObject(FreeCAD.DocumentObject):
         """
 
     @Tcp.setter
-    def Tcp(self, value): ...
+    def Tcp(self, value: FreeCAD.Matrix | FreeCAD.Placement): ...
 
     @property
-    def Tool(self):
+    def Tool(self) -> FreeCAD.Placement:
         """
         Property group: Robot kinematic.
         Property TypeId: App::PropertyPlacement.
@@ -320,10 +323,10 @@ class RobotObject(FreeCAD.DocumentObject):
         """
 
     @Tool.setter
-    def Tool(self, value): ...
+    def Tool(self, value: FreeCAD.Matrix | FreeCAD.Placement): ...
 
     @property
-    def ToolBase(self):
+    def ToolBase(self) -> FreeCAD.Placement:
         """
         Property group: Robot definition.
         Property TypeId: App::PropertyPlacement.
@@ -331,7 +334,7 @@ class RobotObject(FreeCAD.DocumentObject):
         """
 
     @ToolBase.setter
-    def ToolBase(self, value): ...
+    def ToolBase(self, value: FreeCAD.Matrix | FreeCAD.Placement): ...
 
     @property
     def ToolShape(self) -> FreeCAD.DocumentObject | None:

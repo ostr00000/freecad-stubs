@@ -1,5 +1,11 @@
+import typing
+
 import FreeCAD
 import FreeCADGui
+
+_T = typing.TypeVar("_T")
+Triple_t: typing.TypeAlias = tuple[_T, _T, _T]
+Quadruple_t: typing.TypeAlias = tuple[_T, _T, _T, _T]
 
 
 # ViewProviderFemMeshPy.xml
@@ -39,18 +45,18 @@ class ViewProviderFemMesh(FreeCADGui.ViewProviderDocumentObject):
         """List of elements and faces which are actually shown. These are all surface faces of the mesh."""
 
     @property
-    def BackfaceCulling(self) -> int | bool:
+    def BackfaceCulling(self) -> bool:
         """Property TypeId: App::PropertyBool."""
 
     @BackfaceCulling.setter
     def BackfaceCulling(self, value: int | bool): ...
 
     @property
-    def LineWidth(self) -> float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]:
+    def LineWidth(self) -> float:
         """Property TypeId: App::PropertyFloatConstraint."""
 
     @LineWidth.setter
-    def LineWidth(self, value: float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]): ...
+    def LineWidth(self, value: float | Quadruple_t[float]): ...
 
     @property
     def MaxFacesShowInner(self) -> int:
@@ -60,21 +66,21 @@ class ViewProviderFemMesh(FreeCADGui.ViewProviderDocumentObject):
     def MaxFacesShowInner(self, value: int): ...
 
     @property
-    def PointColor(self) -> tuple[float, float, float] | tuple[float, float, float, float] | int:
+    def PointColor(self) -> tuple[float, float, float, float]:
         """Property TypeId: App::PropertyColor."""
 
     @PointColor.setter
-    def PointColor(self, value: tuple[float, float, float] | tuple[float, float, float, float] | int): ...
+    def PointColor(self, value: Triple_t[float] | Quadruple_t[float] | int): ...
 
     @property
-    def PointSize(self) -> float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]:
+    def PointSize(self) -> float:
         """Property TypeId: App::PropertyFloatConstraint."""
 
     @PointSize.setter
-    def PointSize(self, value: float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]): ...
+    def PointSize(self, value: float | Quadruple_t[float]): ...
 
     @property
-    def ShowInner(self) -> int | bool:
+    def ShowInner(self) -> bool:
         """Property TypeId: App::PropertyBool."""
 
     @ShowInner.setter

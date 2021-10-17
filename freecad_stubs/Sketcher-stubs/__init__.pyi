@@ -2,6 +2,13 @@ import typing
 
 import FreeCAD
 import Part
+import Sketcher
+
+DocAndStr_t: typing.TypeAlias = tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]
+LinkSub_t: typing.TypeAlias = FreeCAD.DocumentObject | None | tuple[()] | DocAndStr_t
+LinkList_t: typing.TypeAlias = None | FreeCAD.DocumentObject
+SequenceDoc_t: typing.TypeAlias = tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]
+LinkSubList_t: typing.TypeAlias = typing.Sequence[SequenceDoc_t | FreeCAD.DocumentObject]
 
 
 # SketchGeometryExtensionPy.xml
@@ -220,7 +227,7 @@ class SketchObject(Part.Part2DObject):
         """returns a list of vertices positions."""
 
     @property
-    def Constraints(self) -> dict[int, int] | typing.Iterable[int] | typing.Sequence[int]:
+    def Constraints(self) -> list[Sketcher.Constraint]:
         """
         Property group: Sketch.
         Property TypeId: Sketcher::PropertyConstraintList.
@@ -228,40 +235,40 @@ class SketchObject(Part.Part2DObject):
         """
 
     @Constraints.setter
-    def Constraints(self, value: dict[int, int] | typing.Iterable[int] | typing.Sequence[int]): ...
+    def Constraints(self, value: typing.Iterable[Sketcher.Constraint] | dict[int, Sketcher.Constraint]): ...
 
     @property
-    def ExternalGeometry(self):
+    def ExternalGeometry(self) -> list[tuple[FreeCAD.DocumentObject, list[str]]]:
         """
         Property group: Sketch.
-        Property TypeId: ::PropertyLinkSubList.
+        Property TypeId: App::PropertyLinkSubList.
         Sketch external geometry.
         """
 
     @ExternalGeometry.setter
-    def ExternalGeometry(self, value): ...
+    def ExternalGeometry(self, value: LinkSub_t | LinkList_t | LinkSubList_t): ...
 
     @property
-    def FullyConstrained(self) -> int | bool:
+    def FullyConstrained(self) -> bool:
         """
         [Prop_ReadOnly] Property is read-only in the editor.
         [Prop_Hidden] Property won't appear in the editor.
         [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Sketch.
-        Property TypeId: ::PropertyBool.
+        Property TypeId: App::PropertyBool.
         Sketch is fully constrained.
         """
 
     @property
-    def Geometry(self):
+    def Geometry(self) -> list[Part.Geometry]:
         """
         Property group: Sketch.
-        Property TypeId: ::PropertyGeometryList.
+        Property TypeId: Part::PropertyGeometryList.
         Sketch geometry.
         """
 
     @Geometry.setter
-    def Geometry(self, value): ...
+    def Geometry(self, value: typing.Iterable[Part.Geometry] | dict[int, Part.Geometry]): ...
 
     def DeleteUnusedInternalGeometry(self, arg1: int, /):
         """Deprecated -- use deleteUnusedInternalGeometry"""

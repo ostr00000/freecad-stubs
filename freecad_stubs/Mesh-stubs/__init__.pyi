@@ -211,15 +211,15 @@ class Feature(FreeCAD.GeoFeature):
         """
 
     @property
-    def Mesh(self):
+    def Mesh(self) -> Mesh.Mesh:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
-        Property TypeId: PropertyMeshKernel.
+        Property TypeId: Mesh::PropertyMeshKernel.
         The mesh kernel.
         """
 
     @Mesh.setter
-    def Mesh(self, value): ...
+    def Mesh(self, value: Mesh.Mesh | list[list[float]]): ...
 
     def fixDegenerations(self, arg1: float = None, /):
         """Remove degenerated facets"""
@@ -693,6 +693,14 @@ class Mesh(FreeCAD.ComplexGeoData):
         trim(list, int) -> None
         The argument list is an array of points, a polygon
         The argument int is the mode: 0=inner, 1=outer
+        """
+
+    def trimByPlane(self, Vector: FreeCAD.Vector, Vector2: FreeCAD.Vector, /):
+        """
+        Trims the mesh with a given plane
+        trimByPlane(Vector, Vector) -> None
+        The plane is defined by a base and normal vector. Depending on the
+        direction of the normal the part above or below will be kept.
         """
 
     def unite(self, arg1: Mesh.Mesh, /):

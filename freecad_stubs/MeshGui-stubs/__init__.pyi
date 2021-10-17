@@ -2,13 +2,17 @@ import typing
 
 import FreeCADGui
 
+_T = typing.TypeVar("_T")
+Quadruple_t: typing.TypeAlias = tuple[_T, _T, _T, _T]
+Triple_t: typing.TypeAlias = tuple[_T, _T, _T]
+
 
 # ViewProviderMeshPy.xml
 class ViewProviderMesh(FreeCADGui.ViewProviderDocumentObject):
     """This is the ViewProvider base class"""
 
     @property
-    def Coloring(self) -> int | bool:
+    def Coloring(self) -> bool:
         """
         Property group: Object Style.
         Property TypeId: App::PropertyBool.
@@ -19,7 +23,7 @@ class ViewProviderMesh(FreeCADGui.ViewProviderDocumentObject):
     def Coloring(self, value: int | bool): ...
 
     @property
-    def CreaseAngle(self) -> float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]:
+    def CreaseAngle(self) -> float:
         """
         Property group: Object Style.
         Property TypeId: App::PropertyFloatConstraint.
@@ -27,10 +31,10 @@ class ViewProviderMesh(FreeCADGui.ViewProviderDocumentObject):
         """
 
     @CreaseAngle.setter
-    def CreaseAngle(self, value: float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]): ...
+    def CreaseAngle(self, value: float | Quadruple_t[float]): ...
 
     @property
-    def Lighting(self) -> typing.Literal['One side', 'Two side']:
+    def Lighting(self) -> int:
         """
         Property group: Object Style.
         Property TypeId: App::PropertyEnumeration.
@@ -44,7 +48,7 @@ class ViewProviderMesh(FreeCADGui.ViewProviderDocumentObject):
     def Lighting(self, value: typing.Literal['One side', 'Two side']): ...
 
     @property
-    def LineColor(self) -> tuple[float, float, float] | tuple[float, float, float, float] | int:
+    def LineColor(self) -> tuple[float, float, float, float]:
         """
         Property group: Object Style.
         Property TypeId: App::PropertyColor.
@@ -52,10 +56,10 @@ class ViewProviderMesh(FreeCADGui.ViewProviderDocumentObject):
         """
 
     @LineColor.setter
-    def LineColor(self, value: tuple[float, float, float] | tuple[float, float, float, float] | int): ...
+    def LineColor(self, value: Triple_t[float] | Quadruple_t[float] | int): ...
 
     @property
-    def LineTransparency(self) -> int | tuple[int, int, int, int]:
+    def LineTransparency(self) -> int:
         """
         Property group: Object Style.
         Property TypeId: App::PropertyPercent.
@@ -63,10 +67,10 @@ class ViewProviderMesh(FreeCADGui.ViewProviderDocumentObject):
         """
 
     @LineTransparency.setter
-    def LineTransparency(self, value: int | tuple[int, int, int, int]): ...
+    def LineTransparency(self, value: int): ...
 
     @property
-    def LineWidth(self) -> float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]:
+    def LineWidth(self) -> float:
         """
         Property group: Object Style.
         Property TypeId: App::PropertyFloatConstraint.
@@ -74,10 +78,10 @@ class ViewProviderMesh(FreeCADGui.ViewProviderDocumentObject):
         """
 
     @LineWidth.setter
-    def LineWidth(self, value: float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]): ...
+    def LineWidth(self, value: float | Quadruple_t[float]): ...
 
     @property
-    def OpenEdges(self) -> int | bool:
+    def OpenEdges(self) -> bool:
         """
         Property group: Object Style.
         Property TypeId: App::PropertyBool.
@@ -88,7 +92,7 @@ class ViewProviderMesh(FreeCADGui.ViewProviderDocumentObject):
     def OpenEdges(self, value: int | bool): ...
 
     @property
-    def PointSize(self) -> float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]:
+    def PointSize(self) -> float:
         """
         Property group: Object Style.
         Property TypeId: App::PropertyFloatConstraint.
@@ -96,7 +100,7 @@ class ViewProviderMesh(FreeCADGui.ViewProviderDocumentObject):
         """
 
     @PointSize.setter
-    def PointSize(self, value: float | tuple[float, float, float, float] | tuple[float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float], float | tuple[float, float, float, float]]): ...
+    def PointSize(self, value: float | Quadruple_t[float]): ...
 
     def addSelection(self, arg1: object, /):
         """Add list of facets to selection"""

@@ -3,6 +3,10 @@ import typing
 import Assembly
 import FreeCAD
 
+DocAndStr_t: typing.TypeAlias = tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]
+LinkSub_t: typing.TypeAlias = FreeCAD.DocumentObject | None | tuple[()] | DocAndStr_t
+LinkList_t: typing.TypeAlias = None | FreeCAD.DocumentObject
+
 
 # PartRefPy.xml
 class PartRef(Assembly.Item):
@@ -26,46 +30,46 @@ class Constraint(FreeCAD.DocumentObject):
     """Base class of all objects in Assembly"""
 
     @property
-    def First(self) -> FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None:
+    def First(self) -> tuple[FreeCAD.DocumentObject, list[str]] | None:
         """Property TypeId: App::PropertyLinkSub."""
 
     @First.setter
-    def First(self, value: FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None): ...
+    def First(self, value: LinkSub_t): ...
 
     @property
-    def Orientation(self) -> typing.Literal['Parallel', 'Equal', 'Opposite', 'Perpendicular']:
+    def Orientation(self) -> int:
         """Property TypeId: App::PropertyEnumeration."""
 
     @Orientation.setter
     def Orientation(self, value: typing.Literal['Parallel', 'Equal', 'Opposite', 'Perpendicular']): ...
 
     @property
-    def Second(self) -> FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None:
+    def Second(self) -> tuple[FreeCAD.DocumentObject, list[str]] | None:
         """Property TypeId: App::PropertyLinkSub."""
 
     @Second.setter
-    def Second(self, value: FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]] | list[FreeCAD.DocumentObject | str | typing.Sequence[str]] | None): ...
+    def Second(self, value: LinkSub_t): ...
 
     @property
-    def SolutionSpace(self) -> typing.Literal['Bidirectional', 'PositivDirectional', 'NegativeDirectional']:
+    def SolutionSpace(self) -> int:
         """Property TypeId: App::PropertyEnumeration."""
 
     @SolutionSpace.setter
     def SolutionSpace(self, value: typing.Literal['Bidirectional', 'PositivDirectional', 'NegativeDirectional']): ...
 
     @property
-    def Type(self) -> typing.Literal['Fix', 'Distance', 'Orientation', 'Angle', 'Align', 'Coincident', 'None']:
+    def Type(self) -> int:
         """Property TypeId: App::PropertyEnumeration."""
 
     @Type.setter
     def Type(self, value: typing.Literal['Fix', 'Distance', 'Orientation', 'Angle', 'Align', 'Coincident', 'None']): ...
 
     @property
-    def Value(self) -> float | int:
+    def Value(self) -> float:
         """Property TypeId: App::PropertyFloat."""
 
     @Value.setter
-    def Value(self, value: float | int): ...
+    def Value(self, value: float): ...
 
 
 # ConstraintGroupPy.xml
@@ -73,11 +77,11 @@ class ConstraintGroup(FreeCAD.DocumentObject):
     """Base class of all objects in Assembly"""
 
     @property
-    def Constraints(self) -> dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]:
+    def Constraints(self) -> list[FreeCAD.DocumentObject | None]:
         """Property TypeId: App::PropertyLinkList."""
 
     @Constraints.setter
-    def Constraints(self, value: dict[int, FreeCAD.DocumentObject | None] | typing.Iterable[FreeCAD.DocumentObject | None] | typing.Sequence[FreeCAD.DocumentObject | None]): ...
+    def Constraints(self, value: LinkList_t): ...
 
 
 # ProductRefPy.xml
