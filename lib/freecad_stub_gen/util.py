@@ -1,6 +1,7 @@
 import re
 import textwrap
 from pathlib import Path
+from typing import Iterable, TypeVar
 
 from freecad_stub_gen.config import SOURCE_DIR
 
@@ -42,3 +43,18 @@ def genPyCppFiles(sourcePath: Path = SOURCE_DIR):
 
 def genXmlFiles(sourcePath: Path = SOURCE_DIR):
     yield from Path(sourcePath).glob('**/*.xml')
+
+
+T = TypeVar('T')
+
+
+class OrderedSet(dict[T, None]):
+    def __init__(self, it: Iterable[T] = ()):
+        super().__init__(dict.fromkeys(it))
+
+    def add(self, key: T):
+        self[key] = None
+
+    def update(self, keys: Iterable[T], **kwargs):
+        for k in keys:
+            self.add(k)

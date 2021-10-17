@@ -1,5 +1,6 @@
 import re
 from abc import ABC
+from functools import cached_property
 from itertools import chain
 from typing import Iterable
 
@@ -57,13 +58,28 @@ class DynamicPropertyGenerator(BasePropertyGenerator, ABC):
                     macroBody, expStart=macroCallStartPos, splitChar=',')]
 
                 pm = PropertyMacro(
-                    *macroArgs, constructorBody=constructorBody,
+                    *macroArgs, constructorBody=constructorBody, namespace=self._curNamespace,
                     cppContent=cppIncludeContent, classDeclarationBodies=classDeclarationBodies)
-
                 yield self.getProperty(
-                    pm.name, pythonSetType=pm.pythonSetType, pythonGetType=pm.pythonGetType,
+                    pm.name, pm.pythonGetType, pm.pythonSetType,
                     docs=pm.docs, readOnly=pm.readOnly)
 
             # We assume that they may be more than one constructor,
             # but each constructor add the same properties.
             break
+
+    @cached_property
+    def _curNamespace(self):
+        parts = self.baseGenFilePath.parts
+        try:
+            index = parts.index('Mod')
+            namespace = parts[index + 1]
+        except ValueError:
+            for k in ('App', 'Gui'):
+                if k in parts:
+                    namespace = k
+                    break
+            else:
+                raise ValueError
+
+        return namespace

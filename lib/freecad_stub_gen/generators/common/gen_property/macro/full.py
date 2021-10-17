@@ -25,4 +25,8 @@ class PropertyMacro(PropertyMacroGetter, PropertyMacroSetter):
 
     @property
     def readOnly(self):
-        return bool(self.type & PropertyType.Prop_ReadOnly)
+        res = bool(self.type & PropertyType.Prop_ReadOnly)
+        if not res:
+            if self.TypeId == "App::PropertyExpressionEngine":
+                res = True
+        return res

@@ -59,13 +59,18 @@ def getModuleName(classWithModules: str):
     return classWithModules[:classWithModules.rfind('.')]
 
 
-def getClassWithModulesFromPointer(cTypePointer: str):
-    cType = cTypePointer.removesuffix('::Type')
+def getNamespaceWithClass(cTypeClass: str):
+    cType = cTypeClass
     if '::' in cType:
         namespace, cType = cType.split('::')
     else:
         namespace = None
+    return namespace, cType
 
+
+def getClassWithModulesFromPointer(cTypePointer: str):
+    cType = cTypePointer.removesuffix('::Type')
+    namespace, cType = getNamespaceWithClass(cType)
     return getClassWithModulesFromStem(cType, namespace)
 
 

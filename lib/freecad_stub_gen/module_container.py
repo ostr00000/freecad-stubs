@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Iterable
 
 from freecad_stub_gen.config import TARGET_DIR
+from freecad_stub_gen.util import OrderedSet
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +16,7 @@ class Module:
 
     def __init__(self, content='', imports: Iterable[str] = (), name: str = ''):
         self.name = name
-        self.imports = set(imports)
+        self.imports = OrderedSet(imports)
         self.content = content
         self.subModules = SourcesDict()
 
@@ -81,10 +82,13 @@ class Module:
         return f'{self._genImports()}{self.content.rstrip()}\n'
 
     def _genImports(self):
-        sysImports, libImports, localImports = [], [], []
+        sysImports, libImports, localImports, types = [], [], [], []
         for imp in self.imports:
             if imp.startswith('from '):
                 sortModule = imp.removeprefix('from ').split(' ')[0]
+            elif any(t in imp for t in ('TypeAlias', 'TypeVar')):
+                types.append(imp)
+                continue
             else:
                 sortModule = imp
                 if 'import' not in imp:
@@ -100,7 +104,9 @@ class Module:
         sysImportText = '\n'.join(sorted(sysImports))
         libImportText = '\n'.join(sorted(libImports))
         locImportText = '\n'.join(sorted(localImports))
-        res = '\n\n'.join(filter(None, (sysImportText, libImportText, locImportText)))
+        typesText = '\n'.join(types)
+
+        res = '\n\n'.join(filter(None, (sysImportText, libImportText, locImportText, typesText)))
         if res:
             res += '\n\n\n'
         return res
