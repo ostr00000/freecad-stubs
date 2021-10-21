@@ -5,15 +5,15 @@ import FreeCAD
 
 # Selection.cpp
 @typing.overload
-def addSelection(arg1: str, arg2: str, arg3: str = None, arg4: float = None, arg5: float = None, arg6: float = None, arg7: bool = None, /): ...
+def addSelection(arg0: str, arg1: str, arg2: str = None, arg3: float = None, arg4: float = None, arg5: float = None, arg6: bool = None, /): ...
 
 
 @typing.overload
-def addSelection(arg1: FreeCAD.DocumentObject, arg2: str = None, arg3: float = None, arg4: float = None, arg5: float = None, arg6: bool = None, /): ...
+def addSelection(arg0: FreeCAD.DocumentObject, arg1: str = None, arg2: float = None, arg3: float = None, arg4: float = None, arg5: bool = None, /): ...
 
 
 @typing.overload
-def addSelection(arg1: FreeCAD.DocumentObject, arg2: object, arg3: bool = None, /):
+def addSelection(arg0: FreeCAD.DocumentObject, arg1: object, arg2: bool = None, /):
     """
     Add an object to the selection
     addSelection(object,[string,float,float,float]
@@ -31,11 +31,11 @@ def updateSelection(show: object, object: FreeCAD.DocumentObject, string: str = 
 
 
 @typing.overload
-def removeSelection(arg1: str, arg2: str, arg3: str = None, /): ...
+def removeSelection(arg0: str, arg1: str, arg2: str = None, /): ...
 
 
 @typing.overload
-def removeSelection(arg1: FreeCAD.DocumentObject, arg2: str = None, /):
+def removeSelection(arg0: FreeCAD.DocumentObject, arg1: str = None, /):
     """Remove an object from the selectionremoveSelection(object)"""
 
 
@@ -49,7 +49,7 @@ def clearSelection(docName: str = '', clearPreSelect: bool = True, /):
     """
 
 
-def isSelected(arg1: FreeCAD.DocumentObject, arg2: str = None, arg3=None, /):
+def isSelected(arg0: FreeCAD.DocumentObject, arg1: str = None, arg2=None, /):
     """
     Check if a given object is selected
     isSelected(object,resolve=True)
@@ -136,7 +136,7 @@ def getSelectionEx(docName: str = '', resolve: int = 1, single=False, /):
     """
 
 
-def getSelectionObject(doc: str, obj: str, sub: str, arg4: tuple = None, /):
+def getSelectionObject(doc: str, obj: str, sub: str, arg3: tuple = None, /):
     """
     Return a SelectionObject
     getSelectionObject(doc,obj,sub,(x,y,z))

@@ -1,11 +1,11 @@
 # AppJtReaderPy.cpp
-def open(arg1: str, /):
+def open(arg0: str, /):
     """open a jt file in a new Document"""
 
 
-def insert(arg1: str, arg2: str, /):
+def insert(arg0: str, arg1: str, /):
     """isert a jt file in a existing document"""
 
 
-def read(arg1: str, /):
+def read(arg0: str, /):
     """Read a Mesh from a jt file and returns a Mesh object."""

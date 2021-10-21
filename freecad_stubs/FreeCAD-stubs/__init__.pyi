@@ -1554,7 +1554,7 @@ class ComplexGeoData(FreeCAD.Persistence):
 
 
 # ApplicationPy.cpp
-def ParamGet(arg1: str, /):
+def ParamGet(arg0: str, /):
     """Get parameters by path"""
 
 
@@ -1581,35 +1581,35 @@ def ConfigDump():
     """Dump the configuration to the output."""
 
 
-def addImportType(arg1: str, arg2: str, /):
+def addImportType(arg0: str, arg1: str, /):
     """Register filetype for import"""
 
 
-def changeImportModule(arg1: str, arg2: str, arg3: str, /):
+def changeImportModule(arg0: str, arg1: str, arg2: str, /):
     """Change the import module name of a registered filetype"""
 
 
-def getImportType(arg1: str = None, /):
+def getImportType(arg0: str = None, /):
     """Get the name of the module that can import the filetype"""
 
 
-def EndingAdd(arg1: str, arg2: str, /):
+def EndingAdd(arg0: str, arg1: str, /):
     """deprecated -- use addImportType"""
 
 
-def EndingGet(arg1: str = None, /):
+def EndingGet(arg0: str = None, /):
     """deprecated -- use getImportType"""
 
 
-def addExportType(arg1: str, arg2: str, /):
+def addExportType(arg0: str, arg1: str, /):
     """Register filetype for export"""
 
 
-def changeExportModule(arg1: str, arg2: str, arg3: str, /):
+def changeExportModule(arg0: str, arg1: str, arg2: str, /):
     """Change the export module name of a registered filetype"""
 
 
-def getExportType(arg1: str = None, /):
+def getExportType(arg0: str = None, /):
     """Get the name of the module that can export the filetype"""
 
 
@@ -1636,7 +1636,7 @@ def getHomePath():
     """Get the home path, i.e. the parent directory of the executable"""
 
 
-def loadFile(arg1: str, arg2: str = None, arg3: str = None, /):
+def loadFile(arg0: str, arg1: str = None, arg2: str = None, /):
     """
     loadFile(string=filename,[string=module]) -> None
 
@@ -1691,7 +1691,7 @@ def activeDocument() -> FreeCAD.Document:
     """
 
 
-def setActiveDocument(arg1: str, /):
+def setActiveDocument(arg0: str, /):
     """
     setActiveDocement(string) -> None
 
@@ -1716,7 +1716,7 @@ def listDocuments(sort=False, /):
     """
 
 
-def addDocumentObserver(arg1: object, /):
+def addDocumentObserver(arg0: object, /):
     """
     addDocumentObserver() -> None
 
@@ -1724,7 +1724,7 @@ def addDocumentObserver(arg1: object, /):
     """
 
 
-def removeDocumentObserver(arg1: object, /):
+def removeDocumentObserver(arg0: object, /):
     """
     removeDocumentObserver() -> None
 
@@ -1756,7 +1756,7 @@ def getLinksTo(obj=None, options: int = 0, maxCount: int = 0, /):
     """
 
 
-def getDependentObjects(arg1: object, arg2: int = None, /):
+def getDependentObjects(arg0: object, arg1: int = None, /):
     """
     getDependentObjects(obj|[obj,...], options=0)
     Return a list of dependent objects including the given objects.
@@ -1785,7 +1785,7 @@ def getActiveTransaction():
     """getActiveTransaction() -> (name,id) return the current active transaction name and ID"""
 
 
-def closeActiveTransaction(arg1=None, arg2: int = None, /):
+def closeActiveTransaction(arg0=None, arg1: int = None, /):
     """closeActiveTransaction(abort=False) -- commit or abort current active transaction"""
 
 

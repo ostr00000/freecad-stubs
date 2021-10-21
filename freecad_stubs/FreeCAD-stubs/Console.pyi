@@ -11,13 +11,13 @@ def PrintError(string: object, /):
     """PrintError(string) -- Print an error message to the output"""
 
 
-def PrintWarning(arg1: object, /):
+def PrintWarning(arg0: object, /):
     """PrintWarning -- Print a warning to the output"""
 
 
-def SetStatus(arg1: str, arg2: str, arg3: int, /):
+def SetStatus(arg0: str, arg1: str, arg2: int, /):
     """Set the status for either Log, Msg, Wrn or Error for an observer"""
 
 
-def GetStatus(arg1: str, arg2: str, /):
+def GetStatus(arg0: str, arg1: str, /):
     """Get the status for either Log, Msg, Wrn or Error for an observer"""

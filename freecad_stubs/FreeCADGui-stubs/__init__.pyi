@@ -1465,7 +1465,7 @@ def activateWorkbench(string: str, /):
     """
 
 
-def addWorkbench(arg1: object, /):
+def addWorkbench(arg0: object, /):
     """
     addWorkbench(string, object) -> None
 
@@ -1530,7 +1530,7 @@ def addIconPath(string: str, /):
     """
 
 
-def addIcon(arg1: str, arg2: str, arg3: str = None, /):
+def addIcon(arg0: str, arg1: str, arg2: str = None, /):
     """
     addIcon(string, string or list) -> None
 
@@ -1586,7 +1586,7 @@ def getLocale():
     """
 
 
-def setLocale(arg1: str, /):
+def setLocale(arg0: str, /):
     """
     getLocale(string) -> None
 
@@ -1619,7 +1619,7 @@ def addPreferencePage(string: type, string1: str, /):
     """
 
 
-def addCommand(arg1: str, arg2: object, arg3: str = None, /):
+def addCommand(arg0: str, arg1: object, arg2: str = None, /):
     """
     addCommand(string, object) -> None
 
@@ -1627,7 +1627,7 @@ def addCommand(arg1: str, arg2: object, arg3: str = None, /):
     """
 
 
-def runCommand(arg1: str, arg2: int = None, /):
+def runCommand(arg0: str, arg1: int = None, /):
     """
     runCommand(string) -> None
 
@@ -1635,19 +1635,19 @@ def runCommand(arg1: str, arg2: int = None, /):
     """
 
 
-def SendMsgToActiveView(arg1: str, arg2: bool = None, /):
+def SendMsgToActiveView(arg0: str, arg1: bool = None, /):
     """deprecated -- use class View"""
 
 
-def sendMsgToFocusView(arg1: str, arg2: bool = None, /):
+def sendMsgToFocusView(arg0: str, arg1: bool = None, /):
     """send message to the focused view"""
 
 
-def hide(arg1: str, /):
+def hide(arg0: str, /):
     """deprecated"""
 
 
-def show(arg1: str, /):
+def show(arg0: str, /):
     """deprecated"""
 
 
@@ -1667,15 +1667,15 @@ def showObject(object: FreeCAD.DocumentObject, /):
     """
 
 
-def open(arg1: str, /):
+def open(arg0: str, /):
     """Open a macro, Inventor or VRML file"""
 
 
-def insert(arg1: str, arg2: str = None, /):
+def insert(arg0: str, arg1: str = None, /):
     """Open a macro, Inventor or VRML file"""
 
 
-def export(arg1: object, arg2: str, /):
+def export(arg0: object, arg1: str, /):
     """save scene to Inventor or VRML file"""
 
 
@@ -1708,7 +1708,7 @@ def activeView(typename: str = None, /):
     """
 
 
-def activateView(arg1: str, arg2: bool, /):
+def activateView(arg0: str, arg1: bool, /):
     """
     activateView(type)
 
@@ -1777,7 +1777,7 @@ def showPreferences(string: str = None, int: int = None, /):
     """
 
 
-def createViewer(arg1: int = None, arg2: str = None, /):
+def createViewer(arg0: int = None, arg1: str = None, /):
     """
     createViewer([int]) -> View3DInventor/SplitView3DInventor
 
@@ -1785,11 +1785,11 @@ def createViewer(arg1: int = None, arg2: str = None, /):
     """
 
 
-def getMarkerIndex(arg1: str = None, arg2: int = None, /):
+def getMarkerIndex(arg0: str = None, arg1: int = None, /):
     """Get marker index according to marker size setting"""
 
 
-def addDocumentObserver(arg1: object, /):
+def addDocumentObserver(arg0: object, /):
     """
     addDocumentObserver() -> None
 
@@ -1797,7 +1797,7 @@ def addDocumentObserver(arg1: object, /):
     """
 
 
-def removeDocumentObserver(arg1: object, /):
+def removeDocumentObserver(arg0: object, /):
     """
     removeDocumentObserver() -> None
 
@@ -1848,7 +1848,7 @@ def loadFile(string: str, string1: str = None, /):
     """
 
 
-def coinRemoveAllChildren(arg1: object, /):
+def coinRemoveAllChildren(arg0: object, /):
     """Remove all children from a group node"""
 
 
