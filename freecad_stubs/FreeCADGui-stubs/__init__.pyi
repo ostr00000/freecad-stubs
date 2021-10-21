@@ -107,7 +107,7 @@ class LinkView(FreeCAD.BaseClass):
     def reset(self):
         """Reset the link view and clear the links"""
 
-    def setChildren(self, obj_: object, vis: object = [], type: str = 0, /):
+    def setChildren(self, obj_: object, vis: list = None, type: str = 0, /):
         """
         setChildren([obj...],vis=[],type=0)
         Group a list of children objects. Note, this mode of operation is incompatible 
@@ -122,7 +122,7 @@ class LinkView(FreeCAD.BaseClass):
            2: override none.
         """
 
-    def setLink(self, object: object, subname: object = None, /):
+    def setLink(self, object: object, subname=None, /):
         """
         setLink(object): Set the link
 
@@ -164,7 +164,7 @@ class LinkView(FreeCAD.BaseClass):
                                           array/group by index
         """
 
-    def setType(self, type: int, sublink: object = True, /):
+    def setType(self, type: int, sublink=True, /):
         """
         setType(type, sublink=True): set the link type.
 
@@ -248,13 +248,13 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         canDragAndDropObject(obj)
         """
 
-    def canDragObject(self, obj: object = None, /):
+    def canDragObject(self, obj=None, /):
         """
         check whether the child object can be removed by dragging
         canDragObject(obj=None)
         """
 
-    def canDropObject(self, arg1: object = None, arg2: object = None, arg3: str = None, arg4: object = None, /):
+    def canDropObject(self, arg1=None, arg2=None, arg3: str = None, arg4=None, /):
         """
         check whether the child object can be added by dropping
         canDropObject(obj=None,owner=None,subname=None)
@@ -272,13 +272,13 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         dragObject(obj)
         """
 
-    def dropObject(self, arg1: FreeCAD.DocumentObject, arg2: object = None, arg3: str = None, arg4: object = None, /):
+    def dropObject(self, arg1: FreeCAD.DocumentObject, arg2=None, arg3: str = None, arg4=None, /):
         """
         add a child object by dropping
         dropObject(obj,owner=None,subname=None)
         """
 
-    def getBoundingBox(self, subname: str = None, transform: object = True, view: object = None, /):
+    def getBoundingBox(self, subname: str = None, transform=True, view=None, /):
         """
         obtain the bounding box of this view object
         getBoundingBox(subname=None, transform=True, view=None)
@@ -288,7 +288,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         view: the MDIView, default to active view
         """
 
-    def getDetailPath(self, subname: str, path: object, append: object = True, /):
+    def getDetailPath(self, subname: str, path: object, append=True, /):
         """
         return Coin detail and path of an subelement
         getDetailPath(subname,path,append=True)
@@ -317,7 +317,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
     def listDisplayModes(self):
         """Show a list of all display modes"""
 
-    def partialRender(self, sub: object = None, clear: object = False, /):
+    def partialRender(self, sub=None, clear=False, /):
         """
         render only part of the object
         partialRender(sub=None,clear=False)
@@ -949,13 +949,13 @@ class MDIViewPy:
     def fitAll(self):
         """fitAll()"""
 
-    def setActiveObject(self, name: str, object: object = None, subname: str = None, /):
+    def setActiveObject(self, name: str, object=None, subname: str = None, /):
         """
         setActiveObject(name,object,subname=None)
         add or set a new active object
         """
 
-    def getActiveObject(self, name: str, resolve: object = True, /):
+    def getActiveObject(self, name: str, resolve=True, /):
         """
         getActiveObject(name,resolve=True)
         returns the active object for the given type
@@ -1071,7 +1071,7 @@ class View3DInventorPy:
     def isAnimationEnabled(self):
         """isAnimationEnabled()"""
 
-    def dump(self, filename: str, onlyVisible: object = False, /):
+    def dump(self, filename: str, onlyVisible=False, /):
         """dump(filename, [onlyVisible=False])"""
 
     def dumpNode(self, node: object, /):
@@ -1241,13 +1241,13 @@ class View3DInventorPy:
         'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'
         """
 
-    def setActiveObject(self, name: str, object: object = None, subname: str = None, /):
+    def setActiveObject(self, name: str, object=None, subname: str = None, /):
         """
         setActiveObject(name,object,subname=None)
         add or set a new active object
         """
 
-    def getActiveObject(self, name: str, resolve: object = True, /):
+    def getActiveObject(self, name: str, resolve=True, /):
         """
         getActiveObject(name,resolve=True)
         returns the active object for the given type
@@ -1277,7 +1277,7 @@ class View3DInventorPy:
     def boxZoom(self, XMin: int, YMin: int, XMax: int, YMax: int):
         """boxZoom()"""
 
-    def toggleClippingPlane(self, toggle: int = None, beforeEditing: object = None, noManip: object = None, pla: FreeCAD.Placement = None):
+    def toggleClippingPlane(self, toggle: int = None, beforeEditing=None, noManip=None, pla: FreeCAD.Placement = None):
         """
         toggleClippingPlane(toggle=-1, beforeEditing=False, noManip=True, pla=App.Placement()
         Toggle a global clipping plane
@@ -1927,7 +1927,7 @@ class View3DInventorViewerPy:
     def setPickRadius(self, new_radius: float, /):
         """setPickRadius(new_radius): sets radius of confusion in pixels for picking objects on screen (selection)."""
 
-    def setupEditingRoot(self, arg1: object = None, arg2: FreeCAD.Matrix = None, /):
+    def setupEditingRoot(self, arg1=None, arg2: FreeCAD.Matrix = None, /):
         """
         setupEditingRoot(matrix=None): setup the editing ViewProvider's root node.
         All child coin nodes of the current editing ViewProvider will be transferred to
@@ -1936,7 +1936,7 @@ class View3DInventorViewerPy:
         hidden. Call resetEditingRoot() to restore everything back to normal
         """
 
-    def resetEditingRoot(self, updateLinks: object = True, /):
+    def resetEditingRoot(self, updateLinks=True, /):
         """resetEditingRoot(updateLinks=True): restore the editing ViewProvider's root node"""
 
     def setBackgroundColor(self, r: float, g: float, b: float, /):

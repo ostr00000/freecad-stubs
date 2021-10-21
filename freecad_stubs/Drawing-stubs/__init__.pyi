@@ -31,7 +31,7 @@ def removeSvgTags(string: str, /):
     """
 
 
-def projectToSVG(topoShape: Part.Shape, direction: FreeCAD.Vector = None, type: str = None, tolerance: float = None, vStyle: object = None, v0Style: object = None, v1Style: object = None, hStyle: object = None, h0Style: object = None, h1Style: object = None):
+def projectToSVG(topoShape: Part.Shape, direction: FreeCAD.Vector = None, type: str = None, tolerance: float = None, vStyle=None, v0Style=None, v1Style=None, hStyle=None, h0Style=None, h1Style=None):
     """
     string = projectToSVG(TopoShape[, App.Vector direction, string type, float tolerance, dict vStyle, dict v0Style, dict v1Style, dict hStyle, dict h0Style, dict h1Style])
      -- Project a shape and return the SVG representation as string.

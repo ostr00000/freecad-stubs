@@ -28,10 +28,10 @@ class Tool(FreeCAD.Persistence):
     def __init__(self, arg1: dict, /): ...
 
     @typing.overload
-    def __init__(self, name: str = None, tooltype: str = None, material: str = None, diameter: object = None, lengthOffset: object = None, flatRadius: object = None, cornerRadius: object = None, cuttingEdgeAngle: object = None, cuttingEdgeHeight: object = None, version: int = None): ...
+    def __init__(self, name: str = None, tooltype: str = None, material: str = None, diameter=None, lengthOffset=None, flatRadius=None, cornerRadius=None, cuttingEdgeAngle=None, cuttingEdgeHeight=None, version: int = None): ...
 
     @typing.overload
-    def __init__(self, name: str = None, tooltype: str = None, material: str = None, diameter: object = None, lengthOffset: object = None, flatRadius: object = None, cornerRadius: object = None, cuttingEdgeAngle: object = None, cuttingEdgeHeight: object = None):
+    def __init__(self, name: str = None, tooltype: str = None, material: str = None, diameter=None, lengthOffset=None, flatRadius=None, cornerRadius=None, cuttingEdgeAngle=None, cuttingEdgeHeight=None):
         """
         The Tool objects holds the properties of a CNC tool.
         optional attributes:
@@ -340,7 +340,7 @@ class Area(FreeCAD.BaseClass):
     def getParams(self):
         """Get current algorithm parameters as a dictionary."""
 
-    def getShape(self, index: int = -1, rebuild: object = False):
+    def getShape(self, index: int = -1, rebuild=False):
         """
         getShape(index=-1,rebuild=False): Return the resulting shape
 
@@ -355,7 +355,7 @@ class Area(FreeCAD.BaseClass):
 
     def makePocket(self, index: int = None): ...
 
-    def makeSections(self, heights: object = None, plane: Part.Shape = None): ...
+    def makeSections(self, heights=None, plane: Part.Shape = None): ...
 
     def setParams(self): ...
 
@@ -551,7 +551,7 @@ class Voronoi(FreeCAD.BaseClass):
     def colorColinear(self, arg1: int, arg2: float = None, /):
         """assign given color to all edges sourced by two segments almost in line with each other (optional angle in degrees)"""
 
-    def colorExterior(self, arg1: int, arg2: object = None, /):
+    def colorExterior(self, arg1: int, arg2=None, /):
         """assign given color to all exterior edges and vertices"""
 
     def colorTwins(self, arg1: int, /):
@@ -698,7 +698,7 @@ def fromShape(Shape: object, /):
     """fromShape(Shape): Returns a Path object from a Part Shape (deprecated - use fromShapes() instead)"""
 
 
-def fromShapes(shapes: object, start: FreeCAD.Vector = None, return_end: object = None):
+def fromShapes(shapes: object, start: FreeCAD.Vector = None, return_end=None):
     """
     fromShapes(shapes, start=Vector(), return_end=False" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_PATH) ")
 
@@ -746,10 +746,10 @@ def getDefaultParams():
     """getDefaultParams(): Static method to return the current default parameters."""
 
 
-def abort(aborting: object = None): ...
+def abort(aborting=None): ...
 
 
-def getParamsDesc(as_string: object = False):
+def getParamsDesc(as_string=False):
     """
     getParamsDesc(as_string=False): Returns a list of supported parameters and their descriptions.
 

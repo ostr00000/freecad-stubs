@@ -10,11 +10,11 @@ def approxSurface(Points: object, UDegree: int = None, VDegree: int = None, NbUP
     """
 
 
-def triangulate(Points: Points.Points, SearchRadius: float, Mu: float = None, KSearch: int = None, Normals: object = None):
+def triangulate(Points: Points.Points, SearchRadius: float, Mu: float = None, KSearch: int = None, Normals=None):
     """triangulate(PointKernel,searchRadius[,mu=2.5])."""
 
 
-def poissonReconstruction(Points: Points.Points, KSearch: int = None, OctreeDepth: int = None, SolverDivide: int = None, SamplesPerNode: float = None, Normals: object = None):
+def poissonReconstruction(Points: Points.Points, KSearch: int = None, OctreeDepth: int = None, SolverDivide: int = None, SamplesPerNode: float = None, Normals=None):
     """poissonReconstruction(PointKernel)."""
 
 
@@ -22,15 +22,15 @@ def viewTriangulation(Points: Points.Points, Width: int = None, Height: int = No
     """viewTriangulation(PointKernel, width, height)."""
 
 
-def gridProjection(Points: Points.Points, KSearch: int = None, Normals: object = None):
+def gridProjection(Points: Points.Points, KSearch: int = None, Normals=None):
     """gridProjection(PointKernel)."""
 
 
-def marchingCubesRBF(Points: Points.Points, KSearch: int = None, Normals: object = None):
+def marchingCubesRBF(Points: Points.Points, KSearch: int = None, Normals=None):
     """marchingCubesRBF(PointKernel)."""
 
 
-def marchingCubesHoppe(Points: Points.Points, KSearch: int = None, Normals: object = None):
+def marchingCubesHoppe(Points: Points.Points, KSearch: int = None, Normals=None):
     """marchingCubesHoppe(PointKernel)."""
 
 
@@ -63,7 +63,7 @@ def normalEstimation(Points: Points.Points, KSearch: int = 0, SearchRadius: floa
     """
 
 
-def regionGrowingSegmentation(Points: Points.Points, KSearch: int = None, Normals: object = None):
+def regionGrowingSegmentation(Points: Points.Points, KSearch: int = None, Normals=None):
     """regionGrowingSegmentation()."""
 
 
@@ -71,5 +71,5 @@ def featureSegmentation(Points: Points.Points, KSearch: int = None):
     """featureSegmentation()."""
 
 
-def sampleConsensus(SacModel: str, Points: Points.Points, Normals: object = None):
+def sampleConsensus(SacModel: str, Points: Points.Points, Normals=None):
     """sampleConsensus()."""

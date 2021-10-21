@@ -14,7 +14,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
     FemMesh class
     """
 
-    def __init__(self, arg1: object = None, /):
+    def __init__(self, arg1=None, /):
         """FemMesh class"""
 
     @property

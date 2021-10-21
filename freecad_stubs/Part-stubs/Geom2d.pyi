@@ -692,7 +692,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def StartPoint(self) -> object:
         """Returns the start point of this B-Spline curve."""
 
-    def approximate(self, Points: object, DegMax: int = None, Continuity: str = None, Tolerance: float = None, DegMin: int = None, ParamType: str = None, Parameters: object = None, LengthWeight: float = None, CurvatureWeight: float = None, TorsionWeight: float = None):
+    def approximate(self, Points: object, DegMax: int = None, Continuity: str = None, Tolerance: float = None, DegMin: int = None, ParamType: str = None, Parameters=None, LengthWeight: float = None, CurvatureWeight: float = None, TorsionWeight: float = None):
         """
         Replaces this B-Spline curve by approximating a set of points.
         					The function accepts keywords as arguments.
@@ -727,7 +727,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def buildFromPoles(self, arg1: object, arg2: bool = None, arg3: int = None, arg4: bool = None, /):
         """Builds a B-Spline by a list of poles."""
 
-    def buildFromPolesMultsKnots(self, poles: object, mults: object = None, knots: object = None, periodic: bool = None, degree: int = None, weights: object = None):
+    def buildFromPolesMultsKnots(self, poles: object, mults=None, knots=None, periodic: bool = None, degree: int = None, weights=None):
         """
         Builds a B-Spline by a lists of Poles, Mults, Knots.
         				arguments: poles (sequence of Base.Vector), [mults , knots, periodic, degree, weights (sequence of float), CheckRational]
@@ -853,7 +853,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         				The tolerance criterion for knots equality is the max of Epsilon(U) and ParametricTolerance.
         """
 
-    def interpolate(self, Points: object, PeriodicFlag: bool = None, Tolerance: float = None, InitialTangent: object = None, FinalTangent: object = None, Tangents: object = None, TangentFlags: object = None, Parameters: object = None):
+    def interpolate(self, Points: object, PeriodicFlag: bool = None, Tolerance: float = None, InitialTangent=None, FinalTangent=None, Tangents=None, TangentFlags=None, Parameters=None):
         """
         Replaces this B-Spline curve by interpolating a set of points.
         					The function accepts keywords as arguments.

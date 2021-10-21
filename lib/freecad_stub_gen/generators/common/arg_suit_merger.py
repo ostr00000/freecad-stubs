@@ -1,7 +1,10 @@
 from inspect import Parameter, Signature
 from typing import Iterator
 
-from freecad_stub_gen.generators.common.types_converter import DEFAULT_ARG_NAME, SelfSignature
+from freecad_stub_gen.generators.common.annotation_parameter import SelfSignature
+from freecad_stub_gen.generators.common.types_converter import DEFAULT_ARG_NAME
+
+NO_ANNOTATIONS = (None, 'object', Parameter.empty)
 
 
 def mergeParamIntoSignatureGen(
@@ -38,6 +41,10 @@ def mergeParamIntoSignatureGen(
                 if codeParam.default is None \
                         and docParam.default not in (None, Parameter.empty):
                     newArg = newArg.replace(default=docParam.default)
+
+                if codeParam.annotation in NO_ANNOTATIONS \
+                        and docParam.annotation not in NO_ANNOTATIONS:
+                    newArg = newArg.replace(annotation=docParam.annotation)
 
                 matchedSuite.append(newArg)
 

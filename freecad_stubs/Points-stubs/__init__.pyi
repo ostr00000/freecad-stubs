@@ -12,7 +12,7 @@ class Points(FreeCAD.ComplexGeoData):
     transforming and much more.
     """
 
-    def __init__(self, arg1: object = None, /):
+    def __init__(self, arg1=None, /):
         """
         Points() -- Create an empty points object.
 

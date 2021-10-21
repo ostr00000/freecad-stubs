@@ -275,7 +275,7 @@ class Mesh(FreeCAD.ComplexGeoData):
       d.recompute()
     """
 
-    def __init__(self, arg1: object = None, /):
+    def __init__(self, arg1=None, /):
         """
         Mesh() -- Create an empty mesh object.
 
@@ -707,10 +707,10 @@ class Mesh(FreeCAD.ComplexGeoData):
         """Union of this and the given mesh object."""
 
     @typing.overload
-    def write(self, Filename: str, Format: str = 'STL', Name: str = 'Object name', Material: object = None): ...
+    def write(self, Filename: str, Format: str = 'STL', Name: str = 'Object name', Material=None): ...
 
     @typing.overload
-    def write(self, Stream: object, Format: str, Name: str = 'Object name', Material: object = None):
+    def write(self, Stream: object, Format: str, Name: str = 'Object name', Material=None):
         """
         Write the mesh object into file.
         mesh.write(Filename='mymesh.stl',[Format='STL',Name='Object name',Material=colors])

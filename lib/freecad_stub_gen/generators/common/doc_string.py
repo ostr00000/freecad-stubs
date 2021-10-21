@@ -5,10 +5,11 @@ from itertools import count
 from typing import Generator, Iterator
 from xml.etree import ElementTree as ET
 
+from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam, RawRepr
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
     generateExpressionUntilChar
 from freecad_stub_gen.generators.common.names import validatePythonValue
-from freecad_stub_gen.generators.common.types_converter import DEFAULT_ARG_NAME, RawRepr
+from freecad_stub_gen.generators.common.types_converter import DEFAULT_ARG_NAME
 
 
 def generateArgSuitFromDocstring(name: str, docString: str, argNumStart: int = 0):
@@ -19,37 +20,42 @@ def generateArgSuitFromDocstring(name: str, docString: str, argNumStart: int = 0
 
 
 def _parameterSuiteGen(funDocString: str, argNumStart: int) -> Iterator[Parameter]:
+    if not funDocString:
+        return
+
     uniqueNameGen = _uniqueArgNameGen(argNumStart)
     next(uniqueNameGen)
 
+    paramType = Parameter.POSITIONAL_ONLY
+
     for argText in generateExpressionUntilChar(funDocString, 0, ','):
         argText = argText.strip()
-        paramType = Parameter.POSITIONAL_ONLY
+        annotation = Parameter.empty
 
-        if argText == '':
-            return
-        elif argText[-2:] == '[]':
-            pass
-        else:
-            # TODO parse type?
+        if argText[-2:] == '[]':
+            argText = argText[:-2] + 'None'
+            annotation = 'list'
 
-            if argText.startswith('[') and argText.endswith(']'):
-                paramType = Parameter.POSITIONAL_OR_KEYWORD
-            argText = argText.removeprefix('[').removesuffix(']')
+        if argText.startswith('[') and argText.endswith(']'):
+            paramType = Parameter.POSITIONAL_OR_KEYWORD
+
+        argText = argText.removeprefix('[').removesuffix(']')
 
         if '=' in argText:
             argName, defValue = argText.split('=')
             argName, defValue = argName.strip(), defValue.strip()
             defValue = validatePythonValue(defValue)
         elif argText == '...':
-            yield Parameter('args', Parameter.VAR_POSITIONAL)
+            yield AnnotationParam.ARGS_PARAM
             continue
 
         else:
             argName, defValue = argText, Parameter.empty
 
         uniqueName, argNum = uniqueNameGen.send(argName)
-        yield Parameter(uniqueName, paramType, default=RawRepr(defValue))
+        yield AnnotationParam(
+            uniqueName, paramType,
+            default=RawRepr(defValue), annotation=RawRepr(annotation))
 
 
 REG_ALL_EXCEPT_WORLD = re.compile(r'\W+')

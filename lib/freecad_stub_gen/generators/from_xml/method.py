@@ -12,7 +12,7 @@ from freecad_stub_gen.generators.common.doc_string import generateArgSuitFromDoc
     getDocFromNode
 from freecad_stub_gen.generators.common.gen_method import MethodGenerator
 from freecad_stub_gen.generators.common.names import getClassNameFromNode
-from freecad_stub_gen.generators.common.types_converter import SelfSignature
+from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam, SelfSignature
 from freecad_stub_gen.generators.from_xml.base import BaseXmlGenerator
 
 logger = logging.getLogger(__name__)
@@ -34,22 +34,13 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         pythonName = pythonName or node.attrib['Name']
         static = strtobool(node.attrib.get('Static', 'False'))
         classic = strtobool(node.attrib.get('Class', 'False'))
-        firstParam = self._getFirstParm(bool(static), bool(classic))
+        firstParam = AnnotationParam.getFirstParam(bool(static), bool(classic))
 
         uniqueSignatures = dict.fromkeys(map(
             str, self._signatureArgGen(cName, docName, node, firstParam)))
         signatures = list(uniqueSignatures.keys())
         return self.convertMethodToStr(
             pythonName, signatures, getDocFromNode(node), classic, static)
-
-    @classmethod
-    def _getFirstParm(cls, isStaticMethod: bool, isClassMethod: bool) -> Parameter | None:
-        if isStaticMethod:
-            return
-        elif isClassMethod:
-            return Parameter('cls', Parameter.POSITIONAL_ONLY)
-        else:
-            return Parameter('self', Parameter.POSITIONAL_ONLY)
 
     def _signatureArgGen(self, cName: str, docName: str, node: ET.Element,
                          firstParam: Parameter = None) -> Iterator[Signature]:

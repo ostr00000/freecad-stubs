@@ -148,7 +148,7 @@ class Material(FreeCAD.PyObjectBase):
     This is the Material class
     """
 
-    def __init__(self, DiffuseColor: object = None, AmbientColor: object = None, SpecularColor: object = None, EmissiveColor: object = None, Shininess: object = None, Transparency: object = None):
+    def __init__(self, DiffuseColor=None, AmbientColor=None, SpecularColor=None, EmissiveColor=None, Shininess=None, Transparency=None):
         """This is the Material class"""
 
     @property
@@ -377,7 +377,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
                             name of the property.
         """
 
-    def adjustRelativeLinks(self, parent: FreeCAD.DocumentObject, recursive: object = True, /):
+    def adjustRelativeLinks(self, parent: FreeCAD.DocumentObject, recursive=True, /):
         """adjustRelativeLinks(parent,recursive=True) -- auto correct potential cyclic dependencies"""
 
     def enforceRecompute(self):
@@ -387,7 +387,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     def evalExpression(cls, arg1: str, /):
         """Evaluate an expression"""
 
-    def getLinkedObject(self, recursive: object = True, matrix: object = None, transform: object = True, depth: int = 0):
+    def getLinkedObject(self, recursive=True, matrix=None, transform=True, depth: int = 0):
         """
         getLinkedObject(recursive=True, matrix=None, transform=True, depth=0)
         Returns the linked object if there is one, or else return itself
@@ -428,7 +428,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         'Valid' otherwise.
         """
 
-    def getSubObject(self, subname: object, retType: int = 0, matrix: object = None, transform: object = True, depth: int = 0):
+    def getSubObject(self, subname: object, retType: int = 0, matrix=None, transform=True, depth: int = 0):
         """
         getSubObject(subname, retType=0, matrix=None, transform=True, depth=0)
 
@@ -482,7 +482,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     def purgeTouched(self):
         """Mark the object as unchanged"""
 
-    def recompute(self, recursive: object = False, /):
+    def recompute(self, recursive=False, /):
         """recompute(recursive=False): Recomputes this object"""
 
     def removeProperty(self, string: str, /):
@@ -502,7 +502,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         non-object sub-element name if any.
         """
 
-    def resolveSubElement(self, subname: str, append: object = None, type: int = None, /):
+    def resolveSubElement(self, subname: str, append=None, type: int = None, /):
         """
         resolveSubElement(subname,append,type) -- resolve both new and old style sub element
 
@@ -513,7 +513,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         Return tuple(obj,newElementName,oldElementName)
         """
 
-    def setElementVisible(self, element: str, visible: object = None, /):
+    def setElementVisible(self, element: str, visible=None, /):
         """
         setElementVisible(element,visible): Set the visibility of a child element
         Return -1 if element visibility is not supported, 0 if element not found, 1 if success
@@ -574,7 +574,7 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
     @_LinkTouched.setter
     def _LinkTouched(self, value: int | bool): ...
 
-    def cacheChildLabel(self, enable: object = True, /):
+    def cacheChildLabel(self, enable=True, /):
         """
         cacheChildLabel(enable=True): enable/disable child label cache
 
@@ -794,7 +794,7 @@ class GroupExtension(FreeCAD.DocumentObjectExtension):
     def getObject(self, arg1: str, /):
         """Return the object with the given name"""
 
-    def hasObject(self, obj: FreeCAD.DocumentObject, recursive: object = False, /):
+    def hasObject(self, obj: FreeCAD.DocumentObject, recursive=False, /):
         """
         hasObject(obj, recursive=false)
                         Checks if the group has a given object
@@ -957,10 +957,10 @@ class ExtensionContainer(FreeCAD.PropertyContainer):
     Base class for all objects which can be extended
     """
 
-    def addExtension(self, arg1: str, arg2: object = None, /):
+    def addExtension(self, arg1: str, arg2=None, /):
         """Adds an extension to the object. Requires the string identifier for the python extension as argument"""
 
-    def hasExtension(self, arg1: str, arg2: object = None, /):
+    def hasExtension(self, arg1: str, arg2=None, /):
         """Returns if this object has the specified extension"""
 
 
@@ -1258,7 +1258,7 @@ class Document(FreeCAD.PropertyContainer):
     def abortTransaction(self):
         """Abort an Undo/Redo transaction (rollback)"""
 
-    def addObject(self, type: str, name: str = None, objProxy: object = None, viewProxy: object = None, attach: object = False, viewType: str = None):
+    def addObject(self, type: str, name: str = None, objProxy=None, viewProxy=None, attach=False, viewType: str = None):
         """
         addObject(type, name=None, objProxy=None, viewProxy=None, attach=False, viewType=None)
 
@@ -1280,7 +1280,7 @@ class Document(FreeCAD.PropertyContainer):
     def commitTransaction(self):
         """Commit an Undo/Redo transaction"""
 
-    def copyObject(self, object: object, with_dependencies: object = False, return_all: object = False, /):
+    def copyObject(self, object: object, with_dependencies=False, return_all=False, /):
         """
         copyObject(object, with_dependencies=False, return_all=False)
         Copy an object or objects from another document to this document. 
@@ -1301,7 +1301,7 @@ class Document(FreeCAD.PropertyContainer):
         Name and label support regular expressions. All parameters are optional.
         """
 
-    def getDependentDocuments(self, sort: object = True, /):
+    def getDependentDocuments(self, sort=True, /):
         """
         getDependentDocuments(sort=True)
 
@@ -1310,7 +1310,7 @@ class Document(FreeCAD.PropertyContainer):
         sort: whether to topologically sort the return list
         """
 
-    def getLinksTo(self, obj: object = None, options: int = 0, maxCount: int = 0, /):
+    def getLinksTo(self, obj=None, options: int = 0, maxCount: int = 0, /):
         """
         getLinksTo(obj, options=0, maxCount=0): return objects linked to 'obj'
 
@@ -1334,7 +1334,7 @@ class Document(FreeCAD.PropertyContainer):
     def getTempFileName(self, arg1: object, /):
         """Returns a file name with path in the temp directory of the document."""
 
-    def importLinks(self, object_object_: object = None, /):
+    def importLinks(self, object_object_=None, /):
         """
         importLinks(object|[object...])
 
@@ -1361,7 +1361,7 @@ class Document(FreeCAD.PropertyContainer):
         with_dependencies: if True, all internal dependent objects are copied too.
         """
 
-    def openTransaction(self, name: object = None, /):
+    def openTransaction(self, name=None, /):
         """
         openTransaction(name) - Open a new Undo/Redo transaction.
 
@@ -1372,7 +1372,7 @@ class Document(FreeCAD.PropertyContainer):
         the same internal ID and will be undo/redo together.
         """
 
-    def recompute(self, arg1: object = None, arg2: bool = None, arg3: bool = None, /):
+    def recompute(self, arg1=None, arg2: bool = None, arg3: bool = None, /):
         """recompute(objs=None): Recompute the document and returns the amount of recomputed features"""
 
     def redo(self):
@@ -1647,11 +1647,11 @@ def loadFile(arg1: str, arg2: str = None, arg3: str = None, /):
     """
 
 
-def open(name: str, hidden: object = None):
+def open(name: str, hidden=None):
     """See openDocument(string)"""
 
 
-def openDocument(name: str, hidden: object = False):
+def openDocument(name: str, hidden=False):
     """
     openDocument(filepath,hidden=False) -> object
     Create a document and load the project file into the document.
@@ -1663,7 +1663,7 @@ def openDocument(name: str, hidden: object = False):
     """
 
 
-def newDocument(name: str = None, label: str = None, hidden: object = False, temp: object = False):
+def newDocument(name: str = None, label: str = None, hidden=False, temp=False):
     """
     newDocument(name, label=None, hidden=False, temp=False) -> object
     Create a new document with a given name.
@@ -1708,7 +1708,7 @@ def getDocument(string: str, /):
     """
 
 
-def listDocuments(sort: object = False, /):
+def listDocuments(sort=False, /):
     """
     listDocuments(sort=False) -> list
 
@@ -1747,7 +1747,7 @@ def checkLinkDepth(depth: int, /):
     """checkLinkDepth(depth) -- check link recursion depth"""
 
 
-def getLinksTo(obj: object = None, options: int = 0, maxCount: int = 0, /):
+def getLinksTo(obj=None, options: int = 0, maxCount: int = 0, /):
     """
     getLinksTo(obj,options=0,maxCount=0) -- return the objects linked to 'obj'
 
@@ -1767,7 +1767,7 @@ def getDependentObjects(arg1: object, arg2: int = None, /):
     """
 
 
-def setActiveTransaction(name: str, persist: object = False, /):
+def setActiveTransaction(name: str, persist=False, /):
     """
     setActiveTransaction(name, persist=False) -- setup active transaction with the given name
 
@@ -1785,7 +1785,7 @@ def getActiveTransaction():
     """getActiveTransaction() -> (name,id) return the current active transaction name and ID"""
 
 
-def closeActiveTransaction(arg1: object = None, arg2: int = None, /):
+def closeActiveTransaction(arg1=None, arg2: int = None, /):
     """closeActiveTransaction(abort=False) -- commit or abort current active transaction"""
 
 

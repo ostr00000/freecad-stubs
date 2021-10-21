@@ -1,54 +1,15 @@
 import logging
 import re
-from inspect import Parameter, Signature
+from inspect import Parameter
 from typing import Iterator, Optional
 
+from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam, RawRepr
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.generators.common.names import getClassWithModulesFromPointer, getModuleName
 
 logger = logging.getLogger(__name__)
 
 DEFAULT_ARG_NAME = 'arg'
-
-
-class RawRepr:
-    __slots__ = 'value'
-
-    def __new__(cls, value):
-        if value is Parameter.empty:
-            return value
-        return super().__new__(cls)
-
-    def __init__(self, value):
-        self.value = str(value)
-
-    def __repr__(self):
-        return self.value
-
-
-class SelfSignature(Signature):
-    """Skip separator if there is only self parameter"""
-
-    def __init__(self, parameters=None, *,
-                 return_annotation=Signature.empty,
-                 __validate_parameters__=True):
-
-        if parameters is not None:
-            if len(parameters) == 1:
-                selfParam = parameters[0]
-                if selfParam.name == 'self' and selfParam.kind == Parameter.POSITIONAL_ONLY:
-                    parameters = list(parameters)
-                    parameters[0] = selfParam.replace(kind=Parameter.POSITIONAL_OR_KEYWORD)
-            elif len(parameters) >= 2:
-                selfParam = parameters[0]
-                secondParam = parameters[1]
-                if (selfParam.name == 'self'
-                        and selfParam.kind == Parameter.POSITIONAL_ONLY
-                        and secondParam.kind == Parameter.POSITIONAL_OR_KEYWORD):
-                    parameters = list(parameters)
-                    parameters[0] = selfParam.replace(kind=Parameter.POSITIONAL_OR_KEYWORD)
-
-        super().__init__(parameters, return_annotation=return_annotation)
 
 
 class InvalidPointerFormat(ValueError):
@@ -119,8 +80,10 @@ class TypesConverter:
 
                     if objType := parseTypeMap.get(curVal):
                         name = self._getArgName(formatStr, kwargList, argNum)
-                        yield Parameter(name, parameterKind, default=default,
-                                        annotation=RawRepr(objType))
+                        yield AnnotationParam(
+                            name, parameterKind, default=default,
+                            annotation=RawRepr(objType))
+
                         argNum += 1
                         realArgNum += parseSizeMap[curVal]
                         formatStr = formatStr[formatSize:]

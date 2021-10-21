@@ -1290,16 +1290,16 @@ class DrawViewPart(TechDraw.DrawView):
     def makeCenterLine(self, subNames: object, mode: int, /):
         """makeCenterLine(subNames, mode) - draw a center line on this viewPart. SubNames is a list of n Faces, 2 Edges or 2 Vertices (ex [Face1,Face2,Face3]. Returns unique tag of added CenterLine."""
 
-    def makeCosmeticCircle(self, arg1: FreeCAD.Vector, arg2: float, arg3: int = None, arg4: float = None, arg5: object = None, /):
+    def makeCosmeticCircle(self, arg1: FreeCAD.Vector, arg2: float, arg3: int = None, arg4: float = None, arg5=None, /):
         """tag = makeCosmeticCircle(center, radius) - add a CosmeticEdge at center with radius radius(View coordinates). Returns tag of new CosmeticEdge."""
 
-    def makeCosmeticCircleArc(self, arg1: FreeCAD.Vector, arg2: float, arg3: float, arg4: float, arg5: int = None, arg6: float = None, arg7: object = None, /):
+    def makeCosmeticCircleArc(self, arg1: FreeCAD.Vector, arg2: float, arg3: float, arg4: float, arg5: int = None, arg6: float = None, arg7=None, /):
         """tag = makeCosmeticCircleArc(center, radius, start, end) - add a CosmeticEdge at center with radius radius(View coordinates) from start angle to end angle. Returns tag of new CosmeticEdge."""
 
-    def makeCosmeticLine(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: int = None, arg4: float = None, arg5: object = None, /):
+    def makeCosmeticLine(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: int = None, arg4: float = None, arg5=None, /):
         """tag = makeCosmeticLine(p1, p2) - add a CosmeticEdge from p1 to p2(View coordinates). Returns tag of new CosmeticEdge."""
 
-    def makeCosmeticLine3D(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: int = None, arg4: float = None, arg5: object = None, /):
+    def makeCosmeticLine3D(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: int = None, arg4: float = None, arg5=None, /):
         """tag = makeCosmeticLine3D(p1, p2) - add a CosmeticEdge from p1 to p2(3D coordinates). Returns tag of new CosmeticEdge."""
 
     def makeCosmeticVertex(self, p1: FreeCAD.Vector, /):
@@ -1693,7 +1693,7 @@ class GeomFormat(FreeCAD.PyObjectBase):
 
 
 # AppTechDrawPy.cpp
-def edgeWalker(edgePile: list, inclBiggest: object = None, /):
+def edgeWalker(edgePile: list, inclBiggest=None, /):
     """[wires] = edgeWalker(edgePile,inclBiggest) -- Planar graph traversal finds wires in edge pile."""
 
 
@@ -1713,7 +1713,7 @@ def viewPartAsSvg(DrawViewPart: object, /):
     """string = viewPartAsSvg(DrawViewPart) -- Return the edges of a DrawViewPart in Svg format."""
 
 
-def writeDXFView(arg1: object, arg2: str, arg3: object = None, /):
+def writeDXFView(arg1: object, arg2: str, arg3=None, /):
     """writeDXFView(view,filename): Exports a DrawViewPart to a DXF file."""
 
 

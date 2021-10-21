@@ -615,7 +615,7 @@ class Hyperbola(Part.Conic):
 class PlateSurface(Part.GeometrySurface):
     """This class can be imported."""
 
-    def __init__(self, Surface: Part.Geometry = None, Points: object = None, Curves: object = None, Degree: int = None, NbPtsOnCur: int = None, NbIter: int = None, Tol2d: float = None, Tol3d: float = None, TolAng: float = None, TolCurv: float = None, Anisotropie: bool = None): ...
+    def __init__(self, Surface: Part.Geometry = None, Points=None, Curves=None, Degree: int = None, NbPtsOnCur: int = None, NbIter: int = None, Tol2d: float = None, Tol3d: float = None, TolAng: float = None, TolCurv: float = None, Anisotropie: bool = None): ...
 
     def makeApprox(self, Tol3d: float = None, MaxSegments: int = None, MaxDegree: int = None, MaxDistance: float = None, CritOrder: int = None, Continuity: str = None, EnlargeCoeff: float = None):
         """Approximate the plate surface to a B-Spline surface"""
@@ -1269,7 +1269,7 @@ class Shape(FreeCAD.ComplexGeoData):
     * Face#, where # is in range(1, number of faces)
     """
 
-    def __init__(self, arg1: object = None, /):
+    def __init__(self, arg1=None, /):
         """
         TopoShape is the OpenCasCade topological shape wrapper.
         Sub-elements such as vertices, edges or faces are accessible as:
@@ -1933,7 +1933,7 @@ class Shape(FreeCAD.ComplexGeoData):
         oldFuse(tool) -> Shape
         """
 
-    def optimalBoundingBox(self, useTriangulation: bool = True, useShapeTolerance: object = False, /):
+    def optimalBoundingBox(self, useTriangulation: bool = True, useShapeTolerance=False, /):
         """
         Get the optimal bounding box
         optimalBoundingBox([useTriangulation = True, useShapeTolerance = False]) -> bound box
@@ -2182,7 +2182,7 @@ class Shape(FreeCAD.ComplexGeoData):
         underlying geometry then use the methods translate or rotate.
         """
 
-    def transformShape(self, Matrix: FreeCAD.Matrix, boolean_copy: bool = False, checkScale: object = False, /):
+    def transformShape(self, Matrix: FreeCAD.Matrix, boolean_copy: bool = False, checkScale=False, /):
         """
         Apply transformation on a shape without changing the underlying geometry.
         transformShape(Matrix,[boolean copy=False, checkScale=False]) -> None
@@ -2191,7 +2191,7 @@ class Shape(FreeCAD.ComplexGeoData):
         scaling is detected.
         """
 
-    def transformed(self, matrix: FreeCAD.Matrix, copy: object = False, checkScale: object = False, op: str = None):
+    def transformed(self, matrix: FreeCAD.Matrix, copy=False, checkScale=False, op: str = None):
         """
         Create a new transformed shape
         transformed(Matrix,copy=False,checkScale=False,op=None) -> shape
@@ -2209,7 +2209,7 @@ class Shape(FreeCAD.ComplexGeoData):
         translated(vector) -> shape
         """
 
-    def writeInventor(self, Mode: int = None, Deviation: float = None, Angle: float = None, FaceColors: object = None):
+    def writeInventor(self, Mode: int = None, Deviation: float = None, Angle: float = None, FaceColors=None):
         """
         Write the mesh in OpenInventor format to a string.
         writeInventor() -> string
@@ -2312,7 +2312,7 @@ class BSplineCurve(Part.BoundedCurve):
     def approximate(self, MaxDegree: int, MaxSegments: int = None, Continuity: str = None, Tolerance: float = None): ...
 
     @typing.overload
-    def approximate(self, Points: object, DegMax: int = None, Continuity: str = None, Tolerance: float = None, DegMin: int = None, ParamType: str = None, Parameters: object = None, LengthWeight: float = None, CurvatureWeight: float = None, TorsionWeight: float = None):
+    def approximate(self, Points: object, DegMax: int = None, Continuity: str = None, Tolerance: float = None, DegMin: int = None, ParamType: str = None, Parameters=None, LengthWeight: float = None, CurvatureWeight: float = None, TorsionWeight: float = None):
         """
         Replaces this B-Spline curve by approximating a set of points.
         					The function accepts keywords as arguments.
@@ -2366,7 +2366,7 @@ class BSplineCurve(Part.BoundedCurve):
         					Part.show(n.toShape())
         """
 
-    def buildFromPolesMultsKnots(self, poles: object, mults: object = None, knots: object = None, periodic: bool = None, degree: int = None, weights: object = None, CheckRational: bool = None):
+    def buildFromPolesMultsKnots(self, poles: object, mults=None, knots=None, periodic: bool = None, degree: int = None, weights=None, CheckRational: bool = None):
         """
         Builds a B-Spline by a lists of Poles, Mults, Knots.
         				arguments: poles (sequence of Base.Vector), [mults , knots, periodic, degree, weights (sequence of float), CheckRational]
@@ -2492,7 +2492,7 @@ class BSplineCurve(Part.BoundedCurve):
         				The tolerance criterion for knots equality is the max of Epsilon(U) and ParametricTolerance.
         """
 
-    def interpolate(self, Points: object, PeriodicFlag: bool = None, Tolerance: float = None, InitialTangent: FreeCAD.Vector = None, FinalTangent: FreeCAD.Vector = None, Tangents: object = None, TangentFlags: object = None, Parameters: object = None, Scale: bool = None):
+    def interpolate(self, Points: object, PeriodicFlag: bool = None, Tolerance: float = None, InitialTangent: FreeCAD.Vector = None, FinalTangent: FreeCAD.Vector = None, Tangents=None, TangentFlags=None, Parameters=None, Scale: bool = None):
         """
         Replaces this B-Spline curve by interpolating a set of points.
         					The function accepts keywords as arguments.
@@ -3396,7 +3396,7 @@ class BSplineSurface(Part.GeometrySurface):
     def buildFromNSections(self, arg1: object, arg2: bool = None, /):
         """Builds a B-Spline from a list of control curves"""
 
-    def buildFromPolesMultsKnots(self, poles: object, umults: object, vmults: object, uknots: object = None, vknots: object = None, uperiodic: bool = None, vperiodic: bool = None, udegree: int = None, vdegree: int = None, weights: object = None):
+    def buildFromPolesMultsKnots(self, poles: object, umults: object, vmults: object, uknots=None, vknots=None, uperiodic: bool = None, vperiodic: bool = None, udegree: int = None, vdegree: int = None, weights=None):
         """
         Builds a B-Spline by a lists of Poles, Mults and Knots
         					arguments: poles (sequence of sequence of Base.Vector), umults, vmults, [uknots, vknots, uperiodic, vperiodic, udegree, vdegree, weights (sequence of sequence of float)]
@@ -3658,7 +3658,7 @@ class BSplineSurface(Part.GeometrySurface):
         					index Index in the poles table.
         """
 
-    def setPoleCol(self, arg1: int, arg2: object, arg3: object = None, /):
+    def setPoleCol(self, arg1: int, arg2: object, arg3=None, /):
         """
         Modifies this B-Spline surface by assigning values to all or part
         					of the column of poles of index VIndex, of this B-Spline surface.
@@ -3667,7 +3667,7 @@ class BSplineSurface(Part.GeometrySurface):
         					These syntaxes must only be used for rational surfaces.
         """
 
-    def setPoleRow(self, arg1: int, arg2: object, arg3: object = None, /):
+    def setPoleRow(self, arg1: int, arg2: object, arg3=None, /):
         """
         Modifies this B-Spline surface by assigning values to all or part
         					of the row of poles of index VIndex, of this B-Spline surface.
@@ -4743,7 +4743,7 @@ class BezierCurve(Part.BoundedCurve):
     def insertPoleBefore(self, arg1: int, arg2: FreeCAD.Vector, arg3: float = None, /):
         """Inserts before the pole of index."""
 
-    def interpolate(self, arg1: object, arg2: object = None, /):
+    def interpolate(self, arg1: object, arg2=None, /):
         """
         Interpolates a list of constraints.
         				Each constraint is a list of a point and some optional derivatives
@@ -5664,7 +5664,7 @@ class BezierSurface(Part.GeometrySurface):
         					parametric directions.
         """
 
-    def insertPoleColAfter(self, arg1: int, arg2: object, arg3: object = None, /):
+    def insertPoleColAfter(self, arg1: int, arg2: object, arg3=None, /):
         """
         Inserts into the table of poles of this surface, after the column
         					of poles of index.
@@ -5674,7 +5674,7 @@ class BezierSurface(Part.GeometrySurface):
         					table.
         """
 
-    def insertPoleColBefore(self, arg1: int, arg2: object, arg3: object = None, /):
+    def insertPoleColBefore(self, arg1: int, arg2: object, arg3=None, /):
         """
         Inserts into the table of poles of this surface, before the column
         					of poles of index.
@@ -5684,7 +5684,7 @@ class BezierSurface(Part.GeometrySurface):
         					table.
         """
 
-    def insertPoleRowAfter(self, arg1: int, arg2: object, arg3: object = None, /):
+    def insertPoleRowAfter(self, arg1: int, arg2: object, arg3=None, /):
         """
         Inserts into the table of poles of this surface, after the row
         					of poles of index.
@@ -5694,7 +5694,7 @@ class BezierSurface(Part.GeometrySurface):
         					table.
         """
 
-    def insertPoleRowBefore(self, arg1: int, arg2: object, arg3: object = None, /):
+    def insertPoleRowBefore(self, arg1: int, arg2: object, arg3=None, /):
         """
         Inserts into the table of poles of this surface, before the row
         					of poles of index.
@@ -5782,10 +5782,10 @@ class BezierSurface(Part.GeometrySurface):
     def setPole(self, arg1: int, arg2: int, arg3: FreeCAD.Vector, arg4: float = None, /):
         """Set a pole of the Bezier surface."""
 
-    def setPoleCol(self, arg1: int, arg2: object, arg3: object = None, /):
+    def setPoleCol(self, arg1: int, arg2: object, arg3=None, /):
         """Set the column of poles of the Bezier surface."""
 
-    def setPoleRow(self, arg1: int, arg2: object, arg3: object = None, /):
+    def setPoleRow(self, arg1: int, arg2: object, arg3=None, /):
         """Set the row of poles of the Bezier surface."""
 
     def setWeight(self, arg1: int, arg2: int, arg3: float, /):
@@ -6176,7 +6176,7 @@ def joinSubname(sub: str, mapped: str, subElement: str, /):
     """joinSubname(sub,mapped,subElement) -> subname"""
 
 
-def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matrix = None, needSubElement: object = None, transform: object = None, retType: int = None, noElementMap: object = None, refine: object = None):
+def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matrix = None, needSubElement=None, transform=None, retType: int = None, noElementMap=None, refine=None):
     """
     getShape(obj,subname=None,mat=None,needSubElement=False,transform=True,retType=0):
     Obtain the the TopoShape of a given object with SubName reference

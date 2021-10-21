@@ -22,7 +22,7 @@ def exportPageAsSvg(DrawPageObject: object, FilePath: str, /):
     """exportPageAsSvg(DrawPageObject,FilePath) -- print page as Svg to file."""
 
 
-def copyActiveViewToSvgFile(arg1: object, arg2: str, arg3: float = None, arg4: float = None, arg5: object = None, arg6: object = None, arg7: float = None, arg8: float = None, arg9: int = None, /):
+def copyActiveViewToSvgFile(arg1: object, arg2: str, arg3: float = None, arg4: float = None, arg5=None, arg6=None, arg7: float = None, arg8: float = None, arg9: int = None, /):
     """copyActiveViewToSvgFile(DrawPageObject,FilePath) -- copy ActiveView to Svg file."""
 
 

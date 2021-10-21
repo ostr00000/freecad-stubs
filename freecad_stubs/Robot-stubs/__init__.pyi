@@ -14,7 +14,7 @@ class Waypoint(FreeCAD.Persistence):
     Waypoint class
     """
 
-    def __init__(self, Pos: FreeCAD.Placement, type: str = None, name: str = None, vel: object = None, cont: int = None, tool: int = None, base: int = None, acc: object = None):
+    def __init__(self, Pos: FreeCAD.Placement, type: str = None, name: str = None, vel=None, cont: int = None, tool: int = None, base: int = None, acc=None):
         """Waypoint class"""
 
     @property

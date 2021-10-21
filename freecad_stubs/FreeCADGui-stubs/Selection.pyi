@@ -49,7 +49,7 @@ def clearSelection(docName: str = '', clearPreSelect: bool = True, /):
     """
 
 
-def isSelected(arg1: FreeCAD.DocumentObject, arg2: str = None, arg3: object = None, /):
+def isSelected(arg1: FreeCAD.DocumentObject, arg2: str = None, arg3=None, /):
     """
     Check if a given object is selected
     isSelected(object,resolve=True)
@@ -88,7 +88,7 @@ def countObjectsOfType(string: str, string1: str = None, resolve: int = 1, /):
     """
 
 
-def getSelection(docName: str = '', resolve: int = 1, single: object = False, /):
+def getSelection(docName: str = '', resolve: int = 1, single=False, /):
     """
     Return a list of selected objects
     getSelection(docName='',resolve=1,single=False)
@@ -109,7 +109,7 @@ def getPickedList(docName: str = '', /):
     """
 
 
-def enablePickedList(boolean: object = None, /):
+def enablePickedList(boolean=None, /):
     """
     Enable/disable pick list
     enablePickedList(boolean)
@@ -123,7 +123,7 @@ def getCompleteSelection(resolve: int = 1, /):
     """
 
 
-def getSelectionEx(docName: str = '', resolve: int = 1, single: object = False, /):
+def getSelectionEx(docName: str = '', resolve: int = 1, single=False, /):
     """
     Return a list of SelectionObjects
     getSelectionEx(docName='',resolve=1, single=False)
@@ -193,7 +193,7 @@ def removeSelectionGate():
     """
 
 
-def setVisible(visible: object = None, /):
+def setVisible(visible=None, /):
     """
     set visibility of all selection items
     setVisible(visible=None)
@@ -202,7 +202,7 @@ def setVisible(visible: object = None, /):
     """
 
 
-def pushSelStack(clearForward: object = True, overwrite: object = False, /):
+def pushSelStack(clearForward=True, overwrite=False, /):
     """
     push current selection to stack
     pushSelStack(clearForward=True, overwrite=False)
@@ -212,7 +212,7 @@ def pushSelStack(clearForward: object = True, overwrite: object = False, /):
     """
 
 
-def hasSelection(docName: str = '', resolve: object = False, /):
+def hasSelection(docName: str = '', resolve=False, /):
     """
     check if there is any selection
     hasSelection(docName='', resolve=False)
