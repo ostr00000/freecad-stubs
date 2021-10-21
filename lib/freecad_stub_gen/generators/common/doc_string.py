@@ -1,43 +1,55 @@
 import keyword
 import re
+from inspect import Parameter
 from itertools import count
 from typing import Generator, Iterator
 from xml.etree import ElementTree as ET
 
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
     generateExpressionUntilChar
-from freecad_stub_gen.generators.common.types_converter import Arg
 from freecad_stub_gen.generators.common.names import validatePythonValue
+from freecad_stub_gen.generators.common.types_converter import DEFAULT_ARG_NAME, RawRepr
 
 
 def generateArgSuitFromDocstring(name: str, docString: str, argNumStart: int = 0):
     for match in re.finditer(fr'{name}\((.*?)\):?', docString):
         funCall = findFunctionCall(docString, match.start(), bracketL='(', bracketR=')')
         funCall = funCall.removeprefix(name).removeprefix('(').removesuffix(')')
-        yield list(_argSuiteGen(funCall, argNumStart))
+        yield list(_parameterSuiteGen(funCall, argNumStart))
 
 
-def _argSuiteGen(funDocString: str, argNumStart: int) -> Iterator[Arg]:
+def _parameterSuiteGen(funDocString: str, argNumStart: int) -> Iterator[Parameter]:
     uniqueNameGen = _uniqueArgNameGen(argNumStart)
     next(uniqueNameGen)
 
     for argText in generateExpressionUntilChar(funDocString, 0, ','):
         argText = argText.strip()
+        paramType = Parameter.POSITIONAL_ONLY
+
         if argText == '':
             return
         elif argText[-2:] == '[]':
             pass
         else:
+            # TODO parse type?
+
+            if argText.startswith('[') and argText.endswith(']'):
+                paramType = Parameter.POSITIONAL_OR_KEYWORD
             argText = argText.removeprefix('[').removesuffix(']')
 
         if '=' in argText:
             argName, defValue = argText.split('=')
             argName, defValue = argName.strip(), defValue.strip()
             defValue = validatePythonValue(defValue)
+        elif argText == '...':
+            yield Parameter('args', Parameter.VAR_POSITIONAL)
+            continue
+
         else:
-            argName, defValue = argText, None
+            argName, defValue = argText, Parameter.empty
+
         uniqueName, argNum = uniqueNameGen.send(argName)
-        yield Arg(argNum, '', defValue is not None, uniqueName, defValue)
+        yield Parameter(uniqueName, paramType, default=RawRepr(defValue))
 
 
 REG_ALL_EXCEPT_WORLD = re.compile(r'\W+')
@@ -51,14 +63,14 @@ def _uniqueArgNameGen(argNumStart: int = 1) -> Generator[tuple[str, int], str, N
     for argNum in count(argNumStart):
         name = re.sub(REG_ALL_EXCEPT_WORLD, '_', name)
         if not re.match(REG_START_WITH_LETTER, name):
-            name = 'arg'
+            name = f'{DEFAULT_ARG_NAME}{argNum}'
         elif keyword.iskeyword(name):
             name += '_'
 
         if name in seen:
             name = f'{name}{argNum}'
-        else:
-            seen.add(name)
+
+        seen.add(name)
         name = yield name, argNum
 
 

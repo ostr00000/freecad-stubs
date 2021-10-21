@@ -400,7 +400,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def decimate(self, tolerance_Float_: float, reduction_Float_: float, /): ...
 
     @typing.overload
-    def decimate(self, arg: float, arg2: float, /):
+    def decimate(self, arg1: float, arg2: float, /):
         """
         Decimate the mesh
         					decimate(tolerance(Float), reduction(Float))

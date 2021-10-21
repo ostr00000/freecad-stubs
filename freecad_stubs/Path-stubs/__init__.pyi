@@ -310,7 +310,7 @@ class Area(FreeCAD.BaseClass):
     All arguments are optional.
     """
 
-    def __init__(self, key):
+    def __init__(self, key=None, /):
         """
         FreeCAD python wrapper of libarea
 

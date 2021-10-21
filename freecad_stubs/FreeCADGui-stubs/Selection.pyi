@@ -136,7 +136,7 @@ def getSelectionEx(docName: str = '', resolve: int = 1, single: object = False, 
     """
 
 
-def getSelectionObject(doc: str, obj: str, sub: str, arg: tuple = None, /):
+def getSelectionObject(doc: str, obj: str, sub: str, arg4: tuple = None, /):
     """
     Return a SelectionObject
     getSelectionObject(doc,obj,sub,(x,y,z))

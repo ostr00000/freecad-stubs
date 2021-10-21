@@ -10,7 +10,7 @@ def parseQuantity(string: str, /): ...
 
 
 @typing.overload
-def parseQuantity(arg: str, /):
+def parseQuantity(arg1: str, /):
     """
     parseQuantity(string) -> Base.Quantity()
 

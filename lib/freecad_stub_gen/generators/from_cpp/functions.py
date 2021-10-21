@@ -4,10 +4,10 @@ from typing import Iterable
 
 from more_itertools import islice_extended
 
-from freecad_stub_gen.generators.from_cpp.base import Method, PyMethodDef, \
-    BaseGeneratorFromCpp
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
     generateExpressionUntilChar
+from freecad_stub_gen.generators.from_cpp.base import Method, PyMethodDef, \
+    BaseGeneratorFromCpp
 
 logger = logging.getLogger(__name__)
 
@@ -34,4 +34,5 @@ class FreecadStubGeneratorFromCppFunctions(BaseGeneratorFromCpp):
                 arrayElemStartPos = arrayElemText.find('{') + 1
                 method = PyMethodDef(list(
                     generateExpressionUntilChar(arrayElemText, arrayElemStartPos, ',')))
-                yield from self._genMethodWithArgs(method)
+                # TODO P1 tmp - change argNumStart=1 to 0
+                yield from self._genMethodWithArgs(method, argNumStart=1)

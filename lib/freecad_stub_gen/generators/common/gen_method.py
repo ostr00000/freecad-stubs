@@ -37,7 +37,7 @@ class MethodGenerator(PythonApiGenerator, ABC):
             f'{static}'
             f'{classic}'
             f'{overload}'
-            f'def {methodName}({{args}}){returnType}:'
+            f'def {methodName}{{args}}{returnType}:'
             f'{{docs}}'
             f'{spacing}'
         )

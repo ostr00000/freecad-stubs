@@ -1173,7 +1173,7 @@ class View3DInventorPy:
         pixel coordinates).
         """
 
-    def getPointOnScreen(self, arg: FreeCAD.Vector, /):
+    def getPointOnScreen(self, arg1: FreeCAD.Vector, /):
         """
         getPointOnScreen(3D vector) -> pixel coords (as integer)
 
@@ -1303,10 +1303,10 @@ class UiLoader:
     """UiLoader to create widgets"""
 
     @typing.overload
-    def load(self, string, QWidget_parent = None): ...
+    def load(self, string, QWidget_parent=None, /): ...
 
     @typing.overload
-    def load(self, QIODevice, QWidget_parent = None):
+    def load(self, QIODevice, QWidget_parent=None, /):
         """
         load(string, QWidget parent=None) -> QWidget
         load(QIODevice, QWidget parent=None) -> QWidget

@@ -488,10 +488,10 @@ class Solid(Part.Shape):
     def offsetFaces(self, dict: dict, /): ...
 
     @typing.overload
-    def offsetFaces(self, arg: object, arg2: float, /): ...
+    def offsetFaces(self, arg1: object, arg2: float, /): ...
 
     @typing.overload
-    def offsetFaces(self, arg: object, solid_Faces_1_2_0_: float, /):
+    def offsetFaces(self, arg1: object, solid_Faces_1_2_0_: float, /):
         """
         Extrude single faces of the solid.
         offsetFaces(facesTuple, offset) -> Solid
@@ -1378,10 +1378,10 @@ class Shape(FreeCAD.ComplexGeoData):
     def common(self, tool: Part.Shape, /): ...
 
     @typing.overload
-    def common(self, arg: Part.Shape, tolerance: float, /): ...
+    def common(self, arg1: Part.Shape, tolerance: float, /): ...
 
     @typing.overload
-    def common(self, arg: object, tolerance: float = 0.0, /):
+    def common(self, arg1: object, tolerance: float = 0.0, /):
         """
         Intersection of this and a given (list of) topo shape.
         common(tool) -> Shape
@@ -1424,10 +1424,10 @@ class Shape(FreeCAD.ComplexGeoData):
     def cut(self, tool: Part.Shape, /): ...
 
     @typing.overload
-    def cut(self, arg: Part.Shape, tolerance: float, /): ...
+    def cut(self, arg1: Part.Shape, tolerance: float, /): ...
 
     @typing.overload
-    def cut(self, arg: object, tolerance: float = 0.0, /):
+    def cut(self, arg1: object, tolerance: float = 0.0, /):
         """
         Difference of this and a given (list of) topo shape
         cut(tool) -> Shape
@@ -1561,10 +1561,10 @@ class Shape(FreeCAD.ComplexGeoData):
     def fuse(self, tool: Part.Shape, /): ...
 
     @typing.overload
-    def fuse(self, arg: Part.Shape, tolerance: float, /): ...
+    def fuse(self, arg1: Part.Shape, tolerance: float, /): ...
 
     @typing.overload
-    def fuse(self, arg: object, tolerance: float = 0.0, /):
+    def fuse(self, arg1: object, tolerance: float = 0.0, /):
         """
         Union of this and a given (list of) topo shape.
         fuse(tool) -> Shape
@@ -1906,7 +1906,7 @@ class Shape(FreeCAD.ComplexGeoData):
         The plane is given with its base point and its normal direction.
         """
 
-    def multiFuse(self, arg: object, tolerance: float = 0.0, /):
+    def multiFuse(self, arg1: object, tolerance: float = 0.0, /):
         """
         Union of this and a given list of topo shapes.
         multiFuse((tool1,tool2,...),[tolerance=0.0]) -> Shape
@@ -2028,10 +2028,10 @@ class Shape(FreeCAD.ComplexGeoData):
     def revolve(self, base: FreeCAD.Vector, direction: FreeCAD.Vector, angle: float = None, /): ...
 
     @typing.overload
-    def revolve(self, Vector_0_0_0_: FreeCAD.Vector, Vector_0_0_1_: FreeCAD.Vector, arg: float = None, /): ...
+    def revolve(self, Vector_0_0_0_: FreeCAD.Vector, Vector_0_0_1_: FreeCAD.Vector, arg3: float = None, /): ...
 
     @typing.overload
-    def revolve(self, V_0_0_0_: FreeCAD.Vector, V_0_1_0_: FreeCAD.Vector, arg: float = None, /):
+    def revolve(self, V_0_0_0_: FreeCAD.Vector, V_0_1_0_: FreeCAD.Vector, arg3: float = None, /):
         """
         Revolve the shape around an Axis to a given degree.
         revolve(base, direction, angle)
@@ -2075,7 +2075,7 @@ class Shape(FreeCAD.ComplexGeoData):
     def rotate(self, base: object, dir: object, degree: float, /): ...
 
     @typing.overload
-    def rotate(self, Vector_0_0_0_: object, Vector_0_0_1_: object, arg: float, /):
+    def rotate(self, Vector_0_0_0_: object, Vector_0_0_1_: object, arg3: float, /):
         """
         Apply the rotation (base,dir,degree) to the current location of this shape
         rotate(base,dir,degree)
@@ -2083,7 +2083,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Shp.rotate(Vector(0,0,0),Vector(0,0,1),180) - rotate the shape around the Z Axis 180 degrees.
         """
 
-    def rotated(self, base, dir, degree):
+    def rotated(self, base, dir, degree, /):
         """
         Create a new shape with rotation.
         rotated(base,dir,degree) -> shape
@@ -2095,7 +2095,7 @@ class Shape(FreeCAD.ComplexGeoData):
         scale(factor,[base=Vector(0,0,0)])
         """
 
-    def scaled(self, factor, base):
+    def scaled(self, factor, /, base=None):
         """
         Create a new shape with scale.
         scaled(factor,[base=Vector(0,0,0)]) -> shape
@@ -2105,10 +2105,10 @@ class Shape(FreeCAD.ComplexGeoData):
     def section(self, tool: Part.Shape, approximation: bool = False, /): ...
 
     @typing.overload
-    def section(self, arg: Part.Shape, tolerance: float, approximation: bool = False, /): ...
+    def section(self, arg1: Part.Shape, tolerance: float, approximation: bool = False, /): ...
 
     @typing.overload
-    def section(self, arg: object, tolerance: float = 0.0, approximation: bool = False, /):
+    def section(self, arg1: object, tolerance: float = 0.0, approximation: bool = False, /):
         """
         Section of this with a given (list of) topo shape.
         section(tool,[approximation=False]) -> Shape
@@ -2203,7 +2203,7 @@ class Shape(FreeCAD.ComplexGeoData):
         translate(vector)
         """
 
-    def translated(self, vector):
+    def translated(self, vector, /):
         """
         Create a new shape with translation
         translated(vector) -> shape

@@ -3,16 +3,17 @@ import xml.etree.ElementTree as ET
 from abc import ABC
 from distutils.util import strtobool
 from functools import cached_property
+from inspect import Parameter, Signature
 from pathlib import Path
 from typing import Iterator
 
-from freecad_stub_gen.generators.from_xml.base import BaseXmlGenerator
-from freecad_stub_gen.generators.common.gen_method import MethodGenerator
-from freecad_stub_gen.generators.common.arg_suit_merger import mergeArgSuitesGen
+from freecad_stub_gen.generators.common.arg_suit_merger import mergeParamIntoSignatureGen
 from freecad_stub_gen.generators.common.doc_string import generateArgSuitFromDocstring, \
     getDocFromNode
+from freecad_stub_gen.generators.common.gen_method import MethodGenerator
 from freecad_stub_gen.generators.common.names import getClassNameFromNode
-from freecad_stub_gen.generators.common.types_converter import Arg
+from freecad_stub_gen.generators.common.types_converter import SelfSignature
+from freecad_stub_gen.generators.from_xml.base import BaseXmlGenerator
 
 logger = logging.getLogger(__name__)
 
@@ -33,43 +34,43 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         pythonName = pythonName or node.attrib['Name']
         static = strtobool(node.attrib.get('Static', 'False'))
         classic = strtobool(node.attrib.get('Class', 'False'))
-        firstArgumentName = self._firstArgumentName(bool(static), bool(classic))
+        firstParam = self._getFirstParm(bool(static), bool(classic))
 
-        uniqueArgs = dict.fromkeys(self._signatureArgGen(
-            cName, docName, node, firstArgumentName))
-        sigArgs = list(uniqueArgs.keys())
+        uniqueSignatures = dict.fromkeys(map(
+            str, self._signatureArgGen(cName, docName, node, firstParam)))
+        signatures = list(uniqueSignatures.keys())
         return self.convertMethodToStr(
-            pythonName, sigArgs, getDocFromNode(node), classic, static)
+            pythonName, signatures, getDocFromNode(node), classic, static)
 
     @classmethod
-    def _firstArgumentName(cls, isStaticMethod: bool, isClassMethod: bool) -> str:
+    def _getFirstParm(cls, isStaticMethod: bool, isClassMethod: bool) -> Parameter | None:
         if isStaticMethod:
-            retVal = ''
+            return
         elif isClassMethod:
-            retVal = 'cls'
+            return Parameter('cls', Parameter.POSITIONAL_ONLY)
         else:
-            retVal = 'self'
-        return retVal
+            return Parameter('self', Parameter.POSITIONAL_ONLY)
 
     def _signatureArgGen(self, cName: str, docName: str, node: ET.Element,
-                         firstArgumentName: str) -> Iterator[str]:
-        retVal = []
-        if firstArgumentName:
-            retVal.append(firstArgumentName)
+                         firstParam: Parameter = None) -> Iterator[Signature]:
+        parameters = []
+        if firstParam:
+            parameters.append(firstParam)
 
         if not self.impContent:
-            yield ', '.join(retVal)
+            yield SelfSignature(parameters)
             return
 
         codeSuites = list(self.generateArgFromCode(
-            cName, argNumStart=len(retVal)))
+            cName, argNumStart=len(parameters)))
         docSuites = list(self._generateArgSuiteFromDocString(
-            docName, node, argNumStart=len(retVal)))
-        yield from mergeArgSuitesGen(codeSuites, docSuites, firstArgumentName)
+            docName, node, argNumStart=len(parameters)))
+
+        yield from mergeParamIntoSignatureGen(codeSuites, docSuites, firstParam)
 
     @classmethod
     def _generateArgSuiteFromDocString(
-            cls, name: str, node: ET.Element, argNumStart: int) -> Iterator[list[Arg]]:
+            cls, name: str, node: ET.Element, argNumStart: int) -> Iterator[list[Parameter]]:
         if not (docString := node.find("./Documentation/UserDocu").text):
             return
 

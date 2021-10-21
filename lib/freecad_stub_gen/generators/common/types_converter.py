@@ -1,41 +1,54 @@
-import dataclasses
 import logging
 import re
-from typing import Iterator, Optional, Any
+from inspect import Parameter, Signature
+from typing import Iterator, Optional
 
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.generators.common.names import getClassWithModulesFromPointer, getModuleName
 
 logger = logging.getLogger(__name__)
 
-
-@dataclasses.dataclass
-class Arg:
-    order: int
-    type: str
-    default: bool
-    name: str = None
-    value: Any = None
-
-    def __str__(self):
-        argName = self.name or f'arg{self.order}'
-        ret = argName
-        if self.type:
-            ret += f': {self.type}'
-        if self.default:
-            argValue = self.value or 'None'
-            ret += f' = {argValue}'
-        return ret
+DEFAULT_ARG_NAME = 'arg'
 
 
-class PositionalOnlyArg(Arg):
-    def __str__(self):
-        return '/'
+class RawRepr:
+    __slots__ = 'value'
+
+    def __new__(cls, value):
+        if value is Parameter.empty:
+            return value
+        return super().__new__(cls)
+
+    def __init__(self, value):
+        self.value = str(value)
+
+    def __repr__(self):
+        return self.value
 
 
-class KeyWorldOnlyArg(Arg):
-    def __str__(self):
-        return '*'
+class SelfSignature(Signature):
+    """Skip separator if there is only self parameter"""
+
+    def __init__(self, parameters=None, *,
+                 return_annotation=Signature.empty,
+                 __validate_parameters__=True):
+
+        if parameters is not None:
+            if len(parameters) == 1:
+                selfParam = parameters[0]
+                if selfParam.name == 'self' and selfParam.kind == Parameter.POSITIONAL_ONLY:
+                    parameters = list(parameters)
+                    parameters[0] = selfParam.replace(kind=Parameter.POSITIONAL_OR_KEYWORD)
+            elif len(parameters) >= 2:
+                selfParam = parameters[0]
+                secondParam = parameters[1]
+                if (selfParam.name == 'self'
+                        and selfParam.kind == Parameter.POSITIONAL_ONLY
+                        and secondParam.kind == Parameter.POSITIONAL_OR_KEYWORD):
+                    parameters = list(parameters)
+                    parameters[0] = selfParam.replace(kind=Parameter.POSITIONAL_OR_KEYWORD)
+
+        super().__init__(parameters, return_annotation=return_annotation)
 
 
 class InvalidPointerFormat(ValueError):
@@ -82,11 +95,16 @@ class TypesConverter:
                 argS for argS in self.argumentStrings[varArg]
                 if all(fm not in argS for fm in self._FORBIDDEN_MACROS)]
 
-    def convertFormatToTypes(self, kwargList: list[str]) -> Iterator[Arg]:
+    def convertFormatToTypes(self, kwargList: list[str]) -> Iterator[Parameter]:
         formatStr = self.argumentStrings[self.formatStrPosition]
         realArgNum = self.realStartArgNum
         argNum = 0
-        optional = False
+
+        default = Parameter.empty
+        if kwargList:
+            parameterKind = Parameter.POSITIONAL_OR_KEYWORD
+        else:
+            parameterKind = Parameter.POSITIONAL_ONLY
 
         try:
             while formatStr:
@@ -101,7 +119,8 @@ class TypesConverter:
 
                     if objType := parseTypeMap.get(curVal):
                         name = self._getArgName(formatStr, kwargList, argNum)
-                        yield Arg(self.argNumStart + argNum, objType, optional, name)
+                        yield Parameter(name, parameterKind, default=default,
+                                        annotation=RawRepr(objType))
                         argNum += 1
                         realArgNum += parseSizeMap[curVal]
                         formatStr = formatStr[formatSize:]
@@ -109,9 +128,9 @@ class TypesConverter:
                 else:
                     curVal = formatStr[0]
                     if curVal == '|':
-                        optional = True
+                        default = None
                     elif curVal == '$':
-                        yield KeyWorldOnlyArg(-1, '', default=False)
+                        parameterKind = Parameter.KEYWORD_ONLY
                     elif curVal in ':;':
                         formatStr = []
                     else:
@@ -120,16 +139,14 @@ class TypesConverter:
         except InvalidPointerFormat as ex:
             logger.error(f'{ex}, {formatStr=}, {self.funCall=}, {self.xmlPath=}')
 
-        if self.onlyPositional and argNum != 0:
-            yield PositionalOnlyArg(-1, '', default=False)
-
     def _getArgName(self, formatStr: str, kwargList: list[str], argNum: int) -> Optional[str]:
-        if self.onlyPositional:
-            return None
-        try:
-            return kwargList[argNum]
-        except IndexError:
-            logger.error(f"Too few kw arguments for {formatStr=}, {self.funCall=}, {self.xmlPath=}")
+        if not self.onlyPositional:
+            try:
+                return kwargList[argNum]
+            except IndexError:
+                logger.error(
+                    f"Too few kw arguments for {formatStr=}, {self.funCall=}, {self.xmlPath=}")
+        return f'{DEFAULT_ARG_NAME}{self.argNumStart + argNum}'
 
     def _findPointerType(self, realArgNum: int) -> Optional[str]:
         try:

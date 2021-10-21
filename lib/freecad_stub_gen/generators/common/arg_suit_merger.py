@@ -1,16 +1,18 @@
-import dataclasses
-from typing import Iterator, Union
+from inspect import Parameter, Signature
+from typing import Iterator
 
-from freecad_stub_gen.generators.common.types_converter import Arg, PositionalOnlyArg, \
-    KeyWorldOnlyArg
+from freecad_stub_gen.generators.common.types_converter import DEFAULT_ARG_NAME, SelfSignature
 
 
-def mergeArgSuitesGen(codeSuites: list[list[Arg]], docSuites: list[list[Arg]],
-                      firstArgumentName: str = None) -> Iterator[str]:
+def mergeParamIntoSignatureGen(
+        codeSuites: list[list[Parameter]],
+        docSuites: list[list[Parameter]],
+        firstArgumentName: Parameter = None,
+) -> Iterator[Signature]:
     if len(codeSuites) == len(docSuites) == 0:
         return  # function does not exist neither in code nor xml
 
-    retVal: list[Union[str, Arg]] = []
+    retVal: list[Parameter] = []
     if firstArgumentName:
         retVal.append(firstArgumentName)
 
@@ -21,41 +23,40 @@ def mergeArgSuitesGen(codeSuites: list[list[Arg]], docSuites: list[list[Arg]],
             matchedSuite = list(retVal)
             docSuiteIt = iter(docS)
 
-            for codeArg in codeS:
-                if isinstance(codeArg, (PositionalOnlyArg, KeyWorldOnlyArg)):
-                    matchedSuite.append(codeArg)
-                    continue
-
+            for codeParam in codeS:
                 try:
-                    docArg = next(docSuiteIt)
+                    docParam = next(docSuiteIt)
                 except StopIteration:
                     compatible = False
                     break
 
-                newArg = codeArg
-                if codeArg.name is None:
-                    newArg = dataclasses.replace(codeArg, name=docArg.name)
-                if codeArg.default and codeArg.value is None:
-                    newArg = dataclasses.replace(newArg, value=docArg.value)
+                newArg = codeParam
+                if codeParam.name.startswith(DEFAULT_ARG_NAME) \
+                        and not docParam.name.startswith(DEFAULT_ARG_NAME):
+                    newArg = newArg.replace(name=docParam.name)
+
+                if codeParam.default is None \
+                        and docParam.default not in (None, Parameter.empty):
+                    newArg = newArg.replace(default=docParam.default)
 
                 matchedSuite.append(newArg)
 
             if compatible and len(list(docSuiteIt)) == 0:
-                yield ', '.join(map(str, matchedSuite))
+                yield SelfSignature(matchedSuite)
                 yielded = True
 
-        # maybe nameSuite is empty, try argSuite
+    # maybe nameSuite is empty, try argSuite
     if not yielded:
         for codeS in codeSuites:
-            yield ', '.join(map(str, retVal + codeS))
+            yield SelfSignature(retVal + codeS)
             yielded = True
 
-        # maybe argSuite is empty, try nameSuite
+    # maybe argSuite is empty, try nameSuite
     if not yielded:
         for docS in docSuites:
-            yield ', '.join(map(str, retVal + docS))
+            yield SelfSignature(retVal + docS)
             yielded = True
 
-        # this should never be reachable
+    # this should never be reachable
     if not yielded:
-        yield ', '.join(retVal)
+        yield SelfSignature(retVal)

@@ -1,5 +1,6 @@
 import logging
 import re
+from inspect import Parameter
 from typing import Iterable
 
 from freecad_stub_gen.generators.from_cpp.base import BaseGeneratorFromCpp
@@ -28,8 +29,9 @@ class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
                 logger.debug(f'Cannot find function name in {self.baseGenFilePath}')
                 continue  # it is a template
 
+            selfParam = Parameter('self', Parameter.POSITIONAL_ONLY)
             gen = self._findFunctionCallsGen(funcCall)
-            result = ''.join(self._genAllMethods(gen, firstArgName='self'))
+            result = ''.join(self._genAllMethods(gen, firstParam=selfParam))
             if not result:
                 continue
             content = indent(result)

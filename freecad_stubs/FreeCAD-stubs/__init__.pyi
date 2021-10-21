@@ -583,7 +583,10 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
         """
 
     @typing.overload
-    def configLinkProperty(self, key, arg): ...
+    def configLinkProperty(self, key=None, /, *args): ...
+
+    @typing.overload
+    def configLinkProperty(self, key, /, *args): ...
 
     @typing.overload
     def configLinkProperty(self):
@@ -653,13 +656,16 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
         """
 
     @typing.overload
-    def setLink(self, obj, subName = None, subElements = None): ...
+    def setLink(self, obj, subName=None, subElements=None, /): ...
 
     @typing.overload
-    def setLink(self, obj, arg): ...
+    def setLink(self, obj, /, *args): ...
 
     @typing.overload
-    def setLink(self, arg, arg2):
+    def setLink(self, arg1, /, *args): ...
+
+    @typing.overload
+    def setLink(self, arg1, arg2, /):
         """
         setLink(obj,subName=None,subElements=None): Set link object.
 

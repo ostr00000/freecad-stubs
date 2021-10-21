@@ -1324,13 +1324,13 @@ class DrawViewPart(TechDraw.DrawView):
     def removeCosmeticVertex(self, cv: object, /):
         """removeCosmeticVertex(cv) - remove CosmeticVertex from View. Returns None."""
 
-    def replaceCenterLine(self, cl):
+    def replaceCenterLine(self, cl, /):
         """replaceCenterLine(cl) - replacls CenterLine cl in View. Returns True/False."""
 
-    def replaceCosmeticEdge(self, ce):
+    def replaceCosmeticEdge(self, ce, /):
         """replaceCosmeticEdge(ce) - replaces CosmeticEdge ce in View. Returns True/False."""
 
-    def replaceCosmeticVertex(self, cv):
+    def replaceCosmeticVertex(self, cv, /):
         """rc = replaceCosmeticVertex(cv) - replaces CosmeticVertex in View. Returns True/False."""
 
     def requestPaint(self):
