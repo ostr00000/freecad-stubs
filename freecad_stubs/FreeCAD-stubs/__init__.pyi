@@ -27,100 +27,100 @@ class ParameterGrp:
     def GetGroups(self):
         """GetGroups()"""
 
-    def RemGroup(self, str: str, /):
+    def RemGroup(self, str: str, /) -> None:
         """RemGroup(str)"""
 
-    def HasGroup(self, str: str, /):
+    def HasGroup(self, str: str, /) -> bool:
         """HasGroup(str)"""
 
-    def IsEmpty(self):
+    def IsEmpty(self) -> bool:
         """IsEmpty()"""
 
-    def Clear(self):
+    def Clear(self) -> None:
         """Clear()"""
 
-    def Attach(self, arg1: object, /):
+    def Attach(self, arg1: object, /) -> None:
         """Attach()"""
 
-    def Detach(self, arg1: object, /):
+    def Detach(self, arg1: object, /) -> None:
         """Detach()"""
 
-    def Notify(self, arg1: str, /):
+    def Notify(self, arg1: str, /) -> None:
         """Notify()"""
 
-    def NotifyAll(self):
+    def NotifyAll(self) -> None:
         """NotifyAll()"""
 
-    def SetBool(self, arg1: str, arg2: int, /):
+    def SetBool(self, arg1: str, arg2: int, /) -> None:
         """SetBool()"""
 
-    def GetBool(self, arg1: str, arg2: int = None, /):
+    def GetBool(self, arg1: str, arg2: int = None, /) -> bool:
         """GetBool()"""
 
     def GetBools(self, arg1: str = None, /):
         """GetBools()"""
 
-    def RemBool(self, arg1: str, /):
+    def RemBool(self, arg1: str, /) -> None:
         """RemBool()"""
 
-    def SetInt(self, arg1: str, arg2: int, /):
+    def SetInt(self, arg1: str, arg2: int, /) -> None:
         """SetInt()"""
 
-    def GetInt(self, arg1: str, arg2: int = None, /):
+    def GetInt(self, arg1: str, arg2: int = None, /) -> int:
         """GetInt()"""
 
     def GetInts(self, arg1: str = None, /):
         """GetInts()"""
 
-    def RemInt(self, arg1: str, /):
+    def RemInt(self, arg1: str, /) -> None:
         """RemInt()"""
 
-    def SetUnsigned(self, arg1: str, arg2: int, /):
+    def SetUnsigned(self, arg1: str, arg2: int, /) -> None:
         """SetUnsigned()"""
 
-    def GetUnsigned(self, arg1: str, arg2: int = None, /):
+    def GetUnsigned(self, arg1: str, arg2: int = None, /) -> int:
         """GetUnsigned()"""
 
     def GetUnsigneds(self, arg1: str = None, /):
         """GetUnsigneds()"""
 
-    def RemUnsigned(self, arg1: str, /):
+    def RemUnsigned(self, arg1: str, /) -> None:
         """RemUnsigned()"""
 
-    def SetFloat(self, arg1: str, arg2: float, /):
+    def SetFloat(self, arg1: str, arg2: float, /) -> None:
         """SetFloat()"""
 
-    def GetFloat(self, arg1: str, arg2: float = None, /):
+    def GetFloat(self, arg1: str, arg2: float = None, /) -> float:
         """GetFloat()"""
 
     def GetFloats(self, arg1: str = None, /):
         """GetFloats()"""
 
-    def RemFloat(self, arg1: str, /):
+    def RemFloat(self, arg1: str, /) -> None:
         """RemFloat()"""
 
-    def SetString(self, arg1: str, arg2: str, /):
+    def SetString(self, arg1: str, arg2: str, /) -> None:
         """SetString()"""
 
-    def GetString(self, arg1: str, arg2: str = None, /):
+    def GetString(self, arg1: str, arg2: str = None, /) -> str:
         """GetString()"""
 
     def GetStrings(self, arg1: str = None, /):
         """GetStrings()"""
 
-    def RemString(self, arg1: str, /):
+    def RemString(self, arg1: str, /) -> None:
         """RemString()"""
 
-    def Import(self, arg1: str, /):
+    def Import(self, arg1: str, /) -> None:
         """Import()"""
 
-    def Insert(self, arg1: str, /):
+    def Insert(self, arg1: str, /) -> None:
         """Insert()"""
 
-    def Export(self, arg1: str, /):
+    def Export(self, arg1: str, /) -> None:
         """Export()"""
 
-    def GetContents(self):
+    def GetContents(self) -> None:
         """GetContents()"""
 
 
@@ -131,13 +131,13 @@ class ProgressIndicator:
     Progress indicator
     """
 
-    def start(self, string: str, int: int, /):
+    def start(self, string: str, int: int, /) -> None:
         """start(string,int)"""
 
-    def next(self, arg1: int = None, /):
+    def next(self, arg1: int = None, /) -> None:
         """next()"""
 
-    def stop(self):
+    def stop(self) -> None:
         """stop()"""
 
 
@@ -228,7 +228,7 @@ class GeoFeature(FreeCAD.DocumentObject):
     @Placement.setter
     def Placement(self, value: FreeCAD.Matrix | FreeCAD.Placement): ...
 
-    def getGlobalPlacement(self):
+    def getGlobalPlacement(self) -> FreeCAD.Placement:
         """
         Returns the placement of the object in the global coordinate space, respecting all stacked relationships. 
                           Note: This function is not available during recompute, as there the placements of parents can change 
@@ -403,7 +403,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         * depth: current recursive depth
         """
 
-    def getParentGeoFeatureGroup(self):
+    def getParentGeoFeatureGroup(self) -> None:
         """
         Returns the GeoFeatureGroup, and hence the local coordinate system, the object 
                                   is in or None if it is not part of a group. Note that an object can only be 
@@ -794,7 +794,7 @@ class GroupExtension(FreeCAD.DocumentObjectExtension):
     def getObject(self, arg1: str, /):
         """Return the object with the given name"""
 
-    def hasObject(self, obj: FreeCAD.DocumentObject, recursive=False, /):
+    def hasObject(self, obj: FreeCAD.DocumentObject, recursive=False, /) -> bool:
         """
         hasObject(obj, recursive=false)
                         Checks if the group has a given object
@@ -960,7 +960,7 @@ class ExtensionContainer(FreeCAD.PropertyContainer):
     def addExtension(self, arg1: str, arg2=None, /):
         """Adds an extension to the object. Requires the string identifier for the python extension as argument"""
 
-    def hasExtension(self, arg1: str, arg2=None, /):
+    def hasExtension(self, arg1: str, arg2=None, /) -> bool:
         """Returns if this object has the specified extension"""
 
 
@@ -1291,7 +1291,7 @@ class Document(FreeCAD.PropertyContainer):
                     object corresponding to the input objects.
         """
 
-    def exportGraphviz(self, arg1: str = None, /):
+    def exportGraphviz(self, arg1: str = None, /) -> str:
         """Export the dependencies of the objects as graph"""
 
     def findObjects(self, Type: str = None, Name: str = None, Label: str = None):
@@ -1430,7 +1430,7 @@ class PropertyContainer(FreeCAD.Persistence):
         If the list contains 'Hidden' then the item even doesn't appear in the property editor.
         """
 
-    def getEnumerationsOfProperty(self, arg1: str, /):
+    def getEnumerationsOfProperty(self, arg1: str, /) -> None:
         """Return all enumeration strings of the property of this class or None if not a PropertyEnumeration."""
 
     def getGroupOfProperty(self, arg1: str, /):
@@ -1558,7 +1558,7 @@ def ParamGet(arg0: str, /):
     """Get parameters by path"""
 
 
-def saveParameter(config: str = 'User parameter', /):
+def saveParameter(config: str = 'User parameter', /) -> None:
     """
     saveParameter(config='User parameter') -> None
     Save parameter set to file. The default set is 'User parameter'
@@ -1569,11 +1569,11 @@ def Version():
     """Print the version to the output."""
 
 
-def ConfigGet(string: str, /):
+def ConfigGet(string: str, /) -> str:
     """ConfigGet(string) -- Get the value for the given key."""
 
 
-def ConfigSet(string: str, string1: str, /):
+def ConfigSet(string: str, string1: str, /) -> None:
     """ConfigSet(string, string) -- Set the given key to the given value."""
 
 
@@ -1732,7 +1732,7 @@ def removeDocumentObserver(arg0: object, /):
     """
 
 
-def setLogLevel(tag: str, level: object, /):
+def setLogLevel(tag: str, level: object, /) -> None:
     """
     setLogLevel(tag, level) -- Set the log level for a string tag.
     'level' can either be string 'Log', 'Msg', 'Wrn', 'Error', or an integer value

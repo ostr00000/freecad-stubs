@@ -15,42 +15,45 @@ class StringType(Protocol):
 
 
 class MethodGenerator(PythonApiGenerator, ABC):
-    def convertMethodToStr(self, methodName: str, args: list[StringType], docs: str = '',
+    def convertMethodToStr(self, methodName: str, signatures: list[StringType], docs: str = '',
                            isClassic=False, isStatic=False, functionSpacing=1) -> str:
         ret = ''
-        if not args:
+        if not signatures:
             return ret
+        signatures = list(map(str, signatures))
 
         static = '@staticmethod\n' if isStatic else ''
         classic = '@classmethod\n' if isClassic else ''
 
         # only single signature should not have overload
-        if len(args) > 1:
+        if len(signatures) > 1:
             self.requiredImports.add('typing')
             overload = '@typing.overload\n'
         else:
             overload = ''
 
+        forcedType = self._getForcedReturnType(methodName)
         spacing = '\n' * functionSpacing
-        returnType = f' -> {rt}' if (rt := self._getReturnType(methodName)) else ''
         pattern = (
             f'{static}'
             f'{classic}'
             f'{overload}'
-            f'def {methodName}{{args}}{returnType}:'
+            f'def {methodName}{{signature}}:'
             f'{{docs}}'
             f'{spacing}'
         )
 
-        for arg in args[:-1]:
-            ret += pattern.format(args=arg, docs=' ...\n')
+        for sig in signatures[:-1]:
+            sig = self._formatSignatureWithReturnType(sig, forcedType)
+            ret += pattern.format(signature=sig, docs=' ...\n')
 
         # last signature should have docstring
         docs = f'\n{indent(doc)}' if (doc := formatDocstring(docs)) else ' ...\n'
-        ret += pattern.format(args=args[-1], docs=docs)
+        sig = self._formatSignatureWithReturnType(signatures[-1], forcedType)
+        ret += pattern.format(signature=sig, docs=docs)
         return ret
 
-    def _getReturnType(self, methodName: str) -> str | None:
+    def _getForcedReturnType(self, methodName: str) -> str | None:
         ret = None
         if methodName == 'activeDocument':
             if 'App' in self.baseGenFilePath.parts:
@@ -62,3 +65,11 @@ class MethodGenerator(PythonApiGenerator, ABC):
         elif methodName == 'getParentGroup':
             ret = 'FreeCAD.DocumentObjectGroup | None'
         return ret
+
+    @classmethod
+    def _formatSignatureWithReturnType(cls, sig: str, forcedType: str | None):
+        if forcedType:
+            if ' ->' in sig:
+                sig = sig.rsplit(' ->', maxsplit=1)[0]
+            return f'{sig} -> {forcedType}'
+        return sig

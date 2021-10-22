@@ -102,15 +102,6 @@ class TypesConverter:
         except InvalidPointerFormat as ex:
             logger.error(f'{ex}, {formatStr=}, {self.funCall=}, {self.xmlPath=}')
 
-    def _getArgName(self, formatStr: str, kwargList: list[str], argNum: int) -> Optional[str]:
-        if not self.onlyPositional:
-            try:
-                return kwargList[argNum]
-            except IndexError:
-                logger.error(
-                    f"Too few kw arguments for {formatStr=}, {self.funCall=}, {self.xmlPath=}")
-        return f'{DEFAULT_ARG_NAME}{self.argNumStart + argNum}'
-
     def _findPointerType(self, realArgNum: int) -> Optional[str]:
         try:
             pointerArg = self.argumentStrings[realArgNum]
@@ -158,6 +149,15 @@ class TypesConverter:
 
         # there are only two known cases, too much work to automate this
         raise NotImplementedError
+
+    def _getArgName(self, formatStr: str, kwargList: list[str], argNum: int) -> Optional[str]:
+        if not self.onlyPositional:
+            try:
+                return kwargList[argNum]
+            except IndexError:
+                logger.error(
+                    f"Too few kw arguments for {formatStr=}, {self.funCall=}, {self.xmlPath=}")
+        return f'{DEFAULT_ARG_NAME}{self.argNumStart + argNum}'
 
 
 # based on https://pyo3.rs/v0.11.1/conversions.html

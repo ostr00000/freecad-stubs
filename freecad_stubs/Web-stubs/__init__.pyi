@@ -3,7 +3,7 @@ def startServer(address: str = None, port: int = 0, /):
     """startServer(address=127.0.0.1,port=0) -- Start a server."""
 
 
-def waitForConnection(address: str = None, port: int = 0, timeout: int = 0, /):
+def waitForConnection(address: str = None, port: int = 0, timeout: int = 0, /) -> bool:
     """
     waitForConnection(address=127.0.0.1,port=0,timeout=0)
     Start a server, wait for connection and close server.
@@ -12,7 +12,7 @@ def waitForConnection(address: str = None, port: int = 0, timeout: int = 0, /):
     """
 
 
-def registerServerFirewall(callable_string_: object, /):
+def registerServerFirewall(callable_string_: object, /) -> None:
     """registerServerFirewall(callable(string)) -- Register a firewall."""
 
 
@@ -20,5 +20,5 @@ def registerServerFirewall(callable_string_: object, /):
 class BrowserView:
     """Python interface class to BrowserView"""
 
-    def setHtml(self, arg1: str, arg2: str = None, /):
+    def setHtml(self, arg1: str, arg2: str = None, /) -> None:
         """setHtml(str)"""

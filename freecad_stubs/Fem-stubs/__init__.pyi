@@ -119,7 +119,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
     def addFace(self, arg1: list, arg2: int = None, /):
         """Add a face by setting three node indices."""
 
-    def addGroup(self, name: str, typestring: str, id: int = None, /):
+    def addGroup(self, name: str, typestring: str, id: int = None, /) -> int:
         """
         Add a group to mesh with specific name and type
                             addGroup(name, typestring, [id])
@@ -162,7 +162,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
     def compute(self):
         """Update the internal mesh structure"""
 
-    def copy(self):
+    def copy(self) -> Fem.FemMesh:
         """Make a copy of this FEM mesh."""
 
     def getEdgesByEdge(self, arg1: Part.Edge, /):
@@ -171,25 +171,25 @@ class FemMesh(FreeCAD.ComplexGeoData):
     def getElementNodes(self, arg1: int, /):
         """Return a tuple of node IDs to a given element ID"""
 
-    def getElementType(self, arg1: int, /):
+    def getElementType(self, arg1: int, /) -> str:
         """Return the element type of a given ID"""
 
     def getFacesByFace(self, arg1: Part.Face, /):
         """Return a list of face IDs which belong to a TopoFace"""
 
-    def getGroupElementType(self, arg1: int, /):
+    def getGroupElementType(self, arg1: int, /) -> str:
         """Return a string of group element type to a given group ID"""
 
     def getGroupElements(self, arg1: int, /):
         """Return a tuple of ElementIDs to a given group ID"""
 
-    def getGroupName(self, arg1: int, /):
+    def getGroupName(self, arg1: int, /) -> str:
         """Return a string of group name to a given group ID"""
 
     def getIdByElementType(self, arg1: str, /):
         """Return a tuple of IDs to a given element type"""
 
-    def getNodeById(self, arg1: int, /):
+    def getNodeById(self, arg1: int, /) -> FreeCAD.Vector:
         """Get the node position vector by a Node-ID"""
 
     def getNodesByEdge(self, arg1: Part.Edge, /):
@@ -217,7 +217,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
                             supported formats: DAT, INP, MED, STL, UNV, VTK, Z88
         """
 
-    def removeGroup(self, groupid: int, /):
+    def removeGroup(self, groupid: int, /) -> bool:
         """
         Remove a group with a given group ID
                             removeGroup(groupid)
@@ -302,31 +302,31 @@ class FemPostPipeline(FreeCAD.GeoFeature):
 
 
 # AppFemPy.cpp
-def open(string: str, /):
+def open(string: str, /) -> None:
     """open(string) -- Create a new document and a Mesh::Import feature to load the file into the document."""
 
 
-def insert(string_mesh: str, string: str = None, /):
+def insert(string_mesh: str, string: str = None, /) -> None:
     """insert(string|mesh,[string]) -- Load or insert a mesh into the given or active document."""
 
 
-def export(list: object, string: str, /):
+def export(list: object, string: str, /) -> None:
     """export(list,string) -- Export a list of objects into a single file."""
 
 
-def read(arg1: str, /):
+def read(arg1: str, /) -> Fem.FemMesh:
     """Read a mesh from a file and returns a Mesh object."""
 
 
-def readResult(arg1: str, arg2: str = None, /):
+def readResult(arg1: str, arg2: str = None, /) -> None:
     """Read a CFD or Mechanical result (auto detect) from a file (file format detected from file suffix)"""
 
 
-def writeResult(arg1: str, arg2: FreeCAD.DocumentObject = None, /):
+def writeResult(arg1: str, arg2: FreeCAD.DocumentObject = None, /) -> None:
     """write a CFD or FEM result (auto detect) to a file (file format detected from file suffix)"""
 
 
-def show(shape: Fem.FemMesh, string: str = None, /):
+def show(shape: Fem.FemMesh, string: str = None, /) -> None:
     """show(shape,[string]) -- Add the mesh to the active document or create one if no document exists."""
 
 
@@ -337,7 +337,7 @@ class StdMeshers_Arithmetic1D:
     def setLength(self):
         """setLength()"""
 
-    def getLength(self, arg1: int, /):
+    def getLength(self, arg1: int, /) -> float:
         """getLength()"""
 
 
@@ -347,7 +347,7 @@ class StdMeshers_AutomaticLength:
     def setFineness(self):
         """setFineness()"""
 
-    def getFineness(self):
+    def getFineness(self) -> float:
         """getFineness()"""
 
     def getLength(self):
@@ -360,13 +360,13 @@ class StdMeshers_MaxLength:
     def setLength(self):
         """setLength()"""
 
-    def getLength(self):
+    def getLength(self) -> float:
         """getLength()"""
 
-    def havePreestimatedLength(self):
+    def havePreestimatedLength(self) -> bool:
         """havePreestimatedLength()"""
 
-    def getPreestimatedLength(self):
+    def getPreestimatedLength(self) -> float:
         """getPreestimatedLength()"""
 
     def setPreestimatedLength(self):
@@ -375,7 +375,7 @@ class StdMeshers_MaxLength:
     def setUsePreestimatedLength(self):
         """setUsePreestimatedLength()"""
 
-    def getUsePreestimatedLength(self):
+    def getUsePreestimatedLength(self) -> bool:
         """getUsePreestimatedLength()"""
 
 
@@ -385,13 +385,13 @@ class StdMeshers_LocalLength:
     def setLength(self):
         """setLength()"""
 
-    def getLength(self):
+    def getLength(self) -> float:
         """getLength()"""
 
     def setPrecision(self):
         """setPrecision()"""
 
-    def getPrecision(self):
+    def getPrecision(self) -> float:
         """getPrecision()"""
 
 
@@ -401,7 +401,7 @@ class StdMeshers_MaxElementArea:
     def setMaxArea(self):
         """setMaxArea()"""
 
-    def getMaxArea(self):
+    def getMaxArea(self) -> float:
         """getMaxArea()"""
 
 
@@ -428,7 +428,7 @@ class StdMeshers_SegmentLengthAroundVertex:
     def setLength(self):
         """setLength()"""
 
-    def getLength(self):
+    def getLength(self) -> float:
         """getLength()"""
 
 
@@ -438,7 +438,7 @@ class StdMeshers_NumberOfSegments:
     def setNumberOfSegments(self):
         """setNumberOfSegments()"""
 
-    def getNumberOfSegments(self):
+    def getNumberOfSegments(self) -> int:
         """getNumberOfSegments()"""
 
 
@@ -448,7 +448,7 @@ class StdMeshers_NumberOfLayers:
     def setNumberOfLayers(self):
         """setNumberOfLayers()"""
 
-    def getNumberOfLayers(self):
+    def getNumberOfLayers(self) -> int:
         """getNumberOfLayers()"""
 
 
@@ -458,7 +458,7 @@ class StdMeshers_MaxElementVolume:
     def setMaxVolume(self):
         """setMaxVolume()"""
 
-    def getMaxVolume(self):
+    def getMaxVolume(self) -> float:
         """getMaxVolume()"""
 
 
@@ -468,15 +468,15 @@ class StdMeshers_LengthFromEdges:
     def setMode(self):
         """setMode()"""
 
-    def getMode(self):
+    def getMode(self) -> int:
         """getMode()"""
 
 
 class StdMeshers_LayerDistribution:
     """StdMeshers_LayerDistribution"""
 
-    def setLayerDistribution(self):
+    def setLayerDistribution(self) -> None:
         """setLayerDistribution()"""
 
-    def getLayerDistribution(self):
+    def getLayerDistribution(self) -> None:
         """getLayerDistribution()"""

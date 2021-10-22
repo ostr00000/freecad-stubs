@@ -161,23 +161,23 @@ class Trajectory(FreeCAD.Persistence):
     @Waypoints.setter
     def Waypoints(self, value: list): ...
 
-    def deleteLast(self, n: int = None, /):
+    def deleteLast(self, n: int = None, /) -> Robot.Trajectory:
         """
         deleteLast(n) - delete n waypoints at the end
                   deleteLast()  - delete the last waypoint
         """
 
     @typing.overload
-    def insertWaypoints(self, arg1: FreeCAD.Placement, /): ...
+    def insertWaypoints(self, arg1: FreeCAD.Placement, /) -> Robot.Trajectory: ...
 
     @typing.overload
-    def insertWaypoints(self, arg1: Robot.Waypoint, /): ...
+    def insertWaypoints(self, arg1: Robot.Waypoint, /) -> Robot.Trajectory: ...
 
     @typing.overload
-    def insertWaypoints(self, arg1: list, /):
+    def insertWaypoints(self, arg1: list, /) -> Robot.Trajectory:
         """adds one or a list of waypoint to the end of the trajectory"""
 
-    def position(self, arg1: float, /):
+    def position(self, arg1: float, /) -> FreeCAD.Placement:
         """returns a Frame to a given time in the trajectory"""
 
     def velocity(self, arg1: float, /):
@@ -349,5 +349,5 @@ class RobotObject(FreeCAD.DocumentObject):
 
 
 # AppRobot.cpp
-def simulateToFile(Robot: Robot.Robot6Axis, Trajectory: Robot.Trajectory, TickSize: float, FileName: str, /):
+def simulateToFile(Robot: Robot.Robot6Axis, Trajectory: Robot.Trajectory, TickSize: float, FileName: str, /) -> float:
     """simulateToFile(Robot,Trajectory,TickSize,FileName) - runs the simulation and write the result to a file."""

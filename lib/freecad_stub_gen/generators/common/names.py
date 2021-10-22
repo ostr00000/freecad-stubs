@@ -19,7 +19,16 @@ def getFatherClassWithModules(currentNode: ET.Element) -> str:
 
 
 def getClassWithModulesFromStem(stem: str, namespace: str):
-    file = moduleNamespace.getFileForStem(stem, namespace)
+    try:
+        file = moduleNamespace.getFileForStem(stem, namespace)
+    except ValueError:
+        name = stem.removesuffix('Py')
+        if not namespace:
+            return name
+
+        namespace = moduleNamespace.convertNamespaceToModule(namespace)
+        return f'{namespace}.{name}'
+
     root = ET.parse(file).getroot()
     assert (exportElement := root.find('PythonExport'))
     return getClassWithModulesFromNode(exportElement)
@@ -56,7 +65,8 @@ def getClassName(classWithModules: str):
 
 
 def getModuleName(classWithModules: str):
-    return classWithModules[:classWithModules.rfind('.')]
+    if (splitIndex := classWithModules.rfind('.')) != -1:
+        return classWithModules[:splitIndex]
 
 
 def getNamespaceWithClass(cTypeClass: str):
@@ -71,7 +81,7 @@ def getNamespaceWithClass(cTypeClass: str):
 def getClassWithModulesFromPointer(cTypePointer: str):
     cType = cTypePointer.removesuffix('::Type')
     namespace, cType = getNamespaceWithClass(cType)
-    return getClassWithModulesFromStem(cType, namespace)
+    return getClassWithModulesFromStem(cType, namespace or '')
 
 
 def validatePythonValue(value: str) -> Optional[str]:

@@ -227,7 +227,7 @@ class AttachEngine(FreeCAD.BaseClass):
     @Reverse.setter
     def Reverse(self, value: bool): ...
 
-    def calculateAttachedPlacement(self, orig_placement: FreeCAD.Placement, /):
+    def calculateAttachedPlacement(self, orig_placement: FreeCAD.Placement, /) -> FreeCAD.Placement | None:
         """
         calculateAttachedPlacement(orig_placement): returns result of attachment, based
         on current Mode, References, etc. AttachmentOffset is included.
@@ -240,7 +240,7 @@ class AttachEngine(FreeCAD.BaseClass):
         an exception is raised.
         """
 
-    def copy(self):
+    def copy(self) -> Part.AttachEngine:
         """copy(): returns a new instance of AttachEngine."""
 
     def downgradeRefType(self, type: str, /):
@@ -469,29 +469,29 @@ class Solid(Part.Shape):
          three axes of the Cartesian coordinate system.
         """
 
-    def getMomentOfInertia(self, point: FreeCAD.Vector, direction: FreeCAD.Vector, /):
+    def getMomentOfInertia(self, point: FreeCAD.Vector, direction: FreeCAD.Vector, /) -> float:
         """
         computes the moment of inertia of the material system about the axis A.
         getMomentOfInertia(point,direction) -> Float
         """
 
-    def getRadiusOfGyration(self, point: FreeCAD.Vector, direction: FreeCAD.Vector, /):
+    def getRadiusOfGyration(self, point: FreeCAD.Vector, direction: FreeCAD.Vector, /) -> float:
         """
         Returns the radius of gyration of the current system about the axis A.
         getRadiusOfGyration(point,direction) -> Float
         """
 
     @typing.overload
-    def offsetFaces(self, facesTuple: object, offset: float, /): ...
+    def offsetFaces(self, facesTuple: object, offset: float, /) -> Part.Solid: ...
 
     @typing.overload
-    def offsetFaces(self, dict: dict, /): ...
+    def offsetFaces(self, dict: dict, /) -> Part.Solid: ...
 
     @typing.overload
-    def offsetFaces(self, arg1: object, arg2: float, /): ...
+    def offsetFaces(self, arg1: object, arg2: float, /) -> Part.Solid: ...
 
     @typing.overload
-    def offsetFaces(self, arg1: object, solid_Faces_1_2_0_: float, /):
+    def offsetFaces(self, arg1: object, solid_Faces_1_2_0_: float, /) -> Part.Solid:
         """
         Extrude single faces of the solid.
         offsetFaces(facesTuple, offset) -> Solid
@@ -617,7 +617,7 @@ class PlateSurface(Part.GeometrySurface):
 
     def __init__(self, Surface: Part.Geometry = None, Points=None, Curves=None, Degree: int = None, NbPtsOnCur: int = None, NbIter: int = None, Tol2d: float = None, Tol3d: float = None, TolAng: float = None, TolCurv: float = None, Anisotropie: bool = None): ...
 
-    def makeApprox(self, Tol3d: float = None, MaxSegments: int = None, MaxDegree: int = None, MaxDistance: float = None, CritOrder: int = None, Continuity: str = None, EnlargeCoeff: float = None):
+    def makeApprox(self, Tol3d: float = None, MaxSegments: int = None, MaxDegree: int = None, MaxDistance: float = None, CritOrder: int = None, Continuity: str = None, EnlargeCoeff: float = None) -> Part.BSplineSurface:
         """Approximate the plate surface to a B-Spline surface"""
 
 
@@ -978,19 +978,19 @@ class Face(Part.Shape):
         An exception is raised if the face is not triangulated.
         """
 
-    def isPartOfDomain(self, u: float, v: float, /):
+    def isPartOfDomain(self, u: float, v: float, /) -> bool:
         """
         Check if a given (u,v) pair is inside the domain of a face
         isPartOfDomain(u,v) -> bool
         """
 
-    def makeHalfSpace(self, pos: FreeCAD.Vector, /):
+    def makeHalfSpace(self, pos: FreeCAD.Vector, /) -> Part.Solid:
         """
         Make a half-space solid by this face and a reference point.
         makeHalfSpace(pos) -> Shape
         """
 
-    def makeOffset(self, dist: float, /):
+    def makeOffset(self, dist: float, /) -> Part.Shape:
         """
         Offset the face by a given amount.
         makeOffset(dist) -> Face
@@ -998,7 +998,7 @@ class Face(Part.Shape):
         Returns Compound of Wires. Deprecated - use makeOffset2D instead.
         """
 
-    def normalAt(self, arg1: float, arg2: float, /):
+    def normalAt(self, arg1: float, arg2: float, /) -> FreeCAD.Vector:
         """
         Get the normal vector at the given parameter [0|Length] if defined
         normalAt(pos) -> Vector
@@ -1016,7 +1016,7 @@ class Face(Part.Shape):
         validate()
         """
 
-    def valueAt(self, u: float, v: float, /):
+    def valueAt(self, u: float, v: float, /) -> FreeCAD.Vector:
         """
         Get the point at the given parameter [0|Length] if defined
         valueAt(u,v) -> Vector
@@ -1047,7 +1047,7 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
         					Builds the resulting shape.
         """
 
-    def firstShape(self):
+    def firstShape(self) -> Part.Shape:
         """
         firstShape()
         					Returns the Shape of the bottom of the sweep.
@@ -1071,7 +1071,7 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
         					Returns true if this tool object is ready to build the shape.
         """
 
-    def lastShape(self):
+    def lastShape(self) -> Part.Shape:
         """
         lastShape()
         					Returns the Shape of the top of the sweep.
@@ -1175,7 +1175,7 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
         					All sections will be parallel.
         """
 
-    def shape(self):
+    def shape(self) -> Part.Shape:
         """
         shape()
         					Returns the resulting shape.
@@ -1375,13 +1375,13 @@ class Shape(FreeCAD.ComplexGeoData):
         """
 
     @typing.overload
-    def common(self, tool: Part.Shape, /): ...
+    def common(self, tool: Part.Shape, /) -> Part.Shape: ...
 
     @typing.overload
-    def common(self, arg1: Part.Shape, tolerance: float, /): ...
+    def common(self, arg1: Part.Shape, tolerance: float, /) -> Part.Shape: ...
 
     @typing.overload
-    def common(self, arg1: object, tolerance: float = 0.0, /):
+    def common(self, arg1: object, tolerance: float = 0.0, /) -> Part.Shape:
         """
         Intersection of this and a given (list of) topo shape.
         common(tool) -> Shape
@@ -1421,13 +1421,13 @@ class Shape(FreeCAD.ComplexGeoData):
         """
 
     @typing.overload
-    def cut(self, tool: Part.Shape, /): ...
+    def cut(self, tool: Part.Shape, /) -> Part.Shape: ...
 
     @typing.overload
-    def cut(self, arg1: Part.Shape, tolerance: float, /): ...
+    def cut(self, arg1: Part.Shape, tolerance: float, /) -> Part.Shape: ...
 
     @typing.overload
-    def cut(self, arg1: object, tolerance: float = 0.0, /):
+    def cut(self, arg1: object, tolerance: float = 0.0, /) -> Part.Shape:
         """
         Difference of this and a given (list of) topo shape
         cut(tool) -> Shape
@@ -1525,13 +1525,13 @@ class Shape(FreeCAD.ComplexGeoData):
         exportStl(filename)
         """
 
-    def extrude(self, arg1: FreeCAD.Vector, /):
+    def extrude(self, arg1: FreeCAD.Vector, /) -> Part.Edge | Part.CompSolid | Part.Solid | Part.Face | Part.Shell | Part.Compound:
         """
         Extrude the shape along a direction.
         extrude(direction, length)
         """
 
-    def findPlane(self, tol: float = None, /):
+    def findPlane(self, tol: float = None, /) -> Part.Plane:
         """
         return a plane if the shape is planar
         findPlane(tol=None) -> Shape
@@ -1558,13 +1558,13 @@ class Shape(FreeCAD.ComplexGeoData):
         """
 
     @typing.overload
-    def fuse(self, tool: Part.Shape, /): ...
+    def fuse(self, tool: Part.Shape, /) -> Part.Shape: ...
 
     @typing.overload
-    def fuse(self, arg1: Part.Shape, tolerance: float, /): ...
+    def fuse(self, arg1: Part.Shape, tolerance: float, /) -> Part.Shape: ...
 
     @typing.overload
-    def fuse(self, arg1: object, tolerance: float = 0.0, /):
+    def fuse(self, arg1: object, tolerance: float = 0.0, /) -> Part.Shape:
         """
         Union of this and a given (list of) topo shape.
         fuse(tool) -> Shape
@@ -1610,13 +1610,13 @@ class Shape(FreeCAD.ComplexGeoData):
         OCC 6.9.0 or later is required.
         """
 
-    def getElement(self, elementName: str, /):
+    def getElement(self, elementName: str, /) -> Part.Face | Part.Edge | Part.Vertex:
         """
         Returns a SubElement
         getElement(elementName) -> Face | Edge | Vertex
         """
 
-    def getTolerance(self, mode: int, ShapeType: type = None, /):
+    def getTolerance(self, mode: int, ShapeType: type = None, /) -> float:
         """
         Determines a tolerance from the ones stored in a shape
         getTolerance(mode, ShapeType=Shape) -> float
@@ -1633,7 +1633,7 @@ class Shape(FreeCAD.ComplexGeoData):
                  shell), also checks edge and Vertex
         """
 
-    def globalTolerance(self, mode: int, /):
+    def globalTolerance(self, mode: int, /) -> float:
         """
         Returns the computed tolerance according to the mode
         globalTolerance(mode) -> float
@@ -1751,7 +1751,7 @@ class Shape(FreeCAD.ComplexGeoData):
         isValid() -> bool
         """
 
-    def limitTolerance(self, tmin: float, tmax: float = 0, ShapeType: type = None, /):
+    def limitTolerance(self, tmin: float, tmax: float = 0, ShapeType: type = None, /) -> bool:
         """
         Limits tolerances in a shape
         limitTolerance(tmin, [tmax=0, ShapeType=Shape]) -> bool
@@ -1770,10 +1770,10 @@ class Shape(FreeCAD.ComplexGeoData):
         """
 
     @typing.overload
-    def makeChamfer(self, radius: float, edgeList: object, /): ...
+    def makeChamfer(self, radius: float, edgeList: object, /) -> Part.Shape: ...
 
     @typing.overload
-    def makeChamfer(self, radius1: float, radius2: float, edgeList: object, /):
+    def makeChamfer(self, radius1: float, radius2: float, edgeList: object, /) -> Part.Shape:
         """
         Make chamfer.
         makeChamfer(radius,edgeList) -> Shape
@@ -1782,10 +1782,10 @@ class Shape(FreeCAD.ComplexGeoData):
         """
 
     @typing.overload
-    def makeFillet(self, radius: float, edgeList: object, /): ...
+    def makeFillet(self, radius: float, edgeList: object, /) -> Part.Shape: ...
 
     @typing.overload
-    def makeFillet(self, radius1: float, radius2: float, edgeList: object, /):
+    def makeFillet(self, radius1: float, radius2: float, edgeList: object, /) -> Part.Shape:
         """
         Make fillet.
         makeFillet(radius,edgeList) -> Shape
@@ -1825,7 +1825,7 @@ class Shape(FreeCAD.ComplexGeoData):
         structure follows that of source shape.
         """
 
-    def makeOffsetShape(self, offset: float, tolerance: float, inter: bool = None, self_inter: bool = None, offsetMode: int = None, join: int = None, fill: bool = None):
+    def makeOffsetShape(self, offset: float, tolerance: float, inter: bool = None, self_inter: bool = None, offsetMode: int = None, join: int = None, fill: bool = None) -> Part.Shape:
         """
         makes an offset shape (3d offsetting).
         makeOffsetShape(offset, tolerance, [inter = False, self_inter = False,
@@ -1852,13 +1852,13 @@ class Shape(FreeCAD.ComplexGeoData):
         Returns: result of offsetting.
         """
 
-    def makeParallelProjection(self, shape: Part.Shape, dir: FreeCAD.Vector, /):
+    def makeParallelProjection(self, shape: Part.Shape, dir: FreeCAD.Vector, /) -> Part.Shape:
         """
         Parallel projection of an edge or wire on this shape
         makeParallelProjection(shape, dir) -> Shape
         """
 
-    def makePerspectiveProjection(self, shape: Part.Shape, pnt: FreeCAD.Vector, /):
+    def makePerspectiveProjection(self, shape: Part.Shape, pnt: FreeCAD.Vector, /) -> Part.Shape:
         """
         Perspective projection of an edge or wire on this shape
         makePerspectiveProjection(shape, pnt) -> Shape
@@ -1872,7 +1872,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Note: This should be used for rather small meshes only.
         """
 
-    def makeThickness(self, arg1: object, arg2: float, arg3: float, arg4: bool = None, arg5: bool = None, arg6: int = None, arg7: int = None, /):
+    def makeThickness(self, arg1: object, arg2: float, arg3: float, arg4: bool = None, arg5: bool = None, arg6: int = None, arg7: int = None, /) -> Part.Solid:
         """
         Hollow a solid according to given thickness and faces.
         makeThickness(List of faces, Offset (Float), Tolerance (Float)) -> Shape
@@ -1898,7 +1898,7 @@ class Shape(FreeCAD.ComplexGeoData):
         op: an optional string to be appended when auto generates element mapping.
         """
 
-    def mirror(self, base: FreeCAD.Vector, norm: FreeCAD.Vector, /):
+    def mirror(self, base: FreeCAD.Vector, norm: FreeCAD.Vector, /) -> Part.Shape:
         """
         Mirror this shape on a given plane.
         mirror(base, norm) -> Shape
@@ -1906,7 +1906,7 @@ class Shape(FreeCAD.ComplexGeoData):
         The plane is given with its base point and its normal direction.
         """
 
-    def multiFuse(self, arg1: object, tolerance: float = 0.0, /):
+    def multiFuse(self, arg1: object, tolerance: float = 0.0, /) -> Part.Shape:
         """
         Union of this and a given list of topo shapes.
         multiFuse((tool1,tool2,...),[tolerance=0.0]) -> Shape
@@ -1927,7 +1927,7 @@ class Shape(FreeCAD.ComplexGeoData):
         nullify()
         """
 
-    def oldFuse(self, tool: Part.Shape, /):
+    def oldFuse(self, tool: Part.Shape, /) -> Part.Shape:
         """
         Union of this and a given topo shape (old algorithm).
         oldFuse(tool) -> Shape
@@ -1947,7 +1947,7 @@ class Shape(FreeCAD.ComplexGeoData):
         ShapeType is interpreted as in the method getTolerance
         """
 
-    def project(self, shapeList: object, /):
+    def project(self, shapeList: object, /) -> Part.Shape:
         """
         Project a list of shapes on this shape
         project(shapeList) -> Shape
@@ -1965,7 +1965,7 @@ class Shape(FreeCAD.ComplexGeoData):
         read(filename)
         """
 
-    def reflectLines(self, ViewDir: FreeCAD.Vector, ViewPos: FreeCAD.Vector = None, UpDir: FreeCAD.Vector = None, EdgeType: str = None, Visible: bool = None, OnShape: bool = None):
+    def reflectLines(self, ViewDir: FreeCAD.Vector, ViewPos: FreeCAD.Vector = None, UpDir: FreeCAD.Vector = None, EdgeType: str = None, Visible: bool = None, OnShape: bool = None) -> Part.Shape:
         """
         Build projection or reflect lines of a shape according to a view direction.
         reflectLines(ViewDir, [ViewPos, UpDir, EdgeType, Visible, OnShape]) -> Shape (Compound of edges)
@@ -1998,7 +1998,7 @@ class Shape(FreeCAD.ComplexGeoData):
         The parameter is a list of shapes.
         """
 
-    def removeSplitter(self):
+    def removeSplitter(self) -> Part.Shape:
         """
         Removes redundant edges from the B-REP model
         removeSplitter() -> Shape
@@ -2025,13 +2025,13 @@ class Shape(FreeCAD.ComplexGeoData):
         """
 
     @typing.overload
-    def revolve(self, base: FreeCAD.Vector, direction: FreeCAD.Vector, angle: float = None, /): ...
+    def revolve(self, base: FreeCAD.Vector, direction: FreeCAD.Vector, angle: float = None, /) -> Part.Edge | Part.CompSolid | Part.Solid | Part.Face | Part.Shell | Part.Compound: ...
 
     @typing.overload
-    def revolve(self, Vector_0_0_0_: FreeCAD.Vector, Vector_0_0_1_: FreeCAD.Vector, arg3: float = None, /): ...
+    def revolve(self, Vector_0_0_0_: FreeCAD.Vector, Vector_0_0_1_: FreeCAD.Vector, arg3: float = None, /) -> Part.Edge | Part.CompSolid | Part.Solid | Part.Face | Part.Shell | Part.Compound: ...
 
     @typing.overload
-    def revolve(self, V_0_0_0_: FreeCAD.Vector, V_0_1_0_: FreeCAD.Vector, arg3: float = None, /):
+    def revolve(self, V_0_0_0_: FreeCAD.Vector, V_0_1_0_: FreeCAD.Vector, arg3: float = None, /) -> Part.Edge | Part.CompSolid | Part.Solid | Part.Face | Part.Shell | Part.Compound:
         """
         Revolve the shape around an Axis to a given degree.
         revolve(base, direction, angle)
@@ -2102,13 +2102,13 @@ class Shape(FreeCAD.ComplexGeoData):
         """
 
     @typing.overload
-    def section(self, tool: Part.Shape, approximation: bool = False, /): ...
+    def section(self, tool: Part.Shape, approximation: bool = False, /) -> Part.Shape: ...
 
     @typing.overload
-    def section(self, arg1: Part.Shape, tolerance: float, approximation: bool = False, /): ...
+    def section(self, arg1: Part.Shape, tolerance: float, approximation: bool = False, /) -> Part.Shape: ...
 
     @typing.overload
-    def section(self, arg1: object, tolerance: float = 0.0, approximation: bool = False, /):
+    def section(self, arg1: object, tolerance: float = 0.0, approximation: bool = False, /) -> Part.Shape:
         """
         Section of this with a given (list of) topo shape.
         section(tool,[approximation=False]) -> Shape
@@ -2137,7 +2137,7 @@ class Shape(FreeCAD.ComplexGeoData):
         slice(direction, distance) --> Wires
         """
 
-    def slices(self, direction: FreeCAD.Vector, distancesList: object, /):
+    def slices(self, direction: FreeCAD.Vector, distancesList: object, /) -> Part.Compound:
         """
         Make slices of this shape.
         slices(direction, distancesList) --> Wires
@@ -2149,7 +2149,7 @@ class Shape(FreeCAD.ComplexGeoData):
         tessellate() -> (vertex,facets)
         """
 
-    def toNurbs(self):
+    def toNurbs(self) -> Part.Shape:
         """
         Conversion of the complete geometry of a shape into NURBS geometry.
         toNurbs() -> Shape
@@ -2159,7 +2159,7 @@ class Shape(FreeCAD.ComplexGeoData):
         into B-spline surfaces.
         """
 
-    def transformGeometry(self, matrix: FreeCAD.Matrix, /):
+    def transformGeometry(self, matrix: FreeCAD.Matrix, /) -> Part.Shape:
         """
         Apply geometric transformation on this or a copy the shape.
         transformGeometry(matrix) -> Shape
@@ -2526,23 +2526,23 @@ class BSplineCurve(Part.BoundedCurve):
         					are supplied, the continuity will drop to C1.
         """
 
-    def isClosed(self):
+    def isClosed(self) -> bool:
         """
         Returns true if the distance between the start point and end point of
         					this B-Spline curve is less than or equal to gp::Resolution().
         """
 
-    def isPeriodic(self):
+    def isPeriodic(self) -> bool:
         """Returns true if this BSpline curve is periodic."""
 
-    def isRational(self):
+    def isRational(self) -> bool:
         """
         Returns true if this B-Spline curve is rational.
         					A B-Spline curve is rational if, at the time of construction,
         					the weight table has been initialized.
         """
 
-    def join(self, arg1: Part.BSplineCurve, /):
+    def join(self, arg1: Part.BSplineCurve, /) -> bool:
         """Build a new spline by joining this and a second spline."""
 
     def makeC1Continuous(self, tol: float = 1e-6, ang_tol: float = 1e-7, /):
@@ -2567,7 +2567,7 @@ class BSplineCurve(Part.BoundedCurve):
         first and last poles which are effectively modified.
         """
 
-    def removeKnot(self, Index: int, M: int, tol: float, /):
+    def removeKnot(self, Index: int, M: int, tol: float, /) -> bool:
         """
         removeKnot(Index, M, tol)
 
@@ -2763,7 +2763,7 @@ class Compound(Part.Shape):
         add(shape)
         """
 
-    def connectEdgesToWires(self, Shared: bool = True, Tolerance: float = 1e-7, /):
+    def connectEdgesToWires(self, Shared: bool = True, Tolerance: float = 1e-7, /) -> Part.Compound:
         """
         Build a compound of wires out of the edges of this compound.
         connectEdgesToWires([Shared = True, Tolerance = 1e-7]) -> Compound
@@ -2864,7 +2864,7 @@ class Wire(Part.Shape):
         add(edge)
         """
 
-    def approximate(self, Tol2d: float = None, Tol3d: float = 1e-4, MaxSegments: int = 10, MaxDegree: int = 3):
+    def approximate(self, Tol2d: float = None, Tol3d: float = 1e-4, MaxSegments: int = 10, MaxDegree: int = 3) -> Part.BSplineCurve:
         """
         Approximate B-Spline-curve from this wire
         approximate([Tol2d,Tol3d=1e-4,MaxSegments=10,MaxDegree=3]) -> BSpline
@@ -2965,22 +2965,22 @@ class Wire(Part.Shape):
         A face and a tolerance can optionally be supplied to the algorithm:
         """
 
-    def makeHomogenousWires(self, wire: Part.Wire, /):
+    def makeHomogenousWires(self, wire: Part.Wire, /) -> Part.Wire:
         """
         Make this and the given wire homogeneous to have the same number of edges
         makeHomogenousWires(wire) -> Wire
         """
 
-    def makeOffset(self, arg1: float, /):
+    def makeOffset(self, arg1: float, /) -> Part.Shape:
         """Offset the shape by a given amount. DEPRECATED - use makeOffset2D instead."""
 
-    def makePipe(self, profile: Part.Shape, /):
+    def makePipe(self, profile: Part.Shape, /) -> Part.Shape:
         """
         Make a pipe by sweeping along a wire.
         makePipe(profile) -> Shape
         """
 
-    def makePipeShell(self, shapeList: object, isSolid: bool = False, isFrenet: bool = False, transition: int = 0, /):
+    def makePipeShell(self, shapeList: object, isSolid: bool = False, isFrenet: bool = False, transition: int = 0, /) -> Part.Shape:
         """
         Make a loft defined by a list of profiles along a wire.
         makePipeShell(shapeList,[isSolid=False,isFrenet=False,transition=0]) -> Shape
@@ -3072,7 +3072,7 @@ class Point(Part.Geometry):
     @Z.setter
     def Z(self, value: float): ...
 
-    def toShape(self):
+    def toShape(self) -> Part.Vertex:
         """Create a vertex from this point."""
 
 
@@ -3152,19 +3152,19 @@ class Shell(Part.Shape):
         add(face)
         """
 
-    def getBadEdges(self):
+    def getBadEdges(self) -> Part.Compound:
         """
         Get bad edges as compound.
         getBadEdges() -> compound
         """
 
-    def getFreeEdges(self):
+    def getFreeEdges(self) -> Part.Compound:
         """
         Get free edges as compound.
         getFreeEdges() -> compound
         """
 
-    def makeHalfSpace(self, point: FreeCAD.Vector, /):
+    def makeHalfSpace(self, point: FreeCAD.Vector, /) -> Part.Solid:
         """
         Make a half-space solid by this shell and a reference point.
         makeHalfSpace(point) -> Solid
@@ -3545,17 +3545,17 @@ class BSplineSurface(Part.GeometrySurface):
         					the y starting point Y0 and increment dY
         """
 
-    def isUClosed(self):
+    def isUClosed(self) -> bool:
         """
         Checks if this surface is closed in the u parametric direction.
         					Returns true if, in the table of poles the first row and the last
         					row are identical.
         """
 
-    def isUPeriodic(self):
+    def isUPeriodic(self) -> bool:
         """Returns true if this surface is periodic in the u parametric direction."""
 
-    def isURational(self):
+    def isURational(self) -> bool:
         """
         Returns false if the equation of this B-Spline surface is polynomial
         					(e.g. non-rational) in the u or v parametric direction.
@@ -3563,17 +3563,17 @@ class BSplineSurface(Part.GeometrySurface):
         					weights are identical
         """
 
-    def isVClosed(self):
+    def isVClosed(self) -> bool:
         """
         Checks if this surface is closed in the v parametric direction.
         					Returns true if, in the table of poles the first column and the
         					last column are identical.
         """
 
-    def isVPeriodic(self):
+    def isVPeriodic(self) -> bool:
         """Returns true if this surface is periodic in the v parametric direction."""
 
-    def isVRational(self):
+    def isVRational(self) -> bool:
         """
         Returns false if the equation of this B-Spline surface is polynomial
         					(e.g. non-rational) in the u or v parametric direction.
@@ -3597,7 +3597,7 @@ class BSplineSurface(Part.GeometrySurface):
         					   null.
         """
 
-    def removeUKnot(self, arg1: int, arg2: int, arg3: float, /):
+    def removeUKnot(self, arg1: int, arg2: int, arg3: float, /) -> bool:
         """
         Reduces to M the multiplicity of the knot of index Index in the given
         				parametric direction. If M is 0, the knot is removed.
@@ -3614,7 +3614,7 @@ class BSplineSurface(Part.GeometrySurface):
         				'smoothes' the surface.
         """
 
-    def removeVKnot(self, arg1: int, arg2: int, arg3: float, /):
+    def removeVKnot(self, arg1: int, arg2: int, arg3: float, /) -> bool:
         """
         Reduces to M the multiplicity of the knot of index Index in the given
         				parametric direction. If M is 0, the knot is removed.
@@ -3631,7 +3631,7 @@ class BSplineSurface(Part.GeometrySurface):
         				'smoothes' the surface.
         """
 
-    def reparametrize(self, arg1: int, arg2: int, arg3: float = None, /):
+    def reparametrize(self, arg1: int, arg2: int, arg3: float = None, /) -> Part.BSplineSurface:
         """Returns a reparametrized copy of this surface"""
 
     def segment(self, arg1: float, arg2: float, arg3: float, arg4: float, /):
@@ -3929,16 +3929,16 @@ class GeometrySurface(Part.Geometry):
     def Rotation(self) -> FreeCAD.Rotation:
         """Returns a rotation object to describe the orientation for surface that supports it"""
 
-    def UPeriod(self):
+    def UPeriod(self) -> float:
         """Returns the period of this patch in the u parametric direction."""
 
-    def VPeriod(self):
+    def VPeriod(self) -> float:
         """Returns the period of this patch in the v parametric direction."""
 
     def bounds(self):
         """Returns the parametric bounds (U1, U2, V1, V2) of this trimmed surface."""
 
-    def curvature(self, u: float, v: float, type: str, /):
+    def curvature(self, u: float, v: float, type: str, /) -> float:
         """
         curvature(u,v,type) -> float
         The value of type must be one of this: Max, Min, Mean or Gauss
@@ -3954,10 +3954,10 @@ class GeometrySurface(Part.Geometry):
         the second vector corresponds to the minimum curvature.
         """
 
-    def getD0(self, arg1: float, arg2: float, /):
+    def getD0(self, arg1: float, arg2: float, /) -> FreeCAD.Vector:
         """Returns the point of given parameter"""
 
-    def getDN(self, arg1: float, arg2: float, arg3: int, arg4: int, /):
+    def getDN(self, arg1: float, arg2: float, arg3: int, arg4: int, /) -> FreeCAD.Vector:
         """Returns the n-th derivative"""
 
     @typing.overload
@@ -3975,32 +3975,32 @@ class GeometrySurface(Part.Geometry):
         * precision code (optional, default=0)
         """
 
-    def isPlanar(self, float: float = None, /):
+    def isPlanar(self, float: float = None, /) -> bool:
         """
         isPlanar([float]) -> Bool
         Checks if the surface is planar within a certain tolerance.
         """
 
-    def isUClosed(self):
+    def isUClosed(self) -> bool:
         """Checks if this surface is closed in the u parametric direction."""
 
-    def isUPeriodic(self):
+    def isUPeriodic(self) -> bool:
         """Returns true if this patch is periodic in the given parametric direction."""
 
-    def isUmbillic(self, u: float, v: float, /):
+    def isUmbillic(self, u: float, v: float, /) -> bool:
         """
         isUmbillic(u,v) -> bool
         Check if the geometry on parameter is an umbillic point,
         i.e. maximum and minimum curvature are equal.
         """
 
-    def isVClosed(self):
+    def isVClosed(self) -> bool:
         """Checks if this surface is closed in the v parametric direction."""
 
-    def isVPeriodic(self):
+    def isVPeriodic(self) -> bool:
         """Returns true if this patch is periodic in the given parametric direction."""
 
-    def normal(self, u: float, v: float, /):
+    def normal(self, u: float, v: float, /) -> FreeCAD.Vector:
         """
         normal(u,v) -> Vector
         Computes the normal of parameter (u,v) on this geometry
@@ -4012,7 +4012,7 @@ class GeometrySurface(Part.Geometry):
         of the nearest orthogonal projection of the point.
         """
 
-    def projectPoint(self, Point: FreeCAD.Vector, Method: str = None):
+    def projectPoint(self, Point: FreeCAD.Vector, Method: str = None) -> FreeCAD.Vector:
         """
         Computes the projection of a point on the surface
 
@@ -4031,7 +4031,7 @@ class GeometrySurface(Part.Geometry):
         Computes the tangent of parameter (u,v) on this geometry
         """
 
-    def toBSpline(self, Tol3d: float = None, UContinuity: str = None, VContinuity: str = None, MaxDegreeU: int = None, MaxDegreeV: int = None, MaxSegments: int = None, PrecisCode: int = None):
+    def toBSpline(self, Tol3d: float = None, UContinuity: str = None, VContinuity: str = None, MaxDegreeU: int = None, MaxDegreeV: int = None, MaxSegments: int = None, PrecisCode: int = None) -> Part.BSplineSurface:
         """
         Returns a B-Spline representation of this surface. 
         					The optional arguments are:
@@ -4045,19 +4045,19 @@ class GeometrySurface(Part.Geometry):
         					Will raise an exception if surface is infinite in U or V (like planes, cones or cylinders)
         """
 
-    def toShape(self, arg1: float = None, arg2: float = None, arg3: float = None, arg4: float = None, /):
+    def toShape(self, arg1: float = None, arg2: float = None, arg3: float = None, arg4: float = None, /) -> Part.Face:
         """Return the shape for the geometry."""
 
-    def toShell(self, Bounds: tuple = None, Segment: bool = None):
+    def toShell(self, Bounds: tuple = None, Segment: bool = None) -> Part.Shell:
         """Make a shell of the surface."""
 
-    def uIso(self, arg1: float, /):
+    def uIso(self, arg1: float, /) -> Part.Line:
         """Builds the U isoparametric curve"""
 
-    def vIso(self, arg1: float, /):
+    def vIso(self, arg1: float, /) -> Part.Line:
         """Builds the V isoparametric curve"""
 
-    def value(self, u: float, v: float, /):
+    def value(self, u: float, v: float, /) -> FreeCAD.Vector:
         """
         value(u,v) -> Point
         Computes the point of parameter (u,v) on this surface
@@ -4218,7 +4218,7 @@ class Edge(Part.Shape):
     def Tolerance(self) -> float:
         """Set or get the tolerance of the vertex"""
 
-    def centerOfCurvatureAt(self, paramval: float, /):
+    def centerOfCurvatureAt(self, paramval: float, /) -> FreeCAD.Vector:
         """
         Get the center of curvature at the given parameter [First|Last] if defined
         centerOfCurvatureAt(paramval) -> Vector
@@ -4240,13 +4240,13 @@ class Edge(Part.Shape):
         """
 
     @typing.overload
-    def derivative1At(self, paramval: float, /): ...
+    def derivative1At(self, paramval: float, /) -> FreeCAD.Vector: ...
 
     @typing.overload
-    def derivative1At(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /): ...
+    def derivative1At(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /) -> FreeCAD.Vector: ...
 
     @typing.overload
-    def derivative1At(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /):
+    def derivative1At(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /) -> FreeCAD.Vector:
         """
         Get the first derivative at the given parameter value along the Edge if it is defined
         derivative1At(paramval) -> Vector
@@ -4283,13 +4283,13 @@ class Edge(Part.Shape):
         """
 
     @typing.overload
-    def derivative2At(self, paramval: float, /): ...
+    def derivative2At(self, paramval: float, /) -> FreeCAD.Vector: ...
 
     @typing.overload
-    def derivative2At(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /): ...
+    def derivative2At(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /) -> FreeCAD.Vector: ...
 
     @typing.overload
-    def derivative2At(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /):
+    def derivative2At(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /) -> FreeCAD.Vector:
         """
         Get the second derivative at the given parameter value along the Edge if it is defined
         derivative2At(paramval) -> Vector
@@ -4326,13 +4326,13 @@ class Edge(Part.Shape):
         """
 
     @typing.overload
-    def derivative3At(self, paramval: float, /): ...
+    def derivative3At(self, paramval: float, /) -> FreeCAD.Vector: ...
 
     @typing.overload
-    def derivative3At(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /): ...
+    def derivative3At(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /) -> FreeCAD.Vector: ...
 
     @typing.overload
-    def derivative3At(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /):
+    def derivative3At(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /) -> FreeCAD.Vector:
         """
         Get the third derivative at the given parameter value along the Edge if it is defined
         derivative3At(paramval) -> Vector
@@ -4435,7 +4435,7 @@ class Edge(Part.Shape):
         Part.show(s)
         """
 
-    def firstVertex(self, Orientation: bool = False, /):
+    def firstVertex(self, Orientation: bool = False, /) -> Part.Vertex:
         """
         Returns the Vertex of orientation FORWARD in this edge.
         firstVertex([Orientation=False]) -> Vertex
@@ -4444,7 +4444,7 @@ class Edge(Part.Shape):
         Orientation = True : taking into account the edge orientation
         """
 
-    def getParameterByLength(self, pos: float, tolerance: float = 1e-7, /):
+    def getParameterByLength(self, pos: float, tolerance: float = 1e-7, /) -> float:
         """
         Get the value of the primary parameter at the given distance along the cartesian length of the edge.
         getParameterByLength(pos, [tolerance = 1e-7]) -> Float
@@ -4462,13 +4462,13 @@ class Edge(Part.Shape):
                 given position along its cartesian length.
         """
 
-    def isSeam(self, Face: Part.Face, /):
+    def isSeam(self, Face: Part.Face, /) -> bool:
         """
         Checks whether the edge is a seam edge.
         isSeam(Face)
         """
 
-    def lastVertex(self, Orientation: bool = False, /):
+    def lastVertex(self, Orientation: bool = False, /) -> Part.Vertex:
         """
         Returns the Vertex of orientation REVERSED in this edge.
         lastVertex([Orientation=False]) -> Vertex
@@ -4478,13 +4478,13 @@ class Edge(Part.Shape):
         """
 
     @typing.overload
-    def normalAt(self, paramval: float, /): ...
+    def normalAt(self, paramval: float, /) -> FreeCAD.Vector: ...
 
     @typing.overload
-    def normalAt(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /): ...
+    def normalAt(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /) -> FreeCAD.Vector: ...
 
     @typing.overload
-    def normalAt(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /):
+    def normalAt(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /) -> FreeCAD.Vector:
         """
         Get the normal direction at the given parameter value along the Edge if it is defined
         normalAt(paramval) -> Vector
@@ -4520,7 +4520,7 @@ class Edge(Part.Shape):
                location along its length (or extrapolated length)
         """
 
-    def parameterAt(self, arg1: Part.Vertex, arg2: Part.Face = None, /):
+    def parameterAt(self, arg1: Part.Vertex, arg2: Part.Face = None, /) -> float:
         """
         Get the parameter at the given vertex if lying on the edge
         parameterAt(Vertex) -> Float
@@ -4535,7 +4535,7 @@ class Edge(Part.Shape):
         An exception is raised if the edge has no polygon.
         """
 
-    def split(self, paramval: object, /):
+    def split(self, paramval: object, /) -> Part.Wire:
         """
         Splits the edge at the given parameter values and builds a wire out of it
         split(paramval) -> Wire
@@ -4552,13 +4552,13 @@ class Edge(Part.Shape):
         """
 
     @typing.overload
-    def tangentAt(self, paramval: float, /): ...
+    def tangentAt(self, paramval: float, /) -> FreeCAD.Vector: ...
 
     @typing.overload
-    def tangentAt(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /): ...
+    def tangentAt(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /) -> FreeCAD.Vector: ...
 
     @typing.overload
-    def tangentAt(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /):
+    def tangentAt(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /) -> FreeCAD.Vector:
         """
         Get the tangent direction at the given primary parameter value along the Edge if it is defined
         tangentAt(paramval) -> Vector
@@ -4595,13 +4595,13 @@ class Edge(Part.Shape):
         """
 
     @typing.overload
-    def valueAt(self, paramval: float, /): ...
+    def valueAt(self, paramval: float, /) -> FreeCAD.Vector: ...
 
     @typing.overload
-    def valueAt(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /): ...
+    def valueAt(self, x_FirstParameter_0_5_x_LastParameter_x_FirstParameter_: float, /) -> FreeCAD.Vector: ...
 
     @typing.overload
-    def valueAt(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /):
+    def valueAt(self, x_FirstParameter_3_5_x_LastParameter_x_FirstParameter_: float, /) -> FreeCAD.Vector:
         """
         Get the value of the cartesian parameter value at the given parameter value along the Edge
         valueAt(paramval) -> Vector
@@ -4753,16 +4753,16 @@ class BezierCurve(Part.BoundedCurve):
         				bezier.interpolate([[pt1, deriv11, deriv12], [pt2,], [pt3, deriv31]], [0, 0.4, 1.0])
         """
 
-    def isClosed(self):
+    def isClosed(self) -> bool:
         """
         Returns true if the distance between the start point and end point of
         					this Bezier curve is less than or equal to gp::Resolution().
         """
 
-    def isPeriodic(self):
+    def isPeriodic(self) -> bool:
         """Returns false."""
 
-    def isRational(self):
+    def isRational(self) -> bool:
         """Returns false if the weights of all the poles of this Bezier curve are equal."""
 
     def removePole(self, arg1: int, /):
@@ -5007,13 +5007,13 @@ class Curve(Part.Geometry):
     def Rotation(self) -> FreeCAD.Rotation:
         """Returns a rotation object to describe the orientation for curve that supports it"""
 
-    def approximateBSpline(self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = 'C2', /):
+    def approximateBSpline(self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = 'C2', /) -> Part.BSplineCurve:
         """
         Approximates a curve of any type to a B-Spline curve
         					approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -> B-Spline curve
         """
 
-    def centerOfCurvature(self, float_pos: float, /):
+    def centerOfCurvature(self, float_pos: float, /) -> FreeCAD.Vector:
         """Vector = centerOfCurvature(float pos) - Get the center of curvature at the given parameter [First|Last] if defined"""
 
     def continuityWith(self, arg1: Part.Curve, arg2: float = None, arg3: float = None, arg4: bool = None, arg5: bool = None, arg6: float = None, arg7: float = None, /):
@@ -5085,7 +5085,7 @@ class Curve(Part.Geometry):
         Part.show(s)
         """
 
-    def getD0(self, arg1: float, /):
+    def getD0(self, arg1: float, /) -> FreeCAD.Vector:
         """Returns the point of given parameter"""
 
     def getD1(self, arg1: float, /):
@@ -5097,7 +5097,7 @@ class Curve(Part.Geometry):
     def getD3(self, arg1: float, /):
         """Returns the point, first, second and third derivatives"""
 
-    def getDN(self, arg1: float, arg2: int, /):
+    def getDN(self, arg1: float, arg2: int, /) -> FreeCAD.Vector:
         """Returns the n-th derivative"""
 
     @typing.overload
@@ -5120,22 +5120,22 @@ class Curve(Part.Geometry):
     def intersectCS(self, arg1: Part.GeometrySurface, arg2: float = None, /):
         """Returns all intersection points and curve segments between the curve and the surface."""
 
-    def isClosed(self):
+    def isClosed(self) -> bool:
         """Returns true if the curve is closed."""
 
-    def isPeriodic(self):
+    def isPeriodic(self) -> bool:
         """Returns true if this curve is periodic."""
 
-    def length(self, uMin: float = None, uMax: float = None, Tol: float = None, /):
+    def length(self, uMin: float = None, uMax: float = None, Tol: float = None, /) -> float:
         """
         Computes the length of a curve
         length([uMin,uMax,Tol]) -> Float
         """
 
-    def makeRuledSurface(self, arg1: Part.Curve, /):
+    def makeRuledSurface(self, arg1: Part.Curve, /) -> Part.BSplineSurface | Part.RectangularTrimmedSurface:
         """Make a ruled surface of this and the given curves"""
 
-    def normal(self, pos: float, /):
+    def normal(self, pos: float, /) -> FreeCAD.Vector:
         """Vector = normal(pos) - Get the normal vector at the given parameter [First|Last] if defined"""
 
     def parameter(self, arg1: FreeCAD.Vector, /):
@@ -5144,13 +5144,13 @@ class Curve(Part.Geometry):
         of the nearest orthogonal projection of the point.
         """
 
-    def parameterAtDistance(self, abscissa: float, startingParameter: float = None, /):
+    def parameterAtDistance(self, abscissa: float, startingParameter: float = None, /) -> float:
         """
         Returns the parameter on the curve of a point at the given distance from a starting parameter.
         parameterAtDistance([abscissa, startingParameter]) -> Float the
         """
 
-    def period(self):
+    def period(self) -> float:
         """
         Returns the period of this curve
         or raises an exception if it is not periodic.
@@ -5159,7 +5159,7 @@ class Curve(Part.Geometry):
     def reverse(self):
         """Changes the direction of parametrization of the curve."""
 
-    def reversedParameter(self, arg1: float, /):
+    def reversedParameter(self, arg1: float, /) -> float:
         """
         Returns the parameter on the reversed curve for
         the point of parameter U on this curve.
@@ -5168,19 +5168,19 @@ class Curve(Part.Geometry):
     def tangent(self, arg1: float, /):
         """Computes the tangent of parameter u on this curve"""
 
-    def toBSpline(self, Float: float = None, Float2: float = None, /):
+    def toBSpline(self, Float: float = None, Float2: float = None, /) -> Part.BSplineCurve:
         """
         Converts a curve of any type (only part from First to Last)
         					toBSpline([Float=First, Float=Last]) -> B-Spline curve
         """
 
-    def toNurbs(self, Float: float = None, Float2: float = None, /):
+    def toNurbs(self, Float: float = None, Float2: float = None, /) -> Part.BSplineCurve:
         """
         Converts a curve of any type (only part from First to Last)
                             toNurbs([Float=First, Float=Last]) -> NURBS curve
         """
 
-    def toShape(self, arg1: float = None, arg2: float = None, /):
+    def toShape(self, arg1: float = None, arg2: float = None, /) -> Part.Edge:
         """Return the shape for the geometry."""
 
     def trim(self, Float: float = None, Float2: float = None, /):
@@ -5189,7 +5189,7 @@ class Curve(Part.Geometry):
                             trim([Float=First, Float=Last]) -> trimmed curve
         """
 
-    def value(self, arg1: float, /):
+    def value(self, arg1: float, /) -> FreeCAD.Vector:
         """Computes the point of parameter u on this curve"""
 
 
@@ -5496,19 +5496,19 @@ class BRepOffsetAPI_MakeFilling(FreeCAD.PyObjectBase):
     def __init__(self, Degree: int = None, NbPtsOnCur: int = None, NbIter: int = None, MaxDegree: int = None, MaxSegments: int = None, Tol2d: float = None, Tol3d: float = None, TolAng: float = None, TolCurv: float = None, Anisotropy: bool = None):
         """N-Side Filling"""
 
-    def G0Error(self, int: int = None, /):
+    def G0Error(self, int: int = None, /) -> float:
         """
         G0Error([int])
                           Returns the maximum distance between the result and the constraints.
         """
 
-    def G1Error(self, int: int = None, /):
+    def G1Error(self, int: int = None, /) -> float:
         """
         G1Error([int])
                           Returns the maximum angle between the result and the constraints.
         """
 
-    def G2Error(self, int: int = None, /):
+    def G2Error(self, int: int = None, /) -> float:
         """
         G2Error([int])
                           Returns the greatest difference in curvature between the result and the constraints.
@@ -5570,7 +5570,7 @@ class BRepOffsetAPI_MakeFilling(FreeCAD.PyObjectBase):
                           Sets the parameters used for resolution.
         """
 
-    def shape(self):
+    def shape(self) -> Part.Shape:
         """
         shape()
                           Returns the resulting shape.
@@ -5628,7 +5628,7 @@ class BezierSurface(Part.GeometrySurface):
         					-- the orientation of the surface is reversed.
         """
 
-    def getPole(self, arg1: int, arg2: int, /):
+    def getPole(self, arg1: int, arg2: int, /) -> FreeCAD.Vector:
         """Get a pole of index (UIndex,VIndex) of the Bezier surface."""
 
     def getPoles(self):
@@ -5704,17 +5704,17 @@ class BezierSurface(Part.GeometrySurface):
         					table.
         """
 
-    def isUClosed(self):
+    def isUClosed(self) -> bool:
         """
         Checks if this surface is closed in the u parametric direction.
         					Returns true if, in the table of poles the first row and the last
         					row are identical.
         """
 
-    def isUPeriodic(self):
+    def isUPeriodic(self) -> bool:
         """Returns false."""
 
-    def isURational(self):
+    def isURational(self) -> bool:
         """
         Returns false if the equation of this Bezier surface is polynomial
         					(e.g. non-rational) in the u or v parametric direction.
@@ -5722,17 +5722,17 @@ class BezierSurface(Part.GeometrySurface):
         					weights are identical
         """
 
-    def isVClosed(self):
+    def isVClosed(self) -> bool:
         """
         Checks if this surface is closed in the v parametric direction.
         					Returns true if, in the table of poles the first column and the
         					last column are identical.
         """
 
-    def isVPeriodic(self):
+    def isVPeriodic(self) -> bool:
         """Returns false."""
 
-    def isVRational(self):
+    def isVRational(self) -> bool:
         """
         Returns false if the equation of this Bezier surface is polynomial
         					(e.g. non-rational) in the u or v parametric direction.
@@ -5880,23 +5880,23 @@ class ArcOfConic(Part.TrimmedCurve):
 
 
 # AppPartPy.cpp
-def open(string: str, /):
+def open(string: str, /) -> None:
     """open(string) -- Create a new document and load the file into the document."""
 
 
-def insert(string: str, string1: str, /):
+def insert(string: str, string1: str, /) -> None:
     """insert(string,string) -- Insert the file into the given document."""
 
 
-def export(list: object, string: str, /):
+def export(list: object, string: str, /) -> None:
     """export(list,string) -- Export a list of objects into a single file."""
 
 
-def read(string: str, /):
+def read(string: str, /) -> Part.Shape:
     """read(string) -- Load the file and return the shape."""
 
 
-def show(shape: Part.Shape, string: str = None, /):
+def show(shape: Part.Shape, string: str = None, /) -> None:
     """show(shape,[string]) -- Add the shape to the active document or create one if no document exists."""
 
 
@@ -5904,11 +5904,11 @@ def getFacets(shape: object, /):
     """getFacets(shape): simplified mesh generation"""
 
 
-def makeCompound(list: object, /):
+def makeCompound(list: object, /) -> Part.Compound:
     """makeCompound(list) -- Create a compound out of a list of shapes."""
 
 
-def makeShell(list: object, /):
+def makeShell(list: object, /) -> Part.Shell:
     """makeShell(list) -- Create a shell out of a list of faces."""
 
 
@@ -5919,22 +5919,22 @@ def makeFace(list_of_shapes_or_compound: object, maker_class_name: str, /):
     """
 
 
-def makeFilledFace(arg1: object, arg2: Part.Face = None, /):
+def makeFilledFace(arg1: object, arg2: Part.Face = None, /) -> Part.Face:
     """makeFilledFace(list) -- Create a face out of a list of edges."""
 
 
-def makeSolid(shape: Part.Shape, /):
+def makeSolid(shape: Part.Shape, /) -> Part.Solid | None:
     """makeSolid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created."""
 
 
-def makePlane(length: float, width: float, pnt: FreeCAD.Vector = None, dirZ: FreeCAD.Vector = None, dirX: FreeCAD.Vector = None, /):
+def makePlane(length: float, width: float, pnt: FreeCAD.Vector = None, dirZ: FreeCAD.Vector = None, dirX: FreeCAD.Vector = None, /) -> Part.Face:
     """
     makePlane(length,width,[pnt,dirZ,dirX]) -- Make a plane
     By default pnt=Vector(0,0,0) and dirZ=Vector(0,0,1), dirX is ignored in this case
     """
 
 
-def makeBox(length: float, width: float, height: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, /):
+def makeBox(length: float, width: float, height: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, /) -> Part.Solid:
     """
     makeBox(length,width,height,[pnt,dir]) -- Make a box located
     in pnt with the dimensions (length,width,height)
@@ -5942,7 +5942,7 @@ def makeBox(length: float, width: float, height: float, pnt: FreeCAD.Vector = No
     """
 
 
-def makeWedge(arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, arg6: float, arg7: float, arg8: float, arg9: float, arg10: float, arg11: FreeCAD.Vector = None, arg12: FreeCAD.Vector = None, /):
+def makeWedge(arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, arg6: float, arg7: float, arg8: float, arg9: float, arg10: float, arg11: FreeCAD.Vector = None, arg12: FreeCAD.Vector = None, /) -> Part.Solid:
     """
     makeWedge(xmin, ymin, zmin, z2min, x2min,
     xmax, ymax, zmax, z2max, x2max,[pnt,dir])
@@ -5951,7 +5951,7 @@ def makeWedge(arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, a
     """
 
 
-def makeLine(startpnt: object, endpnt: object, /):
+def makeLine(startpnt: object, endpnt: object, /) -> Part.Edge:
     """
     makeLine(startpnt,endpnt) -- Make a line between two points
 
@@ -5968,7 +5968,7 @@ def makeLine(startpnt: object, endpnt: object, /):
     """
 
 
-def makePolygon(arg1: object, arg2: bool = None, /):
+def makePolygon(arg1: object, arg2: bool = None, /) -> Part.Wire:
     """
     makePolygon(pntslist) -- Make a polygon from a list of points
 
@@ -5983,42 +5983,42 @@ def makePolygon(arg1: object, arg2: bool = None, /):
     """
 
 
-def makeCircle(radius: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle1: float = None, angle2: float = None, /):
+def makeCircle(radius: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle1: float = None, angle2: float = None, /) -> Part.Edge:
     """
     makeCircle(radius,[pnt,dir,angle1,angle2]) -- Make a circle with a given radius
     By default pnt=Vector(0,0,0), dir=Vector(0,0,1), angle1=0 and angle2=360
     """
 
 
-def makeSphere(radius: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle1: float = None, angle2: float = None, angle3: float = None, /):
+def makeSphere(radius: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle1: float = None, angle2: float = None, angle3: float = None, /) -> Part.Solid:
     """
     makeSphere(radius,[pnt, dir, angle1,angle2,angle3]) -- Make a sphere with a given radius
     By default pnt=Vector(0,0,0), dir=Vector(0,0,1), angle1=0, angle2=90 and angle3=360
     """
 
 
-def makeCylinder(radius: float, height: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle: float = None, /):
+def makeCylinder(radius: float, height: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle: float = None, /) -> Part.Solid:
     """
     makeCylinder(radius,height,[pnt,dir,angle]) -- Make a cylinder with a given radius and height
     By default pnt=Vector(0,0,0),dir=Vector(0,0,1) and angle=360
     """
 
 
-def makeCone(radius1: float, radius2: float, height: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle: float = None, /):
+def makeCone(radius1: float, radius2: float, height: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle: float = None, /) -> Part.Solid:
     """
     makeCone(radius1,radius2,height,[pnt,dir,angle]) -- Make a cone with given radii and height
     By default pnt=Vector(0,0,0), dir=Vector(0,0,1) and angle=360
     """
 
 
-def makeTorus(radius1: float, radius2: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle1: float = None, angle2: float = None, angle: float = None, /):
+def makeTorus(radius1: float, radius2: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, angle1: float = None, angle2: float = None, angle: float = None, /) -> Part.Solid:
     """
     makeTorus(radius1,radius2,[pnt,dir,angle1,angle2,angle]) -- Make a torus with a given radii and angles
     By default pnt=Vector(0,0,0),dir=Vector(0,0,1),angle1=0,angle1=360 and angle=360
     """
 
 
-def makeHelix(arg1: float, arg2: float, arg3: float, arg4: float = None, arg5: bool = None, arg6: bool = None, /):
+def makeHelix(arg1: float, arg2: float, arg3: float, arg4: float = None, arg5: bool = None, arg6: bool = None, /) -> Part.Wire:
     """
     makeHelix(pitch,height,radius,[angle]) -- Make a helix with a given pitch, height and radius
     By default a cylindrical surface is used to create the helix. If the fourth parameter is set
@@ -6026,7 +6026,7 @@ def makeHelix(arg1: float, arg2: float, arg3: float, arg4: float = None, arg5: b
     """
 
 
-def makeLongHelix(pitch: float, height: float, radius: float, angle: float = None, hand: bool = None, /):
+def makeLongHelix(pitch: float, height: float, radius: float, angle: float = None, hand: bool = None, /) -> Part.Wire:
     """
     makeLongHelix(pitch,height,radius,[angle],[hand]) -- Make a (multi-edge) helix with a given pitch, height and radius
     By default a cylindrical surface is used to create the helix. If the fourth parameter is set
@@ -6034,16 +6034,16 @@ def makeLongHelix(pitch: float, height: float, radius: float, angle: float = Non
     """
 
 
-def makeThread(pitch: float, depth: float, height: float, radius: float, /):
+def makeThread(pitch: float, depth: float, height: float, radius: float, /) -> Part.Wire:
     """makeThread(pitch,depth,height,radius) -- Make a thread with a given pitch, depth, height and radius"""
 
 
 @typing.overload
-def makeRevolution(Curve_or_Edge: Part.Geometry, vmin: float = None, vmax: float = None, angle: float = None, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, shapetype: type = None, /): ...
+def makeRevolution(Curve_or_Edge: Part.Geometry, vmin: float = None, vmax: float = None, angle: float = None, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, shapetype: type = None, /) -> Part.Solid | Part.Shell | Part.Shape | Part.Face: ...
 
 
 @typing.overload
-def makeRevolution(Curve_or_Edge: Part.Shape, vmin: float = None, vmax: float = None, angle: float = None, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, shapetype: type = None, /):
+def makeRevolution(Curve_or_Edge: Part.Shape, vmin: float = None, vmax: float = None, angle: float = None, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, shapetype: type = None, /) -> Part.Solid | Part.Shell | Part.Shape | Part.Face:
     """
     makeRevolution(Curve or Edge,[vmin,vmax,angle,pnt,dir,shapetype]) -- Make a revolved shape
     by rotating the curve or a portion of it around an axis given by (pnt,dir).
@@ -6052,32 +6052,32 @@ def makeRevolution(Curve_or_Edge: Part.Shape, vmin: float = None, vmax: float = 
     """
 
 
-def makeRuledSurface(Edge_Wire: Part.Shape, Edge_Wire1: Part.Shape, /):
+def makeRuledSurface(Edge_Wire: Part.Shape, Edge_Wire1: Part.Shape, /) -> Part.Face | Part.Shell:
     """
     makeRuledSurface(Edge|Wire,Edge|Wire) -- Make a ruled surface
     Create a ruled surface out of two edges or wires. If wires are used thenthese must have the same number of edges.
     """
 
 
-def makeShellFromWires(Wires: object, /):
+def makeShellFromWires(Wires: object, /) -> Part.Shell:
     """
     makeShellFromWires(Wires) -- Make a shell from wires.
     The wires must have the same number of edges.
     """
 
 
-def makeTube(edge: Part.Shape, radius: float, continuity: str = None, max_degree: int = None, max_segments: int = None, /):
+def makeTube(edge: Part.Shape, radius: float, continuity: str = None, max_degree: int = None, max_segments: int = None, /) -> Part.Face:
     """
     makeTube(edge,radius,[continuity,max degree,max segments]) -- Create a tube.
     continuity is a string which must be 'C0','C1','C2','C3','CN','G1' or 'G1',
     """
 
 
-def makeSweepSurface(arg1: Part.Shape, arg2: Part.Shape, arg3: float = None, arg4: int = None, /):
+def makeSweepSurface(arg1: Part.Shape, arg2: Part.Shape, arg3: float = None, arg4: int = None, /) -> Part.Face:
     """makeSweepSurface(edge(path),edge(profile),[float]) -- Create a profile along a path."""
 
 
-def makeLoft(list_of_wires: object, solid: bool = False, ruled: bool = False, closed: bool = False, maxDegree: int = 5, /):
+def makeLoft(list_of_wires: object, solid: bool = False, ruled: bool = False, closed: bool = False, maxDegree: int = 5, /) -> Part.Shape | Part.BSplineSurface:
     """makeLoft(list of wires,[solid=False,ruled=False,closed=False,maxDegree=5]) -- Create a loft shape."""
 
 
@@ -6114,11 +6114,11 @@ def exportUnits(string: str = None, /):
 
 
 @typing.overload
-def setStaticValue(string: str, string_int_float: str, /): ...
+def setStaticValue(string: str, string_int_float: str, /) -> None: ...
 
 
 @typing.overload
-def setStaticValue(string: str, string_int_float: object, /):
+def setStaticValue(string: str, string_int_float: object, /) -> None:
     """setStaticValue(string,string|int|float) -- Set a name to a value The value can be a string, int or float."""
 
 
@@ -6153,7 +6153,7 @@ def __toPythonOCC__(shape: Part.Shape, /):
     """__toPythonOCC__(shape) -- Helper method to convert an internal shape to pythonocc shape"""
 
 
-def __fromPythonOCC__(occ: object, /):
+def __fromPythonOCC__(occ: object, /) -> Part.Shape:
     """__fromPythonOCC__(occ) -- Helper method to convert a pythonocc shape to an internal shape"""
 
 
@@ -6172,7 +6172,7 @@ def splitSubname(subname: str, /):
     """
 
 
-def joinSubname(sub: str, mapped: str, subElement: str, /):
+def joinSubname(sub: str, mapped: str, subElement: str, /) -> str:
     """joinSubname(sub,mapped,subElement) -> subname"""
 
 

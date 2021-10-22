@@ -15,15 +15,15 @@ def read(arg0: str, /):
     """1"""
 
 
-def createTestBSPLINE():
+def createTestBSPLINE() -> Part.Shape:
     """Creates a TopoShape with a test BSPLINE"""
 
 
-def createTestApproximate():
+def createTestApproximate() -> Part.Shape:
     """1"""
 
 
-def offset(arg0: Part.Shape, arg1: float, /):
+def offset(arg0: Part.Shape, arg1: float, /) -> Part.Shape:
     """1"""
 
 
@@ -31,15 +31,15 @@ def tesselateShape(arg0: Part.Shape, arg1: float, /):
     """1"""
 
 
-def tess_shape(arg0: Part.Shape, arg1: float, /):
+def tess_shape(arg0: Part.Shape, arg1: float, /) -> Mesh.Mesh:
     """1"""
 
 
-def createPlane(arg0: float, /):
+def createPlane(arg0: float, /) -> Part.Shape:
     """1"""
 
 
-def best_fit_test(arg0: Part.Shape, /):
+def best_fit_test(arg0: Part.Shape, /) -> Mesh.Mesh:
     """1"""
 
 
@@ -51,11 +51,11 @@ def best_fit_coarse(arg0: Part.Shape, /):
     """1"""
 
 
-def createBox(arg0: float, arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, /):
+def createBox(arg0: float, arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, /) -> Part.Shape:
     """1"""
 
 
-def spring_back(arg0: Mesh.Mesh, arg1: Part.Shape, /):
+def spring_back(arg0: Mesh.Mesh, arg1: Part.Shape, /) -> Mesh.Mesh:
     """1"""
 
 

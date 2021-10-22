@@ -15,10 +15,10 @@ class _ModuleNamespace:
         for file in genXmlFiles(sourcePath):
             self.stemToPaths[file.stem].append(file)
 
-    def getFileForStem(self, stem: str, namespace: str = ''):
+    def getFileForStem(self, stem: str, namespace: str = '') -> Path:
         match self.stemToPaths[stem]:
             case []:
-                assert False, f"There is no path for {stem=}"
+                raise ValueError(f"There is no path for {stem=}")
             case [onlyOnePath]:
                 return onlyOnePath
             case manyPaths if any(namespace in str(pathWithNamespace := p) for p in manyPaths):

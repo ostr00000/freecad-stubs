@@ -43,5 +43,5 @@ class UnifySameDomain(FreeCAD.PyObjectBase):
         modified during modification process. Default value is true.
         """
 
-    def shape(self):
+    def shape(self) -> Part.Shape:
         """Gives the resulting shape"""

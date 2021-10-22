@@ -7,8 +7,8 @@ from inspect import Parameter, Signature
 from pathlib import Path
 from typing import Iterator
 
-from freecad_stub_gen.generators.common.arg_suit_merger import mergeParamIntoSignatureGen
-from freecad_stub_gen.generators.common.doc_string import generateArgSuitFromDocstring, \
+from freecad_stub_gen.generators.common.signature_merger import mergeSignaturesGen
+from freecad_stub_gen.generators.common.doc_string import generateSignaturesFromDocstring, \
     getDocFromNode
 from freecad_stub_gen.generators.common.gen_method import MethodGenerator
 from freecad_stub_gen.generators.common.names import getClassNameFromNode
@@ -52,20 +52,20 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
             yield SelfSignature(parameters)
             return
 
-        codeSuites = list(self.generateArgFromCode(
+        codeSignatures = list(self.generateSignaturesFromCode(
             cName, argNumStart=len(parameters)))
-        docSuites = list(self._generateArgSuiteFromDocString(
+        docSignatures = list(self._generateSignaturesFromDocString(
             docName, node, argNumStart=len(parameters)))
 
-        yield from mergeParamIntoSignatureGen(codeSuites, docSuites, firstParam)
+        yield from mergeSignaturesGen(codeSignatures, docSignatures, firstParam)
 
     @classmethod
-    def _generateArgSuiteFromDocString(
-            cls, name: str, node: ET.Element, argNumStart: int) -> Iterator[list[Parameter]]:
+    def _generateSignaturesFromDocString(
+            cls, name: str, node: ET.Element, argNumStart: int) -> Iterator[Signature]:
         if not (docString := node.find("./Documentation/UserDocu").text):
             return
 
-        yield from generateArgSuitFromDocstring(name, docString, argNumStart)
+        yield from generateSignaturesFromDocstring(name, docString, argNumStart)
 
     @classmethod
     def genRichCompare(cls) -> str:

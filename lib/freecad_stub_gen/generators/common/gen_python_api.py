@@ -3,10 +3,12 @@ import re
 from abc import ABC
 from re import Pattern
 
+from freecad_stub_gen.generators.common.annotation_parameter import SelfSignature
 from freecad_stub_gen.generators.common.gen_base import BaseGenerator
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
     generateExpressionUntilChar
-from freecad_stub_gen.generators.common.types_converter import TypesConverter
+from freecad_stub_gen.generators.common.arguments_converter import TypesConverter
+from freecad_stub_gen.generators.common.return_type_converter import ReturnTypeConverter
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +17,7 @@ class PythonApiGenerator(BaseGenerator, ABC):
     REG_TUP = re.compile(r'PyArg_ParseTuple(?!\w)\s*\(')
     REG_TUP_KW = re.compile(r'PyArg_ParseTupleAndKeywords\s*\(')
 
-    def generateArgFromCode(self, functionName: str, className: str = '', *, argNumStart=1):
+    def generateSignaturesFromCode(self, functionName: str, className: str = '', *, argNumStart=1):
         """
         Generate arguments for `functionName` in `className`.
         There may be more than one possible signature.
@@ -74,6 +76,7 @@ class PythonApiGenerator(BaseGenerator, ABC):
                         for kw in generateExpressionUntilChar(kwargsStr, 0, ',')
                         if kw.startswith('"') and kw.endswith('"')]
 
-            args = list(tc.convertFormatToTypes(kwargsList))
-            yield args
+            params = list(tc.convertFormatToTypes(kwargsList))
+            rt = ReturnTypeConverter(self.requiredImports, functionBody).getReturnType()
+            yield SelfSignature(params, return_annotation=rt)
 

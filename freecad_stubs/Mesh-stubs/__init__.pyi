@@ -373,7 +373,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def collapseFacets(self, arg1: object, /):
         """Remove a list of facets"""
 
-    def copy(self):
+    def copy(self) -> Mesh.Mesh:
         """Create a copy of this mesh"""
 
     def countComponents(self):
@@ -411,7 +411,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         					mesh.decimate(0.5, 0.9) # reduction by up to 90 percent
         """
 
-    def difference(self, arg1: Mesh.Mesh, /):
+    def difference(self, arg1: Mesh.Mesh, /) -> Mesh.Mesh:
         """Difference of this and the given mesh object."""
 
     def fillupHoles(self, arg1: int, arg2: int = None, arg3: float = None, /):
@@ -537,13 +537,13 @@ class Mesh(FreeCAD.ComplexGeoData):
     def hasSelfIntersections(self):
         """Check if the mesh intersects itself"""
 
-    def inner(self, arg1: Mesh.Mesh, /):
+    def inner(self, arg1: Mesh.Mesh, /) -> Mesh.Mesh:
         """Get the part inside of the intersection"""
 
     def insertVertex(self, arg1: int, arg2: FreeCAD.Vector, /):
         """Insert a vertex into a facet"""
 
-    def intersect(self, arg1: Mesh.Mesh, /):
+    def intersect(self, arg1: Mesh.Mesh, /) -> Mesh.Mesh:
         """Intersection of this and the given mesh object."""
 
     def isSolid(self):
@@ -552,14 +552,14 @@ class Mesh(FreeCAD.ComplexGeoData):
     def mergeFacets(self):
         """Merge facets to optimize topology"""
 
-    def meshFromSegment(self, arg1: object, /):
+    def meshFromSegment(self, arg1: object, /) -> Mesh.Mesh:
         """Create a mesh from segment"""
 
     @typing.overload
-    def nearestFacetOnRay(self, tuple: object, tuple2: object, /): ...
+    def nearestFacetOnRay(self, tuple: object, tuple2: object, /) -> float | int: ...
 
     @typing.overload
-    def nearestFacetOnRay(self, tuple: float, tuple2: int = None, /):
+    def nearestFacetOnRay(self, tuple: float, tuple2: int = None, /) -> float | int:
         """
         nearestFacetOnRay(tuple, tuple) -> dict
         Get the index and intersection point of the nearest facet to a ray.
@@ -581,7 +581,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def optimizeTopology(self, arg1: float = None, /):
         """Optimize the edges to get nicer facets"""
 
-    def outer(self, arg1: Mesh.Mesh, /):
+    def outer(self, arg1: Mesh.Mesh, /) -> Mesh.Mesh:
         """Get the part outside the intersection"""
 
     def printInfo(self):
@@ -703,7 +703,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         direction of the normal the part above or below will be kept.
         """
 
-    def unite(self, arg1: Mesh.Mesh, /):
+    def unite(self, arg1: Mesh.Mesh, /) -> Mesh.Mesh:
         """Union of this and the given mesh object."""
 
     @typing.overload
@@ -722,11 +722,11 @@ class Mesh(FreeCAD.ComplexGeoData):
 
 
 # AppMeshPy.cpp
-def read(arg1: str, /):
+def read(arg1: str, /) -> Mesh.Mesh:
     """Read a mesh from a file and returns a Mesh object."""
 
 
-def open(string: str, /):
+def open(string: str, /) -> None:
     """
     open(string)
     Create a new document and a Mesh feature to load the file into
@@ -734,46 +734,46 @@ def open(string: str, /):
     """
 
 
-def insert(string_mesh: str, string: str = None, /):
+def insert(string_mesh: str, string: str = None, /) -> None:
     """
     insert(string|mesh,[string])
     Load or insert a mesh into the given or active document.
     """
 
 
-def show(shape: Mesh.Mesh, string: str = None, /):
+def show(shape: Mesh.Mesh, string: str = None, /) -> None:
     """show(shape,[string]) -- Add the mesh to the active document or create one if no document exists."""
 
 
-def createBox(arg1: float = None, arg2: float = None, arg3: float = None, arg4: float = None, /):
+def createBox(arg1: float = None, arg2: float = None, arg3: float = None, arg4: float = None, /) -> Mesh.Mesh:
     """Create a solid mesh box"""
 
 
-def createPlane(arg1: float = None, arg2: float = None, arg3: float = None, /):
+def createPlane(arg1: float = None, arg2: float = None, arg3: float = None, /) -> Mesh.Mesh:
     """Create a mesh XY plane normal +Z"""
 
 
-def createSphere(arg1: float = None, arg2: int = None, /):
+def createSphere(arg1: float = None, arg2: int = None, /) -> Mesh.Mesh:
     """Create a tessellated sphere"""
 
 
-def createEllipsoid(arg1: float = None, arg2: float = None, arg3: int = None, /):
+def createEllipsoid(arg1: float = None, arg2: float = None, arg3: int = None, /) -> Mesh.Mesh:
     """Create a tessellated ellipsoid"""
 
 
-def createCylinder(arg1: float = None, arg2: float = None, arg3: int = None, arg4: float = None, arg5: int = None, /):
+def createCylinder(arg1: float = None, arg2: float = None, arg3: int = None, arg4: float = None, arg5: int = None, /) -> Mesh.Mesh:
     """Create a tessellated cylinder"""
 
 
-def createCone(arg1: float = None, arg2: float = None, arg3: float = None, arg4: int = None, arg5: float = None, arg6: int = None, /):
+def createCone(arg1: float = None, arg2: float = None, arg3: float = None, arg4: int = None, arg5: float = None, arg6: int = None, /) -> Mesh.Mesh:
     """Create a tessellated cone"""
 
 
-def createTorus(arg1: float = None, arg2: float = None, arg3: int = None, /):
+def createTorus(arg1: float = None, arg2: float = None, arg3: int = None, /) -> Mesh.Mesh:
     """Create a tessellated torus"""
 
 
-def calculateEigenTransform(seq_Base_Vector_: object, /):
+def calculateEigenTransform(seq_Base_Vector_: object, /) -> FreeCAD.Placement:
     """
     calculateEigenTransform(seq(Base.Vector))
     Calculates the eigen Transformation from a list of points.
@@ -797,7 +797,7 @@ def minimumVolumeOrientedBox(seq_Base_Vector_: object, /):
     """
 
 
-def export(objectList: object, filename: str, tolerance: float = 0.1, exportAmfCompressed: bool = True):
+def export(objectList: object, filename: str, tolerance: float = 0.1, exportAmfCompressed: bool = True) -> None:
     """
     export(objects, filename, [tolerance=0.1, exportAmfCompressed=True])
     Export a list of objects into a single file identified by filename.

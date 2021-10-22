@@ -1,6 +1,7 @@
 import typing
 
 import FreeCAD
+import FreeCADGui
 import Part
 import Path
 
@@ -115,7 +116,7 @@ class Tool(FreeCAD.Persistence):
     @ToolType.setter
     def ToolType(self, value: str): ...
 
-    def copy(self):
+    def copy(self) -> Path.Tool:
         """returns a copy of this tool"""
 
     def getToolMaterials(self):
@@ -180,7 +181,7 @@ class VoronoiEdge(FreeCAD.BaseClass):
     def Vertices(self) -> list:
         """Begin and End voronoi vertex"""
 
-    def toShape(self, arg1: float = None, arg2: float = None, arg3: bool = None, /):
+    def toShape(self, arg1: float = None, arg2: float = None, arg3: bool = None, /) -> Part.Edge | None:
         """Returns a shape for the edge"""
 
     def __eq__(self, other) -> bool: ...
@@ -229,7 +230,7 @@ class VoronoiCell(FreeCAD.BaseClass):
     def SourceIndex(self) -> int:
         """Returns the index of the cell's source"""
 
-    def getSource(self, arg1: float = None, /):
+    def getSource(self, arg1: float = None, /) -> FreeCAD.Vector:
         """Returns the Source for the cell"""
 
     def __eq__(self, other) -> bool: ...
@@ -288,13 +289,13 @@ class Command(FreeCAD.Persistence):
     @Placement.setter
     def Placement(self, value: FreeCAD.Placement): ...
 
-    def setFromGCode(self, arg1: str, /):
+    def setFromGCode(self, arg1: str, /) -> None:
         """setFromGCode(): sets the path from the contents of the given GCode string"""
 
-    def toGCode(self):
+    def toGCode(self) -> str:
         """toGCode(): returns a GCode representation of the command"""
 
-    def transform(self, Placement: FreeCAD.Placement, /):
+    def transform(self, Placement: FreeCAD.Placement, /) -> FreeCADGui.Command:
         """transform(Placement): returns a copy of this command transformed by the given placement"""
 
 
@@ -416,34 +417,34 @@ class Path(FreeCAD.Persistence):
         """the number of commands in this path"""
 
     @typing.overload
-    def addCommands(self, arg1: Path.Command, /): ...
+    def addCommands(self, arg1: Path.Command, /) -> Path.Path: ...
 
     @typing.overload
-    def addCommands(self, arg1: list, /):
+    def addCommands(self, arg1: list, /) -> Path.Path:
         """adds a command or a list of commands at the end of the path"""
 
-    def copy(self):
+    def copy(self) -> Path.Path:
         """returns a copy of this path"""
 
-    def deleteCommand(self, int: int = None, /):
+    def deleteCommand(self, int: int = None, /) -> Path.Path:
         """
         deleteCommand([int]):
         deletes the command found at the given position or from the end of the path
         """
 
-    def getCycleTime(self, arg1: float, arg2: float, arg3: float, arg4: float, /):
+    def getCycleTime(self, arg1: float, arg2: float, arg3: float, arg4: float, /) -> float:
         """return the cycle time estimation for this path in s"""
 
-    def insertCommand(self, Command: Path.Command, int: int = None, /):
+    def insertCommand(self, Command: Path.Command, int: int = None, /) -> Path.Path:
         """
         insertCommand(Command,[int]):
         adds a command at the given position or at the end of the path
         """
 
-    def setFromGCode(self, arg1: str, /):
+    def setFromGCode(self, arg1: str, /) -> None:
         """sets the contents of the path from a gcode string"""
 
-    def toGCode(self):
+    def toGCode(self) -> str:
         """returns a gcode string representing the path"""
 
 
@@ -486,22 +487,22 @@ class Tooltable(FreeCAD.Persistence):
     def Version(self, value: int): ...
 
     @typing.overload
-    def addTools(self, arg1: Path.Tool, /): ...
+    def addTools(self, arg1: Path.Tool, /) -> None: ...
 
     @typing.overload
-    def addTools(self, arg1: list, /):
+    def addTools(self, arg1: list, /) -> None:
         """adds a tool or a list of tools at the end of the table"""
 
-    def copy(self):
+    def copy(self) -> Path.Tooltable:
         """returns a copy of this tooltable"""
 
-    def deleteTool(self, int: int = None, /):
+    def deleteTool(self, int: int = None, /) -> None:
         """
         deleteTool(int):
         deletes the tool found at the given position
         """
 
-    def getTool(self, int: int, /):
+    def getTool(self, int: int, /) -> Path.Tool | None:
         """
         getTool(int):
         returns the tool found at the given position, or  None
@@ -510,7 +511,7 @@ class Tooltable(FreeCAD.Persistence):
     def setFromTemplate(self, dict: dict, /):
         """setFromTemplate(dict) ... restores receiver from given template attribute dictionary"""
 
-    def setTool(self, int: int, tool: Path.Tool, /):
+    def setTool(self, int: int, tool: Path.Tool, /) -> None:
         """
         setTool(int,tool):
         adds a tool at the given position
@@ -542,22 +543,22 @@ class Voronoi(FreeCAD.BaseClass):
     def Vertices(self) -> list:
         """List of all vertices of the voronoi diagram"""
 
-    def addPoint(self, vector_vector2d: object, /):
+    def addPoint(self, vector_vector2d: object, /) -> None:
         """addPoint(vector|vector2d) add given point to input collection"""
 
-    def addSegment(self, vector_vector2d: object, vector_vector2d2: object, /):
+    def addSegment(self, vector_vector2d: object, vector_vector2d2: object, /) -> None:
         """addSegment(vector|vector2d, vector|vector2d) add given segment to input collection"""
 
-    def colorColinear(self, arg1: int, arg2: float = None, /):
+    def colorColinear(self, arg1: int, arg2: float = None, /) -> None:
         """assign given color to all edges sourced by two segments almost in line with each other (optional angle in degrees)"""
 
-    def colorExterior(self, arg1: int, arg2=None, /):
+    def colorExterior(self, arg1: int, arg2=None, /) -> None:
         """assign given color to all exterior edges and vertices"""
 
-    def colorTwins(self, arg1: int, /):
+    def colorTwins(self, arg1: int, /) -> None:
         """assign given color to all twins of edges (which one is considered a twin is arbitrary)"""
 
-    def construct(self):
+    def construct(self) -> None:
         """constructs the voronoi diagram from the input collections"""
 
     def getPoints(self, arg1: float = None, /):
@@ -566,22 +567,22 @@ class Voronoi(FreeCAD.BaseClass):
     def getSegments(self, arg1: float = None, /):
         """Get list of all input segments."""
 
-    def numCells(self):
+    def numCells(self) -> int:
         """Return number of cells"""
 
-    def numEdges(self):
+    def numEdges(self) -> int:
         """Return number of edges"""
 
-    def numPoints(self):
+    def numPoints(self) -> int:
         """Return number of input points"""
 
-    def numSegments(self):
+    def numSegments(self) -> int:
         """Return number of input segments"""
 
-    def numVertices(self):
+    def numVertices(self) -> int:
         """Return number of vertices"""
 
-    def resetColor(self, arg1: int, /):
+    def resetColor(self, arg1: int, /) -> None:
         """assign color 0 to all elements with the given color"""
 
 
@@ -610,10 +611,10 @@ class FeatureArea(FreeCAD.DocumentObject):
     @WorkPlane.setter
     def WorkPlane(self, value: Part.Shape): ...
 
-    def getArea(self):
+    def getArea(self) -> Path.Area:
         """Return a copy of the encapsulated Python Area object."""
 
-    def setParams(self):
+    def setParams(self) -> None:
         """
         setParams(key=value...): Convenient function to configure this feature.
 
@@ -654,7 +655,7 @@ class VoronoiVertex(FreeCAD.BaseClass):
     def Y(self) -> float:
         """Y position"""
 
-    def toPoint(self, arg1: float = None, /):
+    def toPoint(self, arg1: float = None, /) -> FreeCAD.Vector | None:
         """Returns a Vector - or None if not possible"""
 
     def __eq__(self, other) -> bool: ...
@@ -682,23 +683,23 @@ class FeaturePathCompound(FreeCAD.DocumentObject):
 
 
 # AppPathPy.cpp
-def write(object: object, filename: str, /):
+def write(object: object, filename: str, /) -> None:
     """write(object,filename): Exports a given path object to a GCode file"""
 
 
-def read(filename: str, document: str = None, /):
+def read(filename: str, document: str = None, /) -> None:
     """read(filename,[document]): Imports a GCode file into the given document"""
 
 
-def show(path: Path.Path, string: str = None, /):
+def show(path: Path.Path, string: str = None, /) -> None:
     """show(path,[string]): Add the path to the active document or create one if no document exists"""
 
 
-def fromShape(Shape: object, /):
+def fromShape(Shape: object, /) -> Path.Path:
     """fromShape(Shape): Returns a Path object from a Part Shape (deprecated - use fromShapes() instead)"""
 
 
-def fromShapes(shapes: object, start: FreeCAD.Vector = None, return_end=None):
+def fromShapes(shapes: object, start: FreeCAD.Vector = None, return_end=None) -> Path.Path:
     """
     fromShapes(shapes, start=Vector(), return_end=False" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_PATH) ")
 
@@ -734,7 +735,7 @@ def sortWires(shapes: object, start: FreeCAD.Vector = None):
 
 
 # AreaPyImp.cpp
-def setDefaultParams():
+def setDefaultParams() -> None:
     """
     setDefaultParams(key=value...):
     Static method to set the default parameters of all following Path.Area, plus the following
@@ -746,10 +747,10 @@ def getDefaultParams():
     """getDefaultParams(): Static method to return the current default parameters."""
 
 
-def abort(aborting=None): ...
+def abort(aborting=None) -> None: ...
 
 
-def getParamsDesc(as_string=False):
+def getParamsDesc(as_string=False) -> str:
     """
     getParamsDesc(as_string=False): Returns a list of supported parameters and their descriptions.
 

@@ -411,17 +411,17 @@ class SketchObject(Part.Part2DObject):
     def getActive(self, arg1: int, /):
         """Get the constraint status (enforced or not)"""
 
-    def getAxis(self, arg1: int, /):
+    def getAxis(self, arg1: int, /) -> FreeCAD.Axis:
         """return an axis based on the corresponding construction line"""
 
     def getConstruction(self, arg1: int, /):
         """returns the construction mode of a geometry"""
 
     @typing.overload
-    def getDatum(self, arg1: int, /): ...
+    def getDatum(self, arg1: int, /) -> FreeCAD.Quantity: ...
 
     @typing.overload
-    def getDatum(self, arg1: str, /):
+    def getDatum(self, arg1: str, /) -> FreeCAD.Quantity:
         """Get the value of a datum constraint"""
 
     def getDriving(self, arg1: int, /):
@@ -446,7 +446,7 @@ class SketchObject(Part.Part2DObject):
         If there is no such constraint an exception is raised.
         """
 
-    def getPoint(self, GeoIndex: int, PointPos: int, /):
+    def getPoint(self, GeoIndex: int, PointPos: int, /) -> FreeCAD.Vector:
         """getPoint(GeoIndex,PointPos) - retrieve the vector of a point in the sketch"""
 
     def getVirtualSpace(self, arg1: int, /):
@@ -851,4 +851,4 @@ class GeometryFacade(FreeCAD.BaseClass):
 def open(arg1: str, /): ...
 
 
-def insert(arg1: str, arg2: str, /): ...
+def insert(arg1: str, arg2: str, /) -> None: ...

@@ -6,11 +6,11 @@ import FreeCAD
 
 # UnitsApiPy.cpp
 @typing.overload
-def parseQuantity(string: str, /): ...
+def parseQuantity(string: str, /) -> FreeCAD.Quantity: ...
 
 
 @typing.overload
-def parseQuantity(arg0: str, /):
+def parseQuantity(arg0: str, /) -> FreeCAD.Quantity:
     """
     parseQuantity(string) -> Base.Quantity()
 

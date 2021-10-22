@@ -1,6 +1,7 @@
 import FreeCAD
 import Part
 import Part.Geom2d
+import Part.GeomPlate
 
 
 # BuildPlateSurfacePy.xml
@@ -10,19 +11,19 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
     def __init__(self, Surface: Part.GeometrySurface = None, Degree: int = None, NbPtsOnCur: int = None, NbIter: int = None, Tol2d: float = None, Tol3d: float = None, TolAng: float = None, TolCurv: float = None, Anisotropy: bool = None):
         """This class provides an algorithm for constructing such a plate surface."""
 
-    def G0Error(self, arg1: int = None, /):
+    def G0Error(self, arg1: int = None, /) -> float:
         """Returns the max distance between the result and the constraints"""
 
-    def G1Error(self, arg1: int = None, /):
+    def G1Error(self, arg1: int = None, /) -> float:
         """Returns the max angle between the result and the constraints"""
 
-    def G2Error(self, arg1: int = None, /):
+    def G2Error(self, arg1: int = None, /) -> float:
         """Returns the max difference of curvature between the result and the constraints"""
 
     def add(self, arg1: object, /):
         """Adds a linear or point constraint"""
 
-    def curveConstraint(self, arg1: int, /):
+    def curveConstraint(self, arg1: int, /) -> Part.GeomPlate.CurveConstraintPy:
         """Returns the curve constraint of order"""
 
     def curves2d(self):
@@ -50,7 +51,7 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
     def perform(self):
         """Calls the algorithm and computes the plate surface"""
 
-    def pointConstraint(self, arg1: int, /):
+    def pointConstraint(self, arg1: int, /) -> Part.GeomPlate.PointConstraintPy:
         """Returns the point constraint of order"""
 
     def sense(self):
@@ -90,14 +91,14 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
         the number of points.
         """
 
-    def G0Criterion(self, arg1: float, /):
+    def G0Criterion(self, arg1: float, /) -> float:
         """
         Returns the G0 criterion at the parametric point U on
         the curve. This is the greatest distance allowed between
         the constraint and the target surface at U.
         """
 
-    def G1Criterion(self, arg1: float, /):
+    def G1Criterion(self, arg1: float, /) -> float:
         """
         Returns the G1 criterion at the parametric point U on
         the curve. This is the greatest angle allowed between
@@ -105,7 +106,7 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
         Raises an exception if  the  curve  is  not  on  a  surface.
         """
 
-    def G2Criterion(self, arg1: float, /):
+    def G2Criterion(self, arg1: float, /) -> float:
         """
         Returns the G2 criterion at the parametric point U on
         the curve. This is the greatest difference in curvature
@@ -117,7 +118,7 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
 
     def curve3d(self): ...
 
-    def order(self):
+    def order(self) -> int:
         """Returns the order of constraint, one of G0, G1 or G2"""
 
     def projectedCurve(self): ...
@@ -141,14 +142,14 @@ class PointConstraintPy(FreeCAD.PyObjectBase):
     def __init__(self, Point: FreeCAD.Vector, Order: int = None, TolDist: float = None):
         """Defines points as constraints to be used to deform a surface"""
 
-    def G0Criterion(self):
+    def G0Criterion(self) -> float:
         """
         Returns the G0 criterion at the parametric point U on
         the curve. This is the greatest distance allowed between
         the constraint and the target surface at U.
         """
 
-    def G1Criterion(self):
+    def G1Criterion(self) -> float:
         """
         Returns the G1 criterion at the parametric point U on
         the curve. This is the greatest angle allowed between
@@ -156,7 +157,7 @@ class PointConstraintPy(FreeCAD.PyObjectBase):
         Raises an exception if  the  curve  is  not  on  a  surface.
         """
 
-    def G2Criterion(self):
+    def G2Criterion(self) -> float:
         """
         Returns the G2 criterion at the parametric point U on
         the curve. This is the greatest difference in curvature
@@ -166,7 +167,7 @@ class PointConstraintPy(FreeCAD.PyObjectBase):
 
     def hasPnt2dOnSurf(self): ...
 
-    def order(self):
+    def order(self) -> int:
         """Returns the order of constraint, one of G0, G1 or G2"""
 
     def pnt2dOnSurf(self): ...

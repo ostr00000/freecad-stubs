@@ -7,10 +7,10 @@ from inspect import Signature, Parameter
 from itertools import chain
 from typing import Any, Iterable, DefaultDict
 
-from freecad_stub_gen.generators.common.arg_suit_merger import mergeParamIntoSignatureGen
+from freecad_stub_gen.generators.common.signature_merger import mergeSignaturesGen
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
     generateExpressionUntilChar
-from freecad_stub_gen.generators.common.doc_string import generateArgSuitFromDocstring
+from freecad_stub_gen.generators.common.doc_string import generateSignaturesFromDocstring
 from freecad_stub_gen.generators.common.gen_method import MethodGenerator
 from freecad_stub_gen.logger import LEVEL_CODE
 from freecad_stub_gen.module_container import Module
@@ -119,15 +119,15 @@ class BaseGeneratorFromCpp(MethodGenerator, ABC):
 
     def _genMethodWithArgs(self, method: Method, argNumStart=1) -> Iterable[Method]:
         if method.doc is None:
-            docSuites = []
+            docSignatures = []
         else:
-            docSuites = list(generateArgSuitFromDocstring(
+            docSignatures = list(generateSignaturesFromDocstring(
                 method.pythonMethodName, method.doc))
-        codeSuites = list(self.generateArgFromCode(
+        codeSignatures = list(self.generateSignaturesFromCode(
             method.cFunction, method.cClass, argNumStart=argNumStart))
 
         yielded = False
-        for sig in mergeParamIntoSignatureGen(codeSuites, docSuites):
+        for sig in mergeSignaturesGen(codeSignatures, docSignatures):
             yielded = True
             yield dataclasses.replace(method, pythonSignature=sig)
 

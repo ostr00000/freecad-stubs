@@ -1,12 +1,13 @@
 import FreeCAD
+import Sandbox
 
 
 # AppSandbox.cpp
-def DocumentProtector(Document: FreeCAD.Document, /):
+def DocumentProtector(Document: FreeCAD.Document, /) -> Sandbox.DocumentProtector:
     """DocumentProtector(Document)"""
 
 
-def DocumentObjectProtector(DocumentObject: FreeCAD.DocumentObject, /):
+def DocumentObjectProtector(DocumentObject: FreeCAD.DocumentObject, /) -> Sandbox.DocumentObjectProtector:
     """DocumentObjectProtector(DocumentObject)"""
 
 
@@ -14,10 +15,10 @@ def DocumentObjectProtector(DocumentObject: FreeCAD.DocumentObject, /):
 class DocumentProtectorPy:
     """Python binding class for the document protector class"""
 
-    def addObject(self, type: str, name: str = None, /):
+    def addObject(self, type: str, name: str = None, /) -> DocumentObjectProtector:
         """addObject(type,name)"""
 
-    def recompute(self):
+    def recompute(self) -> None:
         """recompute()"""
 
 

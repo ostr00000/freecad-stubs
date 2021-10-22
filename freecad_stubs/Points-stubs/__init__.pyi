@@ -37,13 +37,13 @@ class Points(FreeCAD.ComplexGeoData):
     def addPoints(self, arg1: object, /):
         """add one or more (list of) points to the object"""
 
-    def copy(self):
+    def copy(self) -> Points.Points:
         """Create a copy of this points object"""
 
-    def fromSegment(self, arg1: object, /):
+    def fromSegment(self, arg1: object, /) -> Points.Points:
         """Get a new point object from a given segment"""
 
-    def fromValid(self):
+    def fromValid(self) -> Points.Points:
         """Get a new point object from points with valid coordinates (i.e. that are not NaN)"""
 
     def read(self, arg1: str, /):
@@ -57,14 +57,14 @@ class Points(FreeCAD.ComplexGeoData):
 
 
 # AppPointsPy.cpp
-def open(arg1: str, /): ...
+def open(arg1: str, /) -> None: ...
 
 
-def insert(arg1: str, arg2: str, /): ...
+def insert(arg1: str, arg2: str, /) -> None: ...
 
 
-def export(arg1: object, arg2: str, /): ...
+def export(arg1: object, arg2: str, /) -> None: ...
 
 
-def show(points: Points.Points, string: str = None, /):
+def show(points: Points.Points, string: str = None, /) -> None:
     """show(points,[string]) -- Add the points to the active document or create one if no document exists."""

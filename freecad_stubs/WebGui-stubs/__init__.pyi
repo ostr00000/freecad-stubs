@@ -1,21 +1,21 @@
 # AppWebGui.cpp
-def openBrowser(arg1: str, /): ...
+def openBrowser(arg1: str, /) -> None: ...
 
 
-def openBrowserHTML(arg1: str, arg2: str, arg3: str = None, arg4: str = None, /): ...
+def openBrowserHTML(arg1: str, arg2: str, arg3: str = None, arg4: str = None, /) -> None: ...
 
 
 def openBrowserWindow(arg1: str = None, /): ...
 
 
-def open(arg1: str, /):
+def open(arg1: str, /) -> None:
     """
     open(htmlcode,baseurl,[title,iconpath])
     Load a local (X)HTML file.
     """
 
 
-def insert(string: str, /):
+def insert(string: str, /) -> None:
     """
     insert(string)
     Load a local (X)HTML file.

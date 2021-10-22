@@ -5,21 +5,25 @@ from itertools import count
 from typing import Generator, Iterator
 from xml.etree import ElementTree as ET
 
-from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam, RawRepr
+from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam, RawRepr, \
+    SelfSignature
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
     generateExpressionUntilChar
 from freecad_stub_gen.generators.common.names import validatePythonValue
-from freecad_stub_gen.generators.common.types_converter import DEFAULT_ARG_NAME
+from freecad_stub_gen.generators.common.arguments_converter import DEFAULT_ARG_NAME
 
 
-def generateArgSuitFromDocstring(name: str, docString: str, argNumStart: int = 0):
+def generateSignaturesFromDocstring(name: str, docString: str, argNumStart: int = 0):
     for match in re.finditer(fr'{name}\((.*?)\):?', docString):
         funCall = findFunctionCall(docString, match.start(), bracketL='(', bracketR=')')
         funCall = funCall.removeprefix(name).removeprefix('(').removesuffix(')')
-        yield list(_parameterSuiteGen(funCall, argNumStart))
+
+        # these parameters often are not valid, but we fix it in signature_merger
+        yield SelfSignature(list(_signatureGen(funCall, argNumStart)),
+                            __validate_parameters__=False)
 
 
-def _parameterSuiteGen(funDocString: str, argNumStart: int) -> Iterator[Parameter]:
+def _signatureGen(funDocString: str, argNumStart: int) -> Iterator[Parameter]:
     if not funDocString:
         return
 
@@ -47,6 +51,7 @@ def _parameterSuiteGen(funDocString: str, argNumStart: int) -> Iterator[Paramete
             defValue = validatePythonValue(defValue)
         elif argText == '...':
             yield AnnotationParam.ARGS_PARAM
+            paramType = Parameter.KEYWORD_ONLY
             continue
 
         else:

@@ -2,6 +2,7 @@ import io
 import typing
 
 import FreeCAD
+import Part
 import TechDraw
 
 DocAndStr_t: typing.TypeAlias = tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]
@@ -328,10 +329,10 @@ class DrawViewCollection(TechDraw.DrawView):
     @Views.setter
     def Views(self, value: LinkList_t): ...
 
-    def addView(self, DrawView_object: FreeCAD.DocumentObject, /):
+    def addView(self, DrawView_object: FreeCAD.DocumentObject, /) -> int:
         """addView(DrawView object) - Add a new View to this Group. Returns count of views."""
 
-    def removeView(self, DrawView_object: FreeCAD.DocumentObject, /):
+    def removeView(self, DrawView_object: FreeCAD.DocumentObject, /) -> int:
         """removeView(DrawView object) - Remove specified Viewfrom this Group. Returns count of views in Group."""
 
 
@@ -1028,19 +1029,19 @@ class DrawProjGroup(TechDraw.DrawViewCollection):
     @spacingY.setter
     def spacingY(self, value: str | float | FreeCAD.Quantity): ...
 
-    def addProjection(self, string_projectionType: str, /):
+    def addProjection(self, string_projectionType: str, /) -> TechDraw.DrawProjGroupItem:
         """addProjection(string projectionType) - Add a new Projection Item to this Group. Returns DocObj."""
 
-    def getItemByLabel(self, string_projectionType: str, /):
+    def getItemByLabel(self, string_projectionType: str, /) -> TechDraw.DrawProjGroupItem:
         """getItemByLabel(string projectionType) - return specified Projection Item"""
 
-    def getXYPosition(self, string_projectionType: str, /):
+    def getXYPosition(self, string_projectionType: str, /) -> FreeCAD.Vector:
         """getXYPosition(string projectionType) - return the AutoDistribute position for specified Projection Item"""
 
     def purgeProjections(self):
         """purgeProjections() - Remove all Projection Items from this Group. Returns int number of views in Group (0)."""
 
-    def removeProjection(self, string_projectionType: str, /):
+    def removeProjection(self, string_projectionType: str, /) -> int:
         """removeProjection(string projectionType) - Remove specified Projection Item from this Group. Returns int number of views in Group."""
 
 
@@ -1248,7 +1249,7 @@ class DrawViewPart(TechDraw.DrawView):
     def clearGeomFormats(self):
         """clearGeomFormats() - remove all GeomFormats from the View. Returns None."""
 
-    def formatGeometricEdge(self, index: int, style: int, weight: float, color: object, visible: int, /):
+    def formatGeometricEdge(self, index: int, style: int, weight: float, color: object, visible: int, /) -> None:
         """formatGeometricEdge(index, style, weight, color, visible). Returns None."""
 
     def getCenterLine(self, id: str, /):
@@ -1269,59 +1270,59 @@ class DrawViewPart(TechDraw.DrawView):
     def getCosmeticVertexBySelection(self, name: str, /):
         """cv = getCosmeticVertexBySelection(name) - returns CosmeticVertex with name (Vertex6).  Used in selections."""
 
-    def getEdgeByIndex(self, edgeIndex: int, /):
+    def getEdgeByIndex(self, edgeIndex: int, /) -> Part.Edge:
         """getEdgeByIndex(edgeIndex). Returns Part.TopoShape."""
 
-    def getEdgeBySelection(self, edgeName: str, /):
+    def getEdgeBySelection(self, edgeName: str, /) -> Part.Edge:
         """getEdgeBySelection(edgeName). Returns Part.TopoShape."""
 
     def getHiddenEdges(self):
         """getHiddenEdges() - get the hidden edges in the View as Part::TopoShapeEdges"""
 
-    def getVertexByIndex(self, vertexIndex: int, /):
+    def getVertexByIndex(self, vertexIndex: int, /) -> Part.Vertex:
         """getVertexByIndex(vertexIndex). Returns Part.TopoShape."""
 
-    def getVertexBySelection(self, vertexName: str, /):
+    def getVertexBySelection(self, vertexName: str, /) -> Part.Vertex:
         """getVertexBySelection(vertexName). Returns Part.TopoShape."""
 
     def getVisibleEdges(self):
         """getVisibleEdges() - get the visible edges in the View as Part::TopoShapeEdges"""
 
-    def makeCenterLine(self, subNames: object, mode: int, /):
+    def makeCenterLine(self, subNames: object, mode: int, /) -> str:
         """makeCenterLine(subNames, mode) - draw a center line on this viewPart. SubNames is a list of n Faces, 2 Edges or 2 Vertices (ex [Face1,Face2,Face3]. Returns unique tag of added CenterLine."""
 
-    def makeCosmeticCircle(self, arg1: FreeCAD.Vector, arg2: float, arg3: int = None, arg4: float = None, arg5=None, /):
+    def makeCosmeticCircle(self, arg1: FreeCAD.Vector, arg2: float, arg3: int = None, arg4: float = None, arg5=None, /) -> str:
         """tag = makeCosmeticCircle(center, radius) - add a CosmeticEdge at center with radius radius(View coordinates). Returns tag of new CosmeticEdge."""
 
-    def makeCosmeticCircleArc(self, arg1: FreeCAD.Vector, arg2: float, arg3: float, arg4: float, arg5: int = None, arg6: float = None, arg7=None, /):
+    def makeCosmeticCircleArc(self, arg1: FreeCAD.Vector, arg2: float, arg3: float, arg4: float, arg5: int = None, arg6: float = None, arg7=None, /) -> str:
         """tag = makeCosmeticCircleArc(center, radius, start, end) - add a CosmeticEdge at center with radius radius(View coordinates) from start angle to end angle. Returns tag of new CosmeticEdge."""
 
-    def makeCosmeticLine(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: int = None, arg4: float = None, arg5=None, /):
+    def makeCosmeticLine(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: int = None, arg4: float = None, arg5=None, /) -> str:
         """tag = makeCosmeticLine(p1, p2) - add a CosmeticEdge from p1 to p2(View coordinates). Returns tag of new CosmeticEdge."""
 
-    def makeCosmeticLine3D(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: int = None, arg4: float = None, arg5=None, /):
+    def makeCosmeticLine3D(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: int = None, arg4: float = None, arg5=None, /) -> str:
         """tag = makeCosmeticLine3D(p1, p2) - add a CosmeticEdge from p1 to p2(3D coordinates). Returns tag of new CosmeticEdge."""
 
-    def makeCosmeticVertex(self, p1: FreeCAD.Vector, /):
+    def makeCosmeticVertex(self, p1: FreeCAD.Vector, /) -> str:
         """id = makeCosmeticVertex(p1) - add a CosmeticVertex at p1 (View coordinates). Returns unique id vertex."""
 
-    def makeCosmeticVertex3d(self, p1: FreeCAD.Vector, /):
+    def makeCosmeticVertex3d(self, p1: FreeCAD.Vector, /) -> str:
         """id = makeCosmeticVertex3d(p1) - add a CosmeticVertex at p1 (3d model coordinates). Returns unique id vertex."""
 
-    def removeCenterLine(self, cl: str, /):
+    def removeCenterLine(self, cl: str, /) -> None:
         """removeCenterLine(cl) - remove CenterLine cl from View. Returns None."""
 
-    def removeCosmeticEdge(self, ce: str, /):
+    def removeCosmeticEdge(self, ce: str, /) -> None:
         """removeCosmeticEdge(ce) - remove CosmeticEdge ce from View. Returns None."""
 
     @typing.overload
-    def removeCosmeticVertex(self, cv: str, /): ...
+    def removeCosmeticVertex(self, cv: str, /) -> None: ...
 
     @typing.overload
-    def removeCosmeticVertex(self, cv: TechDraw.CosmeticVertex, /): ...
+    def removeCosmeticVertex(self, cv: TechDraw.CosmeticVertex, /) -> None: ...
 
     @typing.overload
-    def removeCosmeticVertex(self, cv: object, /):
+    def removeCosmeticVertex(self, cv: object, /) -> None:
         """removeCosmeticVertex(cv) - remove CosmeticVertex from View. Returns None."""
 
     def replaceCenterLine(self, cl, /):
@@ -1568,13 +1569,13 @@ class DrawPage(FreeCAD.DocumentObject):
     @Views.setter
     def Views(self, value: LinkList_t): ...
 
-    def addView(self, DrawView: FreeCAD.DocumentObject, /):
+    def addView(self, DrawView: FreeCAD.DocumentObject, /) -> int:
         """addView(DrawView) - Add a View to this Page"""
 
     def getAllViews(self):
         """getAllViews() - returns a list of all the views on page including Views inside Collections"""
 
-    def removeView(self, DrawView: FreeCAD.DocumentObject, /):
+    def removeView(self, DrawView: FreeCAD.DocumentObject, /) -> int:
         """removeView(DrawView) - Remove a View to this Page"""
 
 
@@ -1693,15 +1694,15 @@ class GeomFormat(FreeCAD.PyObjectBase):
 
 
 # AppTechDrawPy.cpp
-def edgeWalker(edgePile: list, inclBiggest=None, /):
+def edgeWalker(edgePile: list, inclBiggest=None, /) -> None:
     """[wires] = edgeWalker(edgePile,inclBiggest) -- Planar graph traversal finds wires in edge pile."""
 
 
-def findOuterWire(edgeList: list, /):
+def findOuterWire(edgeList: list, /) -> None:
     """wire = findOuterWire(edgeList) -- Planar graph traversal finds OuterWire in edge pile."""
 
 
-def findShapeOutline(shape: object, scale: float, direction: object, /):
+def findShapeOutline(shape: object, scale: float, direction: object, /) -> None:
     """wire = findShapeOutline(shape,scale,direction) -- Project shape in direction and find outer wire of result."""
 
 
@@ -1713,19 +1714,19 @@ def viewPartAsSvg(DrawViewPart: object, /):
     """string = viewPartAsSvg(DrawViewPart) -- Return the edges of a DrawViewPart in Svg format."""
 
 
-def writeDXFView(arg1: object, arg2: str, arg3=None, /):
+def writeDXFView(arg1: object, arg2: str, arg3=None, /) -> None:
     """writeDXFView(view,filename): Exports a DrawViewPart to a DXF file."""
 
 
-def writeDXFPage(page: object, filename: str, /):
+def writeDXFPage(page: object, filename: str, /) -> None:
     """writeDXFPage(page,filename): Exports a DrawPage to a DXF file."""
 
 
-def findCentroid(shape: object, direction: object, /):
+def findCentroid(shape: object, direction: object, /) -> None:
     """vector = findCentroid(shape,direction): finds geometric centroid of shape looking in direction."""
 
 
-def makeExtentDim(DrawViewPart: object, edges: list, direction: int, /):
+def makeExtentDim(DrawViewPart: object, edges: list, direction: int, /) -> None:
     """makeExtentDim(DrawViewPart, [edges], direction) -- draw horizontal or vertical extent dimension for edges (or all of DrawViewPart if edge list is empty. direction:  0 - Horizontal, 1 - Vertical."""
 
 
@@ -1733,9 +1734,9 @@ def makeDistanceDim(DrawViewPart: object, dimType: object, fromPoint: object, to
     """makeDistanceDim(DrawViewPart, dimType, fromPoint, toPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 2d View points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."""
 
 
-def makeDistanceDim3d(arg1: object, arg2: object, arg3: object, arg4: object, /):
+def makeDistanceDim3d(arg1: object, arg2: object, arg3: object, arg4: object, /) -> None:
     """makeDistanceDim(DrawViewPart, dimType, 3dFromPoint, 3dToPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 3d model points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."""
 
 
-def makeGeomHatch(face: object, patScale: float = None, patName: str = None, patFile: str = None, /):
+def makeGeomHatch(face: object, patScale: float = None, patName: str = None, patFile: str = None, /) -> None:
     """makeGeomHatch(face, [patScale], [patName], [patFile]) -- draw a geom hatch on a given face, using optionally the given scale (default 1) and a given pattern name (ex. Diamond) and .pat file (the default pattern name and/or .pat files set in preferences are used if none are given). Returns a Part compound shape."""

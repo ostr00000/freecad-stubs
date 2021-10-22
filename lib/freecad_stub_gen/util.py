@@ -58,3 +58,6 @@ class OrderedSet(dict[T, None]):
     def update(self, keys: Iterable[T], **kwargs):
         for k in keys:
             self.add(k)
+
+    def first(self):
+        return next(iter(self.keys()))

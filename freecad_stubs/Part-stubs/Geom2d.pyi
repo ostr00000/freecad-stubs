@@ -29,7 +29,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
     def Periodic(self) -> bool:
         """Returns true if the curve is periodic."""
 
-    def approximateBSpline(self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = 'C2', /):
+    def approximateBSpline(self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = 'C2', /) -> Part.Geom2d.BSplineCurve2d:
         """
         Approximates a curve of any type to a B-Spline curve
         					approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -> B-Spline curve
@@ -92,7 +92,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
     def intersectCC(self, arg1: Part.Geom2d.Curve2d, arg2: float = None, /):
         """Returns all intersection points between this curve and the given curve."""
 
-    def length(self, uMin: float = None, uMax: float = None, Tol: float = None, /):
+    def length(self, uMin: float = None, uMax: float = None, Tol: float = None, /) -> float:
         """
         Computes the length of a curve
         length([uMin,uMax,Tol]) -> Float
@@ -107,7 +107,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
         of the nearest orthogonal projection of the point.
         """
 
-    def parameterAtDistance(self, abscissa: float, startingParameter: float = None, /):
+    def parameterAtDistance(self, abscissa: float, startingParameter: float = None, /) -> float:
         """
         Returns the parameter on the curve of a point at the given distance from a starting parameter. 
         parameterAtDistance([abscissa, startingParameter]) -> Float the
@@ -119,7 +119,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
     def tangent(self, arg1: float, /):
         """Computes the tangent of parameter u on this curve"""
 
-    def toBSpline(self, Float: float = None, Float2: float = None, /):
+    def toBSpline(self, Float: float = None, Float2: float = None, /) -> Part.Geom2d.BSplineCurve2d:
         """
         Converts a curve of any type (only part from First to Last)
         					toBSpline([Float=First, Float=Last]) -> B-Spline curve
@@ -887,23 +887,23 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         					are supplied, the continuity will drop to C1.
         """
 
-    def isClosed(self):
+    def isClosed(self) -> bool:
         """
         Returns true if the distance between the start point and end point of
         					this B-Spline curve is less than or equal to gp::Resolution().
         """
 
-    def isPeriodic(self):
+    def isPeriodic(self) -> bool:
         """Returns true if this BSpline curve is periodic."""
 
-    def isRational(self):
+    def isRational(self) -> bool:
         """
         Returns true if this B-Spline curve is rational.
         					A B-Spline curve is rational if, at the time of construction,
         					the weight table has been initialized.
         """
 
-    def join(self, arg1: Part.Geom2d.BSplineCurve2d, /):
+    def join(self, arg1: Part.Geom2d.BSplineCurve2d, /) -> bool:
         """Build a new spline by joining this and a second spline."""
 
     def makeC1Continuous(self, arg1: float = None, /):
@@ -928,7 +928,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         first and last poles which are effectively modified.
         """
 
-    def removeKnot(self, Index: int, M: int, tol: float, /):
+    def removeKnot(self, Index: int, M: int, tol: float, /) -> bool:
         """
         removeKnot(Index, M, tol)
 
@@ -1061,16 +1061,16 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
     def insertPoleBefore(self, arg1: int, arg2: object, arg3: float = None, /):
         """Inserts before the pole of index."""
 
-    def isClosed(self):
+    def isClosed(self) -> bool:
         """
         Returns true if the distance between the start point and end point of
         					this Bezier curve is less than or equal to gp::Resolution().
         """
 
-    def isPeriodic(self):
+    def isPeriodic(self) -> bool:
         """Returns false."""
 
-    def isRational(self):
+    def isRational(self) -> bool:
         """Returns false if the weights of all the poles of this Bezier curve are equal."""
 
     def removePole(self, arg1: int, /):

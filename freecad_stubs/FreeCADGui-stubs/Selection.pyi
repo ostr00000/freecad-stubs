@@ -77,7 +77,7 @@ def clearPreselection():
     """
 
 
-def countObjectsOfType(string: str, string1: str = None, resolve: int = 1, /):
+def countObjectsOfType(string: str, string1: str = None, resolve: int = 1, /) -> int:
     """
     Get the number of selected objects
     countObjectsOfType(string, [string],[resolve=1])

@@ -6,7 +6,7 @@ import Part
 
 
 # AppMeshPartPy.cpp
-def loftOnCurve(curve: Part.Shape, poly: object, upVector: typing.Sequence[float, float, float], MaxSize: float, /):
+def loftOnCurve(curve: Part.Shape, poly: object, upVector: typing.Sequence[float, float, float], MaxSize: float, /) -> Mesh.Mesh:
     """
     Creates a mesh loft based on a curve and an up vector
 
@@ -68,27 +68,27 @@ def projectShapeOnMesh(Polygons: object, Mesh: Mesh.Mesh, Direction: FreeCAD.Vec
 
 
 @typing.overload
-def meshFromShape(Shape: Part.Shape, /): ...
+def meshFromShape(Shape: Part.Shape, /) -> Mesh.Mesh: ...
 
 
 @typing.overload
-def meshFromShape(Shape: Part.Shape, MaxLength: float): ...
+def meshFromShape(Shape: Part.Shape, MaxLength: float) -> Mesh.Mesh: ...
 
 
 @typing.overload
-def meshFromShape(Shape: Part.Shape, MaxArea: float): ...
+def meshFromShape(Shape: Part.Shape, MaxArea: float) -> Mesh.Mesh: ...
 
 
 @typing.overload
-def meshFromShape(Shape: Part.Shape, LocalLength: float): ...
+def meshFromShape(Shape: Part.Shape, LocalLength: float) -> Mesh.Mesh: ...
 
 
 @typing.overload
-def meshFromShape(Shape: Part.Shape, Deflection: float): ...
+def meshFromShape(Shape: Part.Shape, Deflection: float) -> Mesh.Mesh: ...
 
 
 @typing.overload
-def meshFromShape(Shape: Part.Shape, MinLength: float, MaxLength: float):
+def meshFromShape(Shape: Part.Shape, MinLength: float, MaxLength: float) -> Mesh.Mesh:
     """
     Create surface mesh from shape
 

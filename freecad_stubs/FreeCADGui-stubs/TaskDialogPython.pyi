@@ -2,7 +2,7 @@
 class Control:
     """Control for task dialogs"""
 
-    def showDialog(self, dialog: object, /):
+    def showDialog(self, dialog: object, /) -> None:
         """
         show the given dialog in the task panel
         showDialog(dialog)
@@ -10,55 +10,55 @@ class Control:
         if a task is already active a RuntimeError is raised
         """
 
-    def activeDialog(self):
+    def activeDialog(self) -> bool:
         """
         check if a dialog is active in the task panel
         activeDialog() --> bool
         """
 
-    def closeDialog(self):
+    def closeDialog(self) -> None:
         """
         close the active dialog
         closeDialog()
         """
 
-    def addTaskWatcher(self, TaskWatcher_list: object, /):
+    def addTaskWatcher(self, TaskWatcher_list: object, /) -> None:
         """
         install a (list of) TaskWatcher
         addTaskWatcher(TaskWatcher | list)
         """
 
-    def clearTaskWatcher(self):
+    def clearTaskWatcher(self) -> None:
         """
         remove all TaskWatchers
         clearTaskWatcher()
         """
 
-    def isAllowedAlterDocument(self):
+    def isAllowedAlterDocument(self) -> bool:
         """
         return the permission to alter the current Document
         isAllowedAlterDocument() --> bool
         """
 
-    def isAllowedAlterView(self):
+    def isAllowedAlterView(self) -> bool:
         """
         return the permission to alter the current View
         isAllowedAlterView() --> bool
         """
 
-    def isAllowedAlterSelection(self):
+    def isAllowedAlterSelection(self) -> bool:
         """
         return the permission to alter the current Selection
         isAllowedAlterSelection() --> bool
         """
 
-    def showTaskView(self):
+    def showTaskView(self) -> None:
         """
         show the Task panel
         showTaskView()
         """
 
-    def showModelView(self):
+    def showModelView(self) -> None:
         """
         show the Model panel
         showModelView()

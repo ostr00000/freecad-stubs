@@ -62,16 +62,16 @@ class Sheet(FreeCAD.DocumentObject):
     def get(self, arg1: str, arg2: str = None, /):
         """Get evaluated cell contents"""
 
-    def getAlias(self, arg1: str, /):
+    def getAlias(self, arg1: str, /) -> None:
         """Get alias for cell address"""
 
-    def getAlignment(self, arg1: str, /):
+    def getAlignment(self, arg1: str, /) -> None:
         """Get alignment of the cell"""
 
-    def getBackground(self, arg1: str, /):
+    def getBackground(self, arg1: str, /) -> None:
         """Get background color of the cell"""
 
-    def getCellFromAlias(self, arg1: str, /):
+    def getCellFromAlias(self, arg1: str, /) -> None:
         """Get cell address given an alias"""
 
     def getColumnWidth(self, arg1: str, /):
@@ -83,13 +83,13 @@ class Sheet(FreeCAD.DocumentObject):
     def getDisplayUnit(self, arg1: str, /):
         """Get display unit for cell"""
 
-    def getForeground(self, arg1: str, /):
+    def getForeground(self, arg1: str, /) -> None:
         """Get foreground color of the cell"""
 
     def getRowHeight(self, arg1: str, /):
         """Get given spreadsheet row height"""
 
-    def getStyle(self, arg1: str, /):
+    def getStyle(self, arg1: str, /) -> None:
         """Get style of the cell"""
 
     def importFile(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, /):

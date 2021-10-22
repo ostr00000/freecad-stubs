@@ -2,27 +2,41 @@ import logging
 from inspect import Parameter, formatannotation, Signature
 from typing import Optional, Sequence
 
+from freecad_stub_gen.util import OrderedSet
+
 logger = logging.getLogger(__name__)
 
 
 class RawRepr:
-    __slots__ = 'value'
+    __slots__ = 'values'
 
-    def __new__(cls, value):
-        if value is Parameter.empty:
-            return value
+    def __new__(cls, *values):
+        if len(values) == 1 and values[0] is Parameter.empty:
+            return Parameter.empty
         return super().__new__(cls)
 
-    def __init__(self, value):
-        self.value = str(value)
+    def __init__(self, *values):
+        self.values = OrderedSet(map(str, values))
 
     def __repr__(self):
-        return self.value
+        return ' | '.join(self.values)
 
     def __eq__(self, other):
-        if isinstance(other, str):
-            return other == self.value
+        if isinstance(other, str) and len(self.values) == 1:
+            return other == self.values.first()
         return super().__eq__(other)
+
+    def __add__(self, other):
+        if isinstance(other, str):
+            self.values.add(other)
+            return self
+
+        elif isinstance(other, RawRepr):
+            self.values.update(other.values)
+            return self
+
+        else:
+            raise NotImplementedError
 
 
 class AnnotationParam(Parameter):
@@ -84,7 +98,8 @@ class SelfSignature(Signature):
                     parameters[0] = selfParam.replace(kind=Parameter.POSITIONAL_OR_KEYWORD)
 
         try:
-            super().__init__(parameters, return_annotation=return_annotation)
+            super().__init__(parameters, return_annotation=return_annotation,
+                             __validate_parameters__=__validate_parameters__)
         except ValueError as v:
             if parameters is not None:
                 logger.error(v)

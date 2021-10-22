@@ -104,17 +104,17 @@ class ViewProviderFemMesh(FreeCADGui.ViewProviderDocumentObject):
 
 
 # AppFemGuiPy.cpp
-def setActiveAnalysis(AnalysisObject: FreeCAD.DocumentObject = None, /):
+def setActiveAnalysis(AnalysisObject: FreeCAD.DocumentObject = None, /) -> None:
     """setActiveAnalysis(AnalysisObject) -- Set the Analysis object in work."""
 
 
-def getActiveAnalysis():
+def getActiveAnalysis() -> None:
     """getActiveAnalysis() -- Returns the Analysis object in work."""
 
 
-def open(arg1: str, arg2: str = None, /):
+def open(arg1: str, arg2: str = None, /) -> None:
     """open(string) -- Opens an Abaqus file in a text editor."""
 
 
-def insert(string: str, string1: str = None, /):
+def insert(string: str, string1: str = None, /) -> None:
     """insert(string,string) -- Opens an Abaqus file in a text editor."""
