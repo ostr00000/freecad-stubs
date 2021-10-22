@@ -227,7 +227,7 @@ class AttachEngine(FreeCAD.BaseClass):
     @Reverse.setter
     def Reverse(self, value: bool): ...
 
-    def calculateAttachedPlacement(self, orig_placement: FreeCAD.Placement, /) -> FreeCAD.Placement | None:
+    def calculateAttachedPlacement(self, orig_placement: FreeCAD.Placement, /) -> None | FreeCAD.Placement:
         """
         calculateAttachedPlacement(orig_placement): returns result of attachment, based
         on current Mode, References, etc. AttachmentOffset is included.
@@ -1525,7 +1525,7 @@ class Shape(FreeCAD.ComplexGeoData):
         exportStl(filename)
         """
 
-    def extrude(self, arg1: FreeCAD.Vector, /) -> Part.Edge | Part.CompSolid | Part.Solid | Part.Face | Part.Shell | Part.Compound:
+    def extrude(self, arg1: FreeCAD.Vector, /) -> Part.Compound | Part.CompSolid | Part.Solid | Part.Shell | Part.Face | Part.Edge:
         """
         Extrude the shape along a direction.
         extrude(direction, length)
@@ -2025,13 +2025,13 @@ class Shape(FreeCAD.ComplexGeoData):
         """
 
     @typing.overload
-    def revolve(self, base: FreeCAD.Vector, direction: FreeCAD.Vector, angle: float = None, /) -> Part.Edge | Part.CompSolid | Part.Solid | Part.Face | Part.Shell | Part.Compound: ...
+    def revolve(self, base: FreeCAD.Vector, direction: FreeCAD.Vector, angle: float = None, /) -> Part.Compound | Part.CompSolid | Part.Solid | Part.Shell | Part.Face | Part.Edge: ...
 
     @typing.overload
-    def revolve(self, Vector_0_0_0_: FreeCAD.Vector, Vector_0_0_1_: FreeCAD.Vector, arg3: float = None, /) -> Part.Edge | Part.CompSolid | Part.Solid | Part.Face | Part.Shell | Part.Compound: ...
+    def revolve(self, Vector_0_0_0_: FreeCAD.Vector, Vector_0_0_1_: FreeCAD.Vector, arg3: float = None, /) -> Part.Compound | Part.CompSolid | Part.Solid | Part.Shell | Part.Face | Part.Edge: ...
 
     @typing.overload
-    def revolve(self, V_0_0_0_: FreeCAD.Vector, V_0_1_0_: FreeCAD.Vector, arg3: float = None, /) -> Part.Edge | Part.CompSolid | Part.Solid | Part.Face | Part.Shell | Part.Compound:
+    def revolve(self, V_0_0_0_: FreeCAD.Vector, V_0_1_0_: FreeCAD.Vector, arg3: float = None, /) -> Part.Compound | Part.CompSolid | Part.Solid | Part.Shell | Part.Face | Part.Edge:
         """
         Revolve the shape around an Axis to a given degree.
         revolve(base, direction, angle)
@@ -5132,7 +5132,7 @@ class Curve(Part.Geometry):
         length([uMin,uMax,Tol]) -> Float
         """
 
-    def makeRuledSurface(self, arg1: Part.Curve, /) -> Part.BSplineSurface | Part.RectangularTrimmedSurface:
+    def makeRuledSurface(self, arg1: Part.Curve, /) -> Part.RectangularTrimmedSurface | Part.BSplineSurface:
         """Make a ruled surface of this and the given curves"""
 
     def normal(self, pos: float, /) -> FreeCAD.Vector:
@@ -6039,11 +6039,11 @@ def makeThread(pitch: float, depth: float, height: float, radius: float, /) -> P
 
 
 @typing.overload
-def makeRevolution(Curve_or_Edge: Part.Geometry, vmin: float = None, vmax: float = None, angle: float = None, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, shapetype: type = None, /) -> Part.Solid | Part.Shell | Part.Shape | Part.Face: ...
+def makeRevolution(Curve_or_Edge: Part.Geometry, vmin: float = None, vmax: float = None, angle: float = None, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, shapetype: type = None, /) -> Part.Solid | Part.Shell | Part.Face | Part.Shape: ...
 
 
 @typing.overload
-def makeRevolution(Curve_or_Edge: Part.Shape, vmin: float = None, vmax: float = None, angle: float = None, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, shapetype: type = None, /) -> Part.Solid | Part.Shell | Part.Shape | Part.Face:
+def makeRevolution(Curve_or_Edge: Part.Shape, vmin: float = None, vmax: float = None, angle: float = None, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = None, shapetype: type = None, /) -> Part.Solid | Part.Shell | Part.Face | Part.Shape:
     """
     makeRevolution(Curve or Edge,[vmin,vmax,angle,pnt,dir,shapetype]) -- Make a revolved shape
     by rotating the curve or a portion of it around an axis given by (pnt,dir).
@@ -6077,7 +6077,7 @@ def makeSweepSurface(arg1: Part.Shape, arg2: Part.Shape, arg3: float = None, arg
     """makeSweepSurface(edge(path),edge(profile),[float]) -- Create a profile along a path."""
 
 
-def makeLoft(list_of_wires: object, solid: bool = False, ruled: bool = False, closed: bool = False, maxDegree: int = 5, /) -> Part.Shape | Part.BSplineSurface:
+def makeLoft(list_of_wires: object, solid: bool = False, ruled: bool = False, closed: bool = False, maxDegree: int = 5, /) -> Part.BSplineSurface | Part.Shape:
     """makeLoft(list of wires,[solid=False,ruled=False,closed=False,maxDegree=5]) -- Create a loft shape."""
 
 

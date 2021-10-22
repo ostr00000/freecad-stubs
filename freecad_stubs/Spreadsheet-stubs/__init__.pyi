@@ -109,7 +109,7 @@ class Sheet(FreeCAD.DocumentObject):
         recomputeCells(from, to=None)
 
         Manually recompute cells in the given range with the given order without
-        following depedency order.
+        following dependency order.
         """
 
     def removeColumns(self, arg1: str, arg2: int, /):

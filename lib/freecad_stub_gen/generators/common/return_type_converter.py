@@ -15,7 +15,7 @@ class ReturnTypeConverter:
         self.functionBody = functionBody
 
     def getReturnType(self):
-        returnTypes = set(self._getReturnType())
+        returnTypes = OrderedSet(self._getReturnType())
         if not returnTypes:
             return Signature.empty
         return RawRepr(*returnTypes)

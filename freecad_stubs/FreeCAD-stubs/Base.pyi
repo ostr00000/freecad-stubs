@@ -1417,10 +1417,10 @@ class Matrix(FreeCAD.PyObjectBase):
         """
 
     @typing.overload
-    def multiply(self, Matrix_Vector: FreeCAD.Matrix, /) -> FreeCAD.Vector | FreeCAD.Matrix: ...
+    def multiply(self, Matrix_Vector: FreeCAD.Matrix, /) -> FreeCAD.Matrix | FreeCAD.Vector: ...
 
     @typing.overload
-    def multiply(self, Matrix_Vector: FreeCAD.Vector, /) -> FreeCAD.Vector | FreeCAD.Matrix:
+    def multiply(self, Matrix_Vector: FreeCAD.Vector, /) -> FreeCAD.Matrix | FreeCAD.Vector:
         """
         multiply(Matrix|Vector)
         Multiply a matrix or vector with this matrix

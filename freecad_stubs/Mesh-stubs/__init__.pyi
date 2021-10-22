@@ -74,6 +74,12 @@ class Facet(FreeCAD.PyObjectBase):
     def Roundness(self) -> float:
         """The roundness of the facet"""
 
+    def getEdge(self, int: int, /) -> Mesh.Edge:
+        """
+        getEdge(int) -> Edge
+        Returns the edge of the facet.
+        """
+
     def intersect(self, Facet: Mesh.Facet, /):
         """
         intersect(Facet) -> list 
@@ -556,10 +562,10 @@ class Mesh(FreeCAD.ComplexGeoData):
         """Create a mesh from segment"""
 
     @typing.overload
-    def nearestFacetOnRay(self, tuple: object, tuple2: object, /) -> float | int: ...
+    def nearestFacetOnRay(self, tuple: object, tuple2: object, /) -> int | float: ...
 
     @typing.overload
-    def nearestFacetOnRay(self, tuple: float, tuple2: int = None, /) -> float | int:
+    def nearestFacetOnRay(self, tuple: float, tuple2: int = None, /) -> int | float:
         """
         nearestFacetOnRay(tuple, tuple) -> dict
         Get the index and intersection point of the nearest facet to a ray.
@@ -719,6 +725,74 @@ class Mesh(FreeCAD.ComplexGeoData):
 
     def writeInventor(self, arg1: float = None, /):
         """Write the mesh in OpenInventor format to a string."""
+
+
+# EdgePy.xml
+class Edge(FreeCAD.PyObjectBase):
+    """
+    This class can be imported.
+    Edge in mesh
+    This is an edge of a facet in a MeshObject. You can get it by e.g. iterating over the facets of a
+    mesh and calling getEdge(index).
+    """
+
+    def __init__(self, arg1: FreeCAD.Vector = None, arg2: FreeCAD.Vector = None, /):
+        """
+        Edge in mesh
+        This is an edge of a facet in a MeshObject. You can get it by e.g. iterating over the facets of a
+        mesh and calling getEdge(index).
+        """
+
+    @property
+    def Bound(self) -> bool:
+        """Bound state of the edge"""
+
+    @property
+    def Index(self) -> int:
+        """The index of this edge of the facet"""
+
+    @property
+    def Length(self) -> float:
+        """The length of the edge"""
+
+    @property
+    def NeighbourIndices(self) -> tuple:
+        """The index tuple of neighbour facets of the mesh this edge is adjacent with"""
+
+    @property
+    def PointIndices(self) -> tuple:
+        """The index tuple of point vertices of the mesh this edge is built of"""
+
+    @property
+    def Points(self) -> list:
+        """A list of points of the edge"""
+
+    def intersectWithEdge(self, Edge: Mesh.Edge, /):
+        """
+        intersectWithEdge(Edge) -> list
+        Get a list of intersection points with another edge.
+        """
+
+    def isCollinear(self, Edge: Mesh.Edge, /):
+        """
+        isCollinear(Edge) -> bool
+        Checks if the two edges are collinear.
+        """
+
+    def isParallel(self, Edge: Mesh.Edge, /):
+        """
+        isParallel(Edge) -> bool
+        Checks if the two edges are parallel.
+        """
+
+    def unbound(self):
+        """
+        method unbound()
+        Cut the connection to a MeshObject. The edge becomes
+        free and is more or less a simple edge.
+        After calling unbound() no topological operation will
+        work!
+        """
 
 
 # AppMeshPy.cpp
