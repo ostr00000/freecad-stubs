@@ -1,7 +1,7 @@
 import typing
 
 import FreeCAD
-import Mesh
+import Mesh as MeshModule
 
 
 # FacetPy.xml
@@ -74,13 +74,13 @@ class Facet(FreeCAD.PyObjectBase):
     def Roundness(self) -> float:
         """The roundness of the facet"""
 
-    def getEdge(self, int: int, /) -> Mesh.Edge:
+    def getEdge(self, int: int, /) -> MeshModule.Edge:
         """
         getEdge(int) -> Edge
         Returns the edge of the facet.
         """
 
-    def intersect(self, Facet: Mesh.Facet, /):
+    def intersect(self, Facet: MeshModule.Facet, /):
         """
         intersect(Facet) -> list 
         Get a list of intersection points with another triangle.
@@ -217,7 +217,7 @@ class Feature(FreeCAD.GeoFeature):
         """
 
     @property
-    def Mesh(self) -> Mesh.Mesh:
+    def Mesh(self) -> MeshModule.Mesh:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property TypeId: Mesh::PropertyMeshKernel.
@@ -225,7 +225,7 @@ class Feature(FreeCAD.GeoFeature):
         """
 
     @Mesh.setter
-    def Mesh(self, value: Mesh.Mesh | list[list[float]]): ...
+    def Mesh(self, value: MeshModule.Mesh | list[list[float]]): ...
 
     def fixDegenerations(self, arg1: float = None, /):
         """Remove degenerated facets"""
@@ -348,7 +348,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def addFacet(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: FreeCAD.Vector, /): ...
 
     @typing.overload
-    def addFacet(self, arg1: Mesh.Facet, /):
+    def addFacet(self, arg1: MeshModule.Facet, /):
         """Add a facet to the mesh"""
 
     @typing.overload
@@ -358,7 +358,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def addFacets(self, arg1: tuple, arg2: bool = None, /):
         """Add a list of facets to the mesh"""
 
-    def addMesh(self, arg1: Mesh.Mesh, /):
+    def addMesh(self, arg1: MeshModule.Mesh, /):
         """Combine this mesh with another mesh."""
 
     def addSegment(self, arg1: object, /):
@@ -379,7 +379,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def collapseFacets(self, arg1: object, /):
         """Remove a list of facets"""
 
-    def copy(self) -> Mesh.Mesh:
+    def copy(self) -> MeshModule.Mesh:
         """Create a copy of this mesh"""
 
     def countComponents(self):
@@ -417,7 +417,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         					mesh.decimate(0.5, 0.9) # reduction by up to 90 percent
         """
 
-    def difference(self, arg1: Mesh.Mesh, /) -> Mesh.Mesh:
+    def difference(self, arg1: MeshModule.Mesh, /) -> MeshModule.Mesh:
         """Difference of this and the given mesh object."""
 
     def fillupHoles(self, arg1: int, arg2: int = None, arg3: float = None, /):
@@ -543,13 +543,13 @@ class Mesh(FreeCAD.ComplexGeoData):
     def hasSelfIntersections(self):
         """Check if the mesh intersects itself"""
 
-    def inner(self, arg1: Mesh.Mesh, /) -> Mesh.Mesh:
+    def inner(self, arg1: MeshModule.Mesh, /) -> MeshModule.Mesh:
         """Get the part inside of the intersection"""
 
     def insertVertex(self, arg1: int, arg2: FreeCAD.Vector, /):
         """Insert a vertex into a facet"""
 
-    def intersect(self, arg1: Mesh.Mesh, /) -> Mesh.Mesh:
+    def intersect(self, arg1: MeshModule.Mesh, /) -> MeshModule.Mesh:
         """Intersection of this and the given mesh object."""
 
     def isSolid(self):
@@ -558,7 +558,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def mergeFacets(self):
         """Merge facets to optimize topology"""
 
-    def meshFromSegment(self, arg1: object, /) -> Mesh.Mesh:
+    def meshFromSegment(self, arg1: object, /) -> MeshModule.Mesh:
         """Create a mesh from segment"""
 
     @typing.overload
@@ -587,7 +587,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def optimizeTopology(self, arg1: float = None, /):
         """Optimize the edges to get nicer facets"""
 
-    def outer(self, arg1: Mesh.Mesh, /) -> Mesh.Mesh:
+    def outer(self, arg1: MeshModule.Mesh, /) -> MeshModule.Mesh:
         """Get the part outside the intersection"""
 
     def printInfo(self):
@@ -651,7 +651,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def rotate(self, arg1: float, arg2: float, arg3: float, /):
         """Apply a rotation to the mesh"""
 
-    def section(self, Mesh: Mesh.Mesh, ConnectLines: bool = True, MinDist: float = 0.0001):
+    def section(self, Mesh: MeshModule.Mesh, ConnectLines: bool = True, MinDist: float = 0.0001):
         """
         Get the section curves of this and the given mesh object.
         lines = mesh.section(mesh2, [ConnectLines=True, MinDist=0.0001])
@@ -709,7 +709,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         direction of the normal the part above or below will be kept.
         """
 
-    def unite(self, arg1: Mesh.Mesh, /) -> Mesh.Mesh:
+    def unite(self, arg1: MeshModule.Mesh, /) -> MeshModule.Mesh:
         """Union of this and the given mesh object."""
 
     @typing.overload
@@ -767,19 +767,19 @@ class Edge(FreeCAD.PyObjectBase):
     def Points(self) -> list:
         """A list of points of the edge"""
 
-    def intersectWithEdge(self, Edge: Mesh.Edge, /):
+    def intersectWithEdge(self, Edge: MeshModule.Edge, /):
         """
         intersectWithEdge(Edge) -> list
         Get a list of intersection points with another edge.
         """
 
-    def isCollinear(self, Edge: Mesh.Edge, /):
+    def isCollinear(self, Edge: MeshModule.Edge, /):
         """
         isCollinear(Edge) -> bool
         Checks if the two edges are collinear.
         """
 
-    def isParallel(self, Edge: Mesh.Edge, /):
+    def isParallel(self, Edge: MeshModule.Edge, /):
         """
         isParallel(Edge) -> bool
         Checks if the two edges are parallel.
@@ -796,7 +796,7 @@ class Edge(FreeCAD.PyObjectBase):
 
 
 # AppMeshPy.cpp
-def read(arg1: str, /) -> Mesh.Mesh:
+def read(arg1: str, /) -> MeshModule.Mesh:
     """Read a mesh from a file and returns a Mesh object."""
 
 
@@ -815,35 +815,35 @@ def insert(string_mesh: str, string: str = None, /) -> None:
     """
 
 
-def show(shape: Mesh.Mesh, string: str = None, /) -> None:
+def show(shape: MeshModule.Mesh, string: str = None, /) -> None:
     """show(shape,[string]) -- Add the mesh to the active document or create one if no document exists."""
 
 
-def createBox(arg1: float = None, arg2: float = None, arg3: float = None, arg4: float = None, /) -> Mesh.Mesh:
+def createBox(arg1: float = None, arg2: float = None, arg3: float = None, arg4: float = None, /) -> MeshModule.Mesh:
     """Create a solid mesh box"""
 
 
-def createPlane(arg1: float = None, arg2: float = None, arg3: float = None, /) -> Mesh.Mesh:
+def createPlane(arg1: float = None, arg2: float = None, arg3: float = None, /) -> MeshModule.Mesh:
     """Create a mesh XY plane normal +Z"""
 
 
-def createSphere(arg1: float = None, arg2: int = None, /) -> Mesh.Mesh:
+def createSphere(arg1: float = None, arg2: int = None, /) -> MeshModule.Mesh:
     """Create a tessellated sphere"""
 
 
-def createEllipsoid(arg1: float = None, arg2: float = None, arg3: int = None, /) -> Mesh.Mesh:
+def createEllipsoid(arg1: float = None, arg2: float = None, arg3: int = None, /) -> MeshModule.Mesh:
     """Create a tessellated ellipsoid"""
 
 
-def createCylinder(arg1: float = None, arg2: float = None, arg3: int = None, arg4: float = None, arg5: int = None, /) -> Mesh.Mesh:
+def createCylinder(arg1: float = None, arg2: float = None, arg3: int = None, arg4: float = None, arg5: int = None, /) -> MeshModule.Mesh:
     """Create a tessellated cylinder"""
 
 
-def createCone(arg1: float = None, arg2: float = None, arg3: float = None, arg4: int = None, arg5: float = None, arg6: int = None, /) -> Mesh.Mesh:
+def createCone(arg1: float = None, arg2: float = None, arg3: float = None, arg4: int = None, arg5: float = None, arg6: int = None, /) -> MeshModule.Mesh:
     """Create a tessellated cone"""
 
 
-def createTorus(arg1: float = None, arg2: float = None, arg3: int = None, /) -> Mesh.Mesh:
+def createTorus(arg1: float = None, arg2: float = None, arg3: int = None, /) -> MeshModule.Mesh:
     """Create a tessellated torus"""
 
 

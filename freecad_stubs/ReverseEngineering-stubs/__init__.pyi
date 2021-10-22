@@ -1,4 +1,4 @@
-import Mesh
+import Mesh as MeshModule
 import Part
 import Points
 
@@ -12,27 +12,27 @@ def approxSurface(Points: object, UDegree: int = None, VDegree: int = None, NbUP
     """
 
 
-def triangulate(Points: Points.Points, SearchRadius: float, Mu: float = None, KSearch: int = None, Normals=None) -> Mesh.Mesh:
+def triangulate(Points: Points.Points, SearchRadius: float, Mu: float = None, KSearch: int = None, Normals=None) -> MeshModule.Mesh:
     """triangulate(PointKernel,searchRadius[,mu=2.5])."""
 
 
-def poissonReconstruction(Points: Points.Points, KSearch: int = None, OctreeDepth: int = None, SolverDivide: int = None, SamplesPerNode: float = None, Normals=None) -> Mesh.Mesh:
+def poissonReconstruction(Points: Points.Points, KSearch: int = None, OctreeDepth: int = None, SolverDivide: int = None, SamplesPerNode: float = None, Normals=None) -> MeshModule.Mesh:
     """poissonReconstruction(PointKernel)."""
 
 
-def viewTriangulation(Points: Points.Points, Width: int = None, Height: int = None) -> Mesh.Mesh:
+def viewTriangulation(Points: Points.Points, Width: int = None, Height: int = None) -> MeshModule.Mesh:
     """viewTriangulation(PointKernel, width, height)."""
 
 
-def gridProjection(Points: Points.Points, KSearch: int = None, Normals=None) -> Mesh.Mesh:
+def gridProjection(Points: Points.Points, KSearch: int = None, Normals=None) -> MeshModule.Mesh:
     """gridProjection(PointKernel)."""
 
 
-def marchingCubesRBF(Points: Points.Points, KSearch: int = None, Normals=None) -> Mesh.Mesh:
+def marchingCubesRBF(Points: Points.Points, KSearch: int = None, Normals=None) -> MeshModule.Mesh:
     """marchingCubesRBF(PointKernel)."""
 
 
-def marchingCubesHoppe(Points: Points.Points, KSearch: int = None, Normals=None) -> Mesh.Mesh:
+def marchingCubesHoppe(Points: Points.Points, KSearch: int = None, Normals=None) -> MeshModule.Mesh:
     """marchingCubesHoppe(PointKernel)."""
 
 

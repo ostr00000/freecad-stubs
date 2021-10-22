@@ -5,6 +5,7 @@ from typing import Optional
 from freecad_stub_gen.generators.from_cpp.base import BaseGeneratorFromCpp
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall
 from freecad_stub_gen.module_container import Module
+from freecad_stub_gen.module_namespace import moduleNamespace
 
 
 class FreecadStubGeneratorFromCppModule(BaseGeneratorFromCpp):
@@ -24,6 +25,7 @@ class FreecadStubGeneratorFromCppModule(BaseGeneratorFromCpp):
                 # we prefer name with more details
                 assert self._modName
                 curModName = moduleName if '.' in moduleName else self._modName
+                curModName = moduleNamespace.convertNamespaceToModule(curModName)
 
                 mod[curModName].update(Module(
                     header + result, self.requiredImports))

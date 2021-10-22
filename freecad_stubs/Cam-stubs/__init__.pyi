@@ -1,4 +1,4 @@
-import Mesh
+import Mesh as MeshModule
 import Part
 
 
@@ -31,7 +31,7 @@ def tesselateShape(arg0: Part.Shape, arg1: float, /):
     """1"""
 
 
-def tess_shape(arg0: Part.Shape, arg1: float, /) -> Mesh.Mesh:
+def tess_shape(arg0: Part.Shape, arg1: float, /) -> MeshModule.Mesh:
     """1"""
 
 
@@ -39,11 +39,11 @@ def createPlane(arg0: float, /) -> Part.Shape:
     """1"""
 
 
-def best_fit_test(arg0: Part.Shape, /) -> Mesh.Mesh:
+def best_fit_test(arg0: Part.Shape, /) -> MeshModule.Mesh:
     """1"""
 
 
-def best_fit_complete(arg0: Mesh.Mesh, arg1: Part.Shape, /):
+def best_fit_complete(arg0: MeshModule.Mesh, arg1: Part.Shape, /):
     """1"""
 
 
@@ -55,11 +55,11 @@ def createBox(arg0: float, arg1: float, arg2: float, arg3: float, arg4: float, a
     """1"""
 
 
-def spring_back(arg0: Mesh.Mesh, arg1: Part.Shape, /) -> Mesh.Mesh:
+def spring_back(arg0: MeshModule.Mesh, arg1: Part.Shape, /) -> MeshModule.Mesh:
     """1"""
 
 
-def useMesh(MeshObject: Mesh.Mesh, /):
+def useMesh(MeshObject: MeshModule.Mesh, /):
     """useMesh(MeshObject) -- Shows the usage of Mesh objects from the Mesh Module."""
 
 

@@ -89,6 +89,9 @@ class Module:
             elif any(t in imp for t in ('TypeAlias', 'TypeVar')):
                 types.append(imp)
                 continue
+            elif imp == 'MeshModule':
+                sortModule = 'Mesh'
+                imp = 'import Mesh as MeshModule'
             else:
                 sortModule = imp
                 if 'import' not in imp:

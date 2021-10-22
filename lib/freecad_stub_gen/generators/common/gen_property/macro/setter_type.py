@@ -5,6 +5,7 @@ from freecad_stub_gen.generators.common.cpp_function import generateExpressionUn
 from freecad_stub_gen.generators.common.gen_property.macro.alias import PropertyTypeAlias, \
     PropertyTypeVar
 from freecad_stub_gen.generators.common.gen_property.macro.base import PropertyMacroBase
+from freecad_stub_gen.module_namespace import moduleNamespace
 
 logger = logging.getLogger(__name__)
 seen = set()
@@ -114,7 +115,8 @@ class PropertyMacroSetter(PropertyMacroBase):
                 innerType = ''  # read only
 
             case "Mesh::PropertyMeshKernel":
-                innerType = 'Mesh.Mesh | list[list[float]]'
+                mod = moduleNamespace.convertNamespaceToModule('Mesh')
+                innerType = f'{mod}.Mesh | list[list[float]]'
 
             case "Part::PropertyGeometryList":
                 innerType = 'Part.Geometry'

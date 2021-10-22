@@ -34,6 +34,7 @@ class _ModuleNamespace:
         'Gui': 'FreeCADGui',
         'Data': 'FreeCAD',
         'Attacher': 'Part',
+        'Mesh': 'MeshModule',  # need to use alias, because there is also class 'Mesh'
     }
 
     def convertNamespaceToModule(self, namespace: str):

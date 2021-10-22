@@ -10,6 +10,7 @@ from freecad_stub_gen.generators.from_cpp.klass import FreecadStubGeneratorFromC
 from freecad_stub_gen.generators.from_cpp.module import FreecadStubGeneratorFromCppModule
 from freecad_stub_gen.generators.from_xml.full import FreecadStubGeneratorFromXML
 from freecad_stub_gen.module_container import Module
+from freecad_stub_gen.module_namespace import moduleNamespace
 from freecad_stub_gen.util import genPyCppFiles, genXmlFiles
 
 logger = logging.getLogger(__name__)
@@ -118,11 +119,13 @@ Wrn = FreeCAD.Console.PrintWarning
         'from FreeCADGui.TaskDialogPython import Control as ControlClass'))
 
     for mod in (sourcePath / 'Mod').iterdir():
-        if mod.name in ('Test',):
+        moduleName = mod.name
+        if moduleName in ('Test',):
             continue
 
-        _genModule(sourcesRoot, mod / 'App', sourcePath, moduleName=mod.name)
-        _genModule(sourcesRoot, mod / 'Gui', sourcePath, moduleName=mod.name)
+        moduleName = moduleNamespace.convertNamespaceToModule(moduleName)
+        _genModule(sourcesRoot, mod / 'App', sourcePath, moduleName=moduleName)
+        _genModule(sourcesRoot, mod / 'Gui', sourcePath, moduleName=moduleName)
 
     addExceptions(sourcesRoot)
     sourcesRoot['FreeCAD.Units'].imports.add(
@@ -136,7 +139,12 @@ Wrn = FreeCAD.Console.PrintWarning
 
     for stubPackage in targetPath.iterdir():
         if stubPackage.is_dir():
-            stubPackage.rename(stubPackage.with_name(stubPackage.name + '-stubs'))
+            if stubPackage.name == 'MeshModule':
+                newName = 'Mesh-stubs'
+            else:
+                newName = stubPackage.name + '-stubs'
+
+            stubPackage.rename(stubPackage.with_name(newName))
 
     for additionalPackage in additionalPath.glob('[!_]*.py'):
         targetAdditionalPackage = targetPath / additionalPackage.stem
