@@ -819,7 +819,12 @@ def show(shape: MeshModule.Mesh, string: str = None, /) -> None:
     """show(shape,[string]) -- Add the mesh to the active document or create one if no document exists."""
 
 
-def createBox(arg1: float = None, arg2: float = None, arg3: float = None, arg4: float = None, /) -> MeshModule.Mesh:
+@typing.overload
+def createBox(arg1: float = None, arg2: float = None, arg3: float = None, arg4: float = None, /) -> MeshModule.Mesh: ...
+
+
+@typing.overload
+def createBox(arg1: FreeCAD.BoundBox, /) -> MeshModule.Mesh:
     """Create a solid mesh box"""
 
 

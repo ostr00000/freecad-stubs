@@ -253,9 +253,6 @@ class Rotation(FreeCAD.PyObjectBase):
     def __init__(self, arg1: FreeCAD.Rotation, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Vector, arg2: float, /): ...
-
-    @typing.overload
     def __init__(self, arg1: FreeCAD.Matrix, /): ...
 
     @typing.overload
@@ -277,7 +274,13 @@ class Rotation(FreeCAD.PyObjectBase):
     def __init__(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: FreeCAD.Vector, arg4: str = None, /):
+    def __init__(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: FreeCAD.Vector, arg4: str = None, /): ...
+
+    @typing.overload
+    def __init__(self, Axis: FreeCAD.Vector, Degree: float): ...
+
+    @typing.overload
+    def __init__(self, Axis: FreeCAD.Vector, Radian: float):
         """
         A Rotation using a quaternion.
         				The Rotation object can be created by:
@@ -320,6 +323,14 @@ class Rotation(FreeCAD.PyObjectBase):
     @property
     def RawAxis(self) -> FreeCAD.Vector:
         """The rotation axis without normalization"""
+
+    def getYawPitchRoll(self):
+        """
+        getYawPitchRoll() -> list
+        					Get the Euler angles of this rotation
+        					as yaw-pitch-roll in XY'Z'' convention
+                            NOTE: The angles are in degree
+        """
 
     def invert(self):
         """
@@ -364,17 +375,26 @@ class Rotation(FreeCAD.PyObjectBase):
         					Multiply this quaternion with another quaternion
         """
 
+    def setEulerAngles(self, seq: str, angle1: float, angle2: float, angle3: float, /):
+        """
+        setEulerAngles(seq, angle1, angle2, angle3)
+                        Set the Euler angles in a given sequence for this rotation.
+                        'seq' is the Euler sequence name. You get all possible values with toEulerAngles()
+        """
+
+    def setYawPitchRoll(self, angle1: float, angle2: float, angle3: float, /):
+        """
+        setYawPitchRoll(angle1, angle2, angle3)
+                            Set the Euler angles of this rotation
+                            as yaw-pitch-roll in XY'Z'' convention.
+
+                            NOTE: The angles are in degree
+        """
+
     def slerp(self, Rotation: FreeCAD.Rotation, Float: float, /) -> FreeCAD.Rotation:
         """
         slerp(Rotation, Float) -> Rotation
         					Spherical linear interpolation of this and a given rotation. The float must be in the range of 0 and 1
-        """
-
-    def toEuler(self):
-        """
-        toEuler() -> list
-        					Get the Euler angles of this rotation
-        					as yaw-pitch-roll in XY'Z'' convention
         """
 
     def toEulerAngles(self, seq: str = '', /):

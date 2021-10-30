@@ -46,3 +46,11 @@ def QT_TR_NOOP_UTF8(sourcetext: object, /):
     QT_TR_NOOP_UTF8(sourcetext)
     Same as QT_TR_NOOP
     """
+
+
+def installTranslator(arg1: str, /) -> bool:
+    """Install a translator for testing purposes"""
+
+
+def removeTranslators() -> bool:
+    """Remove test translators"""
