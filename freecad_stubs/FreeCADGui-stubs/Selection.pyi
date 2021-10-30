@@ -49,7 +49,7 @@ def clearSelection(docName: str = '', clearPreSelect: bool = True, /):
     """
 
 
-def isSelected(arg0: FreeCAD.DocumentObject, arg1: str = None, arg2=None, /):
+def isSelected(arg0: FreeCAD.DocumentObject, arg1: str = None, arg2=None, /) -> bool:
     """
     Check if a given object is selected
     isSelected(object,resolve=True)

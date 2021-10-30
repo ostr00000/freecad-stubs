@@ -23,11 +23,11 @@ def parseQuantity(arg0: str, /) -> FreeCAD.Quantity:
 
 
 @typing.overload
-def listSchemas(): ...
+def listSchemas() -> str: ...
 
 
 @typing.overload
-def listSchemas(int: int, /):
+def listSchemas(int: int, /) -> str:
     """
     listSchemas() -> a tuple of schemas
 
@@ -35,7 +35,7 @@ def listSchemas(int: int, /):
     """
 
 
-def getSchema():
+def getSchema() -> int:
     """
     getSchema() -> int
 

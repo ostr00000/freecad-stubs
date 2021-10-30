@@ -350,7 +350,7 @@ class SketchObject(Part.Part2DObject):
     def convertToNURBS(self, arg1: int, /):
         """Approximates the given geometry with a B-Spline"""
 
-    def decreaseBSplineDegree(self, arg1: int, arg2: int = None, /):
+    def decreaseBSplineDegree(self, arg1: int, arg2: int = None, /) -> bool:
         """Decreases the given BSpline Degree by a number of degrees by approximating this curve"""
 
     def delConstraint(self, arg1: int, /):
@@ -440,7 +440,7 @@ class SketchObject(Part.Part2DObject):
                         as being dependent on other parameters.
         """
 
-    def getIndexByName(self, arg1: str, /):
+    def getIndexByName(self, arg1: str, /) -> int:
         """
         Get the index of the constraint by name.
         If there is no such constraint an exception is raised.
@@ -527,7 +527,7 @@ class SketchObject(Part.Part2DObject):
     def setVirtualSpace(self, arg1: object, arg2: bool, /):
         """set the VirtualSpace status of a constraint"""
 
-    def solve(self):
+    def solve(self) -> int:
         """solve the actual set of geometry and constraints"""
 
     def split(self, arg1: int, arg2: FreeCAD.Vector, /):

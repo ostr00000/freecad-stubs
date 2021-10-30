@@ -311,7 +311,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
     def hide(self):
         """Hide the object"""
 
-    def isVisible(self):
+    def isVisible(self) -> bool:
         """Check if the object is visible"""
 
     def listDisplayModes(self):
@@ -326,7 +326,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         clear: true to add, or false to remove the subelement(s) for rendering.
         """
 
-    def removeProperty(self, string: str, /):
+    def removeProperty(self, string: str, /) -> bool:
         """
         Remove a generic property.
         removeProperty(string)
@@ -482,7 +482,7 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
 class ViewProviderExtension(FreeCAD.Extension):
     """Base class for all view provider extensions"""
 
-    def ignoreOverlayIcon(self, arg1: str, /):
+    def ignoreOverlayIcon(self, arg1: str, /) -> bool:
         """Ignore the overlay icon of an extension"""
 
     def setIgnoreOverlayIcon(self, arg1: bool, arg2: str, /):
@@ -779,7 +779,7 @@ class SelectionObject(FreeCAD.BaseClass):
     def TypeName(self) -> str:
         """Type name of the selected object"""
 
-    def isObjectTypeOf(self, type: str, /):
+    def isObjectTypeOf(self, type: str, /) -> bool:
         """
         Test for a certain father class.
         isObjectTypeOf(type) -> Bool
@@ -1635,11 +1635,11 @@ def runCommand(arg0: str, arg1: int = None, /) -> None:
     """
 
 
-def SendMsgToActiveView(arg0: str, arg1: bool = None, /) -> None:
+def SendMsgToActiveView(arg0: str, arg1: bool = None, /) -> str | None:
     """deprecated -- use class View"""
 
 
-def sendMsgToFocusView(arg0: str, arg1: bool = None, /) -> None:
+def sendMsgToFocusView(arg0: str, arg1: bool = None, /) -> str | None:
     """send message to the focused view"""
 
 
@@ -1785,7 +1785,7 @@ def createViewer(arg0: int = None, arg1: str = None, /) -> None:
     """
 
 
-def getMarkerIndex(arg0: str = None, arg1: int = None, /):
+def getMarkerIndex(arg0: str = None, arg1: int = None, /) -> int:
     """Get marker index according to marker size setting"""
 
 

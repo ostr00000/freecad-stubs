@@ -3,7 +3,10 @@ from inspect import Signature
 
 from freecad_stub_gen.generators.common.annotation_parameter import RawRepr
 from freecad_stub_gen.generators.common.arguments_converter import logger
+from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
+    generateExpressionUntilChar
 from freecad_stub_gen.generators.common.names import getClassWithModulesFromPointer, getModuleName
+from freecad_stub_gen.generators.common.py_build_converter import parsePyBuildValues
 from freecad_stub_gen.util import OrderedSet
 
 
@@ -49,10 +52,10 @@ class ReturnTypeConverter:
                           or returnText.startswith('Py::asObject(new '):
                     cType = returnText.removeprefix('Py::asObject(new ').removeprefix('new ')
                     cType = cType.split('(', maxsplit=1)[0]
-                    ClassWithModule = getClassWithModulesFromPointer(cType)
-                    if mod := getModuleName(ClassWithModule):
+                    classWithModule = getClassWithModulesFromPointer(cType)
+                    if mod := getModuleName(classWithModule):
                         self.requiredImports.add(mod)
-                    yield ClassWithModule
+                    yield classWithModule
 
                 case _ if returnText.startswith('Py::asObject(') \
                           or returnText.startswith('Py::new_reference_to(') \
@@ -61,10 +64,18 @@ class ReturnTypeConverter:
                           or returnText.isidentifier():
                     pass  # TODO P2 new object from some variable
 
-                case _ if returnText.startswith('Py_BuildValue('):
-                    # TODO P2 extract value from
-                    #  https://docs.python.org/3/c-api/arg.html#c.Py_BuildValue
-                    pass
+                case _ if returnText.startswith('Py_BuildValue("'):
+                    fc = findFunctionCall(
+                        returnText, bodyStart=len('Py_BuildValue'), bracketL='(', bracketR=')',
+                    ).removeprefix('(').removesuffix(')')
+                    funArgs = list(generateExpressionUntilChar(
+                        fc, 0, ',', bracketL='(', bracketR=')'))
+                    formatText = funArgs[0].removeprefix('"').removesuffix('"')
+                    if pythonType := parsePyBuildValues(formatText):
+                        if pythonType == 'object':
+                            objArg = funArgs[1].strip()
+                            pythonType = self._parseObject(objArg)
+                        yield pythonType
 
                 case _ if returnText.endswith('->getPyObject()') \
                           or returnText.endswith('.getPyObject()'):
@@ -72,3 +83,11 @@ class ReturnTypeConverter:
 
                 case _:
                     logger.warning(f"Unknown return variable: '{returnText}'")
+
+    @staticmethod
+    def _parseObject(objText: str):
+        if 'Py_True' in objText or 'Py_False' in objText:
+            return 'bool'
+
+        logger.debug(f"Possible object extraction: {objText}")
+        return 'object'

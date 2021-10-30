@@ -333,19 +333,19 @@ class Rotation(FreeCAD.PyObjectBase):
                             Returns the inverse of the rotation
         """
 
-    def isIdentity(self):
+    def isIdentity(self) -> bool:
         """
         isIdentity() -> Bool
                             returns True if the rotation equals the unity matrix
         """
 
-    def isNull(self):
+    def isNull(self) -> bool:
         """
         isNull() -> Bool
                             returns True if all Q values are zero
         """
 
-    def isSame(self, Rotation: FreeCAD.Rotation, tolerance: float = 0, /):
+    def isSame(self, Rotation: FreeCAD.Rotation, tolerance: float = 0, /) -> bool:
         """
         isSame(Rotation, [tolerance=0])
                             Checks if the two quaternions perform the same rotation.
@@ -794,7 +794,7 @@ class Placement(FreeCAD.PyObjectBase):
         					compute the inverse placement
         """
 
-    def isIdentity(self):
+    def isIdentity(self) -> bool:
         """
         isIdentity() -> Bool
         					returns True if the placement has no displacement and no rotation
@@ -1154,7 +1154,7 @@ class Quantity(FreeCAD.PyObjectBase):
                   getValueAs(Unit(0,1,0,0,0,0,0,0)) # a unit
         """
 
-    def toStr(self, decimals: int = None, /):
+    def toStr(self, decimals: int = None, /) -> str:
         """
         toStr([decimals])
                   returns a string representation rounded to number of decimals. If no decimals are specified then

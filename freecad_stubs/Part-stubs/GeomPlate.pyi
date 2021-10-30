@@ -39,7 +39,7 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
     def init(self):
         """Resets all constraints"""
 
-    def isDone(self):
+    def isDone(self) -> bool:
         """Tests whether computation of the plate has been completed"""
 
     def loadInitSurface(self, arg1: Part.GeometrySurface, /):
@@ -165,7 +165,7 @@ class PointConstraintPy(FreeCAD.PyObjectBase):
         Raises an exception if  the  curve  is  not  on  a  surface.
         """
 
-    def hasPnt2dOnSurf(self): ...
+    def hasPnt2dOnSurf(self) -> bool: ...
 
     def order(self) -> int:
         """Returns the order of constraint, one of G0, G1 or G2"""

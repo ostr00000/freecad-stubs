@@ -467,25 +467,25 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     def getSubObjects(self, reason: int = 0, /):
         """getSubObjects(reason=0): Return subname reference of all sub-objects"""
 
-    def hasChildElement(self):
+    def hasChildElement(self) -> bool:
         """Return true to indicate the object having child elements"""
 
-    def isElementVisible(self, element: str, /):
+    def isElementVisible(self, element: str, /) -> int:
         """
         isElementVisible(element): Check if a child element is visible
         Return -1 if element visibility is not supported or element not found, 0 if invisible, or else 1
         """
 
-    def isValid(self):
+    def isValid(self) -> bool:
         """Returns True if the object is valid, False otherwise"""
 
     def purgeTouched(self):
         """Mark the object as unchanged"""
 
-    def recompute(self, recursive=False, /):
+    def recompute(self, recursive=False, /) -> bool:
         """recompute(recursive=False): Recomputes this object"""
 
-    def removeProperty(self, string: str, /):
+    def removeProperty(self, string: str, /) -> bool:
         """
         removeProperty(string) -- Remove a generic property.
                             Note, you can only remove user-defined properties but not built-in ones.
@@ -513,7 +513,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         Return tuple(obj,newElementName,oldElementName)
         """
 
-    def setElementVisible(self, element: str, visible=None, /):
+    def setElementVisible(self, element: str, visible=None, /) -> int:
         """
         setElementVisible(element,visible): Set the visibility of a child element
         Return -1 if element visibility is not supported, 0 if element not found, 1 if success
@@ -1739,7 +1739,7 @@ def setLogLevel(tag: str, level: object, /) -> None:
     """
 
 
-def getLogLevel(tag: str, /):
+def getLogLevel(tag: str, /) -> int:
     """getLogLevel(tag) -- Get the log level of a string tag"""
 
 

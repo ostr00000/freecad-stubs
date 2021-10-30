@@ -291,7 +291,7 @@ class FemPostPipeline(FreeCAD.GeoFeature):
     def getLastPostObject(self):
         """Get the last post-processing object"""
 
-    def holdsPostObject(self, arg1: FreeCAD.DocumentObject, /):
+    def holdsPostObject(self, arg1: FreeCAD.DocumentObject, /) -> bool:
         """Check if this pipeline holds a given post-processing object"""
 
     def load(self, arg1: FreeCAD.DocumentObject, /):

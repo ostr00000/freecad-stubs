@@ -37,9 +37,9 @@ def generateExpressionUntilChar(text: str, expStart: int, splitChar: str,
             ignore = not ignore
         elif ignore:
             pass
-        elif char == bracketL:
+        elif char in bracketL:
             bracketDeep += 1
-        elif char == bracketR:
+        elif char in bracketR:
             bracketDeep -= 1
             if bracketDeep < 0:
                 yield text[expStart:expEnd]

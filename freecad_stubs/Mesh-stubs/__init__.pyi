@@ -382,13 +382,13 @@ class Mesh(FreeCAD.ComplexGeoData):
     def copy(self) -> MeshModule.Mesh:
         """Create a copy of this mesh"""
 
-    def countComponents(self):
+    def countComponents(self) -> int:
         """Get the number of topologic independent areas"""
 
-    def countNonUniformOrientedFacets(self):
+    def countNonUniformOrientedFacets(self) -> int:
         """Get the number of wrong oriented facets"""
 
-    def countSegments(self):
+    def countSegments(self) -> int:
         """Get the number of segments which may also be 0"""
 
     def crossSections(self, arg1: object, arg2: float = None, arg3: bool = None, /):
@@ -516,31 +516,31 @@ class Mesh(FreeCAD.ComplexGeoData):
     def harmonizeNormals(self):
         """Adjust wrong oriented facets"""
 
-    def hasCorruptedFacets(self):
+    def hasCorruptedFacets(self) -> bool:
         """Check if the mesh has corrupted facets"""
 
-    def hasFacetsOutOfRange(self):
+    def hasFacetsOutOfRange(self) -> bool:
         """Check if the mesh has facet indices that are out of range"""
 
-    def hasInvalidNeighbourhood(self):
+    def hasInvalidNeighbourhood(self) -> bool:
         """Check if the mesh has invalid neighbourhood indices"""
 
-    def hasInvalidPoints(self):
+    def hasInvalidPoints(self) -> bool:
         """Check if the mesh has points with invalid coordinates (NaN)"""
 
-    def hasNonManifolds(self):
+    def hasNonManifolds(self) -> bool:
         """Check if the mesh has non-manifolds"""
 
-    def hasNonUniformOrientedFacets(self):
+    def hasNonUniformOrientedFacets(self) -> bool:
         """Check if the mesh has facets with inconsistent orientation"""
 
-    def hasPointsOnEdge(self):
+    def hasPointsOnEdge(self) -> bool:
         """Check if points lie on edges"""
 
-    def hasPointsOutOfRange(self):
+    def hasPointsOutOfRange(self) -> bool:
         """Check if the mesh has point indices that are out of range"""
 
-    def hasSelfIntersections(self):
+    def hasSelfIntersections(self) -> bool:
         """Check if the mesh intersects itself"""
 
     def inner(self, arg1: MeshModule.Mesh, /) -> MeshModule.Mesh:
@@ -552,7 +552,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def intersect(self, arg1: MeshModule.Mesh, /) -> MeshModule.Mesh:
         """Intersection of this and the given mesh object."""
 
-    def isSolid(self):
+    def isSolid(self) -> bool:
         """Check if the mesh is a solid"""
 
     def mergeFacets(self):
@@ -590,7 +590,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def outer(self, arg1: MeshModule.Mesh, /) -> MeshModule.Mesh:
         """Get the part outside the intersection"""
 
-    def printInfo(self):
+    def printInfo(self) -> str:
         """Get detailed information about the mesh"""
 
     @typing.overload

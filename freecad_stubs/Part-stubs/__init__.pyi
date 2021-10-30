@@ -1537,7 +1537,7 @@ class Shape(FreeCAD.ComplexGeoData):
         findPlane(tol=None) -> Shape
         """
 
-    def fix(self, working_precision: float, minimum_precision: float, maximum_precision: float, /):
+    def fix(self, working_precision: float, minimum_precision: float, maximum_precision: float, /) -> bool:
         """
         Tries to fix a broken shape.
         fix(working precision, minimum precision, maximum precision) -> bool
@@ -1643,7 +1643,7 @@ class Shape(FreeCAD.ComplexGeoData):
         mode < 0 : minimal
         """
 
-    def hashCode(self, arg1: int = None, /):
+    def hashCode(self, arg1: int = None, /) -> int:
         """
         This value is computed from the value of the underlying shape reference and the location.
         hashCode() -> int
@@ -1687,7 +1687,7 @@ class Shape(FreeCAD.ComplexGeoData):
         ShapeType is interpreted as in the method getTolerance
         """
 
-    def isClosed(self):
+    def isClosed(self) -> bool:
         """
         Checks if the shape is closed.
         isClosed() -> bool
@@ -1704,7 +1704,7 @@ class Shape(FreeCAD.ComplexGeoData):
         isCoplanar(shape,tol=None) -> bool
         """
 
-    def isEqual(self, shape: Part.Shape, /):
+    def isEqual(self, shape: Part.Shape, /) -> bool:
         """
         Checks if both shapes are equal.
                 This means geometry, placement and orientation are equal.
@@ -1717,7 +1717,7 @@ class Shape(FreeCAD.ComplexGeoData):
         isInfinite() -> bool
         """
 
-    def isInside(self, point: FreeCAD.Vector, tolerance: float, checkFace: bool, /):
+    def isInside(self, point: FreeCAD.Vector, tolerance: float, checkFace: bool, /) -> bool:
         """
         Checks whether a point is inside or outside the shape.
         isInside(point, tolerance, checkFace) => Boolean
@@ -1725,27 +1725,27 @@ class Shape(FreeCAD.ComplexGeoData):
         checkFace indicates if the point lying directly on a face is considered to be inside or not
         """
 
-    def isNull(self):
+    def isNull(self) -> bool:
         """
         Checks if the shape is null.
         isNull() -> bool
         """
 
-    def isPartner(self, shape: Part.Shape, /):
+    def isPartner(self, shape: Part.Shape, /) -> bool:
         """
         Checks if both shapes share the same geometry.
         Placement and orientation may differ.
         isPartner(shape) -> bool
         """
 
-    def isSame(self, shape: Part.Shape, /):
+    def isSame(self, shape: Part.Shape, /) -> bool:
         """
         Checks if both shapes share the same geometry
                 and placement. Orientation may differ.
         isSame(shape) -> bool
         """
 
-    def isValid(self):
+    def isValid(self) -> bool:
         """
         Checks if the shape is valid, i.e. neither null, nor empty nor corrupted.
         isValid() -> bool
@@ -2309,10 +2309,10 @@ class BSplineCurve(Part.BoundedCurve):
         """
 
     @typing.overload
-    def approximate(self, MaxDegree: int, MaxSegments: int = None, Continuity: str = None, Tolerance: float = None): ...
+    def approximate(self, MaxDegree: int, MaxSegments: int = None, Continuity: str = None, Tolerance: float = None) -> bool: ...
 
     @typing.overload
-    def approximate(self, Points: object, DegMax: int = None, Continuity: str = None, Tolerance: float = None, DegMin: int = None, ParamType: str = None, Parameters=None, LengthWeight: float = None, CurvatureWeight: float = None, TorsionWeight: float = None):
+    def approximate(self, Points: object, DegMax: int = None, Continuity: str = None, Tolerance: float = None, DegMin: int = None, ParamType: str = None, Parameters=None, LengthWeight: float = None, CurvatureWeight: float = None, TorsionWeight: float = None) -> bool:
         """
         Replaces this B-Spline curve by approximating a set of points.
         					The function accepts keywords as arguments.
@@ -2400,7 +2400,7 @@ class BSplineCurve(Part.BoundedCurve):
     def getCardinalSplineTangents(self, Points: object, Parameters: object):
         """Compute the tangents for a Cardinal spline"""
 
-    def getKnot(self, arg1: int, /):
+    def getKnot(self, arg1: int, /) -> float:
         """Get a knot of the B-Spline curve."""
 
     def getKnots(self):
@@ -2409,7 +2409,7 @@ class BSplineCurve(Part.BoundedCurve):
     def getMultiplicities(self):
         """Returns the multiplicities table M of the knots of this B-Spline curve."""
 
-    def getMultiplicity(self, arg1: int, /):
+    def getMultiplicity(self, arg1: int, /) -> int:
         """
         Returns the multiplicity of the knot of index
         from the knots table of this B-Spline curve.
@@ -2424,7 +2424,7 @@ class BSplineCurve(Part.BoundedCurve):
     def getPolesAndWeights(self):
         """Returns the table of poles and weights in homogeneous coordinates."""
 
-    def getResolution(self, arg1: float, /):
+    def getResolution(self, arg1: float, /) -> float:
         """
         Computes for this B-Spline curve the parametric tolerance (UTolerance)
         for a given 3D tolerance (Tolerance3D).
@@ -2433,7 +2433,7 @@ class BSplineCurve(Part.BoundedCurve):
         |t1-t0| < UTolerance ===> |f(t1)-f(t0)| < Tolerance3D
         """
 
-    def getWeight(self, arg1: int, /):
+    def getWeight(self, arg1: int, /) -> float:
         """Get a weight of the B-Spline curve."""
 
     def getWeights(self):
@@ -2556,7 +2556,7 @@ class BSplineCurve(Part.BoundedCurve):
         					not at a given point.
         """
 
-    def movePoint(self, U: float, P: FreeCAD.Vector, Index1: int, Index2: int, /):
+    def movePoint(self, U: float, P: FreeCAD.Vector, Index1: int, Index2: int, /) -> tuple[int, int]:
         """
         movePoint(U, P, Index1, Index2)
         				Moves the point of parameter U of this B-Spline curve to P.
@@ -3422,7 +3422,7 @@ class BSplineSurface(Part.GeometrySurface):
     def getPolesAndWeights(self):
         """Returns the table of poles and weights in homogeneous coordinates."""
 
-    def getResolution(self, arg1: float, /):
+    def getResolution(self, arg1: float, /) -> tuple[float, float]:
         """
         Computes two tolerance values for this B-Spline surface, based on the
         					given tolerance in 3D space Tolerance3D. The tolerances computed are:
@@ -3436,7 +3436,7 @@ class BSplineSurface(Part.GeometrySurface):
         					====> ||f(u1, v1) - f(u2, v2)|| < Tolerance3D
         """
 
-    def getUKnot(self, arg1: int, /):
+    def getUKnot(self, arg1: int, /) -> float:
         """
         Returns, for this B-Spline surface, in the u parametric direction
         					the knot of index UIndex of the knots table.
@@ -3454,13 +3454,13 @@ class BSplineSurface(Part.GeometrySurface):
         					multiplicities in the u parametric direction
         """
 
-    def getUMultiplicity(self, arg1: int, /):
+    def getUMultiplicity(self, arg1: int, /) -> int:
         """
         Returns, for this B-Spline surface, the multiplicity of
         					the knot of index UIndex in the u parametric direction.
         """
 
-    def getVKnot(self, arg1: int, /):
+    def getVKnot(self, arg1: int, /) -> float:
         """
         Returns, for this B-Spline surface, in the v parametric direction
         					the knot of index VIndex of the knots table.
@@ -3478,13 +3478,13 @@ class BSplineSurface(Part.GeometrySurface):
         					multiplicities in the v parametric direction
         """
 
-    def getVMultiplicity(self, arg1: int, /):
+    def getVMultiplicity(self, arg1: int, /) -> int:
         """
         Returns, for this B-Spline surface, the multiplicity of
         					the knot of index VIndex in the v parametric direction.
         """
 
-    def getWeight(self, arg1: int, arg2: int, /):
+    def getWeight(self, arg1: int, arg2: int, /) -> float:
         """
         Return the weight of the pole of index (UIndex,VIndex)
         					in the poles table for this B-Spline surface.
@@ -3581,7 +3581,7 @@ class BSplineSurface(Part.GeometrySurface):
         					weights are identical
         """
 
-    def movePoint(self, arg1: float, arg2: float, arg3: FreeCAD.Vector, arg4: int, arg5: int, arg6: int, arg7: int, /):
+    def movePoint(self, arg1: float, arg2: float, arg3: FreeCAD.Vector, arg4: int, arg5: int, arg6: int, arg7: int, /) -> tuple[int, int, int, int]:
         """
         Moves the point of parameters (U, V) of this B-Spline surface to P.
         					UIndex1, UIndex2, VIndex1 and VIndex2 are the indexes in the poles
@@ -4715,7 +4715,7 @@ class BezierCurve(Part.BoundedCurve):
     def getPoles(self):
         """Get all poles of the Bezier curve."""
 
-    def getResolution(self, arg1: float, /):
+    def getResolution(self, arg1: float, /) -> float:
         """
         Computes for this Bezier curve the parametric tolerance (UTolerance)
         for a given 3D tolerance (Tolerance3D).
@@ -4724,7 +4724,7 @@ class BezierCurve(Part.BoundedCurve):
         |t1-t0| < UTolerance ===> |f(t1)-f(t0)| < Tolerance3D
         """
 
-    def getWeight(self, arg1: int, /):
+    def getWeight(self, arg1: int, /) -> float:
         """Get a weight of the Bezier curve."""
 
     def getWeights(self):
@@ -5016,7 +5016,7 @@ class Curve(Part.Geometry):
     def centerOfCurvature(self, float_pos: float, /) -> FreeCAD.Vector:
         """Vector = centerOfCurvature(float pos) - Get the center of curvature at the given parameter [First|Last] if defined"""
 
-    def continuityWith(self, arg1: Part.Curve, arg2: float = None, arg3: float = None, arg4: bool = None, arg5: bool = None, arg6: float = None, arg7: float = None, /):
+    def continuityWith(self, arg1: Part.Curve, arg2: float = None, arg3: float = None, arg4: bool = None, arg5: bool = None, arg6: float = None, arg7: float = None, /) -> str:
         """Computes the continuity of two curves"""
 
     def curvature(self, pos: float, /):
@@ -5543,7 +5543,7 @@ class BRepOffsetAPI_MakeFilling(FreeCAD.PyObjectBase):
     def build(self):
         """Builds the resulting faces."""
 
-    def isDone(self):
+    def isDone(self) -> bool:
         """Tests whether computation of the filling plate has been completed."""
 
     def loadInitSurface(self, face: Part.Face, /):
@@ -5634,7 +5634,7 @@ class BezierSurface(Part.GeometrySurface):
     def getPoles(self):
         """Get all poles of the Bezier surface."""
 
-    def getResolution(self, arg1: float, /):
+    def getResolution(self, arg1: float, /) -> tuple[float, float]:
         """
         Computes two tolerance values for this Bezier surface, based on the
         					given tolerance in 3D space Tolerance3D. The tolerances computed are:
@@ -5648,7 +5648,7 @@ class BezierSurface(Part.GeometrySurface):
         					====> ||f(u1, v1) - f(u2, v2)|| < Tolerance3D
         """
 
-    def getWeight(self, arg1: int, arg2: int, /):
+    def getWeight(self, arg1: int, arg2: int, /) -> float:
         """
         Get a weight of the pole of index (UIndex,VIndex)
         					of the Bezier surface.

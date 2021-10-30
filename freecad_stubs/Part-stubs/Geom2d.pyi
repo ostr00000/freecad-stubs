@@ -761,7 +761,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def getCardinalSplineTangents(self, Points: object, Parameters: object):
         """Compute the tangents for a Cardinal spline"""
 
-    def getKnot(self, arg1: int, /):
+    def getKnot(self, arg1: int, /) -> float:
         """Get a knot of the B-Spline curve."""
 
     def getKnots(self):
@@ -770,7 +770,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def getMultiplicities(self):
         """Returns the multiplicities table M of the knots of this B-Spline curve."""
 
-    def getMultiplicity(self, arg1: int, /):
+    def getMultiplicity(self, arg1: int, /) -> int:
         """
         Returns the multiplicity of the knot of index
         from the knots table of this B-Spline curve.
@@ -785,7 +785,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def getPolesAndWeights(self):
         """Returns the table of poles and weights in homogeneous coordinates."""
 
-    def getResolution(self, arg1: float, /):
+    def getResolution(self, arg1: float, /) -> float:
         """
         Computes for this B-Spline curve the parametric tolerance (UTolerance)
         for a given 3D tolerance (Tolerance3D).
@@ -794,7 +794,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         |t1-t0| < UTolerance ===> |f(t1)-f(t0)| < Tolerance3D
         """
 
-    def getWeight(self, arg1: int, /):
+    def getWeight(self, arg1: int, /) -> float:
         """Get a weight of the B-Spline curve."""
 
     def getWeights(self):
@@ -917,7 +917,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         					not at a given point.
         """
 
-    def movePoint(self, U: float, P: object, Index1: int, Index2: int, /):
+    def movePoint(self, U: float, P: object, Index1: int, Index2: int, /) -> tuple[int, int]:
         """
         movePoint(U, P, Index1, Index2)
         				Moves the point of parameter U of this B-Spline curve to P.
@@ -1033,7 +1033,7 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
     def getPoles(self):
         """Get all poles of the Bezier curve."""
 
-    def getResolution(self, arg1: float, /):
+    def getResolution(self, arg1: float, /) -> float:
         """
         Computes for this Bezier curve the parametric tolerance (UTolerance)
         for a given 3D tolerance (Tolerance3D).
@@ -1042,7 +1042,7 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
         |t1-t0| < UTolerance ===> |f(t1)-f(t0)| < Tolerance3D
         """
 
-    def getWeight(self, arg1: int, /):
+    def getWeight(self, arg1: int, /) -> float:
         """Get a weight of the Bezier curve."""
 
     def getWeights(self):
