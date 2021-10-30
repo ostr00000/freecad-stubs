@@ -1456,6 +1456,10 @@ class PythonDebugStderr:
         """write to stderr"""
 
 
+class PythonDebugExcept:
+    """Custom exception handler"""
+
+    pass
 # ApplicationPy.cpp
 def activateWorkbench(string: str, /):
     """

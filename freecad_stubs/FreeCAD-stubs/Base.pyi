@@ -1746,6 +1746,28 @@ class Axis(FreeCAD.PyObjectBase):
         """
 
 
+# GeometryPyCXX.cpp
+class Vector2d:
+    """This class can be imported."""
+
+    pass
+# Sequencer.cpp
+class ProgressIndicator:
+    """
+    This class can be imported.
+    Progress indicator
+    """
+
+    def start(self, string: str, int: int, /) -> None:
+        """start(string,int)"""
+
+    def next(self, arg1: int = None, /) -> None:
+        """next()"""
+
+    def stop(self) -> None:
+        """stop()"""
+
+
 class FreeCADError(RuntimeError):
     pass
 

@@ -124,23 +124,6 @@ class ParameterGrp:
         """GetContents()"""
 
 
-# Sequencer.cpp
-class ProgressIndicator:
-    """
-    This class can be imported.
-    Progress indicator
-    """
-
-    def start(self, string: str, int: int, /) -> None:
-        """start(string,int)"""
-
-    def next(self, arg1: int = None, /) -> None:
-        """next()"""
-
-    def stop(self) -> None:
-        """stop()"""
-
-
 # MaterialPy.xml
 class Material(FreeCAD.PyObjectBase):
     """

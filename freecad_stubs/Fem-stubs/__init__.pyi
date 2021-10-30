@@ -354,6 +354,10 @@ class StdMeshers_AutomaticLength:
         """getLength()"""
 
 
+class StdMeshers_NotConformAllowed:
+    """StdMeshers_NotConformAllowed"""
+
+    pass
 class StdMeshers_MaxLength:
     """StdMeshers_MaxLength"""
 
@@ -405,6 +409,30 @@ class StdMeshers_MaxElementArea:
         """getMaxArea()"""
 
 
+class StdMeshers_QuadranglePreference:
+    """StdMeshers_QuadranglePreference"""
+
+    pass
+class StdMeshers_Quadrangle_2D:
+    """StdMeshers_Quadrangle_2D"""
+
+    pass
+class StdMeshers_Regular_1D:
+    """StdMeshers_Regular_1D"""
+
+    pass
+class StdMeshers_UseExisting_1D:
+    """StdMeshers_UseExisting_1D"""
+
+    pass
+class StdMeshers_UseExisting_2D:
+    """StdMeshers_UseExisting_2D"""
+
+    pass
+class StdMeshers_CompositeSegment_1D:
+    """StdMeshers_CompositeSegment_1D"""
+
+    pass
 class StdMeshers_Deflection1D:
     """StdMeshers_Deflection1D"""
 
@@ -412,6 +440,14 @@ class StdMeshers_Deflection1D:
         """setDeflection()"""
 
 
+class StdMeshers_Hexa_3D:
+    """StdMeshers_Hexa_3D"""
+
+    pass
+class StdMeshers_TrianglePreference:
+    """StdMeshers_TrianglePreference"""
+
+    pass
 class StdMeshers_StartEndLength:
     """StdMeshers_StartEndLength"""
 
@@ -432,6 +468,46 @@ class StdMeshers_SegmentLengthAroundVertex:
         """getLength()"""
 
 
+class StdMeshers_SegmentAroundVertex_0D:
+    """StdMeshers_SegmentAroundVertex_0D"""
+
+    pass
+class StdMeshers_RadialPrism_3D:
+    """StdMeshers_RadialPrism_3D"""
+
+    pass
+class StdMeshers_QuadraticMesh:
+    """StdMeshers_QuadraticMesh"""
+
+    pass
+class StdMeshers_ProjectionSource3D:
+    """StdMeshers_ProjectionSource3D"""
+
+    pass
+class StdMeshers_ProjectionSource2D:
+    """StdMeshers_ProjectionSource2D"""
+
+    pass
+class StdMeshers_ProjectionSource1D:
+    """StdMeshers_ProjectionSource1D"""
+
+    pass
+class StdMeshers_Projection_3D:
+    """StdMeshers_Projection_3D"""
+
+    pass
+class StdMeshers_Projection_2D:
+    """StdMeshers_Projection_2D"""
+
+    pass
+class StdMeshers_Projection_1D:
+    """StdMeshers_Projection_1D"""
+
+    pass
+class StdMeshers_Prism_3D:
+    """StdMeshers_Prism_3D"""
+
+    pass
 class StdMeshers_NumberOfSegments:
     """StdMeshers_NumberOfSegments"""
 
@@ -452,6 +528,10 @@ class StdMeshers_NumberOfLayers:
         """getNumberOfLayers()"""
 
 
+class StdMeshers_MEFISTO_2D:
+    """StdMeshers_MEFISTO_2D"""
+
+    pass
 class StdMeshers_MaxElementVolume:
     """StdMeshers_MaxElementVolume"""
 

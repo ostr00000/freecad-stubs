@@ -78,6 +78,15 @@ class BaseGeneratorFromCpp(MethodGenerator, ABC):
         if (result := ''.join(self._genStub(moduleName))).rstrip():
             header = f'# {self.baseGenFilePath.name}\n'
             newMod = Module(header + result, self.requiredImports)
+
+            if self.baseGenFilePath.name in ('Sequencer.cpp', 'GeometryPyCXX.cpp'):
+                # another exception from general rules:
+                # Base::Interpreter().addType(Base::ProgressIndicatorPy::type_object(),
+                #     pBaseModule,"ProgressIndicator");
+                # Base::Interpreter().addType(Base::Vector2dPy::type_object(),
+                #     pBaseModule, "Vector2d");
+                moduleName = 'FreeCAD.Base'
+
             mod[moduleName].update(newMod)
 
     def _genStub(self, moduleName: str) -> Iterable[str]:

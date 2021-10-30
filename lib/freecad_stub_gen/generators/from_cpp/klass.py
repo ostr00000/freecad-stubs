@@ -32,7 +32,7 @@ class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
             gen = self._findFunctionCallsGen(funcCall)
             result = ''.join(self._genAllMethods(gen, firstParam=AnnotationParam.SELF_PARAM))
             if not result:
-                continue
+                result = 'pass'
             content = indent(result)
 
             doc = ''
