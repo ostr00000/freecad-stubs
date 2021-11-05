@@ -31,16 +31,20 @@ class PropertyMacroBase:
         match rawText:
             case 'nullptr' | '0' | '':
                 newVal = ''
+
             case str(val) if val.startswith('"') and val.endswith('"'):
-                newVal = prepareDocs(val.removeprefix('"').removesuffix('"'))
-                if isSentence and not newVal.endswith('.'):
+                newVal = val.removeprefix('"').removesuffix('"')
+                if isSentence and newVal and not newVal.endswith('.'):
                     newVal = newVal + '.'
+                newVal = prepareDocs(newVal)
+
             case val if 'group' in val:
                 reg = self.REG_PATTERN_GROUP_CHAR.format(val)
                 if match := re.search(reg, self.constructorBody):
                     newVal = match.group(1)
                 else:
                     raise ValueError(f"Cannot find value for variable: {val}")
+
             case unexpectedVal:
                 raise ValueError(unexpectedVal)
         return newVal

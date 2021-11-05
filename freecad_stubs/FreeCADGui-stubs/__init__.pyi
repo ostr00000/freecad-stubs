@@ -397,7 +397,6 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
         """
         Property group: Link.
         Property TypeId: App::PropertyEnumeration.
-        .
         """
 
     @DrawStyle.setter
@@ -408,7 +407,6 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
         """
         Property group: Link.
         Property TypeId: App::PropertyFloatConstraint.
-        .
         """
 
     @LineWidth.setter
@@ -451,7 +449,6 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
         """
         Property group: Link.
         Property TypeId: App::PropertyFloatConstraint.
-        .
         """
 
     @PointSize.setter
@@ -691,8 +688,7 @@ class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
 
         Enabled: Display the object on top of any other object when selected
         Object: On top only if the whole object is selected
-        Element: On top only if some sub-element of the object is selected
-        .
+        Element: On top only if some sub-element of the object is selected.
         """
 
     @OnTopWhenSelected.setter

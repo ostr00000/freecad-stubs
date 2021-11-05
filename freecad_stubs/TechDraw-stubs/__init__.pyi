@@ -175,7 +175,6 @@ class DrawViewAnnotation(TechDraw.DrawView):
 
         Maximum width of the annotation block.
          -1 means no maximum width.
-        .
         """
 
     @MaxWidth.setter
@@ -523,8 +522,7 @@ class DrawTile(FreeCAD.DocumentObject):
         Property TypeId: App::PropertyIntegerConstraint.
 
         Row in parent object
-         0 for arrow side, -1 for other side
-        .
+         0 for arrow side, -1 for other side.
         """
 
     @TileRow.setter
@@ -632,8 +630,7 @@ class DrawViewDimension(TechDraw.DrawView):
 
         Overtolerance value
         If 'Equal Tolerance' is true this is also
-        the negated value for 'Under Tolerance'
-        .
+        the negated value for 'Under Tolerance'.
         """
 
     @OverTolerance.setter
@@ -685,8 +682,7 @@ class DrawViewDimension(TechDraw.DrawView):
 
         Undertolerance value
         If 'Equal Tolerance' is true it will be replaced
-        by negative value of 'Over Tolerance'
-        .
+        by negative value of 'Over Tolerance'.
         """
 
     @UnderTolerance.setter
@@ -1008,8 +1004,7 @@ class DrawProjGroup(TechDraw.DrawViewCollection):
 
         If AutoDistribute is on, this is the horizontal 
         spacing between the borders of views 
-        (if label width is not wider than the object)
-        .
+        (if label width is not wider than the object).
         """
 
     @spacingX.setter
@@ -1022,8 +1017,7 @@ class DrawProjGroup(TechDraw.DrawViewCollection):
         Property TypeId: App::PropertyLength.
 
         If AutoDistribute is on, this is the vertical 
-        spacing between the borders of views
-        .
+        spacing between the borders of views.
         """
 
     @spacingY.setter

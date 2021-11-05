@@ -41,7 +41,6 @@ class ViewProviderMesh(FreeCADGui.ViewProviderDocumentObject):
 
         Set if the illumination comes from two sides
          or one side in the 3D view.
-        .
         """
 
     @Lighting.setter
