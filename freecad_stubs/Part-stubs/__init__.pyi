@@ -243,7 +243,7 @@ class AttachEngine(FreeCAD.BaseClass):
     def copy(self) -> Part.AttachEngine:
         """copy(): returns a new instance of AttachEngine."""
 
-    def downgradeRefType(self, type: str, /):
+    def downgradeRefType(self, type: str, /) -> str:
         """downgradeRefType(type): returns next more general type. E.g. downgradeType('Circle') yields 'Curve'."""
 
     def getModeInfo(self, mode: str, /):
@@ -252,13 +252,13 @@ class AttachEngine(FreeCAD.BaseClass):
     def getRefTypeInfo(self, type: str, /):
         """getRefTypeInfo(type): returns information (dict) on shape type. Keys:'UserFriendlyName', 'TypeIndex', 'Rank'. Rank is the number of times reftype can be downgraded, before it becomes 'Any'."""
 
-    def getRefTypeOfShape(self, shape: Part.Shape, /):
+    def getRefTypeOfShape(self, shape: Part.Shape, /) -> str:
         """getRefTypeOfShape(shape): returns shape type as interpreted by AttachEngine. Returns a string."""
 
-    def isFittingRefType(self, type_shape: str, type_needed: str, /):
+    def isFittingRefType(self, type_shape: str, type_needed: str, /) -> bool:
         """isFittingRefType(type_shape, type_needed): tests if shape type, specified by type_shape (string), fits a type required by attachment mode type_needed (string). e.g. 'Circle' fits a requirement of 'Edge', and 'Curve' doesn't fit if a 'Circle' is required."""
 
-    def readParametersFromFeature(self, document_object: FreeCAD.DocumentObject, /):
+    def readParametersFromFeature(self, document_object: FreeCAD.DocumentObject, /) -> None:
         """readParametersFromFeature(document_object): sets AttachEngine parameters (References, Mode, etc.) by reading out properties of AttachableObject-derived feature."""
 
     def suggestModes(self):
@@ -292,7 +292,7 @@ class AttachEngine(FreeCAD.BaseClass):
         the input information for suggestor, actually).
         """
 
-    def writeParametersToFeature(self, document_object: FreeCAD.DocumentObject, /):
+    def writeParametersToFeature(self, document_object: FreeCAD.DocumentObject, /) -> None:
         """
         writeParametersToFeature(document_object): updates properties of
         AttachableObject-derived feature with current AttachEngine parameters
@@ -1059,13 +1059,13 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
         					Returns a list of new shapes generated from the shape S by the shell-generating algorithm.
         """
 
-    def getStatus(self):
+    def getStatus(self) -> int:
         """
         getStatus()
         					Get a status, when Simulate or Build failed.
         """
 
-    def isReady(self):
+    def isReady(self) -> bool:
         """
         isReady()
         					Returns true if this tool object is ready to build the shape.
@@ -1077,7 +1077,7 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
         					Returns the Shape of the top of the sweep.
         """
 
-    def makeSolid(self):
+    def makeSolid(self) -> bool:
         """
         makeSolid()
         					Transforms the sweeping Shell in Solid. If a propfile is not closed returns False.
@@ -1146,7 +1146,7 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
         					Define the maximum number of spans in V-direction on resulting surface.
         """
 
-    def setSpineSupport(self, shape: Part.Shape, /):
+    def setSpineSupport(self, shape: Part.Shape, /) -> bool:
         """
         setSpineSupport(shape)
         					Sets support to the spine to define the BiNormal of the trihedron, like the normal to the surfaces.
@@ -1475,7 +1475,7 @@ class Shape(FreeCAD.ComplexGeoData):
             params is a tuple (u,v).
         """
 
-    def dumpToString(self):
+    def dumpToString(self) -> str:
         """
         Dump information about the shape to a string.
         dumpToString() -> string
@@ -1499,7 +1499,7 @@ class Shape(FreeCAD.ComplexGeoData):
         BREP is an OpenCasCade native format.
         """
 
-    def exportBrepToString(self):
+    def exportBrepToString(self) -> str:
         """
         Export the content of this shape to a string in BREP format.
         exportBrepToString() -> string
@@ -1698,7 +1698,7 @@ class Shape(FreeCAD.ComplexGeoData):
         If the shape is an edge it returns True if its vertices are the same.
         """
 
-    def isCoplanar(self, shape: Part.Shape, tol: float = None, /):
+    def isCoplanar(self, shape: Part.Shape, tol: float = None, /) -> bool:
         """
         Checks if this shape is coplanar with the given shape.
         isCoplanar(shape,tol=None) -> bool
@@ -1711,7 +1711,7 @@ class Shape(FreeCAD.ComplexGeoData):
         isEqual(shape) -> bool
         """
 
-    def isInfinite(self):
+    def isInfinite(self) -> bool:
         """
         Checks if this shape has an infinite expansion.
         isInfinite() -> bool
@@ -2209,7 +2209,7 @@ class Shape(FreeCAD.ComplexGeoData):
         translated(vector) -> shape
         """
 
-    def writeInventor(self, Mode: int = None, Deviation: float = None, Angle: float = None, FaceColors=None):
+    def writeInventor(self, Mode: int = None, Deviation: float = None, Angle: float = None, FaceColors=None) -> str:
         """
         Write the mesh in OpenInventor format to a string.
         writeInventor() -> string
@@ -4224,7 +4224,7 @@ class Edge(Part.Shape):
         centerOfCurvatureAt(paramval) -> Vector
         """
 
-    def curvatureAt(self, paramval: float, /):
+    def curvatureAt(self, paramval: float, /) -> float:
         """
         Get the curvature at the given parameter [First|Last] if defined
         curvatureAt(paramval) -> Float
@@ -4950,10 +4950,10 @@ class Geometry(FreeCAD.Persistence):
     def getExtensions(self):
         """Returns a list with information about the geometry extensions."""
 
-    def hasExtensionOfName(self, arg1: str, /):
+    def hasExtensionOfName(self, arg1: str, /) -> bool:
         """Returns a boolean indicating whether a geometry extension with the name indicated as a string exists."""
 
-    def hasExtensionOfType(self, arg1: str, /):
+    def hasExtensionOfType(self, arg1: str, /) -> bool:
         """Returns a boolean indicating whether a geometry extension of the type indicated as a string exists."""
 
     @typing.overload
@@ -5019,7 +5019,7 @@ class Curve(Part.Geometry):
     def continuityWith(self, arg1: Part.Curve, arg2: float = None, arg3: float = None, arg4: bool = None, arg5: bool = None, arg6: float = None, arg7: float = None, /) -> str:
         """Computes the continuity of two curves"""
 
-    def curvature(self, pos: float, /):
+    def curvature(self, pos: float, /) -> float:
         """Float = curvature(pos) - Get the curvature at the given parameter [First|Last] if defined"""
 
     @typing.overload
@@ -5138,7 +5138,7 @@ class Curve(Part.Geometry):
     def normal(self, pos: float, /) -> FreeCAD.Vector:
         """Vector = normal(pos) - Get the normal vector at the given parameter [First|Last] if defined"""
 
-    def parameter(self, arg1: FreeCAD.Vector, /):
+    def parameter(self, arg1: FreeCAD.Vector, /) -> float:
         """
         Returns the parameter on the curve
         of the nearest orthogonal projection of the point.
@@ -5419,7 +5419,7 @@ class AttachExtension(FreeCAD.DocumentObjectExtension):
     @Support.setter
     def Support(self, value: LinkSub_t | LinkList_t | LinkSubList_t): ...
 
-    def changeAttacherType(self, typename: str, /):
+    def changeAttacherType(self, typename: str, /) -> bool:
         """
         changeAttacherType(typename): Changes Attacher class of this object.
         typename: string. The following are accepted so far:
@@ -5429,7 +5429,7 @@ class AttachExtension(FreeCAD.DocumentObjectExtension):
         'Attacher::AttachEnginePoint'
         """
 
-    def positionBySupport(self):
+    def positionBySupport(self) -> bool:
         """
         positionBySupport(): Reposition object based on Support, MapMode and MapPathParameter properties.
         Returns True if attachment calculation was successful, false if object is not attached and Placement wasn't updated,
@@ -6200,7 +6200,7 @@ def getModeStrings(attacher_type: str, mode_index: int, /):
     """getModeStrings(attacher_type, mode_index) - gets mode user-friendly name and brief description."""
 
 
-def getRefTypeUserFriendlyName(type_index: int, /):
+def getRefTypeUserFriendlyName(type_index: int, /) -> str:
     """getRefTypeUserFriendlyName(type_index) - gets user-friendly name of AttachEngine's shape type."""
 
 

@@ -180,7 +180,7 @@ class Trajectory(FreeCAD.Persistence):
     def position(self, arg1: float, /) -> FreeCAD.Placement:
         """returns a Frame to a given time in the trajectory"""
 
-    def velocity(self, arg1: float, /):
+    def velocity(self, arg1: float, /) -> float:
         """returns the velocity to a given time in the trajectory"""
 
 

@@ -38,7 +38,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
     def centerOfCurvature(self, float_pos: float, /):
         """Vector = centerOfCurvature(float pos) - Get the center of curvature at the given parameter [First|Last] if defined"""
 
-    def curvature(self, pos: float, /):
+    def curvature(self, pos: float, /) -> float:
         """Float = curvature(pos) - Get the curvature at the given parameter [First|Last] if defined"""
 
     @typing.overload
@@ -101,7 +101,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
     def normal(self, pos: float, /):
         """Vector = normal(pos) - Get the normal vector at the given parameter [First|Last] if defined"""
 
-    def parameter(self, arg1: object, /):
+    def parameter(self, arg1: object, /) -> float:
         """
         Returns the parameter on the curve
         of the nearest orthogonal projection of the point.

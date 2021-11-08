@@ -1412,7 +1412,7 @@ class Matrix(FreeCAD.PyObjectBase):
         Compute the inverse matrix, if possible
         """
 
-    def isOrthogonal(self, Float: float = None, /):
+    def isOrthogonal(self, Float: float = None, /) -> float:
         """
         isOrthogonal([Float]) -> Float
         Checks if the matrix is orthogonal, i.e. M * M^T = k*I and returns

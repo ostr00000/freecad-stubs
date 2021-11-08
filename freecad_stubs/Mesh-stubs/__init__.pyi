@@ -86,7 +86,7 @@ class Facet(FreeCAD.PyObjectBase):
         Get a list of intersection points with another triangle.
         """
 
-    def isDeformed(self, arg1: float, arg2: float, /):
+    def isDeformed(self, arg1: float, arg2: float, /) -> bool:
         """
         isDegenerated(MinAngle, MaxAngle) -> boolean
         Returns true if the facet is deformed, otherwise false.
@@ -95,7 +95,7 @@ class Facet(FreeCAD.PyObjectBase):
         The two angles are given in radian.
         """
 
-    def isDegenerated(self, float: float = None, /):
+    def isDegenerated(self, float: float = None, /) -> bool:
         """
         isDegenerated([float]) -> boolean
         Returns true if the facet is degenerated, otherwise false.
@@ -723,7 +723,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         mesh.write(Stream=file,Format='STL',[Name='Object name',Material=colors])
         """
 
-    def writeInventor(self, arg1: float = None, /):
+    def writeInventor(self, arg1: float = None, /) -> str:
         """Write the mesh in OpenInventor format to a string."""
 
 
@@ -773,13 +773,13 @@ class Edge(FreeCAD.PyObjectBase):
         Get a list of intersection points with another edge.
         """
 
-    def isCollinear(self, Edge: MeshModule.Edge, /):
+    def isCollinear(self, Edge: MeshModule.Edge, /) -> bool:
         """
         isCollinear(Edge) -> bool
         Checks if the two edges are collinear.
         """
 
-    def isParallel(self, Edge: MeshModule.Edge, /):
+    def isParallel(self, Edge: MeshModule.Edge, /) -> bool:
         """
         isParallel(Edge) -> bool
         Checks if the two edges are parallel.

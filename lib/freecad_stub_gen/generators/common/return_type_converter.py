@@ -26,8 +26,15 @@ class ReturnTypeConverter:
     def _getReturnType(self):
         for match in self.REG_RETURN.finditer(self.functionBody):
             returnText = match.group(1).strip()
-            if returnText.startswith('(') and returnText.endswith(')'):
-                returnText = returnText.removeprefix('(').removesuffix(')')
+
+            if returnText.endswith(')') \
+                    and (returnText.startswith('(')
+                         or returnText.startswith('new_reference_to(')
+                         or returnText.startswith('Py::new_reference_to(')):
+                returnText = returnText \
+                    .removeprefix('Py::') \
+                    .removeprefix('new_reference_to') \
+                    .removeprefix('(').removesuffix(')')
 
             match returnText:
                 case 'Py_None' | 'Py::None()' | 'Py_Return':
@@ -58,8 +65,6 @@ class ReturnTypeConverter:
                     yield classWithModule
 
                 case _ if returnText.startswith('Py::asObject(') \
-                          or returnText.startswith('Py::new_reference_to(') \
-                          or returnText.startswith('new_reference_to(') \
                           or returnText.startswith('Py::Object(') \
                           or returnText.isidentifier():
                     pass  # TODO P2 new object from some variable

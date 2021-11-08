@@ -52,7 +52,7 @@ class Points(FreeCAD.ComplexGeoData):
     def write(self, arg1: str, /):
         """Write the points object into file."""
 
-    def writeInventor(self):
+    def writeInventor(self) -> str:
         """Write the points in OpenInventor format to a string."""
 
 

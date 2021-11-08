@@ -218,7 +218,7 @@ class GeoFeature(FreeCAD.DocumentObject):
                           after the execution of this object, rendering the result wrong.
         """
 
-    def getPropertyNameOfGeometry(self):
+    def getPropertyNameOfGeometry(self) -> str | None:
         """
         Returns the property name of the actual geometry or None.
         For example for a part object it returns the value Shape,
@@ -226,7 +226,7 @@ class GeoFeature(FreeCAD.DocumentObject):
         If an object has no such property then None is returned.
         """
 
-    def getPropertyOfGeometry(self):
+    def getPropertyOfGeometry(self) -> None:
         """
         Returns the property of the actual geometry or None.
         For example for a part object it returns its Shape property,
@@ -360,7 +360,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
                             name of the property.
         """
 
-    def adjustRelativeLinks(self, parent: FreeCAD.DocumentObject, recursive=True, /):
+    def adjustRelativeLinks(self, parent: FreeCAD.DocumentObject, recursive=True, /) -> bool:
         """adjustRelativeLinks(parent,recursive=True) -- auto correct potential cyclic dependencies"""
 
     def enforceRecompute(self):
@@ -596,14 +596,14 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
         it is assumed the the actually property name is the same as 'key'
         """
 
-    def expandSubname(self, subname: str, /):
+    def expandSubname(self, subname: str, /) -> str:
         """
         expandSubname(subname) -> string
 
         Return an expanded subname in case it references an object inside a linked plain group
         """
 
-    def flattenSubname(self, subname: str, /):
+    def flattenSubname(self, subname: str, /) -> str:
         """
         flattenSubname(subname) -> string
 
@@ -613,7 +613,7 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
     def getLinkExtProperty(self, name: str, /):
         """getLinkExtProperty(name): return the property value by its predefined name"""
 
-    def getLinkExtPropertyName(self, name: str, /):
+    def getLinkExtPropertyName(self, name: str, /) -> str:
         """getLinkExtPropertyName(name): lookup the property name by its predefined name"""
 
     @typing.overload
@@ -1402,7 +1402,7 @@ class PropertyContainer(FreeCAD.Persistence):
         dumpPropertyContent(propertyname, [Compression=1-9]) -- Sets the data compression from 0 (no) to 9 (max)
         """
 
-    def getDocumentationOfProperty(self, arg1: str, /):
+    def getDocumentationOfProperty(self, arg1: str, /) -> str:
         """Return the documentation string of the property of this class."""
 
     def getEditorMode(self, arg1: str, /):
@@ -1416,7 +1416,7 @@ class PropertyContainer(FreeCAD.Persistence):
     def getEnumerationsOfProperty(self, arg1: str, /) -> None:
         """Return all enumeration strings of the property of this class or None if not a PropertyEnumeration."""
 
-    def getGroupOfProperty(self, arg1: str, /):
+    def getGroupOfProperty(self, arg1: str, /) -> str:
         """Return the name of the group which the property belongs to in this class. The properties sorted in different named groups for convenience."""
 
     def getPropertyByName(self, name: str, checkOwner: int = 0, /):
@@ -1511,7 +1511,7 @@ class ComplexGeoData(FreeCAD.Persistence):
     def applyTranslation(self, arg1: FreeCAD.Vector, /):
         """Apply an additional translation to the placement"""
 
-    def countSubElements(self, arg1: str, /):
+    def countSubElements(self, arg1: str, /) -> int:
         """Return the number of elements of a type"""
 
     def getElementTypes(self):
@@ -1772,7 +1772,7 @@ def closeActiveTransaction(arg0=None, arg1: int = None, /):
     """closeActiveTransaction(abort=False) -- commit or abort current active transaction"""
 
 
-def isRestoring():
+def isRestoring() -> bool:
     """isRestoring() -> Bool -- Test if the application is opening some document"""
 
 

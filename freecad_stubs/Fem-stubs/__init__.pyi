@@ -106,17 +106,17 @@ class FemMesh(FreeCAD.ComplexGeoData):
         """Tuple of volume IDs"""
 
     @typing.overload
-    def addEdge(self, arg1: int, arg2: int, /): ...
+    def addEdge(self, arg1: int, arg2: int, /) -> int: ...
 
     @typing.overload
-    def addEdge(self, arg1: list, arg2: int = None, /):
+    def addEdge(self, arg1: list, arg2: int = None, /) -> int:
         """Add an edge by setting two node indices."""
 
     @typing.overload
-    def addFace(self, arg1: int, arg2: int, arg3: int, /): ...
+    def addFace(self, arg1: int, arg2: int, arg3: int, /) -> int: ...
 
     @typing.overload
-    def addFace(self, arg1: list, arg2: int = None, /):
+    def addFace(self, arg1: list, arg2: int = None, /) -> int:
         """Add a face by setting three node indices."""
 
     def addGroup(self, name: str, typestring: str, id: int = None, /) -> int:
@@ -143,20 +143,20 @@ class FemMesh(FreeCAD.ComplexGeoData):
         """Add hypothesis"""
 
     @typing.overload
-    def addNode(self, arg1: float, arg2: float, arg3: float, /): ...
+    def addNode(self, arg1: float, arg2: float, arg3: float, /) -> int: ...
 
     @typing.overload
-    def addNode(self, arg1: float, arg2: float, arg3: float, arg4: int, /):
+    def addNode(self, arg1: float, arg2: float, arg3: float, arg4: int, /) -> int:
         """Add a node by setting (x,y,z)."""
 
-    def addQuad(self, arg1: int, arg2: int, arg3: int, arg4: int, /):
+    def addQuad(self, arg1: int, arg2: int, arg3: int, arg4: int, /) -> int:
         """Add a quad by setting four node indices."""
 
     @typing.overload
-    def addVolume(self, arg1: int, arg2: int, arg3: int, arg4: int, /): ...
+    def addVolume(self, arg1: int, arg2: int, arg3: int, arg4: int, /) -> int: ...
 
     @typing.overload
-    def addVolume(self, arg1: list, arg2: int = None, /):
+    def addVolume(self, arg1: list, arg2: int = None, /) -> int:
         """Add a volume by setting an arbitrary number of node indices."""
 
     def compute(self):

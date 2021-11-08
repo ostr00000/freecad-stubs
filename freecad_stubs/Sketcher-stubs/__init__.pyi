@@ -56,7 +56,7 @@ class SketchGeometryExtension(Part.GeometryExtension):
     def setGeometryMode(self, arg1: str, arg2: bool = None, /):
         """Sets the given bit to true/false."""
 
-    def testGeometryMode(self, arg1: str, /):
+    def testGeometryMode(self, arg1: str, /) -> bool:
         """Returns a boolean indicating whether the given bit is set."""
 
 
@@ -276,7 +276,7 @@ class SketchObject(Part.Part2DObject):
     def ExposeInternalGeometry(self, arg1: int, /):
         """Deprecated -- use exposeInternalGeometry"""
 
-    def addConstraint(self, arg1: object, /):
+    def addConstraint(self, arg1: object, /) -> int:
         """add a constraint to the sketch"""
 
     def addCopy(self, arg1: object, arg2: FreeCAD.Vector, arg3: bool = None, /):
@@ -286,10 +286,10 @@ class SketchObject(Part.Part2DObject):
         """add a link to an external geometry to use it in a constraint"""
 
     @typing.overload
-    def addGeometry(self, arg1: object, arg2: bool, /): ...
+    def addGeometry(self, arg1: object, arg2: bool, /) -> int: ...
 
     @typing.overload
-    def addGeometry(self, arg1: object, /):
+    def addGeometry(self, arg1: object, /) -> int:
         """add a geometric object to the sketch"""
 
     def addMove(self, arg1: object, arg2: FreeCAD.Vector, /):
@@ -313,7 +313,7 @@ class SketchObject(Part.Part2DObject):
     def autoconstraint(self, arg1: float = None, arg2: float = None, arg3: bool = None, /):
         """Automatic sketch constraining algorithm."""
 
-    def calculateAngleViaPoint(self, GeoId1: int, GeoId2: int, px: float, py: float, /):
+    def calculateAngleViaPoint(self, GeoId1: int, GeoId2: int, px: float, py: float, /) -> float:
         """
         calculateAngleViaPoint(GeoId1, GeoId2, px, py) - calculates angle between
                   curves identified by GeoId1 and GeoId2 at point (x,y). The point must be
@@ -321,7 +321,7 @@ class SketchObject(Part.Part2DObject):
                   line-to-line, where (0,0) is OK). Returned value is in radians.
         """
 
-    def calculateConstraintError(self, index: int, /):
+    def calculateConstraintError(self, index: int, /) -> float:
         """
         calculateConstraintError(index) - calculates the error function of the
                   constraint identified by its index and returns the signed error value.
@@ -333,7 +333,7 @@ class SketchObject(Part.Part2DObject):
     def carbonCopy(self, arg1: str, arg2: bool = None, /):
         """copy another sketch's geometry and constraints"""
 
-    def changeConstraintsLocking(self, bLock: int, /):
+    def changeConstraintsLocking(self, bLock: int, /) -> int:
         """
         changeConstraintsLocking(bLock) - locks or unlocks all tangent and
                   perpendicular constraints. (Constraint locking prevents it from
@@ -377,19 +377,19 @@ class SketchObject(Part.Part2DObject):
     def deleteUnusedInternalGeometry(self, arg1: int, /):
         """Deletes all unused (not further constrained) internal geometry"""
 
-    def detectMissingEqualityConstraints(self, arg1: float = None, /):
+    def detectMissingEqualityConstraints(self, arg1: float = None, /) -> int:
         """
         Detects Missing Equality Constraints. The Detect step just identifies possible missing constraints.
                         The result may be retrieved or applied using the corresponding Get / Make methods.
         """
 
-    def detectMissingPointOnPointConstraints(self, arg1: float = None, arg2: bool = None, /):
+    def detectMissingPointOnPointConstraints(self, arg1: float = None, arg2: bool = None, /) -> int:
         """
         Detects Missing Point On Point Constraints. The Detect step just identifies possible missing constraints.
                         The result may be retrieved or applied using the corresponding Get / Make methods.
         """
 
-    def detectMissingVerticalHorizontalConstraints(self, arg1: float = None, /):
+    def detectMissingVerticalHorizontalConstraints(self, arg1: float = None, /) -> int:
         """
         Detects Missing Horizontal/Vertical Constraints. The Detect step just identifies possible missing constraints.
                         The result may be retrieved or applied using the corresponding Get / Make methods.
@@ -408,13 +408,13 @@ class SketchObject(Part.Part2DObject):
     def fillet(self, arg1: int, arg2: int, arg3: float, arg4: int = None, arg5: bool = None, /):
         """create fillet between two edges or at a point"""
 
-    def getActive(self, arg1: int, /):
+    def getActive(self, arg1: int, /) -> bool:
         """Get the constraint status (enforced or not)"""
 
     def getAxis(self, arg1: int, /) -> FreeCAD.Axis:
         """return an axis based on the corresponding construction line"""
 
-    def getConstruction(self, arg1: int, /):
+    def getConstruction(self, arg1: int, /) -> bool:
         """returns the construction mode of a geometry"""
 
     @typing.overload
@@ -424,13 +424,13 @@ class SketchObject(Part.Part2DObject):
     def getDatum(self, arg1: str, /) -> FreeCAD.Quantity:
         """Get the value of a datum constraint"""
 
-    def getDriving(self, arg1: int, /):
+    def getDriving(self, arg1: int, /) -> bool:
         """Get the Driving status of a datum constraint"""
 
     def getGeoVertexIndex(self, index: int, /):
         """(geoId, posId) = getGeoVertexIndex(index) - retrieve the GeoId and PosId of a point in the sketch"""
 
-    def getGeometryId(self, arg1: int, /):
+    def getGeometryId(self, arg1: int, /) -> int:
         """gets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId"""
 
     def getGeometryWithDependentParameters(self):
@@ -449,13 +449,13 @@ class SketchObject(Part.Part2DObject):
     def getPoint(self, GeoIndex: int, PointPos: int, /) -> FreeCAD.Vector:
         """getPoint(GeoIndex,PointPos) - retrieve the vector of a point in the sketch"""
 
-    def getVirtualSpace(self, arg1: int, /):
+    def getVirtualSpace(self, arg1: int, /) -> bool:
         """Get the VirtualSpace status of a constraint"""
 
     def increaseBSplineDegree(self, arg1: int, arg2: int = None, /):
         """Increases the given BSpline Degree by a number of degrees"""
 
-    def isPointOnCurve(self, arg1: int, arg2: float, arg3: float, /):
+    def isPointOnCurve(self, arg1: int, arg2: float, arg3: float, /) -> bool:
         """
         isPointOnObject(GeoIdCurve, float x, float y) - tests if the point (x,y)
                   geometrically lies on a curve (e.g. ellipse). It treats lines as infinite,
@@ -576,16 +576,16 @@ class Sketch(FreeCAD.Persistence):
     def Shape(self) -> object:
         """Resulting shape from the sketch geometry"""
 
-    def addConstraint(self, arg1: object, /):
+    def addConstraint(self, arg1: object, /) -> int:
         """add an constraint object to the sketch"""
 
-    def addGeometry(self, arg1: object, /):
+    def addGeometry(self, arg1: object, /) -> int:
         """add a geometric object to the sketch"""
 
     def clear(self):
         """clear the sketch"""
 
-    def movePoint(self, GeoIndex: int, PointPos: int, Vector: FreeCAD.Vector, relative: int = None, /):
+    def movePoint(self, GeoIndex: int, PointPos: int, Vector: FreeCAD.Vector, relative: int = None, /) -> int:
         """
         movePoint(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
                   to another location.
@@ -598,7 +598,7 @@ class Sketch(FreeCAD.Persistence):
                   relatively to the current one.
         """
 
-    def solve(self):
+    def solve(self) -> int:
         """solve the actual set of geometry and constraints"""
 
 
@@ -673,10 +673,10 @@ class ExternalGeometryFacade(FreeCAD.BaseClass):
     def getExtensions(self):
         """Returns a list with information about the geometry extensions."""
 
-    def hasExtensionOfName(self, arg1: str, /):
+    def hasExtensionOfName(self, arg1: str, /) -> bool:
         """Returns a boolean indicating whether a geometry extension with the name indicated as a string exists."""
 
-    def hasExtensionOfType(self, arg1: str, /):
+    def hasExtensionOfType(self, arg1: str, /) -> bool:
         """Returns a boolean indicating whether a geometry extension of the type indicated as a string exists."""
 
     @typing.overload
@@ -702,7 +702,7 @@ class ExternalGeometryFacade(FreeCAD.BaseClass):
     def setFlag(self, arg1: str, arg2: bool = None, /):
         """Sets the given bit to true/false."""
 
-    def testFlag(self, arg1: str, /):
+    def testFlag(self, arg1: str, /) -> bool:
         """Returns a boolean indicating whether the given bit is set."""
 
     def transform(self, arg1: FreeCAD.Matrix, /):
@@ -736,7 +736,7 @@ class ExternalGeometryExtension(Part.GeometryExtension):
     def setFlag(self, arg1: str, arg2: bool = None, /):
         """sets the given bit to true/false."""
 
-    def testFlag(self, arg1: str, /):
+    def testFlag(self, arg1: str, /) -> bool:
         """returns a boolean indicating whether the given bit is set."""
 
 
@@ -804,10 +804,10 @@ class GeometryFacade(FreeCAD.BaseClass):
     def getExtensions(self):
         """Returns a list with information about the geometry extensions."""
 
-    def hasExtensionOfName(self, arg1: str, /):
+    def hasExtensionOfName(self, arg1: str, /) -> bool:
         """Returns a boolean indicating whether a geometry extension with the name indicated as a string exists."""
 
-    def hasExtensionOfType(self, arg1: str, /):
+    def hasExtensionOfType(self, arg1: str, /) -> bool:
         """Returns a boolean indicating whether a geometry extension of the type indicated as a string exists."""
 
     @typing.overload
@@ -833,7 +833,7 @@ class GeometryFacade(FreeCAD.BaseClass):
     def setGeometryMode(self, arg1: str, arg2: bool = None, /):
         """Sets the given bit to true/false."""
 
-    def testGeometryMode(self, arg1: str, /):
+    def testGeometryMode(self, arg1: str, /) -> bool:
         """Returns a boolean indicating whether the given bit is set."""
 
     def transform(self, arg1: FreeCAD.Matrix, /):

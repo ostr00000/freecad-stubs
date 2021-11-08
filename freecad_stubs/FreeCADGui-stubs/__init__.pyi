@@ -101,7 +101,7 @@ class LinkView(FreeCAD.BaseClass):
         Return a tuple(path,detail) for the coin3D SoPath and SoDetail of the element
         """
 
-    def getElementPicked(self, pickPoint: object, /):
+    def getElementPicked(self, pickPoint: object, /) -> str:
         """getElementPicked(pickPoint): get the element under a 3d pick point."""
 
     def reset(self):
@@ -242,19 +242,19 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         The first argument specifies the type, the second the name of the property.
         """
 
-    def canDragAndDropObject(self, obj: FreeCAD.DocumentObject, /):
+    def canDragAndDropObject(self, obj: FreeCAD.DocumentObject, /) -> bool:
         """
         Check whether the child object can be removed from other parent and added here by drag and drop
         canDragAndDropObject(obj)
         """
 
-    def canDragObject(self, obj=None, /):
+    def canDragObject(self, obj=None, /) -> bool:
         """
         check whether the child object can be removed by dragging
         canDragObject(obj=None)
         """
 
-    def canDropObject(self, arg1=None, arg2=None, arg3: str = None, arg4=None, /):
+    def canDropObject(self, arg1=None, arg2=None, arg3: str = None, arg4=None, /) -> bool:
         """
         check whether the child object can be added by dropping
         canDropObject(obj=None,owner=None,subname=None)
@@ -263,7 +263,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
     def claimChildren(self):
         """Returns list of objects that are to be grouped in tree under this object."""
 
-    def doubleClicked(self):
+    def doubleClicked(self) -> bool:
         """Trigger double clicking the corresponding tree item of this view object"""
 
     def dragObject(self, obj: FreeCAD.DocumentObject, /):
@@ -272,7 +272,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         dragObject(obj)
         """
 
-    def dropObject(self, arg1: FreeCAD.DocumentObject, arg2=None, arg3: str = None, arg4=None, /):
+    def dropObject(self, arg1: FreeCAD.DocumentObject, arg2=None, arg3: str = None, arg4=None, /) -> str:
         """
         add a child object by dropping
         dropObject(obj,owner=None,subname=None)
@@ -302,7 +302,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
     def getElementColors(self, elementName: str = None, /):
         """getElementColors(elementName=None) -> dict(elementName:color)"""
 
-    def getElementPicked(self, pickPoint: object, /):
+    def getElementPicked(self, pickPoint: object, /) -> str:
         """
         return the picked subelement
         getElementPicked(pickPoint)
@@ -365,7 +365,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
     def supportedProperties(self):
         """A list of supported property types"""
 
-    def toString(self):
+    def toString(self) -> str:
         """Return a string representation of the Inventor node"""
 
 
@@ -517,7 +517,7 @@ class Command(FreeCAD.PyObjectBase):
         getShortcut() -> string
         """
 
-    def isActive(self):
+    def isActive(self) -> bool:
         """
         Returns True if the command is active, False otherwise.
         isActive() -> bool
@@ -539,7 +539,7 @@ class Command(FreeCAD.PyObjectBase):
         Shortcuts are converted to uppercase and spaces removed prior to comparison.
         """
 
-    def resetShortcut(self):
+    def resetShortcut(self) -> bool:
         """
         Resets shortcut for given command back to the default, returns bool True for success.
         resetShortcut() -> bool
@@ -551,7 +551,7 @@ class Command(FreeCAD.PyObjectBase):
         run() -> None
         """
 
-    def setShortcut(self, string: str, /):
+    def setShortcut(self, string: str, /) -> bool:
         """
         Sets shortcut for given command, returns bool True for success.
         setShortcut(string) -> bool
@@ -643,7 +643,7 @@ class AxisOrigin(FreeCAD.BaseClass):
         pPath: output coin path leading to the returned element detail
         """
 
-    def getElementPicked(self, pickPoint: object, /):
+    def getElementPicked(self, pickPoint: object, /) -> str:
         """getElementPicked(pickPoint): return the picked subelement"""
 
 
@@ -1457,7 +1457,7 @@ class PythonDebugExcept:
 
     pass
 # ApplicationPy.cpp
-def activateWorkbench(string: str, /):
+def activateWorkbench(string: str, /) -> bool:
     """
     activateWorkbench(string) -> None
 
@@ -1546,7 +1546,7 @@ def getIcon(string: str, /):
     """
 
 
-def isIconCached(String: str, /):
+def isIconCached(String: str, /) -> bool:
     """
     isIconCached(String) -> Bool
 
@@ -1813,7 +1813,7 @@ def listUserEditModes():
     """
 
 
-def getUserEditMode():
+def getUserEditMode() -> str:
     """
     getUserEditMode() -> string
 
@@ -1821,7 +1821,7 @@ def getUserEditMode():
     """
 
 
-def setUserEditMode(string: str, /):
+def setUserEditMode(string: str, /) -> bool:
     """
     setUserEditMode(string=mode) -> Bool
 

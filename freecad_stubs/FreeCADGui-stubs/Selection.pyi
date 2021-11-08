@@ -212,7 +212,7 @@ def pushSelStack(clearForward=True, overwrite=False, /):
     """
 
 
-def hasSelection(docName: str = '', resolve=False, /):
+def hasSelection(docName: str = '', resolve=False, /) -> bool:
     """
     check if there is any selection
     hasSelection(docName='', resolve=False)
