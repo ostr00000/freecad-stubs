@@ -11,21 +11,21 @@ class MDIViewPage(FreeCAD.PyObjectBase):
 
 
 # AppTechDrawGuiPy.cpp
-def export(arg1: object, arg2: str, /) -> None:
+def export(arg1, arg2: str, /) -> None:
     """TechDraw hook for FC Gui exporter."""
 
 
-def exportPageAsPdf(DrawPageObject: object, FilePath: str, /) -> None:
+def exportPageAsPdf(DrawPageObject, FilePath: str, /) -> None:
     """exportPageAsPdf(DrawPageObject,FilePath) -- print page as Pdf to file."""
 
 
-def exportPageAsSvg(DrawPageObject: object, FilePath: str, /) -> None:
+def exportPageAsSvg(DrawPageObject, FilePath: str, /) -> None:
     """exportPageAsSvg(DrawPageObject,FilePath) -- print page as Svg to file."""
 
 
-def copyActiveViewToSvgFile(arg1: object, arg2: str, arg3: float = None, arg4: float = None, arg5=None, arg6=None, arg7: float = None, arg8: float = None, arg9: int = None, /):
+def copyActiveViewToSvgFile(arg1, arg2: str, arg3: float = None, arg4: float = None, arg5=None, arg6=None, arg7: float = None, arg8: float = None, arg9: int = None, /):
     """copyActiveViewToSvgFile(DrawPageObject,FilePath) -- copy ActiveView to Svg file."""
 
 
-def addQGIToView(View: object, QGraphicsItem: object, /) -> None:
+def addQGIToView(View, QGraphicsItem, /) -> None:
     """addQGIToView(View, QGraphicsItem) -- insert graphics item into view's graphic."""

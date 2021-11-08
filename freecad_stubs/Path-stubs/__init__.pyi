@@ -230,7 +230,7 @@ class VoronoiCell(FreeCAD.BaseClass):
     def SourceIndex(self) -> int:
         """Returns the index of the cell's source"""
 
-    def getSource(self, arg1: float = None, /) -> FreeCAD.Vector:
+    def getSource(self, arg1: float = None, /) -> FreeCAD.Vector | object:
         """Returns the Source for the cell"""
 
     def __eq__(self, other) -> bool: ...
@@ -336,7 +336,7 @@ class Area(FreeCAD.BaseClass):
     @Workplane.setter
     def Workplane(self, value: object): ...
 
-    def add(self, shape: object): ...
+    def add(self, shape): ...
 
     def getParams(self):
         """Get current algorithm parameters as a dictionary."""
@@ -543,10 +543,10 @@ class Voronoi(FreeCAD.BaseClass):
     def Vertices(self) -> list:
         """List of all vertices of the voronoi diagram"""
 
-    def addPoint(self, vector_vector2d: object, /) -> None:
+    def addPoint(self, vector_vector2d, /) -> None:
         """addPoint(vector|vector2d) add given point to input collection"""
 
-    def addSegment(self, vector_vector2d: object, vector_vector2d2: object, /) -> None:
+    def addSegment(self, vector_vector2d, vector_vector2d2, /) -> None:
         """addSegment(vector|vector2d, vector|vector2d) add given segment to input collection"""
 
     def colorColinear(self, arg1: int, arg2: float = None, /) -> None:
@@ -683,7 +683,7 @@ class FeaturePathCompound(FreeCAD.DocumentObject):
 
 
 # AppPathPy.cpp
-def write(object: object, filename: str, /) -> None:
+def write(object, filename: str, /) -> None:
     """write(object,filename): Exports a given path object to a GCode file"""
 
 
@@ -695,11 +695,11 @@ def show(path: Path.Path, string: str = None, /) -> None:
     """show(path,[string]): Add the path to the active document or create one if no document exists"""
 
 
-def fromShape(Shape: object, /) -> Path.Path:
+def fromShape(Shape, /) -> Path.Path:
     """fromShape(Shape): Returns a Path object from a Part Shape (deprecated - use fromShapes() instead)"""
 
 
-def fromShapes(shapes: object, start: FreeCAD.Vector = None, return_end=None) -> Path.Path:
+def fromShapes(shapes, start: FreeCAD.Vector = None, return_end=None) -> Path.Path | object:
     """
     fromShapes(shapes, start=Vector(), return_end=False" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_PATH) ")
 
@@ -715,7 +715,7 @@ def fromShapes(shapes: object, start: FreeCAD.Vector = None, return_end=None) ->
     """
 
 
-def sortWires(shapes: object, start: FreeCAD.Vector = None):
+def sortWires(shapes, start: FreeCAD.Vector = None):
     """
     sortWires(shapes, start=Vector(), "
                 PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_ARC_PLANE)
@@ -750,7 +750,7 @@ def getDefaultParams():
 def abort(aborting=None) -> None: ...
 
 
-def getParamsDesc(as_string=False) -> str:
+def getParamsDesc(as_string=False) -> str | object:
     """
     getParamsDesc(as_string=False): Returns a list of supported parameters and their descriptions.
 

@@ -26,7 +26,7 @@ class UnifySameDomain(FreeCAD.PyObjectBase):
     def keepShape(self, arg1: Part.Shape, /):
         """Sets the shape for avoid merging of the faces/edges."""
 
-    def keepShapes(self, arg1: object, /):
+    def keepShapes(self, arg1, /):
         """Sets the map of shapes for avoid merging of the faces/edges."""
 
     def setAngularTolerance(self, arg1: float, /):

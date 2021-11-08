@@ -139,7 +139,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
                             Notice that the elements have to be in the mesh.
         """
 
-    def addHypothesis(self, arg1: object, arg2: Part.Shape = None, /):
+    def addHypothesis(self, arg1, arg2: Part.Shape = None, /):
         """Add hypothesis"""
 
     @typing.overload
@@ -310,7 +310,7 @@ def insert(string_mesh: str, string: str = None, /) -> None:
     """insert(string|mesh,[string]) -- Load or insert a mesh into the given or active document."""
 
 
-def export(list: object, string: str, /) -> None:
+def export(list, string: str, /) -> None:
     """export(list,string) -- Export a list of objects into a single file."""
 
 

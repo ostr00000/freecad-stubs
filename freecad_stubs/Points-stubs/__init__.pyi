@@ -34,13 +34,13 @@ class Points(FreeCAD.ComplexGeoData):
         	print p
         """
 
-    def addPoints(self, arg1: object, /):
+    def addPoints(self, arg1, /):
         """add one or more (list of) points to the object"""
 
     def copy(self) -> Points.Points:
         """Create a copy of this points object"""
 
-    def fromSegment(self, arg1: object, /) -> Points.Points:
+    def fromSegment(self, arg1, /) -> Points.Points:
         """Get a new point object from a given segment"""
 
     def fromValid(self) -> Points.Points:
@@ -63,7 +63,7 @@ def open(arg1: str, /) -> None: ...
 def insert(arg1: str, arg2: str, /) -> None: ...
 
 
-def export(arg1: object, arg2: str, /) -> None: ...
+def export(arg1, arg2: str, /) -> None: ...
 
 
 def show(points: Points.Points, string: str = None, /) -> None:

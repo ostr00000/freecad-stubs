@@ -6,7 +6,7 @@ import Part
 
 
 # AppMeshPartPy.cpp
-def loftOnCurve(curve: Part.Shape, poly: object, upVector: typing.Sequence[float, float, float], MaxSize: float, /) -> MeshModule.Mesh:
+def loftOnCurve(curve: Part.Shape, poly, upVector: typing.Sequence[float, float, float], MaxSize: float, /) -> MeshModule.Mesh:
     """
     Creates a mesh loft based on a curve and an up vector
 
@@ -29,7 +29,7 @@ def findSectionParameters(Edge: Part.Edge, Mesh: MeshModule.Mesh, Vector: FreeCA
     """
 
 
-def projectPointsOnMesh(list_of_points: object, Mesh: MeshModule.Mesh, Vector: FreeCAD.Vector, float: float = None, /):
+def projectPointsOnMesh(list_of_points, Mesh: MeshModule.Mesh, Vector: FreeCAD.Vector, float: float = None, /):
     """
     Projects points onto a mesh with a given direction
     and tolerance.projectPointsOnMesh(list of points, Mesh, Vector, [float]) -> list of points
@@ -53,7 +53,7 @@ def projectShapeOnMesh(Shape: Part.Shape, Mesh: MeshModule.Mesh, Direction: Free
 
 
 @typing.overload
-def projectShapeOnMesh(Polygons: object, Mesh: MeshModule.Mesh, Direction: FreeCAD.Vector):
+def projectShapeOnMesh(Polygons, Mesh: MeshModule.Mesh, Direction: FreeCAD.Vector):
     """
     Projects a shape onto a mesh with a given maximum distance
     projectShapeOnMesh(Shape, Mesh, float) -> polygon

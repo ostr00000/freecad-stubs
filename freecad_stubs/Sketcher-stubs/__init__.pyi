@@ -74,19 +74,19 @@ class Constraint(FreeCAD.Persistence):
     def __init__(self, arg1: str, arg2: int, /): ...
 
     @typing.overload
-    def __init__(self, arg1: str, arg2: int, arg3: object, /): ...
+    def __init__(self, arg1: str, arg2: int, arg3, /): ...
 
     @typing.overload
-    def __init__(self, arg1: str, arg2: int, arg3: int, arg4: object, /): ...
+    def __init__(self, arg1: str, arg2: int, arg3: int, arg4, /): ...
 
     @typing.overload
-    def __init__(self, arg1: str, arg2: int, arg3: int, arg4: int, arg5: object, /): ...
+    def __init__(self, arg1: str, arg2: int, arg3: int, arg4: int, arg5, /): ...
 
     @typing.overload
-    def __init__(self, arg1: str, arg2: int, arg3: int, arg4: int, arg5: int, arg6: object, /): ...
+    def __init__(self, arg1: str, arg2: int, arg3: int, arg4: int, arg5: int, arg6, /): ...
 
     @typing.overload
-    def __init__(self, arg1: str, arg2: int, arg3: int, arg4: int, arg5: int, arg6: int, arg7: object, /):
+    def __init__(self, arg1: str, arg2: int, arg3: int, arg4: int, arg5: int, arg6: int, arg7, /):
         """With this object you can handle sketches"""
 
     @property
@@ -276,29 +276,29 @@ class SketchObject(Part.Part2DObject):
     def ExposeInternalGeometry(self, arg1: int, /):
         """Deprecated -- use exposeInternalGeometry"""
 
-    def addConstraint(self, arg1: object, /) -> int:
+    def addConstraint(self, arg1, /) -> int | object:
         """add a constraint to the sketch"""
 
-    def addCopy(self, arg1: object, arg2: FreeCAD.Vector, arg3: bool = None, /):
+    def addCopy(self, arg1, arg2: FreeCAD.Vector, arg3: bool = None, /):
         """add a copy of geometric objects to the sketch displaced by a vector3d"""
 
     def addExternal(self, arg1: str, arg2: str, /):
         """add a link to an external geometry to use it in a constraint"""
 
     @typing.overload
-    def addGeometry(self, arg1: object, arg2: bool, /) -> int: ...
+    def addGeometry(self, arg1, arg2: bool, /) -> int | object: ...
 
     @typing.overload
-    def addGeometry(self, arg1: object, /) -> int:
+    def addGeometry(self, arg1, /) -> int | object:
         """add a geometric object to the sketch"""
 
-    def addMove(self, arg1: object, arg2: FreeCAD.Vector, /):
+    def addMove(self, arg1, arg2: FreeCAD.Vector, /):
         """Moves the geometric objects in the sketch displaced by a vector3d"""
 
-    def addRectangularArray(self, arg1: object, arg2: FreeCAD.Vector, arg3: bool, arg4: int, arg5: int, arg6: bool = None, arg7: float = None, /):
+    def addRectangularArray(self, arg1, arg2: FreeCAD.Vector, arg3: bool, arg4: int, arg5: int, arg6: bool = None, arg7: float = None, /):
         """add an array of size cols by rows where each element is a copy of the selected geometric objects displaced by a vector3d in the cols direction and by a vector perpendicular to it in the rows direction"""
 
-    def addSymmetric(self, arg1: object, arg2: int, arg3: int = None, /):
+    def addSymmetric(self, arg1, arg2: int, arg3: int = None, /):
         """add a symmetric geometric objects to the sketch with respect to a reference point or line"""
 
     def analyseMissingPointOnPointCoincident(self, arg1: float = None, /):
@@ -362,7 +362,7 @@ class SketchObject(Part.Part2DObject):
     def delExternal(self, arg1: int, /):
         """delete a external geometry link from the sketch"""
 
-    def delGeometries(self, arg1: object, /):
+    def delGeometries(self, arg1, /):
         """delete a list of geometric objects from the sketch, including any internal alignment geometry thereof"""
 
     def delGeometry(self, arg1: int, /):
@@ -490,7 +490,7 @@ class SketchObject(Part.Part2DObject):
                   relatively to the current one.
         """
 
-    def removeAxesAlignment(self, arg1: object, /):
+    def removeAxesAlignment(self, arg1, /):
         """modifies constraints so that the shape is not forced to be aligned with axes."""
 
     def renameConstraint(self, arg1: int, arg2: str, /):
@@ -524,7 +524,7 @@ class SketchObject(Part.Part2DObject):
     def setGeometryId(self, arg1: int, arg2: int, /):
         """sets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId"""
 
-    def setVirtualSpace(self, arg1: object, arg2: bool, /):
+    def setVirtualSpace(self, arg1, arg2: bool, /):
         """set the VirtualSpace status of a constraint"""
 
     def solve(self) -> int:
@@ -576,10 +576,10 @@ class Sketch(FreeCAD.Persistence):
     def Shape(self) -> object:
         """Resulting shape from the sketch geometry"""
 
-    def addConstraint(self, arg1: object, /) -> int:
+    def addConstraint(self, arg1, /) -> object | int:
         """add an constraint object to the sketch"""
 
-    def addGeometry(self, arg1: object, /) -> int:
+    def addGeometry(self, arg1, /) -> int | object:
         """add a geometric object to the sketch"""
 
     def clear(self):
@@ -702,7 +702,7 @@ class ExternalGeometryFacade(FreeCAD.BaseClass):
     def setFlag(self, arg1: str, arg2: bool = None, /):
         """Sets the given bit to true/false."""
 
-    def testFlag(self, arg1: str, /) -> bool:
+    def testFlag(self, arg1: str, /) -> object | bool:
         """Returns a boolean indicating whether the given bit is set."""
 
     def transform(self, arg1: FreeCAD.Matrix, /):

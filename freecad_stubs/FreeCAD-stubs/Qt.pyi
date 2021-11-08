@@ -9,7 +9,7 @@ def translate(context: str, sourcetext: str, disambiguation: str = None, n: int 
     """
 
 
-def QT_TRANSLATE_NOOP(context: object, sourcetext: object, /):
+def QT_TRANSLATE_NOOP(context, sourcetext, /):
     """
     QT_TRANSLATE_NOOP(context, sourcetext)
     Marks the UTF-8 encoded string literal sourcetext for delayed translation in the given context.
@@ -17,7 +17,7 @@ def QT_TRANSLATE_NOOP(context: object, sourcetext: object, /):
     """
 
 
-def QT_TRANSLATE_NOOP3(context: object, sourcetext: object, disambiguation: object, /):
+def QT_TRANSLATE_NOOP3(context, sourcetext, disambiguation, /):
     """
     QT_TRANSLATE_NOOP3(context, sourcetext, disambiguation)
     Marks the UTF-8 encoded string literal sourceText for delayed translation in the given context
@@ -27,21 +27,21 @@ def QT_TRANSLATE_NOOP3(context: object, sourcetext: object, disambiguation: obje
     """
 
 
-def QT_TRANSLATE_NOOP_UTF8(context: object, sourcetext: object, /):
+def QT_TRANSLATE_NOOP_UTF8(context, sourcetext, /):
     """
     QT_TRANSLATE_NOOP_UTF8(context, sourcetext)
     Same as QT_TRANSLATE_NOOP
     """
 
 
-def QT_TR_NOOP(sourcetext: object, /):
+def QT_TR_NOOP(sourcetext, /):
     """
     QT_TR_NOOP(sourcetext)
     Marks the UTF-8 encoded string literal sourcetext for delayed translation in the current context
     """
 
 
-def QT_TR_NOOP_UTF8(sourcetext: object, /):
+def QT_TR_NOOP_UTF8(sourcetext, /):
     """
     QT_TR_NOOP_UTF8(sourcetext)
     Same as QT_TR_NOOP

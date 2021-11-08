@@ -12,7 +12,7 @@ def waitForConnection(address: str = None, port: int = 0, timeout: int = 0, /) -
     """
 
 
-def registerServerFirewall(callable_string_: object, /) -> None:
+def registerServerFirewall(callable_string_, /) -> None:
     """registerServerFirewall(callable(string)) -- Register a firewall."""
 
 

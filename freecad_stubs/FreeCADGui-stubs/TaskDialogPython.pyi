@@ -2,7 +2,7 @@
 class Control:
     """Control for task dialogs"""
 
-    def showDialog(self, dialog: object, /) -> None:
+    def showDialog(self, dialog, /) -> None:
         """
         show the given dialog in the task panel
         showDialog(dialog)
@@ -22,7 +22,7 @@ class Control:
         closeDialog()
         """
 
-    def addTaskWatcher(self, TaskWatcher_list: object, /) -> None:
+    def addTaskWatcher(self, TaskWatcher_list, /) -> None:
         """
         install a (list of) TaskWatcher
         addTaskWatcher(TaskWatcher | list)

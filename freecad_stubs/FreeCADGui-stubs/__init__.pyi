@@ -88,26 +88,26 @@ class LinkView(FreeCAD.BaseClass):
     def Visibilities(self) -> object:
         """Get/set the child element visibility"""
 
-    def getBoundBox(self, vobj: object, /):
+    def getBoundBox(self, vobj, /):
         """getBoundBox(vobj=None): get the bounding box."""
 
     def getChildren(self):
         """Get children view objects"""
 
-    def getDetailPath(self, arg1: str, arg2: object, /):
+    def getDetailPath(self, arg1: str, arg2, /):
         """
         getDetailPath(element): get the 3d path an detail of an element.
 
         Return a tuple(path,detail) for the coin3D SoPath and SoDetail of the element
         """
 
-    def getElementPicked(self, pickPoint: object, /) -> str:
+    def getElementPicked(self, pickPoint, /) -> str:
         """getElementPicked(pickPoint): get the element under a 3d pick point."""
 
     def reset(self):
         """Reset the link view and clear the links"""
 
-    def setChildren(self, obj_: object, vis: list = None, type: str = 0, /):
+    def setChildren(self, obj_, vis: list = None, type: str = 0, /):
         """
         setChildren([obj...],vis=[],type=0)
         Group a list of children objects. Note, this mode of operation is incompatible 
@@ -122,7 +122,7 @@ class LinkView(FreeCAD.BaseClass):
            2: override none.
         """
 
-    def setLink(self, object: object, subname=None, /):
+    def setLink(self, object, subname=None, /):
         """
         setLink(object): Set the link
 
@@ -138,7 +138,7 @@ class LinkView(FreeCAD.BaseClass):
                  or else it is considered a sub-element reference.
         """
 
-    def setMaterial(self, Material: object, /):
+    def setMaterial(self, Material, /):
         """
         setMaterial(Material): set the override material of the entire linked object
 
@@ -153,7 +153,7 @@ class LinkView(FreeCAD.BaseClass):
         is one
         """
 
-    def setTransform(self, matrix: object, /):
+    def setTransform(self, matrix, /):
         """
         setTransform(matrix): set transformation of the linked object
 
@@ -231,7 +231,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
     @SwitchNode.setter
     def SwitchNode(self, value: object): ...
 
-    def addDisplayMode(self, arg1: object, arg2: str, /):
+    def addDisplayMode(self, arg1, arg2: str, /):
         """Add a new display mode to the view provider"""
 
     def addProperty(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, arg5: int = None, arg6: bool = None, arg7: bool = None, /):
@@ -288,7 +288,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         view: the MDIView, default to active view
         """
 
-    def getDetailPath(self, subname: str, path: object, append=True, /):
+    def getDetailPath(self, subname: str, path, append=True, /):
         """
         return Coin detail and path of an subelement
         getDetailPath(subname,path,append=True)
@@ -302,7 +302,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
     def getElementColors(self, elementName: str = None, /):
         """getElementColors(elementName=None) -> dict(elementName:color)"""
 
-    def getElementPicked(self, pickPoint: object, /) -> str:
+    def getElementPicked(self, pickPoint, /) -> str:
         """
         return the picked subelement
         getElementPicked(pickPoint)
@@ -342,7 +342,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         Returns 1 if succeeded, 0 if not found, -1 if not supported
         """
 
-    def setElementColors(self, colors: object, /):
+    def setElementColors(self, colors, /):
         """
         setElementColors(colors): set element colors
         --
@@ -569,16 +569,16 @@ class Command(FreeCAD.PyObjectBase):
 class PythonWorkbench(FreeCADGui.Workbench):
     """This class handles document objects in group"""
 
-    def appendCommandbar(self, arg1: str, arg2: object, /):
+    def appendCommandbar(self, arg1: str, arg2, /):
         """Append a new command bar"""
 
-    def appendContextMenu(self, arg1: object, arg2: object, /):
+    def appendContextMenu(self, arg1, arg2, /):
         """Append a new context menu item"""
 
-    def appendMenu(self, arg1: object, arg2: object, /):
+    def appendMenu(self, arg1, arg2, /):
         """Append a new menu"""
 
-    def appendToolbar(self, arg1: str, arg2: object, /):
+    def appendToolbar(self, arg1: str, arg2, /):
         """Append a new toolbar"""
 
     def removeCommandbar(self, arg1: str, /):
@@ -635,7 +635,7 @@ class AxisOrigin(FreeCAD.BaseClass):
     def Scale(self) -> float:
         """Get/set auto scaling factor, 0 to disable"""
 
-    def getDetailPath(self, subname: str, path: object, /):
+    def getDetailPath(self, subname: str, path, /):
         """
         getDetailPath(subname,path): return Coin detail and path of an subelement
 
@@ -643,7 +643,7 @@ class AxisOrigin(FreeCAD.BaseClass):
         pPath: output coin path leading to the returned element detail
         """
 
-    def getElementPicked(self, pickPoint: object, /) -> str:
+    def getElementPicked(self, pickPoint, /) -> str:
         """getElementPicked(pickPoint): return the picked subelement"""
 
 
@@ -896,7 +896,7 @@ class Document(FreeCAD.Persistence):
     def setEdit(self, String_Name_ViewProvider_DocumentObject_: str, mod: int = None, subname: str = None, /) -> bool: ...
 
     @typing.overload
-    def setEdit(self, String_Name_ViewProvider_DocumentObject_: object, mod: int = None, subname: str = None, /) -> bool:
+    def setEdit(self, String_Name_ViewProvider_DocumentObject_, mod: int = None, subname: str = None, /) -> bool:
         """
         Set the given object in edit mode.
         setEdit([String:Name|ViewProvider|DocumentObject]|,mod,subname=None) -> Bool
@@ -951,7 +951,7 @@ class MDIViewPy:
         add or set a new active object
         """
 
-    def getActiveObject(self, name: str, resolve=True, /) -> None:
+    def getActiveObject(self, name: str, resolve=True, /) -> None | object:
         """
         getActiveObject(name,resolve=True)
         returns the active object for the given type
@@ -959,7 +959,7 @@ class MDIViewPy:
 
 
 # Application.cpp
-def subgraphFromObject(object: FreeCAD.DocumentObject, /) -> None:
+def subgraphFromObject(object: FreeCAD.DocumentObject, /) -> object | None:
     """
     subgraphFromObject(object) -> Node
 
@@ -967,7 +967,7 @@ def subgraphFromObject(object: FreeCAD.DocumentObject, /) -> None:
     """
 
 
-def exportSubgraph(Node: object, File_or_Buffer: object, Format: str = 'VRML', /) -> None:
+def exportSubgraph(Node, File_or_Buffer, Format: str = 'VRML', /) -> None:
     """
     exportSubgraph(Node, File or Buffer, [Format='VRML']) -> None
 
@@ -1052,7 +1052,7 @@ class View3DInventorPy:
     def zoomOut(self) -> None:
         """zoomOut()"""
 
-    def viewPosition(self, arg1: FreeCAD.Placement = None, arg2: int = None, arg3: int = None, /) -> None:
+    def viewPosition(self, arg1: FreeCAD.Placement = None, arg2: int = None, arg3: int = None, /) -> None | object:
         """viewPosition()"""
 
     def startAnimating(self, arg1: float, arg2: float, arg3: float, arg4: float, /) -> None:
@@ -1070,7 +1070,7 @@ class View3DInventorPy:
     def dump(self, filename: str, onlyVisible=False, /) -> None:
         """dump(filename, [onlyVisible=False])"""
 
-    def dumpNode(self, node: object, /) -> str:
+    def dumpNode(self, node, /) -> str:
         """dumpNode(node)"""
 
     @typing.overload
@@ -1104,7 +1104,7 @@ class View3DInventorPy:
         returns the direction vector the view is currently pointing at as tuple with xyz values
         """
 
-    def setViewDirection(self, tuple: object, /) -> None:
+    def setViewDirection(self, tuple, /) -> None:
         """
         setViewDirection(tuple) --> None
         Sets the direction the view is pointing at. The direction must be given as tuple with
@@ -1114,7 +1114,7 @@ class View3DInventorPy:
     def setCamera(self, arg1: str, /) -> None:
         """setCamera()"""
 
-    def setCameraOrientation(self, arg1: object, arg2: bool = None, /) -> None:
+    def setCameraOrientation(self, arg1, arg2: bool = None, /) -> None:
         """setCameraOrientation()"""
 
     def getCameraOrientation(self):
@@ -1141,7 +1141,7 @@ class View3DInventorPy:
         viewport region.
         """
 
-    def getObjectInfo(self, tuple_int_int_: object, pick_radius: float = None, /):
+    def getObjectInfo(self, tuple_int_int_, pick_radius: float = None, /):
         """
         getObjectInfo(tuple(int,int), [pick_radius]) -> dictionary or None
 
@@ -1151,7 +1151,7 @@ class View3DInventorPy:
         If no geometry was found 'None' is returned, instead.
         """
 
-    def getObjectsInfo(self, tuple_int_int_: object, pick_radius: float = None, /):
+    def getObjectsInfo(self, tuple_int_int_, pick_radius: float = None, /):
         """
         getObjectsInfo(tuple(int,int), [pick_radius]) -> dictionary or None
 
@@ -1176,10 +1176,10 @@ class View3DInventorPy:
         Return the projected 3D point (in pixel coordinates).
         """
 
-    def addEventCallback(self, arg1: str, arg2: object, /):
+    def addEventCallback(self, arg1: str, arg2, /):
         """addEventCallback()"""
 
-    def removeEventCallback(self, arg1: str, arg2: object, /) -> None:
+    def removeEventCallback(self, arg1: str, arg2, /) -> None:
         """removeEventCallback()"""
 
     def setAnnotation(self, arg1: str, arg2: str, /) -> None:
@@ -1194,16 +1194,16 @@ class View3DInventorPy:
     def getViewer(self):
         """getViewer()"""
 
-    def addEventCallbackPivy(self, arg1: object, arg2: object, arg3: int = None, /):
+    def addEventCallbackPivy(self, arg1, arg2, arg3: int = None, /):
         """addEventCallbackPivy()"""
 
-    def removeEventCallbackPivy(self, arg1: object, arg2: object, arg3: int = None, /):
+    def removeEventCallbackPivy(self, arg1, arg2, arg3: int = None, /):
         """removeEventCallbackPivy()"""
 
-    def addEventCallbackSWIG(self, arg1: object, arg2: object, arg3: int = None, /):
+    def addEventCallbackSWIG(self, arg1, arg2, arg3: int = None, /):
         """Deprecated -- use addEventCallbackPivy()"""
 
-    def removeEventCallbackSWIG(self, arg1: object, arg2: object, arg3: int = None, /):
+    def removeEventCallbackSWIG(self, arg1, arg2, arg3: int = None, /):
         """Deprecated -- use removeEventCallbackPivy()"""
 
     def listNavigationTypes(self):
@@ -1221,7 +1221,7 @@ class View3DInventorPy:
     def hasAxisCross(self) -> bool:
         """check if the big axis-cross is on or off()"""
 
-    def addDraggerCallback(self, SoDragger: object, String_CallbackType: str, function: object, /):
+    def addDraggerCallback(self, SoDragger, String_CallbackType: str, function, /):
         """
         addDraggerCallback(SoDragger, String CallbackType, function)
         Add a DraggerCalback function to the coin node
@@ -1229,7 +1229,7 @@ class View3DInventorPy:
         'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'
         """
 
-    def removeDraggerCallback(self, SoDragger: object, String_CallbackType: str, function: object, /):
+    def removeDraggerCallback(self, SoDragger, String_CallbackType: str, function, /):
         """
         removeDraggerCallback(SoDragger, String CallbackType, function)
         Remove the DraggerCalback function from the coin node
@@ -1243,7 +1243,7 @@ class View3DInventorPy:
         add or set a new active object
         """
 
-    def getActiveObject(self, name: str, resolve=True, /) -> None:
+    def getActiveObject(self, name: str, resolve=True, /) -> None | object:
         """
         getActiveObject(name,resolve=True)
         returns the active object for the given type
@@ -1291,7 +1291,7 @@ class PyResource:
 
     def value(self, arg1: str, arg2: str, /): ...
 
-    def setValue(self, arg1: str, arg2: str, arg3: object, /) -> None: ...
+    def setValue(self, arg1: str, arg2: str, arg3, /) -> None: ...
 
 
 # UiLoader.cpp
@@ -1465,7 +1465,7 @@ def activateWorkbench(string: str, /) -> bool:
     """
 
 
-def addWorkbench(arg0: object, /) -> None:
+def addWorkbench(arg0, /) -> None:
     """
     addWorkbench(string, object) -> None
 
@@ -1619,7 +1619,7 @@ def addPreferencePage(string: type, string1: str, /) -> None:
     """
 
 
-def addCommand(arg0: str, arg1: object, arg2: str = None, /) -> None:
+def addCommand(arg0: str, arg1, arg2: str = None, /) -> None:
     """
     addCommand(string, object) -> None
 
@@ -1675,7 +1675,7 @@ def insert(arg0: str, arg1: str = None, /):
     """Open a macro, Inventor or VRML file"""
 
 
-def export(arg0: object, arg1: str, /):
+def export(arg0, arg1: str, /):
     """save scene to Inventor or VRML file"""
 
 
@@ -1777,7 +1777,7 @@ def showPreferences(string: str = None, int: int = None, /) -> None:
     """
 
 
-def createViewer(arg0: int = None, arg1: str = None, /) -> None:
+def createViewer(arg0: int = None, arg1: str = None, /) -> object | None:
     """
     createViewer([int]) -> View3DInventor/SplitView3DInventor
 
@@ -1789,7 +1789,7 @@ def getMarkerIndex(arg0: str = None, arg1: int = None, /) -> int:
     """Get marker index according to marker size setting"""
 
 
-def addDocumentObserver(arg0: object, /):
+def addDocumentObserver(arg0, /):
     """
     addDocumentObserver() -> None
 
@@ -1797,7 +1797,7 @@ def addDocumentObserver(arg0: object, /):
     """
 
 
-def removeDocumentObserver(arg0: object, /):
+def removeDocumentObserver(arg0, /):
     """
     removeDocumentObserver() -> None
 
@@ -1848,7 +1848,7 @@ def loadFile(string: str, string1: str = None, /):
     """
 
 
-def coinRemoveAllChildren(arg0: object, /):
+def coinRemoveAllChildren(arg0, /):
     """Remove all children from a group node"""
 
 
@@ -1898,10 +1898,10 @@ class View3DInventorViewerPy:
     def getSceneGraph(self):
         """getSceneGraph() -> SoNode"""
 
-    def setSceneGraph(self, SoNode: object, /) -> None:
+    def setSceneGraph(self, SoNode, /) -> None:
         """setSceneGraph(SoNode)"""
 
-    def seekToPoint(self, tuple: object, /) -> None:
+    def seekToPoint(self, tuple, /) -> None:
         """
         seekToPoint(tuple) -> None
         Initiate a seek action towards the 3D intersection of the scene and the

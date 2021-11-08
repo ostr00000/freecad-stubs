@@ -482,16 +482,16 @@ class Solid(Part.Shape):
         """
 
     @typing.overload
-    def offsetFaces(self, facesTuple: object, offset: float, /) -> Part.Solid: ...
+    def offsetFaces(self, facesTuple, offset: float, /) -> Part.Solid: ...
 
     @typing.overload
     def offsetFaces(self, dict: dict, /) -> Part.Solid: ...
 
     @typing.overload
-    def offsetFaces(self, arg1: object, arg2: float, /) -> Part.Solid: ...
+    def offsetFaces(self, arg1, arg2: float, /) -> Part.Solid: ...
 
     @typing.overload
-    def offsetFaces(self, arg1: object, solid_Faces_1_2_0_: float, /) -> Part.Solid:
+    def offsetFaces(self, arg1, solid_Faces_1_2_0_: float, /) -> Part.Solid:
         """
         Extrude single faces of the solid.
         offsetFaces(facesTuple, offset) -> Solid
@@ -849,7 +849,7 @@ class Face(Part.Shape):
     def __init__(self, arg1: list, /): ...
 
     @typing.overload
-    def __init__(self, arg1: object, arg2: str, /):
+    def __init__(self, arg1, arg2: str, /):
         """TopoShapeFace is the OpenCasCade topological face wrapper"""
 
     @property
@@ -1199,7 +1199,7 @@ class CompSolid(Part.Shape):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, arg1: object, /):
+    def __init__(self, arg1, /):
         """TopoShapeCompSolid is the OpenCasCade topological compound solid wrapper"""
 
     def add(self, solid: Part.Solid, /):
@@ -1381,7 +1381,7 @@ class Shape(FreeCAD.ComplexGeoData):
     def common(self, arg1: Part.Shape, tolerance: float, /) -> Part.Shape: ...
 
     @typing.overload
-    def common(self, arg1: object, tolerance: float = 0.0, /) -> Part.Shape:
+    def common(self, arg1, tolerance: float = 0.0, /) -> Part.Shape:
         """
         Intersection of this and a given (list of) topo shape.
         common(tool) -> Shape
@@ -1427,7 +1427,7 @@ class Shape(FreeCAD.ComplexGeoData):
     def cut(self, arg1: Part.Shape, tolerance: float, /) -> Part.Shape: ...
 
     @typing.overload
-    def cut(self, arg1: object, tolerance: float = 0.0, /) -> Part.Shape:
+    def cut(self, arg1, tolerance: float = 0.0, /) -> Part.Shape:
         """
         Difference of this and a given (list of) topo shape
         cut(tool) -> Shape
@@ -1442,7 +1442,7 @@ class Shape(FreeCAD.ComplexGeoData):
         OCC 6.9.0 or later is required.
         """
 
-    def defeaturing(self, shapeList: object, /):
+    def defeaturing(self, shapeList, /):
         """
         Remove a feature defined by supplied faces and return a new shape.
         defeaturing(shapeList) -> Shape
@@ -1491,7 +1491,7 @@ class Shape(FreeCAD.ComplexGeoData):
     def exportBrep(self, filename: str, /): ...
 
     @typing.overload
-    def exportBrep(self, filename: object, /):
+    def exportBrep(self, filename, /):
         """
         Export the content of this shape to an BREP file.
         exportBrep(filename)
@@ -1564,7 +1564,7 @@ class Shape(FreeCAD.ComplexGeoData):
     def fuse(self, arg1: Part.Shape, tolerance: float, /) -> Part.Shape: ...
 
     @typing.overload
-    def fuse(self, arg1: object, tolerance: float = 0.0, /) -> Part.Shape:
+    def fuse(self, arg1, tolerance: float = 0.0, /) -> Part.Shape:
         """
         Union of this and a given (list of) topo shape.
         fuse(tool) -> Shape
@@ -1581,7 +1581,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Beginning from OCCT 6.8.1 a tolerance value can be specified.
         """
 
-    def generalFuse(self, list_of_other_shapes: object, fuzzy_value: float = 0.0, /):
+    def generalFuse(self, list_of_other_shapes, fuzzy_value: float = 0.0, /):
         """
         Run general fuse algorithm (GFA) between this and given shapes.
         generalFuse(list_of_other_shapes, [fuzzy_value = 0.0]) -> (result, map)
@@ -1661,7 +1661,7 @@ class Shape(FreeCAD.ComplexGeoData):
     def importBrep(self, filename: str, /): ...
 
     @typing.overload
-    def importBrep(self, filename: object, /):
+    def importBrep(self, filename, /):
         """
         Load the shape from a file in BREP format.
         importBrep(filename)
@@ -1770,10 +1770,10 @@ class Shape(FreeCAD.ComplexGeoData):
         """
 
     @typing.overload
-    def makeChamfer(self, radius: float, edgeList: object, /) -> Part.Shape: ...
+    def makeChamfer(self, radius: float, edgeList, /) -> Part.Shape: ...
 
     @typing.overload
-    def makeChamfer(self, radius1: float, radius2: float, edgeList: object, /) -> Part.Shape:
+    def makeChamfer(self, radius1: float, radius2: float, edgeList, /) -> Part.Shape:
         """
         Make chamfer.
         makeChamfer(radius,edgeList) -> Shape
@@ -1782,10 +1782,10 @@ class Shape(FreeCAD.ComplexGeoData):
         """
 
     @typing.overload
-    def makeFillet(self, radius: float, edgeList: object, /) -> Part.Shape: ...
+    def makeFillet(self, radius: float, edgeList, /) -> Part.Shape: ...
 
     @typing.overload
-    def makeFillet(self, radius1: float, radius2: float, edgeList: object, /) -> Part.Shape:
+    def makeFillet(self, radius1: float, radius2: float, edgeList, /) -> Part.Shape:
         """
         Make fillet.
         makeFillet(radius,edgeList) -> Shape
@@ -1872,7 +1872,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Note: This should be used for rather small meshes only.
         """
 
-    def makeThickness(self, arg1: object, arg2: float, arg3: float, arg4: bool = None, arg5: bool = None, arg6: int = None, arg7: int = None, /) -> Part.Solid:
+    def makeThickness(self, arg1, arg2: float, arg3: float, arg4: bool = None, arg5: bool = None, arg6: int = None, arg7: int = None, /) -> Part.Solid:
         """
         Hollow a solid according to given thickness and faces.
         makeThickness(List of faces, Offset (Float), Tolerance (Float)) -> Shape
@@ -1906,7 +1906,7 @@ class Shape(FreeCAD.ComplexGeoData):
         The plane is given with its base point and its normal direction.
         """
 
-    def multiFuse(self, arg1: object, tolerance: float = 0.0, /) -> Part.Shape:
+    def multiFuse(self, arg1, tolerance: float = 0.0, /) -> Part.Shape:
         """
         Union of this and a given list of topo shapes.
         multiFuse((tool1,tool2,...),[tolerance=0.0]) -> Shape
@@ -1947,7 +1947,7 @@ class Shape(FreeCAD.ComplexGeoData):
         ShapeType is interpreted as in the method getTolerance
         """
 
-    def project(self, shapeList: object, /) -> Part.Shape:
+    def project(self, shapeList, /) -> Part.Shape:
         """
         Project a list of shapes on this shape
         project(shapeList) -> Shape
@@ -1990,7 +1990,7 @@ class Shape(FreeCAD.ComplexGeoData):
         removeInternalWires(minimalArea) -> bool
         """
 
-    def removeShape(self, shapeList: object, /):
+    def removeShape(self, shapeList, /):
         """
         Remove a sub-shape and return a new shape.
         removeShape(shapeList) -> Shape
@@ -2004,7 +2004,7 @@ class Shape(FreeCAD.ComplexGeoData):
         removeSplitter() -> Shape
         """
 
-    def replaceShape(self, tupleList: object, /):
+    def replaceShape(self, tupleList, /):
         """
         Replace a sub-shape with a new shape and return a new shape.
         replaceShape(tupleList) -> Shape
@@ -2072,10 +2072,10 @@ class Shape(FreeCAD.ComplexGeoData):
         """
 
     @typing.overload
-    def rotate(self, base: object, dir: object, degree: float, /): ...
+    def rotate(self, base, dir, degree: float, /): ...
 
     @typing.overload
-    def rotate(self, Vector_0_0_0_: object, Vector_0_0_1_: object, arg3: float, /):
+    def rotate(self, Vector_0_0_0_, Vector_0_0_1_, arg3: float, /):
         """
         Apply the rotation (base,dir,degree) to the current location of this shape
         rotate(base,dir,degree)
@@ -2108,7 +2108,7 @@ class Shape(FreeCAD.ComplexGeoData):
     def section(self, arg1: Part.Shape, tolerance: float, approximation: bool = False, /) -> Part.Shape: ...
 
     @typing.overload
-    def section(self, arg1: object, tolerance: float = 0.0, approximation: bool = False, /) -> Part.Shape:
+    def section(self, arg1, tolerance: float = 0.0, approximation: bool = False, /) -> Part.Shape:
         """
         Section of this with a given (list of) topo shape.
         section(tool,[approximation=False]) -> Shape
@@ -2137,7 +2137,7 @@ class Shape(FreeCAD.ComplexGeoData):
         slice(direction, distance) --> Wires
         """
 
-    def slices(self, direction: FreeCAD.Vector, distancesList: object, /) -> Part.Compound:
+    def slices(self, direction: FreeCAD.Vector, distancesList, /) -> Part.Compound:
         """
         Make slices of this shape.
         slices(direction, distancesList) --> Wires
@@ -2197,7 +2197,7 @@ class Shape(FreeCAD.ComplexGeoData):
         transformed(Matrix,copy=False,checkScale=False,op=None) -> shape
         """
 
-    def translate(self, vector: object, /):
+    def translate(self, vector, /):
         """
         Apply the translation to the current location of this shape.
         translate(vector)
@@ -2312,7 +2312,7 @@ class BSplineCurve(Part.BoundedCurve):
     def approximate(self, MaxDegree: int, MaxSegments: int = None, Continuity: str = None, Tolerance: float = None) -> bool: ...
 
     @typing.overload
-    def approximate(self, Points: object, DegMax: int = None, Continuity: str = None, Tolerance: float = None, DegMin: int = None, ParamType: str = None, Parameters=None, LengthWeight: float = None, CurvatureWeight: float = None, TorsionWeight: float = None) -> bool:
+    def approximate(self, Points, DegMax: int = None, Continuity: str = None, Tolerance: float = None, DegMin: int = None, ParamType: str = None, Parameters=None, LengthWeight: float = None, CurvatureWeight: float = None, TorsionWeight: float = None) -> bool:
         """
         Replaces this B-Spline curve by approximating a set of points.
         					The function accepts keywords as arguments.
@@ -2344,7 +2344,7 @@ class BSplineCurve(Part.BoundedCurve):
         					it conflicts with other parameters ( especially DegMax ).
         """
 
-    def buildFromPoles(self, arg1: object, arg2: bool = None, arg3: int = None, arg4: bool = None, /):
+    def buildFromPoles(self, arg1, arg2: bool = None, arg3: int = None, arg4: bool = None, /):
         """
         Builds a B-Spline by a list of poles.
         					arguments: poles (sequence of Base.Vector), [periodic (default is False), degree (default is 3), interpolate (default is False)]
@@ -2366,7 +2366,7 @@ class BSplineCurve(Part.BoundedCurve):
         					Part.show(n.toShape())
         """
 
-    def buildFromPolesMultsKnots(self, poles: object, mults=None, knots=None, periodic: bool = None, degree: int = None, weights=None, CheckRational: bool = None):
+    def buildFromPolesMultsKnots(self, poles, mults=None, knots=None, periodic: bool = None, degree: int = None, weights=None, CheckRational: bool = None):
         """
         Builds a B-Spline by a lists of Poles, Mults, Knots.
         				arguments: poles (sequence of Base.Vector), [mults , knots, periodic, degree, weights (sequence of float), CheckRational]
@@ -2394,10 +2394,10 @@ class BSplineCurve(Part.BoundedCurve):
         """
 
     @typing.overload
-    def getCardinalSplineTangents(self, Points: object, Parameter: float): ...
+    def getCardinalSplineTangents(self, Points, Parameter: float): ...
 
     @typing.overload
-    def getCardinalSplineTangents(self, Points: object, Parameters: object):
+    def getCardinalSplineTangents(self, Points, Parameters):
         """Compute the tangents for a Cardinal spline"""
 
     def getKnot(self, arg1: int, /) -> float:
@@ -2474,7 +2474,7 @@ class BSplineCurve(Part.BoundedCurve):
         				multiplicity is increased by mult.
         """
 
-    def insertKnots(self, list_of_floats: object, list_of_ints: object, tol: float = 0.0, bool_add: bool = True, /):
+    def insertKnots(self, list_of_floats, list_of_ints, tol: float = 0.0, bool_add: bool = True, /):
         """
         insertKnots(list_of_floats, list_of_ints, tol = 0.0, bool_add = True)
         				Inserts a set of knots values in the sequence of knots.
@@ -2492,7 +2492,7 @@ class BSplineCurve(Part.BoundedCurve):
         				The tolerance criterion for knots equality is the max of Epsilon(U) and ParametricTolerance.
         """
 
-    def interpolate(self, Points: object, PeriodicFlag: bool = None, Tolerance: float = None, InitialTangent: FreeCAD.Vector = None, FinalTangent: FreeCAD.Vector = None, Tangents=None, TangentFlags=None, Parameters=None, Scale: bool = None):
+    def interpolate(self, Points, PeriodicFlag: bool = None, Tolerance: float = None, InitialTangent: FreeCAD.Vector = None, FinalTangent: FreeCAD.Vector = None, Tangents=None, TangentFlags=None, Parameters=None, Scale: bool = None):
         """
         Replaces this B-Spline curve by interpolating a set of points.
         					The function accepts keywords as arguments.
@@ -2594,7 +2594,7 @@ class BSplineCurve(Part.BoundedCurve):
     def setKnot(self, arg1: int, arg2: float, arg3: int = None, /):
         """Set a knot of the B-Spline curve."""
 
-    def setKnots(self, arg1: object, /):
+    def setKnots(self, arg1, /):
         """Set knots of the B-Spline curve."""
 
     def setNotPeriodic(self):
@@ -2754,7 +2754,7 @@ class Compound(Part.Shape):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, arg1: object, /):
+    def __init__(self, arg1, /):
         """Create a compound out of a list of shapes"""
 
     def add(self, shape: Part.Shape, /):
@@ -2787,7 +2787,7 @@ class Wire(Part.Shape):
     def __init__(self, arg1: Part.Shape, /): ...
 
     @typing.overload
-    def __init__(self, arg1: object, /):
+    def __init__(self, arg1, /):
         """TopoShapeWire is the OpenCasCade topological wire wrapper"""
 
     @property
@@ -2871,22 +2871,22 @@ class Wire(Part.Shape):
         """
 
     @typing.overload
-    def discretize(self, kwargs: object, /): ...
+    def discretize(self, kwargs, /): ...
 
     @typing.overload
-    def discretize(self, Number: object, /): ...
+    def discretize(self, Number, /): ...
 
     @typing.overload
-    def discretize(self, QuasiNumber: object, /): ...
+    def discretize(self, QuasiNumber, /): ...
 
     @typing.overload
-    def discretize(self, Distance: object, /): ...
+    def discretize(self, Distance, /): ...
 
     @typing.overload
-    def discretize(self, Deflection: object, /): ...
+    def discretize(self, Deflection, /): ...
 
     @typing.overload
-    def discretize(self, QuasiDeflection: object, /): ...
+    def discretize(self, QuasiDeflection, /): ...
 
     @typing.overload
     def discretize(self, Number: int, First: float = None, Last: float = None): ...
@@ -2965,7 +2965,7 @@ class Wire(Part.Shape):
         A face and a tolerance can optionally be supplied to the algorithm:
         """
 
-    def makeHomogenousWires(self, wire: Part.Wire, /) -> Part.Wire:
+    def makeHomogenousWires(self, wire: Part.Wire, /) -> Part.Wire | object:
         """
         Make this and the given wire homogeneous to have the same number of edges
         makeHomogenousWires(wire) -> Wire
@@ -2980,7 +2980,7 @@ class Wire(Part.Shape):
         makePipe(profile) -> Shape
         """
 
-    def makePipeShell(self, shapeList: object, isSolid: bool = False, isFrenet: bool = False, transition: int = 0, /) -> Part.Shape:
+    def makePipeShell(self, shapeList, isSolid: bool = False, isFrenet: bool = False, transition: int = 0, /) -> Part.Shape:
         """
         Make a loft defined by a list of profiles along a wire.
         makePipeShell(shapeList,[isSolid=False,isFrenet=False,transition=0]) -> Shape
@@ -3087,7 +3087,7 @@ class Shell(Part.Shape):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, arg1: object, /):
+    def __init__(self, arg1, /):
         """Create a shell out of a list of faces"""
 
     @property
@@ -3369,7 +3369,7 @@ class BSplineSurface(Part.GeometrySurface):
         					the v direction.
         """
 
-    def approximate(self, Points: object, DegMin: int = None, DegMax: int = None, Continuity: int = None, Tolerance: float = None, X0: float = None, dX: float = None, Y0: float = None, dY: float = None, ParamType: str = None, LengthWeight: float = None, CurvatureWeight: float = None, TorsionWeight: float = None):
+    def approximate(self, Points, DegMin: int = None, DegMax: int = None, Continuity: int = None, Tolerance: float = None, X0: float = None, dX: float = None, Y0: float = None, dY: float = None, ParamType: str = None, LengthWeight: float = None, CurvatureWeight: float = None, TorsionWeight: float = None):
         """
         Replaces this B-Spline surface by approximating a set of points.
         					This method uses keywords :
@@ -3393,10 +3393,10 @@ class BSplineSurface(Part.GeometrySurface):
     def bounds(self):
         """Returns the parametric bounds (U1, U2, V1, V2) of this B-Spline surface."""
 
-    def buildFromNSections(self, arg1: object, arg2: bool = None, /):
+    def buildFromNSections(self, arg1, arg2: bool = None, /):
         """Builds a B-Spline from a list of control curves"""
 
-    def buildFromPolesMultsKnots(self, poles: object, umults: object, vmults: object, uknots=None, vknots=None, uperiodic: bool = None, vperiodic: bool = None, udegree: int = None, vdegree: int = None, weights=None):
+    def buildFromPolesMultsKnots(self, poles, umults, vmults, uknots=None, vknots=None, uperiodic: bool = None, vperiodic: bool = None, udegree: int = None, vdegree: int = None, weights=None):
         """
         Builds a B-Spline by a lists of Poles, Mults and Knots
         					arguments: poles (sequence of sequence of Base.Vector), umults, vmults, [uknots, vknots, uperiodic, vperiodic, udegree, vdegree, weights (sequence of sequence of float)]
@@ -3520,16 +3520,16 @@ class BSplineSurface(Part.GeometrySurface):
     def insertUKnot(self, arg1: float, arg2: int, arg3: float, arg4: bool = None, /):
         """insertUKnote(float U, int Index, float Tolerance) - Insert or override a knot"""
 
-    def insertUKnots(self, arg1: object, arg2: object, arg3: float = None, arg4: bool = None, /):
+    def insertUKnots(self, arg1, arg2, arg3: float = None, arg4: bool = None, /):
         """insertUKnote(List of float U, List of float Mult, float Tolerance) - Inserts knots."""
 
     def insertVKnot(self, arg1: float, arg2: int, arg3: float, arg4: bool = None, /):
         """insertUKnote(float V, int Index, float Tolerance) - Insert or override a knot."""
 
-    def insertVKnots(self, arg1: object, arg2: object, arg3: float = None, arg4: bool = None, /):
+    def insertVKnots(self, arg1, arg2, arg3: float = None, arg4: bool = None, /):
         """insertUKnote(List of float V, List of float Mult, float Tolerance) - Inserts knots."""
 
-    def interpolate(self, zpoints: object, X0: float = None, dX: float = None, Y0: float = None, dY: float = None, /):
+    def interpolate(self, zpoints, X0: float = None, dX: float = None, Y0: float = None, dY: float = None, /):
         """
         interpolate(points)
         					interpolate(zpoints, X0, dX, Y0, dY)
@@ -3658,7 +3658,7 @@ class BSplineSurface(Part.GeometrySurface):
         					index Index in the poles table.
         """
 
-    def setPoleCol(self, arg1: int, arg2: object, arg3=None, /):
+    def setPoleCol(self, arg1: int, arg2, arg3=None, /):
         """
         Modifies this B-Spline surface by assigning values to all or part
         					of the column of poles of index VIndex, of this B-Spline surface.
@@ -3667,7 +3667,7 @@ class BSplineSurface(Part.GeometrySurface):
         					These syntaxes must only be used for rational surfaces.
         """
 
-    def setPoleRow(self, arg1: int, arg2: object, arg3=None, /):
+    def setPoleRow(self, arg1: int, arg2, arg3=None, /):
         """
         Modifies this B-Spline surface by assigning values to all or part
         					of the row of poles of index VIndex, of this B-Spline surface.
@@ -3687,7 +3687,7 @@ class BSplineSurface(Part.GeometrySurface):
         					that it is not possible to decrease the multiplicity of a knot with this function.
         """
 
-    def setUKnots(self, arg1: object, /):
+    def setUKnots(self, arg1, /):
         """
         Changes all knots of this B-Spline surface in the u parametric
         					direction. The multiplicity of the knots is not modified.
@@ -3744,7 +3744,7 @@ class BSplineSurface(Part.GeometrySurface):
         					that it is not possible to decrease the multiplicity of a knot with this function.
         """
 
-    def setVKnots(self, arg1: object, /):
+    def setVKnots(self, arg1, /):
         """
         Changes all knots of this B-Spline surface in the v parametric
         					direction. The multiplicity of the knots is not modified.
@@ -3799,7 +3799,7 @@ class BSplineSurface(Part.GeometrySurface):
         					This function must only be used for rational surfaces.
         """
 
-    def setWeightCol(self, arg1: int, arg2: object, /):
+    def setWeightCol(self, arg1: int, arg2, /):
         """
         Modifies this B-Spline surface by assigning values to all or part of the
         					weights of the column of poles of index VIndex of this B-Spline surface.
@@ -3810,7 +3810,7 @@ class BSplineSurface(Part.GeometrySurface):
         					This function must only be used for rational surfaces.
         """
 
-    def setWeightRow(self, arg1: int, arg2: object, /):
+    def setWeightRow(self, arg1: int, arg2, /):
         """
         Modifies this B-Spline surface by assigning values to all or part of the
         					weights of the row of poles of index UIndex of this B-Spline surface.
@@ -4012,7 +4012,7 @@ class GeometrySurface(Part.Geometry):
         of the nearest orthogonal projection of the point.
         """
 
-    def projectPoint(self, Point: FreeCAD.Vector, Method: str = None) -> FreeCAD.Vector:
+    def projectPoint(self, Point: FreeCAD.Vector, Method: str = None) -> FreeCAD.Vector | object:
         """
         Computes the projection of a point on the surface
 
@@ -4051,10 +4051,10 @@ class GeometrySurface(Part.Geometry):
     def toShell(self, Bounds: tuple = None, Segment: bool = None) -> Part.Shell:
         """Make a shell of the surface."""
 
-    def uIso(self, arg1: float, /) -> Part.Line:
+    def uIso(self, arg1: float, /) -> Part.Line | object:
         """Builds the U isoparametric curve"""
 
-    def vIso(self, arg1: float, /) -> Part.Line:
+    def vIso(self, arg1: float, /) -> Part.Line | object:
         """Builds the V isoparametric curve"""
 
     def value(self, u: float, v: float, /) -> FreeCAD.Vector:
@@ -4369,22 +4369,22 @@ class Edge(Part.Shape):
         """
 
     @typing.overload
-    def discretize(self, kwargs: object, /): ...
+    def discretize(self, kwargs, /): ...
 
     @typing.overload
-    def discretize(self, Number: object, /): ...
+    def discretize(self, Number, /): ...
 
     @typing.overload
-    def discretize(self, QuasiNumber: object, /): ...
+    def discretize(self, QuasiNumber, /): ...
 
     @typing.overload
-    def discretize(self, Distance: object, /): ...
+    def discretize(self, Distance, /): ...
 
     @typing.overload
-    def discretize(self, Deflection: object, /): ...
+    def discretize(self, Deflection, /): ...
 
     @typing.overload
-    def discretize(self, QuasiDeflection: object, /): ...
+    def discretize(self, QuasiDeflection, /): ...
 
     @typing.overload
     def discretize(self, Number: int, First: float = None, Last: float = None): ...
@@ -4535,7 +4535,7 @@ class Edge(Part.Shape):
         An exception is raised if the edge has no polygon.
         """
 
-    def split(self, paramval: object, /) -> Part.Wire:
+    def split(self, paramval, /) -> Part.Wire:
         """
         Splits the edge at the given parameter values and builds a wire out of it
         split(paramval) -> Wire
@@ -4743,7 +4743,7 @@ class BezierCurve(Part.BoundedCurve):
     def insertPoleBefore(self, arg1: int, arg2: FreeCAD.Vector, arg3: float = None, /):
         """Inserts before the pole of index."""
 
-    def interpolate(self, arg1: object, arg2=None, /):
+    def interpolate(self, arg1, arg2=None, /):
         """
         Interpolates a list of constraints.
         				Each constraint is a list of a point and some optional derivatives
@@ -4777,7 +4777,7 @@ class BezierCurve(Part.BoundedCurve):
     def setPole(self, arg1: int, arg2: FreeCAD.Vector, arg3: float = None, /):
         """Set a pole of the Bezier curve."""
 
-    def setPoles(self, arg1: object, /):
+    def setPoles(self, arg1, /):
         """
         Set the poles of the Bezier curve.
 
@@ -5023,19 +5023,19 @@ class Curve(Part.Geometry):
         """Float = curvature(pos) - Get the curvature at the given parameter [First|Last] if defined"""
 
     @typing.overload
-    def discretize(self, Number: object, /): ...
+    def discretize(self, Number, /): ...
 
     @typing.overload
-    def discretize(self, QuasiNumber: object, /): ...
+    def discretize(self, QuasiNumber, /): ...
 
     @typing.overload
-    def discretize(self, Distance: object, /): ...
+    def discretize(self, Distance, /): ...
 
     @typing.overload
-    def discretize(self, Deflection: object, /): ...
+    def discretize(self, Deflection, /): ...
 
     @typing.overload
-    def discretize(self, QuasiDeflection: object, /): ...
+    def discretize(self, QuasiDeflection, /): ...
 
     @typing.overload
     def discretize(self, Number: int, First: float = None, Last: float = None): ...
@@ -5664,7 +5664,7 @@ class BezierSurface(Part.GeometrySurface):
         					parametric directions.
         """
 
-    def insertPoleColAfter(self, arg1: int, arg2: object, arg3=None, /):
+    def insertPoleColAfter(self, arg1: int, arg2, arg3=None, /):
         """
         Inserts into the table of poles of this surface, after the column
         					of poles of index.
@@ -5674,7 +5674,7 @@ class BezierSurface(Part.GeometrySurface):
         					table.
         """
 
-    def insertPoleColBefore(self, arg1: int, arg2: object, arg3=None, /):
+    def insertPoleColBefore(self, arg1: int, arg2, arg3=None, /):
         """
         Inserts into the table of poles of this surface, before the column
         					of poles of index.
@@ -5684,7 +5684,7 @@ class BezierSurface(Part.GeometrySurface):
         					table.
         """
 
-    def insertPoleRowAfter(self, arg1: int, arg2: object, arg3=None, /):
+    def insertPoleRowAfter(self, arg1: int, arg2, arg3=None, /):
         """
         Inserts into the table of poles of this surface, after the row
         					of poles of index.
@@ -5694,7 +5694,7 @@ class BezierSurface(Part.GeometrySurface):
         					table.
         """
 
-    def insertPoleRowBefore(self, arg1: int, arg2: object, arg3=None, /):
+    def insertPoleRowBefore(self, arg1: int, arg2, arg3=None, /):
         """
         Inserts into the table of poles of this surface, before the row
         					of poles of index.
@@ -5782,10 +5782,10 @@ class BezierSurface(Part.GeometrySurface):
     def setPole(self, arg1: int, arg2: int, arg3: FreeCAD.Vector, arg4: float = None, /):
         """Set a pole of the Bezier surface."""
 
-    def setPoleCol(self, arg1: int, arg2: object, arg3=None, /):
+    def setPoleCol(self, arg1: int, arg2, arg3=None, /):
         """Set the column of poles of the Bezier surface."""
 
-    def setPoleRow(self, arg1: int, arg2: object, arg3=None, /):
+    def setPoleRow(self, arg1: int, arg2, arg3=None, /):
         """Set the row of poles of the Bezier surface."""
 
     def setWeight(self, arg1: int, arg2: int, arg3: float, /):
@@ -5794,13 +5794,13 @@ class BezierSurface(Part.GeometrySurface):
         					for the Bezier surface.
         """
 
-    def setWeightCol(self, arg1: int, arg2: object, /):
+    def setWeightCol(self, arg1: int, arg2, /):
         """
         Set the weights of the poles in the column of poles
         					of index VIndex of the Bezier surface.
         """
 
-    def setWeightRow(self, arg1: int, arg2: object, /):
+    def setWeightRow(self, arg1: int, arg2, /):
         """
         Set the weights of the poles in the row of poles
         					of index UIndex of the Bezier surface.
@@ -5888,7 +5888,7 @@ def insert(string: str, string1: str, /) -> None:
     """insert(string,string) -- Insert the file into the given document."""
 
 
-def export(list: object, string: str, /) -> None:
+def export(list, string: str, /) -> None:
     """export(list,string) -- Export a list of objects into a single file."""
 
 
@@ -5900,26 +5900,26 @@ def show(shape: Part.Shape, string: str = None, /) -> None:
     """show(shape,[string]) -- Add the shape to the active document or create one if no document exists."""
 
 
-def getFacets(shape: object, /):
+def getFacets(shape, /):
     """getFacets(shape): simplified mesh generation"""
 
 
-def makeCompound(list: object, /) -> Part.Compound:
+def makeCompound(list, /) -> Part.Compound:
     """makeCompound(list) -- Create a compound out of a list of shapes."""
 
 
-def makeShell(list: object, /) -> Part.Shell:
+def makeShell(list, /) -> Part.Shell:
     """makeShell(list) -- Create a shell out of a list of faces."""
 
 
-def makeFace(list_of_shapes_or_compound: object, maker_class_name: str, /):
+def makeFace(list_of_shapes_or_compound, maker_class_name: str, /):
     """
     makeFace(list_of_shapes_or_compound, maker_class_name) -- Create a face (faces) using facemaker class.
     maker_class_name is a string like 'Part::FaceMakerSimple'.
     """
 
 
-def makeFilledFace(arg1: object, arg2: Part.Face = None, /) -> Part.Face:
+def makeFilledFace(arg1, arg2: Part.Face = None, /) -> Part.Face:
     """makeFilledFace(list) -- Create a face out of a list of edges."""
 
 
@@ -5951,7 +5951,7 @@ def makeWedge(arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, a
     """
 
 
-def makeLine(startpnt: object, endpnt: object, /) -> Part.Edge:
+def makeLine(startpnt, endpnt, /) -> Part.Edge:
     """
     makeLine(startpnt,endpnt) -- Make a line between two points
 
@@ -5968,7 +5968,7 @@ def makeLine(startpnt: object, endpnt: object, /) -> Part.Edge:
     """
 
 
-def makePolygon(arg1: object, arg2: bool = None, /) -> Part.Wire:
+def makePolygon(arg1, arg2: bool = None, /) -> Part.Wire:
     """
     makePolygon(pntslist) -- Make a polygon from a list of points
 
@@ -6059,7 +6059,7 @@ def makeRuledSurface(Edge_Wire: Part.Shape, Edge_Wire1: Part.Shape, /) -> Part.F
     """
 
 
-def makeShellFromWires(Wires: object, /) -> Part.Shell:
+def makeShellFromWires(Wires, /) -> Part.Shell:
     """
     makeShellFromWires(Wires) -- Make a shell from wires.
     The wires must have the same number of edges.
@@ -6077,15 +6077,15 @@ def makeSweepSurface(arg1: Part.Shape, arg2: Part.Shape, arg3: float = None, arg
     """makeSweepSurface(edge(path),edge(profile),[float]) -- Create a profile along a path."""
 
 
-def makeLoft(list_of_wires: object, solid: bool = False, ruled: bool = False, closed: bool = False, maxDegree: int = 5, /) -> Part.BSplineSurface | Part.Shape:
+def makeLoft(list_of_wires, solid: bool = False, ruled: bool = False, closed: bool = False, maxDegree: int = 5, /) -> Part.BSplineSurface | Part.Shape:
     """makeLoft(list of wires,[solid=False,ruled=False,closed=False,maxDegree=5]) -- Create a loft shape."""
 
 
-def makeWireString(string: object, fontdir: str, fontfile: str, height: float, track: float = None, /):
+def makeWireString(string, fontdir: str, fontfile: str, height: float, track: float = None, /):
     """makeWireString(string,fontdir,fontfile,height,[track]) -- Make list of wires in the form of a string's characters."""
 
 
-def makeSplitShape(shape: Part.Shape, list_of_shape_pairs: object, check_Interior: bool = True, /):
+def makeSplitShape(shape: Part.Shape, list_of_shape_pairs, check_Interior: bool = True, /):
     """
     makeSplitShape(shape, list of shape pairs,[check Interior=True]) -> two lists of shapes.
     The following shape pairs are supported:
@@ -6118,7 +6118,7 @@ def setStaticValue(string: str, string_int_float: str, /) -> None: ...
 
 
 @typing.overload
-def setStaticValue(string: str, string_int_float: object, /) -> None:
+def setStaticValue(string: str, string_int_float, /) -> None:
     """setStaticValue(string,string|int|float) -- Set a name to a value The value can be a string, int or float."""
 
 
@@ -6126,11 +6126,11 @@ def cast_to_shape(shape: Part.Shape, /):
     """cast_to_shape(shape) -- Cast to the actual shape type"""
 
 
-def getSortedClusters(list_of_edges: object, /):
+def getSortedClusters(list_of_edges, /):
     """getSortedClusters(list of edges) -- Helper method to sort and cluster a variety of edges"""
 
 
-def __sortEdges__(list_of_edges: object, /):
+def __sortEdges__(list_of_edges, /):
     """
     __sortEdges__(list of edges) -- list of edges
     Helper method to sort an unsorted list of edges so that afterwards
@@ -6141,7 +6141,7 @@ def __sortEdges__(list_of_edges: object, /):
     """
 
 
-def sortEdges(list_of_edges: object, /):
+def sortEdges(list_of_edges, /):
     """
     sortEdges(list of edges) -- list of lists of edges
     It does basically the same as __sortEdges__ but sorts all input edges and thus returns
@@ -6153,7 +6153,7 @@ def __toPythonOCC__(shape: Part.Shape, /):
     """__toPythonOCC__(shape) -- Helper method to convert an internal shape to pythonocc shape"""
 
 
-def __fromPythonOCC__(occ: object, /) -> Part.Shape:
+def __fromPythonOCC__(occ, /) -> Part.Shape:
     """__fromPythonOCC__(occ) -- Helper method to convert a pythonocc shape to an internal shape"""
 
 

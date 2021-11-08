@@ -10,7 +10,7 @@ class Body(Part.BodyBase):
     def VisibleFeature(self) -> object:
         """Return the the visible feature of this body"""
 
-    def insertObject(self, feature: FreeCAD.DocumentObject, target: object, after: bool = False, /):
+    def insertObject(self, feature: FreeCAD.DocumentObject, target, after: bool = False, /):
         """
         insertObject(feature, target, after=False)
                                 Insert the feature into the body after the given feature.

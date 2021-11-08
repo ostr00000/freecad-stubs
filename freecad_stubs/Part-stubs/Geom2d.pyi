@@ -101,7 +101,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
     def normal(self, pos: float, /):
         """Vector = normal(pos) - Get the normal vector at the given parameter [First|Last] if defined"""
 
-    def parameter(self, arg1: object, /) -> float:
+    def parameter(self, arg1, /) -> float:
         """
         Returns the parameter on the curve
         of the nearest orthogonal projection of the point.
@@ -259,22 +259,22 @@ class Geometry2d(FreeCAD.PyObjectBase):
         """Create a copy of this geometry"""
 
     @typing.overload
-    def mirror(self, arg1: object, /): ...
+    def mirror(self, arg1, /): ...
 
     @typing.overload
-    def mirror(self, arg1: object, arg2: object, /):
+    def mirror(self, arg1, arg2, /):
         """Performs the symmetrical transformation of this geometric object"""
 
-    def rotate(self, arg1: object, arg2: float, /):
+    def rotate(self, arg1, arg2: float, /):
         """Rotates this geometric object at angle Ang (in radians) around a point"""
 
-    def scale(self, arg1: object, arg2: float, /):
+    def scale(self, arg1, arg2: float, /):
         """Applies a scaling transformation on this geometric object with a center and scaling factor"""
 
-    def transform(self, arg1: object, /):
+    def transform(self, arg1, /):
         """Applies a transformation to this geometric object"""
 
-    def translate(self, arg1: object, /):
+    def translate(self, arg1, /):
         """Translates this geometric object"""
 
 
@@ -309,10 +309,10 @@ class Circle2d(Part.Geom2d.Conic2d):
     def __init__(self, Circle: Part.Geom2d.Circle2d, Distance: float): ...
 
     @typing.overload
-    def __init__(self, Center: object, Radius: float): ...
+    def __init__(self, Center, Radius: float): ...
 
     @typing.overload
-    def __init__(self, Point1: object, Point2: object, Point3: object):
+    def __init__(self, Point1, Point2, Point3):
         """
         Describes a circle in 3D space
         To create a circle there are several ways:
@@ -381,7 +381,7 @@ class Line2dSegment(Part.Geom2d.Curve2d):
     def __init__(self, Line: Part.Geom2d.Line2dSegment, /): ...
 
     @typing.overload
-    def __init__(self, Point1: object, Point2: object, /):
+    def __init__(self, Point1, Point2, /):
         """
         Describes a line segment in 2D space
         To create a line there are several ways:
@@ -443,10 +443,10 @@ class Ellipse2d(Part.Geom2d.Conic2d):
     def __init__(self, Ellipse: Part.Geom2d.Ellipse2d): ...
 
     @typing.overload
-    def __init__(self, S1: object, S2: object, Center: object): ...
+    def __init__(self, S1, S2, Center): ...
 
     @typing.overload
-    def __init__(self, Center: object, MajorRadius: float, MinorRadius: float):
+    def __init__(self, Center, MajorRadius: float, MinorRadius: float):
         """
         Describes an ellipse in 2D space
         				To create an ellipse there are several ways:
@@ -509,7 +509,7 @@ class ArcOfCircle2d(Part.Geom2d.ArcOfConic2d):
     def __init__(self, arg1: Part.Geom2d.Circle2d, arg2: float, arg3: float, arg4: bool = None, /): ...
 
     @typing.overload
-    def __init__(self, arg1: object, arg2: object, arg3: object, /):
+    def __init__(self, arg1, arg2, arg3, /):
         """Describes a portion of a circle"""
 
     @property
@@ -580,10 +580,10 @@ class Hyperbola2d(Part.Geom2d.Conic2d):
     def __init__(self, Hyperbola: Part.Geom2d.Hyperbola2d): ...
 
     @typing.overload
-    def __init__(self, S1: object, S2: object, Center: object): ...
+    def __init__(self, S1, S2, Center): ...
 
     @typing.overload
-    def __init__(self, Center: object, MajorRadius: float, MinorRadius: float):
+    def __init__(self, Center, MajorRadius: float, MinorRadius: float):
         """
         Describes a hyperbola in 2D space
                         To create a hyperbola there are several ways:
@@ -692,7 +692,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def StartPoint(self) -> object:
         """Returns the start point of this B-Spline curve."""
 
-    def approximate(self, Points: object, DegMax: int = None, Continuity: str = None, Tolerance: float = None, DegMin: int = None, ParamType: str = None, Parameters=None, LengthWeight: float = None, CurvatureWeight: float = None, TorsionWeight: float = None):
+    def approximate(self, Points, DegMax: int = None, Continuity: str = None, Tolerance: float = None, DegMin: int = None, ParamType: str = None, Parameters=None, LengthWeight: float = None, CurvatureWeight: float = None, TorsionWeight: float = None):
         """
         Replaces this B-Spline curve by approximating a set of points.
         					The function accepts keywords as arguments.
@@ -724,10 +724,10 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         					it conflicts with other parameters ( especially DegMax ).
         """
 
-    def buildFromPoles(self, arg1: object, arg2: bool = None, arg3: int = None, arg4: bool = None, /):
+    def buildFromPoles(self, arg1, arg2: bool = None, arg3: int = None, arg4: bool = None, /):
         """Builds a B-Spline by a list of poles."""
 
-    def buildFromPolesMultsKnots(self, poles: object, mults=None, knots=None, periodic: bool = None, degree: int = None, weights=None):
+    def buildFromPolesMultsKnots(self, poles, mults=None, knots=None, periodic: bool = None, degree: int = None, weights=None):
         """
         Builds a B-Spline by a lists of Poles, Mults, Knots.
         				arguments: poles (sequence of Base.Vector), [mults , knots, periodic, degree, weights (sequence of float), CheckRational]
@@ -755,10 +755,10 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         """
 
     @typing.overload
-    def getCardinalSplineTangents(self, Points: object, Parameter: float): ...
+    def getCardinalSplineTangents(self, Points, Parameter: float): ...
 
     @typing.overload
-    def getCardinalSplineTangents(self, Points: object, Parameters: object):
+    def getCardinalSplineTangents(self, Points, Parameters):
         """Compute the tangents for a Cardinal spline"""
 
     def getKnot(self, arg1: int, /) -> float:
@@ -835,7 +835,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         				multiplicity is increased by mult.
         """
 
-    def insertKnots(self, list_of_floats: object, list_of_ints: object, tol: float = 0.0, bool_add: bool = True, /):
+    def insertKnots(self, list_of_floats, list_of_ints, tol: float = 0.0, bool_add: bool = True, /):
         """
         insertKnots(list_of_floats, list_of_ints, tol = 0.0, bool_add = True)
         				Inserts a set of knots values in the sequence of knots.
@@ -853,7 +853,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         				The tolerance criterion for knots equality is the max of Epsilon(U) and ParametricTolerance.
         """
 
-    def interpolate(self, Points: object, PeriodicFlag: bool = None, Tolerance: float = None, InitialTangent=None, FinalTangent=None, Tangents=None, TangentFlags=None, Parameters=None):
+    def interpolate(self, Points, PeriodicFlag: bool = None, Tolerance: float = None, InitialTangent=None, FinalTangent=None, Tangents=None, TangentFlags=None, Parameters=None):
         """
         Replaces this B-Spline curve by interpolating a set of points.
         					The function accepts keywords as arguments.
@@ -917,7 +917,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         					not at a given point.
         """
 
-    def movePoint(self, U: float, P: object, Index1: int, Index2: int, /) -> tuple[int, int]:
+    def movePoint(self, U: float, P, Index1: int, Index2: int, /) -> tuple[int, int]:
         """
         movePoint(U, P, Index1, Index2)
         				Moves the point of parameter U of this B-Spline curve to P.
@@ -955,7 +955,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def setKnot(self, arg1: int, arg2: float, arg3: int = None, /):
         """Set a knot of the B-Spline curve."""
 
-    def setKnots(self, arg1: object, /):
+    def setKnots(self, arg1, /):
         """Set knots of the B-Spline curve."""
 
     def setNotPeriodic(self):
@@ -974,7 +974,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def setPeriodic(self):
         """Changes this B-Spline curve into a periodic curve."""
 
-    def setPole(self, arg1: int, arg2: object, arg3: float = None, /):
+    def setPole(self, arg1: int, arg2, arg3: float = None, /):
         """
         Modifies this B-Spline curve by assigning P
         to the pole of index Index in the poles table.
@@ -1055,10 +1055,10 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
         As a result, the poles and weights tables are modified.
         """
 
-    def insertPoleAfter(self, arg1: int, arg2: object, arg3: float = None, /):
+    def insertPoleAfter(self, arg1: int, arg2, arg3: float = None, /):
         """Inserts after the pole of index."""
 
-    def insertPoleBefore(self, arg1: int, arg2: object, arg3: float = None, /):
+    def insertPoleBefore(self, arg1: int, arg2, arg3: float = None, /):
         """Inserts before the pole of index."""
 
     def isClosed(self) -> bool:
@@ -1082,10 +1082,10 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
     def segment(self, arg1: float, arg2: float, /):
         """Modifies this Bezier curve by segmenting it."""
 
-    def setPole(self, arg1: int, arg2: object, arg3: float = None, /):
+    def setPole(self, arg1: int, arg2, arg3: float = None, /):
         """Set a pole of the Bezier curve."""
 
-    def setPoles(self, arg1: object, /):
+    def setPoles(self, arg1, /):
         """Set the poles of the Bezier curve."""
 
     def setWeight(self, arg1: int, arg2: float, /):
@@ -1160,7 +1160,7 @@ class Line2d(Part.Geom2d.Curve2d):
     def __init__(self, Line: Part.Geom2d.Line2d, /): ...
 
     @typing.overload
-    def __init__(self, Point: object, Dir: object, /):
+    def __init__(self, Point, Dir, /):
         """
         Describes an infinite line in 2D space
         To create a line there are several ways:

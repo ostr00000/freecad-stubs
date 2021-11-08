@@ -13,7 +13,7 @@ def addSelection(arg0: FreeCAD.DocumentObject, arg1: str = None, arg2: float = N
 
 
 @typing.overload
-def addSelection(arg0: FreeCAD.DocumentObject, arg1: object, arg2: bool = None, /):
+def addSelection(arg0: FreeCAD.DocumentObject, arg1, arg2: bool = None, /):
     """
     Add an object to the selection
     addSelection(object,[string,float,float,float]
@@ -22,7 +22,7 @@ def addSelection(arg0: FreeCAD.DocumentObject, arg1: object, arg2: bool = None, 
     """
 
 
-def updateSelection(show: object, object: FreeCAD.DocumentObject, string: str = None, /):
+def updateSelection(show, object: FreeCAD.DocumentObject, string: str = None, /):
     """
     update an object in the selection
     updateSelection(show,object,[string])
@@ -143,14 +143,14 @@ def getSelectionObject(doc: str, obj: str, sub: str, arg3: tuple = None, /):
     """
 
 
-def addObserver(Object: object, resolve: int = 1, /):
+def addObserver(Object, resolve: int = 1, /):
     """
     Install an observer
     addObserver(Object, resolve=1)
     """
 
 
-def removeObserver(Object: object, /):
+def removeObserver(Object, /):
     """
     Uninstall an observer
     removeObserver(Object)
@@ -162,7 +162,7 @@ def addSelectionGate(String_Filter_Gate: str, resolve: int = 1, /): ...
 
 
 @typing.overload
-def addSelectionGate(String_Filter_Gate: object, resolve: int = 1, /):
+def addSelectionGate(String_Filter_Gate, resolve: int = 1, /):
     """
     activate the selection gate.
     addSelectionGate(String|Filter|Gate, resolve=1)

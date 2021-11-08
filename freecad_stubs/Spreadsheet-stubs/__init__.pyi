@@ -62,16 +62,16 @@ class Sheet(FreeCAD.DocumentObject):
     def get(self, arg1: str, arg2: str = None, /):
         """Get evaluated cell contents"""
 
-    def getAlias(self, arg1: str, /) -> None:
+    def getAlias(self, arg1: str, /) -> object | None:
         """Get alias for cell address"""
 
-    def getAlignment(self, arg1: str, /) -> None:
+    def getAlignment(self, arg1: str, /) -> object | None:
         """Get alignment of the cell"""
 
-    def getBackground(self, arg1: str, /) -> None:
+    def getBackground(self, arg1: str, /) -> object | None:
         """Get background color of the cell"""
 
-    def getCellFromAlias(self, arg1: str, /) -> None:
+    def getCellFromAlias(self, arg1: str, /) -> object | None:
         """Get cell address given an alias"""
 
     def getColumnWidth(self, arg1: str, /):
@@ -83,13 +83,13 @@ class Sheet(FreeCAD.DocumentObject):
     def getDisplayUnit(self, arg1: str, /):
         """Get display unit for cell"""
 
-    def getForeground(self, arg1: str, /) -> None:
+    def getForeground(self, arg1: str, /) -> object | None:
         """Get foreground color of the cell"""
 
     def getRowHeight(self, arg1: str, /):
         """Get given spreadsheet row height"""
 
-    def getStyle(self, arg1: str, /) -> None:
+    def getStyle(self, arg1: str, /) -> object | None:
         """Get style of the cell"""
 
     def importFile(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, /):
@@ -121,13 +121,13 @@ class Sheet(FreeCAD.DocumentObject):
     def set(self, arg1: str, arg2: str, /):
         """Set data into a cell"""
 
-    def setAlias(self, arg1: str, arg2: object, /):
+    def setAlias(self, arg1: str, arg2, /):
         """Set alias for cell address"""
 
-    def setAlignment(self, arg1: str, arg2: object, arg3: str = None, /):
+    def setAlignment(self, arg1: str, arg2, arg3: str = None, /):
         """Set alignment of the cell"""
 
-    def setBackground(self, arg1: str, arg2: object, /):
+    def setBackground(self, arg1: str, arg2, /):
         """Set background color of the cell"""
 
     def setColumnWidth(self, arg1: str, arg2: int, /):
@@ -136,13 +136,13 @@ class Sheet(FreeCAD.DocumentObject):
     def setDisplayUnit(self, arg1: str, arg2: str, /):
         """Set display unit for cell"""
 
-    def setForeground(self, arg1: str, arg2: object, /):
+    def setForeground(self, arg1: str, arg2, /):
         """Set foreground color of the cell"""
 
     def setRowHeight(self, arg1: str, arg2: int, /):
         """Set given spreadsheet row to given height"""
 
-    def setStyle(self, arg1: str, arg2: object, arg3: str = None, /):
+    def setStyle(self, arg1: str, arg2, arg3: str = None, /):
         """Set style of the cell"""
 
     def splitCell(self, arg1: str, /):

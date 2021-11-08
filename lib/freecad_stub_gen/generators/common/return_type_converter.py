@@ -67,7 +67,8 @@ class ReturnTypeConverter:
                 case _ if returnText.startswith('Py::asObject(') \
                           or returnText.startswith('Py::Object(') \
                           or returnText.isidentifier():
-                    pass  # TODO P2 new object from some variable
+
+                    yield 'object'
 
                 case _ if returnText.startswith('Py_BuildValue("'):
                     fc = findFunctionCall(
@@ -85,9 +86,11 @@ class ReturnTypeConverter:
                 case _ if returnText.endswith('->getPyObject()') \
                           or returnText.endswith('.getPyObject()'):
                     pass  # TODO P2 guess python type from cpp type - find variable name
+                    yield 'object'
 
                 case _:
                     logger.warning(f"Unknown return variable: '{returnText}'")
+                    yield 'object'
 
     @staticmethod
     def _parseObject(objText: str):

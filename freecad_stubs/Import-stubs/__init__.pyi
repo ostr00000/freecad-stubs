@@ -48,13 +48,13 @@ def writeDXFObject(objects: FreeCAD.DocumentObject, filename_: str, version: int
     """writeDXFObject([objects],filename [,version,usePolyline,optionSource]): Exports DocumentObject(s) to a DXF file."""
 
 
-def open(name: str, docName: str = None, importHidden=None, merge=None, useLinkGroup=None, mode: int = None) -> None:
+def open(name: str, docName: str = None, importHidden=None, merge=None, useLinkGroup=None, mode: int = None) -> object | None:
     """open(string) -- Open the file and create a new document."""
 
 
-def insert(name: str, docName: str = None, importHidden=None, merge=None, useLinkGroup=None, mode: int = None) -> None:
+def insert(name: str, docName: str = None, importHidden=None, merge=None, useLinkGroup=None, mode: int = None) -> object | None:
     """insert(string,string) -- Insert the file into the given document."""
 
 
-def export(obj: object, name: str, exportHidden=None, legacy=None, keepPlacement=None) -> None:
+def export(obj, name: str, exportHidden=None, legacy=None, keepPlacement=None) -> None:
     """export(list,string) -- Export a list of objects into a single file."""

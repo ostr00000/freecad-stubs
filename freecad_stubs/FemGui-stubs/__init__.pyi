@@ -108,7 +108,7 @@ def setActiveAnalysis(AnalysisObject: FreeCAD.DocumentObject = None, /) -> None:
     """setActiveAnalysis(AnalysisObject) -- Set the Analysis object in work."""
 
 
-def getActiveAnalysis() -> None:
+def getActiveAnalysis() -> object | None:
     """getActiveAnalysis() -- Returns the Analysis object in work."""
 
 

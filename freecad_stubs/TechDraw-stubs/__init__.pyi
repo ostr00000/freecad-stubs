@@ -1243,7 +1243,7 @@ class DrawViewPart(TechDraw.DrawView):
     def clearGeomFormats(self):
         """clearGeomFormats() - remove all GeomFormats from the View. Returns None."""
 
-    def formatGeometricEdge(self, index: int, style: int, weight: float, color: object, visible: int, /) -> None:
+    def formatGeometricEdge(self, index: int, style: int, weight: float, color, visible: int, /) -> None:
         """formatGeometricEdge(index, style, weight, color, visible). Returns None."""
 
     def getCenterLine(self, id: str, /):
@@ -1282,7 +1282,7 @@ class DrawViewPart(TechDraw.DrawView):
     def getVisibleEdges(self):
         """getVisibleEdges() - get the visible edges in the View as Part::TopoShapeEdges"""
 
-    def makeCenterLine(self, subNames: object, mode: int, /) -> str:
+    def makeCenterLine(self, subNames, mode: int, /) -> str:
         """makeCenterLine(subNames, mode) - draw a center line on this viewPart. SubNames is a list of n Faces, 2 Edges or 2 Vertices (ex [Face1,Face2,Face3]. Returns unique tag of added CenterLine."""
 
     def makeCosmeticCircle(self, arg1: FreeCAD.Vector, arg2: float, arg3: int = None, arg4: float = None, arg5=None, /) -> str:
@@ -1316,7 +1316,7 @@ class DrawViewPart(TechDraw.DrawView):
     def removeCosmeticVertex(self, cv: TechDraw.CosmeticVertex, /) -> None: ...
 
     @typing.overload
-    def removeCosmeticVertex(self, cv: object, /) -> None:
+    def removeCosmeticVertex(self, cv, /) -> None:
         """removeCosmeticVertex(cv) - remove CosmeticVertex from View. Returns None."""
 
     def replaceCenterLine(self, cl, /):
@@ -1688,49 +1688,49 @@ class GeomFormat(FreeCAD.PyObjectBase):
 
 
 # AppTechDrawPy.cpp
-def edgeWalker(edgePile: list, inclBiggest=None, /) -> None:
+def edgeWalker(edgePile: list, inclBiggest=None, /) -> None | object:
     """[wires] = edgeWalker(edgePile,inclBiggest) -- Planar graph traversal finds wires in edge pile."""
 
 
-def findOuterWire(edgeList: list, /) -> None:
+def findOuterWire(edgeList: list, /) -> None | object:
     """wire = findOuterWire(edgeList) -- Planar graph traversal finds OuterWire in edge pile."""
 
 
-def findShapeOutline(shape: object, scale: float, direction: object, /) -> None:
+def findShapeOutline(shape, scale: float, direction, /) -> None | object:
     """wire = findShapeOutline(shape,scale,direction) -- Project shape in direction and find outer wire of result."""
 
 
-def viewPartAsDxf(DrawViewPart: object, /):
+def viewPartAsDxf(DrawViewPart, /):
     """string = viewPartAsDxf(DrawViewPart) -- Return the edges of a DrawViewPart in Dxf format."""
 
 
-def viewPartAsSvg(DrawViewPart: object, /):
+def viewPartAsSvg(DrawViewPart, /):
     """string = viewPartAsSvg(DrawViewPart) -- Return the edges of a DrawViewPart in Svg format."""
 
 
-def writeDXFView(arg1: object, arg2: str, arg3=None, /) -> None:
+def writeDXFView(arg1, arg2: str, arg3=None, /) -> None:
     """writeDXFView(view,filename): Exports a DrawViewPart to a DXF file."""
 
 
-def writeDXFPage(page: object, filename: str, /) -> None:
+def writeDXFPage(page, filename: str, /) -> None:
     """writeDXFPage(page,filename): Exports a DrawPage to a DXF file."""
 
 
-def findCentroid(shape: object, direction: object, /) -> None:
+def findCentroid(shape, direction, /) -> None | object:
     """vector = findCentroid(shape,direction): finds geometric centroid of shape looking in direction."""
 
 
-def makeExtentDim(DrawViewPart: object, edges: list, direction: int, /) -> None:
+def makeExtentDim(DrawViewPart, edges: list, direction: int, /) -> None:
     """makeExtentDim(DrawViewPart, [edges], direction) -- draw horizontal or vertical extent dimension for edges (or all of DrawViewPart if edge list is empty. direction:  0 - Horizontal, 1 - Vertical."""
 
 
-def makeDistanceDim(DrawViewPart: object, dimType: object, fromPoint: object, toPoint: object, /):
+def makeDistanceDim(DrawViewPart, dimType, fromPoint, toPoint, /):
     """makeDistanceDim(DrawViewPart, dimType, fromPoint, toPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 2d View points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."""
 
 
-def makeDistanceDim3d(arg1: object, arg2: object, arg3: object, arg4: object, /) -> None:
+def makeDistanceDim3d(arg1, arg2, arg3, arg4, /) -> None:
     """makeDistanceDim(DrawViewPart, dimType, 3dFromPoint, 3dToPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 3d model points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."""
 
 
-def makeGeomHatch(face: object, patScale: float = None, patName: str = None, patFile: str = None, /) -> None:
+def makeGeomHatch(face, patScale: float = None, patName: str = None, patFile: str = None, /) -> None | object:
     """makeGeomHatch(face, [patScale], [patName], [patFile]) -- draw a geom hatch on a given face, using optionally the given scale (default 1) and a given pattern name (ex. Diamond) and .pat file (the default pattern name and/or .pat files set in preferences are used if none are given). Returns a Part compound shape."""

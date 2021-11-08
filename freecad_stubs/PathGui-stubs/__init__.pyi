@@ -7,5 +7,5 @@ def insert(filename: str, docname: str = None, /) -> None:
     """insert(filename,docname): Imports a given GCode file into the given document"""
 
 
-def export(objectslist: object, filename: str, /) -> None:
+def export(objectslist, filename: str, /) -> None:
     """export(objectslist,filename): Exports a given list of Path objects to a GCode file"""

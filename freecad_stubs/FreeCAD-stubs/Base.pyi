@@ -17,7 +17,7 @@ class Vector(FreeCAD.PyObjectBase):
     def __init__(self, arg1: FreeCAD.Vector, /): ...
 
     @typing.overload
-    def __init__(self, arg1: object, /):
+    def __init__(self, arg1, /):
         """This class represents a 3D float vector"""
 
     @property
@@ -78,21 +78,21 @@ class Vector(FreeCAD.PyObjectBase):
         					      returns the cross product between this and another vector
         """
 
-    def distanceToLine(self, Vector: object, Vector2: object, /):
+    def distanceToLine(self, Vector, Vector2, /):
         """
         distanceToLine(Vector,Vector)
         						  returns the distance between this vector and a line defined by
         						  a base point and a direction
         """
 
-    def distanceToLineSegment(self, Vector: object, Vector2: object, /) -> FreeCAD.Vector:
+    def distanceToLineSegment(self, Vector, Vector2, /) -> FreeCAD.Vector:
         """
         distanceToLineSegment(Vector,Vector)
         						  returns the distance between this vector and a line segment defined by
         						  a base point and a direction
         """
 
-    def distanceToPlane(self, Vector: object, Vector2: object, /):
+    def distanceToPlane(self, Vector, Vector2, /):
         """
         distanceToPlane(Vector,Vector)
         						  returns the distance between this vector and a plane defined by
@@ -124,7 +124,7 @@ class Vector(FreeCAD.PyObjectBase):
                                   bith points are considered equal.
         """
 
-    def isOnLineSegment(self, Vector: object, Vector2: object, /):
+    def isOnLineSegment(self, Vector, Vector2, /):
         """
         isOnLineSegment(Vector, Vector)
         					      checks if Vector is on a line segment
@@ -148,7 +148,7 @@ class Vector(FreeCAD.PyObjectBase):
         						  normalizes the vector to the length of 1.0
         """
 
-    def projectToLine(self, Vector_pnt: object, Vector_vec: object, /):
+    def projectToLine(self, Vector_pnt, Vector_vec, /):
         """
         projectToLine(Vector pnt,Vector vec)
         						  Projects the point 'pnt' on a line that goes through the origin with the direction vector 'vec'.
@@ -157,7 +157,7 @@ class Vector(FreeCAD.PyObjectBase):
         						  NOTE: This method modifies the vector instance 'self'.
         """
 
-    def projectToPlane(self, Vector: object, Vector2: object, /):
+    def projectToPlane(self, Vector, Vector2, /):
         """
         projectToPlane(Vector,Vector)
         						  projects the vector on a plane defined by a base point and a normal
@@ -479,7 +479,7 @@ class Persistence(FreeCAD.BaseClass):
         dumpContent(Compression=1-9) -- Sets the data compression from 0 (no) to 9 (max)
         """
 
-    def restoreContent(self, buffer: object, /):
+    def restoreContent(self, buffer, /):
         """
         Restore the content of the object from a byte representation as stored by "dumpContent".
         It could be restored from any python object implementing the buffer protocol.
@@ -845,7 +845,7 @@ class Placement(FreeCAD.PyObjectBase):
                             Also available as ** operator.
         """
 
-    def rotate(self, center: object, axis: object, degree: float, /):
+    def rotate(self, center, axis, degree: float, /):
         """
         rotate(center,axis,degree) - rotate the current placement around center and axis with degree
                         This method is compatible with TopoShape.rotate()
@@ -1716,7 +1716,7 @@ class Axis(FreeCAD.PyObjectBase):
     def __init__(self, Axis: FreeCAD.Axis, /): ...
 
     @typing.overload
-    def __init__(self, Base: FreeCAD.Vector, Direction: object, /):
+    def __init__(self, Base: FreeCAD.Vector, Direction, /):
         """
         Axis
         An defines a direction and a position (base) in 3D space.

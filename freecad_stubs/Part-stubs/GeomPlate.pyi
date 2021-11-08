@@ -20,7 +20,7 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
     def G2Error(self, arg1: int = None, /) -> float:
         """Returns the max difference of curvature between the result and the constraints"""
 
-    def add(self, arg1: object, /):
+    def add(self, arg1, /):
         """Adds a linear or point constraint"""
 
     def curveConstraint(self, arg1: int, /) -> Part.GeomPlate.CurveConstraintPy:

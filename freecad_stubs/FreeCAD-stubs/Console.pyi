@@ -1,17 +1,17 @@
 # Console.cpp
-def PrintMessage(string: object, /) -> None:
+def PrintMessage(string, /) -> None:
     """PrintMessage(string) -- Print a message to the output"""
 
 
-def PrintLog(string: object, /) -> None:
+def PrintLog(string, /) -> None:
     """PrintLog(string) -- Print a log message to the output"""
 
 
-def PrintError(string: object, /) -> None:
+def PrintError(string, /) -> None:
     """PrintError(string) -- Print an error message to the output"""
 
 
-def PrintWarning(arg0: object, /) -> None:
+def PrintWarning(arg0, /) -> None:
     """PrintWarning -- Print a warning to the output"""
 
 

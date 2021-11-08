@@ -39,10 +39,10 @@ class ParameterGrp:
     def Clear(self) -> None:
         """Clear()"""
 
-    def Attach(self, arg1: object, /) -> None:
+    def Attach(self, arg1, /) -> None:
         """Attach()"""
 
-    def Detach(self, arg1: object, /) -> None:
+    def Detach(self, arg1, /) -> None:
         """Detach()"""
 
     def Notify(self, arg1: str, /) -> None:
@@ -120,7 +120,7 @@ class ParameterGrp:
     def Export(self, arg1: str, /) -> None:
         """Export()"""
 
-    def GetContents(self) -> None:
+    def GetContents(self) -> None | object:
         """GetContents()"""
 
 
@@ -226,7 +226,7 @@ class GeoFeature(FreeCAD.DocumentObject):
         If an object has no such property then None is returned.
         """
 
-    def getPropertyOfGeometry(self) -> None:
+    def getPropertyOfGeometry(self) -> object | None:
         """
         Returns the property of the actual geometry or None.
         For example for a part object it returns its Shape property,
@@ -386,7 +386,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         * depth: current recursive depth
         """
 
-    def getParentGeoFeatureGroup(self) -> None:
+    def getParentGeoFeatureGroup(self) -> None | object:
         """
         Returns the GeoFeatureGroup, and hence the local coordinate system, the object 
                                   is in or None if it is not part of a group. Note that an object can only be 
@@ -411,7 +411,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         'Valid' otherwise.
         """
 
-    def getSubObject(self, subname: object, retType: int = 0, matrix=None, transform=True, depth: int = 0):
+    def getSubObject(self, subname, retType: int = 0, matrix=None, transform=True, depth: int = 0):
         """
         getSubObject(subname, retType=0, matrix=None, transform=True, depth=0)
 
@@ -502,7 +502,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         Return -1 if element visibility is not supported, 0 if element not found, 1 if success
         """
 
-    def setExpression(self, arg1: str, arg2: object, arg3: str = None, /):
+    def setExpression(self, arg1: str, arg2, arg3: str = None, /):
         """Register an expression for a property"""
 
     def supportedProperties(self):
@@ -771,7 +771,7 @@ class GroupExtension(FreeCAD.DocumentObjectExtension):
     def addObject(self, arg1: FreeCAD.DocumentObject, /):
         """Add an object to the group. Returns all objects that have been added."""
 
-    def addObjects(self, arg1: object, /):
+    def addObjects(self, arg1, /):
         """Adds multiple objects to the group. Expects a list and returns all objects that have been added."""
 
     def getObject(self, arg1: str, /):
@@ -791,13 +791,13 @@ class GroupExtension(FreeCAD.DocumentObjectExtension):
     def removeObject(self, arg1: FreeCAD.DocumentObject, /):
         """Remove an object from the group and returns all objects that have been removed."""
 
-    def removeObjects(self, arg1: object, /):
+    def removeObjects(self, arg1, /):
         """Remove multiple objects from the group. Expects a list and returns all objects that have been removed."""
 
     def removeObjectsFromDocument(self):
         """Remove all child objects from the group and document"""
 
-    def setObjects(self, arg1: object, /):
+    def setObjects(self, arg1, /):
         """Sets the objects of the group. Expects a list and returns all objects that are now in the group."""
 
 
@@ -1263,7 +1263,7 @@ class Document(FreeCAD.PropertyContainer):
     def commitTransaction(self):
         """Commit an Undo/Redo transaction"""
 
-    def copyObject(self, object: object, with_dependencies=False, return_all=False, /):
+    def copyObject(self, object, with_dependencies=False, return_all=False, /):
         """
         copyObject(object, with_dependencies=False, return_all=False)
         Copy an object or objects from another document to this document. 
@@ -1314,7 +1314,7 @@ class Document(FreeCAD.PropertyContainer):
         NOTE: It's possible that several objects have the same label name.
         """
 
-    def getTempFileName(self, arg1: object, /):
+    def getTempFileName(self, arg1, /):
         """Returns a file name with path in the temp directory of the document."""
 
     def importLinks(self, object_object_=None, /):
@@ -1413,7 +1413,7 @@ class PropertyContainer(FreeCAD.Persistence):
         If the list contains 'Hidden' then the item even doesn't appear in the property editor.
         """
 
-    def getEnumerationsOfProperty(self, arg1: str, /) -> None:
+    def getEnumerationsOfProperty(self, arg1: str, /) -> None | object:
         """Return all enumeration strings of the property of this class or None if not a PropertyEnumeration."""
 
     def getGroupOfProperty(self, arg1: str, /) -> str:
@@ -1450,7 +1450,7 @@ class PropertyContainer(FreeCAD.Persistence):
     def getTypeOfProperty(self, arg1: str, /):
         """Return the type of a named property. This can be (Hidden,ReadOnly,Output) or any combination."""
 
-    def restorePropertyContent(self, propertyname: str, buffer: object, /):
+    def restorePropertyContent(self, propertyname: str, buffer, /):
         """
         Restore the content of given property from a byte representation as stored by "dumpContent".
         It could be restored from any python object implementing the buffer protocol.
@@ -1461,7 +1461,7 @@ class PropertyContainer(FreeCAD.Persistence):
     def setEditorMode(self, arg1: str, arg2: int, /): ...
 
     @typing.overload
-    def setEditorMode(self, arg1: str, arg2: object, /):
+    def setEditorMode(self, arg1: str, arg2, /):
         """
         Set the behaviour of the property in the property editor.
         0 - default behaviour
@@ -1469,7 +1469,7 @@ class PropertyContainer(FreeCAD.Persistence):
         2 - item is hidden
         """
 
-    def setPropertyStatus(self, name: str, val: object, /):
+    def setPropertyStatus(self, name: str, val, /):
         """
         setPropertyStatus(name,val): Set property status
 
@@ -1699,7 +1699,7 @@ def listDocuments(sort=False, /):
     """
 
 
-def addDocumentObserver(arg0: object, /):
+def addDocumentObserver(arg0, /):
     """
     addDocumentObserver() -> None
 
@@ -1707,7 +1707,7 @@ def addDocumentObserver(arg0: object, /):
     """
 
 
-def removeDocumentObserver(arg0: object, /):
+def removeDocumentObserver(arg0, /):
     """
     removeDocumentObserver() -> None
 
@@ -1715,7 +1715,7 @@ def removeDocumentObserver(arg0: object, /):
     """
 
 
-def setLogLevel(tag: str, level: object, /) -> None:
+def setLogLevel(tag: str, level, /) -> None:
     """
     setLogLevel(tag, level) -- Set the log level for a string tag.
     'level' can either be string 'Log', 'Msg', 'Wrn', 'Error', or an integer value
@@ -1739,7 +1739,7 @@ def getLinksTo(obj=None, options: int = 0, maxCount: int = 0, /):
     """
 
 
-def getDependentObjects(arg0: object, arg1: int = None, /):
+def getDependentObjects(arg0, arg1: int = None, /):
     """
     getDependentObjects(obj|[obj,...], options=0)
     Return a list of dependent objects including the given objects.

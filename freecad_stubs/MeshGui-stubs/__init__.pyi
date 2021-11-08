@@ -101,13 +101,13 @@ class ViewProviderMesh(FreeCADGui.ViewProviderDocumentObject):
     @PointSize.setter
     def PointSize(self, value: float | Quadruple_t[float]): ...
 
-    def addSelection(self, arg1: object, /):
+    def addSelection(self, arg1, /):
         """Add list of facets to selection"""
 
     def clearSelection(self):
         """Clear the selection"""
 
-    def highlightSegments(self, arg1: object, /):
+    def highlightSegments(self, arg1, /):
         """
         Highlights the segments of a mesh with a given list of colors.
         The number of elements of this list must be equal to the number of mesh segments.
@@ -116,10 +116,10 @@ class ViewProviderMesh(FreeCADGui.ViewProviderDocumentObject):
     def invertSelection(self):
         """Invert the selection"""
 
-    def removeSelection(self, arg1: object, /):
+    def removeSelection(self, arg1, /):
         """Remove list of facets from selection"""
 
-    def setSelection(self, arg1: object, /):
+    def setSelection(self, arg1, /):
         """Select list of facets"""
 
 

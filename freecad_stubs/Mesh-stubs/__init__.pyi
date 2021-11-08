@@ -361,7 +361,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def addMesh(self, arg1: MeshModule.Mesh, /):
         """Combine this mesh with another mesh."""
 
-    def addSegment(self, arg1: object, /):
+    def addSegment(self, arg1, /):
         """Add a list of facet indices that describes a segment to the mesh"""
 
     def clear(self):
@@ -376,7 +376,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def collapseFacet(self, arg1: int, /):
         """Remove a facet"""
 
-    def collapseFacets(self, arg1: object, /):
+    def collapseFacets(self, arg1, /):
         """Remove a list of facets"""
 
     def copy(self) -> MeshModule.Mesh:
@@ -391,10 +391,10 @@ class Mesh(FreeCAD.ComplexGeoData):
     def countSegments(self) -> int:
         """Get the number of segments which may also be 0"""
 
-    def crossSections(self, arg1: object, arg2: float = None, arg3: bool = None, /):
+    def crossSections(self, arg1, arg2: float = None, arg3: bool = None, /):
         """Get cross-sections of the mesh through several planes"""
 
-    def cut(self, list: object, int: int, /):
+    def cut(self, list, int: int, /):
         """
         Cuts the mesh with a given closed polygon
         cut(list, int) -> None
@@ -441,7 +441,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def flipNormals(self):
         """Flip the mesh normals"""
 
-    def foraminate(self, arg1: object, arg2: object, /):
+    def foraminate(self, arg1, arg2, /):
         """Get a list of facet indices and intersection points"""
 
     def getCurvaturePerVertex(self):
@@ -482,7 +482,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def getSegment(self, arg1: int, /):
         """Get a list of facet indices that describes a segment"""
 
-    def getSegmentsByCurvature(self, list: object, /):
+    def getSegmentsByCurvature(self, list, /):
         """
         getSegmentsByCurvature(list) -> list
         The argument list gives a list if tuples where it defines the preferred maximum curvature,
@@ -558,14 +558,14 @@ class Mesh(FreeCAD.ComplexGeoData):
     def mergeFacets(self):
         """Merge facets to optimize topology"""
 
-    def meshFromSegment(self, arg1: object, /) -> MeshModule.Mesh:
+    def meshFromSegment(self, arg1, /) -> MeshModule.Mesh:
         """Create a mesh from segment"""
 
     @typing.overload
-    def nearestFacetOnRay(self, tuple: object, tuple2: object, /) -> int | float: ...
+    def nearestFacetOnRay(self, tuple, tuple2, /) -> object | int | float: ...
 
     @typing.overload
-    def nearestFacetOnRay(self, tuple: float, tuple2: int = None, /) -> int | float:
+    def nearestFacetOnRay(self, tuple: float, tuple2: int = None, /) -> object | int | float:
         """
         nearestFacetOnRay(tuple, tuple) -> dict
         Get the index and intersection point of the nearest facet to a ray.
@@ -597,7 +597,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def read(self, Filename: str): ...
 
     @typing.overload
-    def read(self, Stream: object, Format: str):
+    def read(self, Stream, Format: str):
         """
         Read in a mesh object from file.
         mesh.read(Filename='mymesh.stl')
@@ -619,7 +619,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def removeDuplicatedPoints(self):
         """Remove duplicated points"""
 
-    def removeFacets(self, arg1: object, /):
+    def removeFacets(self, arg1, /):
         """Remove a list of facet indices from the mesh"""
 
     def removeFoldsOnSurface(self):
@@ -693,7 +693,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def translate(self, arg1: float, arg2: float, arg3: float, /):
         """Apply a translation to the mesh"""
 
-    def trim(self, list: object, int: int, /):
+    def trim(self, list, int: int, /):
         """
         Trims the mesh with a given closed polygon
         trim(list, int) -> None
@@ -716,7 +716,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def write(self, Filename: str, Format: str = 'STL', Name: str = 'Object name', Material=None): ...
 
     @typing.overload
-    def write(self, Stream: object, Format: str, Name: str = 'Object name', Material=None):
+    def write(self, Stream, Format: str, Name: str = 'Object name', Material=None):
         """
         Write the mesh object into file.
         mesh.write(Filename='mymesh.stl',[Format='STL',Name='Object name',Material=colors])
@@ -852,7 +852,7 @@ def createTorus(arg1: float = None, arg2: float = None, arg3: int = None, /) -> 
     """Create a tessellated torus"""
 
 
-def calculateEigenTransform(seq_Base_Vector_: object, /) -> FreeCAD.Placement:
+def calculateEigenTransform(seq_Base_Vector_, /) -> FreeCAD.Placement:
     """
     calculateEigenTransform(seq(Base.Vector))
     Calculates the eigen Transformation from a list of points.
@@ -863,11 +863,11 @@ def calculateEigenTransform(seq_Base_Vector_: object, /) -> FreeCAD.Placement:
     """
 
 
-def polynomialFit(seq_Base_Vector_: object, /):
+def polynomialFit(seq_Base_Vector_, /):
     """polynomialFit(seq(Base.Vector)) -- Calculates a polynomial fit."""
 
 
-def minimumVolumeOrientedBox(seq_Base_Vector_: object, /):
+def minimumVolumeOrientedBox(seq_Base_Vector_, /):
     """
     minimumVolumeOrientedBox(seq(Base.Vector)) -- Calculates the minimum
     volume oriented box containing all points. The return value is a
@@ -876,7 +876,7 @@ def minimumVolumeOrientedBox(seq_Base_Vector_: object, /):
     """
 
 
-def export(objectList: object, filename: str, tolerance: float = 0.1, exportAmfCompressed: bool = True) -> None:
+def export(objectList, filename: str, tolerance: float = 0.1, exportAmfCompressed: bool = True) -> None:
     """
     export(objects, filename, [tolerance=0.1, exportAmfCompressed=True])
     Export a list of objects into a single file identified by filename.
