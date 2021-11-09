@@ -7,12 +7,12 @@ from inspect import Parameter, Signature
 from pathlib import Path
 from typing import Iterator
 
-from freecad_stub_gen.generators.common.signature_merger import mergeSignaturesGen
+from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam, SelfSignature
 from freecad_stub_gen.generators.common.doc_string import generateSignaturesFromDocstring, \
     getDocFromNode
 from freecad_stub_gen.generators.common.gen_method import MethodGenerator
 from freecad_stub_gen.generators.common.names import getClassNameFromNode
-from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam, SelfSignature
+from freecad_stub_gen.generators.common.signature_merger import mergeSignaturesGen
 from freecad_stub_gen.generators.from_xml.base import BaseXmlGenerator
 
 logger = logging.getLogger(__name__)
@@ -53,7 +53,7 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
             return
 
         codeSignatures = list(self.generateSignaturesFromCode(
-            cName, argNumStart=len(parameters)))
+            cName, argNumStart=len(parameters), className=self.classNameWithModules))
         docSignatures = list(self._generateSignaturesFromDocString(
             docName, node, argNumStart=len(parameters)))
 
@@ -106,7 +106,7 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         retType = f' -> {retType}' if retType else ''
         return f'def {name}({", ".join(("self",) + args)}){retType}: ...\n\n'
 
-    def findFunctionBody(self, funcName: str, className: str = '') -> str | None:
+    def findFunctionBody(self, funcName: str, className: str = ''):
         """Override method to search `funcName` also in parent."""
         if res := super().findFunctionBody(funcName, className):
             return res

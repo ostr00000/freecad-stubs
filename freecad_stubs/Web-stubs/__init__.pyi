@@ -1,5 +1,5 @@
 # AppWeb.cpp
-def startServer(address: str = None, port: int = 0, /):
+def startServer(address: str = None, port: int = 0, /) -> tuple:
     """startServer(address=127.0.0.1,port=0) -- Start a server."""
 
 

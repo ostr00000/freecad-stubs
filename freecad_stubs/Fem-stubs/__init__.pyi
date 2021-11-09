@@ -165,49 +165,49 @@ class FemMesh(FreeCAD.ComplexGeoData):
     def copy(self) -> Fem.FemMesh:
         """Make a copy of this FEM mesh."""
 
-    def getEdgesByEdge(self, arg1: Part.Edge, /):
+    def getEdgesByEdge(self, arg1: Part.Edge, /) -> list:
         """Return a list of edge IDs which belong to a TopoEdge"""
 
-    def getElementNodes(self, arg1: int, /):
+    def getElementNodes(self, arg1: int, /) -> tuple:
         """Return a tuple of node IDs to a given element ID"""
 
     def getElementType(self, arg1: int, /) -> str:
         """Return the element type of a given ID"""
 
-    def getFacesByFace(self, arg1: Part.Face, /):
+    def getFacesByFace(self, arg1: Part.Face, /) -> list:
         """Return a list of face IDs which belong to a TopoFace"""
 
     def getGroupElementType(self, arg1: int, /) -> str:
         """Return a string of group element type to a given group ID"""
 
-    def getGroupElements(self, arg1: int, /):
+    def getGroupElements(self, arg1: int, /) -> tuple:
         """Return a tuple of ElementIDs to a given group ID"""
 
     def getGroupName(self, arg1: int, /) -> str:
         """Return a string of group name to a given group ID"""
 
-    def getIdByElementType(self, arg1: str, /):
+    def getIdByElementType(self, arg1: str, /) -> tuple:
         """Return a tuple of IDs to a given element type"""
 
     def getNodeById(self, arg1: int, /) -> FreeCAD.Vector:
         """Get the node position vector by a Node-ID"""
 
-    def getNodesByEdge(self, arg1: Part.Edge, /):
+    def getNodesByEdge(self, arg1: Part.Edge, /) -> list:
         """Return a list of node IDs which belong to a TopoEdge"""
 
-    def getNodesByFace(self, arg1: Part.Face, /):
+    def getNodesByFace(self, arg1: Part.Face, /) -> list:
         """Return a list of node IDs which belong to a TopoFace"""
 
-    def getNodesBySolid(self, arg1: Part.Solid, /):
+    def getNodesBySolid(self, arg1: Part.Solid, /) -> list:
         """Return a list of node IDs which belong to a TopoSolid"""
 
-    def getNodesByVertex(self, arg1: Part.Vertex, /):
+    def getNodesByVertex(self, arg1: Part.Vertex, /) -> list:
         """Return a list of node IDs which belong to a TopoVertex"""
 
-    def getVolumesByFace(self, arg1: Part.Face, /):
+    def getVolumesByFace(self, arg1: Part.Face, /) -> list:
         """Return a dict of volume IDs and face IDs which belong to a TopoFace"""
 
-    def getccxVolumesByFace(self, arg1: Part.Face, /):
+    def getccxVolumesByFace(self, arg1: Part.Face, /) -> list:
         """Return a dict of volume IDs and ccx face numbers which belong to a TopoFace"""
 
     def read(self, file_endingToExportTo: str, /):

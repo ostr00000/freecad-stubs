@@ -56,43 +56,43 @@ class Sheet(FreeCAD.DocumentObject):
     def clearAll(self):
         """Clear all cells in the spreadsheet"""
 
-    def exportFile(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, /):
+    def exportFile(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, /) -> bool:
         """Export file from spreadsheet"""
 
-    def get(self, arg1: str, arg2: str = None, /):
+    def get(self, arg1: str, arg2: str = None, /) -> tuple | object:
         """Get evaluated cell contents"""
 
-    def getAlias(self, arg1: str, /) -> object | None:
+    def getAlias(self, arg1: str, /) -> str | None:
         """Get alias for cell address"""
 
     def getAlignment(self, arg1: str, /) -> object | None:
         """Get alignment of the cell"""
 
-    def getBackground(self, arg1: str, /) -> object | None:
+    def getBackground(self, arg1: str, /) -> tuple | None:
         """Get background color of the cell"""
 
-    def getCellFromAlias(self, arg1: str, /) -> object | None:
+    def getCellFromAlias(self, arg1: str, /) -> str | None:
         """Get cell address given an alias"""
 
-    def getColumnWidth(self, arg1: str, /):
+    def getColumnWidth(self, arg1: str, /) -> int:
         """Get given spreadsheet column width"""
 
-    def getContents(self, arg1: str, /):
+    def getContents(self, arg1: str, /) -> str:
         """Get cell contents"""
 
-    def getDisplayUnit(self, arg1: str, /):
+    def getDisplayUnit(self, arg1: str, /) -> str:
         """Get display unit for cell"""
 
-    def getForeground(self, arg1: str, /) -> object | None:
+    def getForeground(self, arg1: str, /) -> tuple | None:
         """Get foreground color of the cell"""
 
-    def getRowHeight(self, arg1: str, /):
+    def getRowHeight(self, arg1: str, /) -> int:
         """Get given spreadsheet row height"""
 
     def getStyle(self, arg1: str, /) -> object | None:
         """Get style of the cell"""
 
-    def importFile(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, /):
+    def importFile(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, /) -> bool:
         """Import file into spreadsheet"""
 
     def insertColumns(self, arg1: str, arg2: int, /):

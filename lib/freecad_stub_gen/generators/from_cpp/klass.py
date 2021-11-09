@@ -2,9 +2,9 @@ import logging
 import re
 from typing import Iterable
 
+from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall
 from freecad_stub_gen.generators.common.doc_string import formatDocstring
-from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam
 from freecad_stub_gen.generators.from_cpp.base import BaseGeneratorFromCpp
 from freecad_stub_gen.importable_map import importableMap
 from freecad_stub_gen.util import indent
@@ -25,6 +25,7 @@ class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
             classMatch = self.REG_CLASS_NAME.search(funcCall)
             if classMatch:
                 className = classMatch.group(1).replace('.', '_')
+                self.classNameWithModules = f'{moduleName}.{className}'
             else:
                 logger.debug(f'Cannot find function name in {self.baseGenFilePath}')
                 continue  # it is a template
@@ -36,8 +37,7 @@ class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
             content = indent(result)
 
             doc = ''
-            fullClassName = f'{moduleName}.{className}'
-            if importableMap.isImportable(fullClassName):
+            if importableMap.isImportable(self.classNameWithModules):
                 doc = "This class can be imported.\n"
             if docsMatch := self.REG_CLASS_DOC.search(funcCall):
                 doc += docsMatch.group(1)

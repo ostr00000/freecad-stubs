@@ -119,16 +119,16 @@ class Tool(FreeCAD.Persistence):
     def copy(self) -> Path.Tool:
         """returns a copy of this tool"""
 
-    def getToolMaterials(self):
+    def getToolMaterials(self) -> list:
         """returns all available tool materials"""
 
-    def getToolTypes(self):
+    def getToolTypes(self) -> list:
         """returns all available tool types"""
 
     def setFromTemplate(self, xmlString_dictionary: str, /):
         """setFromTemplate(xmlString|dictionary) ... fills receiver with values from the template string or dictionary"""
 
-    def templateAttrs(self):
+    def templateAttrs(self) -> dict:
         """templateAttrs() ... returns a dictionary with all attributes"""
 
 
@@ -230,7 +230,7 @@ class VoronoiCell(FreeCAD.BaseClass):
     def SourceIndex(self) -> int:
         """Returns the index of the cell's source"""
 
-    def getSource(self, arg1: float = None, /) -> FreeCAD.Vector | object:
+    def getSource(self, arg1: float = None, /) -> FreeCAD.Vector | list:
         """Returns the Source for the cell"""
 
     def __eq__(self, other) -> bool: ...
@@ -336,12 +336,12 @@ class Area(FreeCAD.BaseClass):
     @Workplane.setter
     def Workplane(self, value: object): ...
 
-    def add(self, shape): ...
+    def add(self, shape) -> Path.Area: ...
 
-    def getParams(self):
+    def getParams(self) -> dict:
         """Get current algorithm parameters as a dictionary."""
 
-    def getShape(self, index: int = -1, rebuild=False):
+    def getShape(self, index: int = -1, rebuild=False) -> Part.Shape:
         """
         getShape(index=-1,rebuild=False): Return the resulting shape
 
@@ -352,15 +352,15 @@ class Area(FreeCAD.BaseClass):
         * rebuild: clean the internal cache and rebuild
         """
 
-    def makeOffset(self, index: int = None): ...
+    def makeOffset(self, index: int = None) -> Part.Shape: ...
 
-    def makePocket(self, index: int = None): ...
+    def makePocket(self, index: int = None) -> Part.Shape: ...
 
-    def makeSections(self, heights=None, plane: Part.Shape = None): ...
+    def makeSections(self, heights=None, plane: Part.Shape = None) -> list: ...
 
-    def setParams(self): ...
+    def setParams(self) -> Path.Area: ...
 
-    def setPlane(self, shape: Part.Shape, /):
+    def setPlane(self, shape: Part.Shape, /) -> Path.Area:
         """
         setPlane(shape): Set the working plane.
 
@@ -561,10 +561,10 @@ class Voronoi(FreeCAD.BaseClass):
     def construct(self) -> None:
         """constructs the voronoi diagram from the input collections"""
 
-    def getPoints(self, arg1: float = None, /):
+    def getPoints(self, arg1: float = None, /) -> list:
         """Get list of all input points."""
 
-    def getSegments(self, arg1: float = None, /):
+    def getSegments(self, arg1: float = None, /) -> list:
         """Get list of all input segments."""
 
     def numCells(self) -> int:
@@ -699,7 +699,7 @@ def fromShape(Shape, /) -> Path.Path:
     """fromShape(Shape): Returns a Path object from a Part Shape (deprecated - use fromShapes() instead)"""
 
 
-def fromShapes(shapes, start: FreeCAD.Vector = None, return_end=None) -> Path.Path | object:
+def fromShapes(shapes, start: FreeCAD.Vector = None, return_end=None) -> Path.Path | tuple:
     """
     fromShapes(shapes, start=Vector(), return_end=False" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_PATH) ")
 
@@ -715,7 +715,7 @@ def fromShapes(shapes, start: FreeCAD.Vector = None, return_end=None) -> Path.Pa
     """
 
 
-def sortWires(shapes, start: FreeCAD.Vector = None):
+def sortWires(shapes, start: FreeCAD.Vector = None) -> tuple:
     """
     sortWires(shapes, start=Vector(), "
                 PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_ARC_PLANE)
@@ -743,14 +743,14 @@ def setDefaultParams() -> None:
     """
 
 
-def getDefaultParams():
+def getDefaultParams() -> dict:
     """getDefaultParams(): Static method to return the current default parameters."""
 
 
 def abort(aborting=None) -> None: ...
 
 
-def getParamsDesc(as_string=False) -> str | object:
+def getParamsDesc(as_string=False) -> str | dict:
     """
     getParamsDesc(as_string=False): Returns a list of supported parameters and their descriptions.
 

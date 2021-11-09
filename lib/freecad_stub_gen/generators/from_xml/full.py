@@ -46,13 +46,13 @@ class FreecadStubGeneratorFromXML(
                 self.requiredImports.clear()
 
     def _getClassContent(self):
-        classNameWithModules = getClassWithModulesFromNode(self.currentNode)
-        className = getClassName(classNameWithModules)
-        baseClasses = ', '.join(self.genBaseClasses(classNameWithModules))
+        self.classNameWithModules = getClassWithModulesFromNode(self.currentNode)
+        className = getClassName(self.classNameWithModules)
+        baseClasses = ', '.join(self.genBaseClasses())
         classStr = f"class {className}({baseClasses}):\n"
 
         doc = getDocFromNode(self.currentNode)
-        if importableMap.isImportable(classNameWithModules):
+        if importableMap.isImportable(self.classNameWithModules):
             doc = "This class can be imported.\n" + (doc or '')
         if doc:
             classStr += indent(formatDocstring(doc))
@@ -75,19 +75,19 @@ class FreecadStubGeneratorFromXML(
         if strtobool(self.currentNode.attrib.get('NumberProtocol', 'False')):
             classStr += indent(self.genNumberProtocol(className))
 
-        return classStr, classNameWithModules
+        return classStr, self.classNameWithModules
 
     @staticmethod
     def _nodeSort(node: ET.Element):
         return node.attrib['Name']
 
-    def genBaseClasses(self, classNameWithModules: str):
+    def genBaseClasses(self):
         """Only one class is available in xml as a father."""
         fatherModuleAndClass = getFatherClassWithModules(self.currentNode)
         self.requiredImports.add(getModuleName(fatherModuleAndClass))
         yield fatherModuleAndClass
 
-        if classNameWithModules == 'FreeCAD.DocumentObjectGroup':
+        if self.classNameWithModules == 'FreeCAD.DocumentObjectGroup':
             yield 'FreeCAD.GroupExtension'
 
     def getCodeForSpecialCase(self, className: str) -> str:

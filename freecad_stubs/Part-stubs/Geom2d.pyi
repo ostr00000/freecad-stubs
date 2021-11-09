@@ -42,19 +42,19 @@ class Curve2d(Part.Geom2d.Geometry2d):
         """Float = curvature(pos) - Get the curvature at the given parameter [First|Last] if defined"""
 
     @typing.overload
-    def discretize(self, Number: int, First: float = None, Last: float = None): ...
+    def discretize(self, Number: int, First: float = None, Last: float = None) -> list: ...
 
     @typing.overload
-    def discretize(self, Distance: float, First: float = None, Last: float = None): ...
+    def discretize(self, Distance: float, First: float = None, Last: float = None) -> list: ...
 
     @typing.overload
-    def discretize(self, Deflection: float, First: float = None, Last: float = None): ...
+    def discretize(self, Deflection: float, First: float = None, Last: float = None) -> list: ...
 
     @typing.overload
-    def discretize(self, QuasiNumber: int, First: float = None, Last: float = None): ...
+    def discretize(self, QuasiNumber: int, First: float = None, Last: float = None) -> list: ...
 
     @typing.overload
-    def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None):
+    def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None) -> list:
         """
         Discretizes the curve and returns a list of points.
         The function accepts keywords as argument:
@@ -89,7 +89,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
         Part.show(s)
         """
 
-    def intersectCC(self, arg1: Part.Geom2d.Curve2d, arg2: float = None, /):
+    def intersectCC(self, arg1: Part.Geom2d.Curve2d, arg2: float = None, /) -> list:
         """Returns all intersection points between this curve and the given curve."""
 
     def length(self, uMin: float = None, uMax: float = None, Tol: float = None, /) -> float:
@@ -126,22 +126,22 @@ class Curve2d(Part.Geom2d.Geometry2d):
         """
 
     @typing.overload
-    def toShape(self): ...
+    def toShape(self) -> Part.Shape: ...
 
     @typing.overload
-    def toShape(self, arg1: float, arg2: float, /): ...
+    def toShape(self, arg1: float, arg2: float, /) -> Part.Shape: ...
 
     @typing.overload
-    def toShape(self, arg1: Part.GeometrySurface, /): ...
+    def toShape(self, arg1: Part.GeometrySurface, /) -> Part.Shape: ...
 
     @typing.overload
-    def toShape(self, arg1: Part.GeometrySurface, arg2: float, arg3: float, /): ...
+    def toShape(self, arg1: Part.GeometrySurface, arg2: float, arg3: float, /) -> Part.Shape: ...
 
     @typing.overload
-    def toShape(self, arg1: Part.Face, /): ...
+    def toShape(self, arg1: Part.Face, /) -> Part.Shape: ...
 
     @typing.overload
-    def toShape(self, arg1: Part.Face, arg2: float, arg3: float, /):
+    def toShape(self, arg1: Part.Face, arg2: float, arg3: float, /) -> Part.Shape:
         """Return the shape for the geometry."""
 
     def value(self, arg1: float, /):
@@ -755,19 +755,19 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         """
 
     @typing.overload
-    def getCardinalSplineTangents(self, Points, Parameter: float): ...
+    def getCardinalSplineTangents(self, Points, Parameter: float) -> list: ...
 
     @typing.overload
-    def getCardinalSplineTangents(self, Points, Parameters):
+    def getCardinalSplineTangents(self, Points, Parameters) -> list:
         """Compute the tangents for a Cardinal spline"""
 
     def getKnot(self, arg1: int, /) -> float:
         """Get a knot of the B-Spline curve."""
 
-    def getKnots(self):
+    def getKnots(self) -> list:
         """Get all knots of the B-Spline curve."""
 
-    def getMultiplicities(self):
+    def getMultiplicities(self) -> list:
         """Returns the multiplicities table M of the knots of this B-Spline curve."""
 
     def getMultiplicity(self, arg1: int, /) -> int:
@@ -779,10 +779,10 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def getPole(self, arg1: int, /):
         """Get a pole of the B-Spline curve."""
 
-    def getPoles(self):
+    def getPoles(self) -> list:
         """Get all poles of the B-Spline curve."""
 
-    def getPolesAndWeights(self):
+    def getPolesAndWeights(self) -> list:
         """Returns the table of poles and weights in homogeneous coordinates."""
 
     def getResolution(self, arg1: float, /) -> float:
@@ -797,7 +797,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def getWeight(self, arg1: int, /) -> float:
         """Get a weight of the B-Spline curve."""
 
-    def getWeights(self):
+    def getWeights(self) -> list:
         """Get all weights of the B-Spline curve."""
 
     def increaseDegree(self, arg1: int, /):
@@ -983,7 +983,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def setWeight(self, arg1: int, arg2: float, /):
         """Set a weight of the B-Spline curve."""
 
-    def toBezier(self):
+    def toBezier(self) -> list:
         """Build a list of Bezier splines."""
 
     def toBiArcs(self, tolerance: float, /):
@@ -1030,7 +1030,7 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
     def getPole(self, arg1: int, /):
         """Get a pole of the Bezier curve."""
 
-    def getPoles(self):
+    def getPoles(self) -> list:
         """Get all poles of the Bezier curve."""
 
     def getResolution(self, arg1: float, /) -> float:
@@ -1045,7 +1045,7 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
     def getWeight(self, arg1: int, /) -> float:
         """Get a weight of the Bezier curve."""
 
-    def getWeights(self):
+    def getWeights(self) -> list:
         """Get all weights of the Bezier curve."""
 
     def increase(self, Int: int, /):

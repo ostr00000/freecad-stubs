@@ -11,7 +11,7 @@ class Measurement(FreeCAD.BaseClass):
     def addReference3D(self, arg1: str, arg2: str, /):
         """add a geometric reference"""
 
-    def angle(self):
+    def angle(self) -> float:
         """measure the angle between two edges"""
 
     def clear(self):
@@ -23,11 +23,11 @@ class Measurement(FreeCAD.BaseClass):
     def delta(self):
         """measure the difference between references to obtain resultant vector"""
 
-    def has3DReferences(self):
+    def has3DReferences(self) -> bool:
         """does Measurement have links to 3D geometry"""
 
-    def length(self):
+    def length(self) -> float:
         """measure the length of the references"""
 
-    def radius(self):
+    def radius(self) -> float:
         """measure the radius of an arc or circle edge"""

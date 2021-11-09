@@ -21,10 +21,10 @@ class PyObjectBase(object): ...
 class ParameterGrp:
     """Python interface class to set parameters"""
 
-    def GetGroup(self, str: str, /):
+    def GetGroup(self, str: str, /) -> ParameterGrp:
         """GetGroup(str)"""
 
-    def GetGroups(self):
+    def GetGroups(self) -> list:
         """GetGroups()"""
 
     def RemGroup(self, str: str, /) -> None:
@@ -57,7 +57,7 @@ class ParameterGrp:
     def GetBool(self, arg1: str, arg2: int = None, /) -> bool:
         """GetBool()"""
 
-    def GetBools(self, arg1: str = None, /):
+    def GetBools(self, arg1: str = None, /) -> list:
         """GetBools()"""
 
     def RemBool(self, arg1: str, /) -> None:
@@ -69,7 +69,7 @@ class ParameterGrp:
     def GetInt(self, arg1: str, arg2: int = None, /) -> int:
         """GetInt()"""
 
-    def GetInts(self, arg1: str = None, /):
+    def GetInts(self, arg1: str = None, /) -> list:
         """GetInts()"""
 
     def RemInt(self, arg1: str, /) -> None:
@@ -81,7 +81,7 @@ class ParameterGrp:
     def GetUnsigned(self, arg1: str, arg2: int = None, /) -> int:
         """GetUnsigned()"""
 
-    def GetUnsigneds(self, arg1: str = None, /):
+    def GetUnsigneds(self, arg1: str = None, /) -> list:
         """GetUnsigneds()"""
 
     def RemUnsigned(self, arg1: str, /) -> None:
@@ -93,7 +93,7 @@ class ParameterGrp:
     def GetFloat(self, arg1: str, arg2: float = None, /) -> float:
         """GetFloat()"""
 
-    def GetFloats(self, arg1: str = None, /):
+    def GetFloats(self, arg1: str = None, /) -> list:
         """GetFloats()"""
 
     def RemFloat(self, arg1: str, /) -> None:
@@ -105,7 +105,7 @@ class ParameterGrp:
     def GetString(self, arg1: str, arg2: str = None, /) -> str:
         """GetString()"""
 
-    def GetStrings(self, arg1: str = None, /):
+    def GetStrings(self, arg1: str = None, /) -> list:
         """GetStrings()"""
 
     def RemString(self, arg1: str, /) -> None:
@@ -120,7 +120,7 @@ class ParameterGrp:
     def Export(self, arg1: str, /) -> None:
         """Export()"""
 
-    def GetContents(self) -> None | object:
+    def GetContents(self) -> None | list:
         """GetContents()"""
 
 
@@ -353,7 +353,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     @Visibility.setter
     def Visibility(self, value: int | bool): ...
 
-    def addProperty(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, arg5: int = None, arg6: bool = None, arg7: bool = None, /):
+    def addProperty(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, arg5: int = None, arg6: bool = None, arg7: bool = None, /) -> FreeCAD.DocumentObject:
         """
         addProperty(string, string) -- Add a generic property.
                             The first argument specifies the type, the second the
@@ -370,7 +370,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     def evalExpression(cls, arg1: str, /):
         """Evaluate an expression"""
 
-    def getLinkedObject(self, recursive=True, matrix=None, transform=True, depth: int = 0):
+    def getLinkedObject(self, recursive=True, matrix=None, transform=True, depth: int = 0) -> tuple | object:
         """
         getLinkedObject(recursive=True, matrix=None, transform=True, depth=0)
         Returns the linked object if there is one, or else return itself
@@ -400,10 +400,10 @@ class DocumentObject(FreeCAD.ExtensionContainer):
                                   value.
         """
 
-    def getPathsByOutList(self, arg1: FreeCAD.DocumentObject, /):
+    def getPathsByOutList(self, arg1: FreeCAD.DocumentObject, /) -> list:
         """Get all paths from this object to another object following the OutList."""
 
-    def getStatusString(self):
+    def getStatusString(self) -> str:
         """
         Returns the status of the object as string.
         If the object is invalid its error description will be returned.
@@ -411,7 +411,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         'Valid' otherwise.
         """
 
-    def getSubObject(self, subname, retType: int = 0, matrix=None, transform=True, depth: int = 0):
+    def getSubObject(self, subname, retType: int = 0, matrix=None, transform=True, depth: int = 0) -> FreeCAD.Placement | FreeCAD.Matrix | tuple:
         """
         getSubObject(subname, retType=0, matrix=None, transform=True, depth=0)
 
@@ -440,14 +440,14 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         * depth: current recursive depth
         """
 
-    def getSubObjectList(self, subname: str, /):
+    def getSubObjectList(self, subname: str, /) -> list:
         """
         getSubObjectList(subname)
 
         Return a list of objects referenced by a given subname including this object
         """
 
-    def getSubObjects(self, reason: int = 0, /):
+    def getSubObjects(self, reason: int = 0, /) -> tuple:
         """getSubObjects(reason=0): Return subname reference of all sub-objects"""
 
     def hasChildElement(self) -> bool:
@@ -474,7 +474,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
                             Note, you can only remove user-defined properties but not built-in ones.
         """
 
-    def resolve(self, subname: str, /):
+    def resolve(self, subname: str, /) -> tuple:
         """
         resolve(subname) -- resolve the sub object
 
@@ -485,7 +485,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         non-object sub-element name if any.
         """
 
-    def resolveSubElement(self, subname: str, append=None, type: int = None, /):
+    def resolveSubElement(self, subname: str, append=None, type: int = None, /) -> tuple:
         """
         resolveSubElement(subname,append,type) -- resolve both new and old style sub element
 
@@ -505,7 +505,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     def setExpression(self, arg1: str, arg2, arg3: str = None, /):
         """Register an expression for a property"""
 
-    def supportedProperties(self):
+    def supportedProperties(self) -> list:
         """A list of supported property types"""
 
     def touch(self, arg1: str = None, /):
@@ -617,19 +617,19 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
         """getLinkExtPropertyName(name): lookup the property name by its predefined name"""
 
     @typing.overload
-    def getLinkPropertyInfo(self): ...
+    def getLinkPropertyInfo(self) -> tuple: ...
 
     @typing.overload
-    def getLinkPropertyInfo(self, index: int, /): ...
+    def getLinkPropertyInfo(self, index: int, /) -> tuple: ...
 
     @typing.overload
-    def getLinkPropertyInfo(self, index: str, /): ...
+    def getLinkPropertyInfo(self, index: str, /) -> tuple: ...
 
     @typing.overload
-    def getLinkPropertyInfo(self, name: int, /): ...
+    def getLinkPropertyInfo(self, name: int, /) -> tuple: ...
 
     @typing.overload
-    def getLinkPropertyInfo(self, name: str, /):
+    def getLinkPropertyInfo(self, name: str, /) -> tuple:
         """
         getLinkPropertyInfo(): return a tuple of (name,type,doc) for all supported properties.
 
@@ -768,10 +768,10 @@ class GroupExtension(FreeCAD.DocumentObjectExtension):
     @Group.setter
     def Group(self, value: list[DocumentObject]): ...
 
-    def addObject(self, arg1: FreeCAD.DocumentObject, /):
+    def addObject(self, arg1: FreeCAD.DocumentObject, /) -> list:
         """Add an object to the group. Returns all objects that have been added."""
 
-    def addObjects(self, arg1, /):
+    def addObjects(self, arg1, /) -> list:
         """Adds multiple objects to the group. Expects a list and returns all objects that have been added."""
 
     def getObject(self, arg1: str, /):
@@ -788,16 +788,16 @@ class GroupExtension(FreeCAD.DocumentObjectExtension):
     def newObject(self, arg1: str, arg2: str = None, /):
         """Create and add an object with given type and name to the group"""
 
-    def removeObject(self, arg1: FreeCAD.DocumentObject, /):
+    def removeObject(self, arg1: FreeCAD.DocumentObject, /) -> list:
         """Remove an object from the group and returns all objects that have been removed."""
 
-    def removeObjects(self, arg1, /):
+    def removeObjects(self, arg1, /) -> list:
         """Remove multiple objects from the group. Expects a list and returns all objects that have been removed."""
 
     def removeObjectsFromDocument(self):
         """Remove all child objects from the group and document"""
 
-    def setObjects(self, arg1, /):
+    def setObjects(self, arg1, /) -> list:
         """Sets the objects of the group. Expects a list and returns all objects that are now in the group."""
 
 
@@ -1263,7 +1263,7 @@ class Document(FreeCAD.PropertyContainer):
     def commitTransaction(self):
         """Commit an Undo/Redo transaction"""
 
-    def copyObject(self, object, with_dependencies=False, return_all=False, /):
+    def copyObject(self, object, with_dependencies=False, return_all=False, /) -> object | tuple:
         """
         copyObject(object, with_dependencies=False, return_all=False)
         Copy an object or objects from another document to this document. 
@@ -1277,14 +1277,14 @@ class Document(FreeCAD.PropertyContainer):
     def exportGraphviz(self, arg1: str = None, /) -> str:
         """Export the dependencies of the objects as graph"""
 
-    def findObjects(self, Type: str = None, Name: str = None, Label: str = None):
+    def findObjects(self, Type: str = None, Name: str = None, Label: str = None) -> list:
         """
         findObjects([Type=string], [Name=string], [Label=string]) -> list
         Return a list of objects that match the specified type, name or label.
         Name and label support regular expressions. All parameters are optional.
         """
 
-    def getDependentDocuments(self, sort=True, /):
+    def getDependentDocuments(self, sort=True, /) -> list:
         """
         getDependentDocuments(sort=True)
 
@@ -1293,7 +1293,7 @@ class Document(FreeCAD.PropertyContainer):
         sort: whether to topologically sort the return list
         """
 
-    def getLinksTo(self, obj=None, options: int = 0, maxCount: int = 0, /):
+    def getLinksTo(self, obj=None, options: int = 0, maxCount: int = 0, /) -> tuple:
         """
         getLinksTo(obj, options=0, maxCount=0): return objects linked to 'obj'
 
@@ -1308,16 +1308,16 @@ class Document(FreeCAD.PropertyContainer):
     def getObject(self, arg1: int, /):
         """Return the object with the given name"""
 
-    def getObjectsByLabel(self, arg1: str, /):
+    def getObjectsByLabel(self, arg1: str, /) -> list:
         """
         Return the objects with the given label name.
         NOTE: It's possible that several objects have the same label name.
         """
 
-    def getTempFileName(self, arg1, /):
+    def getTempFileName(self, arg1, /) -> str:
         """Returns a file name with path in the temp directory of the document."""
 
-    def importLinks(self, object_object_=None, /):
+    def importLinks(self, object_object_=None, /) -> tuple:
         """
         importLinks(object|[object...])
 
@@ -1355,7 +1355,7 @@ class Document(FreeCAD.PropertyContainer):
         the same internal ID and will be undo/redo together.
         """
 
-    def recompute(self, arg1=None, arg2: bool = None, arg3: bool = None, /):
+    def recompute(self, arg1=None, arg2: bool = None, arg3: bool = None, /) -> int:
         """recompute(objs=None): Recompute the document and returns the amount of recomputed features"""
 
     def redo(self):
@@ -1376,7 +1376,7 @@ class Document(FreeCAD.PropertyContainer):
     def saveCopy(self, arg1: str, /):
         """Save a copy of the document under a new name to disk"""
 
-    def supportedTypes(self):
+    def supportedTypes(self) -> list:
         """A list of supported types of objects"""
 
     def undo(self):
@@ -1405,7 +1405,7 @@ class PropertyContainer(FreeCAD.Persistence):
     def getDocumentationOfProperty(self, arg1: str, /) -> str:
         """Return the documentation string of the property of this class."""
 
-    def getEditorMode(self, arg1: str, /):
+    def getEditorMode(self, arg1: str, /) -> list:
         """
         Get the behaviour of the property in the property editor.
         It returns a list of strings with the current mode. If the list is empty there are no special restrictions.
@@ -1413,13 +1413,13 @@ class PropertyContainer(FreeCAD.Persistence):
         If the list contains 'Hidden' then the item even doesn't appear in the property editor.
         """
 
-    def getEnumerationsOfProperty(self, arg1: str, /) -> None | object:
+    def getEnumerationsOfProperty(self, arg1: str, /) -> None | list:
         """Return all enumeration strings of the property of this class or None if not a PropertyEnumeration."""
 
     def getGroupOfProperty(self, arg1: str, /) -> str:
         """Return the name of the group which the property belongs to in this class. The properties sorted in different named groups for convenience."""
 
-    def getPropertyByName(self, name: str, checkOwner: int = 0, /):
+    def getPropertyByName(self, name: str, checkOwner: int = 0, /) -> object | tuple:
         """
         getPropertyByName(name,checkOwner=0)
 
@@ -1433,7 +1433,7 @@ class PropertyContainer(FreeCAD.Persistence):
                        2: return a tuple(owner,property_value)
         """
 
-    def getPropertyStatus(self, name: str = '', /):
+    def getPropertyStatus(self, name: str = '', /) -> list:
         """
         getPropertyStatus(name=''): Get property status.
 
@@ -1441,13 +1441,13 @@ class PropertyContainer(FreeCAD.Persistence):
         text names of the status.
         """
 
-    def getPropertyTouchList(self, arg1: str, /):
+    def getPropertyTouchList(self, arg1: str, /) -> tuple:
         """Return a list of index of touched values for list type properties."""
 
-    def getTypeIdOfProperty(self, arg1: str, /):
+    def getTypeIdOfProperty(self, arg1: str, /) -> str:
         """Returns the C++ class name of a named property."""
 
-    def getTypeOfProperty(self, arg1: str, /):
+    def getTypeOfProperty(self, arg1: str, /) -> list:
         """Return the type of a named property. This can be (Hidden,ReadOnly,Output) or any combination."""
 
     def restorePropertyContent(self, propertyname: str, buffer, /):
@@ -1514,22 +1514,22 @@ class ComplexGeoData(FreeCAD.Persistence):
     def countSubElements(self, arg1: str, /) -> int:
         """Return the number of elements of a type"""
 
-    def getElementTypes(self):
+    def getElementTypes(self) -> list:
         """Return a list of element types"""
 
-    def getFaces(self, arg1: float, /):
+    def getFaces(self, arg1: float, /) -> tuple:
         """Return a tuple of points and triangles with a given accuracy"""
 
-    def getFacesFromSubElement(self, arg1: str, arg2: int, /):
+    def getFacesFromSubElement(self, arg1: str, arg2: int, /) -> tuple:
         """Return vertexes and faces from a sub-element"""
 
-    def getLines(self, arg1: float, /):
+    def getLines(self, arg1: float, /) -> tuple:
         """Return a tuple of points and lines with a given accuracy"""
 
-    def getLinesFromSubElement(self, arg1: str, arg2: int, /):
+    def getLinesFromSubElement(self, arg1: str, arg2: int, /) -> tuple:
         """Return vertexes and lines from a sub-element"""
 
-    def getPoints(self, arg1: float, /):
+    def getPoints(self, arg1: float, /) -> tuple:
         """Return a tuple of points and normals with a given accuracy"""
 
     def transformGeometry(self, arg1: FreeCAD.Matrix, /):
@@ -1548,7 +1548,7 @@ def saveParameter(config: str = 'User parameter', /) -> None:
     """
 
 
-def Version():
+def Version() -> list:
     """Print the version to the output."""
 
 
@@ -1560,7 +1560,7 @@ def ConfigSet(string: str, string1: str, /) -> None:
     """ConfigSet(string, string) -- Set the given key to the given value."""
 
 
-def ConfigDump():
+def ConfigDump() -> dict:
     """Dump the configuration to the output."""
 
 
@@ -1572,7 +1572,7 @@ def changeImportModule(arg0: str, arg1: str, arg2: str, /):
     """Change the import module name of a registered filetype"""
 
 
-def getImportType(arg0: str = None, /):
+def getImportType(arg0: str = None, /) -> list | dict:
     """Get the name of the module that can import the filetype"""
 
 
@@ -1580,7 +1580,7 @@ def EndingAdd(arg0: str, arg1: str, /):
     """deprecated -- use addImportType"""
 
 
-def EndingGet(arg0: str = None, /):
+def EndingGet(arg0: str = None, /) -> list | dict:
     """deprecated -- use getImportType"""
 
 
@@ -1592,30 +1592,30 @@ def changeExportModule(arg0: str, arg1: str, arg2: str, /):
     """Change the export module name of a registered filetype"""
 
 
-def getExportType(arg0: str = None, /):
+def getExportType(arg0: str = None, /) -> list | dict:
     """Get the name of the module that can export the filetype"""
 
 
-def getResourceDir():
+def getResourceDir() -> str:
     """Get the root directory of all resources"""
 
 
-def getUserAppDataDir():
+def getUserAppDataDir() -> str:
     """Get the root directory of user settings"""
 
 
-def getUserMacroDir(bool: bool = False, /):
+def getUserMacroDir(bool: bool = False, /) -> str:
     """
     getUserMacroDir(bool=False) -> stringGet the directory of the user's macro directory
     If parameter is False (the default) it returns the standard path in theuser's home directory, otherwise it returns the user-defined path.
     """
 
 
-def getHelpDir():
+def getHelpDir() -> str:
     """Get the directory of the documentation"""
 
 
-def getHomePath():
+def getHomePath() -> str:
     """Get the home path, i.e. the parent directory of the executable"""
 
 
@@ -1691,7 +1691,7 @@ def getDocument(string: str, /):
     """
 
 
-def listDocuments(sort=False, /):
+def listDocuments(sort=False, /) -> dict:
     """
     listDocuments(sort=False) -> list
 
@@ -1726,11 +1726,11 @@ def getLogLevel(tag: str, /) -> int:
     """getLogLevel(tag) -- Get the log level of a string tag"""
 
 
-def checkLinkDepth(depth: int, /):
+def checkLinkDepth(depth: int, /) -> int:
     """checkLinkDepth(depth) -- check link recursion depth"""
 
 
-def getLinksTo(obj=None, options: int = 0, maxCount: int = 0, /):
+def getLinksTo(obj=None, options: int = 0, maxCount: int = 0, /) -> tuple:
     """
     getLinksTo(obj,options=0,maxCount=0) -- return the objects linked to 'obj'
 
@@ -1739,7 +1739,7 @@ def getLinksTo(obj=None, options: int = 0, maxCount: int = 0, /):
     """
 
 
-def getDependentObjects(arg0, arg1: int = None, /):
+def getDependentObjects(arg0, arg1: int = None, /) -> tuple:
     """
     getDependentObjects(obj|[obj,...], options=0)
     Return a list of dependent objects including the given objects.
@@ -1750,7 +1750,7 @@ def getDependentObjects(arg0, arg1: int = None, /):
     """
 
 
-def setActiveTransaction(name: str, persist=False, /):
+def setActiveTransaction(name: str, persist=False, /) -> int:
     """
     setActiveTransaction(name, persist=False) -- setup active transaction with the given name
 
@@ -1764,7 +1764,7 @@ def setActiveTransaction(name: str, persist=False, /):
     """
 
 
-def getActiveTransaction():
+def getActiveTransaction() -> tuple:
     """getActiveTransaction() -> (name,id) return the current active transaction name and ID"""
 
 

@@ -5,6 +5,8 @@ def findFunctionCall(text: str, bodyStart: int, bracketL='{', bracketR='}'):
     bracketDeep = 0
     bodyEnd = 0
 
+    # TODO P1 there are macros where brackets do not match:
+    #  #if 0 { #else { #endif }
     sliceIt = islice(text, bodyStart, len(text))
     for bodyEnd, char in enumerate(sliceIt, bodyStart):
         if char == bracketL:

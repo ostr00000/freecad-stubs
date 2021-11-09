@@ -1,5 +1,5 @@
 # Translate.cpp
-def translate(context: str, sourcetext: str, disambiguation: str = None, n: int = -1, /):
+def translate(context: str, sourcetext: str, disambiguation: str = None, n: int = -1, /) -> str:
     """
     translate(context, sourcetext, disambiguation = None, n=-1)
     -- Returns the translation text for sourceText, by querying

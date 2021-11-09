@@ -88,7 +88,7 @@ def countObjectsOfType(string: str, string1: str = None, resolve: int = 1, /) ->
     """
 
 
-def getSelection(docName: str = '', resolve: int = 1, single=False, /):
+def getSelection(docName: str = '', resolve: int = 1, single=False, /) -> list:
     """
     Return a list of selected objects
     getSelection(docName='',resolve=1,single=False)
@@ -100,7 +100,7 @@ def getSelection(docName: str = '', resolve: int = 1, single=False, /):
     """
 
 
-def getPickedList(docName: str = '', /):
+def getPickedList(docName: str = '', /) -> list:
     """
     Return a list of objects under the last mouse click
     getPickedList(docName='')
@@ -116,14 +116,14 @@ def enablePickedList(boolean=None, /):
     """
 
 
-def getCompleteSelection(resolve: int = 1, /):
+def getCompleteSelection(resolve: int = 1, /) -> list:
     """
     Return a list of selected objects of all documents.
     getCompleteSelection(resolve=1)
     """
 
 
-def getSelectionEx(docName: str = '', resolve: int = 1, single=False, /):
+def getSelectionEx(docName: str = '', resolve: int = 1, single=False, /) -> list:
     """
     Return a list of SelectionObjects
     getSelectionEx(docName='',resolve=1, single=False)
@@ -219,14 +219,14 @@ def hasSelection(docName: str = '', resolve=False, /) -> bool:
     """
 
 
-def hasSubSelection(docName: str = '', subElement: bool = False, /):
+def hasSubSelection(docName: str = '', subElement: bool = False, /) -> bool:
     """
     check if there is any selection with subname
     hasSubSelection(docName='',subElement=False)
     """
 
 
-def getSelectionFromStack(docName: str = '', resolve: int = 1, index: int = 0, /):
+def getSelectionFromStack(docName: str = '', resolve: int = 1, index: int = 0, /) -> list:
     """
     Return a list of SelectionObjects from selection stack
     getSelectionFromStack(docName='',resolve=1,index=0)

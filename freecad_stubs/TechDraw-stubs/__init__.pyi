@@ -276,7 +276,7 @@ class DrawViewClip(TechDraw.DrawView):
     def addView(self, DrawView: FreeCAD.DocumentObject, /):
         """addView(DrawView) - Add a View to this ClipView"""
 
-    def getChildViewNames(self):
+    def getChildViewNames(self) -> list:
         """getChildViewNames() - get a list of the DrawViews in this ClipView"""
 
     def removeView(self, DrawView: FreeCAD.DocumentObject, /):
@@ -873,7 +873,7 @@ class DrawSVGTemplate(TechDraw.DrawTemplate):
     def getEditFieldContent(self, EditFieldName: str, /):
         """getEditFieldContent(EditFieldName) - returns the content of a specific Editable Text Field"""
 
-    def setEditFieldContent(self, EditFieldName: str, NewContent: str, /):
+    def setEditFieldContent(self, EditFieldName: str, NewContent: str, /) -> bool:
         """setEditFieldContent(EditFieldName, NewContent) - sets a specific Editable Text Field to a new value"""
 
 
@@ -1246,16 +1246,16 @@ class DrawViewPart(TechDraw.DrawView):
     def formatGeometricEdge(self, index: int, style: int, weight: float, color, visible: int, /) -> None:
         """formatGeometricEdge(index, style, weight, color, visible). Returns None."""
 
-    def getCenterLine(self, id: str, /):
+    def getCenterLine(self, id: str, /) -> None:
         """cl = getCenterLine(id) - returns CenterLine with unique id."""
 
-    def getCenterLineBySelection(self, name: str, /):
+    def getCenterLineBySelection(self, name: str, /) -> None:
         """cl = getCenterLineBySelection(name) - returns CenterLine by name (Edge25).  Used in selections"""
 
-    def getCosmeticEdge(self, id: str, /):
+    def getCosmeticEdge(self, id: str, /) -> None:
         """ce = getCosmeticEdge(id) - returns CosmeticEdge with unique id."""
 
-    def getCosmeticEdgeBySelection(self, name: str, /):
+    def getCosmeticEdgeBySelection(self, name: str, /) -> None:
         """ce = getCosmeticEdgeBySelection(name) - returns CosmeticEdge by name (Edge25).  Used in selections"""
 
     def getCosmeticVertex(self, id: str, /):
@@ -1688,23 +1688,23 @@ class GeomFormat(FreeCAD.PyObjectBase):
 
 
 # AppTechDrawPy.cpp
-def edgeWalker(edgePile: list, inclBiggest=None, /) -> None | object:
+def edgeWalker(edgePile: list, inclBiggest=None, /) -> None | list:
     """[wires] = edgeWalker(edgePile,inclBiggest) -- Planar graph traversal finds wires in edge pile."""
 
 
-def findOuterWire(edgeList: list, /) -> None | object:
+def findOuterWire(edgeList: list, /) -> None:
     """wire = findOuterWire(edgeList) -- Planar graph traversal finds OuterWire in edge pile."""
 
 
-def findShapeOutline(shape, scale: float, direction, /) -> None | object:
+def findShapeOutline(shape, scale: float, direction, /) -> None:
     """wire = findShapeOutline(shape,scale,direction) -- Project shape in direction and find outer wire of result."""
 
 
-def viewPartAsDxf(DrawViewPart, /):
+def viewPartAsDxf(DrawViewPart, /) -> str:
     """string = viewPartAsDxf(DrawViewPart) -- Return the edges of a DrawViewPart in Dxf format."""
 
 
-def viewPartAsSvg(DrawViewPart, /):
+def viewPartAsSvg(DrawViewPart, /) -> str:
     """string = viewPartAsSvg(DrawViewPart) -- Return the edges of a DrawViewPart in Svg format."""
 
 
@@ -1716,7 +1716,7 @@ def writeDXFPage(page, filename: str, /) -> None:
     """writeDXFPage(page,filename): Exports a DrawPage to a DXF file."""
 
 
-def findCentroid(shape, direction, /) -> None | object:
+def findCentroid(shape, direction, /) -> None:
     """vector = findCentroid(shape,direction): finds geometric centroid of shape looking in direction."""
 
 
@@ -1732,5 +1732,5 @@ def makeDistanceDim3d(arg1, arg2, arg3, arg4, /) -> None:
     """makeDistanceDim(DrawViewPart, dimType, 3dFromPoint, 3dToPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 3d model points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."""
 
 
-def makeGeomHatch(face, patScale: float = None, patName: str = None, patFile: str = None, /) -> None | object:
+def makeGeomHatch(face, patScale: float = None, patName: str = None, patFile: str = None, /) -> None | Part.Compound:
     """makeGeomHatch(face, [patScale], [patName], [patFile]) -- draw a geom hatch on a given face, using optionally the given scale (default 1) and a given pattern name (ex. Diamond) and .pat file (the default pattern name and/or .pat files set in preferences are used if none are given). Returns a Part compound shape."""

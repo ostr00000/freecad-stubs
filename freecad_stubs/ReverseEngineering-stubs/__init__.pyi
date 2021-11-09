@@ -44,7 +44,7 @@ def filterVoxelGrid(Points: Points.Points, DimX: float, DimY: float = None, DimZ
     """filterVoxelGrid(dim)."""
 
 
-def normalEstimation(Points: Points.Points, KSearch: int = 0, SearchRadius: float = 0):
+def normalEstimation(Points: Points.Points, KSearch: int = 0, SearchRadius: float = 0) -> list:
     """
     normalEstimation(Points,[KSearch=0, SearchRadius=0]) -> Normals
     KSearch is an int and used to search the k-nearest neighbours in
@@ -65,13 +65,13 @@ def normalEstimation(Points: Points.Points, KSearch: int = 0, SearchRadius: floa
     """
 
 
-def regionGrowingSegmentation(Points: Points.Points, KSearch: int = None, Normals=None):
+def regionGrowingSegmentation(Points: Points.Points, KSearch: int = None, Normals=None) -> list:
     """regionGrowingSegmentation()."""
 
 
-def featureSegmentation(Points: Points.Points, KSearch: int = None):
+def featureSegmentation(Points: Points.Points, KSearch: int = None) -> list:
     """featureSegmentation()."""
 
 
-def sampleConsensus(SacModel: str, Points: Points.Points, Normals=None):
+def sampleConsensus(SacModel: str, Points: Points.Points, Normals=None) -> dict:
     """sampleConsensus()."""

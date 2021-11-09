@@ -60,7 +60,7 @@ class Vector(FreeCAD.PyObjectBase):
     @z.setter
     def z(self, value: float): ...
 
-    def __reduce__(self):
+    def __reduce__(self) -> tuple:
         """
         __reduce__()
                               Serialization of Vector objects
@@ -78,7 +78,7 @@ class Vector(FreeCAD.PyObjectBase):
         					      returns the cross product between this and another vector
         """
 
-    def distanceToLine(self, Vector, Vector2, /):
+    def distanceToLine(self, Vector, Vector2, /) -> float:
         """
         distanceToLine(Vector,Vector)
         						  returns the distance between this vector and a line defined by
@@ -92,45 +92,45 @@ class Vector(FreeCAD.PyObjectBase):
         						  a base point and a direction
         """
 
-    def distanceToPlane(self, Vector, Vector2, /):
+    def distanceToPlane(self, Vector, Vector2, /) -> float:
         """
         distanceToPlane(Vector,Vector)
         						  returns the distance between this vector and a plane defined by
         						  a base point and a normal
         """
 
-    def distanceToPoint(self, Vector: FreeCAD.Vector, /):
+    def distanceToPoint(self, Vector: FreeCAD.Vector, /) -> float:
         """
         distanceToPoint(Vector)
         					returns the distance to another point
         """
 
-    def dot(self, Vector: FreeCAD.Vector, /):
+    def dot(self, Vector: FreeCAD.Vector, /) -> float:
         """
         dot(Vector)
         						  returns the dot product of the this vector with another one
         """
 
-    def getAngle(self, Vector: FreeCAD.Vector, /):
+    def getAngle(self, Vector: FreeCAD.Vector, /) -> float:
         """
         getAngle(Vector)
         					      returns the angle in radians between this and another vector
         """
 
-    def isEqual(self, Vector: FreeCAD.Vector, tolerance: float, /):
+    def isEqual(self, Vector: FreeCAD.Vector, tolerance: float, /) -> bool:
         """
         isEqual(Vector, tolerance) -> Boolean
                                   If the distance to the given point is less or equal to the tolerance
                                   bith points are considered equal.
         """
 
-    def isOnLineSegment(self, Vector, Vector2, /):
+    def isOnLineSegment(self, Vector, Vector2, /) -> bool:
         """
         isOnLineSegment(Vector, Vector)
         					      checks if Vector is on a line segment
         """
 
-    def multiply(self, Float: float, /):
+    def multiply(self, Float: float, /) -> FreeCAD.Vector:
         """
         multiply(Float)
         					      multiplies (scales) this vector by a single factor
@@ -142,13 +142,13 @@ class Vector(FreeCAD.PyObjectBase):
         					      returns the negative (opposite) of this vector
         """
 
-    def normalize(self):
+    def normalize(self) -> FreeCAD.Vector:
         """
         normalize()
         						  normalizes the vector to the length of 1.0
         """
 
-    def projectToLine(self, Vector_pnt, Vector_vec, /):
+    def projectToLine(self, Vector_pnt, Vector_vec, /) -> FreeCAD.Vector:
         """
         projectToLine(Vector pnt,Vector vec)
         						  Projects the point 'pnt' on a line that goes through the origin with the direction vector 'vec'.
@@ -157,13 +157,13 @@ class Vector(FreeCAD.PyObjectBase):
         						  NOTE: This method modifies the vector instance 'self'.
         """
 
-    def projectToPlane(self, Vector, Vector2, /):
+    def projectToPlane(self, Vector, Vector2, /) -> FreeCAD.Vector:
         """
         projectToPlane(Vector,Vector)
         						  projects the vector on a plane defined by a base point and a normal
         """
 
-    def scale(self, Float: float, Float2: float, Float3: float, /):
+    def scale(self, Float: float, Float2: float, Float3: float, /) -> FreeCAD.Vector:
         """
         scale(Float,Float,Float)
         					      scales (multiplies) this vector by a factor
@@ -324,7 +324,7 @@ class Rotation(FreeCAD.PyObjectBase):
     def RawAxis(self) -> FreeCAD.Vector:
         """The rotation axis without normalization"""
 
-    def getYawPitchRoll(self):
+    def getYawPitchRoll(self) -> tuple:
         """
         getYawPitchRoll() -> list
         					Get the Euler angles of this rotation
@@ -397,7 +397,7 @@ class Rotation(FreeCAD.PyObjectBase):
         					Spherical linear interpolation of this and a given rotation. The float must be in the range of 0 and 1
         """
 
-    def toEulerAngles(self, seq: str = '', /):
+    def toEulerAngles(self, seq: str = '', /) -> list | tuple:
         """
         toEulerAngles(seq='') -> list
                             Get the Euler angles in a given sequence for this rotation.
@@ -627,7 +627,7 @@ class BoundBox(FreeCAD.PyObjectBase):
         A negative value shrinks the box.
         """
 
-    def getEdge(self, Int: int, /):
+    def getEdge(self, Int: int, /) -> tuple:
         """
         method getEdge(Int)
         Get the edge points of the given index. The index must be in the range of [0,11]
@@ -647,7 +647,7 @@ class BoundBox(FreeCAD.PyObjectBase):
         Get the point of the given index. The index must be in the range of [0,7]
         """
 
-    def intersect(self, BoundBox_Vector_Base: FreeCAD.Vector, Vector_Dir: FreeCAD.Vector, /):
+    def intersect(self, BoundBox_Vector_Base: FreeCAD.Vector, Vector_Dir: FreeCAD.Vector, /) -> bool:
         """
         method intersect(BoundBox|Vector Base, Vector Dir)
         Checks if the given object intersects with the BoundBox. That can be:
@@ -661,20 +661,20 @@ class BoundBox(FreeCAD.PyObjectBase):
         Returns the intersection of this and the given bounding box.
         """
 
-    def isCutPlane(self, Vector_Base: FreeCAD.Vector, Vector_Normal: FreeCAD.Vector, /):
+    def isCutPlane(self, Vector_Base: FreeCAD.Vector, Vector_Normal: FreeCAD.Vector, /) -> bool:
         """
         method bool isCutPlane(Vector Base, Vector Normal)
         Check if the plane specified by Base and Normal intersects (cuts) the BoundBox
         """
 
     @typing.overload
-    def isInside(self, Vector_Base_BoundBox_box: tuple, /): ...
+    def isInside(self, Vector_Base_BoundBox_box: tuple, /) -> bool: ...
 
     @typing.overload
-    def isInside(self, Vector_Base_BoundBox_box: FreeCAD.Vector, /): ...
+    def isInside(self, Vector_Base_BoundBox_box: FreeCAD.Vector, /) -> bool: ...
 
     @typing.overload
-    def isInside(self, Vector_Base_BoundBox_box: FreeCAD.BoundBox, /):
+    def isInside(self, Vector_Base_BoundBox_box: FreeCAD.BoundBox, /) -> bool:
         """
         method bool isInside(Vector Base|BoundBox box)
         Check if the point or bounding box is inside this bounding box
@@ -1242,7 +1242,7 @@ class BaseClass(FreeCAD.PyObjectBase):
     def TypeId(self) -> str:
         """Is the type of the FreeCAD object with module domain"""
 
-    def getAllDerivedFrom(self):
+    def getAllDerivedFrom(self) -> list:
         """Returns all descendants"""
 
     def isDerivedFrom(self, arg1: str, /) -> bool:
@@ -1394,7 +1394,7 @@ class Matrix(FreeCAD.PyObjectBase):
         Compute the determinant of the matrix
         """
 
-    def hasScale(self, tol: float = None, /):
+    def hasScale(self, tol: float = None, /) -> int:
         """
         hasScale(tol=None)
         Return 0 is no scale factor, 1 for uniform scaling, -1 for non-uniform scaling.
@@ -1662,16 +1662,16 @@ class TypeId(FreeCAD.PyObjectBase):
     def fromName(arg0: str, /) -> FreeCAD.TypeId:
         """Returns a type object by name"""
 
-    def getAllDerived(self):
+    def getAllDerived(self) -> list:
         """Returns all descendants"""
 
     @staticmethod
     @typing.overload
-    def getAllDerivedFrom(arg0: str, /): ...
+    def getAllDerivedFrom(arg0: str, /) -> list: ...
 
     @staticmethod
     @typing.overload
-    def getAllDerivedFrom(arg0: FreeCAD.TypeId, /):
+    def getAllDerivedFrom(arg0: FreeCAD.TypeId, /) -> list:
         """Returns all descendants"""
 
     @staticmethod

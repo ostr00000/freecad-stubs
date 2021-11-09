@@ -5,6 +5,8 @@ import FreeCAD
 import FreeCADGui
 import FreeCADGui.Selection
 import FreeCADTemplates
+import qtpy.QtGui
+import qtpy.QtWidgets
 
 _T = typing.TypeVar("_T")
 Triple_t: typing.TypeAlias = tuple[_T, _T, _T]
@@ -44,7 +46,7 @@ class Workbench(FreeCAD.BaseClass):
     def activate(self):
         """Activate this workbench"""
 
-    def getToolbarItems(self):
+    def getToolbarItems(self) -> dict:
         """Show a dict of all toolbars and their commands"""
 
     def listCommandbars(self):
@@ -56,7 +58,7 @@ class Workbench(FreeCAD.BaseClass):
     def listToolbars(self):
         """Show a list of all toolbars"""
 
-    def name(self):
+    def name(self) -> str:
         """Return the workbench name"""
 
 
@@ -91,7 +93,7 @@ class LinkView(FreeCAD.BaseClass):
     def getBoundBox(self, vobj, /):
         """getBoundBox(vobj=None): get the bounding box."""
 
-    def getChildren(self):
+    def getChildren(self) -> tuple:
         """Get children view objects"""
 
     def getDetailPath(self, arg1: str, arg2, /):
@@ -234,7 +236,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
     def addDisplayMode(self, arg1, arg2: str, /):
         """Add a new display mode to the view provider"""
 
-    def addProperty(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, arg5: int = None, arg6: bool = None, arg7: bool = None, /):
+    def addProperty(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, arg5: int = None, arg6: bool = None, arg7: bool = None, /) -> FreeCADGui.ViewProvider:
         """
         Add a generic property.
         addProperty(string, string)
@@ -260,7 +262,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         canDropObject(obj=None,owner=None,subname=None)
         """
 
-    def claimChildren(self):
+    def claimChildren(self) -> list:
         """Returns list of objects that are to be grouped in tree under this object."""
 
     def doubleClicked(self) -> bool:
@@ -288,7 +290,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         view: the MDIView, default to active view
         """
 
-    def getDetailPath(self, subname: str, path, append=True, /):
+    def getDetailPath(self, subname: str, path, append=True, /) -> bool:
         """
         return Coin detail and path of an subelement
         getDetailPath(subname,path,append=True)
@@ -299,7 +301,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         switch node of this view provider.
         """
 
-    def getElementColors(self, elementName: str = None, /):
+    def getElementColors(self, elementName: str = None, /) -> dict:
         """getElementColors(elementName=None) -> dict(elementName:color)"""
 
     def getElementPicked(self, pickPoint, /) -> str:
@@ -314,10 +316,10 @@ class ViewProvider(FreeCAD.ExtensionContainer):
     def isVisible(self) -> bool:
         """Check if the object is visible"""
 
-    def listDisplayModes(self):
+    def listDisplayModes(self) -> list:
         """Show a list of all display modes"""
 
-    def partialRender(self, sub=None, clear=False, /):
+    def partialRender(self, sub=None, clear=False, /) -> int:
         """
         render only part of the object
         partialRender(sub=None,clear=False)
@@ -334,7 +336,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         Note, you can only remove user-defined properties, not built-in ones.
         """
 
-    def replaceObject(self, oldObj: FreeCAD.DocumentObject, newObj: FreeCAD.DocumentObject, /):
+    def replaceObject(self, oldObj: FreeCAD.DocumentObject, newObj: FreeCAD.DocumentObject, /) -> int:
         """
         replace a child object
         replaceObject(oldObj, newObj) -> Int
@@ -362,7 +364,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
     def signalChangeIcon(self):
         """Trigger icon changed signal"""
 
-    def supportedProperties(self):
+    def supportedProperties(self) -> list:
         """A list of supported property types"""
 
     def toString(self) -> str:
@@ -491,19 +493,19 @@ class Command(FreeCAD.PyObjectBase):
     """FreeCAD Python wrapper of Command functions"""
 
     @staticmethod
-    def get(string: str, /):
+    def get(string: str, /) -> FreeCADGui.Command:
         """
         Get a given command by name or None if it doesn't exist.
         get(string) -> Command
         """
 
-    def getAction(self):
+    def getAction(self) -> list:
         """
         Return the associated QAction object.
         getAction() -> list of QAction
         """
 
-    def getInfo(self):
+    def getInfo(self) -> list:
         """
         Return information about this command.
         getInfo() -> list of strings
@@ -511,7 +513,7 @@ class Command(FreeCAD.PyObjectBase):
         Usage: menuText, tooltipText, whatsThisText, statustipText, pixmapText, shortcutText.
         """
 
-    def getShortcut(self):
+    def getShortcut(self) -> str:
         """
         Returns string representing shortcut key accelerator for command.
         getShortcut() -> string
@@ -524,14 +526,14 @@ class Command(FreeCAD.PyObjectBase):
         """
 
     @staticmethod
-    def listAll():
+    def listAll() -> list:
         """
         Returns the name of all commands.
         listAll() -> list of strings
         """
 
     @staticmethod
-    def listByShortcut(string: str, bool_bUseRegExp: int = False, /):
+    def listByShortcut(string: str, bool_bUseRegExp: int = False, /) -> list:
         """
         Returns a list of all commands, filtered by shortcut.
         listByShortcut(string, bool bUseRegExp=False) -> list of strings
@@ -635,7 +637,7 @@ class AxisOrigin(FreeCAD.BaseClass):
     def Scale(self) -> float:
         """Get/set auto scaling factor, 0 to disable"""
 
-    def getDetailPath(self, subname: str, path, /):
+    def getDetailPath(self, subname: str, path, /) -> bool:
         """
         getDetailPath(subname,path): return Coin detail and path of an subelement
 
@@ -951,7 +953,7 @@ class MDIViewPy:
         add or set a new active object
         """
 
-    def getActiveObject(self, name: str, resolve=True, /) -> None | object:
+    def getActiveObject(self, name: str, resolve=True, /) -> None | object | tuple:
         """
         getActiveObject(name,resolve=True)
         returns the active object for the given type
@@ -959,7 +961,7 @@ class MDIViewPy:
 
 
 # Application.cpp
-def subgraphFromObject(object: FreeCAD.DocumentObject, /) -> object | None:
+def subgraphFromObject(object: FreeCAD.DocumentObject, /) -> None:
     """
     subgraphFromObject(object) -> Node
 
@@ -1052,7 +1054,7 @@ class View3DInventorPy:
     def zoomOut(self) -> None:
         """zoomOut()"""
 
-    def viewPosition(self, arg1: FreeCAD.Placement = None, arg2: int = None, arg3: int = None, /) -> None | object:
+    def viewPosition(self, arg1: FreeCAD.Placement = None, arg2: int = None, arg3: int = None, /) -> None | FreeCAD.Placement:
         """viewPosition()"""
 
     def startAnimating(self, arg1: float, arg2: float, arg3: float, arg4: float, /) -> None:
@@ -1083,7 +1085,7 @@ class View3DInventorPy:
     def getStereoType(self) -> str:
         """getStereoType()"""
 
-    def listStereoTypes(self):
+    def listStereoTypes(self) -> list:
         """listStereoTypes()"""
 
     def saveImage(self, arg1: str, arg2: int = None, arg3: int = None, arg4: str = None, arg5: str = None, arg6: int = None, /) -> None:
@@ -1098,7 +1100,7 @@ class View3DInventorPy:
     def getCameraNode(self):
         """getCameraNode()"""
 
-    def getViewDirection(self):
+    def getViewDirection(self) -> FreeCAD.Vector:
         """
         getViewDirection() --> tuple of integers
         returns the direction vector the view is currently pointing at as tuple with xyz values
@@ -1117,7 +1119,7 @@ class View3DInventorPy:
     def setCameraOrientation(self, arg1, arg2: bool = None, /) -> None:
         """setCameraOrientation()"""
 
-    def getCameraOrientation(self):
+    def getCameraOrientation(self) -> FreeCAD.Rotation:
         """getCameraOrientation()"""
 
     def getCameraType(self) -> str:
@@ -1130,10 +1132,10 @@ class View3DInventorPy:
     def setCameraType(self, arg1: str, /) -> None:
         """setCameraType()"""
 
-    def listCameraTypes(self):
+    def listCameraTypes(self) -> list:
         """listCameraTypes()"""
 
-    def getCursorPos(self):
+    def getCursorPos(self) -> tuple:
         """
         getCursorPos() -> tuple of integers
 
@@ -1141,7 +1143,7 @@ class View3DInventorPy:
         viewport region.
         """
 
-    def getObjectInfo(self, tuple_int_int_, pick_radius: float = None, /):
+    def getObjectInfo(self, tuple_int_int_, pick_radius: float = None, /) -> None:
         """
         getObjectInfo(tuple(int,int), [pick_radius]) -> dictionary or None
 
@@ -1151,17 +1153,17 @@ class View3DInventorPy:
         If no geometry was found 'None' is returned, instead.
         """
 
-    def getObjectsInfo(self, tuple_int_int_, pick_radius: float = None, /):
+    def getObjectsInfo(self, tuple_int_int_, pick_radius: float = None, /) -> None:
         """
         getObjectsInfo(tuple(int,int), [pick_radius]) -> dictionary or None
 
         Does the same as getObjectInfo() but returns a list of dictionaries or None.
         """
 
-    def getSize(self):
+    def getSize(self) -> tuple:
         """getSize()"""
 
-    def getPoint(self, arg1: int, arg2: int, /):
+    def getPoint(self, arg1: int, arg2: int, /) -> FreeCAD.Vector:
         """
         getPoint(pixel coords (as integer)) -> 3D vector
 
@@ -1169,14 +1171,14 @@ class View3DInventorPy:
         pixel coordinates).
         """
 
-    def getPointOnScreen(self, arg1: FreeCAD.Vector, /):
+    def getPointOnScreen(self, arg1: FreeCAD.Vector, /) -> tuple:
         """
         getPointOnScreen(3D vector) -> pixel coords (as integer)
 
         Return the projected 3D point (in pixel coordinates).
         """
 
-    def addEventCallback(self, arg1: str, arg2, /):
+    def addEventCallback(self, arg1: str, arg2, /) -> typing.Callable:
         """addEventCallback()"""
 
     def removeEventCallback(self, arg1: str, arg2, /) -> None:
@@ -1194,16 +1196,16 @@ class View3DInventorPy:
     def getViewer(self):
         """getViewer()"""
 
-    def addEventCallbackPivy(self, arg1, arg2, arg3: int = None, /):
+    def addEventCallbackPivy(self, arg1, arg2, arg3: int = None, /) -> typing.Callable:
         """addEventCallbackPivy()"""
 
-    def removeEventCallbackPivy(self, arg1, arg2, arg3: int = None, /):
+    def removeEventCallbackPivy(self, arg1, arg2, arg3: int = None, /) -> typing.Callable:
         """removeEventCallbackPivy()"""
 
-    def addEventCallbackSWIG(self, arg1, arg2, arg3: int = None, /):
+    def addEventCallbackSWIG(self, arg1, arg2, arg3: int = None, /) -> typing.Callable:
         """Deprecated -- use addEventCallbackPivy()"""
 
-    def removeEventCallbackSWIG(self, arg1, arg2, arg3: int = None, /):
+    def removeEventCallbackSWIG(self, arg1, arg2, arg3: int = None, /) -> typing.Callable:
         """Deprecated -- use removeEventCallbackPivy()"""
 
     def listNavigationTypes(self):
@@ -1221,7 +1223,7 @@ class View3DInventorPy:
     def hasAxisCross(self) -> bool:
         """check if the big axis-cross is on or off()"""
 
-    def addDraggerCallback(self, SoDragger, String_CallbackType: str, function, /):
+    def addDraggerCallback(self, SoDragger, String_CallbackType: str, function, /) -> typing.Callable:
         """
         addDraggerCallback(SoDragger, String CallbackType, function)
         Add a DraggerCalback function to the coin node
@@ -1229,7 +1231,7 @@ class View3DInventorPy:
         'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'
         """
 
-    def removeDraggerCallback(self, SoDragger, String_CallbackType: str, function, /):
+    def removeDraggerCallback(self, SoDragger, String_CallbackType: str, function, /) -> typing.Callable:
         """
         removeDraggerCallback(SoDragger, String CallbackType, function)
         Remove the DraggerCalback function from the coin node
@@ -1243,13 +1245,13 @@ class View3DInventorPy:
         add or set a new active object
         """
 
-    def getActiveObject(self, name: str, resolve=True, /) -> None | object:
+    def getActiveObject(self, name: str, resolve=True, /) -> None | object | tuple:
         """
         getActiveObject(name,resolve=True)
         returns the active object for the given type
         """
 
-    def getViewProvidersOfType(self, name: str, /):
+    def getViewProvidersOfType(self, name: str, /) -> list:
         """
         getViewProvidersOfType(name)
         returns a list of view providers for the given type
@@ -1267,7 +1269,7 @@ class View3DInventorPy:
     def hasClippingPlane(self) -> bool:
         """hasClippingPlane(): check whether this clipping plane is active"""
 
-    def graphicsView(self):
+    def graphicsView(self) -> qtpy.QtWidgets.QGraphicsView:
         """graphicsView(): Access this view as QGraphicsView"""
 
     def boxZoom(self, XMin: int, YMin: int, XMax: int, YMax: int) -> None:
@@ -1289,7 +1291,7 @@ class View3DInventorPy:
 class PyResource:
     """PyResource"""
 
-    def value(self, arg1: str, arg2: str, /): ...
+    def value(self, arg1: str, arg2: str, /) -> None: ...
 
     def setValue(self, arg1: str, arg2: str, arg3, /) -> None: ...
 
@@ -1538,7 +1540,7 @@ def addIcon(arg0: str, arg1: str, arg2: str = None, /) -> None:
     """
 
 
-def getIcon(string: str, /):
+def getIcon(string: str, /) -> qtpy.QtGui.QIcon:
     """
     getIcon(string) -> QIcon
 
@@ -1554,7 +1556,7 @@ def isIconCached(String: str, /) -> bool:
     """
 
 
-def getMainWindow():
+def getMainWindow() -> qtpy.QtWidgets.QMainWindow:
     """
     getMainWindow() -> QMainWindow
 
@@ -1595,7 +1597,7 @@ def setLocale(arg0: str, /) -> None:
     """
 
 
-def supportedLocales():
+def supportedLocales() -> dict:
     """
     supportedLocales() -> dict
 
@@ -1805,7 +1807,7 @@ def removeDocumentObserver(arg0, /):
     """
 
 
-def listUserEditModes():
+def listUserEditModes() -> list:
     """
     listUserEditModes() -> list
 
@@ -1918,7 +1920,7 @@ class View3DInventorViewerPy:
     def getFocalDistance(self) -> float:
         """getFocalDistance() -> float"""
 
-    def getPoint(self, x: int, y: int, /):
+    def getPoint(self, x: int, y: int, /) -> FreeCAD.Vector:
         """getPoint(x, y) -> Base::Vector(x,y,z)"""
 
     def getPickRadius(self) -> float:

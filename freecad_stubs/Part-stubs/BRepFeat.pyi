@@ -25,7 +25,7 @@ class MakePrism(FreeCAD.PyObjectBase):
     def barycCurve(self):
         """Generates a curve along the center of mass of the primitive."""
 
-    def curves(self):
+    def curves(self) -> tuple:
         """Returns the list of curves S parallel to the axis of the prism."""
 
     def init(self, Sbase: Part.Shape, Pbase: Part.Shape, Skface: Part.Face, Direction: FreeCAD.Vector, Fuse: int, Modify: bool):

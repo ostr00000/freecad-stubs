@@ -23,11 +23,11 @@ def parseQuantity(arg0: str, /) -> FreeCAD.Quantity:
 
 
 @typing.overload
-def listSchemas() -> object | str: ...
+def listSchemas() -> tuple | str: ...
 
 
 @typing.overload
-def listSchemas(int: int, /) -> object | str:
+def listSchemas(int: int, /) -> tuple | str:
     """
     listSchemas() -> a tuple of schemas
 
@@ -51,7 +51,7 @@ def setSchema(int: int, /):
     """
 
 
-def schemaTranslate(Quantity: FreeCAD.Quantity, int: int, /):
+def schemaTranslate(Quantity: FreeCAD.Quantity, int: int, /) -> tuple:
     """
     schemaTranslate(Quantity, int) -> tuple
 
