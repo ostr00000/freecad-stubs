@@ -561,11 +561,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def meshFromSegment(self, arg1, /) -> MeshModule.Mesh:
         """Create a mesh from segment"""
 
-    @typing.overload
-    def nearestFacetOnRay(self, tuple, tuple2, /) -> dict | list | int | float | tuple: ...
-
-    @typing.overload
-    def nearestFacetOnRay(self, tuple: float, tuple2: int = None, /) -> dict | list | int | float | tuple:
+    def nearestFacetOnRay(self, tuple, tuple2, /) -> dict:
         """
         nearestFacetOnRay(tuple, tuple) -> dict
         Get the index and intersection point of the nearest facet to a ray.

@@ -1,14 +1,40 @@
+from collections import deque
+from collections.abc import Iterable, Iterator
 from itertools import islice
+
+
+def _skipAdditionalDirectiveBlocks(it: Iterator[tuple[int, str]]):
+    directiveStack = [True]
+    buffer = deque(maxlen=8)
+
+    for index, char in it:
+        buffer.append(char)
+        if char in ' \n\t' and '#' in buffer:
+            text = ''.join(buffer)[:-1]
+            if text.endswith('#endif'):
+                directiveStack.pop()
+                buffer.clear()
+            elif text.endswith('#elif') or text.endswith('#else'):
+                directiveStack[-1] = False
+                buffer.clear()
+            elif text.endswith('#if') or text.endswith('#ifdef') or text.endswith('#ifndef'):
+                directiveStack.append(True)
+                buffer.clear()
+
+        if directiveStack[-1]:
+            yield index, char
 
 
 def findFunctionCall(text: str, bodyStart: int, bracketL='{', bracketR='}'):
     bracketDeep = 0
     bodyEnd = 0
 
-    # TODO P1 there are macros where brackets do not match:
-    #  #if 0 { #else { #endif }
-    sliceIt = islice(text, bodyStart, len(text))
-    for bodyEnd, char in enumerate(sliceIt, bodyStart):
+    sliceIt: Iterable[str] = islice(text, bodyStart, len(text))
+    it = enumerate(sliceIt, bodyStart)
+    if '#if' in text:
+        it = _skipAdditionalDirectiveBlocks(it)
+
+    for bodyEnd, char in it:
         if char == bracketL:
             bracketDeep += 1
         elif char == bracketR:
