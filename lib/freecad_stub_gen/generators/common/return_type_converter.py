@@ -1,4 +1,7 @@
 import re
+from dataclasses import dataclass
+from enum import auto, Enum
+from functools import cached_property
 from inspect import Signature
 
 from freecad_stub_gen.generators.common.annotation_parameter import RawRepr
@@ -8,6 +11,44 @@ from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
 from freecad_stub_gen.generators.common.names import getClassWithModulesFromPointer, getModuleName
 from freecad_stub_gen.generators.common.py_build_converter import parsePyBuildValues
 from freecad_stub_gen.util import OrderedSet
+
+
+@dataclass
+class AffixCmp:
+    class AffixType(Enum):
+        PREFIX = auto()
+        INFIX = auto()
+        SUFFIX = auto()
+
+    text: str
+    type: AffixType
+
+    def __eq__(self, other: str):
+        match self.type:
+            case self.AffixType.PREFIX:
+                return self.text.startswith(other)
+            case self.AffixType.SUFFIX:
+                return self.text.endswith(other)
+            case self.AffixType.INFIX:
+                return other in self.text
+            case _:
+                raise NotImplementedError
+
+
+class StrWrapper(str):
+    __match_args__ = ('start', 'contain', 'end')
+
+    @cached_property
+    def start(self):
+        return AffixCmp(self, AffixCmp.AffixType.PREFIX)
+
+    @cached_property
+    def contain(self):
+        return AffixCmp(self, AffixCmp.AffixType.INFIX)
+
+    @cached_property
+    def end(self):
+        return AffixCmp(self, AffixCmp.AffixType.SUFFIX)
 
 
 class ReturnTypeConverter:
@@ -50,7 +91,7 @@ class ReturnTypeConverter:
 
     def _getReturnTypeForText(self, returnText: str, endPos: int, onlyLiteral=False):
         returnText = returnText.strip()
-        match returnText:
+        match StrWrapper(returnText):
             case 'Py::Object()':
                 # we must use `Union` wrapper,
                 # otherwise `object` may be ignored if there are no other types
@@ -60,57 +101,44 @@ class ReturnTypeConverter:
             case '0' | '-1' | 'NULL' | 'nullptr' | '0L':
                 return  # an exception
 
-            case _ if returnText.startswith('Py::Boolean') \
-                      or returnText.startswith('PyBool_From') \
-                      or returnText.startswith('Py::True') \
-                      or returnText.startswith('Py::False'):
+            case StrWrapper('Py::Boolean' | 'PyBool_From' | 'Py::True' | 'Py::False'):
                 return 'bool'
-            case _ if returnText.startswith('Py::Long') \
-                      or returnText.startswith('PyLong_From') \
-                      or returnText.startswith('Py::Int') \
-                      or returnText.startswith('PyInt_From'):
+            case StrWrapper('Py::Long' | 'PyLong_From' | 'Py::Int' | 'PyInt_From'):
                 return 'int'
-            case _ if returnText.startswith('Py::Float') \
-                      or returnText.startswith('PyFloat_From'):
+            case StrWrapper('Py::Float' | 'PyFloat_From'):
                 return 'float'
-            case _ if returnText.startswith('Py::String') \
-                      or returnText.startswith('PyUnicode_From') \
-                      or returnText.startswith('PyUnicode_DecodeUTF8'):
+            case StrWrapper('Py::String' | 'PyUnicode_From' | 'PyUnicode_DecodeUTF8'):
                 return 'str'
-            case _ if returnText.startswith('Py::Tuple') \
-                      or returnText.startswith('PyTuple_New'):
+            case StrWrapper('Py::Tuple' | 'PyTuple_New'):
                 return 'tuple'
-            case _ if returnText.startswith('Py::List') \
-                      or returnText.startswith('PyList_New'):
+            case StrWrapper('Py::List' | 'PyList_New'):
                 return 'list'  # TODO P3 maybe extract parametrized type?
-            case _ if returnText.startswith('Py::Dict') \
-                      or returnText.startswith('PyDict_New'):
+            case StrWrapper('Py::Dict' | 'PyDict_New'):
                 return 'dict'
-            case _ if returnText.startswith('Py::Callable'):
+            case StrWrapper('Py::Callable'):
                 return 'typing.Callable'
 
             # PyCXX wrapper classes, search for `typedef GeometryT<`
-            case _ if returnText.startswith('Py::BoundingBox('):
+            case StrWrapper('Py::BoundingBox('):
                 return 'FreeCAD.BoundingBox'
-            case _ if returnText.startswith('Py::Matrix('):
+            case StrWrapper('Py::Matrix('):
                 return 'FreeCAD.Matrix'
-            case _ if returnText.startswith('Py::Rotation('):
+            case StrWrapper('Py::Rotation('):
                 return 'FreeCAD.Rotation'
-            case _ if returnText.startswith('Py::Placement('):
+            case StrWrapper('Py::Placement('):
                 return 'FreeCAD.Placement'
             # typedef PythonClassObject<Base::Vector2dPy> Vector2d;
-            case _ if returnText.startswith('Py::Vector2d('):
+            case StrWrapper('Py::Vector2d('):
                 return 'FreeCAD.Vector2d'
-            case _ if returnText.startswith('Py::Vector('):
+            case StrWrapper('Py::Vector('):
                 return 'FreeCAD.Vector'
 
-            case _ if returnText.startswith('shape2pyshape') \
-                      or returnText.startswith('Part::shape2pyshape'):
+            case StrWrapper('shape2pyshape' | 'Part::shape2pyshape'):
                 return 'Part.Shape'
 
             # TODO P2 findCentroid do not return Vector
 
-            case _ if returnText.startswith('wrap.fromQWidget('):
+            case StrWrapper('wrap.fromQWidget('):
                 fc = findFunctionCall(
                     returnText, bodyStart=returnText.find('('),
                     bracketL='(', bracketR=')').removeprefix('(').removesuffix(')')
@@ -119,30 +147,22 @@ class ReturnTypeConverter:
                 assert len(funArgs) == 2
                 widgetType = funArgs[1].strip().removeprefix('"').removesuffix('"')
                 return f'qtpy.QtWidgets.{widgetType}'
-            case _ if returnText.startswith('wrap.fromQIcon('):
+            case StrWrapper('wrap.fromQIcon('):
                 return 'qtpy.QtGui.QIcon'
 
-            case _ if returnText.startswith('PyRun_String'):
+            case StrWrapper('PyRun_String'):
                 return 'object'
 
-            case _ if returnText.startswith('new ') \
-                      or returnText.startswith('Py::asObject(new ') \
-                      or (returnText.isidentifier()
-                          and returnText[0].isupper()
-                          and returnText.endswith('Py')):
-                cType = returnText.removeprefix('Py::asObject(new ').removeprefix('new ')
-                cType = cType.split('(', maxsplit=1)[0]
-                classWithModule = getClassWithModulesFromPointer(cType)
-                if mod := getModuleName(classWithModule):
-                    self.requiredImports.add(mod)
-                return classWithModule
+            case StrWrapper('new ' | 'Py::asObject(new '):
+                return self._findClassWithModule(returnText)
+            case StrWrapper(end='Py') as i if i.isidentifier() and i[0].isupper():
+                return self._findClassWithModule(returnText)
 
-            case _ if returnText.endswith('->getPyObject()') \
-                      or returnText.endswith('.getPyObject()'):
+            case StrWrapper(end='->getPyObject()' | '.getPyObject()'):
                 pass  # TODO P2 guess python type from cpp type - find variable name
                 return 'object'
 
-            case _ if returnText.startswith('Py_BuildValue("'):
+            case StrWrapper('Py_BuildValue("'):
                 fc = findFunctionCall(
                     returnText, bodyStart=len('Py_BuildValue'), bracketL='(', bracketR=')',
                 ).removeprefix('(').removesuffix(')')
@@ -155,13 +175,11 @@ class ReturnTypeConverter:
                         pythonType = self._getReturnTypeForText(objArg, endPos, onlyLiteral=True)
                     return pythonType
 
-            case _ if 'Py_True' in returnText \
-                      or 'Py_False' in returnText:
+            case StrWrapper(contain='Py_True' | 'Py_False'):
                 # must be before identifier and should be after Py_BuildValue
                 return 'bool'
 
-            case _ if returnText.startswith('Py::asObject(') \
-                      or returnText.startswith('Py::Object('):
+            case StrWrapper('Py::asObject(' | 'Py::Object('):
                 fc = findFunctionCall(
                     returnText, bodyStart=returnText.find('('),
                     bracketL='(', bracketR=')').removeprefix('(').removesuffix(')')
@@ -180,6 +198,14 @@ class ReturnTypeConverter:
                 logger.warning(f"Unknown return variable: '{returnText}'")
 
         return None
+
+    def _findClassWithModule(self, text: str):
+        cType = text.removeprefix('Py::asObject(new ').removeprefix('new ')
+        cType = cType.split('(', maxsplit=1)[0]
+        classWithModule = getClassWithModulesFromPointer(cType)
+        if mod := getModuleName(classWithModule):
+            self.requiredImports.add(mod)
+        return classWithModule
 
     def _findVariableType(self, variableName: str, endPos: int) -> str | None:
         if variableName == 'this':
