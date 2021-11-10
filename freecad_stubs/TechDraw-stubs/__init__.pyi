@@ -870,7 +870,7 @@ class DrawSVGTemplate(TechDraw.DrawTemplate):
     @Template.setter
     def Template(self, value: str): ...
 
-    def getEditFieldContent(self, EditFieldName: str, /):
+    def getEditFieldContent(self, EditFieldName: str, /) -> str:
         """getEditFieldContent(EditFieldName) - returns the content of a specific Editable Text Field"""
 
     def setEditFieldContent(self, EditFieldName: str, NewContent: str, /) -> bool:
@@ -1258,10 +1258,10 @@ class DrawViewPart(TechDraw.DrawView):
     def getCosmeticEdgeBySelection(self, name: str, /) -> None:
         """ce = getCosmeticEdgeBySelection(name) - returns CosmeticEdge by name (Edge25).  Used in selections"""
 
-    def getCosmeticVertex(self, id: str, /):
+    def getCosmeticVertex(self, id: str, /) -> None:
         """cv = getCosmeticVertex(id) - returns CosmeticVertex with unique id."""
 
-    def getCosmeticVertexBySelection(self, name: str, /):
+    def getCosmeticVertexBySelection(self, name: str, /) -> None:
         """cv = getCosmeticVertexBySelection(name) - returns CosmeticVertex with name (Vertex6).  Used in selections."""
 
     def getEdgeByIndex(self, edgeIndex: int, /) -> Part.Edge:
@@ -1692,11 +1692,11 @@ def edgeWalker(edgePile: list, inclBiggest=None, /) -> None | list:
     """[wires] = edgeWalker(edgePile,inclBiggest) -- Planar graph traversal finds wires in edge pile."""
 
 
-def findOuterWire(edgeList: list, /) -> None:
+def findOuterWire(edgeList: list, /) -> None | Part.Wire:
     """wire = findOuterWire(edgeList) -- Planar graph traversal finds OuterWire in edge pile."""
 
 
-def findShapeOutline(shape, scale: float, direction, /) -> None:
+def findShapeOutline(shape, scale: float, direction, /) -> None | Part.Wire:
     """wire = findShapeOutline(shape,scale,direction) -- Project shape in direction and find outer wire of result."""
 
 
@@ -1716,7 +1716,7 @@ def writeDXFPage(page, filename: str, /) -> None:
     """writeDXFPage(page,filename): Exports a DrawPage to a DXF file."""
 
 
-def findCentroid(shape, direction, /) -> None:
+def findCentroid(shape, direction, /) -> None | FreeCAD.Vector:
     """vector = findCentroid(shape,direction): finds geometric centroid of shape looking in direction."""
 
 

@@ -961,7 +961,7 @@ class MDIViewPy:
 
 
 # Application.cpp
-def subgraphFromObject(object: FreeCAD.DocumentObject, /) -> None:
+def subgraphFromObject(object: FreeCAD.DocumentObject, /) -> object | None:
     """
     subgraphFromObject(object) -> Node
 
@@ -1605,7 +1605,7 @@ def supportedLocales() -> dict:
     """
 
 
-def createDialog(string: str, /):
+def createDialog(string: str, /) -> PyResource:
     """createDialog(string) -- Open a UI file"""
 
 

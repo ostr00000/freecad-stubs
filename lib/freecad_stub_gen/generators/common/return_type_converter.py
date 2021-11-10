@@ -213,17 +213,27 @@ class ReturnTypeConverter:
             return self.classNameWithModule
 
         variableDec = re.compile(rf'([\w:]+)\s*\*?\s*\b{variableName}\b(?:\s*=\s*(.*);)?')
-        for match in variableDec.finditer(self.functionBody, endpos=endPos):
-            varTypeDec = match.group(1)
+        for declarationMatch in variableDec.finditer(self.functionBody, endpos=endPos):
+            varTypeDec = declarationMatch.group(1)
             if varTypeDec in ('auto', 'PyObject', 'Py::Object'):
-                if assignValue := match.group(2):
+                if assignValue := declarationMatch.group(2):
                     #  we can try resolve real type by checking right side
-                    # TODO P3 search for more assignment expr
                     varType = self._getReturnTypeForText(assignValue, endPos, onlyLiteral=True)
                 else:
                     varType = 'object'
+
             else:
                 varType = self._getReturnTypeForText(varTypeDec, endPos, onlyLiteral=True)
+
+            if varType is None or varType == 'object':
+                variableDec = re.compile(rf'{variableName}\b\s*=\s*(.*);')
+                for assignmentMatch in variableDec.finditer(
+                        self.functionBody, pos=declarationMatch.end(), endpos=endPos):
+                    assignValue = assignmentMatch.group(1)
+                    varType = self._getReturnTypeForText(assignValue, endPos, onlyLiteral=True)
+                    if not (varType is None or varType == 'object'):
+                        break
+
             return varType
 
         varType = self._getReturnTypeForText(variableName, endPos, onlyLiteral=True)
