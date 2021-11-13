@@ -3,12 +3,14 @@ from dataclasses import dataclass
 from enum import auto, Enum
 from functools import cached_property
 from inspect import Signature
+from typing import Iterable
 
 from freecad_stub_gen.generators.common.annotation_parameter import RawRepr
 from freecad_stub_gen.generators.common.arguments_converter import logger
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
     generateExpressionUntilChar
-from freecad_stub_gen.generators.common.names import getClassWithModulesFromPointer, getModuleName
+from freecad_stub_gen.generators.common.names import getClassWithModulesFromPointer, \
+    getModuleName, getClassName
 from freecad_stub_gen.generators.common.py_build_converter import parsePyBuildValues
 from freecad_stub_gen.util import OrderedSet
 
@@ -61,11 +63,21 @@ class ReturnTypeConverter:
         self.classNameWithModule = classNameWithModule
         self.functionName = functionName
 
+    @cached_property
+    def className(self):
+        return getClassName(self.classNameWithModule)
+
     def getReturnType(self):
-        returnTypes = OrderedSet(self._genReturnType())
+        returnTypes = OrderedSet(self._addImportsGenWrapper(self._genReturnType()))
         if not returnTypes:
             return Signature.empty
         return RawRepr(*returnTypes)
+
+    def _addImportsGenWrapper(self, gen: Iterable[str]):
+        for retType in gen:
+            if mod := getModuleName(retType):
+                self.requiredImports.add(mod)
+            yield retType
 
     def _genReturnType(self):
         for match in self.REG_RETURN.finditer(self.functionBody):
@@ -81,13 +93,13 @@ class ReturnTypeConverter:
                     .removeprefix('(').removesuffix(')')
 
             retType = self._getReturnTypeForText(returnText, match.end())
-            if retType is None:
-                continue
-
-            if mod := getModuleName(retType):
-                self.requiredImports.add(mod)
-
-            yield retType
+            match retType:
+                case None:
+                    continue
+                case OrderedSet():
+                    yield from retType
+                case str():
+                    yield retType
 
     def _getReturnTypeForText(self, returnText: str, endPos: int, onlyLiteral=False):
         returnText = returnText.strip()
@@ -100,6 +112,9 @@ class ReturnTypeConverter:
                 return 'None'
             case '0' | '-1' | 'NULL' | 'nullptr' | '0L':
                 return  # an exception
+
+            case 'getDocumentObjectPtr()':
+                return 'FreeCAD.DocumentObject'
 
             case StrWrapper('Py::Boolean' | 'PyBool_From' | 'Py::True' | 'Py::False'):
                 return 'bool'
@@ -136,8 +151,6 @@ class ReturnTypeConverter:
             case StrWrapper('shape2pyshape' | 'Part::shape2pyshape'):
                 return 'Part.Shape'
 
-            # TODO P2 findCentroid do not return Vector
-
             case StrWrapper('wrap.fromQWidget('):
                 fc = findFunctionCall(
                     returnText, bodyStart=returnText.find('('),
@@ -159,7 +172,16 @@ class ReturnTypeConverter:
                 return self._findClassWithModule(returnText)
 
             case StrWrapper(end='->getPyObject()' | '.getPyObject()'):
-                pass  # TODO P2 guess python type from cpp type - find variable name
+                expText = returnText \
+                    .removesuffix('getPyObject()') \
+                    .removesuffix('.') \
+                    .removesuffix('->') \
+                    .removesuffix(')')
+                varTextStartPos = expText.rfind('(') + 1
+                varText = expText[varTextStartPos:]
+                if typeResult := self._getReturnTypeForText(varText, endPos=endPos):
+                    return typeResult
+
                 return 'object'
 
             case StrWrapper('Py_BuildValue("'):
@@ -189,6 +211,10 @@ class ReturnTypeConverter:
                 return self._findVariableType(rawReturnVarName, endPos)
 
             case _ if onlyLiteral:
+                if returnText.isidentifier():
+                    maybeClass = f'{returnText}Py'
+                    if returnText != (ret := self._findClassWithModule(maybeClass)):
+                        return ret
                 return 'object'
 
             case _ if returnText.isidentifier():
@@ -203,9 +229,31 @@ class ReturnTypeConverter:
         cType = text.removeprefix('Py::asObject(new ').removeprefix('new ')
         cType = cType.split('(', maxsplit=1)[0]
         classWithModule = getClassWithModulesFromPointer(cType)
-        if mod := getModuleName(classWithModule):
-            self.requiredImports.add(mod)
-        return classWithModule
+
+        match classWithModule:
+            case self.className:
+                return self.classNameWithModule
+
+            case 'SplitView3DInventor':
+                # we must use take base class
+                return 'FreeCADGui.AbstractSplitViewPy'
+            case 'View3DInventorViewer':
+                return 'FreeCADGui.View3DInventorViewerPy'
+
+            case 'PropertyComplexGeoData':
+                # it may be any of following
+                # access via: `getPropertyOfGeometry` function,
+                # search: `App::PropertyComplexGeoData)`,
+                return OrderedSet(['Mesh.MeshObject', 'Part.Shape', 'Points.PointKernel'])
+
+            case _ if mod := getModuleName(classWithModule):
+                self.requiredImports.add(mod)
+                return classWithModule
+
+            case _ if not self.className:
+                return classWithModule
+
+        return 'object'
 
     def _findVariableType(self, variableName: str, endPos: int) -> str | None:
         if variableName == 'this':
@@ -215,7 +263,9 @@ class ReturnTypeConverter:
         variableDec = re.compile(rf'([\w:]+)\s*\*?\s*\b{variableName}\b(?:\s*=\s*(.*);)?')
         for declarationMatch in variableDec.finditer(self.functionBody, endpos=endPos):
             varTypeDec = declarationMatch.group(1)
-            if varTypeDec in ('auto', 'PyObject', 'Py::Object'):
+            if variableDec == 'return':
+                continue
+            elif varTypeDec in ('auto', 'PyObject', 'Py::Object'):
                 if assignValue := declarationMatch.group(2):
                     #  we can try resolve real type by checking right side
                     varType = self._getReturnTypeForText(assignValue, endPos, onlyLiteral=True)
@@ -240,3 +290,5 @@ class ReturnTypeConverter:
         if varType is None:
             raise ValueError(f"Not found variable declaration for '{variableName}'")
         return varType
+
+# TODO P2 DocumentProtectorPy addObject should return type

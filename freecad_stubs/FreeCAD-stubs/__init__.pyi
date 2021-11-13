@@ -8,6 +8,9 @@ import FreeCAD.Qt as Qt
 import FreeCAD.Units as Units
 import FreeCADGui
 import FreeCADTemplates
+import Mesh
+import Part
+import Points
 
 _T = typing.TypeVar("_T")
 Triple_t: typing.TypeAlias = tuple[_T, _T, _T]
@@ -21,7 +24,7 @@ class PyObjectBase(object): ...
 class ParameterGrp:
     """Python interface class to set parameters"""
 
-    def GetGroup(self, str: str, /) -> ParameterGrp:
+    def GetGroup(self, str: str, /) -> FreeCAD.ParameterGrp:
         """GetGroup(str)"""
 
     def GetGroups(self) -> list:
@@ -226,7 +229,7 @@ class GeoFeature(FreeCAD.DocumentObject):
         If an object has no such property then None is returned.
         """
 
-    def getPropertyOfGeometry(self) -> object | None:
+    def getPropertyOfGeometry(self) -> Mesh.MeshObject | Part.Shape | Points.PointKernel | None:
         """
         Returns the property of the actual geometry or None.
         For example for a part object it returns its Shape property,
@@ -370,7 +373,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     def evalExpression(cls, arg1: str, /):
         """Evaluate an expression"""
 
-    def getLinkedObject(self, recursive=True, matrix=None, transform=True, depth: int = 0) -> tuple | object:
+    def getLinkedObject(self, recursive=True, matrix=None, transform=True, depth: int = 0) -> tuple | FreeCAD.DocumentObject:
         """
         getLinkedObject(recursive=True, matrix=None, transform=True, depth=0)
         Returns the linked object if there is one, or else return itself
@@ -774,7 +777,7 @@ class GroupExtension(FreeCAD.DocumentObjectExtension):
     def addObjects(self, arg1, /) -> list:
         """Adds multiple objects to the group. Expects a list and returns all objects that have been added."""
 
-    def getObject(self, arg1: str, /):
+    def getObject(self, arg1: str, /) -> FreeCAD.DocumentObject:
         """Return the object with the given name"""
 
     def hasObject(self, obj: FreeCAD.DocumentObject, recursive=False, /) -> bool:
@@ -785,7 +788,7 @@ class GroupExtension(FreeCAD.DocumentObjectExtension):
                         @param recursive  if true check also if the obj is child of some sub group (default is false).
         """
 
-    def newObject(self, arg1: str, arg2: str = None, /):
+    def newObject(self, arg1: str, arg2: str = None, /) -> FreeCAD.DocumentObject:
         """Create and add an object with given type and name to the group"""
 
     def removeObject(self, arg1: FreeCAD.DocumentObject, /) -> list:
@@ -1241,7 +1244,7 @@ class Document(FreeCAD.PropertyContainer):
     def abortTransaction(self):
         """Abort an Undo/Redo transaction (rollback)"""
 
-    def addObject(self, type: str, name: str = None, objProxy=None, viewProxy=None, attach=False, viewType: str = None):
+    def addObject(self, type: str, name: str = None, objProxy=None, viewProxy=None, attach=False, viewType: str = None) -> FreeCAD.DocumentObject:
         """
         addObject(type, name=None, objProxy=None, viewProxy=None, attach=False, viewType=None)
 
@@ -1302,10 +1305,10 @@ class Document(FreeCAD.PropertyContainer):
         """
 
     @typing.overload
-    def getObject(self, arg1: str, /): ...
+    def getObject(self, arg1: str, /) -> FreeCAD.DocumentObject: ...
 
     @typing.overload
-    def getObject(self, arg1: int, /):
+    def getObject(self, arg1: int, /) -> FreeCAD.DocumentObject:
         """Return the object with the given name"""
 
     def getObjectsByLabel(self, arg1: str, /) -> list:
@@ -1682,7 +1685,7 @@ def setActiveDocument(arg0: str, /):
     """
 
 
-def getDocument(string: str, /):
+def getDocument(string: str, /) -> FreeCADGui.Document:
     """
     getDocument(string) -> object
 

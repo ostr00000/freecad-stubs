@@ -15,7 +15,7 @@ def DocumentObjectProtector(DocumentObject: FreeCAD.DocumentObject, /) -> Sandbo
 class DocumentProtectorPy:
     """Python binding class for the document protector class"""
 
-    def addObject(self, type: str, name: str = None, /) -> DocumentObjectProtector:
+    def addObject(self, type: str, name: str = None, /):
         """addObject(type,name)"""
 
     def recompute(self) -> None:

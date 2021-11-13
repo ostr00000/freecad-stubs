@@ -5912,7 +5912,7 @@ def makeShell(list, /) -> Part.Shell:
     """makeShell(list) -- Create a shell out of a list of faces."""
 
 
-def makeFace(list_of_shapes_or_compound, maker_class_name: str, /):
+def makeFace(list_of_shapes_or_compound, maker_class_name: str, /) -> Part.Shape:
     """
     makeFace(list_of_shapes_or_compound, maker_class_name) -- Create a face (faces) using facemaker class.
     maker_class_name is a string like 'Part::FaceMakerSimple'.
@@ -6122,7 +6122,7 @@ def setStaticValue(string: str, string_int_float, /) -> None:
     """setStaticValue(string,string|int|float) -- Set a name to a value The value can be a string, int or float."""
 
 
-def cast_to_shape(shape: Part.Shape, /):
+def cast_to_shape(shape: Part.Shape, /) -> Part.Shape:
     """cast_to_shape(shape) -- Cast to the actual shape type"""
 
 

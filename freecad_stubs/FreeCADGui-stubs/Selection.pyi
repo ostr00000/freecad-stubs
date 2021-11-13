@@ -1,6 +1,7 @@
 import typing
 
 import FreeCAD
+import FreeCADGui
 
 
 # Selection.cpp
@@ -63,7 +64,7 @@ def setPreselection(obj: FreeCAD.DocumentObject, subname: str = None, x: float =
     """
 
 
-def getPreselection():
+def getPreselection() -> FreeCADGui.SelectionObject:
     """
     Get preselected object
     getPreselection()
@@ -136,7 +137,7 @@ def getSelectionEx(docName: str = '', resolve: int = 1, single=False, /) -> list
     """
 
 
-def getSelectionObject(doc: str, obj: str, sub: str, arg3: tuple = None, /):
+def getSelectionObject(doc: str, obj: str, sub: str, arg3: tuple = None, /) -> FreeCADGui.SelectionObject:
     """
     Return a SelectionObject
     getSelectionObject(doc,obj,sub,(x,y,z))

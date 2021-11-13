@@ -1724,7 +1724,7 @@ def makeExtentDim(DrawViewPart, edges: list, direction: int, /) -> None:
     """makeExtentDim(DrawViewPart, [edges], direction) -- draw horizontal or vertical extent dimension for edges (or all of DrawViewPart if edge list is empty. direction:  0 - Horizontal, 1 - Vertical."""
 
 
-def makeDistanceDim(DrawViewPart, dimType, fromPoint, toPoint, /):
+def makeDistanceDim(DrawViewPart, dimType, fromPoint, toPoint, /) -> TechDraw.DrawViewDimension:
     """makeDistanceDim(DrawViewPart, dimType, fromPoint, toPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 2d View points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."""
 
 

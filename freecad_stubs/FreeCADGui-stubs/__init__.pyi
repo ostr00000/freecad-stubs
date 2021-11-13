@@ -834,7 +834,7 @@ class Document(FreeCAD.Persistence):
     def Transacting(self) -> bool:
         """Indicate whether the document is undoing/redoing"""
 
-    def activeObject(self):
+    def activeObject(self) -> FreeCADGui.ViewProvider:
         """deprecated -- use ActiveObject"""
 
     def activeView(self):
@@ -846,13 +846,13 @@ class Document(FreeCAD.Persistence):
         addAnnotation(AnnoName,FileName,[ModName]) -> None
         """
 
-    def getInEdit(self):
+    def getInEdit(self) -> FreeCADGui.ViewProvider:
         """
         Returns the current object in edit mode or None if there is no such object
         getInEdit() -> Object or None
         """
 
-    def getObject(self, Name: str, /):
+    def getObject(self, Name: str, /) -> FreeCADGui.ViewProvider:
         """
         Return the object with the given name
         getObject(Name) -> Object or None
@@ -1193,7 +1193,7 @@ class View3DInventorPy:
     def getSceneGraph(self):
         """getSceneGraph()"""
 
-    def getViewer(self):
+    def getViewer(self) -> FreeCADGui.View3DInventorViewerPy:
         """getViewer()"""
 
     def addEventCallbackPivy(self, arg1, arg2, arg3: int = None, /) -> typing.Callable:
@@ -1718,7 +1718,7 @@ def activateView(arg0: str, arg1: bool, /):
     """
 
 
-def editDocument():
+def editDocument() -> FreeCADGui.Document:
     """
     editDocument() -> object or None
 
@@ -1727,11 +1727,11 @@ def editDocument():
 
 
 @typing.overload
-def getDocument(string: str, /): ...
+def getDocument(string: str, /) -> FreeCADGui.Document: ...
 
 
 @typing.overload
-def getDocument(string: FreeCAD.Document, /):
+def getDocument(string: FreeCAD.Document, /) -> FreeCADGui.Document:
     """
     getDocument(string) -> object
 
@@ -1779,7 +1779,7 @@ def showPreferences(string: str = None, int: int = None, /) -> None:
     """
 
 
-def createViewer(arg0: int = None, arg1: str = None, /) -> object | None:
+def createViewer(arg0: int = None, arg1: str = None, /) -> object | FreeCADGui.AbstractSplitViewPy | None:
     """
     createViewer([int]) -> View3DInventor/SplitView3DInventor
 

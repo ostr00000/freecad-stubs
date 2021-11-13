@@ -70,5 +70,5 @@ class MakePrism(FreeCAD.PyObjectBase):
         and a height, Length at which to stop generation of the prism feature.
         """
 
-    def shape(self):
+    def shape(self) -> Part.Shape:
         """Returns a shape built by the shape construction algorithm."""
