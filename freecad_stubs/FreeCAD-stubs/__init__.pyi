@@ -1603,8 +1603,12 @@ def getResourceDir() -> str:
     """Get the root directory of all resources"""
 
 
+def getUserConfigDir() -> str:
+    """Get the root directory of user config files"""
+
+
 def getUserAppDataDir() -> str:
-    """Get the root directory of user settings"""
+    """Get the root directory of application data"""
 
 
 def getUserMacroDir(bool: bool = False, /) -> str:

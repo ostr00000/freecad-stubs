@@ -720,6 +720,19 @@ class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
     def ShowInTree(self, value: int | bool): ...
 
     @property
+    def TreeRank(self) -> int:
+        """
+        [Prop_Hidden] Property won't appear in the editor.
+        [Prop_NoPersist] Property won't be saved to file at all.
+        Property group: Display Options.
+        Property TypeId: App::PropertyInteger.
+        Tree view item ordering key.
+        """
+
+    @TreeRank.setter
+    def TreeRank(self, value: int): ...
+
+    @property
     def Visibility(self) -> bool:
         """
         Property group: Display Options.
@@ -942,8 +955,14 @@ class Document(FreeCAD.Persistence):
 class MDIViewPy:
     """Python binding class for the MDI view class"""
 
-    def message(self, arg1: str, /) -> None:
-        """message()"""
+    def message(self, arg1: str, /) -> bool:
+        """deprecated: use sendMessage"""
+
+    def sendMessage(self, str: str, /) -> bool:
+        """sendMessage(str)"""
+
+    def supportMessage(self, str: str, /) -> bool:
+        """supportMessage(str)"""
 
     def fitAll(self) -> None:
         """fitAll()"""
@@ -1069,6 +1088,12 @@ class View3DInventorPy:
 
     def isAnimationEnabled(self) -> bool:
         """isAnimationEnabled()"""
+
+    def setPopupMenuEnabled(self, arg1: int, /) -> None:
+        """setPopupMenuEnabled()"""
+
+    def isPopupMenuEnabled(self) -> bool:
+        """isPopupMenuEnabled()"""
 
     def dump(self, filename: str, onlyVisible=False, /) -> None:
         """dump(filename, [onlyVisible=False])"""

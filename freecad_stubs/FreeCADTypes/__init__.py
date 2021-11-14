@@ -231,6 +231,7 @@ class Common:
     SoFCDB = 'SoFCDB'
     SoInteraction = 'SoInteraction'
     SoNodeKit = 'SoNodeKit'
+    TinkerCADNavigationStyle = 'TinkerCADNavigationStyle'
     TouchpadNavigationStyle = 'TouchpadNavigationStyle'
     UserNavigationStyle = 'UserNavigationStyle'
     ViewProviderIndex = 'ViewProviderIndex'
@@ -985,6 +986,7 @@ class Spreadsheet:
 class SpreadsheetGui:
     SheetView = 'SpreadsheetGui::SheetView'
     ViewProviderSheet = 'SpreadsheetGui::ViewProviderSheet'
+    ViewProviderSheetPython = 'SpreadsheetGui::ViewProviderSheetPython'
     Workbench = 'SpreadsheetGui::Workbench'
 
 
