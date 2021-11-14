@@ -3,6 +3,17 @@ import typing
 import FreeCAD
 import Part
 
+class ReturnGetmodeinfoDict(typing.TypedDict):
+    ReferenceCombinations: list[list]
+    ModeIndex: int
+    UserFriendlyName: object
+class ReturnGetreftypeinfoDict(typing.TypedDict):
+    TypeIndex: int
+    Rank: str
+class ReturnSuggestmodesDict(typing.TypedDict):
+    allApplicableModes: list[str]
+    bestFitMode: str
+    error: dict[object, list[list[str]]]
 DocAndStr_t: typing.TypeAlias = tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]
 LinkSub_t: typing.TypeAlias = FreeCAD.DocumentObject | None | tuple[()] | DocAndStr_t
 LinkList_t: typing.TypeAlias = None | FreeCAD.DocumentObject
@@ -246,10 +257,10 @@ class AttachEngine(FreeCAD.BaseClass):
     def downgradeRefType(self, type: str, /) -> str:
         """downgradeRefType(type): returns next more general type. E.g. downgradeType('Circle') yields 'Curve'."""
 
-    def getModeInfo(self, mode: str, /) -> dict:
+    def getModeInfo(self, mode: str, /) -> ReturnGetmodeinfoDict:
         """getModeInfo(mode): returns supported reference combinations, user-friendly name, and so on."""
 
-    def getRefTypeInfo(self, type: str, /) -> dict:
+    def getRefTypeInfo(self, type: str, /) -> ReturnGetreftypeinfoDict:
         """getRefTypeInfo(type): returns information (dict) on shape type. Keys:'UserFriendlyName', 'TypeIndex', 'Rank'. Rank is the number of times reftype can be downgraded, before it becomes 'Any'."""
 
     def getRefTypeOfShape(self, shape: Part.Shape, /) -> str:
@@ -261,7 +272,7 @@ class AttachEngine(FreeCAD.BaseClass):
     def readParametersFromFeature(self, document_object: FreeCAD.DocumentObject, /) -> None:
         """readParametersFromFeature(document_object): sets AttachEngine parameters (References, Mode, etc.) by reading out properties of AttachableObject-derived feature."""
 
-    def suggestModes(self) -> dict:
+    def suggestModes(self) -> ReturnSuggestmodesDict:
         """
         suggestModes(): runs mode suggestion routine and returns a dictionary with
         results and supplementary information.
@@ -6109,7 +6120,7 @@ def makeSplitShape(shape: Part.Shape, list_of_shape_pairs, check_Interior: bool 
     """
 
 
-def exportUnits(string: str = None, /) -> dict:
+def exportUnits(string: str = None, /) -> dict[object, str]:
     """exportUnits([string=MM|M|INCH|FT|MI|KM|MIL|UM|CM|UIN]) -- Set units for exporting STEP/IGES files and returns the units."""
 
 

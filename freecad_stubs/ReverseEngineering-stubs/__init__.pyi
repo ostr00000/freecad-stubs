@@ -74,5 +74,5 @@ def featureSegmentation(Points: Points.Points, KSearch: int = None) -> list[tupl
     """featureSegmentation()."""
 
 
-def sampleConsensus(SacModel: str, Points: Points.Points, Normals=None) -> dict:
+def sampleConsensus(SacModel: str, Points: Points.Points, Normals=None) -> dict[str, float | tuple[float] | tuple[int]]:
     """sampleConsensus()."""

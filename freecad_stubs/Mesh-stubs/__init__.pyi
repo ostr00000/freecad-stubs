@@ -441,7 +441,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def flipNormals(self):
         """Flip the mesh normals"""
 
-    def foraminate(self, arg1, arg2, /) -> dict:
+    def foraminate(self, arg1, arg2, /) -> dict[int, tuple[float, float, float]]:
         """Get a list of facet indices and intersection points"""
 
     def getCurvaturePerVertex(self) -> list[tuple[float, float, tuple[float, float, float], tuple[float, float, float]]]:
@@ -561,7 +561,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def meshFromSegment(self, arg1, /) -> MeshModule.Mesh:
         """Create a mesh from segment"""
 
-    def nearestFacetOnRay(self, tuple, tuple2, /) -> dict:
+    def nearestFacetOnRay(self, tuple, tuple2, /) -> dict[int, tuple[float, float, float]]:
         """
         nearestFacetOnRay(tuple, tuple) -> dict
         Get the index and intersection point of the nearest facet to a ray.
@@ -859,7 +859,7 @@ def calculateEigenTransform(seq_Base_Vector_, /) -> FreeCAD.Placement:
     """
 
 
-def polynomialFit(seq_Base_Vector_, /) -> dict:
+def polynomialFit(seq_Base_Vector_, /) -> dict[str, float | tuple[float, float, float, float, float, float] | tuple[float]]:
     """polynomialFit(seq(Base.Vector)) -- Calculates a polynomial fit."""
 
 

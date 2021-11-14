@@ -86,7 +86,7 @@ class Module:
         for imp in self.imports:
             if imp.startswith('from '):
                 sortModule = imp.removeprefix('from ').split(' ')[0]
-            elif any(t in imp for t in ('TypeAlias', 'TypeVar')):
+            elif any(t in imp for t in ('TypeAlias', 'TypeVar', 'TypedDict')):
                 types.append(imp)
                 continue
             elif imp == 'MeshModule':

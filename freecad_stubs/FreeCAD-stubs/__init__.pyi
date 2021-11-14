@@ -1563,7 +1563,7 @@ def ConfigSet(string: str, string1: str, /) -> None:
     """ConfigSet(string, string) -- Set the given key to the given value."""
 
 
-def ConfigDump() -> dict:
+def ConfigDump() -> dict[str, str]:
     """Dump the configuration to the output."""
 
 
@@ -1575,7 +1575,7 @@ def changeImportModule(arg0: str, arg1: str, arg2: str, /):
     """Change the import module name of a registered filetype"""
 
 
-def getImportType(arg0: str = None, /) -> list[str] | dict:
+def getImportType(arg0: str = None, /) -> list[str] | dict[object, None | str | list[str]]:
     """Get the name of the module that can import the filetype"""
 
 
@@ -1583,7 +1583,7 @@ def EndingAdd(arg0: str, arg1: str, /):
     """deprecated -- use addImportType"""
 
 
-def EndingGet(arg0: str = None, /) -> list[str] | dict:
+def EndingGet(arg0: str = None, /) -> list[str] | dict[object, None | str | list[str]]:
     """deprecated -- use getImportType"""
 
 
@@ -1595,7 +1595,7 @@ def changeExportModule(arg0: str, arg1: str, arg2: str, /):
     """Change the export module name of a registered filetype"""
 
 
-def getExportType(arg0: str = None, /) -> list[str] | dict:
+def getExportType(arg0: str = None, /) -> list[str] | dict[object, None | str | list[str]]:
     """Get the name of the module that can export the filetype"""
 
 
@@ -1694,7 +1694,7 @@ def getDocument(string: str, /) -> FreeCADGui.Document:
     """
 
 
-def listDocuments(sort=False, /) -> dict:
+def listDocuments(sort=False, /) -> dict[str, FreeCAD.PyObjectBase]:
     """
     listDocuments(sort=False) -> list
 

@@ -47,7 +47,7 @@ class Workbench(FreeCAD.BaseClass):
     def activate(self):
         """Activate this workbench"""
 
-    def getToolbarItems(self) -> dict:
+    def getToolbarItems(self) -> dict[object, list[str]]:
         """Show a dict of all toolbars and their commands"""
 
     def listCommandbars(self) -> list[str]:
@@ -302,7 +302,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         switch node of this view provider.
         """
 
-    def getElementColors(self, elementName: str = None, /) -> dict:
+    def getElementColors(self, elementName: str = None, /) -> dict[str, tuple]:
         """getElementColors(elementName=None) -> dict(elementName:color)"""
 
     def getElementPicked(self, pickPoint, /) -> str:
@@ -1598,7 +1598,7 @@ def setLocale(arg0: str, /) -> None:
     """
 
 
-def supportedLocales() -> dict:
+def supportedLocales() -> dict[str, str]:
     """
     supportedLocales() -> dict
 

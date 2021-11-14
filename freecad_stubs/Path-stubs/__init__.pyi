@@ -128,7 +128,7 @@ class Tool(FreeCAD.Persistence):
     def setFromTemplate(self, xmlString_dictionary: str, /):
         """setFromTemplate(xmlString|dictionary) ... fills receiver with values from the template string or dictionary"""
 
-    def templateAttrs(self) -> dict:
+    def templateAttrs(self) -> dict[str, object | float]:
         """templateAttrs() ... returns a dictionary with all attributes"""
 
 
