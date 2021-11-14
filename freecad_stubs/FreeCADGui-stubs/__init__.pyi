@@ -5,6 +5,7 @@ import FreeCAD
 import FreeCADGui
 import FreeCADGui.Selection
 import FreeCADTemplates
+import qtpy.QtCore
 import qtpy.QtGui
 import qtpy.QtWidgets
 
@@ -49,13 +50,13 @@ class Workbench(FreeCAD.BaseClass):
     def getToolbarItems(self) -> dict:
         """Show a dict of all toolbars and their commands"""
 
-    def listCommandbars(self):
+    def listCommandbars(self) -> list[str]:
         """Show a list of all command bars"""
 
-    def listMenus(self):
+    def listMenus(self) -> list[str]:
         """Show a list of all menus"""
 
-    def listToolbars(self):
+    def listToolbars(self) -> list[str]:
         """Show a list of all toolbars"""
 
     def name(self) -> str:
@@ -93,7 +94,7 @@ class LinkView(FreeCAD.BaseClass):
     def getBoundBox(self, vobj, /):
         """getBoundBox(vobj=None): get the bounding box."""
 
-    def getChildren(self) -> tuple:
+    def getChildren(self) -> tuple[object]:
         """Get children view objects"""
 
     def getDetailPath(self, arg1: str, arg2, /):
@@ -262,7 +263,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         canDropObject(obj=None,owner=None,subname=None)
         """
 
-    def claimChildren(self) -> list:
+    def claimChildren(self) -> list[FreeCAD.DocumentObject | None]:
         """Returns list of objects that are to be grouped in tree under this object."""
 
     def doubleClicked(self) -> bool:
@@ -290,7 +291,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         view: the MDIView, default to active view
         """
 
-    def getDetailPath(self, subname: str, path, append=True, /) -> bool:
+    def getDetailPath(self, subname: str, path, append=True, /) -> bool | object:
         """
         return Coin detail and path of an subelement
         getDetailPath(subname,path,append=True)
@@ -316,7 +317,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
     def isVisible(self) -> bool:
         """Check if the object is visible"""
 
-    def listDisplayModes(self) -> list:
+    def listDisplayModes(self) -> list[str]:
         """Show a list of all display modes"""
 
     def partialRender(self, sub=None, clear=False, /) -> int:
@@ -364,7 +365,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
     def signalChangeIcon(self):
         """Trigger icon changed signal"""
 
-    def supportedProperties(self) -> list:
+    def supportedProperties(self) -> list[str]:
         """A list of supported property types"""
 
     def toString(self) -> str:
@@ -499,13 +500,13 @@ class Command(FreeCAD.PyObjectBase):
         get(string) -> Command
         """
 
-    def getAction(self) -> list:
+    def getAction(self) -> list[qtpy.QtCore.QObject]:
         """
         Return the associated QAction object.
         getAction() -> list of QAction
         """
 
-    def getInfo(self) -> list:
+    def getInfo(self) -> list[str]:
         """
         Return information about this command.
         getInfo() -> list of strings
@@ -526,14 +527,14 @@ class Command(FreeCAD.PyObjectBase):
         """
 
     @staticmethod
-    def listAll() -> list:
+    def listAll() -> list[str]:
         """
         Returns the name of all commands.
         listAll() -> list of strings
         """
 
     @staticmethod
-    def listByShortcut(string: str, bool_bUseRegExp: int = False, /) -> list:
+    def listByShortcut(string: str, bool_bUseRegExp: int = False, /) -> list[str]:
         """
         Returns a list of all commands, filtered by shortcut.
         listByShortcut(string, bool bUseRegExp=False) -> list of strings
@@ -637,7 +638,7 @@ class AxisOrigin(FreeCAD.BaseClass):
     def Scale(self) -> float:
         """Get/set auto scaling factor, 0 to disable"""
 
-    def getDetailPath(self, subname: str, path, /) -> bool:
+    def getDetailPath(self, subname: str, path, /) -> bool | object:
         """
         getDetailPath(subname,path): return Coin detail and path of an subelement
 
@@ -837,7 +838,7 @@ class Document(FreeCAD.Persistence):
     def activeObject(self) -> FreeCADGui.ViewProvider:
         """deprecated -- use ActiveObject"""
 
-    def activeView(self):
+    def activeView(self) -> FreeCADGui.MDIView:
         """deprecated -- use ActiveView"""
 
     def addAnnotation(self, AnnoName: str, FileName: str, ModName: str = None, /):
@@ -864,7 +865,7 @@ class Document(FreeCAD.Persistence):
         hide() -> None
         """
 
-    def mdiViewsOfType(self, type: str, /):
+    def mdiViewsOfType(self, type: str, /) -> list[FreeCADGui.MDIView]:
         """
         Return a list if mdi views of a given type
         mdiViewsOfType(type) -> list of MDIView
@@ -953,7 +954,7 @@ class MDIViewPy:
         add or set a new active object
         """
 
-    def getActiveObject(self, name: str, resolve=True, /) -> None | object | tuple:
+    def getActiveObject(self, name: str, resolve=True, /) -> None | FreeCAD.DocumentObject | tuple:
         """
         getActiveObject(name,resolve=True)
         returns the active object for the given type
@@ -1135,7 +1136,7 @@ class View3DInventorPy:
     def listCameraTypes(self) -> list:
         """listCameraTypes()"""
 
-    def getCursorPos(self) -> tuple:
+    def getCursorPos(self) -> tuple[int, int]:
         """
         getCursorPos() -> tuple of integers
 
@@ -1160,7 +1161,7 @@ class View3DInventorPy:
         Does the same as getObjectInfo() but returns a list of dictionaries or None.
         """
 
-    def getSize(self) -> tuple:
+    def getSize(self) -> tuple[int, int]:
         """getSize()"""
 
     def getPoint(self, arg1: int, arg2: int, /) -> FreeCAD.Vector:
@@ -1171,7 +1172,7 @@ class View3DInventorPy:
         pixel coordinates).
         """
 
-    def getPointOnScreen(self, arg1: FreeCAD.Vector, /) -> tuple:
+    def getPointOnScreen(self, arg1: FreeCAD.Vector, /) -> tuple[int, int]:
         """
         getPointOnScreen(3D vector) -> pixel coords (as integer)
 
@@ -1245,13 +1246,13 @@ class View3DInventorPy:
         add or set a new active object
         """
 
-    def getActiveObject(self, name: str, resolve=True, /) -> None | object | tuple:
+    def getActiveObject(self, name: str, resolve=True, /) -> None | FreeCAD.DocumentObject | tuple:
         """
         getActiveObject(name,resolve=True)
         returns the active object for the given type
         """
 
-    def getViewProvidersOfType(self, name: str, /) -> list:
+    def getViewProvidersOfType(self, name: str, /) -> list[FreeCADGui.ViewProvider]:
         """
         getViewProvidersOfType(name)
         returns a list of view providers for the given type
@@ -1405,7 +1406,7 @@ class AbstractSplitViewPy:
     def viewIsometric(self) -> None:
         """viewIsometric()"""
 
-    def getViewer(self, index: int, /):
+    def getViewer(self, index: int, /) -> FreeCADGui.View3DInventorViewer:
         """getViewer(index)"""
 
     def close(self) -> None:
@@ -1605,7 +1606,7 @@ def supportedLocales() -> dict:
     """
 
 
-def createDialog(string: str, /) -> PyResource:
+def createDialog(string: str, /):
     """createDialog(string) -- Open a UI file"""
 
 
@@ -1702,7 +1703,7 @@ def setActiveDocument(string_or_App_Document: FreeCAD.Document, /):
     """
 
 
-def activeView(typename: str = None, /):
+def activeView(typename: str = None, /) -> FreeCADGui.MDIView:
     """
     activeView(typename=None) -> object or None
 
@@ -1807,7 +1808,7 @@ def removeDocumentObserver(arg0, /):
     """
 
 
-def listUserEditModes() -> list:
+def listUserEditModes() -> list[str]:
     """
     listUserEditModes() -> list
 

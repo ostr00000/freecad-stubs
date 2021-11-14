@@ -17,10 +17,10 @@ class Measurement(FreeCAD.BaseClass):
     def clear(self):
         """measure the difference between references to obtain resultant vector"""
 
-    def com(self):
+    def com(self) -> FreeCAD.Vector:
         """measure the center of mass for selected volumes"""
 
-    def delta(self):
+    def delta(self) -> FreeCAD.Vector:
         """measure the difference between references to obtain resultant vector"""
 
     def has3DReferences(self) -> bool:

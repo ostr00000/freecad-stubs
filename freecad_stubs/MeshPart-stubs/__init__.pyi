@@ -20,7 +20,7 @@ def loftOnCurve(curve: Part.Shape, poly, upVector: typing.Sequence[float, float,
     """
 
 
-def findSectionParameters(Edge: Part.Edge, Mesh: MeshModule.Mesh, Vector: FreeCAD.Vector, /) -> list:
+def findSectionParameters(Edge: Part.Edge, Mesh: MeshModule.Mesh, Vector: FreeCAD.Vector, /) -> list[float]:
     """
     Find the parameters of the edge where when projecting the corresponding point
     will lie on an edge of the mesh
@@ -29,31 +29,31 @@ def findSectionParameters(Edge: Part.Edge, Mesh: MeshModule.Mesh, Vector: FreeCA
     """
 
 
-def projectPointsOnMesh(list_of_points, Mesh: MeshModule.Mesh, Vector: FreeCAD.Vector, float: float = None, /) -> list:
+def projectPointsOnMesh(list_of_points, Mesh: MeshModule.Mesh, Vector: FreeCAD.Vector, float: float = None, /) -> list[FreeCAD.Vector]:
     """
     Projects points onto a mesh with a given direction
     and tolerance.projectPointsOnMesh(list of points, Mesh, Vector, [float]) -> list of points
     """
 
 
-def wireFromSegment(arg1: MeshModule.Mesh, arg2: list, /) -> list:
+def wireFromSegment(arg1: MeshModule.Mesh, arg2: list, /) -> list[Part.Wire]:
     """Create wire(s) from boundary of a mesh segment"""
 
 
-def wireFromMesh(arg1: MeshModule.Mesh, /) -> list:
+def wireFromMesh(arg1: MeshModule.Mesh, /) -> list[Part.Wire]:
     """Create wire(s) from boundary of a mesh"""
 
 
 @typing.overload
-def projectShapeOnMesh(Shape: Part.Shape, Mesh: MeshModule.Mesh, MaxDistance: float) -> list: ...
+def projectShapeOnMesh(Shape: Part.Shape, Mesh: MeshModule.Mesh, MaxDistance: float) -> list[list[FreeCAD.Vector]]: ...
 
 
 @typing.overload
-def projectShapeOnMesh(Shape: Part.Shape, Mesh: MeshModule.Mesh, Direction: FreeCAD.Vector) -> list: ...
+def projectShapeOnMesh(Shape: Part.Shape, Mesh: MeshModule.Mesh, Direction: FreeCAD.Vector) -> list[list[FreeCAD.Vector]]: ...
 
 
 @typing.overload
-def projectShapeOnMesh(Polygons, Mesh: MeshModule.Mesh, Direction: FreeCAD.Vector) -> list:
+def projectShapeOnMesh(Polygons, Mesh: MeshModule.Mesh, Direction: FreeCAD.Vector) -> list[list[FreeCAD.Vector]]:
     """
     Projects a shape onto a mesh with a given maximum distance
     projectShapeOnMesh(Shape, Mesh, float) -> polygon

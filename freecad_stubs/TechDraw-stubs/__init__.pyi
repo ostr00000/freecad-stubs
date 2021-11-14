@@ -276,7 +276,7 @@ class DrawViewClip(TechDraw.DrawView):
     def addView(self, DrawView: FreeCAD.DocumentObject, /):
         """addView(DrawView) - Add a View to this ClipView"""
 
-    def getChildViewNames(self) -> list:
+    def getChildViewNames(self) -> list[str]:
         """getChildViewNames() - get a list of the DrawViews in this ClipView"""
 
     def removeView(self, DrawView: FreeCAD.DocumentObject, /):
@@ -1258,10 +1258,10 @@ class DrawViewPart(TechDraw.DrawView):
     def getCosmeticEdgeBySelection(self, name: str, /) -> None:
         """ce = getCosmeticEdgeBySelection(name) - returns CosmeticEdge by name (Edge25).  Used in selections"""
 
-    def getCosmeticVertex(self, id: str, /) -> None:
+    def getCosmeticVertex(self, id: str, /) -> TechDraw.CosmeticVertex:
         """cv = getCosmeticVertex(id) - returns CosmeticVertex with unique id."""
 
-    def getCosmeticVertexBySelection(self, name: str, /) -> None:
+    def getCosmeticVertexBySelection(self, name: str, /) -> TechDraw.CosmeticVertex:
         """cv = getCosmeticVertexBySelection(name) - returns CosmeticVertex with name (Vertex6).  Used in selections."""
 
     def getEdgeByIndex(self, edgeIndex: int, /) -> Part.Edge:
@@ -1688,7 +1688,7 @@ class GeomFormat(FreeCAD.PyObjectBase):
 
 
 # AppTechDrawPy.cpp
-def edgeWalker(edgePile: list, inclBiggest=None, /) -> None | list:
+def edgeWalker(edgePile: list, inclBiggest=None, /) -> None | list[Part.Wire]:
     """[wires] = edgeWalker(edgePile,inclBiggest) -- Planar graph traversal finds wires in edge pile."""
 
 

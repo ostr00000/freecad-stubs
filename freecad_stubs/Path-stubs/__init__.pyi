@@ -230,7 +230,7 @@ class VoronoiCell(FreeCAD.BaseClass):
     def SourceIndex(self) -> int:
         """Returns the index of the cell's source"""
 
-    def getSource(self, arg1: float = None, /) -> FreeCAD.Vector | list:
+    def getSource(self, arg1: float = None, /) -> FreeCAD.Vector | list[FreeCAD.Vector]:
         """Returns the Source for the cell"""
 
     def __eq__(self, other) -> bool: ...
@@ -356,7 +356,7 @@ class Area(FreeCAD.BaseClass):
 
     def makePocket(self, index: int = None) -> Part.Shape: ...
 
-    def makeSections(self, heights=None, plane: Part.Shape = None) -> list: ...
+    def makeSections(self, heights=None, plane: Part.Shape = None) -> list[Path.Area]: ...
 
     def setParams(self) -> Path.Area: ...
 
@@ -561,10 +561,10 @@ class Voronoi(FreeCAD.BaseClass):
     def construct(self) -> None:
         """constructs the voronoi diagram from the input collections"""
 
-    def getPoints(self, arg1: float = None, /) -> list:
+    def getPoints(self, arg1: float = None, /) -> list[FreeCAD.Vector]:
         """Get list of all input points."""
 
-    def getSegments(self, arg1: float = None, /) -> list:
+    def getSegments(self, arg1: float = None, /) -> list[tuple[FreeCAD.Vector, FreeCAD.Vector]]:
         """Get list of all input segments."""
 
     def numCells(self) -> int:
@@ -699,7 +699,7 @@ def fromShape(Shape, /) -> Path.Path:
     """fromShape(Shape): Returns a Path object from a Part Shape (deprecated - use fromShapes() instead)"""
 
 
-def fromShapes(shapes, start: FreeCAD.Vector = None, return_end=None) -> Path.Path | tuple:
+def fromShapes(shapes, start: FreeCAD.Vector = None, return_end=None) -> Path.Path | tuple[Path.Path, FreeCAD.Vector]:
     """
     fromShapes(shapes, start=Vector(), return_end=False" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_PATH) ")
 
@@ -715,7 +715,7 @@ def fromShapes(shapes, start: FreeCAD.Vector = None, return_end=None) -> Path.Pa
     """
 
 
-def sortWires(shapes, start: FreeCAD.Vector = None) -> tuple:
+def sortWires(shapes, start: FreeCAD.Vector = None) -> tuple[list[Part.Shape], FreeCAD.Vector, int]:
     """
     sortWires(shapes, start=Vector(), "
                 PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_ARC_PLANE)

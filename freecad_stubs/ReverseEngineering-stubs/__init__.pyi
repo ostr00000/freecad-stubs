@@ -1,3 +1,4 @@
+import FreeCAD
 import Mesh as MeshModule
 import Part
 import Points
@@ -44,7 +45,7 @@ def filterVoxelGrid(Points: Points.Points, DimX: float, DimY: float = None, DimZ
     """filterVoxelGrid(dim)."""
 
 
-def normalEstimation(Points: Points.Points, KSearch: int = 0, SearchRadius: float = 0) -> list:
+def normalEstimation(Points: Points.Points, KSearch: int = 0, SearchRadius: float = 0) -> list[FreeCAD.Vector]:
     """
     normalEstimation(Points,[KSearch=0, SearchRadius=0]) -> Normals
     KSearch is an int and used to search the k-nearest neighbours in
@@ -65,11 +66,11 @@ def normalEstimation(Points: Points.Points, KSearch: int = 0, SearchRadius: floa
     """
 
 
-def regionGrowingSegmentation(Points: Points.Points, KSearch: int = None, Normals=None) -> list:
+def regionGrowingSegmentation(Points: Points.Points, KSearch: int = None, Normals=None) -> list[tuple[int]]:
     """regionGrowingSegmentation()."""
 
 
-def featureSegmentation(Points: Points.Points, KSearch: int = None) -> list:
+def featureSegmentation(Points: Points.Points, KSearch: int = None) -> list[tuple[int]]:
     """featureSegmentation()."""
 
 

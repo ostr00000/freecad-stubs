@@ -89,7 +89,7 @@ def countObjectsOfType(string: str, string1: str = None, resolve: int = 1, /) ->
     """
 
 
-def getSelection(docName: str = '', resolve: int = 1, single=False, /) -> list:
+def getSelection(docName: str = '', resolve: int = 1, single=False, /) -> list[FreeCAD.DocumentObject]:
     """
     Return a list of selected objects
     getSelection(docName='',resolve=1,single=False)
@@ -101,7 +101,7 @@ def getSelection(docName: str = '', resolve: int = 1, single=False, /) -> list:
     """
 
 
-def getPickedList(docName: str = '', /) -> list:
+def getPickedList(docName: str = '', /) -> list[FreeCADGui.SelectionObject]:
     """
     Return a list of objects under the last mouse click
     getPickedList(docName='')
@@ -124,7 +124,7 @@ def getCompleteSelection(resolve: int = 1, /) -> list:
     """
 
 
-def getSelectionEx(docName: str = '', resolve: int = 1, single=False, /) -> list:
+def getSelectionEx(docName: str = '', resolve: int = 1, single=False, /) -> list[FreeCADGui.SelectionObject]:
     """
     Return a list of SelectionObjects
     getSelectionEx(docName='',resolve=1, single=False)

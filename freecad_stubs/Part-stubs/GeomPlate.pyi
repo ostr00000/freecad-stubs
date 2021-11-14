@@ -32,9 +32,9 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
                 correspond to the curve constraints set in add()
         """
 
-    def disc2dContour(self, arg1: int, /) -> list: ...
+    def disc2dContour(self, arg1: int, /) -> list[tuple[float, float]]: ...
 
-    def disc3dContour(self, arg1: int, arg2: int, /) -> list: ...
+    def disc3dContour(self, arg1: int, arg2: int, /) -> list[tuple[float, float, float]]: ...
 
     def init(self):
         """Resets all constraints"""
@@ -45,7 +45,7 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
     def loadInitSurface(self, arg1: Part.GeometrySurface, /):
         """Loads the initial surface"""
 
-    def order(self) -> list:
+    def order(self) -> list[int]:
         """Returns the order of the curves in the array returned by curves2d"""
 
     def perform(self):
@@ -54,7 +54,7 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
     def pointConstraint(self, arg1: int, /) -> Part.GeomPlate.PointConstraintPy:
         """Returns the point constraint of order"""
 
-    def sense(self) -> list:
+    def sense(self) -> list[int]:
         """Returns the orientation of the curves in the the array returned by curves2d"""
 
     def setNbBounds(self, arg1: int, /): ...
@@ -170,7 +170,7 @@ class PointConstraintPy(FreeCAD.PyObjectBase):
     def order(self) -> int:
         """Returns the order of constraint, one of G0, G1 or G2"""
 
-    def pnt2dOnSurf(self) -> tuple: ...
+    def pnt2dOnSurf(self) -> tuple[float, float]: ...
 
     def setG0Criterion(self, arg1: float, /):
         """

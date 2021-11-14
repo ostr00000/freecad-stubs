@@ -937,13 +937,13 @@ class Face(Part.Shape):
         addWire(wire)
         """
 
-    def curvatureAt(self, u: float, v: float, /) -> tuple:
+    def curvatureAt(self, u: float, v: float, /) -> tuple[float, float]:
         """
         Get the curvature at the given parameter [0|Length] if defined
         curvatureAt(u,v) -> Float
         """
 
-    def curveOnSurface(self, Edge: Part.Edge, /) -> tuple:
+    def curveOnSurface(self, Edge: Part.Edge, /) -> tuple[object, float, float]:
         """
         Returns the curve associated to the edge in the parametric space of the face.
         curveOnSurface(Edge) -> (curve, min, max) or None
@@ -958,19 +958,19 @@ class Face(Part.Shape):
         cutHoles(list_of_wires)
         """
 
-    def derivative1At(self, u: float, v: float, /) -> tuple:
+    def derivative1At(self, u: float, v: float, /) -> tuple[FreeCAD.Vector, FreeCAD.Vector]:
         """
         Get the first derivative at the given parameter [0|Length] if defined
         derivative1At(u,v) -> (vectorU,vectorV)
         """
 
-    def derivative2At(self, u: float, v: float, /) -> tuple:
+    def derivative2At(self, u: float, v: float, /) -> tuple[FreeCAD.Vector, FreeCAD.Vector]:
         """
         Vector = d2At(pos) - Get the second derivative at the given parameter [0|Length] if defined
         derivative2At(u,v) -> (vectorU,vectorV)
         """
 
-    def getUVNodes(self) -> list:
+    def getUVNodes(self) -> list | list[tuple[float, float]]:
         """
         Get the list of (u,v) nodes of the tessellation
         getUVNodes() -> list
@@ -1004,7 +1004,7 @@ class Face(Part.Shape):
         normalAt(pos) -> Vector
         """
 
-    def tangentAt(self, u: float, v: float, /) -> tuple:
+    def tangentAt(self, u: float, v: float, /) -> tuple[FreeCAD.Vector, FreeCAD.Vector]:
         """
         Get the tangent in u and v isoparametric at the given point if defined
         tangentAt(u,v) -> Vector
@@ -1053,7 +1053,7 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
         					Returns the Shape of the bottom of the sweep.
         """
 
-    def generated(self, shape_S: Part.Shape, /) -> list:
+    def generated(self, shape_S: Part.Shape, /) -> list[Part.Shape]:
         """
         generated(shape S)
         					Returns a list of new shapes generated from the shape S by the shell-generating algorithm.
@@ -1181,7 +1181,7 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
         					Returns the resulting shape.
         """
 
-    def simulate(self, int_nbsec: int, /) -> list:
+    def simulate(self, int_nbsec: int, /) -> list[Part.Shape]:
         """
         simulate(int nbsec)
         					Simulates the resulting shape by calculating the given number of cross-sections.
@@ -1337,7 +1337,7 @@ class Shape(FreeCAD.ComplexGeoData):
     def Wires(self) -> list:
         """List of wires in this shape."""
 
-    def ancestorsOfType(self, shape: Part.Shape, shape_type: type, /) -> list:
+    def ancestorsOfType(self, shape: Part.Shape, shape_type: type, /) -> list[Part.Shape]:
         """
         For a sub-shape of this shape get its ancestors of a type.
         ancestorsOfType(shape, shape type) -> list
@@ -1352,7 +1352,7 @@ class Shape(FreeCAD.ComplexGeoData):
         if runBopCheck is True, a BOPCheck analysis is also performed.
         """
 
-    def childShapes(self, cumOri: bool = True, cumLoc: bool = True, /) -> list:
+    def childShapes(self, cumOri: bool = True, cumLoc: bool = True, /) -> list[Part.Compound]:
         """
         Return a list of sub-shapes that are direct children of this shape.
         childShapes([cumOri=True, cumLoc=True]) -> list
@@ -1450,7 +1450,7 @@ class Shape(FreeCAD.ComplexGeoData):
         The parameter is a list of faces.
         """
 
-    def distToShape(self, shape: Part.Shape, /) -> tuple:
+    def distToShape(self, shape: Part.Shape, /) -> tuple[float, list[tuple[FreeCAD.Vector, object]], list[tuple[str, int, None, object, object, object]]]:
         """
         Find the minimum distance to another shape.
         distToShape(shape) -> (dist, vectors, infos)
@@ -1581,7 +1581,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Beginning from OCCT 6.8.1 a tolerance value can be specified.
         """
 
-    def generalFuse(self, list_of_other_shapes, fuzzy_value: float = 0.0, /) -> tuple:
+    def generalFuse(self, list_of_other_shapes, fuzzy_value: float = 0.0, /) -> tuple[Part.Shape, list[list[Part.Shape]]]:
         """
         Run general fuse algorithm (GFA) between this and given shapes.
         generalFuse(list_of_other_shapes, [fuzzy_value = 0.0]) -> (result, map)
@@ -1679,7 +1679,7 @@ class Shape(FreeCAD.ComplexGeoData):
         importBrepFromString(str,False) to not display a progress bar.
         """
 
-    def inTolerance(self, arg1: float, arg2: float, arg3: type = None, /) -> tuple:
+    def inTolerance(self, arg1: float, arg2: float, arg3: type = None, /) -> tuple[Part.Shape]:
         """
         Determines which shapes have a tolerance within a given interval
         inTolerance(value, [ShapeType=Shape]) -> ShapeList
@@ -1933,13 +1933,13 @@ class Shape(FreeCAD.ComplexGeoData):
         oldFuse(tool) -> Shape
         """
 
-    def optimalBoundingBox(self, useTriangulation: bool = True, useShapeTolerance=False, /):
+    def optimalBoundingBox(self, useTriangulation: bool = True, useShapeTolerance=False, /) -> FreeCAD.BoundingBox:
         """
         Get the optimal bounding box
         optimalBoundingBox([useTriangulation = True, useShapeTolerance = False]) -> bound box
         """
 
-    def overTolerance(self, value: float, ShapeType: type = None, /) -> tuple:
+    def overTolerance(self, value: float, ShapeType: type = None, /) -> tuple[Part.Shape]:
         """
         Determines which shapes have a tolerance over the given value
         overTolerance(value, [ShapeType=Shape]) -> ShapeList
@@ -1953,7 +1953,7 @@ class Shape(FreeCAD.ComplexGeoData):
         project(shapeList) -> Shape
         """
 
-    def proximity(self, shape: Part.Shape, tolerance: float = None, /) -> tuple:
+    def proximity(self, shape: Part.Shape, tolerance: float = None, /) -> tuple[list[int], list[int]]:
         """
         Returns two lists of Face indexes for the Faces involved in the intersection.
         proximity(shape,[tolerance]) -> (selfFaces, shapeFaces)
@@ -2131,7 +2131,7 @@ class Shape(FreeCAD.ComplexGeoData):
         sewShape()
         """
 
-    def slice(self, direction: FreeCAD.Vector, distance: float, /) -> list:
+    def slice(self, direction: FreeCAD.Vector, distance: float, /) -> list[Part.Wire]:
         """
         Make single slice of this shape.
         slice(direction, distance) --> Wires
@@ -2143,7 +2143,7 @@ class Shape(FreeCAD.ComplexGeoData):
         slices(direction, distancesList) --> Wires
         """
 
-    def tessellate(self, arg1: float, arg2: bool = None, /) -> tuple:
+    def tessellate(self, arg1: float, arg2: bool = None, /) -> tuple[list[FreeCAD.Vector], list[tuple[int, int, int]]]:
         """
         Tessellate the shape and return a list of vertices and face indices
         tessellate() -> (vertex,facets)
@@ -2302,7 +2302,7 @@ class BSplineCurve(Part.BoundedCurve):
     def StartPoint(self) -> object:
         """Returns the start point of this B-Spline curve."""
 
-    def __reduce__(self) -> tuple:
+    def __reduce__(self) -> tuple[object, tuple[typing.Callable, typing.Callable, typing.Callable, typing.Callable, object, typing.Callable, typing.Callable]]:
         """
         __reduce__()
         Serialization of Part.BSplineCurve objects
@@ -2394,19 +2394,19 @@ class BSplineCurve(Part.BoundedCurve):
         """
 
     @typing.overload
-    def getCardinalSplineTangents(self, Points, Parameter: float) -> list: ...
+    def getCardinalSplineTangents(self, Points, Parameter: float) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def getCardinalSplineTangents(self, Points, Parameters) -> list:
+    def getCardinalSplineTangents(self, Points, Parameters) -> list[FreeCAD.Vector]:
         """Compute the tangents for a Cardinal spline"""
 
     def getKnot(self, arg1: int, /) -> float:
         """Get a knot of the B-Spline curve."""
 
-    def getKnots(self) -> list:
+    def getKnots(self) -> list[float]:
         """Get all knots of the B-Spline curve."""
 
-    def getMultiplicities(self) -> list:
+    def getMultiplicities(self) -> list[int]:
         """Returns the multiplicities table M of the knots of this B-Spline curve."""
 
     def getMultiplicity(self, arg1: int, /) -> int:
@@ -2415,13 +2415,13 @@ class BSplineCurve(Part.BoundedCurve):
         from the knots table of this B-Spline curve.
         """
 
-    def getPole(self, arg1: int, /):
+    def getPole(self, arg1: int, /) -> FreeCAD.VectorPy:
         """Get a pole of the B-Spline curve."""
 
-    def getPoles(self) -> list:
+    def getPoles(self) -> list[FreeCAD.VectorPy]:
         """Get all poles of the B-Spline curve."""
 
-    def getPolesAndWeights(self) -> list:
+    def getPolesAndWeights(self) -> list[tuple[float, float, float, float]]:
         """Returns the table of poles and weights in homogeneous coordinates."""
 
     def getResolution(self, arg1: float, /) -> float:
@@ -2436,7 +2436,7 @@ class BSplineCurve(Part.BoundedCurve):
     def getWeight(self, arg1: int, /) -> float:
         """Get a weight of the B-Spline curve."""
 
-    def getWeights(self) -> list:
+    def getWeights(self) -> list[float]:
         """Get all weights of the B-Spline curve."""
 
     def increaseDegree(self, arg1: int, /):
@@ -2622,10 +2622,10 @@ class BSplineCurve(Part.BoundedCurve):
     def setWeight(self, arg1: int, arg2: float, /):
         """Set a weight of the B-Spline curve."""
 
-    def toBezier(self) -> list:
+    def toBezier(self) -> list[Part.BezierCurve]:
         """Build a list of Bezier splines."""
 
-    def toBiArcs(self, tolerance: float, /):
+    def toBiArcs(self, tolerance: float, /) -> list[Part.Geometry]:
         """
         Build a list of arcs and lines to approximate the B-spline.
         					toBiArcs(tolerance) -> list.
@@ -2871,52 +2871,52 @@ class Wire(Part.Shape):
         """
 
     @typing.overload
-    def discretize(self, kwargs, /) -> list: ...
+    def discretize(self, kwargs, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Number, /) -> list: ...
+    def discretize(self, Number, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, QuasiNumber, /) -> list: ...
+    def discretize(self, QuasiNumber, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Distance, /) -> list: ...
+    def discretize(self, Distance, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Deflection, /) -> list: ...
+    def discretize(self, Deflection, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, QuasiDeflection, /) -> list: ...
+    def discretize(self, QuasiDeflection, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Number: int, First: float = None, Last: float = None) -> list: ...
+    def discretize(self, Number: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Distance: float, First: float = None, Last: float = None) -> list: ...
+    def discretize(self, Distance: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Deflection: float, First: float = None, Last: float = None) -> list: ...
+    def discretize(self, Deflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, QuasiNumber: int, First: float = None, Last: float = None) -> list: ...
+    def discretize(self, QuasiNumber: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None) -> list: ...
+    def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Number: int, First: float = 0.01, Last: float = 100) -> list: ...
+    def discretize(self, Number: int, First: float = 0.01, Last: float = 100) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Distance: float, First: float = 0.01, Last: float = 100) -> list: ...
+    def discretize(self, Distance: float, First: float = 0.01, Last: float = 100) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Deflection: float, First: float = 0.01, Last: float = 100) -> list: ...
+    def discretize(self, Deflection: float, First: float = 0.01, Last: float = 100) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, QuasiNumber: int, First: float = 0.01, Last: float = 100) -> list: ...
+    def discretize(self, QuasiNumber: int, First: float = 0.01, Last: float = 100) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, QuasiDeflection: float, First: float = 0.01, Last: float = 100) -> list:
+    def discretize(self, QuasiDeflection: float, First: float = 0.01, Last: float = 100) -> list[FreeCAD.Vector]:
         """
         Discretizes the wire and returns a list of points.
         discretize(kwargs) -> list
@@ -3390,7 +3390,7 @@ class BSplineSurface(Part.GeometrySurface):
         					- approximate(Points, DegMax, Continuity, Tolerance, LengthWeight, CurvatureWeight, TorsionWeight)
         """
 
-    def bounds(self) -> tuple:
+    def bounds(self) -> tuple[float, float, float, float]:
         """Returns the parametric bounds (U1, U2, V1, V2) of this B-Spline surface."""
 
     def buildFromNSections(self, arg1, arg2: bool = None, /):
@@ -3413,13 +3413,13 @@ class BSplineSurface(Part.GeometrySurface):
         					-- the orientation of the surface is reversed.
         """
 
-    def getPole(self, arg1: int, arg2: int, /):
+    def getPole(self, arg1: int, arg2: int, /) -> FreeCAD.VectorPy:
         """Returns the pole of index (UIndex,VIndex) of this B-Spline surface."""
 
-    def getPoles(self) -> list:
+    def getPoles(self) -> list[list[FreeCAD.Vector]]:
         """Returns the table of poles of this B-Spline surface."""
 
-    def getPolesAndWeights(self) -> list:
+    def getPolesAndWeights(self) -> list[list[tuple[float, float, float, float]]]:
         """Returns the table of poles and weights in homogeneous coordinates."""
 
     def getResolution(self, arg1: float, /) -> tuple[float, float]:
@@ -3442,13 +3442,13 @@ class BSplineSurface(Part.GeometrySurface):
         					the knot of index UIndex of the knots table.
         """
 
-    def getUKnots(self) -> list:
+    def getUKnots(self) -> list[float]:
         """
         Returns, for this B-Spline surface, the knots table
         					in the u parametric direction
         """
 
-    def getUMultiplicities(self) -> list:
+    def getUMultiplicities(self) -> list[int]:
         """
         Returns, for this B-Spline surface, the table of
         					multiplicities in the u parametric direction
@@ -3466,13 +3466,13 @@ class BSplineSurface(Part.GeometrySurface):
         					the knot of index VIndex of the knots table.
         """
 
-    def getVKnots(self) -> list:
+    def getVKnots(self) -> list[float]:
         """
         Returns, for this B-Spline surface, the knots table
         					in the v parametric direction
         """
 
-    def getVMultiplicities(self) -> list:
+    def getVMultiplicities(self) -> list[int]:
         """
         Returns, for this B-Spline surface, the table of
         					multiplicities in the v parametric direction
@@ -3490,7 +3490,7 @@ class BSplineSurface(Part.GeometrySurface):
         					in the poles table for this B-Spline surface.
         """
 
-    def getWeights(self) -> list:
+    def getWeights(self) -> list[list[float]]:
         """Returns the table of weights of the poles for this B-Spline surface."""
 
     def increaseDegree(self, arg1: int, arg2: int, /):
@@ -3935,7 +3935,7 @@ class GeometrySurface(Part.Geometry):
     def VPeriod(self) -> float:
         """Returns the period of this patch in the v parametric direction."""
 
-    def bounds(self) -> tuple:
+    def bounds(self) -> tuple[float, float, float, float]:
         """Returns the parametric bounds (U1, U2, V1, V2) of this trimmed surface."""
 
     def curvature(self, u: float, v: float, type: str, /) -> float:
@@ -3945,7 +3945,7 @@ class GeometrySurface(Part.Geometry):
         Computes the curvature of parameter (u,v) on this geometry
         """
 
-    def curvatureDirections(self, u: float, v: float, /) -> tuple:
+    def curvatureDirections(self, u: float, v: float, /) -> tuple[FreeCAD.Vector, FreeCAD.Vector]:
         """
         curvatureDirections(u,v) -> (Vector,Vector)
         Computes the directions of maximum and minimum curvature
@@ -4006,13 +4006,13 @@ class GeometrySurface(Part.Geometry):
         Computes the normal of parameter (u,v) on this geometry
         """
 
-    def parameter(self, arg1: FreeCAD.Vector, arg2: float = None, /) -> tuple:
+    def parameter(self, arg1: FreeCAD.Vector, arg2: float = None, /) -> tuple[float, float]:
         """
         Returns the parameter on the curve
         of the nearest orthogonal projection of the point.
         """
 
-    def projectPoint(self, Point: FreeCAD.Vector, Method: str = None) -> FreeCAD.Vector | float | tuple | list:
+    def projectPoint(self, Point: FreeCAD.Vector, Method: str = None) -> FreeCAD.Vector | float | tuple[float, float] | list[float] | list[tuple[float, float]] | list[FreeCAD.Vector]:
         """
         Computes the projection of a point on the surface
 
@@ -4025,7 +4025,7 @@ class GeometrySurface(Part.Geometry):
         projectPoint(Vector,"Point") -> list of points
         """
 
-    def tangent(self, u: float, v: float, /) -> tuple:
+    def tangent(self, u: float, v: float, /) -> tuple[FreeCAD.Vector, FreeCAD.Vector]:
         """
         tangent(u,v) -> (Vector,Vector)
         Computes the tangent of parameter (u,v) on this geometry
@@ -4051,10 +4051,10 @@ class GeometrySurface(Part.Geometry):
     def toShell(self, Bounds: tuple = None, Segment: bool = None) -> Part.Shell:
         """Make a shell of the surface."""
 
-    def uIso(self, arg1: float, /) -> Part.Line:
+    def uIso(self, arg1: float, /) -> Part.Line | object:
         """Builds the U isoparametric curve"""
 
-    def vIso(self, arg1: float, /) -> Part.Line:
+    def vIso(self, arg1: float, /) -> Part.Line | object:
         """Builds the V isoparametric curve"""
 
     def value(self, u: float, v: float, /) -> FreeCAD.Vector:
@@ -4230,7 +4230,7 @@ class Edge(Part.Shape):
         curvatureAt(paramval) -> Float
         """
 
-    def curveOnSurface(self, idx: int, /) -> tuple:
+    def curveOnSurface(self, idx: int, /) -> tuple[object, object, FreeCAD.Placement, float, float]:
         """
         Returns the 2D curve, the surface, the placement and the parameter range of index idx.
         curveOnSurface(idx) -> None or tuple
@@ -4369,37 +4369,37 @@ class Edge(Part.Shape):
         """
 
     @typing.overload
-    def discretize(self, kwargs, /) -> list: ...
+    def discretize(self, kwargs, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Number, /) -> list: ...
+    def discretize(self, Number, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, QuasiNumber, /) -> list: ...
+    def discretize(self, QuasiNumber, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Distance, /) -> list: ...
+    def discretize(self, Distance, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Deflection, /) -> list: ...
+    def discretize(self, Deflection, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, QuasiDeflection, /) -> list: ...
+    def discretize(self, QuasiDeflection, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Number: int, First: float = None, Last: float = None) -> list: ...
+    def discretize(self, Number: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Distance: float, First: float = None, Last: float = None) -> list: ...
+    def discretize(self, Distance: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Deflection: float, First: float = None, Last: float = None) -> list: ...
+    def discretize(self, Deflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, QuasiNumber: int, First: float = None, Last: float = None) -> list: ...
+    def discretize(self, QuasiNumber: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None) -> list:
+    def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector]:
         """
         Discretizes the edge and returns a list of points.
         discretize(kwargs) -> list
@@ -4526,7 +4526,7 @@ class Edge(Part.Shape):
         parameterAt(Vertex) -> Float
         """
 
-    def parameters(self, face: Part.Face = None, /) -> list:
+    def parameters(self, face: Part.Face = None, /) -> list | list[float]:
         """
         Get the list of parameters of the tessellation of an edge.
         parameters([face]) -> list
@@ -4709,10 +4709,10 @@ class BezierCurve(Part.BoundedCurve):
     def StartPoint(self) -> object:
         """Returns the start point of this Bezier curve."""
 
-    def getPole(self, arg1: int, /):
+    def getPole(self, arg1: int, /) -> FreeCAD.VectorPy:
         """Get a pole of the Bezier curve."""
 
-    def getPoles(self) -> list:
+    def getPoles(self) -> list[FreeCAD.VectorPy]:
         """Get all poles of the Bezier curve."""
 
     def getResolution(self, arg1: float, /) -> float:
@@ -4727,7 +4727,7 @@ class BezierCurve(Part.BoundedCurve):
     def getWeight(self, arg1: int, /) -> float:
         """Get a weight of the Bezier curve."""
 
-    def getWeights(self) -> list:
+    def getWeights(self) -> list[float]:
         """Get all weights of the Bezier curve."""
 
     def increase(self, Int: int, /):
@@ -5023,34 +5023,34 @@ class Curve(Part.Geometry):
         """Float = curvature(pos) - Get the curvature at the given parameter [First|Last] if defined"""
 
     @typing.overload
-    def discretize(self, Number, /) -> list: ...
+    def discretize(self, Number, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, QuasiNumber, /) -> list: ...
+    def discretize(self, QuasiNumber, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Distance, /) -> list: ...
+    def discretize(self, Distance, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Deflection, /) -> list: ...
+    def discretize(self, Deflection, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, QuasiDeflection, /) -> list: ...
+    def discretize(self, QuasiDeflection, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Number: int, First: float = None, Last: float = None) -> list: ...
+    def discretize(self, Number: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Distance: float, First: float = None, Last: float = None) -> list: ...
+    def discretize(self, Distance: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Deflection: float, First: float = None, Last: float = None) -> list: ...
+    def discretize(self, Deflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, QuasiNumber: int, First: float = None, Last: float = None) -> list: ...
+    def discretize(self, QuasiNumber: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None) -> list:
+    def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector]:
         """
         Discretizes the curve and returns a list of points.
         The function accepts keywords as argument:
@@ -5088,13 +5088,13 @@ class Curve(Part.Geometry):
     def getD0(self, arg1: float, /) -> FreeCAD.Vector:
         """Returns the point of given parameter"""
 
-    def getD1(self, arg1: float, /) -> tuple:
+    def getD1(self, arg1: float, /) -> tuple[FreeCAD.Vector, FreeCAD.Vector]:
         """Returns the point and first derivative of given parameter"""
 
-    def getD2(self, arg1: float, /) -> tuple:
+    def getD2(self, arg1: float, /) -> tuple[FreeCAD.Vector, FreeCAD.Vector, FreeCAD.Vector]:
         """Returns the point, first and second derivatives"""
 
-    def getD3(self, arg1: float, /) -> tuple:
+    def getD3(self, arg1: float, /) -> tuple[FreeCAD.Vector, FreeCAD.Vector, FreeCAD.Vector, FreeCAD.Vector]:
         """Returns the point, first, second and third derivatives"""
 
     def getDN(self, arg1: float, arg2: int, /) -> FreeCAD.Vector:
@@ -5111,13 +5111,13 @@ class Curve(Part.Geometry):
         				  arguments: curve/surface (for the intersection), precision (float)
         """
 
-    def intersect2d(self, arg1: Part.Curve, arg2: Part.Plane, /) -> list:
+    def intersect2d(self, arg1: Part.Curve, arg2: Part.Plane, /) -> list[tuple[float, float]]:
         """Get intersection points with another curve lying on a plane."""
 
-    def intersectCC(self, arg1: Part.Curve, arg2: float = None, /) -> list:
+    def intersectCC(self, arg1: Part.Curve, arg2: float = None, /) -> list | list[Part.Point]:
         """Returns all intersection points between this curve and the given curve."""
 
-    def intersectCS(self, arg1: Part.GeometrySurface, arg2: float = None, /) -> tuple:
+    def intersectCS(self, arg1: Part.GeometrySurface, arg2: float = None, /) -> tuple[list[Part.Point], list]:
         """Returns all intersection points and curve segments between the curve and the surface."""
 
     def isClosed(self) -> bool:
@@ -5165,7 +5165,7 @@ class Curve(Part.Geometry):
         the point of parameter U on this curve.
         """
 
-    def tangent(self, arg1: float, /) -> tuple:
+    def tangent(self, arg1: float, /) -> tuple[FreeCAD.Vector]:
         """Computes the tangent of parameter u on this curve"""
 
     def toBSpline(self, Float: float = None, Float2: float = None, /) -> Part.BSplineCurve:
@@ -5615,7 +5615,7 @@ class BezierSurface(Part.GeometrySurface):
         					which is equal to the number of poles minus 1.
         """
 
-    def bounds(self) -> tuple:
+    def bounds(self) -> tuple[float, float, float, float]:
         """Returns the parametric bounds (U1, U2, V1, V2) of this Bezier surface."""
 
     def exchangeUV(self):
@@ -5631,7 +5631,7 @@ class BezierSurface(Part.GeometrySurface):
     def getPole(self, arg1: int, arg2: int, /) -> FreeCAD.Vector:
         """Get a pole of index (UIndex,VIndex) of the Bezier surface."""
 
-    def getPoles(self) -> list:
+    def getPoles(self) -> list[list[FreeCAD.Vector]]:
         """Get all poles of the Bezier surface."""
 
     def getResolution(self, arg1: float, /) -> tuple[float, float]:
@@ -5654,7 +5654,7 @@ class BezierSurface(Part.GeometrySurface):
         					of the Bezier surface.
         """
 
-    def getWeights(self) -> list:
+    def getWeights(self) -> list[list[float]]:
         """Get all weights of the Bezier surface."""
 
     def increase(self, Int: int, Int2: int, /):
@@ -6085,7 +6085,7 @@ def makeWireString(string, fontdir: str, fontfile: str, height: float, track: fl
     """makeWireString(string,fontdir,fontfile,height,[track]) -- Make list of wires in the form of a string's characters."""
 
 
-def makeSplitShape(shape: Part.Shape, list_of_shape_pairs, check_Interior: bool = True, /) -> tuple:
+def makeSplitShape(shape: Part.Shape, list_of_shape_pairs, check_Interior: bool = True, /) -> tuple[list[Part.Shape], list[Part.Shape]]:
     """
     makeSplitShape(shape, list of shape pairs,[check Interior=True]) -> two lists of shapes.
     The following shape pairs are supported:
@@ -6126,11 +6126,11 @@ def cast_to_shape(shape: Part.Shape, /) -> Part.Shape:
     """cast_to_shape(shape) -- Cast to the actual shape type"""
 
 
-def getSortedClusters(list_of_edges, /) -> list:
+def getSortedClusters(list_of_edges, /) -> list[list[Part.Edge]]:
     """getSortedClusters(list of edges) -- Helper method to sort and cluster a variety of edges"""
 
 
-def __sortEdges__(list_of_edges, /) -> list:
+def __sortEdges__(list_of_edges, /) -> list[Part.Edge]:
     """
     __sortEdges__(list of edges) -- list of edges
     Helper method to sort an unsorted list of edges so that afterwards
@@ -6141,7 +6141,7 @@ def __sortEdges__(list_of_edges, /) -> list:
     """
 
 
-def sortEdges(list_of_edges, /) -> list:
+def sortEdges(list_of_edges, /) -> list[list[Part.Edge]]:
     """
     sortEdges(list of edges) -- list of lists of edges
     It does basically the same as __sortEdges__ but sorts all input edges and thus returns
@@ -6161,7 +6161,7 @@ def clearShapeCache() -> typing.Union[object]:
     """clearShapeCache() -- Clears internal shape cache"""
 
 
-def splitSubname(subname: str, /) -> list:
+def splitSubname(subname: str, /) -> list[str]:
     """
     splitSubname(subname) -> list(sub,mapped,subElement)
     Split the given subname into a list
@@ -6196,7 +6196,7 @@ def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matr
 
 
 # AttacherTexts.cpp
-def getModeStrings(attacher_type: str, mode_index: int, /) -> list:
+def getModeStrings(attacher_type: str, mode_index: int, /) -> list[str]:
     """getModeStrings(attacher_type, mode_index) - gets mode user-friendly name and brief description."""
 
 

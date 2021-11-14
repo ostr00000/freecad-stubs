@@ -60,7 +60,7 @@ class Vector(FreeCAD.PyObjectBase):
     @z.setter
     def z(self, value: float): ...
 
-    def __reduce__(self) -> tuple:
+    def __reduce__(self) -> tuple[object, tuple[float, float, float]]:
         """
         __reduce__()
                               Serialization of Vector objects
@@ -324,7 +324,7 @@ class Rotation(FreeCAD.PyObjectBase):
     def RawAxis(self) -> FreeCAD.Vector:
         """The rotation axis without normalization"""
 
-    def getYawPitchRoll(self) -> tuple:
+    def getYawPitchRoll(self) -> tuple[float, float, float]:
         """
         getYawPitchRoll() -> list
         					Get the Euler angles of this rotation
@@ -397,7 +397,7 @@ class Rotation(FreeCAD.PyObjectBase):
         					Spherical linear interpolation of this and a given rotation. The float must be in the range of 0 and 1
         """
 
-    def toEulerAngles(self, seq: str = '', /) -> list | tuple:
+    def toEulerAngles(self, seq: str = '', /) -> list[str] | tuple[float, float, float]:
         """
         toEulerAngles(seq='') -> list
                             Get the Euler angles in a given sequence for this rotation.
@@ -627,7 +627,7 @@ class BoundBox(FreeCAD.PyObjectBase):
         A negative value shrinks the box.
         """
 
-    def getEdge(self, Int: int, /) -> tuple:
+    def getEdge(self, Int: int, /) -> tuple[FreeCAD.Vector, FreeCAD.Vector]:
         """
         method getEdge(Int)
         Get the edge points of the given index. The index must be in the range of [0,11]
@@ -1242,7 +1242,7 @@ class BaseClass(FreeCAD.PyObjectBase):
     def TypeId(self) -> str:
         """Is the type of the FreeCAD object with module domain"""
 
-    def getAllDerivedFrom(self) -> list:
+    def getAllDerivedFrom(self) -> list[str]:
         """Returns all descendants"""
 
     def isDerivedFrom(self, arg1: str, /) -> bool:
@@ -1647,11 +1647,11 @@ class TypeId(FreeCAD.PyObjectBase):
     def Name(self) -> str:
         """The name of the type id"""
 
-    def createInstance(self):
+    def createInstance(self) -> FreeCAD.BaseClass:
         """Creates an instance of this type"""
 
     @staticmethod
-    def createInstanceByName(arg0: str, arg1: bool = None, /):
+    def createInstanceByName(arg0: str, arg1: bool = None, /) -> FreeCAD.BaseClass:
         """Creates an instance of the named type"""
 
     @staticmethod
@@ -1662,16 +1662,16 @@ class TypeId(FreeCAD.PyObjectBase):
     def fromName(arg0: str, /) -> FreeCAD.TypeId:
         """Returns a type object by name"""
 
-    def getAllDerived(self) -> list:
+    def getAllDerived(self) -> list[FreeCAD.TypeId]:
         """Returns all descendants"""
 
     @staticmethod
     @typing.overload
-    def getAllDerivedFrom(arg0: str, /) -> list: ...
+    def getAllDerivedFrom(arg0: str, /) -> list[FreeCAD.TypeId]: ...
 
     @staticmethod
     @typing.overload
-    def getAllDerivedFrom(arg0: FreeCAD.TypeId, /) -> list:
+    def getAllDerivedFrom(arg0: FreeCAD.TypeId, /) -> list[FreeCAD.TypeId]:
         """Returns all descendants"""
 
     @staticmethod

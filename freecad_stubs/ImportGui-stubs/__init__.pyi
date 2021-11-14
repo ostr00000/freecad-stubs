@@ -1,6 +1,3 @@
-import typing
-
-
 # AppImportGuiPy.cpp
 def ocaf(string: str, /) -> None:
     """ocaf(string) -- Browse the ocaf structure."""

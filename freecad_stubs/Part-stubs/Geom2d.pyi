@@ -764,10 +764,10 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def getKnot(self, arg1: int, /) -> float:
         """Get a knot of the B-Spline curve."""
 
-    def getKnots(self) -> list:
+    def getKnots(self) -> list[float]:
         """Get all knots of the B-Spline curve."""
 
-    def getMultiplicities(self) -> list:
+    def getMultiplicities(self) -> list[int]:
         """Returns the multiplicities table M of the knots of this B-Spline curve."""
 
     def getMultiplicity(self, arg1: int, /) -> int:
@@ -782,7 +782,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def getPoles(self) -> list:
         """Get all poles of the B-Spline curve."""
 
-    def getPolesAndWeights(self) -> list:
+    def getPolesAndWeights(self) -> list[tuple[float, float, float]]:
         """Returns the table of poles and weights in homogeneous coordinates."""
 
     def getResolution(self, arg1: float, /) -> float:
@@ -797,7 +797,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def getWeight(self, arg1: int, /) -> float:
         """Get a weight of the B-Spline curve."""
 
-    def getWeights(self) -> list:
+    def getWeights(self) -> list[float]:
         """Get all weights of the B-Spline curve."""
 
     def increaseDegree(self, arg1: int, /):
@@ -983,10 +983,10 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def setWeight(self, arg1: int, arg2: float, /):
         """Set a weight of the B-Spline curve."""
 
-    def toBezier(self) -> list:
+    def toBezier(self) -> list[Part.Geom2d.BezierCurve2d]:
         """Build a list of Bezier splines."""
 
-    def toBiArcs(self, tolerance: float, /):
+    def toBiArcs(self, tolerance: float, /) -> list[Part.Geom2d.Geometry2d]:
         """
         Build a list of arcs and lines to approximate the B-spline.
         					toBiArcs(tolerance) -> list.
@@ -1045,7 +1045,7 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
     def getWeight(self, arg1: int, /) -> float:
         """Get a weight of the Bezier curve."""
 
-    def getWeights(self) -> list:
+    def getWeights(self) -> list[float]:
         """Get all weights of the Bezier curve."""
 
     def increase(self, Int: int, /):

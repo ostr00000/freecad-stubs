@@ -3,14 +3,14 @@ import Part
 
 
 # AppDrawingPy.cpp
-def project(arg1: Part.Shape, arg2: FreeCAD.Vector = None, /) -> list:
+def project(arg1: Part.Shape, arg2: FreeCAD.Vector = None, /) -> list[Part.Shape]:
     """
     [visiblyG0,visiblyG1,hiddenG0,hiddenG1] = project(TopoShape[,App.Vector Direction, string type])
      -- Project a shape and return the visible/invisible parts of it.
     """
 
 
-def projectEx(arg1: Part.Shape, arg2: FreeCAD.Vector = None, /) -> list:
+def projectEx(arg1: Part.Shape, arg2: FreeCAD.Vector = None, /) -> list[Part.Shape]:
     """
     [V,V1,VN,VO,VI,H,H1,HN,HO,HI] = projectEx(TopoShape[,App.Vector Direction, string type])
      -- Project a shape and return the all parts of it.

@@ -276,20 +276,20 @@ class SketchObject(Part.Part2DObject):
     def ExposeInternalGeometry(self, arg1: int, /):
         """Deprecated -- use exposeInternalGeometry"""
 
-    def addConstraint(self, arg1, /) -> int | tuple:
+    def addConstraint(self, arg1, /) -> int | tuple[int]:
         """add a constraint to the sketch"""
 
-    def addCopy(self, arg1, arg2: FreeCAD.Vector, arg3: bool = None, /) -> tuple:
+    def addCopy(self, arg1, arg2: FreeCAD.Vector, arg3: bool = None, /) -> tuple[int]:
         """add a copy of geometric objects to the sketch displaced by a vector3d"""
 
     def addExternal(self, arg1: str, arg2: str, /):
         """add a link to an external geometry to use it in a constraint"""
 
     @typing.overload
-    def addGeometry(self, arg1, arg2: bool, /) -> int | tuple: ...
+    def addGeometry(self, arg1, arg2: bool, /) -> int | tuple[int]: ...
 
     @typing.overload
-    def addGeometry(self, arg1, /) -> int | tuple:
+    def addGeometry(self, arg1, /) -> int | tuple[int]:
         """add a geometric object to the sketch"""
 
     def addMove(self, arg1, arg2: FreeCAD.Vector, /):
@@ -298,7 +298,7 @@ class SketchObject(Part.Part2DObject):
     def addRectangularArray(self, arg1, arg2: FreeCAD.Vector, arg3: bool, arg4: int, arg5: int, arg6: bool = None, arg7: float = None, /):
         """add an array of size cols by rows where each element is a copy of the selected geometric objects displaced by a vector3d in the cols direction and by a vector perpendicular to it in the rows direction"""
 
-    def addSymmetric(self, arg1, arg2: int, arg3: int = None, /) -> tuple:
+    def addSymmetric(self, arg1, arg2: int, arg3: int = None, /) -> tuple[int]:
         """add a symmetric geometric objects to the sketch with respect to a reference point or line"""
 
     def analyseMissingPointOnPointCoincident(self, arg1: float = None, /):
@@ -427,13 +427,13 @@ class SketchObject(Part.Part2DObject):
     def getDriving(self, arg1: int, /) -> bool:
         """Get the Driving status of a datum constraint"""
 
-    def getGeoVertexIndex(self, index: int, /) -> tuple:
+    def getGeoVertexIndex(self, index: int, /) -> tuple[int, int]:
         """(geoId, posId) = getGeoVertexIndex(index) - retrieve the GeoId and PosId of a point in the sketch"""
 
     def getGeometryId(self, arg1: int, /) -> int:
         """gets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId"""
 
-    def getGeometryWithDependentParameters(self) -> list:
+    def getGeometryWithDependentParameters(self) -> list[tuple[int, int]]:
         """
         getGeometryWithDependentParameters - returns a list of geoid posid pairs
                         with all the geometry element edges and vertices which the solver regards
@@ -576,10 +576,10 @@ class Sketch(FreeCAD.Persistence):
     def Shape(self) -> object:
         """Resulting shape from the sketch geometry"""
 
-    def addConstraint(self, arg1, /) -> tuple | int:
+    def addConstraint(self, arg1, /) -> tuple[int] | int:
         """add an constraint object to the sketch"""
 
-    def addGeometry(self, arg1, /) -> int | tuple:
+    def addGeometry(self, arg1, /) -> int | tuple[int]:
         """add a geometric object to the sketch"""
 
     def clear(self):
@@ -699,7 +699,7 @@ class ExternalGeometryFacade(FreeCAD.BaseClass):
     def setExtension(self, arg1: Part.GeometryExtension, /):
         """Sets a geometry extension of the indicated type."""
 
-    def setFlag(self, arg1: str, arg2: bool = None, /):
+    def setFlag(self, arg1: str, arg2: bool = None, /) -> bool:
         """Sets the given bit to true/false."""
 
     def testFlag(self, arg1: str, /) -> bool:

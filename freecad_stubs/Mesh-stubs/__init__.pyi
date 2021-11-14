@@ -80,7 +80,7 @@ class Facet(FreeCAD.PyObjectBase):
         Returns the edge of the facet.
         """
 
-    def intersect(self, Facet: MeshModule.Facet, /) -> list:
+    def intersect(self, Facet: MeshModule.Facet, /) -> list[tuple[float, float, float]]:
         """
         intersect(Facet) -> list 
         Get a list of intersection points with another triangle.
@@ -391,7 +391,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def countSegments(self) -> int:
         """Get the number of segments which may also be 0"""
 
-    def crossSections(self, arg1, arg2: float = None, arg3: bool = None, /) -> list:
+    def crossSections(self, arg1, arg2: float = None, arg3: bool = None, /) -> list[list[list[FreeCAD.Vector]]]:
         """Get cross-sections of the mesh through several planes"""
 
     def cut(self, list, int: int, /):
@@ -444,25 +444,25 @@ class Mesh(FreeCAD.ComplexGeoData):
     def foraminate(self, arg1, arg2, /) -> dict:
         """Get a list of facet indices and intersection points"""
 
-    def getCurvaturePerVertex(self) -> list:
+    def getCurvaturePerVertex(self) -> list[tuple[float, float, tuple[float, float, float], tuple[float, float, float]]]:
         """
         getCurvaturePerVertex() -> list
         The items in the list contains minimum and maximum curvature with their directions
         """
 
-    def getEigenSystem(self) -> tuple:
+    def getEigenSystem(self) -> tuple[FreeCAD.Matrix, FreeCAD.Vector]:
         """Get Eigen base of the mesh"""
 
-    def getFacetSelection(self) -> list:
+    def getFacetSelection(self) -> list[int]:
         """Get a list of the indices of selected facets"""
 
     def getInternalFacets(self) -> list:
         """Builds a list of facet indices with triangles that are inside a volume mesh"""
 
-    def getNonUniformOrientedFacets(self) -> tuple:
+    def getNonUniformOrientedFacets(self) -> tuple[int]:
         """Get a tuple of wrong oriented facets"""
 
-    def getPlanarSegments(self, dev: float, min_faces: int = 0, /) -> list:
+    def getPlanarSegments(self, dev: float, min_faces: int = 0, /) -> list[list[int]]:
         """
         getPlanarSegments(dev,[min faces=0]) -> list
         Get all planes of the mesh as segment.
@@ -470,19 +470,19 @@ class Mesh(FreeCAD.ComplexGeoData):
         plane if none of its neighbors are coplanar.
         """
 
-    def getPointNormals(self) -> tuple:
+    def getPointNormals(self) -> tuple[FreeCAD.Vector]:
         """
         getPointNormals()
         					Get the normals of the points.
         """
 
-    def getPointSelection(self) -> list:
+    def getPointSelection(self) -> list[int]:
         """Get a list of the indices of selected points"""
 
-    def getSegment(self, arg1: int, /) -> list:
+    def getSegment(self, arg1: int, /) -> list[int]:
         """Get a list of facet indices that describes a segment"""
 
-    def getSegmentsByCurvature(self, list, /) -> list:
+    def getSegmentsByCurvature(self, list, /) -> list[list[int]]:
         """
         getSegmentsByCurvature(list) -> list
         The argument list gives a list if tuples where it defines the preferred maximum curvature,
@@ -493,17 +493,17 @@ class Mesh(FreeCAD.ComplexGeoData):
         mesh.getSegmentsByCurvature([c,p])
         """
 
-    def getSegmentsOfType(self, type: str, dev: float, min_faces: int = 0, /) -> list:
+    def getSegmentsOfType(self, type: str, dev: float, min_faces: int = 0, /) -> list[list[int]]:
         """
         getSegmentsOfType(type, dev,[min faces=0]) -> list
         Get all segments of type.
         Type can be Plane, Cylinder or Sphere
         """
 
-    def getSelfIntersections(self) -> tuple:
+    def getSelfIntersections(self) -> tuple[tuple[int, int, FreeCAD.Vector, FreeCAD.Vector]]:
         """Returns a tuple of indices of intersecting triangles"""
 
-    def getSeparateComponents(self) -> list:
+    def getSeparateComponents(self) -> list[MeshModule.Mesh]:
         """
         Returns a list containing the different
         components (separated areas) of the mesh as separate meshes
@@ -647,7 +647,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def rotate(self, arg1: float, arg2: float, arg3: float, /):
         """Apply a rotation to the mesh"""
 
-    def section(self, Mesh: MeshModule.Mesh, ConnectLines: bool = True, MinDist: float = 0.0001) -> list:
+    def section(self, Mesh: MeshModule.Mesh, ConnectLines: bool = True, MinDist: float = 0.0001) -> list[list[FreeCAD.Vector]]:
         """
         Get the section curves of this and the given mesh object.
         lines = mesh.section(mesh2, [ConnectLines=True, MinDist=0.0001])
@@ -763,7 +763,7 @@ class Edge(FreeCAD.PyObjectBase):
     def Points(self) -> list:
         """A list of points of the edge"""
 
-    def intersectWithEdge(self, Edge: MeshModule.Edge, /) -> list:
+    def intersectWithEdge(self, Edge: MeshModule.Edge, /) -> list[tuple[float, float, float]]:
         """
         intersectWithEdge(Edge) -> list
         Get a list of intersection points with another edge.
@@ -863,7 +863,7 @@ def polynomialFit(seq_Base_Vector_, /) -> dict:
     """polynomialFit(seq(Base.Vector)) -- Calculates a polynomial fit."""
 
 
-def minimumVolumeOrientedBox(seq_Base_Vector_, /) -> tuple:
+def minimumVolumeOrientedBox(seq_Base_Vector_, /) -> tuple[FreeCAD.Vector, FreeCAD.Vector, FreeCAD.Vector, FreeCAD.Vector, float, float, float]:
     """
     minimumVolumeOrientedBox(seq(Base.Vector)) -- Calculates the minimum
     volume oriented box containing all points. The return value is a

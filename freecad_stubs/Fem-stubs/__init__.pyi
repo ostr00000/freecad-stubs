@@ -165,49 +165,49 @@ class FemMesh(FreeCAD.ComplexGeoData):
     def copy(self) -> Fem.FemMesh:
         """Make a copy of this FEM mesh."""
 
-    def getEdgesByEdge(self, arg1: Part.Edge, /) -> list:
+    def getEdgesByEdge(self, arg1: Part.Edge, /) -> list[int]:
         """Return a list of edge IDs which belong to a TopoEdge"""
 
-    def getElementNodes(self, arg1: int, /) -> tuple:
+    def getElementNodes(self, arg1: int, /) -> tuple[int]:
         """Return a tuple of node IDs to a given element ID"""
 
     def getElementType(self, arg1: int, /) -> str:
         """Return the element type of a given ID"""
 
-    def getFacesByFace(self, arg1: Part.Face, /) -> list:
+    def getFacesByFace(self, arg1: Part.Face, /) -> list[int]:
         """Return a list of face IDs which belong to a TopoFace"""
 
     def getGroupElementType(self, arg1: int, /) -> str:
         """Return a string of group element type to a given group ID"""
 
-    def getGroupElements(self, arg1: int, /) -> tuple:
+    def getGroupElements(self, arg1: int, /) -> tuple[int]:
         """Return a tuple of ElementIDs to a given group ID"""
 
     def getGroupName(self, arg1: int, /) -> str:
         """Return a string of group name to a given group ID"""
 
-    def getIdByElementType(self, arg1: str, /) -> tuple:
+    def getIdByElementType(self, arg1: str, /) -> tuple[int]:
         """Return a tuple of IDs to a given element type"""
 
     def getNodeById(self, arg1: int, /) -> FreeCAD.Vector:
         """Get the node position vector by a Node-ID"""
 
-    def getNodesByEdge(self, arg1: Part.Edge, /) -> list:
+    def getNodesByEdge(self, arg1: Part.Edge, /) -> list[int]:
         """Return a list of node IDs which belong to a TopoEdge"""
 
-    def getNodesByFace(self, arg1: Part.Face, /) -> list:
+    def getNodesByFace(self, arg1: Part.Face, /) -> list[int]:
         """Return a list of node IDs which belong to a TopoFace"""
 
-    def getNodesBySolid(self, arg1: Part.Solid, /) -> list:
+    def getNodesBySolid(self, arg1: Part.Solid, /) -> list[int]:
         """Return a list of node IDs which belong to a TopoSolid"""
 
-    def getNodesByVertex(self, arg1: Part.Vertex, /) -> list:
+    def getNodesByVertex(self, arg1: Part.Vertex, /) -> list[int]:
         """Return a list of node IDs which belong to a TopoVertex"""
 
-    def getVolumesByFace(self, arg1: Part.Face, /) -> list:
+    def getVolumesByFace(self, arg1: Part.Face, /) -> list[tuple[int, int]]:
         """Return a dict of volume IDs and face IDs which belong to a TopoFace"""
 
-    def getccxVolumesByFace(self, arg1: Part.Face, /) -> list:
+    def getccxVolumesByFace(self, arg1: Part.Face, /) -> list[tuple[int, int]]:
         """Return a dict of volume IDs and ccx face numbers which belong to a TopoFace"""
 
     def read(self, file_endingToExportTo: str, /):
@@ -288,7 +288,7 @@ class FemPostPipeline(FreeCAD.GeoFeature):
     @Mode.setter
     def Mode(self, value: typing.Literal['Serial', 'Parallel']): ...
 
-    def getLastPostObject(self):
+    def getLastPostObject(self) -> FreeCAD.DocumentObject:
         """Get the last post-processing object"""
 
     def holdsPostObject(self, arg1: FreeCAD.DocumentObject, /) -> bool:

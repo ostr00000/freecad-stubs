@@ -59,7 +59,7 @@ class Sheet(FreeCAD.DocumentObject):
     def exportFile(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, /) -> bool:
         """Export file from spreadsheet"""
 
-    def get(self, arg1: str, arg2: str = None, /) -> tuple | object:
+    def get(self, arg1: str, arg2: str = None, /) -> tuple[FreeCAD.Property] | FreeCAD.Property:
         """Get evaluated cell contents"""
 
     def getAlias(self, arg1: str, /) -> str | None:
@@ -68,7 +68,7 @@ class Sheet(FreeCAD.DocumentObject):
     def getAlignment(self, arg1: str, /) -> object | None:
         """Get alignment of the cell"""
 
-    def getBackground(self, arg1: str, /) -> tuple | None:
+    def getBackground(self, arg1: str, /) -> tuple[float, float, float, float] | None:
         """Get background color of the cell"""
 
     def getCellFromAlias(self, arg1: str, /) -> str | None:
@@ -83,7 +83,7 @@ class Sheet(FreeCAD.DocumentObject):
     def getDisplayUnit(self, arg1: str, /) -> str:
         """Get display unit for cell"""
 
-    def getForeground(self, arg1: str, /) -> tuple | None:
+    def getForeground(self, arg1: str, /) -> tuple[float, float, float, float] | None:
         """Get foreground color of the cell"""
 
     def getRowHeight(self, arg1: str, /) -> int:
