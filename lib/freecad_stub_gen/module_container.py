@@ -95,6 +95,9 @@ class Module:
             elif imp == 'PathModule':
                 sortModule = 'Path'
                 imp = 'import Path as PathModule'
+            elif imp == 'PointsModule':
+                sortModule = 'Points'
+                imp = 'import Points as PointsModule'
             else:
                 sortModule = imp
                 if 'import' not in imp:

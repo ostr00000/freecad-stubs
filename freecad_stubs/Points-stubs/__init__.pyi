@@ -1,5 +1,5 @@
 import FreeCAD
-import Points
+import Points as PointsModule
 
 
 # PointsPy.xml
@@ -37,13 +37,13 @@ class Points(FreeCAD.ComplexGeoData):
     def addPoints(self, arg1, /):
         """add one or more (list of) points to the object"""
 
-    def copy(self) -> Points.Points:
+    def copy(self) -> PointsModule.Points:
         """Create a copy of this points object"""
 
-    def fromSegment(self, arg1, /) -> Points.Points:
+    def fromSegment(self, arg1, /) -> PointsModule.Points:
         """Get a new point object from a given segment"""
 
-    def fromValid(self) -> Points.Points:
+    def fromValid(self) -> PointsModule.Points:
         """Get a new point object from points with valid coordinates (i.e. that are not NaN)"""
 
     def read(self, arg1: str, /):
@@ -66,5 +66,5 @@ def insert(arg1: str, arg2: str, /) -> None: ...
 def export(arg1, arg2: str, /) -> None: ...
 
 
-def show(points: Points.Points, string: str = None, /) -> None:
+def show(points: PointsModule.Points, string: str = None, /) -> None:
     """show(points,[string]) -- Add the points to the active document or create one if no document exists."""

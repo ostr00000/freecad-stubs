@@ -94,4 +94,5 @@ class PythonApiGenerator(BaseGenerator, ABC):
             rt = ReturnTypeConverter(
                 self.requiredImports, self._functionBody,
                 self.classNameWithModules, self._functionName).getReturnType()
+            # TODO P3 extract exceptions and add them to docs
             yield SelfSignature(params, return_annotation=rt)

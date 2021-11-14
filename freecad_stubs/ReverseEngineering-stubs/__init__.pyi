@@ -1,7 +1,7 @@
 import FreeCAD
 import Mesh as MeshModule
 import Part
-import Points
+import Points as PointsModule
 
 
 # AppReverseEngineering.cpp
@@ -13,39 +13,39 @@ def approxSurface(Points, UDegree: int = None, VDegree: int = None, NbUPoles: in
     """
 
 
-def triangulate(Points: Points.Points, SearchRadius: float, Mu: float = None, KSearch: int = None, Normals=None) -> MeshModule.Mesh:
+def triangulate(Points: PointsModule.Points, SearchRadius: float, Mu: float = None, KSearch: int = None, Normals=None) -> MeshModule.Mesh:
     """triangulate(PointKernel,searchRadius[,mu=2.5])."""
 
 
-def poissonReconstruction(Points: Points.Points, KSearch: int = None, OctreeDepth: int = None, SolverDivide: int = None, SamplesPerNode: float = None, Normals=None) -> MeshModule.Mesh:
+def poissonReconstruction(Points: PointsModule.Points, KSearch: int = None, OctreeDepth: int = None, SolverDivide: int = None, SamplesPerNode: float = None, Normals=None) -> MeshModule.Mesh:
     """poissonReconstruction(PointKernel)."""
 
 
-def viewTriangulation(Points: Points.Points, Width: int = None, Height: int = None) -> MeshModule.Mesh:
+def viewTriangulation(Points: PointsModule.Points, Width: int = None, Height: int = None) -> MeshModule.Mesh:
     """viewTriangulation(PointKernel, width, height)."""
 
 
-def gridProjection(Points: Points.Points, KSearch: int = None, Normals=None) -> MeshModule.Mesh:
+def gridProjection(Points: PointsModule.Points, KSearch: int = None, Normals=None) -> MeshModule.Mesh:
     """gridProjection(PointKernel)."""
 
 
-def marchingCubesRBF(Points: Points.Points, KSearch: int = None, Normals=None) -> MeshModule.Mesh:
+def marchingCubesRBF(Points: PointsModule.Points, KSearch: int = None, Normals=None) -> MeshModule.Mesh:
     """marchingCubesRBF(PointKernel)."""
 
 
-def marchingCubesHoppe(Points: Points.Points, KSearch: int = None, Normals=None) -> MeshModule.Mesh:
+def marchingCubesHoppe(Points: PointsModule.Points, KSearch: int = None, Normals=None) -> MeshModule.Mesh:
     """marchingCubesHoppe(PointKernel)."""
 
 
-def fitBSpline(Points: Points.Points, Degree: int = None, Refinement: int = None, Iterations: int = None, InteriorSmoothness: float = None, InteriorWeight: float = None, BoundarySmoothness: float = None, BoundaryWeight: float = None) -> Part.BSplineSurface:
+def fitBSpline(Points: PointsModule.Points, Degree: int = None, Refinement: int = None, Iterations: int = None, InteriorSmoothness: float = None, InteriorWeight: float = None, BoundarySmoothness: float = None, BoundaryWeight: float = None) -> Part.BSplineSurface:
     """fitBSpline(PointKernel)."""
 
 
-def filterVoxelGrid(Points: Points.Points, DimX: float, DimY: float = None, DimZ: float = None) -> Points.Points:
+def filterVoxelGrid(Points: PointsModule.Points, DimX: float, DimY: float = None, DimZ: float = None) -> PointsModule.Points:
     """filterVoxelGrid(dim)."""
 
 
-def normalEstimation(Points: Points.Points, KSearch: int = 0, SearchRadius: float = 0) -> list[FreeCAD.Vector]:
+def normalEstimation(Points: PointsModule.Points, KSearch: int = 0, SearchRadius: float = 0) -> list[FreeCAD.Vector]:
     """
     normalEstimation(Points,[KSearch=0, SearchRadius=0]) -> Normals
     KSearch is an int and used to search the k-nearest neighbours in
@@ -66,13 +66,13 @@ def normalEstimation(Points: Points.Points, KSearch: int = 0, SearchRadius: floa
     """
 
 
-def regionGrowingSegmentation(Points: Points.Points, KSearch: int = None, Normals=None) -> list[tuple[int]]:
+def regionGrowingSegmentation(Points: PointsModule.Points, KSearch: int = None, Normals=None) -> list[tuple[int]]:
     """regionGrowingSegmentation()."""
 
 
-def featureSegmentation(Points: Points.Points, KSearch: int = None) -> list[tuple[int]]:
+def featureSegmentation(Points: PointsModule.Points, KSearch: int = None) -> list[tuple[int]]:
     """featureSegmentation()."""
 
 
-def sampleConsensus(SacModel: str, Points: Points.Points, Normals=None) -> dict[str, float | tuple[float] | tuple[int]]:
+def sampleConsensus(SacModel: str, Points: PointsModule.Points, Normals=None) -> dict[str, float | tuple[float] | tuple[int]]:
     """sampleConsensus()."""
