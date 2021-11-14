@@ -9,7 +9,7 @@ from freecad_stub_gen.generators.common.arguments_converter import TypesConverte
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
     generateExpressionUntilChar
 from freecad_stub_gen.generators.common.gen_base import BaseGenerator
-from freecad_stub_gen.generators.common.return_type_converter import ReturnTypeConverter
+from freecad_stub_gen.generators.common.return_type_converter.full import ReturnTypeConverter
 
 logger = logging.getLogger(__name__)
 
