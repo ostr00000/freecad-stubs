@@ -141,6 +141,8 @@ Wrn = FreeCAD.Console.PrintWarning
         if stubPackage.is_dir():
             if stubPackage.name == 'MeshModule':
                 newName = 'Mesh-stubs'
+            elif stubPackage.name == 'PathModule':
+                newName = 'Path-stubs'
             else:
                 newName = stubPackage.name + '-stubs'
 

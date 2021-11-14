@@ -3,7 +3,7 @@ import typing
 import FreeCAD
 import FreeCADGui
 import Part
-import Path
+import Path as PathModule
 
 LinkList_t: typing.TypeAlias = None | FreeCAD.DocumentObject
 
@@ -116,7 +116,7 @@ class Tool(FreeCAD.Persistence):
     @ToolType.setter
     def ToolType(self, value: str): ...
 
-    def copy(self) -> Path.Tool:
+    def copy(self) -> PathModule.Tool:
         """returns a copy of this tool"""
 
     def getToolMaterials(self) -> list:
@@ -336,7 +336,7 @@ class Area(FreeCAD.BaseClass):
     @Workplane.setter
     def Workplane(self, value: object): ...
 
-    def add(self, shape) -> Path.Area: ...
+    def add(self, shape) -> PathModule.Area: ...
 
     def getParams(self) -> dict:
         """Get current algorithm parameters as a dictionary."""
@@ -356,11 +356,11 @@ class Area(FreeCAD.BaseClass):
 
     def makePocket(self, index: int = None) -> Part.Shape: ...
 
-    def makeSections(self, heights=None, plane: Part.Shape = None) -> list[Path.Area]: ...
+    def makeSections(self, heights=None, plane: Part.Shape = None) -> list[PathModule.Area]: ...
 
-    def setParams(self) -> Path.Area: ...
+    def setParams(self) -> PathModule.Area: ...
 
-    def setPlane(self, shape: Part.Shape, /) -> Path.Area:
+    def setPlane(self, shape: Part.Shape, /) -> PathModule.Area:
         """
         setPlane(shape): Set the working plane.
 
@@ -417,16 +417,16 @@ class Path(FreeCAD.Persistence):
         """the number of commands in this path"""
 
     @typing.overload
-    def addCommands(self, arg1: Path.Command, /) -> Path.Path: ...
+    def addCommands(self, arg1: PathModule.Command, /) -> PathModule.Path: ...
 
     @typing.overload
-    def addCommands(self, arg1: list, /) -> Path.Path:
+    def addCommands(self, arg1: list, /) -> PathModule.Path:
         """adds a command or a list of commands at the end of the path"""
 
-    def copy(self) -> Path.Path:
+    def copy(self) -> PathModule.Path:
         """returns a copy of this path"""
 
-    def deleteCommand(self, int: int = None, /) -> Path.Path:
+    def deleteCommand(self, int: int = None, /) -> PathModule.Path:
         """
         deleteCommand([int]):
         deletes the command found at the given position or from the end of the path
@@ -435,7 +435,7 @@ class Path(FreeCAD.Persistence):
     def getCycleTime(self, arg1: float, arg2: float, arg3: float, arg4: float, /) -> float:
         """return the cycle time estimation for this path in s"""
 
-    def insertCommand(self, Command: Path.Command, int: int = None, /) -> Path.Path:
+    def insertCommand(self, Command: PathModule.Command, int: int = None, /) -> PathModule.Path:
         """
         insertCommand(Command,[int]):
         adds a command at the given position or at the end of the path
@@ -487,13 +487,13 @@ class Tooltable(FreeCAD.Persistence):
     def Version(self, value: int): ...
 
     @typing.overload
-    def addTools(self, arg1: Path.Tool, /) -> None: ...
+    def addTools(self, arg1: PathModule.Tool, /) -> None: ...
 
     @typing.overload
     def addTools(self, arg1: list, /) -> None:
         """adds a tool or a list of tools at the end of the table"""
 
-    def copy(self) -> Path.Tooltable:
+    def copy(self) -> PathModule.Tooltable:
         """returns a copy of this tooltable"""
 
     def deleteTool(self, int: int = None, /) -> None:
@@ -502,7 +502,7 @@ class Tooltable(FreeCAD.Persistence):
         deletes the tool found at the given position
         """
 
-    def getTool(self, int: int, /) -> Path.Tool | None:
+    def getTool(self, int: int, /) -> PathModule.Tool | None:
         """
         getTool(int):
         returns the tool found at the given position, or  None
@@ -511,7 +511,7 @@ class Tooltable(FreeCAD.Persistence):
     def setFromTemplate(self, dict: dict, /):
         """setFromTemplate(dict) ... restores receiver from given template attribute dictionary"""
 
-    def setTool(self, int: int, tool: Path.Tool, /) -> None:
+    def setTool(self, int: int, tool: PathModule.Tool, /) -> None:
         """
         setTool(int,tool):
         adds a tool at the given position
@@ -611,7 +611,7 @@ class FeatureArea(FreeCAD.DocumentObject):
     @WorkPlane.setter
     def WorkPlane(self, value: Part.Shape): ...
 
-    def getArea(self) -> Path.Area:
+    def getArea(self) -> PathModule.Area:
         """Return a copy of the encapsulated Python Area object."""
 
     def setParams(self) -> None:
@@ -691,15 +691,15 @@ def read(filename: str, document: str = None, /) -> None:
     """read(filename,[document]): Imports a GCode file into the given document"""
 
 
-def show(path: Path.Path, string: str = None, /) -> None:
+def show(path: PathModule.Path, string: str = None, /) -> None:
     """show(path,[string]): Add the path to the active document or create one if no document exists"""
 
 
-def fromShape(Shape, /) -> Path.Path:
+def fromShape(Shape, /) -> PathModule.Path:
     """fromShape(Shape): Returns a Path object from a Part Shape (deprecated - use fromShapes() instead)"""
 
 
-def fromShapes(shapes, start: FreeCAD.Vector = None, return_end=None) -> Path.Path | tuple[Path.Path, FreeCAD.Vector]:
+def fromShapes(shapes, start: FreeCAD.Vector = None, return_end=None) -> PathModule.Path | tuple[PathModule.Path, FreeCAD.Vector]:
     """
     fromShapes(shapes, start=Vector(), return_end=False" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_PATH) ")
 

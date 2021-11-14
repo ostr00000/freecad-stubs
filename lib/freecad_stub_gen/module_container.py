@@ -92,6 +92,9 @@ class Module:
             elif imp == 'MeshModule':
                 sortModule = 'Mesh'
                 imp = 'import Mesh as MeshModule'
+            elif imp == 'PathModule':
+                sortModule = 'Path'
+                imp = 'import Path as PathModule'
             else:
                 sortModule = imp
                 if 'import' not in imp:

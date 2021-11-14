@@ -34,7 +34,13 @@ class _ModuleNamespace:
         'Gui': 'FreeCADGui',
         'Data': 'FreeCAD',
         'Attacher': 'Part',
-        'Mesh': 'MeshModule',  # need to use alias, because there is also class 'Mesh'
+
+        # To use module with alias the change must be done in:
+        # 1. here,
+        # 2. Module._genImports,
+        # 3. generateFreeCadStubs in rename loop.
+        'Mesh': 'MeshModule',  # there is a class 'Mesh'
+        'Path': 'PathModule',  # there is a class 'Path'
     }
 
     def convertNamespaceToModule(self, namespace: str):
