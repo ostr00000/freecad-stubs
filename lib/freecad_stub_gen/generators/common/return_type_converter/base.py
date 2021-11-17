@@ -207,20 +207,21 @@ class ReturnTypeConverterBase:
             return self.classNameWithModule
 
         variableDecReg = re.compile(rf"""
-        ([\w:]+(?<!:))                  # word with ':', but cannot end with ':'
+        (?P<type>[\w:]+(?<!:))          # word with ':', but cannot end with ':'
         \s*\*?                          # may be a pointer
         (?:>::(?:const_)?iterator)?\s*  # may be iterator or const_iterator
+        (?:\b\w+\s*,\s*)*               # there may be multiple declaration for one type
         \b{variableName}\b              # variable name must be separate word
-        (?:\s*=\s*(.*);)?               # there may be optional assignment expression 
+        (?:\s*=\s*(?P<val>.*);)?        # there may be optional assignment expression 
         """, re.VERBOSE)
         matches = list(variableDecReg.finditer(self.functionBody, endpos=endPos))
         for declarationMatch in reversed(matches):
-            varTypeDec = declarationMatch.group(1)
+            varTypeDec = declarationMatch.group('type')
             if varTypeDec in ('return', 'else'):
                 continue
 
             elif varTypeDec in ('auto', 'PyObject', 'Py::Object'):
-                if assignValue := declarationMatch.group(2):
+                if assignValue := declarationMatch.group('val'):
                     #  we can try resolve real type by checking right side
                     varType = self._getReturnTypeForText(assignValue, endPos, onlyLiteral=True)
                 else:

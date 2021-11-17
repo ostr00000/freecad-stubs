@@ -1484,7 +1484,7 @@ class Shape(FreeCAD.ComplexGeoData):
         The parameter is a list of faces.
         """
 
-    def distToShape(self, shape: Part.Shape, /) -> tuple[float, list[tuple[FreeCAD.Vector, object]], list[tuple[str, int, float | tuple[float, float] | None, object, object, object]]]:
+    def distToShape(self, shape: Part.Shape, /) -> tuple[float, list[tuple[FreeCAD.Vector, FreeCAD.Vector]], list[tuple[str, int, float | tuple[float, float] | None, str, int, float | tuple[float, float] | None]]]:
         """
         Find the minimum distance to another shape.
         distToShape(shape) -> (dist, vectors, infos)
