@@ -20,7 +20,7 @@ class ViewProviderFemMesh(FreeCADGui.ViewProviderDocumentObject):
     def ElementColor(self, value: dict): ...
 
     @property
-    def HighlightedNodes(self) -> list:
+    def HighlightedNodes(self) -> list[int]:
         """List of nodes which get highlighted."""
 
     @HighlightedNodes.setter

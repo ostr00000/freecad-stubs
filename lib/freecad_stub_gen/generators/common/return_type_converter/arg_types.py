@@ -1,7 +1,10 @@
 from functools import cached_property
+from typing import TypeVar, Generator
 
 from freecad_stub_gen.generators.common.names import getModuleName
 from freecad_stub_gen.util import OrderedSet, indent
+
+T = TypeVar('T')
 
 
 class EmptyType:
@@ -47,6 +50,15 @@ class UnionArguments(ArgumentsIter, OrderedSet):
 
 
 class TupleArgument(ArgumentsIter, list):
+    def __init__(self, gen: Generator[T, None, bool | None] = ()):
+        super().__init__()
+        while True:
+            try:
+                self.append(next(gen))
+            except StopIteration as st:
+                self.repeated = len(self) == 1 and bool(st)
+                return
+
     def __str__(self):
         if self:
             return f'tuple[{", ".join(self)}]'

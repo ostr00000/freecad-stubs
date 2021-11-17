@@ -48,7 +48,7 @@ class Vertex(Part.Shape):
         """TopoShapeVertex is the OpenCasCade topological vertex wrapper"""
 
     @property
-    def Point(self) -> object:
+    def Point(self) -> FreeCAD.PyObjectBase:
         """Position of this Vertex as a Vector"""
 
     @property
@@ -131,7 +131,7 @@ class Cylinder(Part.GeometrySurface):
     def Axis(self, value: FreeCAD.Vector): ...
 
     @property
-    def Center(self) -> object:
+    def Center(self) -> FreeCAD.Vector:
         """Center of the cylinder."""
 
     @Center.setter
@@ -192,22 +192,22 @@ class AttachEngine(FreeCAD.BaseClass):
         """Type of engine: 3d, plane, line, or point."""
 
     @property
-    def AttachmentOffset(self) -> object:
+    def AttachmentOffset(self) -> FreeCAD.Placement:
         """Current attachment mode."""
 
     @AttachmentOffset.setter
     def AttachmentOffset(self, value: object): ...
 
     @property
-    def CompleteModeList(self) -> list:
+    def CompleteModeList(self) -> list[str]:
         """List of all attachment modes of all AttachEngines. This is the list of modes in MapMode enum properties of AttachableObjects."""
 
     @property
-    def CompleteRefTypeList(self) -> list:
+    def CompleteRefTypeList(self) -> list[str]:
         """List of all reference shape types recognized by AttachEngine."""
 
     @property
-    def ImplementedModes(self) -> list:
+    def ImplementedModes(self) -> list[str]:
         """List of all attachment modes of all AttachEngines. This is the list of modes in MapMode enum properties of AttachableObjects."""
 
     @property
@@ -379,14 +379,14 @@ class Ellipse(Part.Conic):
         """The focal distance of the ellipse."""
 
     @property
-    def Focus1(self) -> object:
+    def Focus1(self) -> FreeCAD.Vector:
         """
         The first focus is on the positive side of the major axis of the ellipse;
         the second focus is on the negative side.
         """
 
     @property
-    def Focus2(self) -> object:
+    def Focus2(self) -> FreeCAD.Vector:
         """
         The first focus is on the positive side of the major axis of the ellipse;
         the second focus is on the negative side.
@@ -418,7 +418,7 @@ class Solid(Part.Shape):
         """Part.Solid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created."""
 
     @property
-    def CenterOfMass(self) -> object:
+    def CenterOfMass(self) -> FreeCAD.Vector:
         """
         Returns the center of mass of the current system.
         If the gravitational field is uniform, it is the center of gravity.
@@ -427,11 +427,11 @@ class Solid(Part.Shape):
         """
 
     @property
-    def Mass(self) -> object:
+    def Mass(self) -> float:
         """Returns the mass of the current system."""
 
     @property
-    def MatrixOfInertia(self) -> object:
+    def MatrixOfInertia(self) -> FreeCAD.Matrix:
         """
         Returns the matrix of inertia. It is a symmetrical matrix.
         The coefficients of the matrix are the quadratic moments of
@@ -452,14 +452,14 @@ class Solid(Part.Shape):
         """
 
     @property
-    def OuterShell(self) -> object:
+    def OuterShell(self) -> Part.Shell:
         """
         Returns the outer most shell of this solid or an null
         shape if the solid has no shells
         """
 
     @property
-    def PrincipalProperties(self) -> dict:
+    def PrincipalProperties(self) -> dict[object, bool | tuple[float, float, float] | FreeCAD.Vector]:
         """
         Computes the principal properties of inertia of the current system.
          There is always a set of axes for which the products
@@ -473,7 +473,7 @@ class Solid(Part.Shape):
         """
 
     @property
-    def StaticMoments(self) -> object:
+    def StaticMoments(self) -> tuple[float, float, float]:
         """
         Returns Ix, Iy, Iz, the static moments of inertia of the
          current system; i.e. the moments of inertia about the
@@ -521,11 +521,11 @@ class BoundedCurve(Part.Curve):
     """The abstract class BoundedCurve is the root class of all bounded curve objects."""
 
     @property
-    def EndPoint(self) -> object:
+    def EndPoint(self) -> FreeCAD.Vector:
         """Returns the end point of the bounded curve."""
 
     @property
-    def StartPoint(self) -> object:
+    def StartPoint(self) -> FreeCAD.Vector:
         """Returns the starting point of the bounded curve."""
 
 
@@ -594,14 +594,14 @@ class Hyperbola(Part.Conic):
         """The focal distance of the hyperbola."""
 
     @property
-    def Focus1(self) -> object:
+    def Focus1(self) -> FreeCAD.Vector:
         """
         The first focus is on the positive side of the major axis of the hyperbola;
         the second focus is on the negative side.
         """
 
     @property
-    def Focus2(self) -> object:
+    def Focus2(self) -> FreeCAD.Vector:
         """
         The first focus is on the positive side of the major axis of the hyperbola;
         the second focus is on the negative side.
@@ -643,7 +643,7 @@ class OffsetCurve(Part.Curve):
         """Sets or gets the basic curve."""
 
     @property
-    def OffsetDirection(self) -> object:
+    def OffsetDirection(self) -> FreeCAD.Vector:
         """Sets or gets the offset direction to offset the underlying curve."""
 
     @property
@@ -827,7 +827,7 @@ class Plane(Part.GeometrySurface):
     def Axis(self, value: FreeCAD.Vector): ...
 
     @property
-    def Position(self) -> object:
+    def Position(self) -> FreeCAD.Vector:
         """Returns the position point of this plane."""
 
     @Position.setter
@@ -864,7 +864,7 @@ class Face(Part.Shape):
         """TopoShapeFace is the OpenCasCade topological face wrapper"""
 
     @property
-    def CenterOfMass(self) -> object:
+    def CenterOfMass(self) -> FreeCAD.Vector:
         """
         Returns the center of mass of the current system.
         If the gravitational field is uniform, it is the center of gravity.
@@ -873,11 +873,11 @@ class Face(Part.Shape):
         """
 
     @property
-    def Mass(self) -> object:
+    def Mass(self) -> float:
         """Returns the mass of the current system."""
 
     @property
-    def MatrixOfInertia(self) -> object:
+    def MatrixOfInertia(self) -> FreeCAD.Matrix:
         """
         Returns the matrix of inertia. It is a symmetrical matrix.
         The coefficients of the matrix are the quadratic moments of
@@ -898,15 +898,15 @@ class Face(Part.Shape):
         """
 
     @property
-    def OuterWire(self) -> object:
+    def OuterWire(self) -> FreeCAD.PyObjectBase:
         """The outer wire of this face"""
 
     @property
-    def ParameterRange(self) -> tuple:
+    def ParameterRange(self) -> tuple[float, float, float, float]:
         """Returns a 4 tuple with the parameter range"""
 
     @property
-    def PrincipalProperties(self) -> dict:
+    def PrincipalProperties(self) -> dict[object, bool | tuple[float, float, float] | FreeCAD.Vector]:
         """
         Computes the principal properties of inertia of the current system.
          There is always a set of axes for which the products
@@ -920,7 +920,7 @@ class Face(Part.Shape):
         """
 
     @property
-    def StaticMoments(self) -> object:
+    def StaticMoments(self) -> tuple[float, float, float]:
         """
         Returns Ix, Iy, Iz, the static moments of inertia of the
          current system; i.e. the moments of inertia about the
@@ -1248,7 +1248,7 @@ class Parabola(Part.Conic):
     def Focal(self, value: float): ...
 
     @property
-    def Focus(self) -> object:
+    def Focus(self) -> FreeCAD.Vector:
         """
         The focus is on the positive side of the
         'X Axis' of the local coordinate system of the parabola.
@@ -1294,19 +1294,19 @@ class Shape(FreeCAD.ComplexGeoData):
         """Total area of the faces of the shape."""
 
     @property
-    def CompSolids(self) -> list:
+    def CompSolids(self) -> list[FreeCAD.PyObjectBase]:
         """List of subsequent shapes in this shape."""
 
     @property
-    def Compounds(self) -> list:
+    def Compounds(self) -> list[FreeCAD.PyObjectBase]:
         """List of compounds in this shape."""
 
     @property
-    def Edges(self) -> list:
+    def Edges(self) -> list[FreeCAD.PyObjectBase]:
         """List of Edges in this shape."""
 
     @property
-    def Faces(self) -> list:
+    def Faces(self) -> list[FreeCAD.PyObjectBase]:
         """List of faces in this shape."""
 
     @property
@@ -1325,19 +1325,19 @@ class Shape(FreeCAD.ComplexGeoData):
         """Returns the type of the shape."""
 
     @property
-    def Shells(self) -> list:
+    def Shells(self) -> list[FreeCAD.PyObjectBase]:
         """List of subsequent shapes in this shape."""
 
     @property
-    def Solids(self) -> list:
+    def Solids(self) -> list[FreeCAD.PyObjectBase]:
         """List of subsequent shapes in this shape."""
 
     @property
-    def SubShapes(self) -> list:
+    def SubShapes(self) -> list[Part.Shape]:
         """List of sub-shapes in this shape."""
 
     @property
-    def Vertexes(self) -> list:
+    def Vertexes(self) -> list[FreeCAD.PyObjectBase]:
         """List of vertexes in this shape."""
 
     @property
@@ -1345,7 +1345,7 @@ class Shape(FreeCAD.ComplexGeoData):
         """Total volume of the solids of the shape."""
 
     @property
-    def Wires(self) -> list:
+    def Wires(self) -> list[FreeCAD.PyObjectBase]:
         """List of wires in this shape."""
 
     def ancestorsOfType(self, shape: Part.Shape, shape_type: type, /) -> list[Part.Shape]:
@@ -2238,7 +2238,7 @@ class ArcOfHyperbola(Part.ArcOfConic):
         """Describes a portion of an hyperbola"""
 
     @property
-    def Hyperbola(self) -> object:
+    def Hyperbola(self) -> Part.Hyperbola:
         """The internal hyperbola representation"""
 
     @property
@@ -2271,11 +2271,11 @@ class BSplineCurve(Part.BoundedCurve):
         """Returns the polynomial degree of this B-Spline curve."""
 
     @property
-    def EndPoint(self) -> object:
+    def EndPoint(self) -> FreeCAD.Vector:
         """Returns the end point of this B-Spline curve."""
 
     @property
-    def FirstUKnotIndex(self) -> object:
+    def FirstUKnotIndex(self) -> int:
         """
         Returns the index in the knot array of the knot
         corresponding to the first or last parameter
@@ -2283,11 +2283,11 @@ class BSplineCurve(Part.BoundedCurve):
         """
 
     @property
-    def KnotSequence(self) -> list:
+    def KnotSequence(self) -> list[float]:
         """Returns the knots sequence of this B-Spline curve."""
 
     @property
-    def LastUKnotIndex(self) -> object:
+    def LastUKnotIndex(self) -> int:
         """
         Returns the index in the knot array of the knot
         corresponding to the first or last parameter
@@ -2310,7 +2310,7 @@ class BSplineCurve(Part.BoundedCurve):
         """Returns the number of poles of this B-Spline curve."""
 
     @property
-    def StartPoint(self) -> object:
+    def StartPoint(self) -> FreeCAD.Vector:
         """Returns the start point of this B-Spline curve."""
 
     def __reduce__(self) -> tuple[object, tuple[typing.Callable, typing.Callable, typing.Callable, typing.Callable, object, typing.Callable, typing.Callable]]:
@@ -2426,10 +2426,10 @@ class BSplineCurve(Part.BoundedCurve):
         from the knots table of this B-Spline curve.
         """
 
-    def getPole(self, arg1: int, /) -> FreeCAD.VectorPy:
+    def getPole(self, arg1: int, /) -> FreeCAD.Vector:
         """Get a pole of the B-Spline curve."""
 
-    def getPoles(self) -> list[FreeCAD.VectorPy]:
+    def getPoles(self) -> list[FreeCAD.Vector]:
         """Get all poles of the B-Spline curve."""
 
     def getPolesAndWeights(self) -> list[tuple[float, float, float, float]]:
@@ -2661,7 +2661,7 @@ class ArcOfParabola(Part.ArcOfConic):
     def Focal(self, value: float): ...
 
     @property
-    def Parabola(self) -> object:
+    def Parabola(self) -> Part.Parabola:
         """The internal parabola representation"""
 
 
@@ -2703,7 +2703,7 @@ class ArcOfCircle(Part.ArcOfConic):
         """Describes a portion of a circle"""
 
     @property
-    def Circle(self) -> object:
+    def Circle(self) -> Part.Circle:
         """The internal circle representation"""
 
     @property
@@ -2736,7 +2736,7 @@ class Sphere(Part.GeometrySurface):
     def Axis(self, value: FreeCAD.Vector): ...
 
     @property
-    def Center(self) -> object:
+    def Center(self) -> FreeCAD.Vector:
         """Center of the sphere."""
 
     @Center.setter
@@ -2802,7 +2802,7 @@ class Wire(Part.Shape):
         """TopoShapeWire is the OpenCasCade topological wire wrapper"""
 
     @property
-    def CenterOfMass(self) -> object:
+    def CenterOfMass(self) -> FreeCAD.Vector:
         """
         Returns the center of mass of the current system.
         If the gravitational field is uniform, it is the center of gravity.
@@ -2815,11 +2815,11 @@ class Wire(Part.Shape):
         """Returns the continuity"""
 
     @property
-    def Mass(self) -> object:
+    def Mass(self) -> float:
         """Returns the mass of the current system."""
 
     @property
-    def MatrixOfInertia(self) -> object:
+    def MatrixOfInertia(self) -> FreeCAD.Matrix:
         """
         Returns the matrix of inertia. It is a symmetrical matrix.
         The coefficients of the matrix are the quadratic moments of
@@ -2840,15 +2840,15 @@ class Wire(Part.Shape):
         """
 
     @property
-    def OrderedEdges(self) -> list:
+    def OrderedEdges(self) -> list[Part.Shape]:
         """List of ordered edges in this shape."""
 
     @property
-    def OrderedVertexes(self) -> list:
+    def OrderedVertexes(self) -> list[Part.Shape]:
         """List of ordered vertexes in this shape."""
 
     @property
-    def PrincipalProperties(self) -> dict:
+    def PrincipalProperties(self) -> dict[object, bool | tuple[float, float, float] | FreeCAD.Vector]:
         """
         Computes the principal properties of inertia of the current system.
          There is always a set of axes for which the products
@@ -2862,7 +2862,7 @@ class Wire(Part.Shape):
         """
 
     @property
-    def StaticMoments(self) -> object:
+    def StaticMoments(self) -> tuple[float, float, float]:
         """
         Returns Ix, Iy, Iz, the static moments of inertia of the
          current system; i.e. the moments of inertia about the
@@ -3015,7 +3015,7 @@ class SurfaceOfExtrusion(Part.GeometrySurface):
         """Sets or gets the basic curve."""
 
     @property
-    def Direction(self) -> object:
+    def Direction(self) -> FreeCAD.Vector:
         """Sets or gets the direction of revolution."""
 
 
@@ -3102,7 +3102,7 @@ class Shell(Part.Shape):
         """Create a shell out of a list of faces"""
 
     @property
-    def CenterOfMass(self) -> object:
+    def CenterOfMass(self) -> FreeCAD.Vector:
         """
         Returns the center of mass of the current system.
         If the gravitational field is uniform, it is the center of gravity.
@@ -3111,11 +3111,11 @@ class Shell(Part.Shape):
         """
 
     @property
-    def Mass(self) -> object:
+    def Mass(self) -> float:
         """Returns the mass of the current system."""
 
     @property
-    def MatrixOfInertia(self) -> object:
+    def MatrixOfInertia(self) -> FreeCAD.Matrix:
         """
         Returns the matrix of inertia. It is a symmetrical matrix.
         The coefficients of the matrix are the quadratic moments of
@@ -3136,7 +3136,7 @@ class Shell(Part.Shape):
         """
 
     @property
-    def PrincipalProperties(self) -> dict:
+    def PrincipalProperties(self) -> dict[object, bool | tuple[float, float, float] | FreeCAD.Vector]:
         """
         Computes the principal properties of inertia of the current system.
          There is always a set of axes for which the products
@@ -3150,7 +3150,7 @@ class Shell(Part.Shape):
         """
 
     @property
-    def StaticMoments(self) -> object:
+    def StaticMoments(self) -> tuple[float, float, float]:
         """
         Returns Ix, Iy, Iz, the static moments of inertia of the
          current system; i.e. the moments of inertia about the
@@ -3204,7 +3204,7 @@ class Conic(Part.Curve):
     def Axis(self, value: FreeCAD.Vector): ...
 
     @property
-    def Center(self) -> object:
+    def Center(self) -> FreeCAD.Vector:
         """Deprecated -- use Location."""
 
     @Center.setter
@@ -3221,21 +3221,21 @@ class Conic(Part.Curve):
         """
 
     @property
-    def Location(self) -> object:
+    def Location(self) -> FreeCAD.Vector:
         """Location of the conic."""
 
     @Location.setter
     def Location(self, value: object): ...
 
     @property
-    def XAxis(self) -> object:
+    def XAxis(self) -> FreeCAD.Vector:
         """The X axis direction of the circle"""
 
     @XAxis.setter
     def XAxis(self, value: object): ...
 
     @property
-    def YAxis(self) -> object:
+    def YAxis(self) -> FreeCAD.Vector:
         """The Y axis direction of the circle"""
 
     @YAxis.setter
@@ -3275,7 +3275,7 @@ class BSplineSurface(Part.GeometrySurface):
     """
 
     @property
-    def FirstUKnotIndex(self) -> object:
+    def FirstUKnotIndex(self) -> int:
         """
         Returns the index in the knot array associated with the u parametric direction,
         					which corresponds to the first parameter of this B-Spline surface in the specified
@@ -3290,7 +3290,7 @@ class BSplineSurface(Part.GeometrySurface):
         """
 
     @property
-    def FirstVKnotIndex(self) -> object:
+    def FirstVKnotIndex(self) -> int:
         """
         Returns the index in the knot array associated with the v parametric direction,
         					which corresponds to the first parameter of this B-Spline surface in the specified
@@ -3305,7 +3305,7 @@ class BSplineSurface(Part.GeometrySurface):
         """
 
     @property
-    def LastUKnotIndex(self) -> object:
+    def LastUKnotIndex(self) -> int:
         """
         Returns the index in the knot array associated with the u parametric direction,
         					which corresponds to the last parameter of this B-Spline surface in the specified
@@ -3320,7 +3320,7 @@ class BSplineSurface(Part.GeometrySurface):
         """
 
     @property
-    def LastVKnotIndex(self) -> object:
+    def LastVKnotIndex(self) -> int:
         """
         Returns the index in the knot array associated with the v parametric direction,
         					which corresponds to the last parameter of this B-Spline surface in the specified
@@ -3363,7 +3363,7 @@ class BSplineSurface(Part.GeometrySurface):
         """Returns the degree of this B-Spline surface in the u parametric direction."""
 
     @property
-    def UKnotSequence(self) -> list:
+    def UKnotSequence(self) -> list[float]:
         """
         Returns the knots sequence of this B-Spline surface in
         						the u direction.
@@ -3374,7 +3374,7 @@ class BSplineSurface(Part.GeometrySurface):
         """Returns the degree of this B-Spline surface in the v parametric direction."""
 
     @property
-    def VKnotSequence(self) -> list:
+    def VKnotSequence(self) -> list[float]:
         """
         Returns the knots sequence of this B-Spline surface in
         					the v direction.
@@ -3424,7 +3424,7 @@ class BSplineSurface(Part.GeometrySurface):
         					-- the orientation of the surface is reversed.
         """
 
-    def getPole(self, arg1: int, arg2: int, /) -> FreeCAD.VectorPy:
+    def getPole(self, arg1: int, arg2: int, /) -> FreeCAD.Vector:
         """Returns the pole of index (UIndex,VIndex) of this B-Spline surface."""
 
     def getPoles(self) -> list[list[FreeCAD.Vector]]:
@@ -3914,14 +3914,14 @@ class Line(Part.Curve):
         """
 
     @property
-    def Direction(self) -> object:
+    def Direction(self) -> FreeCAD.Vector:
         """Returns the direction of this line."""
 
     @Direction.setter
     def Direction(self, value: object): ...
 
     @property
-    def Location(self) -> object:
+    def Location(self) -> FreeCAD.Vector:
         """Returns the location of this line."""
 
     @Location.setter
@@ -4096,7 +4096,7 @@ class Edge(Part.Shape):
         """TopoShapeEdge is the OpenCasCade topological edge wrapper"""
 
     @property
-    def CenterOfMass(self) -> object:
+    def CenterOfMass(self) -> FreeCAD.Vector:
         """
         Returns the center of mass of the current system.
         If the gravitational field is uniform, it is the center of gravity.
@@ -4159,11 +4159,11 @@ class Edge(Part.Shape):
         """Returns the cartesian length of the curve"""
 
     @property
-    def Mass(self) -> object:
+    def Mass(self) -> float:
         """Returns the mass of the current system."""
 
     @property
-    def MatrixOfInertia(self) -> object:
+    def MatrixOfInertia(self) -> FreeCAD.Matrix:
         """
         Returns the matrix of inertia. It is a symmetrical matrix.
         The coefficients of the matrix are the quadratic moments of
@@ -4184,7 +4184,7 @@ class Edge(Part.Shape):
         """
 
     @property
-    def ParameterRange(self) -> tuple:
+    def ParameterRange(self) -> tuple[float, float]:
         """
         Returns a 2 tuple with the range of the primary parameter
         defining the curve. This is the same as would be returned by
@@ -4204,7 +4204,7 @@ class Edge(Part.Shape):
         """
 
     @property
-    def PrincipalProperties(self) -> dict:
+    def PrincipalProperties(self) -> dict[object, bool | tuple[float, float, float] | FreeCAD.Vector]:
         """
         Computes the principal properties of inertia of the current system.
          There is always a set of axes for which the products
@@ -4218,7 +4218,7 @@ class Edge(Part.Shape):
         """
 
     @property
-    def StaticMoments(self) -> object:
+    def StaticMoments(self) -> tuple[float, float, float]:
         """
         Returns Ix, Iy, Iz, the static moments of inertia of the
          current system; i.e. the moments of inertia about the
@@ -4702,7 +4702,7 @@ class BezierCurve(Part.BoundedCurve):
         """
 
     @property
-    def EndPoint(self) -> object:
+    def EndPoint(self) -> FreeCAD.Vector:
         """Returns the end point of this Bezier curve."""
 
     @property
@@ -4717,13 +4717,13 @@ class BezierCurve(Part.BoundedCurve):
         """Returns the number of poles of this Bezier curve."""
 
     @property
-    def StartPoint(self) -> object:
+    def StartPoint(self) -> FreeCAD.Vector:
         """Returns the start point of this Bezier curve."""
 
-    def getPole(self, arg1: int, /) -> FreeCAD.VectorPy:
+    def getPole(self, arg1: int, /) -> FreeCAD.Vector:
         """Get a pole of the Bezier curve."""
 
-    def getPoles(self) -> list[FreeCAD.VectorPy]:
+    def getPoles(self) -> list[FreeCAD.Vector]:
         """Get all poles of the Bezier curve."""
 
     def getResolution(self, arg1: float, /) -> float:
@@ -4864,11 +4864,11 @@ class SurfaceOfRevolution(Part.GeometrySurface):
         """Sets or gets the basic curve."""
 
     @property
-    def Direction(self) -> object:
+    def Direction(self) -> FreeCAD.Vector:
         """Sets or gets the direction of revolution."""
 
     @property
-    def Location(self) -> object:
+    def Location(self) -> FreeCAD.Vector:
         """Sets or gets the location of revolution."""
 
 
@@ -4910,14 +4910,14 @@ class LineSegment(Part.TrimmedCurve):
         """
 
     @property
-    def EndPoint(self) -> object:
+    def EndPoint(self) -> FreeCAD.Vector:
         """Returns the end point point of this line."""
 
     @EndPoint.setter
     def EndPoint(self, value: object): ...
 
     @property
-    def StartPoint(self) -> object:
+    def StartPoint(self) -> FreeCAD.Vector:
         """Returns the start point of this line."""
 
     @StartPoint.setter
@@ -5277,7 +5277,7 @@ class Cone(Part.GeometrySurface):
         """
 
     @property
-    def Apex(self) -> object:
+    def Apex(self) -> FreeCAD.Vector:
         """Compute the apex of the cone."""
 
     @property
@@ -5288,7 +5288,7 @@ class Cone(Part.GeometrySurface):
     def Axis(self, value: FreeCAD.Vector): ...
 
     @property
-    def Center(self) -> object:
+    def Center(self) -> FreeCAD.Vector:
         """Center of the cone."""
 
     @Center.setter
@@ -5331,7 +5331,7 @@ class Toroid(Part.GeometrySurface):
     def Axis(self, value: FreeCAD.Vector): ...
 
     @property
-    def Center(self) -> object:
+    def Center(self) -> FreeCAD.Vector:
         """Center of the toroid."""
 
     @Center.setter
@@ -5361,7 +5361,7 @@ class AttachExtension(FreeCAD.DocumentObjectExtension):
     """This object represents an attachable object with OCC shape."""
 
     @property
-    def Attacher(self) -> object:
+    def Attacher(self) -> None | Part.AttachEngine:
         """AttachEngine object driving this AttachableObject. Returns a copy."""
 
     @property
@@ -5467,7 +5467,7 @@ class ArcOfEllipse(Part.ArcOfConic):
         """Describes a portion of an ellipse"""
 
     @property
-    def Ellipse(self) -> object:
+    def Ellipse(self) -> Part.Ellipse:
         """The internal ellipse representation"""
 
     @property
@@ -5862,28 +5862,28 @@ class ArcOfConic(Part.TrimmedCurve):
     def Axis(self, value: FreeCAD.Vector): ...
 
     @property
-    def Center(self) -> object:
+    def Center(self) -> FreeCAD.Vector:
         """Deprecated -- use Location."""
 
     @Center.setter
     def Center(self, value: object): ...
 
     @property
-    def Location(self) -> object:
+    def Location(self) -> FreeCAD.Vector:
         """Center of the conic."""
 
     @Location.setter
     def Location(self, value: object): ...
 
     @property
-    def XAxis(self) -> object:
+    def XAxis(self) -> FreeCAD.Vector:
         """The X axis direction of the circle"""
 
     @XAxis.setter
     def XAxis(self, value: object): ...
 
     @property
-    def YAxis(self) -> object:
+    def YAxis(self) -> FreeCAD.Vector:
         """The Y axis direction of the circle"""
 
     @YAxis.setter

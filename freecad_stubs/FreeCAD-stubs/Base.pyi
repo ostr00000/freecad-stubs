@@ -536,7 +536,7 @@ class BoundBox(FreeCAD.PyObjectBase):
         """
 
     @property
-    def Center(self) -> object:
+    def Center(self) -> FreeCAD.Vector:
         """Center point of the bounding box"""
 
     @property
@@ -994,7 +994,7 @@ class Unit(FreeCAD.PyObjectBase):
         """
 
     @property
-    def Signature(self) -> tuple:
+    def Signature(self) -> tuple[int, int, int, int, int, int, int, int]:
         """Returns the signature."""
 
     @property
@@ -1101,14 +1101,14 @@ class Quantity(FreeCAD.PyObjectBase):
         """
 
     @property
-    def Format(self) -> dict:
+    def Format(self) -> dict[object, int | object]:
         """Format of the Quantity"""
 
     @Format.setter
     def Format(self, value: dict): ...
 
     @property
-    def Unit(self) -> object:
+    def Unit(self) -> FreeCAD.Unit:
         """Unit of the Quantity"""
 
     @Unit.setter
@@ -1562,28 +1562,28 @@ class CoordinateSystem(FreeCAD.PyObjectBase):
     def Axis(self, value: FreeCAD.Vector): ...
 
     @property
-    def Position(self) -> object:
+    def Position(self) -> FreeCAD.Vector:
         """Set or get position"""
 
     @Position.setter
     def Position(self, value: object): ...
 
     @property
-    def XDirection(self) -> object:
+    def XDirection(self) -> FreeCAD.Vector:
         """Set or get x direction"""
 
     @XDirection.setter
     def XDirection(self, value: object): ...
 
     @property
-    def YDirection(self) -> object:
+    def YDirection(self) -> FreeCAD.Vector:
         """Set or get y direction"""
 
     @YDirection.setter
     def YDirection(self, value: object): ...
 
     @property
-    def ZDirection(self) -> object:
+    def ZDirection(self) -> FreeCAD.Vector:
         """Set or get z direction"""
 
     @ZDirection.setter
@@ -1728,14 +1728,14 @@ class Axis(FreeCAD.PyObjectBase):
         """
 
     @property
-    def Base(self) -> object:
+    def Base(self) -> FreeCAD.Vector:
         """Vector to the Base position of the Axis"""
 
     @Base.setter
     def Base(self, value: object): ...
 
     @property
-    def Direction(self) -> object:
+    def Direction(self) -> FreeCAD.Vector:
         """Direction vector of the Axis"""
 
     @Direction.setter

@@ -138,21 +138,21 @@ class Material(FreeCAD.PyObjectBase):
         """This is the Material class"""
 
     @property
-    def AmbientColor(self) -> tuple:
+    def AmbientColor(self) -> tuple[float, float, float, float]:
         """Ambient color"""
 
     @AmbientColor.setter
     def AmbientColor(self, value: tuple): ...
 
     @property
-    def DiffuseColor(self) -> tuple:
+    def DiffuseColor(self) -> tuple[float, float, float, float]:
         """Diffuse color"""
 
     @DiffuseColor.setter
     def DiffuseColor(self, value: tuple): ...
 
     @property
-    def EmissiveColor(self) -> tuple:
+    def EmissiveColor(self) -> tuple[float, float, float, float]:
         """Emissive color"""
 
     @EmissiveColor.setter
@@ -166,7 +166,7 @@ class Material(FreeCAD.PyObjectBase):
     def Shininess(self, value: float): ...
 
     @property
-    def SpecularColor(self) -> tuple:
+    def SpecularColor(self) -> tuple[float, float, float, float]:
         """Specular color"""
 
     @SpecularColor.setter
@@ -836,23 +836,23 @@ class Metadata(FreeCAD.PyObjectBase):
         """
 
     @property
-    def Author(self) -> object:
+    def Author(self) -> list:
         """List of author objects, each with a 'name' and a (potentially empty) 'email' string attribute"""
 
     @property
-    def Classname(self) -> object:
+    def Classname(self) -> str:
         """String: the name of the main Python class this item creates/represents"""
 
     @property
-    def Conflict(self) -> object:
+    def Conflict(self) -> list:
         """List of conflicts, format identical to dependencies"""
 
     @property
-    def Content(self) -> object:
+    def Content(self) -> dict[object, list[FreeCAD.Metadata]]:
         """A dictionary of lists of content items: defined recursively, each item is itself a Metadata object -- see package.xml file format documentation for details"""
 
     @property
-    def Depend(self) -> object:
+    def Depend(self) -> list:
         """
         List of dependencies, as objects with the following attributes:
                   * package -- Required: must exactly match the contents of the 'name' element in the referenced package's package.xml file
@@ -865,39 +865,39 @@ class Metadata(FreeCAD.PyObjectBase):
         """
 
     @property
-    def Description(self) -> object:
+    def Description(self) -> str:
         """String: the description of this item (text only, no markup allowed)"""
 
     @property
-    def File(self) -> object:
+    def File(self) -> list[str]:
         """A list of files associated with this item -- the meaning of each file is implementation-defined"""
 
     @property
-    def Icon(self) -> object:
+    def Icon(self) -> str:
         """Relative path to an icon file"""
 
     @property
-    def License(self) -> object:
+    def License(self) -> list:
         """List of applicable licenses as objects with 'name' and 'file' string attributes"""
 
     @property
-    def Maintainer(self) -> object:
+    def Maintainer(self) -> list:
         """List of maintainer objects with 'name' and 'email' string attributes"""
 
     @property
-    def Name(self) -> object:
+    def Name(self) -> str:
         """String: the name of this item"""
 
     @property
-    def Replace(self) -> object:
+    def Replace(self) -> list:
         """List of things this item is considered by its author to replace: format identical to dependencies"""
 
     @property
-    def Tag(self) -> object:
+    def Tag(self) -> list[str]:
         """List of strings"""
 
     @property
-    def Url(self) -> object:
+    def Url(self) -> list:
         """
         List of URLs as objects with 'location' and 'urltype' string attributes, where urltype is one of:
                   * website
@@ -908,7 +908,7 @@ class Metadata(FreeCAD.PyObjectBase):
         """
 
     @property
-    def Version(self) -> object:
+    def Version(self) -> str:
         """String: the version of this item in semantic triplet format"""
 
     def getGenericMetadata(self, name: str, /):
@@ -982,7 +982,7 @@ class Document(FreeCAD.PropertyContainer):
         """The internal name of the document"""
 
     @property
-    def Objects(self) -> list:
+    def Objects(self) -> list[FreeCAD.DocumentObject]:
         """The list of object handled by this document"""
 
     @property
@@ -1010,7 +1010,7 @@ class Document(FreeCAD.PropertyContainer):
         """Number of possible Redos"""
 
     @property
-    def RedoNames(self) -> list:
+    def RedoNames(self) -> list[str]:
         """A List of Redo names"""
 
     @property
@@ -1018,7 +1018,7 @@ class Document(FreeCAD.PropertyContainer):
         """Indicate if the document is restoring"""
 
     @property
-    def RootObjects(self) -> list:
+    def RootObjects(self) -> list[FreeCAD.DocumentObject]:
         """The list of root object of this document"""
 
     @property
@@ -1026,7 +1026,7 @@ class Document(FreeCAD.PropertyContainer):
         """Check if this is a temporary document"""
 
     @property
-    def TopologicalSortedObjects(self) -> list:
+    def TopologicalSortedObjects(self) -> list[FreeCAD.DocumentObject]:
         """The list of object of this document in topological sorted order"""
 
     @property
@@ -1045,7 +1045,7 @@ class Document(FreeCAD.PropertyContainer):
     def UndoMode(self, value: int): ...
 
     @property
-    def UndoNames(self) -> list:
+    def UndoNames(self) -> list[str]:
         """A list of Undo names"""
 
     @property
@@ -1394,7 +1394,7 @@ class PropertyContainer(FreeCAD.Persistence):
     """
 
     @property
-    def PropertiesList(self) -> list:
+    def PropertiesList(self) -> list[str]:
         """A list of all property names"""
 
     def dumpPropertyContent(self, Property: str, Compression: int = 1-9):
@@ -1494,7 +1494,7 @@ class ComplexGeoData(FreeCAD.Persistence):
         """Get the BoundBox of the object"""
 
     @property
-    def CenterOfGravity(self) -> object:
+    def CenterOfGravity(self) -> FreeCAD.Vector:
         """Get the center of gravity"""
 
     @property

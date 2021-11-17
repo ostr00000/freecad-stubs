@@ -143,7 +143,7 @@ class VoronoiEdge(FreeCAD.BaseClass):
         """Edge of a Voronoi diagram"""
 
     @property
-    def Cell(self) -> object:
+    def Cell(self) -> PathModule.VoronoiCell:
         """cell the edge belongs to"""
 
     @property
@@ -158,27 +158,27 @@ class VoronoiEdge(FreeCAD.BaseClass):
         """Internal id of the element."""
 
     @property
-    def Next(self) -> object:
+    def Next(self) -> PathModule.VoronoiEdge:
         """CCW next edge within voronoi cell"""
 
     @property
-    def Prev(self) -> object:
+    def Prev(self) -> PathModule.VoronoiEdge:
         """CCW previous edge within voronoi cell"""
 
     @property
-    def RotNext(self) -> object:
+    def RotNext(self) -> PathModule.VoronoiEdge:
         """Rotated CCW next edge within voronoi cell"""
 
     @property
-    def RotPrev(self) -> object:
+    def RotPrev(self) -> PathModule.VoronoiEdge:
         """Rotated CCW previous edge within voronoi cell"""
 
     @property
-    def Twin(self) -> object:
+    def Twin(self) -> PathModule.VoronoiEdge:
         """Twin edge"""
 
     @property
-    def Vertices(self) -> list:
+    def Vertices(self) -> list[PathModule.VoronoiVertex | None]:
         """Begin and End voronoi vertex"""
 
     def toShape(self, arg1: float = None, arg2: float = None, arg3: bool = None, /) -> Part.Edge | None:
@@ -215,7 +215,7 @@ class VoronoiCell(FreeCAD.BaseClass):
     def Color(self, value: int): ...
 
     @property
-    def IncidentEdge(self) -> object:
+    def IncidentEdge(self) -> PathModule.VoronoiEdge:
         """Incident edge of the cell - if exists"""
 
     @property
@@ -322,15 +322,15 @@ class Area(FreeCAD.BaseClass):
         """
 
     @property
-    def Sections(self) -> list:
+    def Sections(self) -> list[Part.Shape]:
         """List of sections in this area."""
 
     @property
-    def Shapes(self) -> list:
+    def Shapes(self) -> list[tuple]:
         """A list of tuple: [(shape,op), ...] containing the added shapes together with their operation code"""
 
     @property
-    def Workplane(self) -> object:
+    def Workplane(self) -> Part.Shape:
         """The current workplane. If no plane is set, it is derived from the added shapes."""
 
     @Workplane.setter
@@ -395,14 +395,14 @@ class Path(FreeCAD.Persistence):
         """the extent of this path"""
 
     @property
-    def Center(self) -> object:
+    def Center(self) -> FreeCAD.Vector:
         """the center position for all rotational parameters"""
 
     @Center.setter
     def Center(self, value: object): ...
 
     @property
-    def Commands(self) -> list:
+    def Commands(self) -> list[PathModule.Command]:
         """the list of commands of this path"""
 
     @Commands.setter
@@ -473,7 +473,7 @@ class Tooltable(FreeCAD.Persistence):
     def Name(self, value: str): ...
 
     @property
-    def Tools(self) -> dict:
+    def Tools(self) -> dict[int, PathModule.Tool]:
         """the dictionary of tools of this table"""
 
     @Tools.setter
@@ -532,15 +532,15 @@ class Voronoi(FreeCAD.BaseClass):
         """Voronoi([segments]): Create voronoi for given collection of line segments"""
 
     @property
-    def Cells(self) -> list:
+    def Cells(self) -> list[PathModule.VoronoiCell]:
         """List of all cells of the voronoi diagram"""
 
     @property
-    def Edges(self) -> list:
+    def Edges(self) -> list[PathModule.VoronoiEdge]:
         """List of all edges of the voronoi diagram"""
 
     @property
-    def Vertices(self) -> list:
+    def Vertices(self) -> list[PathModule.VoronoiVertex]:
         """List of all vertices of the voronoi diagram"""
 
     def addPoint(self, vector_vector2d, /) -> None:
@@ -591,7 +591,7 @@ class FeatureArea(FreeCAD.DocumentObject):
     """This class handles Path Area features"""
 
     @property
-    def WorkPlane(self) -> object:
+    def WorkPlane(self) -> Part.Shape:
         """The current workplane. If no plane is set, it is derived from the added shapes."""
 
     @WorkPlane.setter
@@ -640,7 +640,7 @@ class VoronoiVertex(FreeCAD.BaseClass):
     def Color(self, value: int): ...
 
     @property
-    def IncidentEdge(self) -> object:
+    def IncidentEdge(self) -> PathModule.VoronoiEdge:
         """Y position"""
 
     @property

@@ -55,19 +55,19 @@ class Facet(FreeCAD.PyObjectBase):
         """The index of this facet in the MeshObject"""
 
     @property
-    def NeighbourIndices(self) -> tuple:
+    def NeighbourIndices(self) -> tuple | tuple[int]:
         """The index tuple of neighbour facets of the mesh this facet is adjacent with"""
 
     @property
-    def Normal(self) -> object:
+    def Normal(self) -> FreeCAD.Vector:
         """Normal vector of the facet."""
 
     @property
-    def PointIndices(self) -> tuple:
+    def PointIndices(self) -> tuple | tuple[int]:
         """The index tuple of point vertices of the mesh this facet is built of"""
 
     @property
-    def Points(self) -> list:
+    def Points(self) -> list[tuple[float, float, float]]:
         """A list of points of the facet"""
 
     @property
@@ -142,11 +142,11 @@ class MeshPoint(FreeCAD.PyObjectBase):
         """The index of this point in the MeshObject"""
 
     @property
-    def Normal(self) -> object:
+    def Normal(self) -> FreeCAD.Vector:
         """Normal vector of the point computed by the surrounding mesh."""
 
     @property
-    def Vector(self) -> object:
+    def Vector(self) -> FreeCAD.Vector:
         """Vector of the point."""
 
     @property
@@ -316,7 +316,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         """Return the number of vertices of the mesh object."""
 
     @property
-    def Facets(self) -> list:
+    def Facets(self) -> list[MeshModule.Facet]:
         """
         A collection of facets
         With this attribute it is possible to get access to the facets of the mesh
@@ -325,7 +325,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         """
 
     @property
-    def Points(self) -> list:
+    def Points(self) -> list[MeshModule.MeshPoint]:
         """
         A collection of the mesh points
         With this attribute it is possible to get access to the points of the mesh
@@ -334,7 +334,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         """
 
     @property
-    def Topology(self) -> tuple:
+    def Topology(self) -> tuple[list[FreeCAD.Vector], list[tuple[int, int, int]]]:
         """Return the points and face indices as tuple."""
 
     @property
@@ -752,15 +752,15 @@ class Edge(FreeCAD.PyObjectBase):
         """The length of the edge"""
 
     @property
-    def NeighbourIndices(self) -> tuple:
+    def NeighbourIndices(self) -> tuple[int]:
         """The index tuple of neighbour facets of the mesh this edge is adjacent with"""
 
     @property
-    def PointIndices(self) -> tuple:
+    def PointIndices(self) -> tuple[int]:
         """The index tuple of point vertices of the mesh this edge is built of"""
 
     @property
-    def Points(self) -> list:
+    def Points(self) -> list[tuple[float, float, float]]:
         """A list of points of the edge"""
 
     def intersectWithEdge(self, Edge: MeshModule.Edge, /) -> list[tuple[float, float, float]]:

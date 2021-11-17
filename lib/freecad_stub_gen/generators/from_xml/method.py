@@ -2,7 +2,7 @@ import logging
 import xml.etree.ElementTree as ET
 from abc import ABC
 from distutils.util import strtobool
-from functools import cached_property
+from functools import cached_property, lru_cache
 from inspect import Parameter, Signature
 from pathlib import Path
 from typing import Iterator
@@ -23,26 +23,29 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         """Generate stub for __init__ method."""
         # maybe should check self.currentNode.attrib['Constructor']
         className = getClassNameFromNode(self.currentNode)
-        return self.genMethod(self.currentNode, cName='PyInit',
-                              docName=className, pythonName='__init__')
+        return self.genMethod(self.currentNode, cFunName='PyInit',
+                              cClassName=className, pythonFunName='__init__',
+                              docsFunName=className)
 
-    def genMethod(self, node: ET.Element, cName: str = None,
-                  docName: str = None, pythonName: str = None) -> str:
+    def genMethod(self, node: ET.Element, cFunName: str = None,
+                  cClassName: str = None, pythonFunName: str = None,
+                  docsFunName: str = None) -> str:
         """Generate stub for method specified in arguments."""
-        cName = cName or node.attrib['Name']
-        docName = docName or node.attrib['Name']
-        pythonName = pythonName or node.attrib['Name']
-        static = strtobool(node.attrib.get('Static', 'False'))
-        classic = strtobool(node.attrib.get('Class', 'False'))
-        firstParam = AnnotationParam.getFirstParam(bool(static), bool(classic))
+        cFunName = cFunName or node.attrib['Name']
+        pythonFunName = pythonFunName or node.attrib['Name']
+        docsFunName = docsFunName or node.attrib['Name']
+
+        isStatic = strtobool(node.attrib.get('Static', 'False'))
+        isClassic = strtobool(node.attrib.get('Class', 'False'))
+        firstParam = AnnotationParam.getFirstParam(isStatic, isClassic)
 
         uniqueSignatures = dict.fromkeys(map(
-            str, self._signatureArgGen(cName, docName, node, firstParam)))
+            str, self._signatureArgGen(cFunName, cClassName, docsFunName, node, firstParam)))
         signatures = list(uniqueSignatures.keys())
         return self.convertMethodToStr(
-            pythonName, signatures, getDocFromNode(node), classic, static)
+            pythonFunName, signatures, getDocFromNode(node), isClassic, isStatic)
 
-    def _signatureArgGen(self, cName: str, docName: str, node: ET.Element,
+    def _signatureArgGen(self, cFunName: str, cClassName: str, docsFunName: str, node: ET.Element,
                          firstParam: Parameter = None) -> Iterator[Signature]:
         parameters = []
         if firstParam:
@@ -53,9 +56,9 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
             return
 
         codeSignatures = list(self.generateSignaturesFromCode(
-            cName, argNumStart=len(parameters), className=self.classNameWithModules))
+            cFunName, cClassName=cClassName, argNumStart=len(parameters)))
         docSignatures = list(self._generateSignaturesFromDocString(
-            docName, node, argNumStart=len(parameters)))
+            docsFunName, node, argNumStart=len(parameters)))
 
         yield from mergeSignaturesGen(codeSignatures, docSignatures, firstParam)
 
@@ -106,19 +109,20 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         retType = f' -> {retType}' if retType else ''
         return f'def {name}({", ".join(("self",) + args)}){retType}: ...\n\n'
 
-    def findFunctionBody(self, funcName: str, className: str = ''):
+    @lru_cache()
+    def findFunctionBody(self, cFuncName: str, cClassName: str):
         """Override method to search `funcName` also in parent."""
-        if res := super().findFunctionBody(funcName, className):
+        if res := super().findFunctionBody(cFuncName, cClassName):
             return res
 
         if not (baseClass := type(self).safeCreate(self.parentXmlPath)):
-            if funcName == 'PyInit':
+            if cFuncName == 'PyInit':
                 pass  # skip implicit constructor - probably inherited from PyObject
             else:
                 logger.error(f"Cannot find {self.parentXmlPath=} for {self.baseGenFilePath=}")
             return
 
-        return baseClass.findFunctionBody(funcName, className)
+        return baseClass.findFunctionBody(cFuncName, cClassName)
 
     @cached_property
     def parentXmlPath(self) -> Path:

@@ -19,10 +19,13 @@ class ReturnTypeConverter(
 ):
     REG_RETURN = re.compile(r'return ([^;]+);')
 
+    def getStrReturnType(self) -> str:
+        if (ret := self.getReturnType()) != Signature.empty:
+            return str(ret)
+        return 'object'
+
     def getReturnType(self):
         returnTypes = OrderedSet(self._genReturnType())
-        if not returnTypes:
-            return Signature.empty
         return RawRepr(*returnTypes)
 
     def _genReturnType(self):

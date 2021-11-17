@@ -719,7 +719,7 @@ class CosmeticVertex(FreeCAD.PyObjectBase):
     def Color(self, value: object): ...
 
     @property
-    def Point(self) -> object:
+    def Point(self) -> FreeCAD.Vector:
         """Gives the position of this CosmeticVertex as vector."""
 
     @property
@@ -727,14 +727,14 @@ class CosmeticVertex(FreeCAD.PyObjectBase):
         """Show/hide the vertex."""
 
     @property
-    def Size(self) -> object:
+    def Size(self) -> float:
         """set/return the vertex's radius in mm."""
 
     @Size.setter
     def Size(self, value: object): ...
 
     @property
-    def Style(self) -> object:
+    def Style(self) -> int:
         """set/return the vertex's style as integer."""
 
     @Style.setter
@@ -1382,7 +1382,7 @@ class CenterLine(FreeCAD.PyObjectBase):
     """CenterLine specifies additional mark up edges in a View"""
 
     @property
-    def Edges(self) -> object:
+    def Edges(self) -> list[str]:
         """The names of source edges for this CenterLine."""
 
     @property
@@ -1390,7 +1390,7 @@ class CenterLine(FreeCAD.PyObjectBase):
         """The additional length to be added to this CenterLine."""
 
     @property
-    def Faces(self) -> object:
+    def Faces(self) -> list[str]:
         """The names of source Faces for this CenterLine."""
 
     @property
@@ -1398,7 +1398,7 @@ class CenterLine(FreeCAD.PyObjectBase):
         """Reverse the order of points for 2 point CenterLine."""
 
     @property
-    def Format(self) -> object:
+    def Format(self) -> tuple[int, float, object, bool]:
         """The appearance attributes (style, color, weight, visible) for this CenterLine."""
 
     @property
@@ -1410,7 +1410,7 @@ class CenterLine(FreeCAD.PyObjectBase):
         """0 - vert/ 1 - horiz/ 2 - aligned."""
 
     @property
-    def Points(self) -> object:
+    def Points(self) -> list[str]:
         """The names of source Points for this CenterLine."""
 
     @property
@@ -1642,23 +1642,23 @@ class CosmeticEdge(FreeCAD.PyObjectBase):
     """CosmeticEdge specifies an extra (cosmetic) edge in Views"""
 
     @property
-    def Center(self) -> object:
+    def Center(self) -> FreeCAD.Vector:
         """Gives the position of center point of this CosmeticEdge as vector."""
 
     @property
-    def End(self) -> object:
+    def End(self) -> FreeCAD.Vector:
         """Gives the position of one end of this CosmeticEdge as vector."""
 
     @property
-    def Format(self) -> object:
+    def Format(self) -> tuple[int, float, object, bool]:
         """The appearance attributes (style, weight, color, visible) for this CosmeticEdge."""
 
     @property
-    def Radius(self) -> object:
+    def Radius(self) -> float:
         """Gives the radius of CosmeticEdge in mm."""
 
     @property
-    def Start(self) -> object:
+    def Start(self) -> FreeCAD.Vector:
         """Gives the position of one end of this CosmeticEdge as vector."""
 
     @property

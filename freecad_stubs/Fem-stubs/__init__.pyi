@@ -22,11 +22,11 @@ class FemMesh(FreeCAD.ComplexGeoData):
         """Number of edges in the Mesh."""
 
     @property
-    def Edges(self) -> tuple:
+    def Edges(self) -> tuple[int]:
         """Tuple of edge IDs"""
 
     @property
-    def EdgesOnly(self) -> tuple:
+    def EdgesOnly(self) -> tuple[int]:
         """Tuple of edge IDs which does not belong to any face (and thus not belong to any volume too)"""
 
     @property
@@ -34,11 +34,11 @@ class FemMesh(FreeCAD.ComplexGeoData):
         """Number of Faces in the Mesh."""
 
     @property
-    def Faces(self) -> tuple:
+    def Faces(self) -> tuple[int]:
         """Tuple of face IDs"""
 
     @property
-    def FacesOnly(self) -> tuple:
+    def FacesOnly(self) -> tuple[int]:
         """Tuple of face IDs which does not belong to any volume"""
 
     @property
@@ -46,7 +46,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
         """Number of Groups in the Mesh."""
 
     @property
-    def Groups(self) -> tuple:
+    def Groups(self) -> tuple[int]:
         """Tuple of Group IDs."""
 
     @property
@@ -58,7 +58,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
         """Number of nodes in the Mesh."""
 
     @property
-    def Nodes(self) -> dict:
+    def Nodes(self) -> dict[int, FreeCAD.Vector]:
         """Dictionary of Nodes by ID (int ID:Vector())"""
 
     @property
@@ -94,7 +94,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
         """Number of Triangles in the Mesh."""
 
     @property
-    def Volume(self) -> object:
+    def Volume(self) -> FreeCAD.Quantity:
         """Volume of the mesh."""
 
     @property
@@ -102,7 +102,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
         """Number of Volumes in the Mesh."""
 
     @property
-    def Volumes(self) -> tuple:
+    def Volumes(self) -> tuple[int]:
         """Tuple of volume IDs"""
 
     @typing.overload

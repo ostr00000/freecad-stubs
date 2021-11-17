@@ -15,7 +15,7 @@ from freecad_stub_gen.util import OrderedSet
 
 class ReturnTypeConverterBase:
     def __init__(self, requiredImports: OrderedSet, functionBody: str,
-                 classNameWithModule: str, functionName: str = None):
+                 classNameWithModule: str, functionName: str):
         self.requiredImports = requiredImports
         self.functionBody = functionBody
         self.classNameWithModule = classNameWithModule
@@ -151,7 +151,9 @@ class ReturnTypeConverterBase:
 
             case _ if onlyLiteral:
                 if all(i.isidentifier() for i in returnText.split('::')):
-                    maybeClass = f'{returnText}Py'
+                    maybeClass = returnText
+                    if not maybeClass.endswith('Py'):
+                        maybeClass += 'Py'
                     return self._findClassWithModule(maybeClass, mustDiffer=returnText)
                 return Empty
 

@@ -11,8 +11,9 @@ class RawRepr:
     __slots__ = 'values'
 
     def __new__(cls, *values):
-        if len(values) == 1 and values[0] in (Parameter.empty, 'object'):
-            return Parameter.empty
+        match values:
+            case () | (Parameter.empty | 'object', ):
+                return Parameter.empty
         return super().__new__(cls)
 
     def __init__(self, *values):

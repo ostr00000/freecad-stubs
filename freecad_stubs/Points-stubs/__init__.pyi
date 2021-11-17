@@ -25,7 +25,7 @@ class Points(FreeCAD.ComplexGeoData):
         """Return the number of vertices of the points object."""
 
     @property
-    def Points(self) -> list:
+    def Points(self) -> list[FreeCAD.Vector]:
         """
         A collection of points
         With this attribute it is possible to get access to the points of the object

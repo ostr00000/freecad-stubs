@@ -1,24 +1,34 @@
+import logging
 from abc import ABC
 from distutils.util import strtobool
 from functools import cached_property
 from xml.etree import ElementTree as ET
 
-from freecad_stub_gen.generators.from_xml.base import BaseXmlGenerator
-from freecad_stub_gen.generators.common.names import getClassNameFromNode
-from freecad_stub_gen.generators.common.gen_property.gen_base import BasePropertyGenerator
 from freecad_stub_gen.generators.common.doc_string import getDocFromNode
+from freecad_stub_gen.generators.common.gen_property.gen_base import BasePropertyGenerator
+from freecad_stub_gen.generators.common.names import getClassNameFromNode
+from freecad_stub_gen.generators.common.return_type_converter.full import ReturnTypeConverter
+from freecad_stub_gen.generators.from_xml.base import BaseXmlGenerator
+from freecad_stub_gen.generators.from_xml.method import XmlMethodGenerator
+
+logger = logging.getLogger(__name__)
 
 
-class XmlPropertyGenerator(BaseXmlGenerator, BasePropertyGenerator, ABC):
+class XmlPropertyGenerator(XmlMethodGenerator, BaseXmlGenerator, BasePropertyGenerator, ABC):
     def getAttributes(self, node: ET.Element):
         """This function generate property based on xml file."""
         name = node.attrib['Name']
-        pythonType = self._findTypeBasedOnXmlDeclaration(node)
         docs = getDocFromNode(node)
         readOnly = strtobool(node.attrib.get('ReadOnly', 'True'))
 
-        pythonType = self.__getReturnTypeForSpecialCase(name, pythonType)
-        return self.getProperty(name, pythonType, pythonType, docs, readOnly)
+        pythonType = self._findTypeBasedOnXmlDeclaration(node)
+        pythonGetType = pythonSetType = self.__getReturnTypeForSpecialCase(name, pythonType)
+
+        pythonGetType = self._getExtendedTypeFromCode(pythonGetType, f'get{name}')
+        if not readOnly:
+            pythonSetType = self._getExtendedTypeFromCode(pythonSetType, f'set{name}')
+
+        return self.getProperty(name, pythonGetType, pythonSetType, docs, readOnly)
 
     def _findTypeBasedOnXmlDeclaration(self, node: ET.Element):
         pythonType = None
@@ -27,6 +37,27 @@ class XmlPropertyGenerator(BaseXmlGenerator, BasePropertyGenerator, ABC):
             pythonType = xmlTypeToPythonType[xmlType]
             if 'typing' in pythonType:
                 self.requiredImports.add('typing')
+        return pythonType
+
+    def _getExtendedTypeFromCode(self, pythonType: str, cFuncName: str) -> str:
+        cClassName = self.currentNode.attrib['Name']
+        funcBody = self.findFunctionBody(cFuncName, cClassName)
+        assert funcBody is not None
+
+        rt = ReturnTypeConverter(
+            self.requiredImports, funcBody,
+            self.classNameWithModules, cFuncName)
+        extendedType = rt.getStrReturnType()
+
+        match pythonType:
+            case 'dict' | 'list' | 'tuple' | 'typing.Sequence':
+                if extendedType.startswith(pythonType):
+                    return extendedType
+            case 'object':
+                return extendedType
+            case _:
+                logger.warning(f"Type from code does not match type from xml:"
+                               f"{pythonType=}, {extendedType=}")
         return pythonType
 
     def __getReturnTypeForSpecialCase(self, propertyName: str, pythonType: str):

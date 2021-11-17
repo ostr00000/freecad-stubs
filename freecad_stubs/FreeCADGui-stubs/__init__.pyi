@@ -5,6 +5,7 @@ import FreeCAD
 import FreeCADGui
 import FreeCADGui.Selection
 import FreeCADTemplates
+import qtpy
 import qtpy.QtCore
 import qtpy.QtGui
 import qtpy.QtWidgets
@@ -72,11 +73,11 @@ class LinkView(FreeCAD.BaseClass):
         """Set the element size to create an array of linked object"""
 
     @property
-    def LinkedView(self) -> object:
+    def LinkedView(self) -> typing.Union[object] | object:
         """The linked view object"""
 
     @property
-    def Owner(self) -> object:
+    def Owner(self) -> typing.Union[object] | object:
         """The owner view object of this link handle"""
 
     @property
@@ -84,11 +85,11 @@ class LinkView(FreeCAD.BaseClass):
         """A pivy node holding the cloned representation of the linked view object"""
 
     @property
-    def SubNames(self) -> object:
+    def SubNames(self) -> typing.Union[object] | tuple[str]:
         """The sub-object reference of the link"""
 
     @property
-    def Visibilities(self) -> object:
+    def Visibilities(self) -> typing.Union[object] | tuple[bool]:
         """Get/set the child element visibility"""
 
     def getBoundBox(self, vobj, /):
@@ -213,7 +214,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         """Represents the whole ViewProvider as an Inventor string."""
 
     @property
-    def Icon(self) -> object:
+    def Icon(self) -> str | qtpy.QtGui.QIcon:
         """The icon of this ViewProvider"""
 
     @property
@@ -377,7 +378,7 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
     """This is the ViewProviderLink class"""
 
     @property
-    def DraggingPlacement(self) -> object:
+    def DraggingPlacement(self) -> FreeCAD.Placement:
         """Get/set dragger placement during dragging"""
 
     @property
@@ -606,7 +607,7 @@ class AxisOrigin(FreeCAD.BaseClass):
         """Get/set the axis length"""
 
     @property
-    def Labels(self) -> dict:
+    def Labels(self) -> dict[str, str]:
         """
         Get/set axis component names as a dictionary. Available keys are,
         'O': origin
@@ -627,7 +628,7 @@ class AxisOrigin(FreeCAD.BaseClass):
         """Get the Coin3D node"""
 
     @property
-    def Plane(self) -> tuple:
+    def Plane(self) -> tuple[float, float]:
         """Get/set axis plane size and distance to axis line"""
 
     @property
@@ -768,7 +769,7 @@ class SelectionObject(FreeCAD.BaseClass):
         """Selected sub-element, if any"""
 
     @property
-    def Object(self) -> object:
+    def Object(self) -> FreeCAD.DocumentObject:
         """Selected object"""
 
     @property
@@ -776,15 +777,15 @@ class SelectionObject(FreeCAD.BaseClass):
         """Name of the selected object"""
 
     @property
-    def PickedPoints(self) -> tuple:
+    def PickedPoints(self) -> tuple[FreeCAD.Vector]:
         """Picked points for selection"""
 
     @property
-    def SubElementNames(self) -> tuple:
+    def SubElementNames(self) -> tuple[str]:
         """Name of the selected sub-element if any"""
 
     @property
-    def SubObjects(self) -> tuple:
+    def SubObjects(self) -> tuple[object]:
         """Selected sub-element, if any"""
 
     @property
@@ -833,11 +834,11 @@ class Document(FreeCAD.Persistence):
         """Current edit mode. Only meaningful when there is a current object in edit"""
 
     @property
-    def EditingTransform(self) -> object:
+    def EditingTransform(self) -> FreeCAD.Matrix:
         """The editing transformation matrix"""
 
     @property
-    def InEditInfo(self) -> object:
+    def InEditInfo(self) -> None | tuple:
         """A tuple(obj,subname,subElement,editMode) of editing object reference, or None if no object is in edit"""
 
     @property

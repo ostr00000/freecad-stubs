@@ -188,42 +188,42 @@ class SketchObject(Part.Part2DObject):
         """Number of geometric objects in this sketch"""
 
     @property
-    def GeometryFacadeList(self) -> list:
+    def GeometryFacadeList(self) -> list[Sketcher.GeometryFacade]:
         """Return a list of GeometryFacade objects corresponding to the PropertyGeometryList"""
 
     @GeometryFacadeList.setter
     def GeometryFacadeList(self, value: list): ...
 
     @property
-    def MissingLineEqualityConstraints(self) -> list:
+    def MissingLineEqualityConstraints(self) -> list[tuple[int, int, int, int]]:
         """returns a list of (First FirstPos Second SecondPos) tuples with all the detected line segment equality constraints."""
 
     @MissingLineEqualityConstraints.setter
     def MissingLineEqualityConstraints(self, value: list): ...
 
     @property
-    def MissingPointOnPointConstraints(self) -> list:
+    def MissingPointOnPointConstraints(self) -> list[tuple[int, int, int, int, int]]:
         """returns a list of (First FirstPos Second SecondPos Type) tuples with all the detected endpoint constraints."""
 
     @MissingPointOnPointConstraints.setter
     def MissingPointOnPointConstraints(self, value: list): ...
 
     @property
-    def MissingRadiusConstraints(self) -> list:
+    def MissingRadiusConstraints(self) -> list[tuple[int, int, int, int]]:
         """returns a list of (First FirstPos Second SecondPos) tuples with all the detected radius constraints."""
 
     @MissingRadiusConstraints.setter
     def MissingRadiusConstraints(self, value: list): ...
 
     @property
-    def MissingVerticalHorizontalConstraints(self) -> list:
+    def MissingVerticalHorizontalConstraints(self) -> list[tuple[int, int, int, int, int]]:
         """returns a list of (First FirstPos Second SecondPos Type) tuples with all the detected vertical/horizontal constraints."""
 
     @MissingVerticalHorizontalConstraints.setter
     def MissingVerticalHorizontalConstraints(self, value: list): ...
 
     @property
-    def OpenVertices(self) -> list:
+    def OpenVertices(self) -> list[tuple[float, float, float]]:
         """returns a list of vertices positions."""
 
     @property
@@ -557,7 +557,7 @@ class Sketch(FreeCAD.Persistence):
     """
 
     @property
-    def Conflicts(self) -> tuple:
+    def Conflicts(self) -> tuple[int]:
         """Tuple of conflicting constraints"""
 
     @property
@@ -569,11 +569,11 @@ class Sketch(FreeCAD.Persistence):
         """Tuple of all geometric elements in this sketch"""
 
     @property
-    def Redundancies(self) -> tuple:
+    def Redundancies(self) -> tuple[int]:
         """Tuple of redundant constraints"""
 
     @property
-    def Shape(self) -> object:
+    def Shape(self) -> Part.Shape:
         """Resulting shape from the sketch geometry"""
 
     def addConstraint(self, arg1, /) -> tuple[int] | int:

@@ -156,7 +156,7 @@ class ArcOfEllipse2d(Part.Geom2d.ArcOfConic2d):
         """Describes a portion of an ellipse"""
 
     @property
-    def Ellipse(self) -> object:
+    def Ellipse(self) -> Part.Geom2d.Ellipse2d:
         """The internal ellipse representation"""
 
     @property
@@ -355,7 +355,7 @@ class ArcOfParabola2d(Part.Geom2d.ArcOfConic2d):
     def Focal(self, value: float): ...
 
     @property
-    def Parabola(self) -> object:
+    def Parabola(self) -> Part.Geom2d.Parabola2d:
         """The internal parabola representation"""
 
 
@@ -513,7 +513,7 @@ class ArcOfCircle2d(Part.Geom2d.ArcOfConic2d):
         """Describes a portion of a circle"""
 
     @property
-    def Circle(self) -> object:
+    def Circle(self) -> Part.Geom2d.Circle2d:
         """The internal circle representation"""
 
     @property
@@ -532,7 +532,7 @@ class ArcOfHyperbola2d(Part.Geom2d.ArcOfConic2d):
         """Describes a portion of an hyperbola"""
 
     @property
-    def Hyperbola(self) -> object:
+    def Hyperbola(self) -> Part.Geom2d.Hyperbola2d:
         """The internal hyperbola representation"""
 
     @property
@@ -654,7 +654,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         """Returns the end point of this B-Spline curve."""
 
     @property
-    def FirstUKnotIndex(self) -> object:
+    def FirstUKnotIndex(self) -> int:
         """
         Returns the index in the knot array of the knot
         corresponding to the first or last parameter
@@ -662,11 +662,11 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         """
 
     @property
-    def KnotSequence(self) -> list:
+    def KnotSequence(self) -> list[float]:
         """Returns the knots sequence of this B-Spline curve."""
 
     @property
-    def LastUKnotIndex(self) -> object:
+    def LastUKnotIndex(self) -> int:
         """
         Returns the index in the knot array of the knot
         corresponding to the first or last parameter
@@ -1097,7 +1097,7 @@ class OffsetCurve2d(Part.Geom2d.Curve2d):
     def __init__(self, arg1: Part.Geom2d.Curve2d, arg2: float, /): ...
 
     @property
-    def BasisCurve(self) -> object:
+    def BasisCurve(self) -> None | object:
         """Sets or gets the basic curve."""
 
     @property
