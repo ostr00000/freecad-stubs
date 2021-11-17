@@ -20,6 +20,9 @@ class RawRepr:
         self.values = OrderedSet(map(str, values))
 
     def __repr__(self):
+        if 'None' in self.values:
+            self.values.pop('None')
+            self.values.add('None')
         return ' | '.join(self.values)
 
     def __eq__(self, other):

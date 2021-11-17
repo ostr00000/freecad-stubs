@@ -58,11 +58,13 @@ class ReturnTypeConverterBase:
 
             case StrWrapper('Py::Boolean' | 'PyBool_From' | 'Py::True' | 'Py::False'):
                 return 'bool'
-            case StrWrapper('Py::Long' | 'PyLong_From' | 'Py::Int' | 'PyInt_From'):
+            case StrWrapper('Py::Long' | 'PyLong_From' | 'Py::Int'
+                            | 'PyInt_From' | 'PYINT_FROMLONG'):
                 return 'int'
             case StrWrapper('Py::Float' | 'PyFloat_From'):
                 return 'float'
-            case StrWrapper('Py::String' | 'PyUnicode_From' | 'PyUnicode_DecodeUTF8'):
+            case StrWrapper('Py::String' | 'PyUnicode_From' | 'Py::Char'
+                            | 'PyUnicode_DecodeUTF8' | 'PYSTRING_FROMSTRING'):
                 return 'str'
             case StrWrapper('Py::Tuple' | 'PyTuple_New'):
                 return 'tuple'
@@ -83,7 +85,7 @@ class ReturnTypeConverterBase:
             case StrWrapper('Py::Placement'):
                 return 'FreeCAD.Placement'
             # typedef PythonClassObject<Base::Vector2dPy> Vector2d;
-            case StrWrapper('Py::Vector2d'):
+            case StrWrapper('Py::Vector2d' | 'Base::Vector2dPy::create('):
                 return 'FreeCAD.Vector2d'
             case StrWrapper('Py::Vector'):
                 return 'FreeCAD.Vector'
@@ -205,11 +207,11 @@ class ReturnTypeConverterBase:
             return self.classNameWithModule
 
         variableDecReg = re.compile(rf"""
-        ([\w:]+(?<!:))     # word with ':', but cannot end with ':'
-        \s*\*?             # may be a pointer
-        (?:>::(?:const_)?iterator)?\s* # may be iterator or const_iterator
-        \b{variableName}\b # variable name must be separate word
-        (?:\s*=\s*(.*);)?  # there may be optional assignment expression 
+        ([\w:]+(?<!:))                  # word with ':', but cannot end with ':'
+        \s*\*?                          # may be a pointer
+        (?:>::(?:const_)?iterator)?\s*  # may be iterator or const_iterator
+        \b{variableName}\b              # variable name must be separate word
+        (?:\s*=\s*(.*);)?               # there may be optional assignment expression 
         """, re.VERBOSE)
         matches = list(variableDecReg.finditer(self.functionBody, endpos=endPos))
         for declarationMatch in reversed(matches):
@@ -227,9 +229,17 @@ class ReturnTypeConverterBase:
             else:
                 varType = self._getReturnTypeForText(varTypeDec, endPos, onlyLiteral=True)
 
-            if varType == Empty:
+            if (isNone := (varType == 'None')) or varType == Empty:
                 varType = self._getRetTypeFromAssignment(
                     variableName, declarationMatch.end(), endPos)
+                if isNone:
+                    match varType:
+                        case UnionArguments():
+                            varType.add('None')
+                        case str():
+                            varType = UnionArguments(('None', varType))
+                        case Empty.value:
+                            varType = 'None'
 
             varType = self.getInnerType(
                 varType, variableName, declarationMatch.start(), declarationMatch.end(), endPos)
@@ -240,8 +250,9 @@ class ReturnTypeConverterBase:
 
     def _getRetTypeFromAssignment(self, variableName: str, startPos: int, endPos: int) -> RetType:
         """Example: `myVar = Py::Float(7.0)`."""
-        return next(self._genVariableTypeFromRegex(
-            re.compile(rf'{variableName}\b\s*=\s*([^;]*);'), startPos, endPos), Empty)
+        regex = re.compile(rf'{variableName}\b\s*=\s*([^;]*);')
+        gen = self._genVariableTypeFromRegex(regex, startPos, endPos, onlyLiteral=False)
+        return next(gen, Empty)  # TODO maybe union?
 
     def _genVariableTypeFromRegex(self, regex: re.Pattern, startPos: int, endPos: int,
                                   onlyLiteral=True):

@@ -1246,16 +1246,16 @@ class DrawViewPart(TechDraw.DrawView):
     def formatGeometricEdge(self, index: int, style: int, weight: float, color, visible: int, /) -> None:
         """formatGeometricEdge(index, style, weight, color, visible). Returns None."""
 
-    def getCenterLine(self, id: str, /) -> None:
+    def getCenterLine(self, id: str, /) -> None | TechDraw.CenterLine:
         """cl = getCenterLine(id) - returns CenterLine with unique id."""
 
-    def getCenterLineBySelection(self, name: str, /) -> None:
+    def getCenterLineBySelection(self, name: str, /) -> None | TechDraw.CenterLine:
         """cl = getCenterLineBySelection(name) - returns CenterLine by name (Edge25).  Used in selections"""
 
-    def getCosmeticEdge(self, id: str, /) -> None:
+    def getCosmeticEdge(self, id: str, /) -> None | TechDraw.CosmeticEdge:
         """ce = getCosmeticEdge(id) - returns CosmeticEdge with unique id."""
 
-    def getCosmeticEdgeBySelection(self, name: str, /) -> None:
+    def getCosmeticEdgeBySelection(self, name: str, /) -> None | TechDraw.CosmeticEdge:
         """ce = getCosmeticEdgeBySelection(name) - returns CosmeticEdge by name (Edge25).  Used in selections"""
 
     def getCosmeticVertex(self, id: str, /) -> TechDraw.CosmeticVertex:

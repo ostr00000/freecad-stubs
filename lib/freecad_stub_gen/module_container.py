@@ -87,6 +87,8 @@ class Module:
             if imp.startswith('from '):
                 sortModule = imp.removeprefix('from ').split(' ')[0]
             elif any(t in imp for t in ('TypeAlias', 'TypeVar', 'TypedDict')):
+                if 'TypedDict' in imp and 'class' in imp:
+                    imp = f'\n{imp}\n'
                 types.append(imp)
                 continue
             elif imp == 'MeshModule':

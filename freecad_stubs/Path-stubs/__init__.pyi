@@ -119,16 +119,16 @@ class Tool(FreeCAD.Persistence):
     def copy(self) -> PathModule.Tool:
         """returns a copy of this tool"""
 
-    def getToolMaterials(self) -> list:
+    def getToolMaterials(self) -> list[str]:
         """returns all available tool materials"""
 
-    def getToolTypes(self) -> list:
+    def getToolTypes(self) -> list[str]:
         """returns all available tool types"""
 
     def setFromTemplate(self, xmlString_dictionary: str, /):
         """setFromTemplate(xmlString|dictionary) ... fills receiver with values from the template string or dictionary"""
 
-    def templateAttrs(self) -> dict[str, object | float]:
+    def templateAttrs(self) -> dict[str, int | str | float]:
         """templateAttrs() ... returns a dictionary with all attributes"""
 
 

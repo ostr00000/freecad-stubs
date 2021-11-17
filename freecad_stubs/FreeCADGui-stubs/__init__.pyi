@@ -14,6 +14,28 @@ _T = typing.TypeVar("_T")
 Triple_t: typing.TypeAlias = tuple[_T, _T, _T]
 Quadruple_t: typing.TypeAlias = tuple[_T, _T, _T, _T]
 
+class ReturnGetObjectInfoDict(typing.TypedDict):
+    x: float
+    y: float
+    z: float
+    ParentObject: object
+    SubName: str
+    Document: str
+    Object: str
+    Component: str
+
+
+class ReturnGetObjectsInfoDict(typing.TypedDict):
+    x: float
+    y: float
+    z: float
+    ParentObject: object
+    SubName: str
+    Document: str
+    Object: str
+    Component: str
+
+
 
 # WorkbenchPy.xml
 class Workbench(FreeCAD.BaseClass):
@@ -1170,7 +1192,7 @@ class View3DInventorPy:
         viewport region.
         """
 
-    def getObjectInfo(self, tuple_int_int_, pick_radius: float = None, /) -> None:
+    def getObjectInfo(self, tuple_int_int_, pick_radius: float = None, /) -> None | ReturnGetObjectInfoDict:
         """
         getObjectInfo(tuple(int,int), [pick_radius]) -> dictionary or None
 
@@ -1180,7 +1202,7 @@ class View3DInventorPy:
         If no geometry was found 'None' is returned, instead.
         """
 
-    def getObjectsInfo(self, tuple_int_int_, pick_radius: float = None, /) -> None:
+    def getObjectsInfo(self, tuple_int_int_, pick_radius: float = None, /) -> None | ReturnGetObjectsInfoDict:
         """
         getObjectsInfo(tuple(int,int), [pick_radius]) -> dictionary or None
 
@@ -1318,7 +1340,7 @@ class View3DInventorPy:
 class PyResource:
     """PyResource"""
 
-    def value(self, arg1: str, arg2: str, /) -> None: ...
+    def value(self, arg1: str, arg2: str, /) -> None | list: ...
 
     def setValue(self, arg1: str, arg2: str, arg3, /) -> None: ...
 

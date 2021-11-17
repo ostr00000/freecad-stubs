@@ -3,22 +3,45 @@ import typing
 import FreeCAD
 import Part
 
-class ReturnGetmodeinfoDict(typing.TypedDict):
+
+class ReturnGetModeInfoDict(typing.TypedDict):
     ReferenceCombinations: list[list]
     ModeIndex: int
     UserFriendlyName: object
-class ReturnGetreftypeinfoDict(typing.TypedDict):
+    BriefDocu: object
+
+
+class ReturnGetRefTypeInfoDict(typing.TypedDict):
     TypeIndex: int
-    Rank: str
-class ReturnSuggestmodesDict(typing.TypedDict):
+    Rank: int
+    UserFriendlyName: str
+
+
+class ReturnSuggestModesDict(typing.TypedDict):
     allApplicableModes: list[str]
     bestFitMode: str
-    error: dict[object, list[list[str]]]
+    error: str
+    message: str
+    nextRefTypeHint: list[str]
+    reachableModes: dict[object, list[list[str]]]
+    references_Types: list[str]
+
+
+class ReturnGetPrincipalPropertiesDict(typing.TypedDict):
+    SymmetryAxis: bool
+    SymmetryPoint: bool
+    Moments: tuple[float, float, float]
+    FirstAxisOfInertia: FreeCAD.Vector
+    SecondAxisOfInertia: FreeCAD.Vector
+    ThirdAxisOfInertia: FreeCAD.Vector
+    RadiusOfGyration: tuple[float, float, float]
+
 DocAndStr_t: typing.TypeAlias = tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]
 LinkSub_t: typing.TypeAlias = FreeCAD.DocumentObject | None | tuple[()] | DocAndStr_t
 LinkList_t: typing.TypeAlias = None | FreeCAD.DocumentObject
 SequenceDoc_t: typing.TypeAlias = tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]
 LinkSubList_t: typing.TypeAlias = typing.Sequence[SequenceDoc_t | FreeCAD.DocumentObject]
+ReturnExportUnitsDict = typing.TypedDict('ReturnExportUnitsDict', {'write.iges.unit': str, 'write.step.unit': str})
 
 
 # TopoShapeVertexPy.xml
@@ -257,10 +280,10 @@ class AttachEngine(FreeCAD.BaseClass):
     def downgradeRefType(self, type: str, /) -> str:
         """downgradeRefType(type): returns next more general type. E.g. downgradeType('Circle') yields 'Curve'."""
 
-    def getModeInfo(self, mode: str, /) -> ReturnGetmodeinfoDict:
+    def getModeInfo(self, mode: str, /) -> ReturnGetModeInfoDict:
         """getModeInfo(mode): returns supported reference combinations, user-friendly name, and so on."""
 
-    def getRefTypeInfo(self, type: str, /) -> ReturnGetreftypeinfoDict:
+    def getRefTypeInfo(self, type: str, /) -> ReturnGetRefTypeInfoDict:
         """getRefTypeInfo(type): returns information (dict) on shape type. Keys:'UserFriendlyName', 'TypeIndex', 'Rank'. Rank is the number of times reftype can be downgraded, before it becomes 'Any'."""
 
     def getRefTypeOfShape(self, shape: Part.Shape, /) -> str:
@@ -272,7 +295,7 @@ class AttachEngine(FreeCAD.BaseClass):
     def readParametersFromFeature(self, document_object: FreeCAD.DocumentObject, /) -> None:
         """readParametersFromFeature(document_object): sets AttachEngine parameters (References, Mode, etc.) by reading out properties of AttachableObject-derived feature."""
 
-    def suggestModes(self) -> ReturnSuggestmodesDict:
+    def suggestModes(self) -> ReturnSuggestModesDict:
         """
         suggestModes(): runs mode suggestion routine and returns a dictionary with
         results and supplementary information.
@@ -459,7 +482,7 @@ class Solid(Part.Shape):
         """
 
     @property
-    def PrincipalProperties(self) -> dict[object, bool | tuple[float, float, float] | FreeCAD.Vector]:
+    def PrincipalProperties(self) -> ReturnGetPrincipalPropertiesDict:
         """
         Computes the principal properties of inertia of the current system.
          There is always a set of axes for which the products
@@ -906,7 +929,7 @@ class Face(Part.Shape):
         """Returns a 4 tuple with the parameter range"""
 
     @property
-    def PrincipalProperties(self) -> dict[object, bool | tuple[float, float, float] | FreeCAD.Vector]:
+    def PrincipalProperties(self) -> ReturnGetPrincipalPropertiesDict:
         """
         Computes the principal properties of inertia of the current system.
          There is always a set of axes for which the products
@@ -2848,7 +2871,7 @@ class Wire(Part.Shape):
         """List of ordered vertexes in this shape."""
 
     @property
-    def PrincipalProperties(self) -> dict[object, bool | tuple[float, float, float] | FreeCAD.Vector]:
+    def PrincipalProperties(self) -> ReturnGetPrincipalPropertiesDict:
         """
         Computes the principal properties of inertia of the current system.
          There is always a set of axes for which the products
@@ -3136,7 +3159,7 @@ class Shell(Part.Shape):
         """
 
     @property
-    def PrincipalProperties(self) -> dict[object, bool | tuple[float, float, float] | FreeCAD.Vector]:
+    def PrincipalProperties(self) -> ReturnGetPrincipalPropertiesDict:
         """
         Computes the principal properties of inertia of the current system.
          There is always a set of axes for which the products
@@ -4204,7 +4227,7 @@ class Edge(Part.Shape):
         """
 
     @property
-    def PrincipalProperties(self) -> dict[object, bool | tuple[float, float, float] | FreeCAD.Vector]:
+    def PrincipalProperties(self) -> ReturnGetPrincipalPropertiesDict:
         """
         Computes the principal properties of inertia of the current system.
          There is always a set of axes for which the products
@@ -6120,7 +6143,7 @@ def makeSplitShape(shape: Part.Shape, list_of_shape_pairs, check_Interior: bool 
     """
 
 
-def exportUnits(string: str = None, /) -> dict[object, str]:
+def exportUnits(string: str = None, /) -> ReturnExportUnitsDict:
     """exportUnits([string=MM|M|INCH|FT|MI|KM|MIL|UM|CM|UIN]) -- Set units for exporting STEP/IGES files and returns the units."""
 
 

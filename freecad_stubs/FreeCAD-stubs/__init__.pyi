@@ -1575,7 +1575,7 @@ def changeImportModule(arg0: str, arg1: str, arg2: str, /):
     """Change the import module name of a registered filetype"""
 
 
-def getImportType(arg0: str = None, /) -> list[str] | dict[object, None | str | list[str]]:
+def getImportType(arg0: str = None, /) -> list[str] | dict[object, str | list[str] | None]:
     """Get the name of the module that can import the filetype"""
 
 
@@ -1583,7 +1583,7 @@ def EndingAdd(arg0: str, arg1: str, /):
     """deprecated -- use addImportType"""
 
 
-def EndingGet(arg0: str = None, /) -> list[str] | dict[object, None | str | list[str]]:
+def EndingGet(arg0: str = None, /) -> list[str] | dict[object, str | list[str] | None]:
     """deprecated -- use getImportType"""
 
 
@@ -1595,7 +1595,7 @@ def changeExportModule(arg0: str, arg1: str, arg2: str, /):
     """Change the export module name of a registered filetype"""
 
 
-def getExportType(arg0: str = None, /) -> list[str] | dict[object, None | str | list[str]]:
+def getExportType(arg0: str = None, /) -> list[str] | dict[object, str | list[str] | None]:
     """Get the name of the module that can export the filetype"""
 
 

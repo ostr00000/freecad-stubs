@@ -35,26 +35,26 @@ class Curve2d(Part.Geom2d.Geometry2d):
         					approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -> B-Spline curve
         """
 
-    def centerOfCurvature(self, float_pos: float, /):
+    def centerOfCurvature(self, float_pos: float, /) -> FreeCAD.Vector2d:
         """Vector = centerOfCurvature(float pos) - Get the center of curvature at the given parameter [First|Last] if defined"""
 
     def curvature(self, pos: float, /) -> float:
         """Float = curvature(pos) - Get the curvature at the given parameter [First|Last] if defined"""
 
     @typing.overload
-    def discretize(self, Number: int, First: float = None, Last: float = None) -> list: ...
+    def discretize(self, Number: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
 
     @typing.overload
-    def discretize(self, Distance: float, First: float = None, Last: float = None) -> list: ...
+    def discretize(self, Distance: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
 
     @typing.overload
-    def discretize(self, Deflection: float, First: float = None, Last: float = None) -> list: ...
+    def discretize(self, Deflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
 
     @typing.overload
-    def discretize(self, QuasiNumber: int, First: float = None, Last: float = None) -> list: ...
+    def discretize(self, QuasiNumber: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
 
     @typing.overload
-    def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None) -> list:
+    def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]:
         """
         Discretizes the curve and returns a list of points.
         The function accepts keywords as argument:
@@ -89,7 +89,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
         Part.show(s)
         """
 
-    def intersectCC(self, arg1: Part.Geom2d.Curve2d, arg2: float = None, /) -> list:
+    def intersectCC(self, arg1: Part.Geom2d.Curve2d, arg2: float = None, /) -> list | list[FreeCAD.Vector2d]:
         """Returns all intersection points between this curve and the given curve."""
 
     def length(self, uMin: float = None, uMax: float = None, Tol: float = None, /) -> float:
@@ -98,7 +98,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
         length([uMin,uMax,Tol]) -> Float
         """
 
-    def normal(self, pos: float, /):
+    def normal(self, pos: float, /) -> FreeCAD.Vector2d:
         """Vector = normal(pos) - Get the normal vector at the given parameter [First|Last] if defined"""
 
     def parameter(self, arg1, /) -> float:
@@ -116,7 +116,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
     def reverse(self):
         """Changes the direction of parametrization of the curve."""
 
-    def tangent(self, arg1: float, /):
+    def tangent(self, arg1: float, /) -> FreeCAD.Vector2d:
         """Computes the tangent of parameter u on this curve"""
 
     def toBSpline(self, Float: float = None, Float2: float = None, /) -> Part.Geom2d.BSplineCurve2d:
@@ -144,7 +144,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
     def toShape(self, arg1: Part.Face, arg2: float, arg3: float, /) -> Part.Shape:
         """Return the shape for the geometry."""
 
-    def value(self, arg1: float, /):
+    def value(self, arg1: float, /) -> FreeCAD.Vector2d:
         """Computes the point of parameter u on this curve"""
 
 
@@ -189,21 +189,21 @@ class ArcOfConic2d(Part.Geom2d.Curve2d):
         """
 
     @property
-    def Location(self) -> object:
+    def Location(self) -> FreeCAD.Vector2d:
         """Location of the conic."""
 
     @Location.setter
     def Location(self, value: object): ...
 
     @property
-    def XAxis(self) -> object:
+    def XAxis(self) -> FreeCAD.Vector2d:
         """The X axis direction of the circle"""
 
     @XAxis.setter
     def XAxis(self, value: object): ...
 
     @property
-    def YAxis(self) -> object:
+    def YAxis(self) -> FreeCAD.Vector2d:
         """The Y axis direction of the circle"""
 
     @YAxis.setter
@@ -225,21 +225,21 @@ class Conic2d(Part.Geom2d.Curve2d):
         """
 
     @property
-    def Location(self) -> object:
+    def Location(self) -> FreeCAD.Vector2d:
         """Location of the conic."""
 
     @Location.setter
     def Location(self, value: object): ...
 
     @property
-    def XAxis(self) -> object:
+    def XAxis(self) -> FreeCAD.Vector2d:
         """The X axis direction of the circle"""
 
     @XAxis.setter
     def XAxis(self, value: object): ...
 
     @property
-    def YAxis(self) -> object:
+    def YAxis(self) -> FreeCAD.Vector2d:
         """The Y axis direction of the circle"""
 
     @YAxis.setter
@@ -396,14 +396,14 @@ class Line2dSegment(Part.Geom2d.Curve2d):
         """
 
     @property
-    def EndPoint(self) -> object:
+    def EndPoint(self) -> FreeCAD.Vector2d:
         """Returns the end point of this line segment."""
 
     @EndPoint.setter
     def EndPoint(self, value: object): ...
 
     @property
-    def StartPoint(self) -> object:
+    def StartPoint(self) -> FreeCAD.Vector2d:
         """Returns the start point of this line segment."""
 
     @StartPoint.setter
@@ -473,14 +473,14 @@ class Ellipse2d(Part.Geom2d.Conic2d):
         """The focal distance of the ellipse."""
 
     @property
-    def Focus1(self) -> object:
+    def Focus1(self) -> FreeCAD.Vector2d:
         """
         The first focus is on the positive side of the major axis of the ellipse;
         the second focus is on the negative side.
         """
 
     @property
-    def Focus2(self) -> object:
+    def Focus2(self) -> FreeCAD.Vector2d:
         """
         The first focus is on the positive side of the major axis of the ellipse;
         the second focus is on the negative side.
@@ -610,14 +610,14 @@ class Hyperbola2d(Part.Geom2d.Conic2d):
         """The focal distance of the hyperbola."""
 
     @property
-    def Focus1(self) -> object:
+    def Focus1(self) -> FreeCAD.Vector2d:
         """
         The first focus is on the positive side of the major axis of the hyperbola;
         the second focus is on the negative side.
         """
 
     @property
-    def Focus2(self) -> object:
+    def Focus2(self) -> FreeCAD.Vector2d:
         """
         The first focus is on the positive side of the major axis of the hyperbola;
         the second focus is on the negative side.
@@ -650,7 +650,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         """Returns the polynomial degree of this B-Spline curve."""
 
     @property
-    def EndPoint(self) -> object:
+    def EndPoint(self) -> FreeCAD.Vector2d:
         """Returns the end point of this B-Spline curve."""
 
     @property
@@ -689,7 +689,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         """Returns the number of poles of this B-Spline curve."""
 
     @property
-    def StartPoint(self) -> object:
+    def StartPoint(self) -> FreeCAD.Vector2d:
         """Returns the start point of this B-Spline curve."""
 
     def approximate(self, Points, DegMax: int = None, Continuity: str = None, Tolerance: float = None, DegMin: int = None, ParamType: str = None, Parameters=None, LengthWeight: float = None, CurvatureWeight: float = None, TorsionWeight: float = None):
@@ -755,10 +755,10 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         """
 
     @typing.overload
-    def getCardinalSplineTangents(self, Points, Parameter: float) -> list: ...
+    def getCardinalSplineTangents(self, Points, Parameter: float) -> list[FreeCAD.Vector2d]: ...
 
     @typing.overload
-    def getCardinalSplineTangents(self, Points, Parameters) -> list:
+    def getCardinalSplineTangents(self, Points, Parameters) -> list[FreeCAD.Vector2d]:
         """Compute the tangents for a Cardinal spline"""
 
     def getKnot(self, arg1: int, /) -> float:
@@ -776,10 +776,10 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         from the knots table of this B-Spline curve.
         """
 
-    def getPole(self, arg1: int, /):
+    def getPole(self, arg1: int, /) -> FreeCAD.Vector2d:
         """Get a pole of the B-Spline curve."""
 
-    def getPoles(self) -> list:
+    def getPoles(self) -> list[FreeCAD.Vector2d]:
         """Get all poles of the B-Spline curve."""
 
     def getPolesAndWeights(self) -> list[tuple[float, float, float]]:
@@ -1009,7 +1009,7 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
         """
 
     @property
-    def EndPoint(self) -> object:
+    def EndPoint(self) -> FreeCAD.Vector2d:
         """Returns the end point of this Bezier curve."""
 
     @property
@@ -1024,13 +1024,13 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
         """Returns the number of poles of this Bezier curve."""
 
     @property
-    def StartPoint(self) -> object:
+    def StartPoint(self) -> FreeCAD.Vector2d:
         """Returns the start point of this Bezier curve."""
 
-    def getPole(self, arg1: int, /):
+    def getPole(self, arg1: int, /) -> FreeCAD.Vector2d:
         """Get a pole of the Bezier curve."""
 
-    def getPoles(self) -> list:
+    def getPoles(self) -> list[FreeCAD.Vector2d]:
         """Get all poles of the Bezier curve."""
 
     def getResolution(self, arg1: float, /) -> float:
@@ -1123,7 +1123,7 @@ class Parabola2d(Part.Geom2d.Conic2d):
     def Focal(self, value: float): ...
 
     @property
-    def Focus(self) -> object:
+    def Focus(self) -> FreeCAD.Vector2d:
         """
         The focus is on the positive side of the
         'X Axis' of the local coordinate system of the parabola.
@@ -1175,14 +1175,14 @@ class Line2d(Part.Geom2d.Curve2d):
         """
 
     @property
-    def Direction(self) -> object:
+    def Direction(self) -> FreeCAD.Vector2d:
         """Returns the direction of this line."""
 
     @Direction.setter
     def Direction(self, value: object): ...
 
     @property
-    def Location(self) -> object:
+    def Location(self) -> FreeCAD.Vector2d:
         """Returns the location of this line."""
 
     @Location.setter

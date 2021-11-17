@@ -3,6 +3,13 @@ import typing
 import FreeCAD
 
 
+class ReturnGetFormatDict(typing.TypedDict):
+    Precision: int
+    NumberFormat: str
+    Denominator: int
+
+
+
 # VectorPy.xml
 class Vector(FreeCAD.PyObjectBase):
     """
@@ -1101,7 +1108,7 @@ class Quantity(FreeCAD.PyObjectBase):
         """
 
     @property
-    def Format(self) -> dict[object, int | object]:
+    def Format(self) -> ReturnGetFormatDict:
         """Format of the Quantity"""
 
     @Format.setter

@@ -46,7 +46,12 @@ class ArgumentsIter:
 
 class UnionArguments(ArgumentsIter, OrderedSet):
     def __str__(self):
-        return ' | '.join(self)
+        values = list(self)
+        if 'None' in values:
+            values.remove('None')
+            values.append('None')
+
+        return ' | '.join(values)
 
 
 class TupleArgument(ArgumentsIter, list):
@@ -75,8 +80,7 @@ class InvalidReturnType(ValueError):
 
 
 class DictArgument(ArgumentsIter):
-    def __init__(self, literalKeys=False):
-        self.literalKeys = literalKeys
+    def __init__(self):
         self.keys = UnionArguments()
         self.values = UnionArguments()
 
@@ -91,30 +95,41 @@ class DictArgument(ArgumentsIter):
         if not self:
             return 'dict'
 
-        if self.literalKeys:
-            self.imports.add('typing')
-            ret = f'dict[typing.Literal[{self.keys}], {self.values}]'
-        else:
-            ret = f'dict[{self.keys}, {self.values}]'
-
+        ret = f'dict[{self.keys}, {self.values}]'
         self.imports.update(self.keys.imports)
         self.imports.update(self.values.imports)
         return ret
 
 
-class TypedDictGen(DictArgument):
+class ListIter(list, ArgumentsIter):
+    pass
+
+
+class TypedDictGen(dict, ArgumentsIter):
     def __init__(self, funName: str):
         super().__init__()
         self.funName = funName
+        self.alternativeSyntax = False
+
+    def add(self, key: str, value: RetType):
+        if not key.isidentifier():  # + keyword (not implemented)
+            self.alternativeSyntax |= True
+        self[key] = value
 
     def __str__(self):
-        lines = [f'{k}: {v}' for k, v in zip(self.keys, self.values)]
-        content = indent('\n'.join(lines))
-        typedDictName = f'Return{self.funName.capitalize()}Dict'
-        fun = f"class {typedDictName}(typing.TypedDict):\n{content}"
+        typedDictName = f'Return{self.funName[0].upper() + self.funName[1:]}Dict'
+        listIter = ListIter(self.values())
+
+        if self.alternativeSyntax:
+            content = ', '.join(f"'{k}': {v}" for k, v in zip(self.keys(), listIter))
+            fun = f"{typedDictName} = typing.TypedDict('{typedDictName}', {{{content}}})"
+
+        else:
+            lines = [f'{k}: {v}' for k, v in zip(self.keys(), listIter)]
+            content = indent('\n'.join(lines))
+            fun = f"class {typedDictName}(typing.TypedDict):\n{content}"
 
         self.imports.add('typing')
-        self.imports.update(self.keys.imports)
-        self.imports.update(self.values.imports)
+        self.imports.update(listIter.imports)
         self.imports.add(fun)
         return typedDictName

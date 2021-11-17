@@ -60,13 +60,24 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
     def _getInnerTypeDictSetItem(self, variableName: str, startPos: int, endPos: int):
         """Example: `dict.setItem(it->c_str(), list);`"""
         da = DictArgument()
+        tdg = TypedDictGen(self.functionName)
         regex = re.compile(rf'{variableName}\b\.setItem\(([^;]*)\);')
+
         for match in regex.finditer(self.functionBody, startPos, endPos):
             funArgs = list(generateExpressionUntilChar(
                 match.group(1), 0, ',', bracketL='(', bracketR=')'))
-            key = self._getReturnTypeForText(funArgs[0], endPos)
+
             value = self._getReturnTypeForText(funArgs[1], endPos)
-            da.add(key, value)
+            key = funArgs[0]
+            if key.startswith('"') and key.endswith('"'):
+                key = key.removeprefix('"').removesuffix('"')
+                tdg.add(key, value)
+            else:
+                key = self._getReturnTypeForText(key, endPos)
+                da.add(key, value)
+
+        if tdg:
+            return tdg
         return da
 
     def _getInnerTypeDictAssignLiterals(self, variableName: str, startPos: int, endPos: int):

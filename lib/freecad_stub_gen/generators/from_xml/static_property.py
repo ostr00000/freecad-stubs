@@ -49,12 +49,23 @@ class XmlPropertyGenerator(XmlMethodGenerator, BaseXmlGenerator, BasePropertyGen
             self.classNameWithModules, cFuncName)
         extendedType = rt.getStrReturnType()
 
-        match pythonType:
-            case 'dict' | 'list' | 'tuple' | 'typing.Sequence':
-                if extendedType.startswith(pythonType):
-                    return extendedType
-            case 'object':
+        match pythonType, extendedType:
+            case ('object', _):
                 return extendedType
+
+            case _ if pythonType == extendedType:
+                return extendedType
+
+            case (_, 'object'):
+                return pythonType
+
+            case ('dict' | 'list' | 'tuple' | 'typing.Sequence', _):
+                if extendedType.startswith(pythonType) or extendedType.endswith('Dict'):
+                    return extendedType
+                else:
+                    logger.warning(f"Type from code does not match type from xml"
+                                   f" (cannot extend): {pythonType=}, {extendedType=}")
+
             case _:
                 logger.warning(f"Type from code does not match type from xml:"
                                f"{pythonType=}, {extendedType=}")
