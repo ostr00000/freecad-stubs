@@ -85,6 +85,10 @@ class DictArgument(ArgumentsIter):
         self.values = UnionArguments()
 
     def add(self, key: RetType, value: RetType):
+        if isinstance(key, UnionArguments):
+            keyStr = str(key)
+            self.imports.update(key.imports)
+            key = keyStr
         self.keys.add(key)
         self.values.add(value)
 

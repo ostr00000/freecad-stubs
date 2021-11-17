@@ -252,7 +252,9 @@ class ReturnTypeConverterBase:
         """Example: `myVar = Py::Float(7.0)`."""
         regex = re.compile(rf'{variableName}\b\s*=\s*([^;]*);')
         gen = self._genVariableTypeFromRegex(regex, startPos, endPos, onlyLiteral=False)
-        return next(gen, Empty)  # TODO maybe union?
+        if union := UnionArguments(gen):
+            return union
+        return Empty
 
     def _genVariableTypeFromRegex(self, regex: re.Pattern, startPos: int, endPos: int,
                                   onlyLiteral=True):
@@ -260,8 +262,11 @@ class ReturnTypeConverterBase:
         for variableMatch in regex.finditer(self.functionBody, startPos, endpos=endPos):
             variableTypeText = variableMatch.group(1)
             varType = self._getReturnTypeForText(variableTypeText, endPos, onlyLiteral=onlyLiteral)
-            if varType != Empty:
-                yield varType
+            match varType:
+                case UnionArguments():
+                    yield from varType
+                case str():
+                    yield varType
 
     def getInnerType(self, varType: str | EmptyType, variableName: str,
                      declarationStartPos: int, declarationEndPos: int, endPos: int) -> str:

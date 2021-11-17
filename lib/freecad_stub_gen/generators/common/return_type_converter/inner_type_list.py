@@ -25,8 +25,8 @@ class ReturnTypeInnerList(ReturnTypeConverterBase):
 
     def _getInnerTypeList(self, variableName: str, startPos: int, endPos: int):
         regex = re.compile(rf'{variableName}\b.append\(([^;]*)\);')
-        return UnionArguments(
-            self._genVariableTypeFromRegex(regex, startPos, endPos, onlyLiteral=False))
+        gen = self._genVariableTypeFromRegex(regex, startPos, endPos, onlyLiteral=False)
+        return UnionArguments(gen)
 
     def _getInnerTypePyListSetItem(self, variableName: str, startPos: int, endPos: int):
         """Example: `PyList_SetItem(pyList, i++, str);`."""

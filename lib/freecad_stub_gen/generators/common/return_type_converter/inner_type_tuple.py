@@ -4,7 +4,6 @@ from freecad_stub_gen.generators.common.cpp_function import generateExpressionUn
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import EmptyType, \
     TupleArgument
 from freecad_stub_gen.generators.common.return_type_converter.base import ReturnTypeConverterBase
-from freecad_stub_gen.util import OrderedSet
 
 
 class ReturnTypeInnerTuple(ReturnTypeConverterBase):

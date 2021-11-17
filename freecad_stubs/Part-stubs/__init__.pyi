@@ -1386,7 +1386,7 @@ class Shape(FreeCAD.ComplexGeoData):
         if runBopCheck is True, a BOPCheck analysis is also performed.
         """
 
-    def childShapes(self, cumOri: bool = True, cumLoc: bool = True, /) -> list[Part.Compound]:
+    def childShapes(self, cumOri: bool = True, cumLoc: bool = True, /) -> list[Part.Compound | Part.CompSolid | Part.Solid | Part.Shell | Part.Face | Part.Wire | Part.Edge | Part.Vertex]:
         """
         Return a list of sub-shapes that are direct children of this shape.
         childShapes([cumOri=True, cumLoc=True]) -> list
@@ -1484,7 +1484,7 @@ class Shape(FreeCAD.ComplexGeoData):
         The parameter is a list of faces.
         """
 
-    def distToShape(self, shape: Part.Shape, /) -> tuple[float, list[tuple[FreeCAD.Vector, object]], list[tuple[str, int, None, object, object, object]]]:
+    def distToShape(self, shape: Part.Shape, /) -> tuple[float, list[tuple[FreeCAD.Vector, object]], list[tuple[str, int, float | tuple[float, float] | None, object, object, object]]]:
         """
         Find the minimum distance to another shape.
         distToShape(shape) -> (dist, vectors, infos)

@@ -1202,7 +1202,7 @@ class View3DInventorPy:
         If no geometry was found 'None' is returned, instead.
         """
 
-    def getObjectsInfo(self, tuple_int_int_, pick_radius: float = None, /) -> ReturnGetObjectsInfoDict | None:
+    def getObjectsInfo(self, tuple_int_int_, pick_radius: float = None, /) -> ReturnGetObjectsInfoDict | list[ReturnGetObjectsInfoDict] | None:
         """
         getObjectsInfo(tuple(int,int), [pick_radius]) -> dictionary or None
 
@@ -1340,7 +1340,7 @@ class View3DInventorPy:
 class PyResource:
     """PyResource"""
 
-    def value(self, arg1: str, arg2: str, /) -> list | None: ...
+    def value(self, arg1: str, arg2: str, /) -> list | str | float | bool | int | None: ...
 
     def setValue(self, arg1: str, arg2: str, arg3, /) -> None: ...
 

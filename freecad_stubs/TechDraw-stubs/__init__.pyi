@@ -1258,10 +1258,10 @@ class DrawViewPart(TechDraw.DrawView):
     def getCosmeticEdgeBySelection(self, name: str, /) -> TechDraw.CosmeticEdge | None:
         """ce = getCosmeticEdgeBySelection(name) - returns CosmeticEdge by name (Edge25).  Used in selections"""
 
-    def getCosmeticVertex(self, id: str, /) -> TechDraw.CosmeticVertex:
+    def getCosmeticVertex(self, id: str, /) -> TechDraw.CosmeticVertex | None:
         """cv = getCosmeticVertex(id) - returns CosmeticVertex with unique id."""
 
-    def getCosmeticVertexBySelection(self, name: str, /) -> TechDraw.CosmeticVertex:
+    def getCosmeticVertexBySelection(self, name: str, /) -> TechDraw.CosmeticVertex | None:
         """cv = getCosmeticVertexBySelection(name) - returns CosmeticVertex with name (Vertex6).  Used in selections."""
 
     def getEdgeByIndex(self, edgeIndex: int, /) -> Part.Edge:
