@@ -1097,7 +1097,7 @@ class OffsetCurve2d(Part.Geom2d.Curve2d):
     def __init__(self, arg1: Part.Geom2d.Curve2d, arg2: float, /): ...
 
     @property
-    def BasisCurve(self) -> None | object:
+    def BasisCurve(self) -> object | None:
         """Sets or gets the basic curve."""
 
     @property

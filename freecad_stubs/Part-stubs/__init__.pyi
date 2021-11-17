@@ -261,7 +261,7 @@ class AttachEngine(FreeCAD.BaseClass):
     @Reverse.setter
     def Reverse(self, value: bool): ...
 
-    def calculateAttachedPlacement(self, orig_placement: FreeCAD.Placement, /) -> None | FreeCAD.Placement:
+    def calculateAttachedPlacement(self, orig_placement: FreeCAD.Placement, /) -> FreeCAD.Placement | None:
         """
         calculateAttachedPlacement(orig_placement): returns result of attachment, based
         on current Mode, References, etc. AttachmentOffset is included.
@@ -5384,7 +5384,7 @@ class AttachExtension(FreeCAD.DocumentObjectExtension):
     """This object represents an attachable object with OCC shape."""
 
     @property
-    def Attacher(self) -> None | Part.AttachEngine:
+    def Attacher(self) -> Part.AttachEngine | None:
         """AttachEngine object driving this AttachableObject. Returns a copy."""
 
     @property

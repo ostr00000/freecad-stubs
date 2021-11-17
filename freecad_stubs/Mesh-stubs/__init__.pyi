@@ -43,11 +43,11 @@ class Facet(FreeCAD.PyObjectBase):
         """Bound state of the facet"""
 
     @property
-    def CircumCircle(self) -> tuple:
+    def CircumCircle(self) -> tuple[FreeCAD.Vector, float] | None:
         """The center and radius of the circum-circle"""
 
     @property
-    def InCircle(self) -> tuple:
+    def InCircle(self) -> tuple[FreeCAD.Vector, float] | None:
         """The center and radius of the in-circle"""
 
     @property

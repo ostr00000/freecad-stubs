@@ -123,7 +123,7 @@ class ParameterGrp:
     def Export(self, arg1: str, /) -> None:
         """Export()"""
 
-    def GetContents(self) -> None | list[tuple[str, str, str] | tuple[str, str, int] | tuple[str, str, float] | tuple[str, str, bool]]:
+    def GetContents(self) -> list[tuple[str, str, str] | tuple[str, str, int] | tuple[str, str, float] | tuple[str, str, bool]] | None:
         """GetContents()"""
 
 
@@ -389,7 +389,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         * depth: current recursive depth
         """
 
-    def getParentGeoFeatureGroup(self) -> None | object:
+    def getParentGeoFeatureGroup(self) -> object | None:
         """
         Returns the GeoFeatureGroup, and hence the local coordinate system, the object 
                                   is in or None if it is not part of a group. Note that an object can only be 
@@ -1416,7 +1416,7 @@ class PropertyContainer(FreeCAD.Persistence):
         If the list contains 'Hidden' then the item even doesn't appear in the property editor.
         """
 
-    def getEnumerationsOfProperty(self, arg1: str, /) -> None | list[str]:
+    def getEnumerationsOfProperty(self, arg1: str, /) -> list[str] | None:
         """Return all enumeration strings of the property of this class or None if not a PropertyEnumeration."""
 
     def getGroupOfProperty(self, arg1: str, /) -> str:

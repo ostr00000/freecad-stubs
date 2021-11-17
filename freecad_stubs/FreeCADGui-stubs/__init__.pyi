@@ -860,7 +860,7 @@ class Document(FreeCAD.Persistence):
         """The editing transformation matrix"""
 
     @property
-    def InEditInfo(self) -> None | tuple:
+    def InEditInfo(self) -> tuple | None:
         """A tuple(obj,subname,subElement,editMode) of editing object reference, or None if no object is in edit"""
 
     @property
@@ -996,7 +996,7 @@ class MDIViewPy:
         add or set a new active object
         """
 
-    def getActiveObject(self, name: str, resolve=True, /) -> None | FreeCAD.DocumentObject | tuple:
+    def getActiveObject(self, name: str, resolve=True, /) -> FreeCAD.DocumentObject | tuple | None:
         """
         getActiveObject(name,resolve=True)
         returns the active object for the given type
@@ -1097,7 +1097,7 @@ class View3DInventorPy:
     def zoomOut(self) -> None:
         """zoomOut()"""
 
-    def viewPosition(self, arg1: FreeCAD.Placement = None, arg2: int = None, arg3: int = None, /) -> None | FreeCAD.Placement:
+    def viewPosition(self, arg1: FreeCAD.Placement = None, arg2: int = None, arg3: int = None, /) -> FreeCAD.Placement | None:
         """viewPosition()"""
 
     def startAnimating(self, arg1: float, arg2: float, arg3: float, arg4: float, /) -> None:
@@ -1192,7 +1192,7 @@ class View3DInventorPy:
         viewport region.
         """
 
-    def getObjectInfo(self, tuple_int_int_, pick_radius: float = None, /) -> None | ReturnGetObjectInfoDict:
+    def getObjectInfo(self, tuple_int_int_, pick_radius: float = None, /) -> ReturnGetObjectInfoDict | None:
         """
         getObjectInfo(tuple(int,int), [pick_radius]) -> dictionary or None
 
@@ -1202,7 +1202,7 @@ class View3DInventorPy:
         If no geometry was found 'None' is returned, instead.
         """
 
-    def getObjectsInfo(self, tuple_int_int_, pick_radius: float = None, /) -> None | ReturnGetObjectsInfoDict:
+    def getObjectsInfo(self, tuple_int_int_, pick_radius: float = None, /) -> ReturnGetObjectsInfoDict | None:
         """
         getObjectsInfo(tuple(int,int), [pick_radius]) -> dictionary or None
 
@@ -1294,7 +1294,7 @@ class View3DInventorPy:
         add or set a new active object
         """
 
-    def getActiveObject(self, name: str, resolve=True, /) -> None | FreeCAD.DocumentObject | tuple:
+    def getActiveObject(self, name: str, resolve=True, /) -> FreeCAD.DocumentObject | tuple | None:
         """
         getActiveObject(name,resolve=True)
         returns the active object for the given type
@@ -1340,7 +1340,7 @@ class View3DInventorPy:
 class PyResource:
     """PyResource"""
 
-    def value(self, arg1: str, arg2: str, /) -> None | list: ...
+    def value(self, arg1: str, arg2: str, /) -> list | None: ...
 
     def setValue(self, arg1: str, arg2: str, arg3, /) -> None: ...
 

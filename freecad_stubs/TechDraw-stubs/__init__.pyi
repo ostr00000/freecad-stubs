@@ -1246,16 +1246,16 @@ class DrawViewPart(TechDraw.DrawView):
     def formatGeometricEdge(self, index: int, style: int, weight: float, color, visible: int, /) -> None:
         """formatGeometricEdge(index, style, weight, color, visible). Returns None."""
 
-    def getCenterLine(self, id: str, /) -> None | TechDraw.CenterLine:
+    def getCenterLine(self, id: str, /) -> TechDraw.CenterLine | None:
         """cl = getCenterLine(id) - returns CenterLine with unique id."""
 
-    def getCenterLineBySelection(self, name: str, /) -> None | TechDraw.CenterLine:
+    def getCenterLineBySelection(self, name: str, /) -> TechDraw.CenterLine | None:
         """cl = getCenterLineBySelection(name) - returns CenterLine by name (Edge25).  Used in selections"""
 
-    def getCosmeticEdge(self, id: str, /) -> None | TechDraw.CosmeticEdge:
+    def getCosmeticEdge(self, id: str, /) -> TechDraw.CosmeticEdge | None:
         """ce = getCosmeticEdge(id) - returns CosmeticEdge with unique id."""
 
-    def getCosmeticEdgeBySelection(self, name: str, /) -> None | TechDraw.CosmeticEdge:
+    def getCosmeticEdgeBySelection(self, name: str, /) -> TechDraw.CosmeticEdge | None:
         """ce = getCosmeticEdgeBySelection(name) - returns CosmeticEdge by name (Edge25).  Used in selections"""
 
     def getCosmeticVertex(self, id: str, /) -> TechDraw.CosmeticVertex:
@@ -1688,15 +1688,15 @@ class GeomFormat(FreeCAD.PyObjectBase):
 
 
 # AppTechDrawPy.cpp
-def edgeWalker(edgePile: list, inclBiggest=None, /) -> None | list[Part.Wire]:
+def edgeWalker(edgePile: list, inclBiggest=None, /) -> list[Part.Wire] | None:
     """[wires] = edgeWalker(edgePile,inclBiggest) -- Planar graph traversal finds wires in edge pile."""
 
 
-def findOuterWire(edgeList: list, /) -> None | Part.Wire:
+def findOuterWire(edgeList: list, /) -> Part.Wire | None:
     """wire = findOuterWire(edgeList) -- Planar graph traversal finds OuterWire in edge pile."""
 
 
-def findShapeOutline(shape, scale: float, direction, /) -> None | Part.Wire:
+def findShapeOutline(shape, scale: float, direction, /) -> Part.Wire | None:
     """wire = findShapeOutline(shape,scale,direction) -- Project shape in direction and find outer wire of result."""
 
 
@@ -1716,7 +1716,7 @@ def writeDXFPage(page, filename: str, /) -> None:
     """writeDXFPage(page,filename): Exports a DrawPage to a DXF file."""
 
 
-def findCentroid(shape, direction, /) -> None | FreeCAD.Vector:
+def findCentroid(shape, direction, /) -> FreeCAD.Vector | None:
     """vector = findCentroid(shape,direction): finds geometric centroid of shape looking in direction."""
 
 
@@ -1732,5 +1732,5 @@ def makeDistanceDim3d(arg1, arg2, arg3, arg4, /) -> None:
     """makeDistanceDim(DrawViewPart, dimType, 3dFromPoint, 3dToPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 3d model points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."""
 
 
-def makeGeomHatch(face, patScale: float = None, patName: str = None, patFile: str = None, /) -> None | Part.Compound:
+def makeGeomHatch(face, patScale: float = None, patName: str = None, patFile: str = None, /) -> Part.Compound | None:
     """makeGeomHatch(face, [patScale], [patName], [patFile]) -- draw a geom hatch on a given face, using optionally the given scale (default 1) and a given pattern name (ex. Diamond) and .pat file (the default pattern name and/or .pat files set in preferences are used if none are given). Returns a Part compound shape."""
