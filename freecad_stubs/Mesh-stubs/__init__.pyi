@@ -55,7 +55,7 @@ class Facet(FreeCAD.PyObjectBase):
         """The index of this facet in the MeshObject"""
 
     @property
-    def NeighbourIndices(self) -> tuple | tuple[int]:
+    def NeighbourIndices(self) -> tuple | tuple[int, ...]:
         """The index tuple of neighbour facets of the mesh this facet is adjacent with"""
 
     @property
@@ -63,7 +63,7 @@ class Facet(FreeCAD.PyObjectBase):
         """Normal vector of the facet."""
 
     @property
-    def PointIndices(self) -> tuple | tuple[int]:
+    def PointIndices(self) -> tuple | tuple[int, ...]:
         """The index tuple of point vertices of the mesh this facet is built of"""
 
     @property
@@ -459,7 +459,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def getInternalFacets(self) -> list:
         """Builds a list of facet indices with triangles that are inside a volume mesh"""
 
-    def getNonUniformOrientedFacets(self) -> tuple[int]:
+    def getNonUniformOrientedFacets(self) -> tuple[int, ...]:
         """Get a tuple of wrong oriented facets"""
 
     def getPlanarSegments(self, dev: float, min_faces: int = 0, /) -> list[list[int]]:
@@ -470,7 +470,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         plane if none of its neighbors are coplanar.
         """
 
-    def getPointNormals(self) -> tuple[FreeCAD.Vector]:
+    def getPointNormals(self) -> tuple[FreeCAD.Vector, ...]:
         """
         getPointNormals()
         					Get the normals of the points.
@@ -500,7 +500,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         Type can be Plane, Cylinder or Sphere
         """
 
-    def getSelfIntersections(self) -> tuple[tuple[int, int, FreeCAD.Vector, FreeCAD.Vector]]:
+    def getSelfIntersections(self) -> tuple[tuple[int, int, FreeCAD.Vector, FreeCAD.Vector], ...]:
         """Returns a tuple of indices of intersecting triangles"""
 
     def getSeparateComponents(self) -> list[MeshModule.Mesh]:
@@ -752,11 +752,11 @@ class Edge(FreeCAD.PyObjectBase):
         """The length of the edge"""
 
     @property
-    def NeighbourIndices(self) -> tuple[int]:
+    def NeighbourIndices(self) -> tuple[int, ...]:
         """The index tuple of neighbour facets of the mesh this edge is adjacent with"""
 
     @property
-    def PointIndices(self) -> tuple[int]:
+    def PointIndices(self) -> tuple[int, ...]:
         """The index tuple of point vertices of the mesh this edge is built of"""
 
     @property
@@ -859,7 +859,7 @@ def calculateEigenTransform(seq_Base_Vector_, /) -> FreeCAD.Placement:
     """
 
 
-def polynomialFit(seq_Base_Vector_, /) -> dict[str, float | tuple[float, float, float, float, float, float] | tuple[float]]:
+def polynomialFit(seq_Base_Vector_, /) -> dict[str, float | tuple[float, float, float, float, float, float] | tuple[float, ...]]:
     """polynomialFit(seq(Base.Vector)) -- Calculates a polynomial fit."""
 
 

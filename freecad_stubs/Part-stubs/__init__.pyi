@@ -1690,7 +1690,7 @@ class Shape(FreeCAD.ComplexGeoData):
         importBrepFromString(str,False) to not display a progress bar.
         """
 
-    def inTolerance(self, arg1: float, arg2: float, arg3: type = None, /) -> tuple[Part.Shape]:
+    def inTolerance(self, arg1: float, arg2: float, arg3: type = None, /) -> tuple[Part.Shape, ...]:
         """
         Determines which shapes have a tolerance within a given interval
         inTolerance(value, [ShapeType=Shape]) -> ShapeList
@@ -1950,7 +1950,7 @@ class Shape(FreeCAD.ComplexGeoData):
         optimalBoundingBox([useTriangulation = True, useShapeTolerance = False]) -> bound box
         """
 
-    def overTolerance(self, value: float, ShapeType: type = None, /) -> tuple[Part.Shape]:
+    def overTolerance(self, value: float, ShapeType: type = None, /) -> tuple[Part.Shape, ...]:
         """
         Determines which shapes have a tolerance over the given value
         overTolerance(value, [ShapeType=Shape]) -> ShapeList
@@ -5176,7 +5176,7 @@ class Curve(Part.Geometry):
         the point of parameter U on this curve.
         """
 
-    def tangent(self, arg1: float, /) -> tuple[FreeCAD.Vector]:
+    def tangent(self, arg1: float, /) -> tuple[FreeCAD.Vector, ...]:
         """Computes the tangent of parameter u on this curve"""
 
     def toBSpline(self, Float: float = None, Float2: float = None, /) -> Part.BSplineCurve:

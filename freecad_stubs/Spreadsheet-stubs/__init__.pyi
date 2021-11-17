@@ -59,7 +59,7 @@ class Sheet(FreeCAD.DocumentObject):
     def exportFile(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, /) -> bool:
         """Export file from spreadsheet"""
 
-    def get(self, arg1: str, arg2: str = None, /) -> tuple[FreeCAD.Property] | FreeCAD.Property:
+    def get(self, arg1: str, arg2: str = None, /) -> tuple[FreeCAD.Property, ...] | FreeCAD.Property:
         """Get evaluated cell contents"""
 
     def getAlias(self, arg1: str, /) -> str | None:

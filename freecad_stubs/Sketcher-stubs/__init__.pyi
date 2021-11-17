@@ -276,20 +276,20 @@ class SketchObject(Part.Part2DObject):
     def ExposeInternalGeometry(self, arg1: int, /):
         """Deprecated -- use exposeInternalGeometry"""
 
-    def addConstraint(self, arg1, /) -> int | tuple[int]:
+    def addConstraint(self, arg1, /) -> int | tuple[int, ...]:
         """add a constraint to the sketch"""
 
-    def addCopy(self, arg1, arg2: FreeCAD.Vector, arg3: bool = None, /) -> tuple[int]:
+    def addCopy(self, arg1, arg2: FreeCAD.Vector, arg3: bool = None, /) -> tuple[int, ...]:
         """add a copy of geometric objects to the sketch displaced by a vector3d"""
 
     def addExternal(self, arg1: str, arg2: str, /):
         """add a link to an external geometry to use it in a constraint"""
 
     @typing.overload
-    def addGeometry(self, arg1, arg2: bool, /) -> int | tuple[int]: ...
+    def addGeometry(self, arg1, arg2: bool, /) -> int | tuple[int, ...]: ...
 
     @typing.overload
-    def addGeometry(self, arg1, /) -> int | tuple[int]:
+    def addGeometry(self, arg1, /) -> int | tuple[int, ...]:
         """add a geometric object to the sketch"""
 
     def addMove(self, arg1, arg2: FreeCAD.Vector, /):
@@ -298,7 +298,7 @@ class SketchObject(Part.Part2DObject):
     def addRectangularArray(self, arg1, arg2: FreeCAD.Vector, arg3: bool, arg4: int, arg5: int, arg6: bool = None, arg7: float = None, /):
         """add an array of size cols by rows where each element is a copy of the selected geometric objects displaced by a vector3d in the cols direction and by a vector perpendicular to it in the rows direction"""
 
-    def addSymmetric(self, arg1, arg2: int, arg3: int = None, /) -> tuple[int]:
+    def addSymmetric(self, arg1, arg2: int, arg3: int = None, /) -> tuple[int, ...]:
         """add a symmetric geometric objects to the sketch with respect to a reference point or line"""
 
     def analyseMissingPointOnPointCoincident(self, arg1: float = None, /):
@@ -557,7 +557,7 @@ class Sketch(FreeCAD.Persistence):
     """
 
     @property
-    def Conflicts(self) -> tuple[int]:
+    def Conflicts(self) -> tuple[int, ...]:
         """Tuple of conflicting constraints"""
 
     @property
@@ -569,17 +569,17 @@ class Sketch(FreeCAD.Persistence):
         """Tuple of all geometric elements in this sketch"""
 
     @property
-    def Redundancies(self) -> tuple[int]:
+    def Redundancies(self) -> tuple[int, ...]:
         """Tuple of redundant constraints"""
 
     @property
     def Shape(self) -> Part.Shape:
         """Resulting shape from the sketch geometry"""
 
-    def addConstraint(self, arg1, /) -> tuple[int] | int:
+    def addConstraint(self, arg1, /) -> tuple[int, ...] | int:
         """add an constraint object to the sketch"""
 
-    def addGeometry(self, arg1, /) -> int | tuple[int]:
+    def addGeometry(self, arg1, /) -> int | tuple[int, ...]:
         """add a geometric object to the sketch"""
 
     def clear(self):

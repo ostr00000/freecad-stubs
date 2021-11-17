@@ -22,11 +22,11 @@ class FemMesh(FreeCAD.ComplexGeoData):
         """Number of edges in the Mesh."""
 
     @property
-    def Edges(self) -> tuple[int]:
+    def Edges(self) -> tuple[int, ...]:
         """Tuple of edge IDs"""
 
     @property
-    def EdgesOnly(self) -> tuple[int]:
+    def EdgesOnly(self) -> tuple[int, ...]:
         """Tuple of edge IDs which does not belong to any face (and thus not belong to any volume too)"""
 
     @property
@@ -34,11 +34,11 @@ class FemMesh(FreeCAD.ComplexGeoData):
         """Number of Faces in the Mesh."""
 
     @property
-    def Faces(self) -> tuple[int]:
+    def Faces(self) -> tuple[int, ...]:
         """Tuple of face IDs"""
 
     @property
-    def FacesOnly(self) -> tuple[int]:
+    def FacesOnly(self) -> tuple[int, ...]:
         """Tuple of face IDs which does not belong to any volume"""
 
     @property
@@ -46,7 +46,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
         """Number of Groups in the Mesh."""
 
     @property
-    def Groups(self) -> tuple[int]:
+    def Groups(self) -> tuple[int, ...]:
         """Tuple of Group IDs."""
 
     @property
@@ -102,7 +102,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
         """Number of Volumes in the Mesh."""
 
     @property
-    def Volumes(self) -> tuple[int]:
+    def Volumes(self) -> tuple[int, ...]:
         """Tuple of volume IDs"""
 
     @typing.overload
@@ -168,7 +168,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
     def getEdgesByEdge(self, arg1: Part.Edge, /) -> list[int]:
         """Return a list of edge IDs which belong to a TopoEdge"""
 
-    def getElementNodes(self, arg1: int, /) -> tuple[int]:
+    def getElementNodes(self, arg1: int, /) -> tuple[int, ...]:
         """Return a tuple of node IDs to a given element ID"""
 
     def getElementType(self, arg1: int, /) -> str:
@@ -180,13 +180,13 @@ class FemMesh(FreeCAD.ComplexGeoData):
     def getGroupElementType(self, arg1: int, /) -> str:
         """Return a string of group element type to a given group ID"""
 
-    def getGroupElements(self, arg1: int, /) -> tuple[int]:
+    def getGroupElements(self, arg1: int, /) -> tuple[int, ...]:
         """Return a tuple of ElementIDs to a given group ID"""
 
     def getGroupName(self, arg1: int, /) -> str:
         """Return a string of group name to a given group ID"""
 
-    def getIdByElementType(self, arg1: str, /) -> tuple[int]:
+    def getIdByElementType(self, arg1: str, /) -> tuple[int, ...]:
         """Return a tuple of IDs to a given element type"""
 
     def getNodeById(self, arg1: int, /) -> FreeCAD.Vector:

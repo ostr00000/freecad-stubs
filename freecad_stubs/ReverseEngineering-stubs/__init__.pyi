@@ -66,13 +66,13 @@ def normalEstimation(Points: PointsModule.Points, KSearch: int = 0, SearchRadius
     """
 
 
-def regionGrowingSegmentation(Points: PointsModule.Points, KSearch: int = None, Normals=None) -> list[tuple[int]]:
+def regionGrowingSegmentation(Points: PointsModule.Points, KSearch: int = None, Normals=None) -> list[tuple[int, ...]]:
     """regionGrowingSegmentation()."""
 
 
-def featureSegmentation(Points: PointsModule.Points, KSearch: int = None) -> list[tuple[int]]:
+def featureSegmentation(Points: PointsModule.Points, KSearch: int = None) -> list[tuple[int, ...]]:
     """featureSegmentation()."""
 
 
-def sampleConsensus(SacModel: str, Points: PointsModule.Points, Normals=None) -> dict[str, float | tuple[float] | tuple[int]]:
+def sampleConsensus(SacModel: str, Points: PointsModule.Points, Normals=None) -> dict[str, float | tuple[float, ...] | tuple[int, ...]]:
     """sampleConsensus()."""

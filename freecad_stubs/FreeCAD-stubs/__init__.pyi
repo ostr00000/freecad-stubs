@@ -450,7 +450,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         Return a list of objects referenced by a given subname including this object
         """
 
-    def getSubObjects(self, reason: int = 0, /) -> tuple[str]:
+    def getSubObjects(self, reason: int = 0, /) -> tuple[str, ...]:
         """getSubObjects(reason=0): Return subname reference of all sub-objects"""
 
     def hasChildElement(self) -> bool:
@@ -620,19 +620,19 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
         """getLinkExtPropertyName(name): lookup the property name by its predefined name"""
 
     @typing.overload
-    def getLinkPropertyInfo(self) -> tuple[tuple] | tuple[str, str, str] | tuple[str, str]: ...
+    def getLinkPropertyInfo(self) -> tuple[tuple, ...] | tuple[str, str, str] | tuple[str, str]: ...
 
     @typing.overload
-    def getLinkPropertyInfo(self, index: int, /) -> tuple[tuple] | tuple[str, str, str] | tuple[str, str]: ...
+    def getLinkPropertyInfo(self, index: int, /) -> tuple[tuple, ...] | tuple[str, str, str] | tuple[str, str]: ...
 
     @typing.overload
-    def getLinkPropertyInfo(self, index: str, /) -> tuple[tuple] | tuple[str, str, str] | tuple[str, str]: ...
+    def getLinkPropertyInfo(self, index: str, /) -> tuple[tuple, ...] | tuple[str, str, str] | tuple[str, str]: ...
 
     @typing.overload
-    def getLinkPropertyInfo(self, name: int, /) -> tuple[tuple] | tuple[str, str, str] | tuple[str, str]: ...
+    def getLinkPropertyInfo(self, name: int, /) -> tuple[tuple, ...] | tuple[str, str, str] | tuple[str, str]: ...
 
     @typing.overload
-    def getLinkPropertyInfo(self, name: str, /) -> tuple[tuple] | tuple[str, str, str] | tuple[str, str]:
+    def getLinkPropertyInfo(self, name: str, /) -> tuple[tuple, ...] | tuple[str, str, str] | tuple[str, str]:
         """
         getLinkPropertyInfo(): return a tuple of (name,type,doc) for all supported properties.
 
@@ -1266,7 +1266,7 @@ class Document(FreeCAD.PropertyContainer):
     def commitTransaction(self):
         """Commit an Undo/Redo transaction"""
 
-    def copyObject(self, object, with_dependencies=False, return_all=False, /) -> object | tuple[object]:
+    def copyObject(self, object, with_dependencies=False, return_all=False, /) -> object | tuple[object, ...]:
         """
         copyObject(object, with_dependencies=False, return_all=False)
         Copy an object or objects from another document to this document. 
@@ -1296,7 +1296,7 @@ class Document(FreeCAD.PropertyContainer):
         sort: whether to topologically sort the return list
         """
 
-    def getLinksTo(self, obj=None, options: int = 0, maxCount: int = 0, /) -> tuple[object]:
+    def getLinksTo(self, obj=None, options: int = 0, maxCount: int = 0, /) -> tuple[object, ...]:
         """
         getLinksTo(obj, options=0, maxCount=0): return objects linked to 'obj'
 
@@ -1320,7 +1320,7 @@ class Document(FreeCAD.PropertyContainer):
     def getTempFileName(self, arg1, /) -> str:
         """Returns a file name with path in the temp directory of the document."""
 
-    def importLinks(self, object_object_=None, /) -> tuple[object]:
+    def importLinks(self, object_object_=None, /) -> tuple[object, ...]:
         """
         importLinks(object|[object...])
 
@@ -1444,7 +1444,7 @@ class PropertyContainer(FreeCAD.Persistence):
         text names of the status.
         """
 
-    def getPropertyTouchList(self, arg1: str, /) -> tuple[int]:
+    def getPropertyTouchList(self, arg1: str, /) -> tuple[int, ...]:
         """Return a list of index of touched values for list type properties."""
 
     def getTypeIdOfProperty(self, arg1: str, /) -> str:
@@ -1737,7 +1737,7 @@ def checkLinkDepth(depth: int, /) -> int:
     """checkLinkDepth(depth) -- check link recursion depth"""
 
 
-def getLinksTo(obj=None, options: int = 0, maxCount: int = 0, /) -> tuple[object]:
+def getLinksTo(obj=None, options: int = 0, maxCount: int = 0, /) -> tuple[object, ...]:
     """
     getLinksTo(obj,options=0,maxCount=0) -- return the objects linked to 'obj'
 
@@ -1746,7 +1746,7 @@ def getLinksTo(obj=None, options: int = 0, maxCount: int = 0, /) -> tuple[object
     """
 
 
-def getDependentObjects(arg0, arg1: int = None, /) -> tuple[object]:
+def getDependentObjects(arg0, arg1: int = None, /) -> tuple[object, ...]:
     """
     getDependentObjects(obj|[obj,...], options=0)
     Return a list of dependent objects including the given objects.

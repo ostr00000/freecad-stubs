@@ -60,7 +60,9 @@ class TupleArgument(ArgumentsIter, list):
                 return
 
     def __str__(self):
-        if self:
+        if len(self) == 1 and self.repeated:
+            return f'tuple[{self[0]}, ...]'
+        elif self:
             return f'tuple[{", ".join(self)}]'
         return 'tuple'
 

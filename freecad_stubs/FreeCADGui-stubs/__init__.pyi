@@ -85,17 +85,17 @@ class LinkView(FreeCAD.BaseClass):
         """A pivy node holding the cloned representation of the linked view object"""
 
     @property
-    def SubNames(self) -> typing.Union[object] | tuple[str]:
+    def SubNames(self) -> typing.Union[object] | tuple[str, ...]:
         """The sub-object reference of the link"""
 
     @property
-    def Visibilities(self) -> typing.Union[object] | tuple[bool]:
+    def Visibilities(self) -> typing.Union[object] | tuple[bool, ...]:
         """Get/set the child element visibility"""
 
     def getBoundBox(self, vobj, /):
         """getBoundBox(vobj=None): get the bounding box."""
 
-    def getChildren(self) -> tuple[object]:
+    def getChildren(self) -> tuple[object, ...]:
         """Get children view objects"""
 
     def getDetailPath(self, arg1: str, arg2, /):
@@ -777,15 +777,15 @@ class SelectionObject(FreeCAD.BaseClass):
         """Name of the selected object"""
 
     @property
-    def PickedPoints(self) -> tuple[FreeCAD.Vector]:
+    def PickedPoints(self) -> tuple[FreeCAD.Vector, ...]:
         """Picked points for selection"""
 
     @property
-    def SubElementNames(self) -> tuple[str]:
+    def SubElementNames(self) -> tuple[str, ...]:
         """Name of the selected sub-element if any"""
 
     @property
-    def SubObjects(self) -> tuple[object]:
+    def SubObjects(self) -> tuple[object, ...]:
         """Selected sub-element, if any"""
 
     @property
