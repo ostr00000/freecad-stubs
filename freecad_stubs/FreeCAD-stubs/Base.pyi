@@ -25,7 +25,10 @@ class Vector(FreeCAD.PyObjectBase):
 
     @typing.overload
     def __init__(self, arg1, /):
-        """This class represents a 3D float vector"""
+        """
+        This class represents a 3D float vector
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def Length(self) -> float:
@@ -90,6 +93,8 @@ class Vector(FreeCAD.PyObjectBase):
         distanceToLine(Vector,Vector)
         						  returns the distance between this vector and a line defined by
         						  a base point and a direction
+				
+        Possible exceptions: (TypeError).
         """
 
     def distanceToLineSegment(self, Vector, Vector2, /) -> FreeCAD.Vector:
@@ -97,6 +102,8 @@ class Vector(FreeCAD.PyObjectBase):
         distanceToLineSegment(Vector,Vector)
         						  returns the distance between this vector and a line segment defined by
         						  a base point and a direction
+				
+        Possible exceptions: (TypeError).
         """
 
     def distanceToPlane(self, Vector, Vector2, /) -> float:
@@ -104,6 +111,8 @@ class Vector(FreeCAD.PyObjectBase):
         distanceToPlane(Vector,Vector)
         						  returns the distance between this vector and a plane defined by
         						  a base point and a normal
+				
+        Possible exceptions: (TypeError).
         """
 
     def distanceToPoint(self, Vector: FreeCAD.Vector, /) -> float:
@@ -135,6 +144,8 @@ class Vector(FreeCAD.PyObjectBase):
         """
         isOnLineSegment(Vector, Vector)
         					      checks if Vector is on a line segment
+				
+        Possible exceptions: (TypeError).
         """
 
     def multiply(self, Float: float, /) -> FreeCAD.Vector:
@@ -153,6 +164,8 @@ class Vector(FreeCAD.PyObjectBase):
         """
         normalize()
         						  normalizes the vector to the length of 1.0
+				
+        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
     def projectToLine(self, Vector_pnt, Vector_vec, /) -> FreeCAD.Vector:
@@ -162,12 +175,16 @@ class Vector(FreeCAD.PyObjectBase):
         						  The result is the vector from point 'pnt' to the projected point.
         						  NOTE: The result does not depend on the vector instance 'self'.
         						  NOTE: This method modifies the vector instance 'self'.
+				
+        Possible exceptions: (TypeError).
         """
 
     def projectToPlane(self, Vector, Vector2, /) -> FreeCAD.Vector:
         """
         projectToPlane(Vector,Vector)
         						  projects the vector on a plane defined by a base point and a normal
+				
+        Possible exceptions: (TypeError).
         """
 
     def scale(self, Float: float, Float2: float, Float3: float, /) -> FreeCAD.Vector:
@@ -304,6 +321,8 @@ class Rotation(FreeCAD.PyObjectBase):
         				   3-characher string of capital letters 'X', 'Y', 'Z' that sets the
         				   order of importance of the axes (e.g., 'ZXY' means z direction is
         				   followed strictly, x is used but corrected if necessary, y is ignored).
+			
+        Possible exceptions: (FreeCAD.FreeCADError, TypeError).
         """
 
     @property
@@ -484,6 +503,8 @@ class Persistence(FreeCAD.BaseClass):
         required, into a byte representation. It will be returned as byte array.
         dumpContent() -- returns a byte array with full content
         dumpContent(Compression=1-9) -- Sets the data compression from 0 (no) to 9 (max)
+                
+        Possible exceptions: (IOError).
         """
 
     def restoreContent(self, buffer, /):
@@ -491,6 +512,8 @@ class Persistence(FreeCAD.BaseClass):
         Restore the content of the object from a byte representation as stored by "dumpContent".
         It could be restored from any python object implementing the buffer protocol.
         restoreContent(buffer) -- restores from the given byte array
+                
+        Possible exceptions: (TypeError, IOError).
         """
 
 
@@ -540,6 +563,8 @@ class BoundBox(FreeCAD.PyObjectBase):
         App.BoundBox(Tuple, Tuple)
         App.BoundBox(Vector, Vector)
         App.BoundBox(BoundBox)
+	  
+        Possible exceptions: (TypeError).
         """
 
     @property
@@ -615,6 +640,7 @@ class BoundBox(FreeCAD.PyObjectBase):
         """
         method add(BoundBox)
         Add (enlarge) the given BoundBox
+        Possible exceptions: (TypeError).
         """
 
     @typing.overload
@@ -625,6 +651,8 @@ class BoundBox(FreeCAD.PyObjectBase):
         """
         method closestPoint(Vector)
         Get the closest point of the bounding box to the given point
+        
+        Possible exceptions: (TypeError).
         """
 
     def enlarge(self, Float: float, /):
@@ -646,6 +674,8 @@ class BoundBox(FreeCAD.PyObjectBase):
         Calculate the intersection point of a line with the BoundBox
         The Base point must lie inside the bounding box, if not an
         exception is thrown.
+			  
+        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
     def getPoint(self, Int: int, /) -> FreeCAD.Vector:
@@ -660,6 +690,8 @@ class BoundBox(FreeCAD.PyObjectBase):
         Checks if the given object intersects with the BoundBox. That can be:
         - Another BoundBox
         - A line, specified by Base and Dir
+		
+        Possible exceptions: (TypeError).
         """
 
     def intersected(self, BoundBox: FreeCAD.BoundBox, /) -> FreeCAD.BoundBox:
@@ -685,6 +717,8 @@ class BoundBox(FreeCAD.PyObjectBase):
         """
         method bool isInside(Vector Base|BoundBox box)
         Check if the point or bounding box is inside this bounding box
+				
+        Possible exceptions: (TypeError).
         """
 
     def isValid(self) -> bool:
@@ -701,12 +735,16 @@ class BoundBox(FreeCAD.PyObjectBase):
         """
         method move(Vector)
         Move the BoundBox by the given vector
+			  
+        Possible exceptions: (TypeError).
         """
 
     def scale(self, x: float, y: float, z: float, /):
         """
         method scale(x,y,z)
         Scale the BoundBox by the given values in x, y and z
+			  
+        Possible exceptions: (TypeError).
         """
 
     def setVoid(self):
@@ -786,6 +824,8 @@ class Placement(FreeCAD.PyObjectBase):
         Placement(Base, Rotation) -- define position and rotation
         Placement(Base, Rotation,Center) -- define position and rotation with center
         Placement(Base, Axis, Angle) -- define position and rotation
+		
+        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
     @property
@@ -998,6 +1038,8 @@ class Unit(FreeCAD.PyObjectBase):
          Unit(Quantity)                -- copy unit from Quantity
          Unit(Unit)                    -- copy constructor
          Unit(string)                  -- parse the string for units
+        
+        Possible exceptions: (RuntimeError, OverflowError, TypeError).
         """
 
     @property
@@ -1105,6 +1147,8 @@ class Quantity(FreeCAD.PyObjectBase):
         Quantity(Value,Unit) -- empty constructor
         Quantity(Quantity) -- copy constructor
         Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
+		
+        Possible exceptions: (TypeError, ValueError).
         """
 
     @property
@@ -1179,6 +1223,8 @@ class Quantity(FreeCAD.PyObjectBase):
                   getValueAs(FreeCAD.Units.Pascal) # predefined standard units 
                   getValueAs(Qantity('N/m^2')) # a quantity
                   getValueAs(Unit(0,1,0,0,0,0,0,0)) # a unit
+        
+        Possible exceptions: (TypeError, ValueError).
         """
 
     def toStr(self, decimals: int = None, /) -> str:
@@ -1268,7 +1314,10 @@ class Matrix(FreeCAD.PyObjectBase):
 
     @typing.overload
     def __init__(self, arg1: FreeCAD.Matrix, /):
-        """A 4x4 Matrix"""
+        """
+        A 4x4 Matrix
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     @property
     def A(self) -> typing.Sequence:
@@ -1411,12 +1460,16 @@ class Matrix(FreeCAD.PyObjectBase):
         """
         inverse() -> Matrix
         Compute the inverse matrix, if possible
+        
+        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
     def invert(self):
         """
         invert() -> None
         Compute the inverse matrix, if possible
+        
+        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
     def isOrthogonal(self, Float: float = None, /) -> float:
@@ -1451,6 +1504,8 @@ class Matrix(FreeCAD.PyObjectBase):
         """
         multiply(Matrix|Vector)
         Multiply a matrix or vector with this matrix
+        
+        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
     @typing.overload
@@ -1458,21 +1513,30 @@ class Matrix(FreeCAD.PyObjectBase):
 
     @typing.overload
     def rotateX(self, float: float, /):
-        """rotateX(float) - rotate around X"""
+        """
+        rotateX(float) - rotate around X
+        Possible exceptions: (TypeError).
+        """
 
     @typing.overload
     def rotateY(self, float: FreeCAD.Quantity, /): ...
 
     @typing.overload
     def rotateY(self, float: float, /):
-        """rotateY(float) - rotate around Y"""
+        """
+        rotateY(float) - rotate around Y
+        Possible exceptions: (TypeError).
+        """
 
     @typing.overload
     def rotateZ(self, float: FreeCAD.Quantity, /): ...
 
     @typing.overload
     def rotateZ(self, float: float, /):
-        """rotateZ(float) - rotate around Z"""
+        """
+        rotateZ(float) - rotate around Z
+        Possible exceptions: (TypeError).
+        """
 
     @typing.overload
     def scale(self, Vector: tuple, /): ...
@@ -1488,6 +1552,8 @@ class Matrix(FreeCAD.PyObjectBase):
         """
         submatrix(int) -> Matrix
         Get the sub-matrix. The parameter must be in the range [1,4].
+        
+        Possible exceptions: (IndexError).
         """
 
     def transform(self, Vector: FreeCAD.Vector, Matrix: FreeCAD.Matrix, /):
@@ -1610,6 +1676,7 @@ class CoordinateSystem(FreeCAD.PyObjectBase):
         """
         setAxes(Axis or Vector z, Vector x)
         Set axis or z direction and x direction
+        Possible exceptions: (TypeError).
         """
 
     def setPlacement(self, arg1: FreeCAD.Placement, /):
@@ -1626,6 +1693,8 @@ class CoordinateSystem(FreeCAD.PyObjectBase):
         """
         transform(Rotation or Placement)
         Applies the rotation or placement on this coordinate system
+        
+        Possible exceptions: (TypeError).
         """
 
     def transformTo(self, Vector: FreeCAD.Vector, /) -> FreeCAD.Vector:
@@ -1679,7 +1748,10 @@ class TypeId(FreeCAD.PyObjectBase):
     @staticmethod
     @typing.overload
     def getAllDerivedFrom(arg0: FreeCAD.TypeId, /) -> list[FreeCAD.TypeId]:
-        """Returns all descendants"""
+        """
+        Returns all descendants
+        Possible exceptions: (TypeError).
+        """
 
     @staticmethod
     def getBadType() -> FreeCAD.TypeId:
@@ -1700,7 +1772,10 @@ class TypeId(FreeCAD.PyObjectBase):
 
     @typing.overload
     def isDerivedFrom(self, arg1: FreeCAD.TypeId, /) -> bool:
-        """Returns true if given type is a father"""
+        """
+        Returns true if given type is a father
+        Possible exceptions: (TypeError).
+        """
 
 
 # AxisPy.xml
@@ -1732,6 +1807,8 @@ class Axis(FreeCAD.PyObjectBase):
         Axis() -- empty constructor
         Axis(Axis) -- copy constructor
         Axis(Base, Direction) -- define position and direction
+		
+        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
     @property

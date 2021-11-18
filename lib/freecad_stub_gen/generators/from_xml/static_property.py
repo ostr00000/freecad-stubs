@@ -68,7 +68,7 @@ class XmlPropertyGenerator(XmlMethodGenerator, BaseXmlGenerator, BasePropertyGen
 
             case _:
                 logger.warning(f"Type from code does not match type from xml:"
-                               f"{pythonType=}, {extendedType=}")
+                               f"{pythonType=}, {extendedType=}, {self._cFunctionName=}")
         return pythonType
 
     def __getReturnTypeForSpecialCase(self, propertyName: str, pythonType: str):

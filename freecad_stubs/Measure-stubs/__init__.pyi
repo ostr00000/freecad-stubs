@@ -9,7 +9,10 @@ class Measurement(FreeCAD.BaseClass):
     """
 
     def addReference3D(self, arg1: str, arg2: str, /):
-        """add a geometric reference"""
+        """
+        add a geometric reference
+        Possible exceptions: (ValueError).
+        """
 
     def angle(self) -> float:
         """measure the angle between two edges"""

@@ -61,3 +61,6 @@ class OrderedSet(dict[T, None]):
 
     def first(self):
         return next(iter(self.keys()))
+
+    def __repr__(self):
+        return '|'.join(self)

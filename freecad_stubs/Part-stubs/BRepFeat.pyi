@@ -13,13 +13,18 @@ class MakePrism(FreeCAD.PyObjectBase):
 
     @typing.overload
     def __init__(self, Sbase: Part.Shape, Pbase: Part.Shape, Skface: Part.Face, Direction: FreeCAD.Vector, Fuse: int, Modify: bool):
-        """Describes functions to build prism features."""
+        """
+        Describes functions to build prism features.
+        Possible exceptions: (RuntimeError, TypeError).
+        """
 
     def add(self, Edge: Part.Edge, Face: Part.Face):
         """
         Indicates that the edge will slide on the face.
         Raises ConstructionError if the  face does not belong to the
         basis shape, or the edge to the prismed shape.
+            
+        Possible exceptions: (RuntimeError).
         """
 
     def barycCurve(self):
@@ -41,6 +46,8 @@ class MakePrism(FreeCAD.PyObjectBase):
         The sketch face Skface serves to determine
         the type of operation. If it is inside the basis
         shape, a local operation such as glueing can be performed.
+            
+        Possible exceptions: (RuntimeError).
         """
 
     @typing.overload
@@ -50,25 +57,41 @@ class MakePrism(FreeCAD.PyObjectBase):
     def perform(self, Until: Part.Shape): ...
 
     @typing.overload
-    def perform(self, Length: float): ...
+    def perform(self, Length: float):
+        """Possible exceptions: (RuntimeError, TypeError)."""
 
     def performFromEnd(self, arg1: Part.Shape, /):
-        """Realizes a semi-infinite prism, limited by the face Funtil."""
+        """
+        Realizes a semi-infinite prism, limited by the face Funtil.
+            
+        Possible exceptions: (RuntimeError).
+        """
 
     def performThruAll(self):
-        """Builds an infinite prism. The infinite descendants will not be kept in the result."""
+        """
+        Builds an infinite prism. The infinite descendants will not be kept in the result.
+            
+        Possible exceptions: (RuntimeError).
+        """
 
     def performUntilEnd(self):
         """
         Realizes a semi-infinite prism, limited by the
         position of the prism base. All other faces extend infinitely.
+            
+        Possible exceptions: (RuntimeError).
         """
 
     def performUntilHeight(self, arg1: Part.Shape, arg2: float, /):
         """
         Assigns both a limiting shape, Until from TopoDS_Shape
         and a height, Length at which to stop generation of the prism feature.
+            
+        Possible exceptions: (RuntimeError).
         """
 
     def shape(self) -> Part.Shape:
-        """Returns a shape built by the shape construction algorithm."""
+        """
+        Returns a shape built by the shape construction algorithm.
+        Possible exceptions: (RuntimeError).
+        """

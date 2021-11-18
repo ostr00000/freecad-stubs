@@ -91,8 +91,9 @@ class PythonApiGenerator(BaseGenerator, ABC):
                         if kw.startswith('"') and kw.endswith('"')]
 
             params = list(tc.convertFormatToTypes(kwargsList))
-            rt = ReturnTypeConverter(
+            rtc = ReturnTypeConverter(
                 self.requiredImports, self._functionBody,
-                self.classNameWithModules, self._cFunctionName).getReturnType()
-            # TODO P3 extract exceptions and add them to docs
-            yield SelfSignature(params, return_annotation=rt)
+                self.classNameWithModules, self._cFunctionName)
+            rt = rtc.getReturnType()
+            ex = rtc.getExceptionsFromCode()
+            yield SelfSignature(params, return_annotation=rt, exceptions=ex)

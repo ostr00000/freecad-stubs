@@ -45,6 +45,7 @@ class Tool(FreeCAD.Persistence):
           cornerRadius
           cuttingEdgeAngle
           cuttingEdgeHeight
+        Possible exceptions: (TypeError).
         """
 
     @property
@@ -126,7 +127,10 @@ class Tool(FreeCAD.Persistence):
         """returns all available tool types"""
 
     def setFromTemplate(self, xmlString_dictionary: str, /):
-        """setFromTemplate(xmlString|dictionary) ... fills receiver with values from the template string or dictionary"""
+        """
+        setFromTemplate(xmlString|dictionary) ... fills receiver with values from the template string or dictionary
+        Possible exceptions: (TypeError).
+        """
 
     def templateAttrs(self) -> dict[str, int | str | float]:
         """templateAttrs() ... returns a dictionary with all attributes"""
@@ -140,7 +144,10 @@ class VoronoiEdge(FreeCAD.BaseClass):
     """
 
     def __init__(self):
-        """Edge of a Voronoi diagram"""
+        """
+        Edge of a Voronoi diagram
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def Cell(self) -> PathModule.VoronoiCell:
@@ -205,7 +212,10 @@ class VoronoiCell(FreeCAD.BaseClass):
     """
 
     def __init__(self):
-        """Cell of a Voronoi diagram"""
+        """
+        Cell of a Voronoi diagram
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def Color(self) -> int:
@@ -266,6 +276,7 @@ class Command(FreeCAD.Persistence):
         name (optional) is the name of the command, ex. G1
         parameters (optional) is a dictionary containing string:number 
         pairs, or a placement, or a vector
+        Possible exceptions: (ValueError, TypeError).
         """
 
     @property
@@ -290,7 +301,10 @@ class Command(FreeCAD.Persistence):
     def Placement(self, value: FreeCAD.Placement): ...
 
     def setFromGCode(self, arg1: str, /) -> None:
-        """setFromGCode(): sets the path from the contents of the given GCode string"""
+        """
+        setFromGCode(): sets the path from the contents of the given GCode string
+        Possible exceptions: (ValueError).
+        """
 
     def toGCode(self) -> str:
         """toGCode(): returns a GCode representation of the command"""
@@ -336,7 +350,8 @@ class Area(FreeCAD.BaseClass):
     @Workplane.setter
     def Workplane(self, value: object): ...
 
-    def add(self, shape) -> PathModule.Area: ...
+    def add(self, shape) -> PathModule.Area:
+        """Possible exceptions: (TypeError)."""
 
     def getParams(self) -> dict:
         """Get current algorithm parameters as a dictionary."""
@@ -356,7 +371,8 @@ class Area(FreeCAD.BaseClass):
 
     def makePocket(self, index: int = None) -> Part.Shape: ...
 
-    def makeSections(self, heights=None, plane: Part.Shape = None) -> list[PathModule.Area]: ...
+    def makeSections(self, heights=None, plane: Part.Shape = None) -> list[PathModule.Area]:
+        """Possible exceptions: (TypeError)."""
 
     def setParams(self) -> PathModule.Area: ...
 
@@ -388,6 +404,7 @@ class Path(FreeCAD.Persistence):
         """
         Path([commands]): Represents a basic Gcode path
         commands (optional) is a list of Path commands
+        Possible exceptions: (TypeError).
         """
 
     @property
@@ -463,7 +480,10 @@ class Tooltable(FreeCAD.Persistence):
 
     @typing.overload
     def __init__(self, arg1: list, /):
-        """The Tooltable object holds a table of CNC tools"""
+        """
+        The Tooltable object holds a table of CNC tools
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def Name(self) -> str:
@@ -509,7 +529,10 @@ class Tooltable(FreeCAD.Persistence):
         """
 
     def setFromTemplate(self, dict: dict, /):
-        """setFromTemplate(dict) ... restores receiver from given template attribute dictionary"""
+        """
+        setFromTemplate(dict) ... restores receiver from given template attribute dictionary
+        Possible exceptions: (TypeError).
+        """
 
     def setTool(self, int: int, tool: PathModule.Tool, /) -> None:
         """
@@ -529,7 +552,10 @@ class Voronoi(FreeCAD.BaseClass):
     """
 
     def __init__(self, segments: float = None, /):
-        """Voronoi([segments]): Create voronoi for given collection of line segments"""
+        """
+        Voronoi([segments]): Create voronoi for given collection of line segments
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def Cells(self) -> list[PathModule.VoronoiCell]:
@@ -630,7 +656,10 @@ class VoronoiVertex(FreeCAD.BaseClass):
     """
 
     def __init__(self):
-        """Vertex of a Voronoi diagram"""
+        """
+        Vertex of a Voronoi diagram
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def Color(self) -> int:
@@ -676,10 +705,16 @@ class FeaturePathCompound(FreeCAD.DocumentObject):
     """This class handles Path Compound features"""
 
     def addObject(self, arg1: FreeCAD.DocumentObject, /):
-        """Add an object to the group"""
+        """
+        Add an object to the group
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def removeObject(self, arg1: FreeCAD.DocumentObject, /):
-        """Remove an object from the group"""
+        """
+        Remove an object from the group
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
 
 # AppPathPy.cpp

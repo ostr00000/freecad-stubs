@@ -387,6 +387,8 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         containing the accumulated transformation matrix
 
         * depth: current recursive depth
+                
+        Possible exceptions: (TypeError).
         """
 
     def getParentGeoFeatureGroup(self) -> object | None:
@@ -441,6 +443,8 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         * transform: whether to transform the sub object using this object's placement
 
         * depth: current recursive depth
+                
+        Possible exceptions: (TypeError).
         """
 
     def getSubObjectList(self, subname: str, /) -> list:
@@ -614,10 +618,16 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
         """
 
     def getLinkExtProperty(self, name: str, /):
-        """getLinkExtProperty(name): return the property value by its predefined name"""
+        """
+        getLinkExtProperty(name): return the property value by its predefined name 
+        Possible exceptions: (AttributeError).
+        """
 
     def getLinkExtPropertyName(self, name: str, /) -> str:
-        """getLinkExtPropertyName(name): lookup the property name by its predefined name"""
+        """
+        getLinkExtPropertyName(name): lookup the property name by its predefined name 
+        Possible exceptions: (AttributeError, RuntimeError).
+        """
 
     @typing.overload
     def getLinkPropertyInfo(self) -> tuple[tuple, ...] | tuple[str, str, str] | tuple[str, str]: ...
@@ -639,6 +649,8 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
         getLinkPropertyInfo(index): return (name,type,doc) of a specific property
 
         getLinkPropertyInfo(name): return (type,doc) of a specific property
+        
+        Possible exceptions: (ValueError).
         """
 
     @typing.overload
@@ -772,7 +784,10 @@ class GroupExtension(FreeCAD.DocumentObjectExtension):
     def Group(self, value: list[DocumentObject]): ...
 
     def addObject(self, arg1: FreeCAD.DocumentObject, /) -> list[FreeCAD.DocumentObject]:
-        """Add an object to the group. Returns all objects that have been added."""
+        """
+        Add an object to the group. Returns all objects that have been added.
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def addObjects(self, arg1, /) -> list[FreeCAD.DocumentObject]:
         """Adds multiple objects to the group. Expects a list and returns all objects that have been added."""
@@ -786,13 +801,18 @@ class GroupExtension(FreeCAD.DocumentObjectExtension):
                         Checks if the group has a given object
                         @param obj        the object to check for.
                         @param recursive  if true check also if the obj is child of some sub group (default is false).
+            
+        Possible exceptions: (FreeCAD.FreeCADError, ValueError).
         """
 
     def newObject(self, arg1: str, arg2: str = None, /) -> FreeCAD.DocumentObject:
         """Create and add an object with given type and name to the group"""
 
     def removeObject(self, arg1: FreeCAD.DocumentObject, /) -> list[FreeCAD.DocumentObject]:
-        """Remove an object from the group and returns all objects that have been removed."""
+        """
+        Remove an object from the group and returns all objects that have been removed.
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def removeObjects(self, arg1, /) -> list[FreeCAD.DocumentObject]:
         """Remove multiple objects from the group. Expects a list and returns all objects that have been removed."""
@@ -833,6 +853,8 @@ class Metadata(FreeCAD.PyObjectBase):
 
                 A single constructor is supported:
                 Metadata(file) -- Reads the XML file and provides access to the metadata it specifies.
+      
+        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
     @property
@@ -944,7 +966,10 @@ class ExtensionContainer(FreeCAD.PropertyContainer):
     """
 
     def addExtension(self, arg1: str, arg2=None, /):
-        """Adds an extension to the object. Requires the string identifier for the python extension as argument"""
+        """
+        Adds an extension to the object. Requires the string identifier for the python extension as argument
+        Possible exceptions: (DeprecationWarning).
+        """
 
     def hasExtension(self, arg1: str, arg2=None, /) -> bool:
         """Returns if this object has the specified extension"""
@@ -1275,6 +1300,8 @@ class Document(FreeCAD.PropertyContainer):
         with_dependencies: if True, all internal dependent objects are copied too.
         return_all: if True, return all copied objects, or else return only the copied
                     object corresponding to the input objects.
+          
+        Possible exceptions: (TypeError).
         """
 
     def exportGraphviz(self, arg1: str = None, /) -> str:
@@ -1285,6 +1312,7 @@ class Document(FreeCAD.PropertyContainer):
         findObjects([Type=string], [Name=string], [Label=string]) -> list
         Return a list of objects that match the specified type, name or label.
         Name and label support regular expressions. All parameters are optional.
+        Possible exceptions: (RuntimeError).
         """
 
     def getDependentDocuments(self, sort=True, /) -> list:
@@ -1302,6 +1330,8 @@ class Document(FreeCAD.PropertyContainer):
 
         options: 1: recursive, 2: check link array. Options can combine.
         maxCount: to limit the number of links returned
+            
+        Possible exceptions: (TypeError).
         """
 
     @typing.overload
@@ -1330,6 +1360,8 @@ class Document(FreeCAD.PropertyContainer):
 
         If no object is given as input, it import all externally linked
         object of this document.
+          
+        Possible exceptions: (TypeError).
         """
 
     def load(self, arg1: str, /):
@@ -1356,10 +1388,15 @@ class Document(FreeCAD.PropertyContainer):
         transaction with the given name when any change happed in any opened document.
         If more than one document is changed, all newly created transactions will have
         the same internal ID and will be undo/redo together.
+          
+        Possible exceptions: (TypeError).
         """
 
     def recompute(self, arg1=None, arg2: bool = None, arg3: bool = None, /) -> int:
-        """recompute(objs=None): Recompute the document and returns the amount of recomputed features"""
+        """
+        recompute(objs=None): Recompute the document and returns the amount of recomputed features
+        Possible exceptions: (TypeError).
+        """
 
     def redo(self):
         """Redo a previously undone transaction"""
@@ -1371,7 +1408,10 @@ class Document(FreeCAD.PropertyContainer):
         """Restore the document from disk"""
 
     def save(self):
-        """Save the document to disk"""
+        """
+        Save the document to disk
+        Possible exceptions: (ValueError).
+        """
 
     def saveAs(self, arg1: str, /):
         """Save the document under a new name to disk"""
@@ -1403,6 +1443,8 @@ class PropertyContainer(FreeCAD.Persistence):
         required, into a byte representation. It will be returned as byte array.
         dumpPropertyContent(propertyname) -- returns a byte array with full content
         dumpPropertyContent(propertyname, [Compression=1-9]) -- Sets the data compression from 0 (no) to 9 (max)
+                
+        Possible exceptions: (IOError).
         """
 
     def getDocumentationOfProperty(self, arg1: str, /) -> str:
@@ -1458,6 +1500,8 @@ class PropertyContainer(FreeCAD.Persistence):
         Restore the content of given property from a byte representation as stored by "dumpContent".
         It could be restored from any python object implementing the buffer protocol.
         restorePropertyContent(propertyname, buffer) -- restores from the given byte array
+                
+        Possible exceptions: (TypeError, IOError).
         """
 
     @typing.overload
@@ -1470,6 +1514,8 @@ class PropertyContainer(FreeCAD.Persistence):
         0 - default behaviour
         1 - item is ready-only
         2 - item is hidden
+                
+        Possible exceptions: (TypeError).
         """
 
     def setPropertyStatus(self, name: str, val, /):
@@ -1482,6 +1528,8 @@ class PropertyContainer(FreeCAD.Persistence):
         values. Call getPropertyStatus() to get a list of supported text value.
         If the text start with '-' or the integer value is negative, then the
         status is cleared.
+                
+        Possible exceptions: (TypeError).
         """
 
 
@@ -1509,34 +1557,61 @@ class ComplexGeoData(FreeCAD.Persistence):
         """Geometry Tag"""
 
     def applyRotation(self, arg1: FreeCAD.Rotation, /):
-        """Apply an additional rotation to the placement"""
+        """
+        Apply an additional rotation to the placement
+        Possible exceptions: (RuntimeError).
+        """
 
     def applyTranslation(self, arg1: FreeCAD.Vector, /):
-        """Apply an additional translation to the placement"""
+        """
+        Apply an additional translation to the placement
+        Possible exceptions: (RuntimeError).
+        """
 
     def countSubElements(self, arg1: str, /) -> int:
-        """Return the number of elements of a type"""
+        """
+        Return the number of elements of a type
+        Possible exceptions: (RuntimeError).
+        """
 
     def getElementTypes(self) -> list[str]:
         """Return a list of element types"""
 
     def getFaces(self, arg1: float, /) -> tuple[list[FreeCAD.Vector], list[tuple[int, int, int]]]:
-        """Return a tuple of points and triangles with a given accuracy"""
+        """
+        Return a tuple of points and triangles with a given accuracy
+        Possible exceptions: (RuntimeError).
+        """
 
     def getFacesFromSubElement(self, arg1: str, arg2: int, /) -> tuple[list[FreeCAD.Vector], list[tuple[int, int, int]]]:
-        """Return vertexes and faces from a sub-element"""
+        """
+        Return vertexes and faces from a sub-element
+        Possible exceptions: (RuntimeError).
+        """
 
     def getLines(self, arg1: float, /) -> tuple[list[FreeCAD.Vector], list[tuple[int, int]]]:
-        """Return a tuple of points and lines with a given accuracy"""
+        """
+        Return a tuple of points and lines with a given accuracy
+        Possible exceptions: (RuntimeError).
+        """
 
     def getLinesFromSubElement(self, arg1: str, arg2: int, /) -> tuple[list[FreeCAD.Vector], list[tuple[int, int]]]:
-        """Return vertexes and lines from a sub-element"""
+        """
+        Return vertexes and lines from a sub-element
+        Possible exceptions: (RuntimeError).
+        """
 
     def getPoints(self, arg1: float, /) -> tuple[list[FreeCAD.Vector], list]:
-        """Return a tuple of points and normals with a given accuracy"""
+        """
+        Return a tuple of points and normals with a given accuracy
+        Possible exceptions: (RuntimeError).
+        """
 
     def transformGeometry(self, arg1: FreeCAD.Matrix, /):
-        """Apply a transformation to the underlying geometry"""
+        """
+        Apply a transformation to the underlying geometry
+        Possible exceptions: (RuntimeError).
+        """
 
 
 # ApplicationPy.cpp

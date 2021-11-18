@@ -186,6 +186,8 @@ class MeshPoint(FreeCAD.PyObjectBase):
         given vector. This affects the geometry of the mesh.
         Be aware that after moving point(s) the mesh can 
         have self intersections!
+              
+        Possible exceptions: (RuntimeError, IndexError, TypeError).
         """
 
     def unbound(self):
@@ -234,7 +236,10 @@ class Feature(FreeCAD.GeoFeature):
         """Repair any invalid indices"""
 
     def fixSelfIntersections(self):
-        """Repair self-intersections"""
+        """
+        Repair self-intersections
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def harmonizeNormals(self):
         """Adjust wrong oriented facets"""
@@ -246,10 +251,16 @@ class Feature(FreeCAD.GeoFeature):
         """Remove duplicated points"""
 
     def removeFoldsOnSurface(self):
-        """Remove folds on surfaces"""
+        """
+        Remove folds on surfaces
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def removeInvalidPoints(self):
-        """Remove points with invalid coordinates (NaN)"""
+        """
+        Remove points with invalid coordinates (NaN)
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def removeNonManifoldPoints(self):
         """Remove non-manifold points"""
@@ -297,6 +308,7 @@ class Mesh(FreeCAD.ComplexGeoData):
           f = d.addObject("Mesh::Feature", "Mesh") # Create a mesh feature
           f.Mesh = m # Assign the mesh object to the internal property
           d.recompute()
+        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
     @property
@@ -349,14 +361,20 @@ class Mesh(FreeCAD.ComplexGeoData):
 
     @typing.overload
     def addFacet(self, arg1: MeshModule.Facet, /):
-        """Add a facet to the mesh"""
+        """
+        Add a facet to the mesh
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     @typing.overload
     def addFacets(self, arg1: list, /): ...
 
     @typing.overload
     def addFacets(self, arg1: tuple, arg2: bool = None, /):
-        """Add a list of facets to the mesh"""
+        """
+        Add a list of facets to the mesh
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def addMesh(self, arg1: MeshModule.Mesh, /):
         """Combine this mesh with another mesh."""
@@ -368,13 +386,22 @@ class Mesh(FreeCAD.ComplexGeoData):
         """Clear the mesh"""
 
     def coarsen(self):
-        """Coarse the mesh"""
+        """
+        Coarse the mesh
+        Possible exceptions: (NotImplementedError).
+        """
 
     def collapseEdge(self, arg1: int, arg2: int, /):
-        """Remove an edge and both facets that share this edge"""
+        """
+        Remove an edge and both facets that share this edge
+        Possible exceptions: (IndexError).
+        """
 
     def collapseFacet(self, arg1: int, /):
-        """Remove a facet"""
+        """
+        Remove a facet
+        Possible exceptions: (IndexError).
+        """
 
     def collapseFacets(self, arg1, /):
         """Remove a list of facets"""
@@ -415,13 +442,18 @@ class Mesh(FreeCAD.ComplexGeoData):
         					Example:
         					mesh.decimate(0.5, 0.1) # reduction by up to 10 percent
         					mesh.decimate(0.5, 0.9) # reduction by up to 90 percent
+				
+        Possible exceptions: (ValueError).
         """
 
     def difference(self, arg1: MeshModule.Mesh, /) -> MeshModule.Mesh:
         """Difference of this and the given mesh object."""
 
     def fillupHoles(self, arg1: int, arg2: int = None, arg3: float = None, /):
-        """Fillup holes"""
+        """
+        Fillup holes
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def fixCaps(self, arg1: float = None, arg2: float = None, /):
         """Repair caps by swapping the edge"""
@@ -436,7 +468,10 @@ class Mesh(FreeCAD.ComplexGeoData):
         """Repair any invalid indices"""
 
     def fixSelfIntersections(self):
-        """Repair self-intersections"""
+        """
+        Repair self-intersections
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def flipNormals(self):
         """Flip the mesh normals"""
@@ -480,7 +515,10 @@ class Mesh(FreeCAD.ComplexGeoData):
         """Get a list of the indices of selected points"""
 
     def getSegment(self, arg1: int, /) -> list[int]:
-        """Get a list of facet indices that describes a segment"""
+        """
+        Get a list of facet indices that describes a segment
+        Possible exceptions: (IndexError).
+        """
 
     def getSegmentsByCurvature(self, list, /) -> list[list[int]]:
         """
@@ -498,6 +536,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         getSegmentsOfType(type, dev,[min faces=0]) -> list
         Get all segments of type.
         Type can be Plane, Cylinder or Sphere
+        Possible exceptions: (ValueError).
         """
 
     def getSelfIntersections(self) -> tuple[tuple[int, int, FreeCAD.Vector, FreeCAD.Vector], ...]:
@@ -547,7 +586,10 @@ class Mesh(FreeCAD.ComplexGeoData):
         """Get the part inside of the intersection"""
 
     def insertVertex(self, arg1: int, arg2: FreeCAD.Vector, /):
-        """Insert a vertex into a facet"""
+        """
+        Insert a vertex into a facet
+        Possible exceptions: (IndexError).
+        """
 
     def intersect(self, arg1: MeshModule.Mesh, /) -> MeshModule.Mesh:
         """Intersection of this and the given mesh object."""
@@ -598,6 +640,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         Read in a mesh object from file.
         mesh.read(Filename='mymesh.stl')
         mesh.read(Stream=file,Format='STL')
+        Possible exceptions: (TypeError).
         """
 
     def rebuildNeighbourHood(self):
@@ -619,13 +662,19 @@ class Mesh(FreeCAD.ComplexGeoData):
         """Remove a list of facet indices from the mesh"""
 
     def removeFoldsOnSurface(self):
-        """Remove folds on surfaces"""
+        """
+        Remove folds on surfaces
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def removeFullBoundaryFacets(self):
         """Remove facets whose all three points are on the boundary"""
 
     def removeInvalidPoints(self):
-        """Remove points with invalid coordinates (NaN)"""
+        """
+        Remove points with invalid coordinates (NaN)
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def removeNeedles(self, arg1: float, /):
         """Remove all edges that are smaller than a given length"""
@@ -642,6 +691,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         Remove points that lie on edges.
         If FillBoundary is True then the holes by removing the affected facets
         will be re-filled.
+        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
     def rotate(self, arg1: float, arg2: float, arg3: float, /):
@@ -666,19 +716,31 @@ class Mesh(FreeCAD.ComplexGeoData):
         """
 
     def snapVertex(self, arg1: int, arg2: FreeCAD.Vector, /):
-        """Insert a new facet at the border"""
+        """
+        Insert a new facet at the border
+        Possible exceptions: (IndexError).
+        """
 
     def splitEdge(self, arg1: int, arg2: int, arg3: FreeCAD.Vector, /):
-        """Split edge"""
+        """
+        Split edge
+        Possible exceptions: (IndexError).
+        """
 
     def splitEdges(self):
         """Split all edges"""
 
     def splitFacet(self, arg1: int, arg2: FreeCAD.Vector, arg3: FreeCAD.Vector, /):
-        """Split facet"""
+        """
+        Split facet
+        Possible exceptions: (IndexError).
+        """
 
     def swapEdge(self, arg1: int, arg2: int, /):
-        """Swap the common edge with the neighbour"""
+        """
+        Swap the common edge with the neighbour
+        Possible exceptions: (IndexError).
+        """
 
     def transform(self, arg1: FreeCAD.Matrix, /):
         """Apply a transformation to the mesh"""
@@ -717,6 +779,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         Write the mesh object into file.
         mesh.write(Filename='mymesh.stl',[Format='STL',Name='Object name',Material=colors])
         mesh.write(Stream=file,Format='STL',[Name='Object name',Material=colors])
+        Possible exceptions: (TypeError).
         """
 
     def writeInventor(self, arg1: float = None, /) -> str:

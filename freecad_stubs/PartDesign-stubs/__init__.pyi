@@ -24,6 +24,8 @@ class Body(Part.BodyBase):
                                 @param after    if true insert the feature after the target. Default is false.
 
                                 @note the method doesn't modify the Tip unlike addObject()
+                    
+        Possible exceptions: (SystemError).
         """
 
 

@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 from abc import ABC
 from distutils.util import strtobool
 from functools import cached_property, lru_cache
-from inspect import Parameter, Signature
+from inspect import Parameter
 from pathlib import Path
 from typing import Iterator
 
@@ -39,14 +39,18 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         isClassic = strtobool(node.attrib.get('Class', 'False'))
         firstParam = AnnotationParam.getFirstParam(isStatic, isClassic)
 
-        uniqueSignatures = dict.fromkeys(map(
-            str, self._signatureArgGen(cFunName, cClassName, docsFunName, node, firstParam)))
+        allSignatures = list(self._signatureArgGen(cFunName, cClassName, docsFunName, node, firstParam))
+        uniqueSignatures = dict.fromkeys(map(str, allSignatures))
         signatures = list(uniqueSignatures.keys())
+
+        docs = getDocFromNode(node)
+        docs += SelfSignature.getExceptionsDocs(allSignatures)
+
         return self.convertMethodToStr(
-            pythonFunName, signatures, getDocFromNode(node), isClassic, isStatic)
+            pythonFunName, signatures, docs, isClassic, isStatic)
 
     def _signatureArgGen(self, cFunName: str, cClassName: str, docsFunName: str, node: ET.Element,
-                         firstParam: Parameter = None) -> Iterator[Signature]:
+                         firstParam: Parameter = None) -> Iterator[SelfSignature]:
         parameters = []
         if firstParam:
             parameters.append(firstParam)
@@ -64,7 +68,7 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
 
     @classmethod
     def _generateSignaturesFromDocString(
-            cls, name: str, node: ET.Element, argNumStart: int) -> Iterator[Signature]:
+            cls, name: str, node: ET.Element, argNumStart: int) -> Iterator[SelfSignature]:
         if not (docString := node.find("./Documentation/UserDocu").text):
             return
 

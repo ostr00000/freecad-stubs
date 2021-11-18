@@ -115,7 +115,10 @@ class LinkView(FreeCAD.BaseClass):
         """Get/set the child element visibility"""
 
     def getBoundBox(self, vobj, /):
-        """getBoundBox(vobj=None): get the bounding box."""
+        """
+        getBoundBox(vobj=None): get the bounding box. 
+        Possible exceptions: (TypeError).
+        """
 
     def getChildren(self) -> tuple[object, ...]:
         """Get children view objects"""
@@ -162,6 +165,8 @@ class LinkView(FreeCAD.BaseClass):
                  or sub elements (e.g. Face1, Edge2) belonging to the linked object.
                  The sub-name must end with a '.' if it is referencing an sub-object,
                  or else it is considered a sub-element reference.
+                
+        Possible exceptions: (TypeError).
         """
 
     def setMaterial(self, Material, /):
@@ -177,6 +182,8 @@ class LinkView(FreeCAD.BaseClass):
         If material is None, then the material is unset. If the material of an element
         is unset, it defaults to the override material of the linked object, if there
         is one
+                
+        Possible exceptions: (TypeError).
         """
 
     def setTransform(self, matrix, /):
@@ -188,6 +195,8 @@ class LinkView(FreeCAD.BaseClass):
 
         setTransform({index:matrix,...}): set transformation for elements of the link
                                           array/group by index
+                
+        Possible exceptions: (TypeError).
         """
 
     def setType(self, type: int, sublink=True, /):
@@ -258,7 +267,11 @@ class ViewProvider(FreeCAD.ExtensionContainer):
     def SwitchNode(self, value: object): ...
 
     def addDisplayMode(self, arg1, arg2: str, /):
-        """Add a new display mode to the view provider"""
+        """
+        Add a new display mode to the view provider
+
+        Possible exceptions: (RuntimeError).
+        """
 
     def addProperty(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, arg5: int = None, arg6: bool = None, arg7: bool = None, /) -> FreeCADGui.ViewProvider:
         """
@@ -278,12 +291,16 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         """
         check whether the child object can be removed by dragging
         canDragObject(obj=None)
+
+        Possible exceptions: (TypeError).
         """
 
     def canDropObject(self, arg1=None, arg2=None, arg3: str = None, arg4=None, /) -> bool:
         """
         check whether the child object can be added by dropping
         canDropObject(obj=None,owner=None,subname=None)
+
+        Possible exceptions: (TypeError).
         """
 
     def claimChildren(self) -> list[FreeCAD.DocumentObject | None]:
@@ -302,6 +319,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         """
         add a child object by dropping
         dropObject(obj,owner=None,subname=None)
+        Possible exceptions: (TypeError).
         """
 
     def getBoundingBox(self, subname: str = None, transform=True, view=None, /):
@@ -380,7 +398,11 @@ class ViewProvider(FreeCAD.ExtensionContainer):
 
     @typing.overload
     def setTransformation(self, arg1: FreeCAD.Placement, /):
-        """Set a transformation on the Inventor node"""
+        """
+        Set a transformation on the Inventor node
+
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def show(self):
         """Show the object"""
@@ -506,10 +528,16 @@ class ViewProviderExtension(FreeCAD.Extension):
     """Base class for all view provider extensions"""
 
     def ignoreOverlayIcon(self, arg1: str, /) -> bool:
-        """Ignore the overlay icon of an extension"""
+        """
+        Ignore the overlay icon of an extension
+        Possible exceptions: (NameError).
+        """
 
     def setIgnoreOverlayIcon(self, arg1: bool, arg2: str, /):
-        """Ignore the overlay icon of an extension"""
+        """
+        Ignore the overlay icon of an extension
+        Possible exceptions: (NameError).
+        """
 
 
 # CommandPy.xml
@@ -596,16 +624,28 @@ class PythonWorkbench(FreeCADGui.Workbench):
     """This class handles document objects in group"""
 
     def appendCommandbar(self, arg1: str, arg2, /):
-        """Append a new command bar"""
+        """
+        Append a new command bar
+        Possible exceptions: (AssertionError).
+        """
 
     def appendContextMenu(self, arg1, arg2, /):
-        """Append a new context menu item"""
+        """
+        Append a new context menu item
+        Possible exceptions: (AssertionError).
+        """
 
     def appendMenu(self, arg1, arg2, /):
-        """Append a new menu"""
+        """
+        Append a new menu
+        Possible exceptions: (AssertionError).
+        """
 
     def appendToolbar(self, arg1: str, arg2, /):
-        """Append a new toolbar"""
+        """
+        Append a new toolbar
+        Possible exceptions: (AssertionError).
+        """
 
     def removeCommandbar(self, arg1: str, /):
         """Remove a command bar"""
@@ -818,6 +858,8 @@ class SelectionObject(FreeCAD.BaseClass):
         """
         Test for a certain father class.
         isObjectTypeOf(type) -> Bool
+
+        Possible exceptions: (TypeError).
         """
 
     def remove(self):
@@ -939,6 +981,8 @@ class Document(FreeCAD.Persistence):
         """
         Set the given object in edit mode.
         setEdit([String:Name|ViewProvider|DocumentObject]|,mod,subname=None) -> Bool
+
+        Possible exceptions: (TypeError, ValueError).
         """
 
     def setPos(self, arg1: str, arg2: FreeCAD.Matrix, /):

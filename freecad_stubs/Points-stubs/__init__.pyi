@@ -18,6 +18,9 @@ class Points(FreeCAD.ComplexGeoData):
 
         This class allows one to manipulate the Points object by adding new points, deleting facets, importing from an STL file,
         transforming and much more.
+
+      
+        Possible exceptions: (TypeError).
         """
 
     @property
@@ -35,16 +38,25 @@ class Points(FreeCAD.ComplexGeoData):
         """
 
     def addPoints(self, arg1, /):
-        """add one or more (list of) points to the object"""
+        """
+        add one or more (list of) points to the object
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def copy(self) -> PointsModule.Points:
         """Create a copy of this points object"""
 
     def fromSegment(self, arg1, /) -> PointsModule.Points:
-        """Get a new point object from a given segment"""
+        """
+        Get a new point object from a given segment
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def fromValid(self) -> PointsModule.Points:
-        """Get a new point object from points with valid coordinates (i.e. that are not NaN)"""
+        """
+        Get a new point object from points with valid coordinates (i.e. that are not NaN)
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def read(self, arg1: str, /):
         """Read in a points object from file."""

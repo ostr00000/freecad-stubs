@@ -329,10 +329,16 @@ class DrawViewCollection(TechDraw.DrawView):
     def Views(self, value: LinkList_t): ...
 
     def addView(self, DrawView_object: FreeCAD.DocumentObject, /) -> int:
-        """addView(DrawView object) - Add a new View to this Group. Returns count of views."""
+        """
+        addView(DrawView object) - Add a new View to this Group. Returns count of views.
+        Possible exceptions: (TypeError).
+        """
 
     def removeView(self, DrawView_object: FreeCAD.DocumentObject, /) -> int:
-        """removeView(DrawView object) - Remove specified Viewfrom this Group. Returns count of views in Group."""
+        """
+        removeView(DrawView object) - Remove specified Viewfrom this Group. Returns count of views in Group.
+        Possible exceptions: (TypeError).
+        """
 
 
 # CosmeticExtensionPy.xml
@@ -745,10 +751,16 @@ class CosmeticVertex(FreeCAD.PyObjectBase):
         """Gives the tag of the CosmeticVertex as string."""
 
     def clone(self):
-        """Create a clone of this CosmeticVertex"""
+        """
+        Create a clone of this CosmeticVertex
+        Possible exceptions: (TypeError).
+        """
 
     def copy(self):
-        """Create a copy of this CosmeticVertex"""
+        """
+        Create a copy of this CosmeticVertex
+        Possible exceptions: (TypeError).
+        """
 
 
 # DrawViewPy.xml
@@ -1024,10 +1036,16 @@ class DrawProjGroup(TechDraw.DrawViewCollection):
     def spacingY(self, value: str | float | FreeCAD.Quantity): ...
 
     def addProjection(self, string_projectionType: str, /) -> TechDraw.DrawProjGroupItem:
-        """addProjection(string projectionType) - Add a new Projection Item to this Group. Returns DocObj."""
+        """
+        addProjection(string projectionType) - Add a new Projection Item to this Group. Returns DocObj.
+        Possible exceptions: (TypeError).
+        """
 
     def getItemByLabel(self, string_projectionType: str, /) -> TechDraw.DrawProjGroupItem:
-        """getItemByLabel(string projectionType) - return specified Projection Item"""
+        """
+        getItemByLabel(string projectionType) - return specified Projection Item
+        Possible exceptions: (TypeError).
+        """
 
     def getXYPosition(self, string_projectionType: str, /) -> FreeCAD.Vector:
         """getXYPosition(string projectionType) - return the AutoDistribute position for specified Projection Item"""
@@ -1430,10 +1448,16 @@ class CenterLine(FreeCAD.PyObjectBase):
         """The up/down offset for this CenterLine."""
 
     def clone(self):
-        """Create a clone of this centerline"""
+        """
+        Create a clone of this centerline
+        Possible exceptions: (TypeError).
+        """
 
     def copy(self):
-        """Create a copy of this centerline"""
+        """
+        Create a copy of this centerline
+        Possible exceptions: (TypeError).
+        """
 
 
 # DrawTileWeldPy.xml
@@ -1564,13 +1588,19 @@ class DrawPage(FreeCAD.DocumentObject):
     def Views(self, value: LinkList_t): ...
 
     def addView(self, DrawView: FreeCAD.DocumentObject, /) -> int:
-        """addView(DrawView) - Add a View to this Page"""
+        """
+        addView(DrawView) - Add a View to this Page
+        Possible exceptions: (TypeError).
+        """
 
     def getAllViews(self):
         """getAllViews() - returns a list of all the views on page including Views inside Collections"""
 
     def removeView(self, DrawView: FreeCAD.DocumentObject, /) -> int:
-        """removeView(DrawView) - Remove a View to this Page"""
+        """
+        removeView(DrawView) - Remove a View to this Page
+        Possible exceptions: (TypeError).
+        """
 
 
 # DrawHatchPy.xml
@@ -1666,10 +1696,16 @@ class CosmeticEdge(FreeCAD.PyObjectBase):
         """Gives the tag of the CosmeticEdge as string."""
 
     def clone(self):
-        """Create a clone of this CosmeticEdge"""
+        """
+        Create a clone of this CosmeticEdge
+        Possible exceptions: (TypeError).
+        """
 
     def copy(self):
-        """Create a copy of this CosmeticEdge"""
+        """
+        Create a copy of this CosmeticEdge
+        Possible exceptions: (TypeError).
+        """
 
 
 # GeomFormatPy.xml
@@ -1681,10 +1717,16 @@ class GeomFormat(FreeCAD.PyObjectBase):
         """Gives the tag of the GeomFormat as string."""
 
     def clone(self):
-        """Create a clone of this geomformat"""
+        """
+        Create a clone of this geomformat
+        Possible exceptions: (TypeError).
+        """
 
     def copy(self):
-        """Create a copy of this geomformat"""
+        """
+        Create a copy of this geomformat
+        Possible exceptions: (TypeError).
+        """
 
 
 # AppTechDrawPy.cpp

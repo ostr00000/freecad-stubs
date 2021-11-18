@@ -15,7 +15,10 @@ class FemMesh(FreeCAD.ComplexGeoData):
     """
 
     def __init__(self, arg1=None, /):
-        """FemMesh class"""
+        """
+        FemMesh class
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     @property
     def EdgeCount(self) -> int:
@@ -110,14 +113,20 @@ class FemMesh(FreeCAD.ComplexGeoData):
 
     @typing.overload
     def addEdge(self, arg1: list, arg2: int = None, /) -> int:
-        """Add an edge by setting two node indices."""
+        """
+        Add an edge by setting two node indices.
+        Possible exceptions: (FreeCAD.FreeCADError, TypeError).
+        """
 
     @typing.overload
     def addFace(self, arg1: int, arg2: int, arg3: int, /) -> int: ...
 
     @typing.overload
     def addFace(self, arg1: list, arg2: int = None, /) -> int:
-        """Add a face by setting three node indices."""
+        """
+        Add a face by setting three node indices.
+        Possible exceptions: (FreeCAD.FreeCADError, TypeError).
+        """
 
     def addGroup(self, name: str, typestring: str, id: int = None, /) -> int:
         """
@@ -128,6 +137,8 @@ class FemMesh(FreeCAD.ComplexGeoData):
                             id: int
                             Optional id is used to force specific id for group, but does
                             not work, yet.
+                
+        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
     def addGroupElements(self, groupid: int, list_of_elements: list, /):
@@ -137,84 +148,144 @@ class FemMesh(FreeCAD.ComplexGeoData):
                             groupid: int
                             list_of_elements: list of int
                             Notice that the elements have to be in the mesh.
+                
+        Possible exceptions: (TypeError, FreeCAD.FreeCADError).
         """
 
     def addHypothesis(self, arg1, arg2: Part.Shape = None, /):
-        """Add hypothesis"""
+        """
+        Add hypothesis
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     @typing.overload
     def addNode(self, arg1: float, arg2: float, arg3: float, /) -> int: ...
 
     @typing.overload
     def addNode(self, arg1: float, arg2: float, arg3: float, arg4: int, /) -> int:
-        """Add a node by setting (x,y,z)."""
+        """
+        Add a node by setting (x,y,z).
+        Possible exceptions: (FreeCAD.FreeCADError, TypeError).
+        """
 
     def addQuad(self, arg1: int, arg2: int, arg3: int, arg4: int, /) -> int:
-        """Add a quad by setting four node indices."""
+        """
+        Add a quad by setting four node indices.
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     @typing.overload
     def addVolume(self, arg1: int, arg2: int, arg3: int, arg4: int, /) -> int: ...
 
     @typing.overload
     def addVolume(self, arg1: list, arg2: int = None, /) -> int:
-        """Add a volume by setting an arbitrary number of node indices."""
+        """
+        Add a volume by setting an arbitrary number of node indices.
+        Possible exceptions: (FreeCAD.FreeCADError, TypeError).
+        """
 
     def compute(self):
-        """Update the internal mesh structure"""
+        """
+        Update the internal mesh structure
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def copy(self) -> Fem.FemMesh:
         """Make a copy of this FEM mesh."""
 
     def getEdgesByEdge(self, arg1: Part.Edge, /) -> list[int]:
-        """Return a list of edge IDs which belong to a TopoEdge"""
+        """
+        Return a list of edge IDs which belong to a TopoEdge
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def getElementNodes(self, arg1: int, /) -> tuple[int, ...]:
-        """Return a tuple of node IDs to a given element ID"""
+        """
+        Return a tuple of node IDs to a given element ID
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def getElementType(self, arg1: int, /) -> str:
-        """Return the element type of a given ID"""
+        """
+        Return the element type of a given ID
+        Possible exceptions: (ValueError).
+        """
 
     def getFacesByFace(self, arg1: Part.Face, /) -> list[int]:
-        """Return a list of face IDs which belong to a TopoFace"""
+        """
+        Return a list of face IDs which belong to a TopoFace
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def getGroupElementType(self, arg1: int, /) -> str:
-        """Return a string of group element type to a given group ID"""
+        """
+        Return a string of group element type to a given group ID
+        Possible exceptions: (ValueError).
+        """
 
     def getGroupElements(self, arg1: int, /) -> tuple[int, ...]:
-        """Return a tuple of ElementIDs to a given group ID"""
+        """
+        Return a tuple of ElementIDs to a given group ID
+        Possible exceptions: (ValueError).
+        """
 
     def getGroupName(self, arg1: int, /) -> str:
-        """Return a string of group name to a given group ID"""
+        """
+        Return a string of group name to a given group ID
+        Possible exceptions: (ValueError).
+        """
 
     def getIdByElementType(self, arg1: str, /) -> tuple[int, ...]:
         """Return a tuple of IDs to a given element type"""
 
     def getNodeById(self, arg1: int, /) -> FreeCAD.Vector:
-        """Get the node position vector by a Node-ID"""
+        """
+        Get the node position vector by a Node-ID
+        Possible exceptions: (ValueError).
+        """
 
     def getNodesByEdge(self, arg1: Part.Edge, /) -> list[int]:
-        """Return a list of node IDs which belong to a TopoEdge"""
+        """
+        Return a list of node IDs which belong to a TopoEdge
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def getNodesByFace(self, arg1: Part.Face, /) -> list[int]:
-        """Return a list of node IDs which belong to a TopoFace"""
+        """
+        Return a list of node IDs which belong to a TopoFace
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def getNodesBySolid(self, arg1: Part.Solid, /) -> list[int]:
-        """Return a list of node IDs which belong to a TopoSolid"""
+        """
+        Return a list of node IDs which belong to a TopoSolid
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def getNodesByVertex(self, arg1: Part.Vertex, /) -> list[int]:
-        """Return a list of node IDs which belong to a TopoVertex"""
+        """
+        Return a list of node IDs which belong to a TopoVertex
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def getVolumesByFace(self, arg1: Part.Face, /) -> list[tuple[int, int]]:
-        """Return a dict of volume IDs and face IDs which belong to a TopoFace"""
+        """
+        Return a dict of volume IDs and face IDs which belong to a TopoFace
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def getccxVolumesByFace(self, arg1: Part.Face, /) -> list[tuple[int, int]]:
-        """Return a dict of volume IDs and ccx face numbers which belong to a TopoFace"""
+        """
+        Return a dict of volume IDs and ccx face numbers which belong to a TopoFace
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def read(self, file_endingToExportTo: str, /):
         """
         Read in a various FEM mesh file formats.
                             read(file.endingToExportTo)
                             supported formats: DAT, INP, MED, STL, UNV, VTK, Z88
+        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
     def removeGroup(self, groupid: int, /) -> bool:
@@ -226,19 +297,30 @@ class FemMesh(FreeCAD.ComplexGeoData):
         """
 
     def setShape(self, arg1: Part.Shape, /):
-        """Set the Part shape to mesh"""
+        """
+        Set the Part shape to mesh
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def setStandardHypotheses(self):
-        """Set some standard hypotheses for the whole shape"""
+        """
+        Set some standard hypotheses for the whole shape
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def setTransform(self, arg1: FreeCAD.Placement, /):
-        """Use a Placement object to perform a translation or rotation"""
+        """
+        Use a Placement object to perform a translation or rotation
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
     def write(self, file_endingToExportTo: str, /):
         """
         Write out various FEM mesh file formats.
                             write(file.endingToExportTo)
                             supported formats: BDF, DAT, INP, MED, STL, UNV, VTK, Z88
+                
+        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
     def writeABAQUS(self, file: str, int_elemParam: int, bool_groupParam: bool, /):
@@ -247,6 +329,8 @@ class FemMesh(FreeCAD.ComplexGeoData):
                             writeABAQUS(file, int elemParam, bool groupParam)
                             elemParam: 0 = all elements, 1 = highest elements only, 2 = FEM elements only (only edges not belonging to faces and faces not belonging to volumes)
                             groupParam: true = write group data, false = do not write group data
+                
+        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
 
@@ -292,10 +376,16 @@ class FemPostPipeline(FreeCAD.GeoFeature):
         """Get the last post-processing object"""
 
     def holdsPostObject(self, arg1: FreeCAD.DocumentObject, /) -> bool:
-        """Check if this pipeline holds a given post-processing object"""
+        """
+        Check if this pipeline holds a given post-processing object
+        Possible exceptions: (TypeError).
+        """
 
     def load(self, arg1: FreeCAD.DocumentObject, /):
-        """Load a result object"""
+        """
+        Load a result object
+        Possible exceptions: (TypeError).
+        """
 
     def read(self, arg1: str, /):
         """Read in vtk file"""

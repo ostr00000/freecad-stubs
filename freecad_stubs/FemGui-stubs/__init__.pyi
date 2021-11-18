@@ -98,9 +98,13 @@ class ViewProviderFemMesh(FreeCADGui.ViewProviderDocumentObject):
         """Reset displacements set by method setNodeDisplacementByVectors."""
 
     def setNodeColorByScalars(self, arg1: list, arg2: list, /):
-        """Sets mesh node colors using element list and value list."""
+        """
+        Sets mesh node colors using element list and value list.
+        Possible exceptions: (FreeCAD.FreeCADError).
+        """
 
-    def setNodeDisplacementByVectors(self, arg1: list, arg2: list, /): ...
+    def setNodeDisplacementByVectors(self, arg1: list, arg2: list, /):
+        """Possible exceptions: (FreeCAD.FreeCADError)."""
 
 
 # AppFemGuiPy.cpp

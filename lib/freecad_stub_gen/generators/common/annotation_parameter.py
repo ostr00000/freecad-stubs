@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 from inspect import Parameter, formatannotation, Signature
 from typing import Optional, Sequence
@@ -81,9 +83,10 @@ class AnnotationParam(Parameter):
 
 class SelfSignature(Signature):
     """Skip separator if there is only self parameter"""
+    __slots__ = ('exceptions',)
 
     def __init__(self, parameters: Optional[Sequence[Parameter]] = None, *,
-                 return_annotation=Signature.empty,
+                 return_annotation=Signature.empty, exceptions=(),
                  __validate_parameters__=True):
 
         if parameters is not None:
@@ -104,9 +107,21 @@ class SelfSignature(Signature):
         try:
             super().__init__(parameters, return_annotation=return_annotation,
                              __validate_parameters__=__validate_parameters__)
+            self.exceptions: OrderedSet[str] | tuple[()] = exceptions
         except ValueError as v:
             if parameters is not None:
                 logger.error(v)
                 for p in parameters:
                     logger.error(f'{p} [{p.kind}]')
             raise
+
+    @classmethod
+    def getExceptionsDocs(cls, signatures: list[SelfSignature]) -> str:
+        uniqueExceptions = OrderedSet()
+        for sig in signatures:
+            uniqueExceptions.update(sig.exceptions)
+
+        if not uniqueExceptions:
+            return ''
+
+        return f"\nPossible exceptions: ({', '.join(uniqueExceptions)})."

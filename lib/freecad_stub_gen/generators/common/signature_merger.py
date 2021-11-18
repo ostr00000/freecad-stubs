@@ -8,10 +8,10 @@ NO_ANNOTATIONS = (None, 'object', Parameter.empty)
 
 
 def mergeSignaturesGen(
-        codeSignatures: list[Signature],
-        docSignatures: list[Signature],
+        codeSignatures: list[SelfSignature],
+        docSignatures: list[SelfSignature],
         firstParam: Parameter = None,
-) -> Iterator[Signature]:
+) -> Iterator[SelfSignature]:
     if len(codeSignatures) == len(docSignatures) == 0:
         return  # function does not exist neither in code nor xml
 
@@ -49,14 +49,16 @@ def mergeSignaturesGen(
                 matchedParam.append(newArg)
 
             if compatible and len(list(docSignatureIt)) == 0:
-                yield SelfSignature(matchedParam, return_annotation=codeS.return_annotation)
+                yield SelfSignature(matchedParam, return_annotation=codeS.return_annotation,
+                                    exceptions=codeS.exceptions)
                 yielded = True
 
     # maybe docSignatures is empty, try codeSignatures
     if not yielded:
         for codeS in codeSignatures:
             yield SelfSignature(retParam + list(codeS.parameters.values()),
-                                return_annotation=codeS.return_annotation)
+                                return_annotation=codeS.return_annotation,
+                                exceptions=codeS.exceptions)
             yielded = True
 
     # maybe codeSignatures is empty, try docSignatures
