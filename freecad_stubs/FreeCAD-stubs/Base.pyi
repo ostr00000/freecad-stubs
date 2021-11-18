@@ -1628,11 +1628,11 @@ class CoordinateSystem(FreeCAD.PyObjectBase):
     """This class can be imported."""
 
     @property
-    def Axis(self) -> FreeCAD.Vector:
+    def Axis(self) -> FreeCAD.Axis:
         """Set or get axis"""
 
     @Axis.setter
-    def Axis(self, value: FreeCAD.Vector): ...
+    def Axis(self, value: FreeCAD.Axis): ...
 
     @property
     def Position(self) -> FreeCAD.Vector:

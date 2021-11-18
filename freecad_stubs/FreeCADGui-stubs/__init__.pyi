@@ -883,11 +883,11 @@ class Document(FreeCAD.Persistence):
     def ActiveObject(self, value: FreeCADGui.ViewProvider | None): ...
 
     @property
-    def ActiveView(self) -> FreeCADGui.View3DInventorPy:
+    def ActiveView(self) -> FreeCADGui.MDIViewPy | None:
         """The active view of the document"""
 
     @ActiveView.setter
-    def ActiveView(self, value: FreeCADGui.View3DInventorPy): ...
+    def ActiveView(self, value: FreeCADGui.MDIViewPy | None): ...
 
     @property
     def Document(self) -> FreeCAD.Document:

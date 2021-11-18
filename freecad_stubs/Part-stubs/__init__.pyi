@@ -4405,7 +4405,7 @@ class GeometrySurface(Part.Geometry):
         """Returns the global continuity of the surface."""
 
     @property
-    def Rotation(self) -> FreeCAD.Rotation:
+    def Rotation(self) -> 'object' | FreeCAD.Rotation:
         """Returns a rotation object to describe the orientation for surface that supports it"""
 
     def UPeriod(self) -> float:
@@ -5644,7 +5644,7 @@ class Curve(Part.Geometry):
         """Returns the value of the last parameter."""
 
     @property
-    def Rotation(self) -> FreeCAD.Rotation:
+    def Rotation(self) -> 'object' | FreeCAD.Rotation:
         """Returns a rotation object to describe the orientation for curve that supports it"""
 
     def approximateBSpline(self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = 'C2', /) -> Part.BSplineCurve:

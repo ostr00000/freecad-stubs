@@ -25,10 +25,8 @@ class XmlPropertyGenerator(XmlMethodGenerator, BaseXmlGenerator, BasePropertyGen
         pythonGetType = pythonSetType = self.__getReturnTypeForSpecialCase(name, pythonType)
 
         pythonGetType = self._getExtendedTypeFromCode(pythonGetType, f'get{name}')
-        if not readOnly:
-            pythonSetType = self._getExtendedTypeFromCode(pythonSetType, f'set{name}')
-            if pythonSetType == 'object':
-                pythonSetType = pythonGetType
+        if not readOnly and pythonSetType == 'object':
+            pythonSetType = pythonGetType
 
         return self.getProperty(name, pythonGetType, pythonSetType, docs, readOnly)
 
@@ -91,32 +89,12 @@ class XmlPropertyGenerator(XmlMethodGenerator, BaseXmlGenerator, BasePropertyGen
                              '"Recompute2", "Restore", "Expanded", "Partial", ' \
                              '"Importing", "Up-to-date"]]'
 
-            case 'Document', 'ActiveView':
-                pythonType = 'FreeCADGui.View3DInventorPy'
             case 'Document', 'Document':  # here is reversed
                 pythonType = 'FreeCAD.Document' if self._isGuiFile else 'FreeCADGui.Document'
-
-            case 'ViewProviderDocumentObject', 'Document':
-                pythonType = 'FreeCADGui.Document'
-            case 'ViewProviderDocumentObject', 'Object':
-                pythonType = 'FreeCAD.DocumentObject'
-
-            case 'Placement', 'Base':
-                pythonType = 'FreeCAD.Vector'
 
             case _, 'Document':
                 pythonType = 'FreeCADGui.Document' if self._isGuiFile else 'FreeCAD.Document'
 
-            case _, 'BoundBox':
-                pythonType = 'FreeCAD.BoundBox'
-            case _, 'Placement':
-                pythonType = 'FreeCAD.Placement'
-            case _, 'Matrix':
-                pythonType = 'FreeCAD.Matrix'
-            case _, 'Rotation':
-                pythonType = 'FreeCAD.Rotation'
-            case _, ('Axis' | 'RawAxis'):
-                pythonType = 'FreeCAD.Vector'
             case _, 'Q':
                 pythonType = 'tuple[float, float, float, float]'
 
