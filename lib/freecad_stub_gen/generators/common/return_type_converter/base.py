@@ -42,9 +42,9 @@ class ReturnTypeConverterBase:
             case '':
                 return Empty
             case 'Py::Object()':
-                # we must use `Union` wrapper,
+                # we cannot return `object` directly
                 # otherwise `object` may be ignored if there are no other types
-                return 'typing.Union[object]'
+                return "'object'"
             case 'Py_None' | 'Py::None()' | 'Py_Return':
                 return 'None'
             case '0' | '-1' | 'NULL' | 'nullptr' | '0L':
@@ -77,7 +77,7 @@ class ReturnTypeConverterBase:
 
             # PyCXX wrapper classes, search for `typedef GeometryT<`
             case StrWrapper('Py::BoundingBox'):
-                return 'FreeCAD.BoundingBox'
+                return 'FreeCAD.BoundBox'
             case StrWrapper('Py::Matrix'):
                 return 'FreeCAD.Matrix'
             case StrWrapper('Py::Rotation'):
@@ -178,9 +178,14 @@ class ReturnTypeConverterBase:
         cType = cType.split('(', maxsplit=1)[0]
         classWithModule = getClassWithModulesFromPointer(cType)
 
-        match classWithModule:
+        match StrWrapper(classWithModule):
             case self.className:
                 return self.classNameWithModule
+
+            # yet another exception from rules
+            case StrWrapper(contain='MDIView' | 'View3DInventorViewerPy'
+                                    | 'View3DInventorPy' | 'AbstractSplitViewPy'):
+                return classWithModule + 'Py'
 
             case 'SplitView3DInventor':
                 # we must use take base class

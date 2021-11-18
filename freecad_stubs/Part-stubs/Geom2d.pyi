@@ -230,21 +230,21 @@ class ArcOfConic2d(Part.Geom2d.Curve2d):
         """Location of the conic."""
 
     @Location.setter
-    def Location(self, value: object): ...
+    def Location(self, value: FreeCAD.Vector2d): ...
 
     @property
     def XAxis(self) -> FreeCAD.Vector2d:
         """The X axis direction of the circle"""
 
     @XAxis.setter
-    def XAxis(self, value: object): ...
+    def XAxis(self, value: FreeCAD.Vector2d): ...
 
     @property
     def YAxis(self) -> FreeCAD.Vector2d:
         """The Y axis direction of the circle"""
 
     @YAxis.setter
-    def YAxis(self, value: object): ...
+    def YAxis(self, value: FreeCAD.Vector2d): ...
 
 
 # Conic2dPy.xml
@@ -266,21 +266,21 @@ class Conic2d(Part.Geom2d.Curve2d):
         """Location of the conic."""
 
     @Location.setter
-    def Location(self, value: object): ...
+    def Location(self, value: FreeCAD.Vector2d): ...
 
     @property
     def XAxis(self) -> FreeCAD.Vector2d:
         """The X axis direction of the circle"""
 
     @XAxis.setter
-    def XAxis(self, value: object): ...
+    def XAxis(self, value: FreeCAD.Vector2d): ...
 
     @property
     def YAxis(self) -> FreeCAD.Vector2d:
         """The Y axis direction of the circle"""
 
     @YAxis.setter
-    def YAxis(self, value: object): ...
+    def YAxis(self, value: FreeCAD.Vector2d): ...
 
 
 # Geometry2dPy.xml
@@ -458,14 +458,14 @@ class Line2dSegment(Part.Geom2d.Curve2d):
         """Returns the end point of this line segment."""
 
     @EndPoint.setter
-    def EndPoint(self, value: object): ...
+    def EndPoint(self, value: FreeCAD.Vector2d): ...
 
     @property
     def StartPoint(self) -> FreeCAD.Vector2d:
         """Returns the start point of this line segment."""
 
     @StartPoint.setter
-    def StartPoint(self, value: object): ...
+    def StartPoint(self, value: FreeCAD.Vector2d): ...
 
     def setParameterRange(self, arg1: float, arg2: float, /):
         """
@@ -1349,11 +1349,11 @@ class Line2d(Part.Geom2d.Curve2d):
         """Returns the direction of this line."""
 
     @Direction.setter
-    def Direction(self, value: object): ...
+    def Direction(self, value: FreeCAD.Vector2d): ...
 
     @property
     def Location(self) -> FreeCAD.Vector2d:
         """Returns the location of this line."""
 
     @Location.setter
-    def Location(self, value: object): ...
+    def Location(self, value: FreeCAD.Vector2d): ...

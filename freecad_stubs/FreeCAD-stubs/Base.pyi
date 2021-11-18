@@ -1163,7 +1163,7 @@ class Quantity(FreeCAD.PyObjectBase):
         """Unit of the Quantity"""
 
     @Unit.setter
-    def Unit(self, value: object): ...
+    def Unit(self, value: FreeCAD.Unit): ...
 
     @property
     def UserString(self) -> str:
@@ -1639,28 +1639,28 @@ class CoordinateSystem(FreeCAD.PyObjectBase):
         """Set or get position"""
 
     @Position.setter
-    def Position(self, value: object): ...
+    def Position(self, value: FreeCAD.Vector): ...
 
     @property
     def XDirection(self) -> FreeCAD.Vector:
         """Set or get x direction"""
 
     @XDirection.setter
-    def XDirection(self, value: object): ...
+    def XDirection(self, value: FreeCAD.Vector): ...
 
     @property
     def YDirection(self) -> FreeCAD.Vector:
         """Set or get y direction"""
 
     @YDirection.setter
-    def YDirection(self, value: object): ...
+    def YDirection(self, value: FreeCAD.Vector): ...
 
     @property
     def ZDirection(self) -> FreeCAD.Vector:
         """Set or get z direction"""
 
     @ZDirection.setter
-    def ZDirection(self, value: object): ...
+    def ZDirection(self, value: FreeCAD.Vector): ...
 
     def displacement(self, CoordinateSystem: FreeCAD.CoordinateSystem, /) -> FreeCAD.Placement:
         """
@@ -1816,14 +1816,14 @@ class Axis(FreeCAD.PyObjectBase):
         """Vector to the Base position of the Axis"""
 
     @Base.setter
-    def Base(self, value: object): ...
+    def Base(self, value: FreeCAD.Vector): ...
 
     @property
     def Direction(self) -> FreeCAD.Vector:
         """Direction vector of the Axis"""
 
     @Direction.setter
-    def Direction(self, value: object): ...
+    def Direction(self, value: FreeCAD.Vector): ...
 
     def copy(self) -> FreeCAD.Axis:
         """

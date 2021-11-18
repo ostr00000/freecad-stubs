@@ -310,7 +310,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         """State of the object in the document"""
 
     @property
-    def ViewObject(self) -> typing.Optional[FreeCADGui.ViewProviderDocumentObject]:
+    def ViewObject(self) -> FreeCADGui.ViewProviderDocumentObject | None:
         """
         If the GUI is loaded the associated view provider is returned
         or None if the GUI is not up
@@ -416,7 +416,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         'Valid' otherwise.
         """
 
-    def getSubObject(self, subname, retType: int = 0, matrix=None, transform=True, depth: int = 0) -> object | FreeCAD.Placement | FreeCAD.Matrix | tuple[object, FreeCAD.Matrix, object] | tuple[object, object, typing.Union[object], FreeCAD.Placement, FreeCAD.Matrix, FreeCAD.Placement, FreeCAD.Matrix, tuple[object, FreeCAD.Matrix, object]]:
+    def getSubObject(self, subname, retType: int = 0, matrix=None, transform=True, depth: int = 0) -> object | FreeCAD.Placement | FreeCAD.Matrix | tuple[object, FreeCAD.Matrix, object] | tuple[object, object, 'object', FreeCAD.Placement, FreeCAD.Matrix, FreeCAD.Placement, FreeCAD.Matrix, tuple[object, FreeCAD.Matrix, object]]:
         """
         getSubObject(subname, retType=0, matrix=None, transform=True, depth=0)
 
@@ -983,7 +983,7 @@ class Document(FreeCAD.PropertyContainer):
     """
 
     @property
-    def ActiveObject(self) -> typing.Optional[FreeCAD.DocumentObject]:
+    def ActiveObject(self) -> FreeCAD.DocumentObject | None:
         """The active object of the document"""
 
     @property

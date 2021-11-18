@@ -45,6 +45,7 @@ class ReturnTypeConverter(
             self.requiredImports.update(retType.imports)
 
     def getExceptionsFromCode(self):
+        # TODO P2 throw Py::RuntimeError(e.what());
         exceptions = OrderedSet()
         regex = re.compile(r'PyErr_SetString\(([^;]+)\);')
         for exceptionMatch in regex.finditer(self.functionBody):
@@ -54,8 +55,8 @@ class ReturnTypeConverter(
             exception: str
             match funArgs[0].split('::'):
                 case [str(exception)]:
-                    namespace = None
-                case [namespace, str(exception)]:
+                    pass
+                case [_namespace, str(exception)]:
                     pass
                 case _:
                     raise ValueError

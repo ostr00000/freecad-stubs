@@ -95,11 +95,11 @@ class LinkView(FreeCAD.BaseClass):
         """Set the element size to create an array of linked object"""
 
     @property
-    def LinkedView(self) -> typing.Union[object] | object:
+    def LinkedView(self) -> 'object' | object:
         """The linked view object"""
 
     @property
-    def Owner(self) -> typing.Union[object] | object:
+    def Owner(self) -> 'object' | object:
         """The owner view object of this link handle"""
 
     @property
@@ -107,11 +107,11 @@ class LinkView(FreeCAD.BaseClass):
         """A pivy node holding the cloned representation of the linked view object"""
 
     @property
-    def SubNames(self) -> typing.Union[object] | tuple[str, ...]:
+    def SubNames(self) -> 'object' | tuple[str, ...]:
         """The sub-object reference of the link"""
 
     @property
-    def Visibilities(self) -> typing.Union[object] | tuple[bool, ...]:
+    def Visibilities(self) -> 'object' | tuple[bool, ...]:
         """Get/set the child element visibility"""
 
     def getBoundBox(self, vobj, /):
@@ -876,11 +876,11 @@ class Document(FreeCAD.Persistence):
     """This is a Document class"""
 
     @property
-    def ActiveObject(self) -> typing.Optional[FreeCAD.DocumentObject]:
+    def ActiveObject(self) -> FreeCADGui.ViewProvider | None:
         """The active object of the document"""
 
     @ActiveObject.setter
-    def ActiveObject(self, value: typing.Optional[FreeCAD.DocumentObject]): ...
+    def ActiveObject(self, value: FreeCADGui.ViewProvider | None): ...
 
     @property
     def ActiveView(self) -> FreeCADGui.View3DInventorPy:
@@ -916,7 +916,7 @@ class Document(FreeCAD.Persistence):
     def activeObject(self) -> FreeCADGui.ViewProvider:
         """deprecated -- use ActiveObject"""
 
-    def activeView(self) -> FreeCADGui.MDIView:
+    def activeView(self) -> FreeCADGui.MDIViewPy:
         """deprecated -- use ActiveView"""
 
     def addAnnotation(self, AnnoName: str, FileName: str, ModName: str = None, /):
@@ -943,7 +943,7 @@ class Document(FreeCAD.Persistence):
         hide() -> None
         """
 
-    def mdiViewsOfType(self, type: str, /) -> list[FreeCADGui.MDIView]:
+    def mdiViewsOfType(self, type: str, /) -> list[FreeCADGui.MDIViewPy]:
         """
         Return a list if mdi views of a given type
         mdiViewsOfType(type) -> list of MDIView
@@ -1795,7 +1795,7 @@ def setActiveDocument(string_or_App_Document: FreeCAD.Document, /):
     """
 
 
-def activeView(typename: str = None, /) -> FreeCADGui.MDIView:
+def activeView(typename: str = None, /) -> FreeCADGui.MDIViewPy:
     """
     activeView(typename=None) -> object or None
 

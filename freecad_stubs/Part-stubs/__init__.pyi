@@ -163,7 +163,7 @@ class Cylinder(Part.GeometrySurface):
         """Center of the cylinder."""
 
     @Center.setter
-    def Center(self, value: object): ...
+    def Center(self, value: FreeCAD.Vector): ...
 
     @property
     def Radius(self) -> float:
@@ -230,7 +230,7 @@ class AttachEngine(FreeCAD.BaseClass):
         """Current attachment mode."""
 
     @AttachmentOffset.setter
-    def AttachmentOffset(self, value: object): ...
+    def AttachmentOffset(self, value: FreeCAD.Placement): ...
 
     @property
     def CompleteModeList(self) -> list[str]:
@@ -891,7 +891,7 @@ class Plane(Part.GeometrySurface):
         """Returns the position point of this plane."""
 
     @Position.setter
-    def Position(self, value: object): ...
+    def Position(self, value: FreeCAD.Vector): ...
 
 
 # TopoShapeFacePy.xml
@@ -2146,7 +2146,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (Part.OCCError).
         """
 
-    def optimalBoundingBox(self, useTriangulation: bool = True, useShapeTolerance=False, /) -> FreeCAD.BoundingBox:
+    def optimalBoundingBox(self, useTriangulation: bool = True, useShapeTolerance=False, /) -> FreeCAD.BoundBox:
         """
         Get the optimal bounding box
         optimalBoundingBox([useTriangulation = True, useShapeTolerance = False]) -> bound box
@@ -3064,7 +3064,7 @@ class Sphere(Part.GeometrySurface):
         """Center of the sphere."""
 
     @Center.setter
-    def Center(self, value: object): ...
+    def Center(self, value: FreeCAD.Vector): ...
 
     @property
     def Radius(self) -> float:
@@ -3572,7 +3572,7 @@ class Conic(Part.Curve):
         """Deprecated -- use Location."""
 
     @Center.setter
-    def Center(self, value: object): ...
+    def Center(self, value: FreeCAD.Vector): ...
 
     @property
     def Eccentricity(self) -> float:
@@ -3589,21 +3589,21 @@ class Conic(Part.Curve):
         """Location of the conic."""
 
     @Location.setter
-    def Location(self, value: object): ...
+    def Location(self, value: FreeCAD.Vector): ...
 
     @property
     def XAxis(self) -> FreeCAD.Vector:
         """The X axis direction of the circle"""
 
     @XAxis.setter
-    def XAxis(self, value: object): ...
+    def XAxis(self, value: FreeCAD.Vector): ...
 
     @property
     def YAxis(self) -> FreeCAD.Vector:
         """The Y axis direction of the circle"""
 
     @YAxis.setter
-    def YAxis(self, value: object): ...
+    def YAxis(self, value: FreeCAD.Vector): ...
 
 
 # GeometryIntExtensionPy.xml
@@ -4386,14 +4386,14 @@ class Line(Part.Curve):
         """Returns the direction of this line."""
 
     @Direction.setter
-    def Direction(self, value: object): ...
+    def Direction(self, value: FreeCAD.Vector): ...
 
     @property
     def Location(self) -> FreeCAD.Vector:
         """Returns the location of this line."""
 
     @Location.setter
-    def Location(self, value: object): ...
+    def Location(self, value: FreeCAD.Vector): ...
 
 
 # GeometrySurfacePy.xml
@@ -5501,14 +5501,14 @@ class LineSegment(Part.TrimmedCurve):
         """Returns the end point point of this line."""
 
     @EndPoint.setter
-    def EndPoint(self, value: object): ...
+    def EndPoint(self, value: FreeCAD.Vector): ...
 
     @property
     def StartPoint(self) -> FreeCAD.Vector:
         """Returns the start point of this line."""
 
     @StartPoint.setter
-    def StartPoint(self, value: object): ...
+    def StartPoint(self, value: FreeCAD.Vector): ...
 
     def setParameterRange(self, arg1: float, arg2: float, /):
         """
@@ -6000,7 +6000,7 @@ class Cone(Part.GeometrySurface):
         """Center of the cone."""
 
     @Center.setter
-    def Center(self, value: object): ...
+    def Center(self, value: FreeCAD.Vector): ...
 
     @property
     def Radius(self) -> float:
@@ -6043,7 +6043,7 @@ class Toroid(Part.GeometrySurface):
         """Center of the toroid."""
 
     @Center.setter
-    def Center(self, value: object): ...
+    def Center(self, value: FreeCAD.Vector): ...
 
     @property
     def MajorRadius(self) -> float:
@@ -6655,28 +6655,28 @@ class ArcOfConic(Part.TrimmedCurve):
         """Deprecated -- use Location."""
 
     @Center.setter
-    def Center(self, value: object): ...
+    def Center(self, value: FreeCAD.Vector): ...
 
     @property
     def Location(self) -> FreeCAD.Vector:
         """Center of the conic."""
 
     @Location.setter
-    def Location(self, value: object): ...
+    def Location(self, value: FreeCAD.Vector): ...
 
     @property
     def XAxis(self) -> FreeCAD.Vector:
         """The X axis direction of the circle"""
 
     @XAxis.setter
-    def XAxis(self, value: object): ...
+    def XAxis(self, value: FreeCAD.Vector): ...
 
     @property
     def YAxis(self) -> FreeCAD.Vector:
         """The Y axis direction of the circle"""
 
     @YAxis.setter
-    def YAxis(self, value: object): ...
+    def YAxis(self, value: FreeCAD.Vector): ...
 
 
 # AppPartPy.cpp
@@ -6957,7 +6957,7 @@ def __fromPythonOCC__(occ, /) -> Part.Shape:
     """__fromPythonOCC__(occ) -- Helper method to convert a pythonocc shape to an internal shape"""
 
 
-def clearShapeCache() -> typing.Union[object]:
+def clearShapeCache() -> 'object':
     """clearShapeCache() -- Clears internal shape cache"""
 
 

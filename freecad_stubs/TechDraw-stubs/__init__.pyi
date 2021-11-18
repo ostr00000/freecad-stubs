@@ -737,14 +737,14 @@ class CosmeticVertex(FreeCAD.PyObjectBase):
         """set/return the vertex's radius in mm."""
 
     @Size.setter
-    def Size(self, value: object): ...
+    def Size(self, value: float): ...
 
     @property
     def Style(self) -> int:
         """set/return the vertex's style as integer."""
 
     @Style.setter
-    def Style(self, value: object): ...
+    def Style(self, value: int): ...
 
     @property
     def Tag(self) -> str:

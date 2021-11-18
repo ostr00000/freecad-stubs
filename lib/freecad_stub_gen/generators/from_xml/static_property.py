@@ -27,6 +27,8 @@ class XmlPropertyGenerator(XmlMethodGenerator, BaseXmlGenerator, BasePropertyGen
         pythonGetType = self._getExtendedTypeFromCode(pythonGetType, f'get{name}')
         if not readOnly:
             pythonSetType = self._getExtendedTypeFromCode(pythonSetType, f'set{name}')
+            if pythonSetType == 'object':
+                pythonSetType = pythonGetType
 
         return self.getProperty(name, pythonGetType, pythonSetType, docs, readOnly)
 
@@ -69,6 +71,7 @@ class XmlPropertyGenerator(XmlMethodGenerator, BaseXmlGenerator, BasePropertyGen
             case _:
                 logger.warning(f"Type from code does not match type from xml:"
                                f"{pythonType=}, {extendedType=}, {self._cFunctionName=}")
+
         return pythonType
 
     def __getReturnTypeForSpecialCase(self, propertyName: str, pythonType: str):
@@ -76,7 +79,7 @@ class XmlPropertyGenerator(XmlMethodGenerator, BaseXmlGenerator, BasePropertyGen
 
         match className, propertyName:
             case 'DocumentObject', 'ViewObject':
-                pythonType = 'typing.Optional[FreeCADGui.ViewProviderDocumentObject]'
+                pythonType = 'FreeCADGui.ViewProviderDocumentObject | None'
             case 'DocumentObject', 'Parents':
                 pythonType = 'list[tuple[FreeCAD.DocumentObject, str]]'
             case 'DocumentObject', 'Document':
@@ -88,8 +91,6 @@ class XmlPropertyGenerator(XmlMethodGenerator, BaseXmlGenerator, BasePropertyGen
                              '"Recompute2", "Restore", "Expanded", "Partial", ' \
                              '"Importing", "Up-to-date"]]'
 
-            case 'Document', 'ActiveObject':
-                pythonType = 'typing.Optional[FreeCAD.DocumentObject]'
             case 'Document', 'ActiveView':
                 pythonType = 'FreeCADGui.View3DInventorPy'
             case 'Document', 'Document':  # here is reversed

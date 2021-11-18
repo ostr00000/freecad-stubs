@@ -348,7 +348,7 @@ class Area(FreeCAD.BaseClass):
         """The current workplane. If no plane is set, it is derived from the added shapes."""
 
     @Workplane.setter
-    def Workplane(self, value: object): ...
+    def Workplane(self, value: Part.Shape): ...
 
     def add(self, shape) -> PathModule.Area:
         """Possible exceptions: (TypeError)."""
@@ -416,7 +416,7 @@ class Path(FreeCAD.Persistence):
         """the center position for all rotational parameters"""
 
     @Center.setter
-    def Center(self, value: object): ...
+    def Center(self, value: FreeCAD.Vector): ...
 
     @property
     def Commands(self) -> list[PathModule.Command]:
@@ -621,7 +621,7 @@ class FeatureArea(FreeCAD.DocumentObject):
         """The current workplane. If no plane is set, it is derived from the added shapes."""
 
     @WorkPlane.setter
-    def WorkPlane(self, value: object): ...
+    def WorkPlane(self, value: Part.Shape): ...
 
     @property
     def Sources(self) -> list[FreeCAD.DocumentObject | None]:

@@ -43,7 +43,7 @@ class Waypoint(FreeCAD.Persistence):
         """End position (destination) of the waypoint"""
 
     @Pos.setter
-    def Pos(self, value: object): ...
+    def Pos(self, value: FreeCAD.Placement): ...
 
     @property
     def Tool(self) -> int:
@@ -122,18 +122,18 @@ class Robot6Axis(FreeCAD.Persistence):
     def Axis6(self, value: float): ...
 
     @property
-    def Base(self) -> typing.Union[object]:
+    def Base(self) -> 'object':
         """Actual Base system in respect to the robot world system"""
 
     @Base.setter
-    def Base(self, value: object): ...
+    def Base(self, value: 'object'): ...
 
     @property
     def Tcp(self) -> FreeCAD.Placement:
         """Tool center point frame. Where the tool of the robot is"""
 
     @Tcp.setter
-    def Tcp(self, value: object): ...
+    def Tcp(self, value: FreeCAD.Placement): ...
 
 
 # TrajectoryPy.xml
