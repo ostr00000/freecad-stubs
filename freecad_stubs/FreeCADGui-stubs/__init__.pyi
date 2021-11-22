@@ -114,7 +114,7 @@ class LinkView(FreeCAD.BaseClass):
     def Visibilities(self) -> 'object' | tuple[bool, ...]:
         """Get/set the child element visibility"""
 
-    def getBoundBox(self, vobj, /):
+    def getBoundBox(self, vobj, /) -> FreeCAD.BoundBox:
         """
         getBoundBox(vobj=None): get the bounding box. 
         Possible exceptions: (TypeError).
@@ -322,7 +322,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         Possible exceptions: (TypeError).
         """
 
-    def getBoundingBox(self, subname: str = None, transform=True, view=None, /):
+    def getBoundingBox(self, subname: str = None, transform=True, view=None, /) -> FreeCAD.BoundBox:
         """
         obtain the bounding box of this view object
         getBoundingBox(subname=None, transform=True, view=None)
@@ -343,7 +343,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         switch node of this view provider.
         """
 
-    def getElementColors(self, elementName: str = None, /) -> dict[str, tuple]:
+    def getElementColors(self, elementName: str = None, /) -> dict[str, tuple[float, float, float, float]]:
         """getElementColors(elementName=None) -> dict(elementName:color)"""
 
     def getElementPicked(self, pickPoint, /) -> str:
@@ -902,7 +902,7 @@ class Document(FreeCAD.Persistence):
         """The editing transformation matrix"""
 
     @property
-    def InEditInfo(self) -> tuple | None:
+    def InEditInfo(self) -> tuple[object, str, str, int] | None:
         """A tuple(obj,subname,subElement,editMode) of editing object reference, or None if no object is in edit"""
 
     @property
@@ -1040,7 +1040,7 @@ class MDIViewPy:
         add or set a new active object
         """
 
-    def getActiveObject(self, name: str, resolve=True, /) -> FreeCAD.DocumentObject | tuple | None:
+    def getActiveObject(self, name: str, resolve=True, /) -> FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, FreeCAD.DocumentObject, str] | None:
         """
         getActiveObject(name,resolve=True)
         returns the active object for the given type
@@ -1338,7 +1338,7 @@ class View3DInventorPy:
         add or set a new active object
         """
 
-    def getActiveObject(self, name: str, resolve=True, /) -> FreeCAD.DocumentObject | tuple | None:
+    def getActiveObject(self, name: str, resolve=True, /) -> FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, FreeCAD.DocumentObject, str] | None:
         """
         getActiveObject(name,resolve=True)
         returns the active object for the given type

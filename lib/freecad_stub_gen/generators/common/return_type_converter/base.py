@@ -66,6 +66,12 @@ class ReturnTypeConverterBase:
             case StrWrapper('Py::String' | 'PyUnicode_From' | 'Py::Char'
                             | 'PyUnicode_DecodeUTF8' | 'PYSTRING_FROMSTRING'):
                 return 'str'
+            case StrWrapper('Py::TupleN'):
+                if onlyLiteral:
+                    return 'tuple'
+                else:
+                    return self.getInnerType('tuple', variableName=returnText, decStartPos=0,
+                                             decEndPos=endPos, endPos=endPos)
             case StrWrapper('Py::Tuple' | 'PyTuple_New'):
                 return 'tuple'
             case StrWrapper('Py::List' | 'PyList_New'):
@@ -217,7 +223,11 @@ class ReturnTypeConverterBase:
         (?:>::(?:const_)?iterator)?\s*  # may be iterator or const_iterator
         (?:\b\w+\s*,\s*)*               # there may be multiple declaration for one type
         \b{variableName}\b              # variable name must be separate word
-        (?:\s*=\s*(?P<val>.*);)?        # there may be optional assignment expression 
+        (?:\s*
+            =\s*(?P<val>.*);            # there may be optional assignment expression
+            |
+            \((?P<args>[^;]+)\);        # there may be arguments to constructor
+        )?
         """, re.VERBOSE)
         matches = list(variableDecReg.finditer(self.functionBody, endpos=endPos))
         for declarationMatch in reversed(matches):
@@ -229,6 +239,11 @@ class ReturnTypeConverterBase:
                 if assignValue := declarationMatch.group('val'):
                     #  we can try resolve real type by checking right side
                     varType = self._getReturnTypeForText(assignValue, endPos, onlyLiteral=True)
+                elif varTypeDec != 'auto' and (argsValue := declarationMatch.group('args')):
+                    funArgs = list(generateExpressionUntilChar(
+                        argsValue, 0, ',', bracketL='(', bracketR=')'))
+                    #  we can try resolve real type from constructor argument
+                    varType = self._getReturnTypeForText(funArgs[0], endPos, onlyLiteral=False)
                 else:
                     varType = Empty
 
@@ -247,8 +262,8 @@ class ReturnTypeConverterBase:
                         case Empty.value:
                             varType = 'None'
 
-            varType = self.getInnerType(
-                varType, variableName, declarationMatch.start(), declarationMatch.end(), endPos)
+            varType = self.getInnerType(varType, variableName, declarationMatch.start(),
+                                        declarationMatch.end(), endPos)
 
             return varType
 
@@ -275,6 +290,6 @@ class ReturnTypeConverterBase:
                     yield varType
 
     def getInnerType(self, varType: str | EmptyType, variableName: str,
-                     declarationStartPos: int, declarationEndPos: int, endPos: int) -> str:
+                     decStartPos: int, decEndPos: int, endPos: int) -> str:
         """Additional search for generic types."""
         return varType

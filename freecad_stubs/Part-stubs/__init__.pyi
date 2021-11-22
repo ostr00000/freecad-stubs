@@ -6976,7 +6976,7 @@ def joinSubname(sub: str, mapped: str, subElement: str, /) -> str:
     """joinSubname(sub,mapped,subElement) -> subname"""
 
 
-def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matrix = None, needSubElement=None, transform=None, retType: int = None, noElementMap=None, refine=None) -> object | tuple:
+def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matrix = None, needSubElement=None, transform=None, retType: int = None, noElementMap=None, refine=None) -> Part.Shape | tuple[Part.Shape, FreeCAD.Matrix, object]:
     """
     getShape(obj,subname=None,mat=None,needSubElement=False,transform=True,retType=0):
     Obtain the the TopoShape of a given object with SubName reference

@@ -1,39 +1,52 @@
 import re
+from functools import wraps
+from typing import ParamSpec, Callable, TypeVar
 
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import EmptyType, \
-    DictArgument, TypedDictGen
+    DictArgument, TypedDictGen, ArgumentsIter
 from freecad_stub_gen.generators.common.return_type_converter.base import ReturnTypeConverterBase
+
+PAR = ParamSpec('PAR')
+RET = TypeVar('RET')
+
+
+def lazyDec(fun: Callable[PAR, RET]) -> Callable[PAR, Callable[[], RET]]:
+    @wraps(fun)
+    def lazyInner(*args: PAR.args, **kwargs: PAR.kwargs):
+        def callRequired():
+            return fun(*args, **kwargs)
+
+        return callRequired
+
+    return lazyInner
 
 
 class ReturnTypeInnerDict(ReturnTypeConverterBase):
-    def getInnerType(self, varType: str | EmptyType, variableName: str,
-                     declarationStartPos: int, declarationEndPos: int, endPos: int) -> str:
+    def getInnerType(self, varType: str | EmptyType, variableName: str, decStartPos: int,
+                     decEndPos: int, endPos: int) -> str:
         if varType != 'dict':
-            return super().getInnerType(
-                varType, variableName, declarationStartPos, declarationEndPos, endPos)
+            return super().getInnerType(varType, variableName, decStartPos, decEndPos, endPos)
 
-        da = self._getInnerTypePyDictSetItemString(variableName, declarationEndPos, endPos)
-        if not da:
-            da = self._getInnerTypePyDictSetItem(variableName, declarationEndPos, endPos)
-        if not da:
-            da = self._getInnerTypeDictSetItem(variableName, declarationEndPos, endPos)
-        if not da:
-            da = self._getInnerTypeDictAssignLiterals(variableName, declarationEndPos, endPos)
-        if not da:
-            da = self._getInnerTypeDictAssign(variableName, declarationEndPos, endPos)
-
-        if not da:
-            if 'PARAM_PY_DICT' in self.functionBody:
+        for wrapper in (
+                self._getInnerTypePyDictSetItemString(variableName, decEndPos, endPos),
+                self._getInnerTypePyDictSetItem(variableName, decEndPos, endPos),
+                self._getInnerTypeDictSetItem(variableName, decEndPos, endPos),
+                self._getInnerTypeDictAssignLiterals(variableName, decEndPos, endPos),
+                self._getInnerTypeDictAssign(variableName, decEndPos, endPos),
+        ):
+            da: ArgumentsIter = wrapper()
+            if da:
+                varType = str(da)
+                self.requiredImports.update(da.imports)
                 return varType
-            else:
-                raise ValueError("Cannot extract dict inner types.")
 
-        assert da
-        varType = str(da)
-        self.requiredImports.update(da.imports)
-        return varType
+        if 'PARAM_PY_DICT' in self.functionBody:
+            return varType
+        else:
+            raise ValueError("Cannot extract dict inner types.")
 
+    @lazyDec
     def _getInnerTypePyDictSetItemString(self, variableName: str, startPos: int, endPos: int):
         """Example: `PyDict_SetItemString(dict,It->first.c_str(), PyUnicode_FromString(It`"""
         da = DictArgument()
@@ -45,6 +58,7 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
             da.add('str', value)
         return da
 
+    @lazyDec
     def _getInnerTypePyDictSetItem(self, variableName: str, startPos: int, endPos: int):
         """Example: `PyDict_SetItem(pDict, pKey, pValue);`"""
         da = DictArgument()
@@ -57,6 +71,7 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
             da.add(key, value)
         return da
 
+    @lazyDec
     def _getInnerTypeDictSetItem(self, variableName: str, startPos: int, endPos: int):
         """Example: `dict.setItem(it->c_str(), list);`"""
         da = DictArgument()
@@ -80,6 +95,7 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
             return tdg
         return da
 
+    @lazyDec
     def _getInnerTypeDictAssignLiterals(self, variableName: str, startPos: int, endPos: int):
         """Example: `ret["UserFriendlyName"] = strs[0];`"""
         tdg = TypedDictGen(self.functionName)
@@ -91,6 +107,7 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
 
         return tdg
 
+    @lazyDec
     def _getInnerTypeDictAssign(self, variableName: str, startPos: int, endPos: int):
         """Example: `pyRM[AttachEngine::getModeName(rm.first)] = pyListOfCombinations;`"""
         da = DictArgument()

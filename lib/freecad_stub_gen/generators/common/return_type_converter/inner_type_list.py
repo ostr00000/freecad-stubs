@@ -7,15 +7,14 @@ from freecad_stub_gen.generators.common.return_type_converter.base import Return
 
 class ReturnTypeInnerList(ReturnTypeConverterBase):
 
-    def getInnerType(self, varType: str | EmptyType, variableName: str,
-                     declarationStartPos: int, declarationEndPos: int, endPos: int) -> str:
+    def getInnerType(self, varType: str | EmptyType, variableName: str, decStartPos: int,
+                     decEndPos: int, endPos: int) -> str:
         if varType != 'list':
-            return super().getInnerType(
-                varType, variableName, declarationStartPos, declarationEndPos, endPos)
+            return super().getInnerType(varType, variableName, decStartPos, decEndPos, endPos)
 
-        innerTypes = self._getInnerTypeList(variableName, declarationEndPos, endPos)
+        innerTypes = self._getInnerTypeList(variableName, decEndPos, endPos)
         if not innerTypes:
-            innerTypes = self._getInnerTypePyListSetItem(variableName, declarationEndPos, endPos)
+            innerTypes = self._getInnerTypePyListSetItem(variableName, decEndPos, endPos)
 
         if innerTypes:
             varType += f'[{innerTypes}]'

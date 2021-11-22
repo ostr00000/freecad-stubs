@@ -8,28 +8,33 @@ from freecad_stub_gen.generators.common.return_type_converter.base import Return
 
 class ReturnTypeInnerTuple(ReturnTypeConverterBase):
 
-    def getInnerType(self, varType: str | EmptyType, variableName: str,
-                     declarationStartPos: int, declarationEndPos: int, endPos: int) -> str:
+    def getInnerType(self, varType: str | EmptyType, variableName: str, decStartPos: int,
+                     decEndPos: int, endPos: int) -> str:
         if varType != 'tuple':
-            return super().getInnerType(
-                varType, variableName, declarationStartPos, declarationEndPos, endPos)
+            return super().getInnerType(varType, variableName, decStartPos, decEndPos, endPos)
 
-        listTypes = TupleArgument(self._genInnerTypeTupleSetItem(
-            variableName, declarationEndPos, endPos))
-        if not listTypes:
-            listTypes = TupleArgument(self._genInnerTypePyTupleSetItem(
-                variableName, declarationEndPos, endPos))
-        if not listTypes:
-            listTypes = TupleArgument(self._genInnerTypeTupleAssignItem(
-                variableName, declarationEndPos, endPos))
-        if not listTypes:
-            listTypes = TupleArgument(self._genInnerTypeTupleConstructor(
-                variableName, declarationStartPos, endPos))
+        for gen in (
+                self._genInnerTypeTupleConstructorWithoutAssignment(decStartPos, decEndPos),
+                self._genInnerTypeTupleSetItem(variableName, decEndPos, endPos),
+                self._genInnerTypePyTupleSetItem(variableName, decEndPos, endPos),
+                self._genInnerTypeTupleAssignItem(variableName, decEndPos, endPos),
+                self._genInnerTypeTupleConstructor(variableName, decStartPos, endPos),
+        ):
+            if tupleArg := TupleArgument(gen):
+                varType = str(tupleArg)
+                self.requiredImports.update(tupleArg.imports)
+                return varType
 
-        assert listTypes, "Cannot find inner type for tuple"
-        varType = str(listTypes)
-        self.requiredImports.update(listTypes.imports)
-        return varType
+        raise ValueError("Cannot find inner type for tuple")
+
+    def _genInnerTypeTupleConstructorWithoutAssignment(self, startPos:int, endPos: int):
+        """Py::TupleN(Py::Object(v.first->getPyObject(),true),Py::String(v.second))"""
+        regex = re.compile(r'TupleN\s*\(([^;]+)\)')
+        if match := regex.search(self.functionBody, startPos, endPos):
+            funArgs = list(generateExpressionUntilChar(
+                match.group(1), 0, ',', bracketL='(', bracketR=')'))
+            for arg in funArgs:
+                yield self._getReturnTypeForText(arg, endPos=endPos)
 
     def _genInnerTypeTupleSetItem(self, variableName: str, startPos: int, endPos: int):
         """Example: `list.setItem(0, Py::Float(7.0));`"""
@@ -77,7 +82,7 @@ class ReturnTypeInnerTuple(ReturnTypeConverterBase):
 
     def _genInnerTypeTupleConstructor(self, variableName: str, startPos: int, endPos: int):
         """Example: `Py::TupleN list(Py::Float(7.0), Py::Float(7.0));`"""
-        regex = re.compile(rf'TupleN\s*{variableName}\s*\(([^;]+)\);')
+        regex = re.compile(rf'TupleN\s+{variableName}\s*\(([^;]+)\);')
         if match := regex.search(self.functionBody, startPos, endpos=endPos):
             funArgs = list(generateExpressionUntilChar(
                 match.group(1), 0, ',', bracketL='(', bracketR=')'))

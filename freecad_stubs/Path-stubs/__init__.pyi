@@ -340,7 +340,7 @@ class Area(FreeCAD.BaseClass):
         """List of sections in this area."""
 
     @property
-    def Shapes(self) -> list[tuple]:
+    def Shapes(self) -> list[tuple[Part.Shape, int]]:
         """A list of tuple: [(shape,op), ...] containing the added shapes together with their operation code"""
 
     @property
