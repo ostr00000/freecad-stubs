@@ -139,17 +139,12 @@ Wrn = FreeCAD.Console.PrintWarning
 
     for stubPackage in targetPath.iterdir():
         if stubPackage.is_dir():
-            match stubPackage.name:
-                case 'MeshModule':
-                    newName = 'Mesh-stubs'
-                case 'PathModule':
-                    newName = 'Path-stubs'
-                case 'PointsModule':
-                    newName = 'Points-stubs'
-                case _:
-                    newName = stubPackage.name + '-stubs'
+            if mod := moduleNamespace.getModFromAlias(stubPackage.name):
+                newName = mod
+            else:
+                newName = stubPackage.name
 
-            stubPackage.rename(stubPackage.with_name(newName))
+            stubPackage.rename(stubPackage.with_name(f'{newName}-stubs'))
 
     for additionalPackage in additionalPath.glob('[!_]*.py'):
         targetAdditionalPackage = targetPath / additionalPackage.stem

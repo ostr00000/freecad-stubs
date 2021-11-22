@@ -34,19 +34,26 @@ class _ModuleNamespace:
         'Gui': 'FreeCADGui',
         'Data': 'FreeCAD',
         'Attacher': 'Part',
+    }
 
-        # Some modules have class with the same name therefore we must use alias.
-        # To give an alias to a module, the change following changes must be done in:
-        # 1. here,
-        # 2. Module._genImports,
-        # 3. generateFreeCadStubs in rename loop.
+    # Some modules have class with the same name therefore we must use alias.
+    MODULE_TO_ALIAS = {
         'Mesh': 'MeshModule',
         'Path': 'PathModule',
         'Points': 'PointsModule',
+        # 'Part': 'PartModule',
     }
 
+    def getModFromAlias(self, alias: str, default=None):
+        for k, v in self.MODULE_TO_ALIAS.items():
+            if v == alias:
+                return k
+        return default
+
     def convertNamespaceToModule(self, namespace: str):
-        return self.NAMESPACE_TO_MODULE.get(namespace, namespace)
+        mod = self.NAMESPACE_TO_MODULE.get(namespace, namespace)
+        aliasedMod = self.MODULE_TO_ALIAS.get(mod, mod)
+        return aliasedMod
 
 
 __all__ = ['moduleNamespace']

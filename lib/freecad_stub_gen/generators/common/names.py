@@ -42,7 +42,13 @@ def getClassWithModulesFromNode(currentNode: ET.Element) -> str:
     """
     if name := currentNode.attrib.get('PythonName'):
         assert '.' in name
-        return name
+        if name.count('.') == 1:
+            # we want to map only main module without submodules
+            namespace, name = name.split('.', maxsplit=1)
+            namespace = moduleNamespace.convertNamespaceToModule(namespace)
+            return f'{namespace}.{name}'
+        else:
+            return name
 
     if fullName := importableMap.get(currentNode.attrib['Name']):
         if '.' in fullName:

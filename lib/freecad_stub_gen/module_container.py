@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Iterable
 
 from freecad_stub_gen.config import TARGET_DIR
+from freecad_stub_gen.module_namespace import moduleNamespace
 from freecad_stub_gen.util import OrderedSet
 
 logger = logging.getLogger(__name__)
@@ -32,6 +33,7 @@ class Module:
         assert item
         mainPart, *otherParts = item.split('.', maxsplit=1)
 
+        mainPart = moduleNamespace.getModFromAlias(mainPart, mainPart)
         mod = self.subModules[mainPart]
         if mod.parent is None:
             mod.parent = self
@@ -91,15 +93,9 @@ class Module:
                     imp = f'\n{imp}\n'
                 types.append(imp)
                 continue
-            elif imp == 'MeshModule':
-                sortModule = 'Mesh'
-                imp = 'import Mesh as MeshModule'
-            elif imp == 'PathModule':
-                sortModule = 'Path'
-                imp = 'import Path as PathModule'
-            elif imp == 'PointsModule':
-                sortModule = 'Points'
-                imp = 'import Points as PointsModule'
+            elif modName := moduleNamespace.getModFromAlias(imp):
+                sortModule = modName
+                imp = f'import {modName} as {imp}'
             else:
                 sortModule = imp
                 if 'import' not in imp:
