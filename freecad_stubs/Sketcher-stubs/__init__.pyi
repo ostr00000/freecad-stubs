@@ -297,11 +297,14 @@ class SketchObject(Part.Part2DObject):
     def addConstraint(self, arg1, /) -> int | tuple[int, ...]:
         """
         add a constraint to the sketch
-        Possible exceptions: (IndexError).
+        Possible exceptions: (TypeError, IndexError).
         """
 
     def addCopy(self, arg1, arg2: FreeCAD.Vector, arg3: bool = None, /) -> tuple[int, ...]:
-        """add a copy of geometric objects to the sketch displaced by a vector3d"""
+        """
+        add a copy of geometric objects to the sketch displaced by a vector3d
+        Possible exceptions: (TypeError, ValueError).
+        """
 
     def addExternal(self, arg1: str, arg2: str, /):
         """
@@ -320,13 +323,22 @@ class SketchObject(Part.Part2DObject):
         """
 
     def addMove(self, arg1, arg2: FreeCAD.Vector, /):
-        """Moves the geometric objects in the sketch displaced by a vector3d"""
+        """
+        Moves the geometric objects in the sketch displaced by a vector3d
+        Possible exceptions: (TypeError).
+        """
 
     def addRectangularArray(self, arg1, arg2: FreeCAD.Vector, arg3: bool, arg4: int, arg5: int, arg6: bool = None, arg7: float = None, /):
-        """add an array of size cols by rows where each element is a copy of the selected geometric objects displaced by a vector3d in the cols direction and by a vector perpendicular to it in the rows direction"""
+        """
+        add an array of size cols by rows where each element is a copy of the selected geometric objects displaced by a vector3d in the cols direction and by a vector perpendicular to it in the rows direction
+        Possible exceptions: (TypeError, ValueError).
+        """
 
     def addSymmetric(self, arg1, arg2: int, arg3: int = None, /) -> tuple[int, ...]:
-        """add a symmetric geometric objects to the sketch with respect to a reference point or line"""
+        """
+        add a symmetric geometric objects to the sketch with respect to a reference point or line
+        Possible exceptions: (TypeError).
+        """
 
     def analyseMissingPointOnPointCoincident(self, arg1: float = None, /):
         """
@@ -415,7 +427,7 @@ class SketchObject(Part.Part2DObject):
     def delGeometries(self, arg1, /):
         """
         delete a list of geometric objects from the sketch, including any internal alignment geometry thereof
-        Possible exceptions: (ValueError).
+        Possible exceptions: (TypeError, ValueError).
         """
 
     def delGeometry(self, arg1: int, /):
@@ -602,7 +614,10 @@ class SketchObject(Part.Part2DObject):
         """
 
     def removeAxesAlignment(self, arg1, /):
-        """modifies constraints so that the shape is not forced to be aligned with axes."""
+        """
+        modifies constraints so that the shape is not forced to be aligned with axes.
+        Possible exceptions: (TypeError).
+        """
 
     def renameConstraint(self, arg1: int, arg2: str, /):
         """
@@ -659,7 +674,7 @@ class SketchObject(Part.Part2DObject):
     def setVirtualSpace(self, arg1, arg2: bool, /):
         """
         set the VirtualSpace status of a constraint
-        Possible exceptions: (ValueError).
+        Possible exceptions: (TypeError, ValueError).
         """
 
     def solve(self) -> int:
@@ -730,10 +745,16 @@ class Sketch(FreeCAD.Persistence):
         """Resulting shape from the sketch geometry"""
 
     def addConstraint(self, arg1, /) -> tuple[int, ...] | int:
-        """add an constraint object to the sketch"""
+        """
+        add an constraint object to the sketch
+        Possible exceptions: (TypeError).
+        """
 
     def addGeometry(self, arg1, /) -> int | tuple[int, ...]:
-        """add a geometric object to the sketch"""
+        """
+        add a geometric object to the sketch
+        Possible exceptions: (TypeError).
+        """
 
     def clear(self):
         """clear the sketch"""

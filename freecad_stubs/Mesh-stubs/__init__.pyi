@@ -93,12 +93,16 @@ class Facet(FreeCAD.PyObjectBase):
         A triangle is considered deformed if an angle is less than MinAngle
         or higher than MaxAngle.
         The two angles are given in radian.
+              
+        Possible exceptions: (RuntimeError).
         """
 
     def isDegenerated(self, float: float = None, /) -> bool:
         """
         isDegenerated([float]) -> boolean
         Returns true if the facet is degenerated, otherwise false.
+              
+        Possible exceptions: (RuntimeError).
         """
 
     def unbound(self):
@@ -713,6 +717,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         """
         Smooth the mesh
         smooth([iteration=1,maxError=FLT_MAX])
+        Possible exceptions: (ValueError).
         """
 
     def snapVertex(self, arg1: int, arg2: FreeCAD.Vector, /):

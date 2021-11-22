@@ -128,10 +128,15 @@ class LinkView(FreeCAD.BaseClass):
         getDetailPath(element): get the 3d path an detail of an element.
 
         Return a tuple(path,detail) for the coin3D SoPath and SoDetail of the element
+                
+        Possible exceptions: (TypeError).
         """
 
     def getElementPicked(self, pickPoint, /) -> str:
-        """getElementPicked(pickPoint): get the element under a 3d pick point."""
+        """
+        getElementPicked(pickPoint): get the element under a 3d pick point. 
+        Possible exceptions: (TypeError).
+        """
 
     def reset(self):
         """Reset the link view and clear the links"""
@@ -279,6 +284,8 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         addProperty(string, string)
         --
         The first argument specifies the type, the second the name of the property.
+                
+        Possible exceptions: (RuntimeError, Exception).
         """
 
     def canDragAndDropObject(self, obj: FreeCAD.DocumentObject, /) -> bool:
@@ -376,6 +383,8 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         removeProperty(string)
         --
         Note, you can only remove user-defined properties, not built-in ones.
+                
+        Possible exceptions: (RuntimeError).
         """
 
     def replaceObject(self, oldObj: FreeCAD.DocumentObject, newObj: FreeCAD.DocumentObject, /) -> int:
@@ -391,6 +400,8 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         setElementColors(colors): set element colors
         --
         colors: color dictionary of type elementName:(r,g,b,a)
+                
+        Possible exceptions: (TypeError).
         """
 
     @typing.overload
@@ -591,6 +602,8 @@ class Command(FreeCAD.PyObjectBase):
         listByShortcut(string, bool bUseRegExp=False) -> list of strings
         --
         Shortcuts are converted to uppercase and spaces removed prior to comparison.
+
+        Possible exceptions: (RuntimeError).
         """
 
     def resetShortcut(self) -> bool:
@@ -1009,6 +1022,8 @@ class Document(FreeCAD.Persistence):
         toggleTreeItem(DocObject,[flag=0]) -> None
         --
         flag can be 0:Toggle, 1:Collaps, 2:Expand
+
+        Possible exceptions: (RuntimeError).
         """
 
     def update(self):

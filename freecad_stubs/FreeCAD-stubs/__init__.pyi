@@ -219,6 +219,7 @@ class GeoFeature(FreeCAD.DocumentObject):
         Returns the placement of the object in the global coordinate space, respecting all stacked relationships. 
                           Note: This function is not available during recompute, as there the placements of parents can change 
                           after the execution of this object, rendering the result wrong.
+        Possible exceptions: (RuntimeError).
         """
 
     def getPropertyNameOfGeometry(self) -> str | None:
@@ -361,6 +362,8 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         addProperty(string, string) -- Add a generic property.
                             The first argument specifies the type, the second the
                             name of the property.
+                
+        Possible exceptions: (RuntimeError, Exception).
         """
 
     def adjustRelativeLinks(self, parent: FreeCAD.DocumentObject, recursive=True, /) -> bool:
@@ -396,6 +399,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         Returns the GeoFeatureGroup, and hence the local coordinate system, the object 
                                   is in or None if it is not part of a group. Note that an object can only be 
                                   in a single group, hence only a single return value.
+        Possible exceptions: (RuntimeError).
         """
 
     def getParentGroup(self) -> FreeCAD.DocumentObjectGroup | None:
@@ -403,10 +407,14 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         Returns the group the object is in or None if it is not part of a group. 
                                   Note that an object can only be in a single group, hence only a single return 
                                   value.
+        Possible exceptions: (RuntimeError).
         """
 
     def getPathsByOutList(self, arg1: FreeCAD.DocumentObject, /) -> list[list]:
-        """Get all paths from this object to another object following the OutList."""
+        """
+        Get all paths from this object to another object following the OutList.
+        Possible exceptions: (RuntimeError).
+        """
 
     def getStatusString(self) -> str:
         """
@@ -414,6 +422,8 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         If the object is invalid its error description will be returned.
         If the object is valid but touched then 'Touched' will be returned,
         'Valid' otherwise.
+
+        Possible exceptions: (RuntimeError).
         """
 
     def getSubObject(self, subname, retType: int = 0, matrix=None, transform=True, depth: int = 0) -> object | FreeCAD.Placement | FreeCAD.Matrix | tuple[object, FreeCAD.Matrix, object] | tuple[object, object, 'object', FreeCAD.Placement, FreeCAD.Matrix, FreeCAD.Placement, FreeCAD.Matrix, tuple[object, FreeCAD.Matrix, object]]:
@@ -467,18 +477,26 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         """
 
     def isValid(self) -> bool:
-        """Returns True if the object is valid, False otherwise"""
+        """
+        Returns True if the object is valid, False otherwise
+        Possible exceptions: (RuntimeError).
+        """
 
     def purgeTouched(self):
         """Mark the object as unchanged"""
 
     def recompute(self, recursive=False, /) -> bool:
-        """recompute(recursive=False): Recomputes this object"""
+        """
+        recompute(recursive=False): Recomputes this object
+        Possible exceptions: (RuntimeError).
+        """
 
     def removeProperty(self, string: str, /) -> bool:
         """
         removeProperty(string) -- Remove a generic property.
                             Note, you can only remove user-defined properties but not built-in ones.
+                
+        Possible exceptions: (RuntimeError).
         """
 
     def resolve(self, subname: str, /) -> tuple[object, object, str, str]:
@@ -510,13 +528,19 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         """
 
     def setExpression(self, arg1: str, arg2, arg3: str = None, /):
-        """Register an expression for a property"""
+        """
+        Register an expression for a property
+        Possible exceptions: (TypeError).
+        """
 
     def supportedProperties(self) -> list[str]:
         """A list of supported property types"""
 
     def touch(self, arg1: str = None, /):
-        """Mark the object as changed (touched)"""
+        """
+        Mark the object as changed (touched)
+        Possible exceptions: (RuntimeError).
+        """
 
 
 # LinkBaseExtensionPy.xml
@@ -968,11 +992,14 @@ class ExtensionContainer(FreeCAD.PropertyContainer):
     def addExtension(self, arg1: str, arg2=None, /):
         """
         Adds an extension to the object. Requires the string identifier for the python extension as argument
-        Possible exceptions: (DeprecationWarning).
+        Possible exceptions: (Exception, DeprecationWarning).
         """
 
     def hasExtension(self, arg1: str, arg2=None, /) -> bool:
-        """Returns if this object has the specified extension"""
+        """
+        Returns if this object has the specified extension
+        Possible exceptions: (Exception).
+        """
 
 
 # DocumentPy.xml
@@ -1283,6 +1310,7 @@ class Document(FreeCAD.PropertyContainer):
                 to allow Python code to override view provider type. Once bound, and before adding to
                 the document, it will try to call Python binding object's attach(obj) method.
         viewType (String): override the view provider type directly, only effective when attach is False.
+        Possible exceptions: (Exception).
         """
 
     def clearUndos(self):
@@ -1348,7 +1376,10 @@ class Document(FreeCAD.PropertyContainer):
         """
 
     def getTempFileName(self, arg1, /) -> str:
-        """Returns a file name with path in the temp directory of the document."""
+        """
+        Returns a file name with path in the temp directory of the document.
+        Possible exceptions: (TypeError).
+        """
 
     def importLinks(self, object_object_=None, /) -> tuple[object, ...]:
         """
@@ -1377,6 +1408,8 @@ class Document(FreeCAD.PropertyContainer):
               
         object: can either a single object or sequence of objects
         with_dependencies: if True, all internal dependent objects are copied too.
+        
+        Possible exceptions: (Exception).
         """
 
     def openTransaction(self, name=None, /):
@@ -1402,7 +1435,10 @@ class Document(FreeCAD.PropertyContainer):
         """Redo a previously undone transaction"""
 
     def removeObject(self, arg1: str, /):
-        """Remove an object from the document"""
+        """
+        Remove an object from the document
+        Possible exceptions: (Exception).
+        """
 
     def restore(self):
         """Restore the document from disk"""

@@ -292,10 +292,16 @@ class AttachEngine(FreeCAD.BaseClass):
         """downgradeRefType(type): returns next more general type. E.g. downgradeType('Circle') yields 'Curve'."""
 
     def getModeInfo(self, mode: str, /) -> ReturnGetModeInfoDict:
-        """getModeInfo(mode): returns supported reference combinations, user-friendly name, and so on."""
+        """
+        getModeInfo(mode): returns supported reference combinations, user-friendly name, and so on.
+        Possible exceptions: (RuntimeError).
+        """
 
     def getRefTypeInfo(self, type: str, /) -> ReturnGetRefTypeInfoDict:
-        """getRefTypeInfo(type): returns information (dict) on shape type. Keys:'UserFriendlyName', 'TypeIndex', 'Rank'. Rank is the number of times reftype can be downgraded, before it becomes 'Any'."""
+        """
+        getRefTypeInfo(type): returns information (dict) on shape type. Keys:'UserFriendlyName', 'TypeIndex', 'Rank'. Rank is the number of times reftype can be downgraded, before it becomes 'Any'.
+        Possible exceptions: (RuntimeError).
+        """
 
     def getRefTypeOfShape(self, shape: Part.Shape, /) -> str:
         """getRefTypeOfShape(shape): returns shape type as interpreted by AttachEngine. Returns a string."""
@@ -304,7 +310,10 @@ class AttachEngine(FreeCAD.BaseClass):
         """isFittingRefType(type_shape, type_needed): tests if shape type, specified by type_shape (string), fits a type required by attachment mode type_needed (string). e.g. 'Circle' fits a requirement of 'Edge', and 'Curve' doesn't fit if a 'Circle' is required."""
 
     def readParametersFromFeature(self, document_object: FreeCAD.DocumentObject, /) -> None:
-        """readParametersFromFeature(document_object): sets AttachEngine parameters (References, Mode, etc.) by reading out properties of AttachableObject-derived feature."""
+        """
+        readParametersFromFeature(document_object): sets AttachEngine parameters (References, Mode, etc.) by reading out properties of AttachableObject-derived feature.
+        Possible exceptions: (TypeError).
+        """
 
     def suggestModes(self) -> ReturnSuggestModesDict:
         """
@@ -345,6 +354,7 @@ class AttachEngine(FreeCAD.BaseClass):
 
         Warning: if a feature linked by AttachEngine.References was deleted, this method
         will crash FreeCAD.
+        Possible exceptions: (TypeError).
         """
 
 
@@ -2150,6 +2160,8 @@ class Shape(FreeCAD.ComplexGeoData):
         """
         Get the optimal bounding box
         optimalBoundingBox([useTriangulation = True, useShapeTolerance = False]) -> bound box
+        
+        Possible exceptions: (RuntimeError).
         """
 
     def overTolerance(self, value: float, ShapeType: type = None, /) -> tuple[Part.Shape, ...]:

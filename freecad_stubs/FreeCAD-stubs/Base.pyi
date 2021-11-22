@@ -757,6 +757,8 @@ class BoundBox(FreeCAD.PyObjectBase):
         """
         method transformed(Matrix)
         Return a new bounding box with the transformed corner of this bounding box
+			  
+        Possible exceptions: (FloatingPointError).
         """
 
     def united(self, BoundBox: FreeCAD.BoundBox, /) -> FreeCAD.BoundBox:

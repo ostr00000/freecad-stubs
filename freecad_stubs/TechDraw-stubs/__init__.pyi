@@ -310,7 +310,10 @@ class DrawViewSymbol(TechDraw.DrawView):
     def Symbol(self, value: str): ...
 
     def dumpSymbol(self, fileSpec: str, /):
-        """dumpSymbol(fileSpec) - dump the contents of Symbol to a file"""
+        """
+        dumpSymbol(fileSpec) - dump the contents of Symbol to a file
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
 
 # DrawViewCollectionPy.xml
@@ -1038,23 +1041,29 @@ class DrawProjGroup(TechDraw.DrawViewCollection):
     def addProjection(self, string_projectionType: str, /) -> TechDraw.DrawProjGroupItem:
         """
         addProjection(string projectionType) - Add a new Projection Item to this Group. Returns DocObj.
-        Possible exceptions: (TypeError).
+        Possible exceptions: (Exception, TypeError).
         """
 
     def getItemByLabel(self, string_projectionType: str, /) -> TechDraw.DrawProjGroupItem:
         """
         getItemByLabel(string projectionType) - return specified Projection Item
-        Possible exceptions: (TypeError).
+        Possible exceptions: (Exception, TypeError).
         """
 
     def getXYPosition(self, string_projectionType: str, /) -> FreeCAD.Vector:
-        """getXYPosition(string projectionType) - return the AutoDistribute position for specified Projection Item"""
+        """
+        getXYPosition(string projectionType) - return the AutoDistribute position for specified Projection Item
+        Possible exceptions: (Exception).
+        """
 
     def purgeProjections(self):
         """purgeProjections() - Remove all Projection Items from this Group. Returns int number of views in Group (0)."""
 
     def removeProjection(self, string_projectionType: str, /) -> int:
-        """removeProjection(string projectionType) - Remove specified Projection Item from this Group. Returns int number of views in Group."""
+        """
+        removeProjection(string projectionType) - Remove specified Projection Item from this Group. Returns int number of views in Group.
+        Possible exceptions: (Exception).
+        """
 
 
 # DrawParametricTemplatePy.xml
@@ -1262,70 +1271,130 @@ class DrawViewPart(TechDraw.DrawView):
         """clearGeomFormats() - remove all GeomFormats from the View. Returns None."""
 
     def formatGeometricEdge(self, index: int, style: int, weight: float, color, visible: int, /) -> None:
-        """formatGeometricEdge(index, style, weight, color, visible). Returns None."""
+        """
+        formatGeometricEdge(index, style, weight, color, visible). Returns None.
+        Possible exceptions: (TypeError).
+        """
 
     def getCenterLine(self, id: str, /) -> TechDraw.CenterLine | None:
-        """cl = getCenterLine(id) - returns CenterLine with unique id."""
+        """
+        cl = getCenterLine(id) - returns CenterLine with unique id.
+        Possible exceptions: (TypeError).
+        """
 
     def getCenterLineBySelection(self, name: str, /) -> TechDraw.CenterLine | None:
-        """cl = getCenterLineBySelection(name) - returns CenterLine by name (Edge25).  Used in selections"""
+        """
+        cl = getCenterLineBySelection(name) - returns CenterLine by name (Edge25).  Used in selections
+        Possible exceptions: (TypeError).
+        """
 
     def getCosmeticEdge(self, id: str, /) -> TechDraw.CosmeticEdge | None:
-        """ce = getCosmeticEdge(id) - returns CosmeticEdge with unique id."""
+        """
+        ce = getCosmeticEdge(id) - returns CosmeticEdge with unique id.
+        Possible exceptions: (TypeError).
+        """
 
     def getCosmeticEdgeBySelection(self, name: str, /) -> TechDraw.CosmeticEdge | None:
-        """ce = getCosmeticEdgeBySelection(name) - returns CosmeticEdge by name (Edge25).  Used in selections"""
+        """
+        ce = getCosmeticEdgeBySelection(name) - returns CosmeticEdge by name (Edge25).  Used in selections
+        Possible exceptions: (TypeError).
+        """
 
     def getCosmeticVertex(self, id: str, /) -> TechDraw.CosmeticVertex | None:
-        """cv = getCosmeticVertex(id) - returns CosmeticVertex with unique id."""
+        """
+        cv = getCosmeticVertex(id) - returns CosmeticVertex with unique id.
+        Possible exceptions: (TypeError).
+        """
 
     def getCosmeticVertexBySelection(self, name: str, /) -> TechDraw.CosmeticVertex | None:
-        """cv = getCosmeticVertexBySelection(name) - returns CosmeticVertex with name (Vertex6).  Used in selections."""
+        """
+        cv = getCosmeticVertexBySelection(name) - returns CosmeticVertex with name (Vertex6).  Used in selections.
+        Possible exceptions: (TypeError).
+        """
 
     def getEdgeByIndex(self, edgeIndex: int, /) -> Part.Edge:
-        """getEdgeByIndex(edgeIndex). Returns Part.TopoShape."""
+        """
+        getEdgeByIndex(edgeIndex). Returns Part.TopoShape.
+        Possible exceptions: (TypeError, ValueError).
+        """
 
     def getEdgeBySelection(self, edgeName: str, /) -> Part.Edge:
-        """getEdgeBySelection(edgeName). Returns Part.TopoShape."""
+        """
+        getEdgeBySelection(edgeName). Returns Part.TopoShape.
+        Possible exceptions: (TypeError, ValueError).
+        """
 
     def getHiddenEdges(self):
         """getHiddenEdges() - get the hidden edges in the View as Part::TopoShapeEdges"""
 
     def getVertexByIndex(self, vertexIndex: int, /) -> Part.Vertex:
-        """getVertexByIndex(vertexIndex). Returns Part.TopoShape."""
+        """
+        getVertexByIndex(vertexIndex). Returns Part.TopoShape.
+        Possible exceptions: (TypeError, ValueError).
+        """
 
     def getVertexBySelection(self, vertexName: str, /) -> Part.Vertex:
-        """getVertexBySelection(vertexName). Returns Part.TopoShape."""
+        """
+        getVertexBySelection(vertexName). Returns Part.TopoShape.
+        Possible exceptions: (TypeError, ValueError).
+        """
 
     def getVisibleEdges(self):
         """getVisibleEdges() - get the visible edges in the View as Part::TopoShapeEdges"""
 
     def makeCenterLine(self, subNames, mode: int, /) -> str:
-        """makeCenterLine(subNames, mode) - draw a center line on this viewPart. SubNames is a list of n Faces, 2 Edges or 2 Vertices (ex [Face1,Face2,Face3]. Returns unique tag of added CenterLine."""
+        """
+        makeCenterLine(subNames, mode) - draw a center line on this viewPart. SubNames is a list of n Faces, 2 Edges or 2 Vertices (ex [Face1,Face2,Face3]. Returns unique tag of added CenterLine.
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     def makeCosmeticCircle(self, arg1: FreeCAD.Vector, arg2: float, arg3: int = None, arg4: float = None, arg5=None, /) -> str:
-        """tag = makeCosmeticCircle(center, radius) - add a CosmeticEdge at center with radius radius(View coordinates). Returns tag of new CosmeticEdge."""
+        """
+        tag = makeCosmeticCircle(center, radius) - add a CosmeticEdge at center with radius radius(View coordinates). Returns tag of new CosmeticEdge.
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     def makeCosmeticCircleArc(self, arg1: FreeCAD.Vector, arg2: float, arg3: float, arg4: float, arg5: int = None, arg6: float = None, arg7=None, /) -> str:
-        """tag = makeCosmeticCircleArc(center, radius, start, end) - add a CosmeticEdge at center with radius radius(View coordinates) from start angle to end angle. Returns tag of new CosmeticEdge."""
+        """
+        tag = makeCosmeticCircleArc(center, radius, start, end) - add a CosmeticEdge at center with radius radius(View coordinates) from start angle to end angle. Returns tag of new CosmeticEdge.
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     def makeCosmeticLine(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: int = None, arg4: float = None, arg5=None, /) -> str:
-        """tag = makeCosmeticLine(p1, p2) - add a CosmeticEdge from p1 to p2(View coordinates). Returns tag of new CosmeticEdge."""
+        """
+        tag = makeCosmeticLine(p1, p2) - add a CosmeticEdge from p1 to p2(View coordinates). Returns tag of new CosmeticEdge.
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     def makeCosmeticLine3D(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: int = None, arg4: float = None, arg5=None, /) -> str:
-        """tag = makeCosmeticLine3D(p1, p2) - add a CosmeticEdge from p1 to p2(3D coordinates). Returns tag of new CosmeticEdge."""
+        """
+        tag = makeCosmeticLine3D(p1, p2) - add a CosmeticEdge from p1 to p2(3D coordinates). Returns tag of new CosmeticEdge.
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     def makeCosmeticVertex(self, p1: FreeCAD.Vector, /) -> str:
-        """id = makeCosmeticVertex(p1) - add a CosmeticVertex at p1 (View coordinates). Returns unique id vertex."""
+        """
+        id = makeCosmeticVertex(p1) - add a CosmeticVertex at p1 (View coordinates). Returns unique id vertex.
+        Possible exceptions: (TypeError).
+        """
 
     def makeCosmeticVertex3d(self, p1: FreeCAD.Vector, /) -> str:
-        """id = makeCosmeticVertex3d(p1) - add a CosmeticVertex at p1 (3d model coordinates). Returns unique id vertex."""
+        """
+        id = makeCosmeticVertex3d(p1) - add a CosmeticVertex at p1 (3d model coordinates). Returns unique id vertex.
+        Possible exceptions: (TypeError).
+        """
 
     def removeCenterLine(self, cl: str, /) -> None:
-        """removeCenterLine(cl) - remove CenterLine cl from View. Returns None."""
+        """
+        removeCenterLine(cl) - remove CenterLine cl from View. Returns None.
+        Possible exceptions: (TypeError).
+        """
 
     def removeCosmeticEdge(self, ce: str, /) -> None:
-        """removeCosmeticEdge(ce) - remove CosmeticEdge ce from View. Returns None."""
+        """
+        removeCosmeticEdge(ce) - remove CosmeticEdge ce from View. Returns None.
+        Possible exceptions: (TypeError).
+        """
 
     @typing.overload
     def removeCosmeticVertex(self, cv: str, /) -> None: ...
@@ -1335,7 +1404,10 @@ class DrawViewPart(TechDraw.DrawView):
 
     @typing.overload
     def removeCosmeticVertex(self, cv, /) -> None:
-        """removeCosmeticVertex(cv) - remove CosmeticVertex from View. Returns None."""
+        """
+        removeCosmeticVertex(cv) - remove CosmeticVertex from View. Returns None.
+        Possible exceptions: (TypeError).
+        """
 
     def replaceCenterLine(self, cl, /):
         """replaceCenterLine(cl) - replacls CenterLine cl in View. Returns True/False."""

@@ -118,13 +118,22 @@ class Tool(FreeCAD.Persistence):
     def ToolType(self, value: str): ...
 
     def copy(self) -> PathModule.Tool:
-        """returns a copy of this tool"""
+        """
+        returns a copy of this tool
+        Possible exceptions: (TypeError).
+        """
 
     def getToolMaterials(self) -> list[str]:
-        """returns all available tool materials"""
+        """
+        returns all available tool materials
+        Possible exceptions: (TypeError).
+        """
 
     def getToolTypes(self) -> list[str]:
-        """returns all available tool types"""
+        """
+        returns all available tool types
+        Possible exceptions: (TypeError).
+        """
 
     def setFromTemplate(self, xmlString_dictionary: str, /):
         """
@@ -133,7 +142,10 @@ class Tool(FreeCAD.Persistence):
         """
 
     def templateAttrs(self) -> dict[str, int | str | float]:
-        """templateAttrs() ... returns a dictionary with all attributes"""
+        """
+        templateAttrs() ... returns a dictionary with all attributes
+        Possible exceptions: (TypeError).
+        """
 
 
 # VoronoiEdgePy.xml
@@ -189,7 +201,10 @@ class VoronoiEdge(FreeCAD.BaseClass):
         """Begin and End voronoi vertex"""
 
     def toShape(self, arg1: float = None, arg2: float = None, arg3: bool = None, /) -> Part.Edge | None:
-        """Returns a shape for the edge"""
+        """
+        Returns a shape for the edge
+        Possible exceptions: (RuntimeError).
+        """
 
     def __eq__(self, other) -> bool: ...
 
@@ -241,7 +256,10 @@ class VoronoiCell(FreeCAD.BaseClass):
         """Returns the index of the cell's source"""
 
     def getSource(self, arg1: float = None, /) -> FreeCAD.Vector | list[FreeCAD.Vector]:
-        """Returns the Source for the cell"""
+        """
+        Returns the Source for the cell
+        Possible exceptions: (TypeError).
+        """
 
     def __eq__(self, other) -> bool: ...
 
@@ -303,14 +321,20 @@ class Command(FreeCAD.Persistence):
     def setFromGCode(self, arg1: str, /) -> None:
         """
         setFromGCode(): sets the path from the contents of the given GCode string
-        Possible exceptions: (ValueError).
+        Possible exceptions: (TypeError, ValueError).
         """
 
     def toGCode(self) -> str:
-        """toGCode(): returns a GCode representation of the command"""
+        """
+        toGCode(): returns a GCode representation of the command
+        Possible exceptions: (TypeError).
+        """
 
     def transform(self, Placement: FreeCAD.Placement, /) -> FreeCADGui.Command:
-        """transform(Placement): returns a copy of this command transformed by the given placement"""
+        """
+        transform(Placement): returns a copy of this command transformed by the given placement
+        Possible exceptions: (TypeError).
+        """
 
 
 # AreaPy.xml
@@ -441,7 +465,10 @@ class Path(FreeCAD.Persistence):
         """adds a command or a list of commands at the end of the path"""
 
     def copy(self) -> PathModule.Path:
-        """returns a copy of this path"""
+        """
+        returns a copy of this path
+        Possible exceptions: (TypeError).
+        """
 
     def deleteCommand(self, int: int = None, /) -> PathModule.Path:
         """
@@ -459,10 +486,16 @@ class Path(FreeCAD.Persistence):
         """
 
     def setFromGCode(self, arg1: str, /) -> None:
-        """sets the contents of the path from a gcode string"""
+        """
+        sets the contents of the path from a gcode string
+        Possible exceptions: (TypeError).
+        """
 
     def toGCode(self) -> str:
-        """returns a gcode string representing the path"""
+        """
+        returns a gcode string representing the path
+        Possible exceptions: (TypeError).
+        """
 
 
 # TooltablePy.xml
@@ -514,7 +547,10 @@ class Tooltable(FreeCAD.Persistence):
         """adds a tool or a list of tools at the end of the table"""
 
     def copy(self) -> PathModule.Tooltable:
-        """returns a copy of this tooltable"""
+        """
+        returns a copy of this tooltable
+        Possible exceptions: (TypeError).
+        """
 
     def deleteTool(self, int: int = None, /) -> None:
         """
@@ -576,40 +612,76 @@ class Voronoi(FreeCAD.BaseClass):
         """addSegment(vector|vector2d, vector|vector2d) add given segment to input collection"""
 
     def colorColinear(self, arg1: int, arg2: float = None, /) -> None:
-        """assign given color to all edges sourced by two segments almost in line with each other (optional angle in degrees)"""
+        """
+        assign given color to all edges sourced by two segments almost in line with each other (optional angle in degrees)
+        Possible exceptions: (RuntimeError).
+        """
 
     def colorExterior(self, arg1: int, arg2=None, /) -> None:
-        """assign given color to all exterior edges and vertices"""
+        """
+        assign given color to all exterior edges and vertices
+        Possible exceptions: (RuntimeError).
+        """
 
     def colorTwins(self, arg1: int, /) -> None:
-        """assign given color to all twins of edges (which one is considered a twin is arbitrary)"""
+        """
+        assign given color to all twins of edges (which one is considered a twin is arbitrary)
+        Possible exceptions: (RuntimeError).
+        """
 
     def construct(self) -> None:
-        """constructs the voronoi diagram from the input collections"""
+        """
+        constructs the voronoi diagram from the input collections
+        Possible exceptions: (RuntimeError).
+        """
 
     def getPoints(self, arg1: float = None, /) -> list[FreeCAD.Vector]:
-        """Get list of all input points."""
+        """
+        Get list of all input points.
+        Possible exceptions: (RuntimeError).
+        """
 
     def getSegments(self, arg1: float = None, /) -> list[tuple[FreeCAD.Vector, FreeCAD.Vector]]:
-        """Get list of all input segments."""
+        """
+        Get list of all input segments.
+        Possible exceptions: (RuntimeError).
+        """
 
     def numCells(self) -> int:
-        """Return number of cells"""
+        """
+        Return number of cells
+        Possible exceptions: (RuntimeError).
+        """
 
     def numEdges(self) -> int:
-        """Return number of edges"""
+        """
+        Return number of edges
+        Possible exceptions: (RuntimeError).
+        """
 
     def numPoints(self) -> int:
-        """Return number of input points"""
+        """
+        Return number of input points
+        Possible exceptions: (RuntimeError).
+        """
 
     def numSegments(self) -> int:
-        """Return number of input segments"""
+        """
+        Return number of input segments
+        Possible exceptions: (RuntimeError).
+        """
 
     def numVertices(self) -> int:
-        """Return number of vertices"""
+        """
+        Return number of vertices
+        Possible exceptions: (RuntimeError).
+        """
 
     def resetColor(self, arg1: int, /) -> None:
-        """assign color 0 to all elements with the given color"""
+        """
+        assign color 0 to all elements with the given color
+        Possible exceptions: (RuntimeError).
+        """
 
 
 # FeatureAreaPy.xml
@@ -685,7 +757,10 @@ class VoronoiVertex(FreeCAD.BaseClass):
         """Y position"""
 
     def toPoint(self, arg1: float = None, /) -> FreeCAD.Vector | None:
-        """Returns a Vector - or None if not possible"""
+        """
+        Returns a Vector - or None if not possible
+        Possible exceptions: (RuntimeError).
+        """
 
     def __eq__(self, other) -> bool: ...
 

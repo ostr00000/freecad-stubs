@@ -4,6 +4,7 @@ from inspect import Signature
 
 from freecad_stub_gen.generators.common.annotation_parameter import RawRepr
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
+from freecad_stub_gen.generators.common.names import validatePythonValue
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import InvalidReturnType, \
     UnionArguments
 from freecad_stub_gen.generators.common.return_type_converter.base import ReturnTypeConverterBase
@@ -44,11 +45,20 @@ class ReturnTypeConverter(
             yield from retType
             self.requiredImports.update(retType.imports)
 
+    EXCEPTION_SET_STRING_REG = re.compile(r'PyErr_SetString\(([^;]+)\);')
+    EXCEPTION_PY_REG = re.compile(r'throw\s+Py::(?P<exc>\w+)')
+
     def getExceptionsFromCode(self):
-        # TODO P2 throw Py::RuntimeError(e.what());
         exceptions = OrderedSet()
-        regex = re.compile(r'PyErr_SetString\(([^;]+)\);')
-        for exceptionMatch in regex.finditer(self.functionBody):
+
+        for exceptionMatch in self.EXCEPTION_PY_REG.finditer(self.functionBody):
+            exceptionName = exceptionMatch.group('exc')
+            if validatePythonValue(exceptionName) is None:
+                logger.error(f'Invalid exception value: {exceptionName}')
+            else:
+                exceptions.add(exceptionName)
+
+        for exceptionMatch in self.EXCEPTION_SET_STRING_REG.finditer(self.functionBody):
             funArgs = list(generateExpressionUntilChar(
                 exceptionMatch.group(1), 0, ',', bracketL='(', bracketR=')'))
 
