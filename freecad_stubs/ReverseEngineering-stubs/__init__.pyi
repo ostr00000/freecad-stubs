@@ -7,9 +7,9 @@ import Points as PointsModule
 # AppReverseEngineering.cpp
 def approxSurface(Points, UDegree: int = None, VDegree: int = None, NbUPoles: int = None, NbVPoles: int = None, Smooth: bool = None, Weight: float = None, Grad: float = None, Bend: float = None, Curv: float = None, Iterations: int = None, Correction: bool = None, PatchFactor: float = None, UVDirs: tuple = None) -> PartModule.BSplineSurface:
     """
-    approxSurface(Points=,UDegree=3,VDegree=3,NbUPoles=6,NbVPoles=6,Smooth=True,
+    approxSurface(Points=,UDegree=3,VDegree=3,NbUPoles=6,NbVPoles=6,Smooth=True)
     Weight=0.1,Grad=1.0,Bend=0.0,
-    Iterations=5,Correction=True,PatchFactor=1.0)
+    Iterations=5,Correction=True,PatchFactor=1.0
     """
 
 
@@ -74,5 +74,5 @@ def featureSegmentation(Points: PointsModule.Points, KSearch: int = None) -> lis
     """featureSegmentation()."""
 
 
-def sampleConsensus(SacModel: str, Points: PointsModule.Points, Normals=None) -> dict[str, float | tuple[float, ...] | tuple[int, ...]]:
+def sampleConsensus(Points: PointsModule.Points) -> dict[str, float | tuple[float, ...]]:
     """sampleConsensus()."""

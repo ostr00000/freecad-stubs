@@ -3,13 +3,6 @@ import typing
 import FreeCAD
 
 
-class ReturnGetFormatDict(typing.TypedDict):
-    Precision: int
-    NumberFormat: str
-    Denominator: int
-
-
-
 # VectorPy.xml
 class Vector(FreeCAD.PyObjectBase):
     """
@@ -140,14 +133,6 @@ class Vector(FreeCAD.PyObjectBase):
                                   bith points are considered equal.
         """
 
-    def isOnLineSegment(self, Vector, Vector2, /) -> bool:
-        """
-        isOnLineSegment(Vector, Vector)
-        					      checks if Vector is on a line segment
-				
-        Possible exceptions: (TypeError).
-        """
-
     def multiply(self, Float: float, /) -> FreeCAD.Vector:
         """
         multiply(Float)
@@ -260,8 +245,6 @@ class Rotation(FreeCAD.PyObjectBase):
     				-- a Vector (axis) and a float (angle)
     				-- two Vectors (rotation from/to vector)
     				-- three floats (Euler angles) as yaw-pitch-roll in XY'Z'' convention
-                    -- one string and three floats (Euler angles) as euler rotation 
-                       of a given type. Call toEulerSequence() for supported sequence types.
     				-- four floats (Quaternion) where the quaternion is specified as:
     				   q=xi+yj+zk+w, i.e. the last parameter is the real part
     				-- three vectors that define rotated axes directions + an optional
@@ -277,6 +260,9 @@ class Rotation(FreeCAD.PyObjectBase):
     def __init__(self, arg1: FreeCAD.Rotation, /): ...
 
     @typing.overload
+    def __init__(self, arg1: FreeCAD.Vector, arg2: float, /): ...
+
+    @typing.overload
     def __init__(self, arg1: FreeCAD.Matrix, /): ...
 
     @typing.overload
@@ -284,9 +270,6 @@ class Rotation(FreeCAD.PyObjectBase):
 
     @typing.overload
     def __init__(self, arg1: float, arg2: float, arg3: float, /): ...
-
-    @typing.overload
-    def __init__(self, arg1: str, arg2: float, arg3: float, arg4: float, /): ...
 
     @typing.overload
     def __init__(self, arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, arg6: float, arg7: float, arg8: float, arg9: float, arg10: float, arg11: float, arg12: float, arg13: float, arg14: float, arg15: float, arg16: float, /): ...
@@ -298,13 +281,7 @@ class Rotation(FreeCAD.PyObjectBase):
     def __init__(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: FreeCAD.Vector, arg4: str = None, /): ...
-
-    @typing.overload
-    def __init__(self, Axis: FreeCAD.Vector, Degree: float): ...
-
-    @typing.overload
-    def __init__(self, Axis: FreeCAD.Vector, Radian: float):
+    def __init__(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: FreeCAD.Vector, arg4: str = None, /):
         """
         A Rotation using a quaternion.
         				The Rotation object can be created by:
@@ -313,8 +290,6 @@ class Rotation(FreeCAD.PyObjectBase):
         				-- a Vector (axis) and a float (angle)
         				-- two Vectors (rotation from/to vector)
         				-- three floats (Euler angles) as yaw-pitch-roll in XY'Z'' convention
-                        -- one string and three floats (Euler angles) as euler rotation 
-                           of a given type. Call toEulerSequence() for supported sequence types.
         				-- four floats (Quaternion) where the quaternion is specified as:
         				   q=xi+yj+zk+w, i.e. the last parameter is the real part
         				-- three vectors that define rotated axes directions + an optional
@@ -346,18 +321,6 @@ class Rotation(FreeCAD.PyObjectBase):
     @Q.setter
     def Q(self, value: tuple[float, float, float, float]): ...
 
-    @property
-    def RawAxis(self) -> FreeCAD.Vector:
-        """The rotation axis without normalization"""
-
-    def getYawPitchRoll(self) -> tuple[float, float, float]:
-        """
-        getYawPitchRoll() -> list
-        					Get the Euler angles of this rotation
-        					as yaw-pitch-roll in XY'Z'' convention
-                            NOTE: The angles are in degree
-        """
-
     def invert(self):
         """
         invert() -> None
@@ -382,11 +345,10 @@ class Rotation(FreeCAD.PyObjectBase):
                             returns True if all Q values are zero
         """
 
-    def isSame(self, Rotation: FreeCAD.Rotation, tolerance: float = 0, /) -> bool:
+    def isSame(self, Rotation: FreeCAD.Rotation, /) -> bool:
         """
-        isSame(Rotation, [tolerance=0])
-                            Checks if the two quaternions perform the same rotation.
-                            Optionally, a tolerance value greater than zero can be passed.
+        isSame(Rotation)
+                            Checks if the two quaternions perform the same rotation
         """
 
     def multVec(self, Vector: FreeCAD.Vector, /) -> FreeCAD.Vector:
@@ -401,39 +363,11 @@ class Rotation(FreeCAD.PyObjectBase):
         					Multiply this quaternion with another quaternion
         """
 
-    def setEulerAngles(self, seq: str, angle1: float, angle2: float, angle3: float, /):
+    def toEuler(self) -> tuple[float, float, float]:
         """
-        setEulerAngles(seq, angle1, angle2, angle3)
-                        Set the Euler angles in a given sequence for this rotation.
-                        'seq' is the Euler sequence name. You get all possible values with toEulerAngles()
-        """
-
-    def setYawPitchRoll(self, angle1: float, angle2: float, angle3: float, /):
-        """
-        setYawPitchRoll(angle1, angle2, angle3)
-                            Set the Euler angles of this rotation
-                            as yaw-pitch-roll in XY'Z'' convention.
-
-                            NOTE: The angles are in degree
-        """
-
-    def slerp(self, Rotation: FreeCAD.Rotation, Float: float, /) -> FreeCAD.Rotation:
-        """
-        slerp(Rotation, Float) -> Rotation
-        					Spherical linear interpolation of this and a given rotation. The float must be in the range of 0 and 1
-        """
-
-    def toEulerAngles(self, seq: str = '', /) -> list[str] | tuple[float, float, float]:
-        """
-        toEulerAngles(seq='') -> list
-                            Get the Euler angles in a given sequence for this rotation.
-                            Call this function without arguments to output all possible values of 'seq'.
-        """
-
-    def toMatrix(self) -> FreeCAD.Matrix:
-        """
-        toMatrix()
-        					convert the rotation to a matrix representation
+        toEuler(Vector) -> list
+        					Get the Euler angles of this rotation
+        					as yaw-pitch-roll in XY'Z'' convention
         """
 
     def __eq__(self, other) -> bool: ...
@@ -448,42 +382,6 @@ class Rotation(FreeCAD.PyObjectBase):
 
     def __gt__(self, other) -> bool: ...
 
-    def __add__(self, other) -> Rotation: ...
-
-    def __sub__(self, other) -> Rotation: ...
-
-    def __mul__(self, other) -> Rotation: ...
-
-    def __floordiv__(self, other): ...
-
-    def __divmod__(self, other): ...
-
-    def __truediv__(self, other) -> Rotation: ...
-
-    def __pow__(self, power, modulo=None): ...
-
-    def __neg__(self) -> Rotation: ...
-
-    def __pos__(self) -> Rotation: ...
-
-    def __abs__(self) -> Rotation: ...
-
-    def __invert__(self): ...
-
-    def __lshift__(self, other): ...
-
-    def __rshift__(self, other): ...
-
-    def __and__(self, other): ...
-
-    def __xor__(self, other): ...
-
-    def __or__(self, other): ...
-
-    def __int__(self): ...
-
-    def __float__(self): ...
-
 
 # PersistencePy.xml
 class Persistence(FreeCAD.BaseClass):
@@ -493,28 +391,12 @@ class Persistence(FreeCAD.BaseClass):
     def Content(self) -> str:
         """Content of the object in XML representation"""
 
+    @Content.setter
+    def Content(self, value: str): ...
+
     @property
     def MemSize(self) -> int:
         """Memory size of the object in byte"""
-
-    def dumpContent(self, Compression: int = 1-9):
-        """
-        Dumps the content of the object, both the XML representation as well as the additional datafiles  
-        required, into a byte representation. It will be returned as byte array.
-        dumpContent() -- returns a byte array with full content
-        dumpContent(Compression=1-9) -- Sets the data compression from 0 (no) to 9 (max)
-                
-        Possible exceptions: (IOError).
-        """
-
-    def restoreContent(self, buffer, /):
-        """
-        Restore the content of the object from a byte representation as stored by "dumpContent".
-        It could be restored from any python object implementing the buffer protocol.
-        restoreContent(buffer) -- restores from the given byte array
-                
-        Possible exceptions: (TypeError, IOError).
-        """
 
 
 # BoundBoxPy.xml
@@ -524,7 +406,7 @@ class BoundBox(FreeCAD.PyObjectBase):
     Bound box class
     A bounding box is an orthographic cube which is a way to describe outer boundaries.
     You get a bounding box from a lot of 3D types. It is often used to check if a 3D
-    entity lies in the range of another object. Checking for bounding interference first
+    entity lies in the range of another object. Checking for boundig interference first
     can save a lot of computing time!
 
     Constructor:
@@ -555,7 +437,7 @@ class BoundBox(FreeCAD.PyObjectBase):
         Bound box class
         A bounding box is an orthographic cube which is a way to describe outer boundaries.
         You get a bounding box from a lot of 3D types. It is often used to check if a 3D
-        entity lies in the range of another object. Checking for bounding interference first
+        entity lies in the range of another object. Checking for boundig interference first
         can save a lot of computing time!
 
         Constructor:
@@ -838,13 +720,6 @@ class Placement(FreeCAD.PyObjectBase):
     def Base(self, value: FreeCAD.Vector): ...
 
     @property
-    def Matrix(self) -> FreeCAD.Matrix:
-        """Set/get matrix representation of this placement"""
-
-    @Matrix.setter
-    def Matrix(self, value: FreeCAD.Matrix): ...
-
-    @property
     def Rotation(self) -> FreeCAD.Rotation:
         """Orientation of the placement expressed as rotation"""
 
@@ -887,53 +762,10 @@ class Placement(FreeCAD.PyObjectBase):
         					Multiply this placement with another placement
         """
 
-    def pow(self, t: float, shorten: bool = True, /) -> FreeCAD.Placement:
-        """
-        pow(t, shorten = true): raise this placement to real power using ScLERP interpolation.
-                            If 'shorten' is true, ensures rotation quaternion is net positive, to make the path shorter.
-                            Also available as ** operator.
-        """
-
-    def rotate(self, center, axis, degree: float, /):
-        """
-        rotate(center,axis,degree) - rotate the current placement around center and axis with degree
-                        This method is compatible with TopoShape.rotate()
-        """
-
-    def sclerp(self, placement2: FreeCAD.Placement, t: float, shorten: bool = True, /) -> FreeCAD.Placement:
-        """
-        sclerp(placement2, t, shorten = True): interpolate between self and placement2.
-                            Interpolation is a continuous motion along a helical path, made of equal transforms if discretized.
-                            t = 0.0 - return self. t = 1.0 - return placement2. t can also be outside of 0..1 range, for extrapolation.
-                            If quaternions of rotations of the two placements differ in sign, the interpolation will 
-                             take a long path. If 'shorten' is true, the signs are harmonized before interpolation, and the 
-                             interpolation takes the shorter path.
-        """
-
-    def slerp(self, arg1: FreeCAD.Placement, arg2: float, /) -> FreeCAD.Placement:
-        """
-        slerp(placement2, t, shorten = True): interpolate between self and placement2.
-                            This function performs independent interpolation of rotation and movement.
-                            Result of such interpolation might be not what application expects, thus this
-                            tool might be considered for simple cases or for interpolating between small intervals.
-                    
-                            For more complex cases you better use the advanced sclerp() function.
-        """
-
     def toMatrix(self) -> FreeCAD.Matrix:
         """
         toMatrix()
         					convert the placement to a matrix representation
-        """
-
-    @typing.overload
-    def translate(self, Vector, /): ...
-
-    @typing.overload
-    def translate(self):
-        """
-        translate(Vector) 
-        					alias to move(), to be compatible with TopoShape.translate()
         """
 
     def __eq__(self, other) -> bool: ...
@@ -947,42 +779,6 @@ class Placement(FreeCAD.PyObjectBase):
     def __ge__(self, other) -> bool: ...
 
     def __gt__(self, other) -> bool: ...
-
-    def __add__(self, other) -> Placement: ...
-
-    def __sub__(self, other) -> Placement: ...
-
-    def __mul__(self, other) -> Placement: ...
-
-    def __floordiv__(self, other): ...
-
-    def __divmod__(self, other): ...
-
-    def __truediv__(self, other) -> Placement: ...
-
-    def __pow__(self, power, modulo=None): ...
-
-    def __neg__(self) -> Placement: ...
-
-    def __pos__(self) -> Placement: ...
-
-    def __abs__(self) -> Placement: ...
-
-    def __invert__(self): ...
-
-    def __lshift__(self, other): ...
-
-    def __rshift__(self, other): ...
-
-    def __and__(self, other): ...
-
-    def __xor__(self, other): ...
-
-    def __or__(self, other): ...
-
-    def __int__(self): ...
-
-    def __float__(self): ...
 
 
 # UnitPy.xml
@@ -1041,12 +837,8 @@ class Unit(FreeCAD.PyObjectBase):
          Unit(Unit)                    -- copy constructor
          Unit(string)                  -- parse the string for units
         
-        Possible exceptions: (RuntimeError, OverflowError, TypeError).
+        Possible exceptions: (TypeError).
         """
-
-    @property
-    def Signature(self) -> tuple[int, int, int, int, int, int, int, int]:
-        """Returns the signature."""
 
     @property
     def Type(self) -> str:
@@ -1154,11 +946,11 @@ class Quantity(FreeCAD.PyObjectBase):
         """
 
     @property
-    def Format(self) -> ReturnGetFormatDict:
+    def Format(self) -> tuple[int, str]:
         """Format of the Quantity"""
 
     @Format.setter
-    def Format(self, value: dict): ...
+    def Format(self, value: tuple): ...
 
     @property
     def Unit(self) -> FreeCAD.Unit:
@@ -1229,13 +1021,6 @@ class Quantity(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError, ValueError).
         """
 
-    def toStr(self, decimals: int = None, /) -> str:
-        """
-        toStr([decimals])
-                  returns a string representation rounded to number of decimals. If no decimals are specified then
-                  the internal precision is used
-        """
-
     def __eq__(self, other) -> bool: ...
 
     def __ne__(self, other) -> bool: ...
@@ -1298,7 +1083,7 @@ class BaseClass(FreeCAD.PyObjectBase):
         """Is the type of the FreeCAD object with module domain"""
 
     def getAllDerivedFrom(self) -> list[str]:
-        """Returns all descendants"""
+        """Returns all descentences"""
 
     def isDerivedFrom(self, arg1: str, /) -> bool:
         """Returns true if given type is a father"""
@@ -1452,12 +1237,6 @@ class Matrix(FreeCAD.PyObjectBase):
         Compute the determinant of the matrix
         """
 
-    def hasScale(self, tol: float = None, /) -> int:
-        """
-        hasScale(tol=None)
-        Return 0 is no scale factor, 1 for uniform scaling, -1 for non-uniform scaling.
-        """
-
     def inverse(self) -> FreeCAD.Matrix:
         """
         inverse() -> Matrix
@@ -1490,12 +1269,6 @@ class Matrix(FreeCAD.PyObjectBase):
         """
         move(Vector)
         Move the matrix along the vector
-        """
-
-    def multVec(self, Vector: FreeCAD.Vector, /) -> FreeCAD.Vector:
-        """
-        multVec(Vector) -> Vector
-        Compute the transformed vector using the matrix
         """
 
     @typing.overload
@@ -1703,80 +1476,6 @@ class CoordinateSystem(FreeCAD.PyObjectBase):
         """
         transformTo(Vector)
         Computes the coordinates of the point in coordinates of this system
-        """
-
-
-# TypePy.xml
-class TypeId(FreeCAD.PyObjectBase):
-    """
-    This class can be imported.
-    This is the Type class
-    """
-
-    @property
-    def Key(self) -> int:
-        """The key of the type id"""
-
-    @property
-    def Module(self) -> str:
-        """Module in which this class is defined"""
-
-    @property
-    def Name(self) -> str:
-        """The name of the type id"""
-
-    def createInstance(self) -> FreeCAD.BaseClass:
-        """Creates an instance of this type"""
-
-    @staticmethod
-    def createInstanceByName(arg0: str, arg1: bool = None, /) -> FreeCAD.BaseClass:
-        """Creates an instance of the named type"""
-
-    @staticmethod
-    def fromKey(arg0: int, /) -> FreeCAD.TypeId:
-        """Returns a type object by key"""
-
-    @staticmethod
-    def fromName(arg0: str, /) -> FreeCAD.TypeId:
-        """Returns a type object by name"""
-
-    def getAllDerived(self) -> list[FreeCAD.TypeId]:
-        """Returns all descendants"""
-
-    @staticmethod
-    @typing.overload
-    def getAllDerivedFrom(arg0: str, /) -> list[FreeCAD.TypeId]: ...
-
-    @staticmethod
-    @typing.overload
-    def getAllDerivedFrom(arg0: FreeCAD.TypeId, /) -> list[FreeCAD.TypeId]:
-        """
-        Returns all descendants
-        Possible exceptions: (TypeError).
-        """
-
-    @staticmethod
-    def getBadType() -> FreeCAD.TypeId:
-        """Returns an invalid type id"""
-
-    @staticmethod
-    def getNumTypes() -> int:
-        """Returns the number of type ids"""
-
-    def getParent(self) -> FreeCAD.TypeId:
-        """Returns the parent type id"""
-
-    def isBad(self) -> bool:
-        """Checks if the type id is invalid"""
-
-    @typing.overload
-    def isDerivedFrom(self, arg1: str, /) -> bool: ...
-
-    @typing.overload
-    def isDerivedFrom(self, arg1: FreeCAD.TypeId, /) -> bool:
-        """
-        Returns true if given type is a father
-        Possible exceptions: (TypeError).
         """
 
 

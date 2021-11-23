@@ -43,14 +43,6 @@ def getSchema() -> int:
     """
 
 
-def setSchema(int: int, /):
-    """
-    setSchema(int) -> None
-
-    Sets the current schema to the given number, if possible
-    """
-
-
 def schemaTranslate(Quantity: FreeCAD.Quantity, int: int, /) -> tuple[str, float, str]:
     """
     schemaTranslate(Quantity, int) -> tuple

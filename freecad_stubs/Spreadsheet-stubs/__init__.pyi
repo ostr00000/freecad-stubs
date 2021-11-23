@@ -1,5 +1,3 @@
-import typing
-
 import FreeCAD
 import Spreadsheet
 
@@ -11,34 +9,32 @@ class Sheet(FreeCAD.DocumentObject):
     @property
     def cells(self) -> Spreadsheet.Sheet:
         """
+        [Prop_ReadOnly] Property is read-only in the editor.
         [Prop_Hidden] Property won't appear in the editor.
         Property group: Spreadsheet.
         Property TypeId: Spreadsheet::PropertySheet.
         Cell contents.
         """
 
-    @cells.setter
-    def cells(self, value: Spreadsheet.Sheet): ...
-
     @property
     def columnWidths(self) -> Spreadsheet.PropertyColumnWidths:
         """
         [Prop_ReadOnly] Property is read-only in the editor.
         [Prop_Hidden] Property won't appear in the editor.
-        [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Spreadsheet.
         Property TypeId: Spreadsheet::PropertyColumnWidths.
         Column widths.
         """
 
     @property
-    def rowHeights(self) -> Spreadsheet.PropertyRowHeights:
+    def docDeps(self) -> list[FreeCAD.DocumentObject | None]:
         """
         [Prop_ReadOnly] Property is read-only in the editor.
+        [Prop_Transient] Property content won't be saved to file, but still saves name, type and status.
         [Prop_Hidden] Property won't appear in the editor.
         Property group: Spreadsheet.
-        Property TypeId: Spreadsheet::PropertyRowHeights.
-        Row heights.
+        Property TypeId: App::PropertyLinkList.
+        Dependencies.
         """
 
     @property
@@ -46,7 +42,6 @@ class Sheet(FreeCAD.DocumentObject):
         """
         [Prop_ReadOnly] Property is read-only in the editor.
         [Prop_Hidden] Property won't appear in the editor.
-        [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Spreadsheet.
         Property TypeId: Spreadsheet::PropertyRowHeights.
         Row heights.
@@ -64,8 +59,11 @@ class Sheet(FreeCAD.DocumentObject):
     def exportFile(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, /) -> bool:
         """Export file from spreadsheet"""
 
-    def get(self, arg1: str, arg2: str = None, /) -> tuple[FreeCAD.Property, ...] | FreeCAD.Property:
-        """Get evaluated cell contents"""
+    def get(self, arg1: str, /) -> FreeCAD.Property:
+        """
+        Get evaluated cell contents
+        Possible exceptions: (ValueError).
+        """
 
     def getAlias(self, arg1: str, /) -> str | None:
         """
@@ -139,14 +137,6 @@ class Sheet(FreeCAD.DocumentObject):
     def mergeCells(self, arg1: str, /):
         """Merge given cell area into one cell"""
 
-    def recomputeCells(self, from_: str, to: str = None, /):
-        """
-        recomputeCells(from, to=None)
-
-        Manually recompute cells in the given range with the given order without
-        following dependency order.
-        """
-
     def removeColumns(self, arg1: str, arg2: int, /):
         """Remove a given number of columns from the spreadsheet."""
 
@@ -212,54 +202,3 @@ class Sheet(FreeCAD.DocumentObject):
         Split a previously merged cell
         Possible exceptions: (ValueError).
         """
-
-    def touchCells(self, from_: str, to: str = None, /):
-        """touchCells(from, to=None): touch cells in the given range"""
-
-
-# PropertyRowHeightsPy.xml
-class PropertyRowHeights(FreeCAD.Persistence):
-    """Internal spreadsheet object"""
-
-
-# PropertyColumnWidthsPy.xml
-class PropertyColumnWidths(FreeCAD.Persistence):
-    """Internal spreadsheet object"""
-
-
-# PropertySheetPy.xml
-class PropertySheet(FreeCAD.Persistence):
-    """Internal spreadsheet object"""
-
-
-# SpreadsheetView.cpp
-class SheetViewPy:
-    """Python binding class for the Sheet view class"""
-
-    def selectedRanges(self) -> list[str]:
-        """selectedRanges(): Get a list of all selected ranges"""
-
-    def selectedCells(self) -> list[str]:
-        """selectedCells(): Get a list of all selected cells"""
-
-    @typing.overload
-    def select(self, cell: str, flags: int, /) -> None: ...
-
-    @typing.overload
-    def select(self, topLeft: str, bottomRight: str, flags: int, /) -> None:
-        """
-        select(cell,flags): Select (or deselect) the given cell, applying QItemSelectionModel.SelectionFlags
-        select(topLeft,bottomRight,flags): Select (or deselect) the given range, applying QItemSelectionModel.SelectionFlags
-        """
-
-    def currentIndex(self) -> str:
-        """currentIndex(): Get the current index"""
-
-    def setCurrentIndex(self, cell: str, /) -> None:
-        """setCurrentIndex(cell): Set the current index to the named cell (e.g. 'A1')"""
-
-    def getSheet(self) -> Spreadsheet.Sheet:
-        """getSheet()"""
-
-    def cast_to_base(self):
-        """cast_to_base() cast to MDIView class"""

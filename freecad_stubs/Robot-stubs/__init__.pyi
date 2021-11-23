@@ -253,7 +253,7 @@ class RobotObject(FreeCAD.DocumentObject):
         """
         Property group: Robot kinematic.
         Property TypeId: App::PropertyPlacement.
-        Actual base frame of the robot.
+        Actuall base frame of the robot.
         """
 
     @Base.setter

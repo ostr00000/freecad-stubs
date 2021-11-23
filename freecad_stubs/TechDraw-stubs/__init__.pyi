@@ -7,15 +7,13 @@ import TechDraw
 
 DocAndStr_t: typing.TypeAlias = tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]
 LinkSub_t: typing.TypeAlias = FreeCAD.DocumentObject | None | tuple[()] | DocAndStr_t
-StrIO_t: typing.TypeAlias = str | bytes | io.IOBase
 _T = typing.TypeVar("_T")
 Quadruple_t: typing.TypeAlias = tuple[_T, _T, _T, _T]
-Triple_t: typing.TypeAlias = tuple[_T, _T, _T]
 LinkList_t: typing.TypeAlias = None | FreeCAD.DocumentObject
 SequenceDoc_t: typing.TypeAlias = tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]
 LinkSubList_t: typing.TypeAlias = typing.Sequence[SequenceDoc_t | FreeCAD.DocumentObject]
-SequenceNone_t: typing.TypeAlias = tuple[None, typing.Any]
-PropX_t: typing.TypeAlias = None | FreeCAD.DocumentObject | SequenceNone_t | SequenceDoc_t
+StrIO_t: typing.TypeAlias = str | bytes | io.IOBase
+Triple_t: typing.TypeAlias = tuple[_T, _T, _T]
 
 
 # DrawGeomHatchPy.xml
@@ -45,17 +43,6 @@ class DrawGeomHatch(FreeCAD.DocumentObject):
     def NamePattern(self, value: str): ...
 
     @property
-    def PatIncluded(self) -> str:
-        """
-        Property group: GeomHatch.
-        Property TypeId: App::PropertyFileIncluded.
-        Embedded Pat hatch file. System use only.
-        """
-
-    @PatIncluded.setter
-    def PatIncluded(self, value: StrIO_t | tuple[StrIO_t, StrIO_t]): ...
-
-    @property
     def ScalePattern(self) -> float:
         """
         Property group: GeomHatch.
@@ -76,153 +63,6 @@ class DrawGeomHatch(FreeCAD.DocumentObject):
 
     @Source.setter
     def Source(self, value: LinkSub_t): ...
-
-
-# DrawLeaderLinePy.xml
-class DrawLeaderLine(TechDraw.DrawView):
-    """Feature for adding leaders to Technical Drawings"""
-
-    @property
-    def AutoHorizontal(self) -> bool:
-        """
-        Property group: Leader.
-        Property TypeId: App::PropertyBool.
-        Forces last line segment to be horizontal.
-        """
-
-    @AutoHorizontal.setter
-    def AutoHorizontal(self, value: int | bool): ...
-
-    @property
-    def EndSymbol(self) -> int:
-        """Property TypeId: App::PropertyEnumeration."""
-
-    @EndSymbol.setter
-    def EndSymbol(self, value): ...
-
-    @property
-    def LeaderParent(self) -> FreeCAD.DocumentObject | None:
-        """
-        Property group: Leader.
-        Property TypeId: App::PropertyLink.
-        View to which this leader is attached.
-        """
-
-    @LeaderParent.setter
-    def LeaderParent(self, value: FreeCAD.DocumentObject | None): ...
-
-    @property
-    def Scalable(self) -> bool:
-        """
-        Property group: Leader.
-        Property TypeId: App::PropertyBool.
-        Scale line with LeaderParent.
-        """
-
-    @Scalable.setter
-    def Scalable(self, value: int | bool): ...
-
-    @property
-    def StartSymbol(self) -> int:
-        """Property TypeId: App::PropertyEnumeration."""
-
-    @StartSymbol.setter
-    def StartSymbol(self, value): ...
-
-    @property
-    def WayPoints(self) -> list[FreeCAD.Vector]:
-        """
-        Property group: Leader.
-        Property TypeId: App::PropertyVectorList.
-        Intermediate points for Leader line.
-        """
-
-    @WayPoints.setter
-    def WayPoints(self, value: typing.Iterable[FreeCAD.Vector | Triple_t[float]] | dict[int, FreeCAD.Vector | Triple_t[float]]): ...
-
-
-# DrawViewAnnotationPy.xml
-class DrawViewAnnotation(TechDraw.DrawView):
-    """Feature for creating and manipulating Technical Drawing Annotation Views"""
-
-    @property
-    def Font(self) -> str:
-        """
-        Property group: Annotation.
-        Property TypeId: App::PropertyFont.
-        Font name.
-        """
-
-    @Font.setter
-    def Font(self, value: str): ...
-
-    @property
-    def LineSpace(self) -> int:
-        """
-        Property group: Annotation.
-        Property TypeId: App::PropertyPercent.
-        Line spacing in %. 100 means the height of a line.
-        """
-
-    @LineSpace.setter
-    def LineSpace(self, value: int): ...
-
-    @property
-    def MaxWidth(self) -> FreeCAD.Quantity:
-        """
-        Property group: Annotation.
-        Property TypeId: App::PropertyLength.
-
-        Maximum width of the annotation block.
-         -1 means no maximum width.
-        """
-
-    @MaxWidth.setter
-    def MaxWidth(self, value: str | float | FreeCAD.Quantity): ...
-
-    @property
-    def Text(self) -> list[str]:
-        """
-        Property group: Annotation.
-        Property TypeId: App::PropertyStringList.
-        Annotation text.
-        """
-
-    @Text.setter
-    def Text(self, value: typing.Iterable[str] | dict[int, str]): ...
-
-    @property
-    def TextColor(self) -> tuple[float, float, float, float]:
-        """
-        Property group: Annotation.
-        Property TypeId: App::PropertyColor.
-        Text color.
-        """
-
-    @TextColor.setter
-    def TextColor(self, value: Triple_t[float] | Quadruple_t[float] | int): ...
-
-    @property
-    def TextSize(self) -> FreeCAD.Quantity:
-        """
-        Property group: Annotation.
-        Property TypeId: App::PropertyLength.
-        Text size.
-        """
-
-    @TextSize.setter
-    def TextSize(self, value: str | float | FreeCAD.Quantity): ...
-
-    @property
-    def TextStyle(self) -> int:
-        """
-        Property group: Annotation.
-        Property TypeId: App::PropertyEnumeration.
-        Text style.
-        """
-
-    @TextStyle.setter
-    def TextStyle(self, value: typing.Literal['Normal', 'Bold', 'Italic', 'Bold-Italic']): ...
 
 
 # DrawViewClipPy.xml
@@ -252,6 +92,17 @@ class DrawViewClip(TechDraw.DrawView):
     def ShowFrame(self, value: int | bool): ...
 
     @property
+    def ShowLabels(self) -> bool:
+        """
+        Property group: Clip Group.
+        Property TypeId: App::PropertyBool.
+        Specifies if View labels appear within the clip area.
+        """
+
+    @ShowLabels.setter
+    def ShowLabels(self, value: int | bool): ...
+
+    @property
     def Views(self) -> list[FreeCAD.DocumentObject | None]:
         """
         Property group: Clip Group.
@@ -276,7 +127,7 @@ class DrawViewClip(TechDraw.DrawView):
     def addView(self, DrawView: FreeCAD.DocumentObject, /):
         """addView(DrawView) - Add a View to this ClipView"""
 
-    def getChildViewNames(self) -> list[str]:
+    def getChildViewNames(self) -> list:
         """getChildViewNames() - get a list of the DrawViews in this ClipView"""
 
     def removeView(self, DrawView: FreeCAD.DocumentObject, /):
@@ -301,6 +152,7 @@ class DrawViewSymbol(TechDraw.DrawView):
     @property
     def Symbol(self) -> str:
         """
+        [Prop_Hidden] Property won't appear in the editor.
         Property group: Drawing view.
         Property TypeId: App::PropertyString.
         The SVG code defining this symbol.
@@ -312,7 +164,7 @@ class DrawViewSymbol(TechDraw.DrawView):
     def dumpSymbol(self, fileSpec: str, /):
         """
         dumpSymbol(fileSpec) - dump the contents of Symbol to a file
-        Possible exceptions: (TypeError, RuntimeError).
+        Possible exceptions: (TypeError, Exception).
         """
 
 
@@ -323,9 +175,9 @@ class DrawViewCollection(TechDraw.DrawView):
     @property
     def Views(self) -> list[FreeCAD.DocumentObject | None]:
         """
-        Property group: Collection.
+        Property group: Drawing view.
         Property TypeId: App::PropertyLinkList.
-        Collection Views.
+        Attached Views.
         """
 
     @Views.setter
@@ -344,285 +196,20 @@ class DrawViewCollection(TechDraw.DrawView):
         """
 
 
-# CosmeticExtensionPy.xml
-class CosmeticExtension(FreeCAD.DocumentObjectExtension):
-    """This object represents cosmetic features for a DrawViewPart."""
-
-    @property
-    def CenterLines(self) -> list[TechDraw.CenterLine]:
-        """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        Property group: Cosmetics.
-        Property TypeId: TechDraw::PropertyCenterLineList.
-        Geometry format Save/Restore.
-        """
-
-    @CenterLines.setter
-    def CenterLines(self, value: typing.Iterable[TechDraw.CenterLine] | dict[int, TechDraw.CenterLine]): ...
-
-    @property
-    def CosmeticEdges(self) -> list[TechDraw.CosmeticEdge]:
-        """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        Property group: Cosmetics.
-        Property TypeId: TechDraw::PropertyCosmeticEdgeList.
-        CosmeticEdge Save/Restore.
-        """
-
-    @CosmeticEdges.setter
-    def CosmeticEdges(self, value: typing.Iterable[TechDraw.CosmeticEdge] | dict[int, TechDraw.CosmeticEdge]): ...
-
-    @property
-    def CosmeticVertexes(self) -> list[TechDraw.CosmeticVertex]:
-        """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        Property group: Cosmetics.
-        Property TypeId: TechDraw::PropertyCosmeticVertexList.
-        CosmeticVertex Save/Restore.
-        """
-
-    @CosmeticVertexes.setter
-    def CosmeticVertexes(self, value: typing.Iterable[TechDraw.CosmeticVertex] | dict[int, TechDraw.CosmeticVertex]): ...
-
-    @property
-    def GeomFormats(self) -> list[TechDraw.GeomFormat]:
-        """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        Property group: Cosmetics.
-        Property TypeId: TechDraw::PropertyGeomFormatList.
-        Geometry format Save/Restore.
-        """
-
-    @GeomFormats.setter
-    def GeomFormats(self, value: typing.Iterable[TechDraw.GeomFormat] | dict[int, TechDraw.GeomFormat]): ...
-
-
-# DrawViewDimExtentPy.xml
-class DrawViewDimExtent(TechDraw.DrawViewDimension):
-    """Feature for creating and manipulating Technical Drawing DimExtents"""
-
-    @property
-    def CosmeticTags(self) -> list[str]:
-        """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        Property TypeId: App::PropertyStringList.
-        Id of cosmetic endpoints.
-        """
-
-    @CosmeticTags.setter
-    def CosmeticTags(self, value: typing.Iterable[str] | dict[int, str]): ...
-
-    @property
-    def DirExtent(self) -> int:
-        """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        Property TypeId: App::PropertyInteger.
-        Horizontal / Vertical.
-        """
-
-    @DirExtent.setter
-    def DirExtent(self, value: int): ...
-
-    @property
-    def Source(self) -> list[tuple[FreeCAD.DocumentObject, list[str]]]:
-        """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        Property TypeId: App::PropertyLinkSubList.
-        View (Edges) to dimension.
-        """
-
-    @Source.setter
-    def Source(self, value: LinkSub_t | LinkList_t | LinkSubList_t): ...
-
-    @property
-    def Source3d(self) -> list[tuple[FreeCAD.DocumentObject, list[str]]]:
-        """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        Property TypeId: App::PropertyLinkSubList.
-        View (Edges) to dimension.
-        """
-
-    @Source3d.setter
-    def Source3d(self, value: LinkSub_t | LinkList_t | LinkSubList_t): ...
-
-    def tbd(self):
-        """tbd() - returns tbd."""
-
-
-# DrawRichAnnoPy.xml
-class DrawRichAnno(TechDraw.DrawView):
-    """Feature for adding rich annotation blocks to Technical Drawings"""
-
-    @property
-    def AnnoParent(self) -> FreeCAD.DocumentObject | None:
-        """
-        Property group: Text Block.
-        Property TypeId: App::PropertyLink.
-        Object to which this annontation is attached.
-        """
-
-    @AnnoParent.setter
-    def AnnoParent(self, value: FreeCAD.DocumentObject | None): ...
-
-    @property
-    def AnnoText(self) -> str:
-        """
-        Property group: Text Block.
-        Property TypeId: App::PropertyString.
-        Annotation text.
-        """
-
-    @AnnoText.setter
-    def AnnoText(self, value: str): ...
-
-    @property
-    def MaxWidth(self) -> float:
-        """
-        Property group: Text Block.
-        Property TypeId: App::PropertyFloat.
-        Width limit before auto wrap.
-        """
-
-    @MaxWidth.setter
-    def MaxWidth(self, value: float): ...
-
-    @property
-    def ShowFrame(self) -> bool:
-        """
-        Property group: Text Block.
-        Property TypeId: App::PropertyBool.
-        Outline rectangle on/off.
-        """
-
-    @ShowFrame.setter
-    def ShowFrame(self, value: int | bool): ...
-
-
-# DrawTilePy.xml
-class DrawTile(FreeCAD.DocumentObject):
-    """Feature for adding tiles to leader lines"""
-
-    @property
-    def TileColumn(self) -> int:
-        """
-        Property group: Tile.
-        Property TypeId: App::PropertyInteger.
-        Column in parent object.
-        """
-
-    @TileColumn.setter
-    def TileColumn(self, value: int): ...
-
-    @property
-    def TileParent(self) -> FreeCAD.DocumentObject | None:
-        """
-        Property group: Tile.
-        Property TypeId: App::PropertyLink.
-        Object to which this tile is attached.
-        """
-
-    @TileParent.setter
-    def TileParent(self, value: FreeCAD.DocumentObject | None): ...
-
-    @property
-    def TileRow(self) -> int:
-        """
-        Property group: Tile.
-        Property TypeId: App::PropertyIntegerConstraint.
-
-        Row in parent object
-         0 for arrow side, -1 for other side.
-        """
-
-    @TileRow.setter
-    def TileRow(self, value: int | Quadruple_t[int]): ...
-
-
 # DrawViewDimensionPy.xml
 class DrawViewDimension(TechDraw.DrawView):
     """Feature for creating and manipulating Technical Drawing Dimensions"""
 
     @property
-    def Arbitrary(self) -> bool:
-        """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        Property group: Format.
-        Property TypeId: App::PropertyBool.
-        Value overridden by user.
-        """
-
-    @Arbitrary.setter
-    def Arbitrary(self, value: int | bool): ...
-
-    @property
-    def ArbitraryTolerances(self) -> bool:
-        """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        Property group: Format.
-        Property TypeId: App::PropertyBool.
-        Tolerance values overridden by user.
-        """
-
-    @ArbitraryTolerances.setter
-    def ArbitraryTolerances(self, value: int | bool): ...
-
-    @property
-    def EqualTolerance(self) -> bool:
-        """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        Property TypeId: App::PropertyBool.
-        If over- and undertolerance are equal.
-        """
-
-    @EqualTolerance.setter
-    def EqualTolerance(self, value: int | bool): ...
-
-    @property
     def FormatSpec(self) -> str:
         """
-        [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Format.
         Property TypeId: App::PropertyString.
-        Dimension format.
+        Dimension Format.
         """
 
     @FormatSpec.setter
     def FormatSpec(self, value: str): ...
-
-    @property
-    def FormatSpecOverTolerance(self) -> str:
-        """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        Property group: Format.
-        Property TypeId: App::PropertyString.
-        Dimension overtolerance format.
-        """
-
-    @FormatSpecOverTolerance.setter
-    def FormatSpecOverTolerance(self, value: str): ...
-
-    @property
-    def FormatSpecUnderTolerance(self) -> str:
-        """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        Property group: Format.
-        Property TypeId: App::PropertyString.
-        Dimension undertolerance format.
-        """
-
-    @FormatSpecUnderTolerance.setter
-    def FormatSpecUnderTolerance(self, value: str): ...
-
-    @property
-    def Inverted(self) -> bool:
-        """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        Property TypeId: App::PropertyBool.
-        The dimensional value is displayed inverted.
-        """
-
-    @Inverted.setter
-    def Inverted(self, value: int | bool): ...
 
     @property
     def MeasureType(self) -> int:
@@ -630,20 +217,6 @@ class DrawViewDimension(TechDraw.DrawView):
 
     @MeasureType.setter
     def MeasureType(self, value: typing.Literal['True', 'Projected']): ...
-
-    @property
-    def OverTolerance(self) -> FreeCAD.Quantity:
-        """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        Property TypeId: App::PropertyQuantityConstraint.
-
-        Overtolerance value
-        If 'Equal Tolerance' is true this is also
-        the negated value for 'Under Tolerance'.
-        """
-
-    @OverTolerance.setter
-    def OverTolerance(self, value: str | float | FreeCAD.Quantity): ...
 
     @property
     def References2D(self) -> list[tuple[FreeCAD.DocumentObject, list[str]]]:
@@ -666,104 +239,11 @@ class DrawViewDimension(TechDraw.DrawView):
     def References3D(self, value: LinkSub_t | LinkList_t | LinkSubList_t): ...
 
     @property
-    def TheoreticalExact(self) -> bool:
-        """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        Property TypeId: App::PropertyBool.
-        If theoretical exact (basic) dimension.
-        """
-
-    @TheoreticalExact.setter
-    def TheoreticalExact(self, value: int | bool): ...
-
-    @property
     def Type(self) -> int:
         """Property TypeId: App::PropertyEnumeration."""
 
     @Type.setter
-    def Type(self, value: typing.Literal['Distance', 'DistanceX', 'DistanceY', 'DistanceZ', 'Radius', 'Diameter', 'Angle', 'Angle3Pt']): ...
-
-    @property
-    def UnderTolerance(self) -> FreeCAD.Quantity:
-        """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        Property TypeId: App::PropertyQuantityConstraint.
-
-        Undertolerance value
-        If 'Equal Tolerance' is true it will be replaced
-        by negative value of 'Over Tolerance'.
-        """
-
-    @UnderTolerance.setter
-    def UnderTolerance(self, value: str | float | FreeCAD.Quantity): ...
-
-    def getAnglePoints(self):
-        """getAnglePoints() - returns list of points for angle Dimension"""
-
-    def getArcPoints(self):
-        """getArcPoints() - returns list of points for circle/arc Dimension"""
-
-    def getArrowPositions(self):
-        """getArrowPositions() - returns list of locations or Dimension Arrowheads. Locations are in unscaled coordinates of parent View"""
-
-    def getLinearPoints(self):
-        """getLinearPoints() - returns list of points for linear Dimension"""
-
-    def getRawValue(self):
-        """getRawValue() - returns Dimension value in mm."""
-
-    def getText(self):
-        """getText() - returns Dimension text."""
-
-
-# CosmeticVertexPy.xml
-class CosmeticVertex(FreeCAD.PyObjectBase):
-    """CosmeticVertex specifies an extra (cosmetic) vertex in Views"""
-
-    @property
-    def Color(self) -> object:
-        """set/return the vertex's colour using a tuple (rgba)."""
-
-    @Color.setter
-    def Color(self, value: object): ...
-
-    @property
-    def Point(self) -> FreeCAD.Vector:
-        """Gives the position of this CosmeticVertex as vector."""
-
-    @property
-    def Show(self) -> bool:
-        """Show/hide the vertex."""
-
-    @property
-    def Size(self) -> float:
-        """set/return the vertex's radius in mm."""
-
-    @Size.setter
-    def Size(self, value: float): ...
-
-    @property
-    def Style(self) -> int:
-        """set/return the vertex's style as integer."""
-
-    @Style.setter
-    def Style(self, value: int): ...
-
-    @property
-    def Tag(self) -> str:
-        """Gives the tag of the CosmeticVertex as string."""
-
-    def clone(self):
-        """
-        Create a clone of this CosmeticVertex
-        Possible exceptions: (TypeError).
-        """
-
-    def copy(self):
-        """
-        Create a copy of this CosmeticVertex
-        Possible exceptions: (TypeError).
-        """
+    def Type(self, value: typing.Literal['Distance', 'DistanceX', 'DistanceY', 'DistanceZ', 'Radius', 'Diameter', 'Angle']): ...
 
 
 # DrawViewPy.xml
@@ -773,7 +253,6 @@ class DrawView(FreeCAD.DocumentObject):
     @property
     def Caption(self) -> str:
         """
-        [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Base.
         Property TypeId: App::PropertyString.
         Short text about the view.
@@ -785,34 +264,31 @@ class DrawView(FreeCAD.DocumentObject):
     @property
     def LockPosition(self) -> bool:
         """
-        [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Base.
         Property TypeId: App::PropertyBool.
-        Lock View position to parent Page or Group.
+        Prevent View from moving in Gui.
         """
 
     @LockPosition.setter
     def LockPosition(self, value: int | bool): ...
 
     @property
-    def Rotation(self) -> FreeCAD.Quantity:
+    def Rotation(self) -> float:
         """
-        [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Base.
-        Property TypeId: App::PropertyAngle.
-        Rotation in degrees counterclockwise.
+        Property TypeId: App::PropertyFloat.
+        Rotation of the view on the page in degrees counterclockwise.
         """
 
     @Rotation.setter
-    def Rotation(self, value: str | float | FreeCAD.Quantity): ...
+    def Rotation(self, value: float): ...
 
     @property
     def Scale(self) -> float:
         """
-        [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Base.
         Property TypeId: App::PropertyFloatConstraint.
-        Scale factor of the view. Scale factors like 1:100 can be written as =1/100.
+        Scale factor of the view.
         """
 
     @Scale.setter
@@ -821,7 +297,6 @@ class DrawView(FreeCAD.DocumentObject):
     @property
     def ScaleType(self) -> int:
         """
-        [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Base.
         Property TypeId: App::PropertyEnumeration.
         Scale Type.
@@ -831,30 +306,26 @@ class DrawView(FreeCAD.DocumentObject):
     def ScaleType(self, value: typing.Literal['Page', 'Automatic', 'Custom']): ...
 
     @property
-    def X(self) -> FreeCAD.Quantity:
+    def X(self) -> float:
         """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        [Prop_NoRecompute] Modified property doesn't touch its container for recompute.
         Property group: Base.
-        Property TypeId: App::PropertyDistance.
-        X position.
+        Property TypeId: App::PropertyFloat.
+        X position of the view on the page in modelling units (mm).
         """
 
     @X.setter
-    def X(self, value: str | float | FreeCAD.Quantity | FreeCAD.Unit): ...
+    def X(self, value: float): ...
 
     @property
-    def Y(self) -> FreeCAD.Quantity:
+    def Y(self) -> float:
         """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        [Prop_NoRecompute] Modified property doesn't touch its container for recompute.
         Property group: Base.
-        Property TypeId: App::PropertyDistance.
-        Y position.
+        Property TypeId: App::PropertyFloat.
+        Y position of the view on the page in modelling units (mm).
         """
 
     @Y.setter
-    def Y(self, value: str | float | FreeCAD.Quantity | FreeCAD.Unit): ...
+    def Y(self, value: float): ...
 
 
 # DrawSVGTemplatePy.xml
@@ -892,66 +363,6 @@ class DrawSVGTemplate(TechDraw.DrawTemplate):
         """setEditFieldContent(EditFieldName, NewContent) - sets a specific Editable Text Field to a new value"""
 
 
-# DrawWeldSymbolPy.xml
-class DrawWeldSymbol(TechDraw.DrawView):
-    """Feature for adding welding tiles to leader lines"""
-
-    @property
-    def AllAround(self) -> bool:
-        """
-        Property group: Weld Symbol.
-        Property TypeId: App::PropertyBool.
-        All Around Symbol on/off.
-        """
-
-    @AllAround.setter
-    def AllAround(self, value: int | bool): ...
-
-    @property
-    def AlternatingWeld(self) -> bool:
-        """
-        Property group: Weld Symbol.
-        Property TypeId: App::PropertyBool.
-        Alternating Weld true/false.
-        """
-
-    @AlternatingWeld.setter
-    def AlternatingWeld(self, value: int | bool): ...
-
-    @property
-    def FieldWeld(self) -> bool:
-        """
-        Property group: Weld Symbol.
-        Property TypeId: App::PropertyBool.
-        Field Weld Symbol on/off.
-        """
-
-    @FieldWeld.setter
-    def FieldWeld(self, value: int | bool): ...
-
-    @property
-    def Leader(self) -> FreeCAD.DocumentObject | None:
-        """
-        Property group: Weld Symbol.
-        Property TypeId: App::PropertyLink.
-        Parent Leader.
-        """
-
-    @Leader.setter
-    def Leader(self, value: FreeCAD.DocumentObject | None): ...
-
-    @property
-    def TailText(self) -> str:
-        """
-        Property group: Weld Symbol.
-        Property TypeId: App::PropertyString.
-        Text at tail of symbol.
-        """
-
-    @TailText.setter
-    def TailText(self, value: str): ...
-
-
 # DrawProjGroupPy.xml
 class DrawProjGroup(TechDraw.DrawViewCollection):
     """Feature for creating and manipulating Technical Drawing Projection Groups"""
@@ -972,22 +383,40 @@ class DrawProjGroup(TechDraw.DrawViewCollection):
         """
         Property group: Distribute.
         Property TypeId: App::PropertyBool.
-        Distribute views automatically or manually.
+        Distribute Views Automatically or Manually.
         """
 
     @AutoDistribute.setter
     def AutoDistribute(self, value: int | bool): ...
 
     @property
-    def ProjectionType(self) -> int:
+    def CubeDirs(self) -> list[FreeCAD.Vector]:
         """
-        Property group: Base.
-        Property TypeId: App::PropertyEnumeration.
-        First or Third angle projection.
+        Property group: Distribute.
+        Property TypeId: App::PropertyVectorList.
+        Current view directions.
         """
 
+    @CubeDirs.setter
+    def CubeDirs(self, value: typing.Iterable[FreeCAD.Vector | Triple_t[float]] | dict[int, FreeCAD.Vector | Triple_t[float]]): ...
+
+    @property
+    def CubeRotations(self) -> list[FreeCAD.Vector]:
+        """
+        Property group: Distribute.
+        Property TypeId: App::PropertyVectorList.
+        Current rotations.
+        """
+
+    @CubeRotations.setter
+    def CubeRotations(self, value: typing.Iterable[FreeCAD.Vector | Triple_t[float]] | dict[int, FreeCAD.Vector | Triple_t[float]]): ...
+
+    @property
+    def ProjectionType(self) -> int:
+        """Property TypeId: App::PropertyEnumeration."""
+
     @ProjectionType.setter
-    def ProjectionType(self, value: typing.Literal['First Angle', 'Third Angle', 'Default']): ...
+    def ProjectionType(self, value: typing.Literal['Default', 'First Angle', 'Third Angle']): ...
 
     @property
     def Source(self) -> list[FreeCAD.DocumentObject | None]:
@@ -1001,42 +430,26 @@ class DrawProjGroup(TechDraw.DrawViewCollection):
     def Source(self, value: LinkList_t): ...
 
     @property
-    def XSource(self) -> list[tuple[FreeCAD.DocumentObject, list[str]]] | list[FreeCAD.DocumentObject]:
-        """
-        Property group: Base.
-        Property TypeId: App::PropertyXLinkList.
-        External 3D Shape to view.
-        """
-
-    @XSource.setter
-    def XSource(self, value: typing.Iterable[PropX_t] | dict[int, PropX_t]): ...
-
-    @property
-    def spacingX(self) -> FreeCAD.Quantity:
+    def spacingX(self) -> float:
         """
         Property group: Distribute.
-        Property TypeId: App::PropertyLength.
-
-        If AutoDistribute is on, this is the horizontal 
-        spacing between the borders of views 
-        (if label width is not wider than the object).
+        Property TypeId: App::PropertyFloat.
+        Horizontal spacing between views.
         """
 
     @spacingX.setter
-    def spacingX(self, value: str | float | FreeCAD.Quantity): ...
+    def spacingX(self, value: float): ...
 
     @property
-    def spacingY(self) -> FreeCAD.Quantity:
+    def spacingY(self) -> float:
         """
         Property group: Distribute.
-        Property TypeId: App::PropertyLength.
-
-        If AutoDistribute is on, this is the vertical 
-        spacing between the borders of views.
+        Property TypeId: App::PropertyFloat.
+        Vertical spacing between views.
         """
 
     @spacingY.setter
-    def spacingY(self, value: str | float | FreeCAD.Quantity): ...
+    def spacingY(self, value: float): ...
 
     def addProjection(self, string_projectionType: str, /) -> TechDraw.DrawProjGroupItem:
         """
@@ -1109,7 +522,7 @@ class DrawViewPart(TechDraw.DrawView):
         """
         Property group: Projection.
         Property TypeId: App::PropertyVector.
-        Projection Plane normal. The direction you are looking from.
+        Projection direction. The direction you are looking from.
         """
 
     @Direction.setter
@@ -1131,7 +544,7 @@ class DrawViewPart(TechDraw.DrawView):
         """
         Property group: HLR Parameters.
         Property TypeId: App::PropertyBool.
-        Show Hidden Hard lines.
+        Hidden Hard lines on/off.
         """
 
     @HardHidden.setter
@@ -1142,7 +555,7 @@ class DrawViewPart(TechDraw.DrawView):
         """
         Property group: HLR Parameters.
         Property TypeId: App::PropertyInteger.
-        Number of iso parameters lines.
+        Number of isoparameters.
         """
 
     @IsoCount.setter
@@ -1153,7 +566,7 @@ class DrawViewPart(TechDraw.DrawView):
         """
         Property group: HLR Parameters.
         Property TypeId: App::PropertyBool.
-        Show Hidden Iso u,v lines.
+        Hidden Iso u,v lines on/off.
         """
 
     @IsoHidden.setter
@@ -1164,7 +577,7 @@ class DrawViewPart(TechDraw.DrawView):
         """
         Property group: HLR Parameters.
         Property TypeId: App::PropertyBool.
-        Show Visible Iso u,v lines.
+        Visible Iso u,v lines on/off.
         """
 
     @IsoVisible.setter
@@ -1186,7 +599,7 @@ class DrawViewPart(TechDraw.DrawView):
         """
         Property group: HLR Parameters.
         Property TypeId: App::PropertyBool.
-        Show Hidden Seam lines.
+        Hidden Seam lines on/off.
         """
 
     @SeamHidden.setter
@@ -1197,7 +610,7 @@ class DrawViewPart(TechDraw.DrawView):
         """
         Property group: HLR Parameters.
         Property TypeId: App::PropertyBool.
-        Show Visible Seam lines.
+        Visible Seam lines on/off.
         """
 
     @SeamVisible.setter
@@ -1208,7 +621,7 @@ class DrawViewPart(TechDraw.DrawView):
         """
         Property group: HLR Parameters.
         Property TypeId: App::PropertyBool.
-        Show Hidden Smooth lines.
+        Hidden Smooth lines on/off.
         """
 
     @SmoothHidden.setter
@@ -1219,7 +632,7 @@ class DrawViewPart(TechDraw.DrawView):
         """
         Property group: HLR Parameters.
         Property TypeId: App::PropertyBool.
-        Show Visible Smooth lines.
+        Visible Smooth lines on/off.
         """
 
     @SmoothVisible.setter
@@ -1235,191 +648,6 @@ class DrawViewPart(TechDraw.DrawView):
 
     @Source.setter
     def Source(self, value: LinkList_t): ...
-
-    @property
-    def XDirection(self) -> FreeCAD.Vector:
-        """
-        Property group: Projection.
-        Property TypeId: App::PropertyVector.
-        Projection Plane X Axis in R3. Rotates/Mirrors View.
-        """
-
-    @XDirection.setter
-    def XDirection(self, value: FreeCAD.Vector | Triple_t[float]): ...
-
-    @property
-    def XSource(self) -> list[tuple[FreeCAD.DocumentObject, list[str]]] | list[FreeCAD.DocumentObject]:
-        """
-        Property group: Projection.
-        Property TypeId: App::PropertyXLinkList.
-        External 3D Shape to view.
-        """
-
-    @XSource.setter
-    def XSource(self, value: typing.Iterable[PropX_t] | dict[int, PropX_t]): ...
-
-    def clearCenterLines(self):
-        """clearCenterLines() - remove all CenterLines from the View. Returns None."""
-
-    def clearCosmeticEdges(self):
-        """clearCosmeticEdges() - remove all CosmeticLines from the View. Returns None."""
-
-    def clearCosmeticVertices(self):
-        """clearCosmeticVertices() - remove all CosmeticVertices from the View. Returns None."""
-
-    def clearGeomFormats(self):
-        """clearGeomFormats() - remove all GeomFormats from the View. Returns None."""
-
-    def formatGeometricEdge(self, index: int, style: int, weight: float, color, visible: int, /) -> None:
-        """
-        formatGeometricEdge(index, style, weight, color, visible). Returns None.
-        Possible exceptions: (TypeError).
-        """
-
-    def getCenterLine(self, id: str, /) -> TechDraw.CenterLine | None:
-        """
-        cl = getCenterLine(id) - returns CenterLine with unique id.
-        Possible exceptions: (TypeError).
-        """
-
-    def getCenterLineBySelection(self, name: str, /) -> TechDraw.CenterLine | None:
-        """
-        cl = getCenterLineBySelection(name) - returns CenterLine by name (Edge25).  Used in selections
-        Possible exceptions: (TypeError).
-        """
-
-    def getCosmeticEdge(self, id: str, /) -> TechDraw.CosmeticEdge | None:
-        """
-        ce = getCosmeticEdge(id) - returns CosmeticEdge with unique id.
-        Possible exceptions: (TypeError).
-        """
-
-    def getCosmeticEdgeBySelection(self, name: str, /) -> TechDraw.CosmeticEdge | None:
-        """
-        ce = getCosmeticEdgeBySelection(name) - returns CosmeticEdge by name (Edge25).  Used in selections
-        Possible exceptions: (TypeError).
-        """
-
-    def getCosmeticVertex(self, id: str, /) -> TechDraw.CosmeticVertex | None:
-        """
-        cv = getCosmeticVertex(id) - returns CosmeticVertex with unique id.
-        Possible exceptions: (TypeError).
-        """
-
-    def getCosmeticVertexBySelection(self, name: str, /) -> TechDraw.CosmeticVertex | None:
-        """
-        cv = getCosmeticVertexBySelection(name) - returns CosmeticVertex with name (Vertex6).  Used in selections.
-        Possible exceptions: (TypeError).
-        """
-
-    def getEdgeByIndex(self, edgeIndex: int, /) -> PartModule.Edge:
-        """
-        getEdgeByIndex(edgeIndex). Returns Part.TopoShape.
-        Possible exceptions: (TypeError, ValueError).
-        """
-
-    def getEdgeBySelection(self, edgeName: str, /) -> PartModule.Edge:
-        """
-        getEdgeBySelection(edgeName). Returns Part.TopoShape.
-        Possible exceptions: (TypeError, ValueError).
-        """
-
-    def getHiddenEdges(self):
-        """getHiddenEdges() - get the hidden edges in the View as Part::TopoShapeEdges"""
-
-    def getVertexByIndex(self, vertexIndex: int, /) -> PartModule.Vertex:
-        """
-        getVertexByIndex(vertexIndex). Returns Part.TopoShape.
-        Possible exceptions: (TypeError, ValueError).
-        """
-
-    def getVertexBySelection(self, vertexName: str, /) -> PartModule.Vertex:
-        """
-        getVertexBySelection(vertexName). Returns Part.TopoShape.
-        Possible exceptions: (TypeError, ValueError).
-        """
-
-    def getVisibleEdges(self):
-        """getVisibleEdges() - get the visible edges in the View as Part::TopoShapeEdges"""
-
-    def makeCenterLine(self, subNames, mode: int, /) -> str:
-        """
-        makeCenterLine(subNames, mode) - draw a center line on this viewPart. SubNames is a list of n Faces, 2 Edges or 2 Vertices (ex [Face1,Face2,Face3]. Returns unique tag of added CenterLine.
-        Possible exceptions: (TypeError, RuntimeError).
-        """
-
-    def makeCosmeticCircle(self, arg1: FreeCAD.Vector, arg2: float, arg3: int = None, arg4: float = None, arg5=None, /) -> str:
-        """
-        tag = makeCosmeticCircle(center, radius) - add a CosmeticEdge at center with radius radius(View coordinates). Returns tag of new CosmeticEdge.
-        Possible exceptions: (TypeError, RuntimeError).
-        """
-
-    def makeCosmeticCircleArc(self, arg1: FreeCAD.Vector, arg2: float, arg3: float, arg4: float, arg5: int = None, arg6: float = None, arg7=None, /) -> str:
-        """
-        tag = makeCosmeticCircleArc(center, radius, start, end) - add a CosmeticEdge at center with radius radius(View coordinates) from start angle to end angle. Returns tag of new CosmeticEdge.
-        Possible exceptions: (TypeError, RuntimeError).
-        """
-
-    def makeCosmeticLine(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: int = None, arg4: float = None, arg5=None, /) -> str:
-        """
-        tag = makeCosmeticLine(p1, p2) - add a CosmeticEdge from p1 to p2(View coordinates). Returns tag of new CosmeticEdge.
-        Possible exceptions: (TypeError, RuntimeError).
-        """
-
-    def makeCosmeticLine3D(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: int = None, arg4: float = None, arg5=None, /) -> str:
-        """
-        tag = makeCosmeticLine3D(p1, p2) - add a CosmeticEdge from p1 to p2(3D coordinates). Returns tag of new CosmeticEdge.
-        Possible exceptions: (TypeError, RuntimeError).
-        """
-
-    def makeCosmeticVertex(self, p1: FreeCAD.Vector, /) -> str:
-        """
-        id = makeCosmeticVertex(p1) - add a CosmeticVertex at p1 (View coordinates). Returns unique id vertex.
-        Possible exceptions: (TypeError).
-        """
-
-    def makeCosmeticVertex3d(self, p1: FreeCAD.Vector, /) -> str:
-        """
-        id = makeCosmeticVertex3d(p1) - add a CosmeticVertex at p1 (3d model coordinates). Returns unique id vertex.
-        Possible exceptions: (TypeError).
-        """
-
-    def removeCenterLine(self, cl: str, /) -> None:
-        """
-        removeCenterLine(cl) - remove CenterLine cl from View. Returns None.
-        Possible exceptions: (TypeError).
-        """
-
-    def removeCosmeticEdge(self, ce: str, /) -> None:
-        """
-        removeCosmeticEdge(ce) - remove CosmeticEdge ce from View. Returns None.
-        Possible exceptions: (TypeError).
-        """
-
-    @typing.overload
-    def removeCosmeticVertex(self, cv: str, /) -> None: ...
-
-    @typing.overload
-    def removeCosmeticVertex(self, cv: TechDraw.CosmeticVertex, /) -> None: ...
-
-    @typing.overload
-    def removeCosmeticVertex(self, cv, /) -> None:
-        """
-        removeCosmeticVertex(cv) - remove CosmeticVertex from View. Returns None.
-        Possible exceptions: (TypeError).
-        """
-
-    def replaceCenterLine(self, cl, /):
-        """replaceCenterLine(cl) - replacls CenterLine cl in View. Returns True/False."""
-
-    def replaceCosmeticEdge(self, ce, /):
-        """replaceCosmeticEdge(ce) - replaces CosmeticEdge ce in View. Returns True/False."""
-
-    def replaceCosmeticVertex(self, cv, /):
-        """rc = replaceCosmeticVertex(cv) - replaces CosmeticVertex in View. Returns True/False."""
-
-    def requestPaint(self):
-        """requestPaint(). Redraw the graphic for this View."""
 
 
 # DrawTemplatePy.xml
@@ -1467,131 +695,6 @@ class DrawTemplate(FreeCAD.DocumentObject):
     def Width(self, value: str | float | FreeCAD.Quantity): ...
 
 
-# CenterLinePy.xml
-class CenterLine(FreeCAD.PyObjectBase):
-    """CenterLine specifies additional mark up edges in a View"""
-
-    @property
-    def Edges(self) -> list[str]:
-        """The names of source edges for this CenterLine."""
-
-    @property
-    def Extension(self) -> float:
-        """The additional length to be added to this CenterLine."""
-
-    @property
-    def Faces(self) -> list[str]:
-        """The names of source Faces for this CenterLine."""
-
-    @property
-    def Flip(self) -> bool:
-        """Reverse the order of points for 2 point CenterLine."""
-
-    @property
-    def Format(self) -> tuple[int, float, object, bool]:
-        """The appearance attributes (style, color, weight, visible) for this CenterLine."""
-
-    @property
-    def HorizShift(self) -> float:
-        """The left/right offset for this CenterLine."""
-
-    @property
-    def Mode(self) -> int:
-        """0 - vert/ 1 - horiz/ 2 - aligned."""
-
-    @property
-    def Points(self) -> list[str]:
-        """The names of source Points for this CenterLine."""
-
-    @property
-    def Rotation(self) -> float:
-        """The rotation of the Centerline in degrees."""
-
-    @property
-    def Tag(self) -> str:
-        """Gives the tag of the CenterLine as string."""
-
-    @property
-    def Type(self) -> int:
-        """0 - face, 1 - 2 line, 2 - 2 point."""
-
-    @property
-    def VertShift(self) -> float:
-        """The up/down offset for this CenterLine."""
-
-    def clone(self):
-        """
-        Create a clone of this centerline
-        Possible exceptions: (TypeError).
-        """
-
-    def copy(self):
-        """
-        Create a copy of this centerline
-        Possible exceptions: (TypeError).
-        """
-
-
-# DrawTileWeldPy.xml
-class DrawTileWeld(TechDraw.DrawTile):
-    """Feature for adding welding tiles to leader lines"""
-
-    @property
-    def CenterText(self) -> str:
-        """
-        Property group: TileWeld.
-        Property TypeId: App::PropertyString.
-        Text above/below symbol.
-        """
-
-    @CenterText.setter
-    def CenterText(self, value: str): ...
-
-    @property
-    def LeftText(self) -> str:
-        """
-        Property group: TileWeld.
-        Property TypeId: App::PropertyString.
-        Text before symbol.
-        """
-
-    @LeftText.setter
-    def LeftText(self, value: str): ...
-
-    @property
-    def RightText(self) -> str:
-        """
-        Property group: TileWeld.
-        Property TypeId: App::PropertyString.
-        Text after symbol.
-        """
-
-    @RightText.setter
-    def RightText(self, value: str): ...
-
-    @property
-    def SymbolFile(self) -> str:
-        """
-        Property group: TileWeld.
-        Property TypeId: App::PropertyFile.
-        Symbol File.
-        """
-
-    @SymbolFile.setter
-    def SymbolFile(self, value: str): ...
-
-    @property
-    def SymbolIncluded(self) -> str:
-        """
-        Property group: TileWeld.
-        Property TypeId: App::PropertyFileIncluded.
-        Embedded Symbol. System use only.
-        """
-
-    @SymbolIncluded.setter
-    def SymbolIncluded(self, value: StrIO_t | tuple[StrIO_t, StrIO_t]): ...
-
-
 # DrawPagePy.xml
 class DrawPage(FreeCAD.DocumentObject):
     """Feature for creating and manipulating Technical Drawing Pages"""
@@ -1599,7 +702,6 @@ class DrawPage(FreeCAD.DocumentObject):
     @property
     def KeepUpdated(self) -> bool:
         """
-        [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Page.
         Property TypeId: App::PropertyBool.
         Keep page in sync with model.
@@ -1609,15 +711,11 @@ class DrawPage(FreeCAD.DocumentObject):
     def KeepUpdated(self, value: int | bool): ...
 
     @property
-    def NextBalloonIndex(self) -> int:
-        """
-        Property group: Page.
-        Property TypeId: App::PropertyInteger.
-        Auto-numbering for Balloons.
-        """
+    def ProjectionType(self) -> int:
+        """Property TypeId: App::PropertyEnumeration."""
 
-    @NextBalloonIndex.setter
-    def NextBalloonIndex(self, value: int): ...
+    @ProjectionType.setter
+    def ProjectionType(self, value: typing.Literal['First Angle', 'Third Angle']): ...
 
     @property
     def ProjectionType(self) -> int:
@@ -1665,9 +763,6 @@ class DrawPage(FreeCAD.DocumentObject):
         Possible exceptions: (TypeError).
         """
 
-    def getAllViews(self):
-        """getAllViews() - returns a list of all the views on page including Views inside Collections"""
-
     def removeView(self, DrawView: FreeCAD.DocumentObject, /) -> int:
         """
         removeView(DrawView) - Remove a View to this Page
@@ -1678,6 +773,17 @@ class DrawPage(FreeCAD.DocumentObject):
 # DrawHatchPy.xml
 class DrawHatch(FreeCAD.DocumentObject):
     """Feature for creating and manipulating Technical Drawing Hatch areas"""
+
+    @property
+    def DirProjection(self) -> FreeCAD.Vector:
+        """
+        Property group: Hatch.
+        Property TypeId: App::PropertyVector.
+        Projection direction when Hatch was defined.
+        """
+
+    @DirProjection.setter
+    def DirProjection(self, value: FreeCAD.Vector | Triple_t[float]): ...
 
     @property
     def HatchPattern(self) -> str:
@@ -1701,17 +807,6 @@ class DrawHatch(FreeCAD.DocumentObject):
     @Source.setter
     def Source(self, value: LinkSub_t): ...
 
-    @property
-    def SvgIncluded(self) -> str:
-        """
-        Property group: Hatch.
-        Property TypeId: App::PropertyFileIncluded.
-        Embedded SVG hatch file. System use only.
-        """
-
-    @SvgIncluded.setter
-    def SvgIncluded(self, value: StrIO_t | tuple[StrIO_t, StrIO_t]): ...
-
 
 # DrawProjGroupItemPy.xml
 class DrawProjGroupItem(TechDraw.DrawViewPart):
@@ -1722,7 +817,7 @@ class DrawProjGroupItem(TechDraw.DrawViewPart):
         """
         Property group: Base.
         Property TypeId: App::PropertyVector.
-        Deprecated. Use XDirection.
+        Controls rotation of item in view. .
         """
 
     @RotationVector.setter
@@ -1739,70 +834,8 @@ class DrawProjGroupItem(TechDraw.DrawViewPart):
         """autoPosition() - Move to AutoDistribute/Unlocked position on Page. Returns none."""
 
 
-# CosmeticEdgePy.xml
-class CosmeticEdge(FreeCAD.PyObjectBase):
-    """CosmeticEdge specifies an extra (cosmetic) edge in Views"""
-
-    @property
-    def Center(self) -> FreeCAD.Vector:
-        """Gives the position of center point of this CosmeticEdge as vector."""
-
-    @property
-    def End(self) -> FreeCAD.Vector:
-        """Gives the position of one end of this CosmeticEdge as vector."""
-
-    @property
-    def Format(self) -> tuple[int, float, object, bool]:
-        """The appearance attributes (style, weight, color, visible) for this CosmeticEdge."""
-
-    @property
-    def Radius(self) -> float:
-        """Gives the radius of CosmeticEdge in mm."""
-
-    @property
-    def Start(self) -> FreeCAD.Vector:
-        """Gives the position of one end of this CosmeticEdge as vector."""
-
-    @property
-    def Tag(self) -> str:
-        """Gives the tag of the CosmeticEdge as string."""
-
-    def clone(self):
-        """
-        Create a clone of this CosmeticEdge
-        Possible exceptions: (TypeError).
-        """
-
-    def copy(self):
-        """
-        Create a copy of this CosmeticEdge
-        Possible exceptions: (TypeError).
-        """
-
-
-# GeomFormatPy.xml
-class GeomFormat(FreeCAD.PyObjectBase):
-    """GeomFormat specifies appearance parameters for TechDraw Geometry objects"""
-
-    @property
-    def Tag(self) -> str:
-        """Gives the tag of the GeomFormat as string."""
-
-    def clone(self):
-        """
-        Create a clone of this geomformat
-        Possible exceptions: (TypeError).
-        """
-
-    def copy(self):
-        """
-        Create a copy of this geomformat
-        Possible exceptions: (TypeError).
-        """
-
-
 # AppTechDrawPy.cpp
-def edgeWalker(edgePile: list, inclBiggest=None, /) -> list[PartModule.Wire] | None:
+def edgeWalker(edgePile: list, inclBiggest=None, /) -> list | None:
     """[wires] = edgeWalker(edgePile,inclBiggest) -- Planar graph traversal finds wires in edge pile."""
 
 
@@ -1820,42 +853,3 @@ def viewPartAsDxf(DrawViewPart, /) -> str:
 
 def viewPartAsSvg(DrawViewPart, /) -> str:
     """string = viewPartAsSvg(DrawViewPart) -- Return the edges of a DrawViewPart in Svg format."""
-
-
-def writeDXFView(arg1, arg2: str, arg3=None, /) -> None:
-    """writeDXFView(view,filename): Exports a DrawViewPart to a DXF file."""
-
-
-def writeDXFPage(page, filename: str, /) -> None:
-    """writeDXFPage(page,filename): Exports a DrawPage to a DXF file."""
-
-
-def findCentroid(shape, direction, /) -> FreeCAD.Vector | None:
-    """vector = findCentroid(shape,direction): finds geometric centroid of shape looking in direction."""
-
-
-def makeExtentDim(DrawViewPart, edges: list, direction: int, /) -> None:
-    """makeExtentDim(DrawViewPart, [edges], direction) -- draw horizontal or vertical extent dimension for edges (or all of DrawViewPart if edge list is empty. direction:  0 - Horizontal, 1 - Vertical."""
-
-
-def makeDistanceDim(DrawViewPart, dimType, fromPoint, toPoint, /) -> TechDraw.DrawViewDimension:
-    """makeDistanceDim(DrawViewPart, dimType, fromPoint, toPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 2d View points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."""
-
-
-def makeDistanceDim3d(arg1, arg2, arg3, arg4, /) -> None:
-    """makeDistanceDim(DrawViewPart, dimType, 3dFromPoint, 3dToPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 3d model points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."""
-
-
-def makeGeomHatch(face, patScale: float = None, patName: str = None, patFile: str = None, /) -> PartModule.Compound | None:
-    """makeGeomHatch(face, [patScale], [patName], [patFile]) -- draw a geom hatch on a given face, using optionally the given scale (default 1) and a given pattern name (ex. Diamond) and .pat file (the default pattern name and/or .pat files set in preferences are used if none are given). Returns a Part compound shape."""
-
-
-# MDIViewPage.cpp
-class MDIViewPagePy:
-    """Python binding class for the MDI view page class"""
-
-    def getPage(self) -> TechDraw.DrawPage:
-        """getPage() returns the page being displayed"""
-
-    def cast_to_base(self):
-        """cast_to_base() cast to MDIView class"""

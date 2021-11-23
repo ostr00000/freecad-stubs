@@ -49,7 +49,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
         """Number of Groups in the Mesh."""
 
     @property
-    def Groups(self) -> tuple[int, ...]:
+    def Groups(self) -> tuple:
         """Tuple of Group IDs."""
 
     @property
@@ -128,30 +128,6 @@ class FemMesh(FreeCAD.ComplexGeoData):
         Possible exceptions: (FreeCAD.FreeCADError, TypeError).
         """
 
-    def addGroup(self, name: str, typestring: str, id: int = None, /) -> int:
-        """
-        Add a group to mesh with specific name and type
-                            addGroup(name, typestring, [id])
-                            name: string
-                            typestring: "All", "Node", "Edge", "Face", "Volume", "0DElement", "Ball"
-                            id: int
-                            Optional id is used to force specific id for group, but does
-                            not work, yet.
-                
-        Possible exceptions: (FreeCAD.FreeCADError).
-        """
-
-    def addGroupElements(self, groupid: int, list_of_elements: list, /):
-        """
-        Add a tuple of ElementIDs to a given group ID
-                            addGroupElements(groupid, list_of_elements)
-                            groupid: int
-                            list_of_elements: list of int
-                            Notice that the elements have to be in the mesh.
-                
-        Possible exceptions: (TypeError, FreeCAD.FreeCADError).
-        """
-
     def addHypothesis(self, arg1, arg2: PartModule.Shape = None, /):
         """
         Add hypothesis
@@ -193,55 +169,31 @@ class FemMesh(FreeCAD.ComplexGeoData):
     def copy(self) -> Fem.FemMesh:
         """Make a copy of this FEM mesh."""
 
-    def getEdgesByEdge(self, arg1: PartModule.Edge, /) -> list[int]:
-        """
-        Return a list of edge IDs which belong to a TopoEdge
-        Possible exceptions: (FreeCAD.FreeCADError).
-        """
-
     def getElementNodes(self, arg1: int, /) -> tuple[int, ...]:
         """
         Return a tuple of node IDs to a given element ID
         Possible exceptions: (FreeCAD.FreeCADError).
         """
 
-    def getElementType(self, arg1: int, /) -> str:
-        """
-        Return the element type of a given ID
-        Possible exceptions: (ValueError).
-        """
-
-    def getFacesByFace(self, arg1: PartModule.Face, /) -> list[int]:
+    def getFacesByFace(self, arg1: PartModule.Face, /):
         """
         Return a list of face IDs which belong to a TopoFace
         Possible exceptions: (FreeCAD.FreeCADError).
         """
 
-    def getGroupElementType(self, arg1: int, /) -> str:
-        """
-        Return a string of group element type to a given group ID
-        Possible exceptions: (ValueError).
-        """
+    def getGroupElementType(self, arg1: int, /) -> object | str:
+        """Return a string of group element type to a given group ID"""
 
-    def getGroupElements(self, arg1: int, /) -> tuple[int, ...]:
-        """
-        Return a tuple of ElementIDs to a given group ID
-        Possible exceptions: (ValueError).
-        """
+    def getGroupElements(self, arg1: int, /):
+        """Return a tuple of ElementIDs to a given group ID"""
 
-    def getGroupName(self, arg1: int, /) -> str:
-        """
-        Return a string of group name to a given group ID
-        Possible exceptions: (ValueError).
-        """
-
-    def getIdByElementType(self, arg1: str, /) -> tuple[int, ...]:
-        """Return a tuple of IDs to a given element type"""
+    def getGroupName(self, arg1: int, /) -> object | str:
+        """Return a string of group name to a given group ID"""
 
     def getNodeById(self, arg1: int, /) -> FreeCAD.Vector:
         """
         Get the node position vector by a Node-ID
-        Possible exceptions: (ValueError).
+        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
     def getNodesByEdge(self, arg1: PartModule.Edge, /) -> list[int]:
@@ -280,20 +232,10 @@ class FemMesh(FreeCAD.ComplexGeoData):
         Possible exceptions: (FreeCAD.FreeCADError).
         """
 
-    def read(self, file_endingToExportTo: str, /):
+    def read(self, arg1: str, /):
         """
-        Read in a various FEM mesh file formats.
-                            read(file.endingToExportTo)
-                            supported formats: DAT, INP, MED, STL, UNV, VTK, Z88
+        Read in a DAT, UNV, MED or STL file.
         Possible exceptions: (FreeCAD.FreeCADError).
-        """
-
-    def removeGroup(self, groupid: int, /) -> bool:
-        """
-        Remove a group with a given group ID
-                            removeGroup(groupid)
-                            groupid: int
-                            Returns boolean.
         """
 
     def setShape(self, arg1: PartModule.Shape, /):
@@ -314,12 +256,9 @@ class FemMesh(FreeCAD.ComplexGeoData):
         Possible exceptions: (FreeCAD.FreeCADError).
         """
 
-    def write(self, file_endingToExportTo: str, /):
+    def write(self, arg1: str, /):
         """
-        Write out various FEM mesh file formats.
-                            write(file.endingToExportTo)
-                            supported formats: BDF, DAT, INP, MED, STL, UNV, VTK, Z88
-                
+        Write out a DAT, UNV, MED or STL file.
         Possible exceptions: (FreeCAD.FreeCADError).
         """
 
@@ -343,7 +282,7 @@ class FemPostPipeline(FreeCAD.GeoFeature):
         """
         Property group: Pipeline.
         Property TypeId: App::PropertyLinkList.
-        The filter used in this pipeline.
+        The filter used in in this pipeline.
         """
 
     @Filter.setter
@@ -366,7 +305,7 @@ class FemPostPipeline(FreeCAD.GeoFeature):
         """
         Property group: Pipeline.
         Property TypeId: App::PropertyEnumeration.
-        Selects the pipeline data transition mode. In serial, every filtergets the output of the previous one as input. In parallel, everyfilter gets the pipeline source as input.
+        Selects the pipeline data transition mode. In serial every filtergets the output of the previous one as input, in parallel everyfilter gets the pipelien source as input.
         """
 
     @Mode.setter

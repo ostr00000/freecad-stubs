@@ -6,11 +6,7 @@ import Part as PartModule
 class Body(PartModule.BodyBase):
     """PartDesign body class"""
 
-    @property
-    def VisibleFeature(self) -> object | 'object':
-        """Return the the visible feature of this body"""
-
-    def insertObject(self, feature: FreeCAD.DocumentObject, target, after: bool = False, /):
+    def insertObject(self, feature: FreeCAD.DocumentObject, target, after=False, /):
         """
         insertObject(feature, target, after=False)
                                 Insert the feature into the body after the given feature.
@@ -23,7 +19,7 @@ class Body(PartModule.BodyBase):
 
                                 @note the method doesn't modify the Tip unlike addObject()
                     
-        Possible exceptions: (SystemError).
+        Possible exceptions: (SystemError, ValueError).
         """
 
 
@@ -37,14 +33,3 @@ class Feature(PartModule.Feature):
 
     @BaseFeature.setter
     def BaseFeature(self, value: FreeCAD.DocumentObject | None): ...
-
-    @property
-    def _Body(self) -> FreeCAD.DocumentObject | None:
-        """
-        [Prop_ReadOnly] Property is read-only in the editor.
-        [Prop_Transient] Property content won't be saved to file, but still saves name, type and status.
-        [Prop_Hidden] Property won't appear in the editor.
-        [Prop_Output] Modified property doesn't touch its parent container.
-        Property group: Base.
-        Property TypeId: App::PropertyLinkHidden.
-        """

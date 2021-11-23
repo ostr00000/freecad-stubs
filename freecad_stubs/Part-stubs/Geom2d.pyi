@@ -38,7 +38,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
         Possible exceptions: (RuntimeError, Part.OCCError).
         """
 
-    def centerOfCurvature(self, float_pos: float, /) -> FreeCAD.Vector2d:
+    def centerOfCurvature(self, float_pos: float, /):
         """
         Vector = centerOfCurvature(float pos) - Get the center of curvature at the given parameter [First|Last] if defined
         Possible exceptions: (Part.OCCError).
@@ -51,19 +51,19 @@ class Curve2d(Part.Geom2d.Geometry2d):
         """
 
     @typing.overload
-    def discretize(self, Number: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
+    def discretize(self, Number: int, First: float = None, Last: float = None) -> list: ...
 
     @typing.overload
-    def discretize(self, Distance: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
+    def discretize(self, Distance: float, First: float = None, Last: float = None) -> list: ...
 
     @typing.overload
-    def discretize(self, Deflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
+    def discretize(self, Deflection: float, First: float = None, Last: float = None) -> list: ...
 
     @typing.overload
-    def discretize(self, QuasiNumber: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
+    def discretize(self, QuasiNumber: int, First: float = None, Last: float = None) -> list: ...
 
     @typing.overload
-    def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]:
+    def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None) -> list:
         """
         Discretizes the curve and returns a list of points.
         The function accepts keywords as argument:
@@ -100,7 +100,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def intersectCC(self, arg1: Part.Geom2d.Curve2d, arg2: float = None, /) -> list | list[FreeCAD.Vector2d]:
+    def intersectCC(self, arg1: Part.Geom2d.Curve2d, arg2: float = None, /) -> list:
         """
         Returns all intersection points between this curve and the given curve.
                 
@@ -114,7 +114,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def normal(self, pos: float, /) -> FreeCAD.Vector2d:
+    def normal(self, pos: float, /):
         """
         Vector = normal(pos) - Get the normal vector at the given parameter [First|Last] if defined
         Possible exceptions: (Part.OCCError).
@@ -140,7 +140,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def tangent(self, arg1: float, /) -> FreeCAD.Vector2d:
+    def tangent(self, arg1: float, /):
         """
         Computes the tangent of parameter u on this curve
         Possible exceptions: (Part.OCCError).
@@ -176,7 +176,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
         Possible exceptions: (Part.OCCError, TypeError).
         """
 
-    def value(self, arg1: float, /) -> FreeCAD.Vector2d:
+    def value(self, arg1: float, /):
         """
         Computes the point of parameter u on this curve
         Possible exceptions: (Part.OCCError).
@@ -227,25 +227,25 @@ class ArcOfConic2d(Part.Geom2d.Curve2d):
         """
 
     @property
-    def Location(self) -> FreeCAD.Vector2d:
+    def Location(self) -> object:
         """Location of the conic."""
 
     @Location.setter
-    def Location(self, value: FreeCAD.Vector2d): ...
+    def Location(self, value: object): ...
 
     @property
-    def XAxis(self) -> FreeCAD.Vector2d:
+    def XAxis(self) -> object:
         """The X axis direction of the circle"""
 
     @XAxis.setter
-    def XAxis(self, value: FreeCAD.Vector2d): ...
+    def XAxis(self, value: object): ...
 
     @property
-    def YAxis(self) -> FreeCAD.Vector2d:
+    def YAxis(self) -> object:
         """The Y axis direction of the circle"""
 
     @YAxis.setter
-    def YAxis(self, value: FreeCAD.Vector2d): ...
+    def YAxis(self, value: object): ...
 
 
 # Conic2dPy.xml
@@ -263,25 +263,25 @@ class Conic2d(Part.Geom2d.Curve2d):
         """
 
     @property
-    def Location(self) -> FreeCAD.Vector2d:
+    def Location(self) -> object:
         """Location of the conic."""
 
     @Location.setter
-    def Location(self, value: FreeCAD.Vector2d): ...
+    def Location(self, value: object): ...
 
     @property
-    def XAxis(self) -> FreeCAD.Vector2d:
+    def XAxis(self) -> object:
         """The X axis direction of the circle"""
 
     @XAxis.setter
-    def XAxis(self, value: FreeCAD.Vector2d): ...
+    def XAxis(self, value: object): ...
 
     @property
-    def YAxis(self) -> FreeCAD.Vector2d:
+    def YAxis(self) -> object:
         """The Y axis direction of the circle"""
 
     @YAxis.setter
-    def YAxis(self, value: FreeCAD.Vector2d): ...
+    def YAxis(self, value: object): ...
 
 
 # Geometry2dPy.xml
@@ -455,18 +455,18 @@ class Line2dSegment(Part.Geom2d.Curve2d):
         """
 
     @property
-    def EndPoint(self) -> FreeCAD.Vector2d:
+    def EndPoint(self) -> object:
         """Returns the end point of this line segment."""
 
     @EndPoint.setter
-    def EndPoint(self, value: FreeCAD.Vector2d): ...
+    def EndPoint(self, value: object): ...
 
     @property
-    def StartPoint(self) -> FreeCAD.Vector2d:
+    def StartPoint(self) -> object:
         """Returns the start point of this line segment."""
 
     @StartPoint.setter
-    def StartPoint(self, value: FreeCAD.Vector2d): ...
+    def StartPoint(self, value: object): ...
 
     def setParameterRange(self, arg1: float, arg2: float, /):
         """
@@ -537,14 +537,14 @@ class Ellipse2d(Part.Geom2d.Conic2d):
         """The focal distance of the ellipse."""
 
     @property
-    def Focus1(self) -> FreeCAD.Vector2d:
+    def Focus1(self) -> object:
         """
         The first focus is on the positive side of the major axis of the ellipse;
         the second focus is on the negative side.
         """
 
     @property
-    def Focus2(self) -> FreeCAD.Vector2d:
+    def Focus2(self) -> object:
         """
         The first focus is on the positive side of the major axis of the ellipse;
         the second focus is on the negative side.
@@ -682,14 +682,14 @@ class Hyperbola2d(Part.Geom2d.Conic2d):
         """The focal distance of the hyperbola."""
 
     @property
-    def Focus1(self) -> FreeCAD.Vector2d:
+    def Focus1(self) -> object:
         """
         The first focus is on the positive side of the major axis of the hyperbola;
         the second focus is on the negative side.
         """
 
     @property
-    def Focus2(self) -> FreeCAD.Vector2d:
+    def Focus2(self) -> object:
         """
         The first focus is on the positive side of the major axis of the hyperbola;
         the second focus is on the negative side.
@@ -725,7 +725,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         """Returns the polynomial degree of this B-Spline curve."""
 
     @property
-    def EndPoint(self) -> FreeCAD.Vector2d:
+    def EndPoint(self) -> object:
         """Returns the end point of this B-Spline curve."""
 
     @property
@@ -764,7 +764,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         """Returns the number of poles of this B-Spline curve."""
 
     @property
-    def StartPoint(self) -> FreeCAD.Vector2d:
+    def StartPoint(self) -> object:
         """Returns the start point of this B-Spline curve."""
 
     def approximate(self, Points, DegMax: int = None, Continuity: str = None, Tolerance: float = None, DegMin: int = None, ParamType: str = None, Parameters=None, LengthWeight: float = None, CurvatureWeight: float = None, TorsionWeight: float = None):
@@ -772,7 +772,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Replaces this B-Spline curve by approximating a set of points.
         					The function accepts keywords as arguments.
 
-        					approximate2(Points = list_of_points)
+        					approximate2(Points = list_of_points) 
 
         					Optional arguments :
 
@@ -783,9 +783,9 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         					Possible values : 'C0','G1','C1','G2','C2','C3','CN'
 
         					LengthWeight = float, CurvatureWeight = float, TorsionWeight = float
-        					If one of these arguments is not null, the functions approximates the
-        					points using variational smoothing algorithm, which tries to minimize
-        					additional criterium:
+        					If one of these arguments is not null, the functions approximates the 
+        					points using variational smoothing algorithm, which tries to minimize 
+        					additional criterium: 
         					LengthWeight*CurveLength + CurvatureWeight*Curvature + TorsionWeight*Torsion
         					Continuity must be C0, C1 or C2, else defaults to C2.
 
@@ -795,7 +795,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         					ParamType = string ('Uniform','Centripetal' or 'ChordLength')
         					Parameterization type. Only used if weights and Parameters above aren't specified.
 
-        					Note : Continuity of the spline defaults to C2. However, it may not be applied if
+        					Note : Continuity of the spline defaults to C2. However, it may not be applied if 
         					it conflicts with other parameters ( especially DegMax ).
 				
         Possible exceptions: (Part.OCCError).
@@ -812,7 +812,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         """
         Builds a B-Spline by a lists of Poles, Mults, Knots.
         				arguments: poles (sequence of Base.Vector), [mults , knots, periodic, degree, weights (sequence of float), CheckRational]
-
+				
         				Examples:
         				from FreeCAD import Base
         				import Part
@@ -823,7 +823,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         				n=Part.BSplineCurve()
         				n.buildFromPolesMultsKnots(poles,(3,1,3),(0,0.5,1),False,2)
         				Part.show(n.toShape())
-
+				
         				# periodic spline
         				p=Part.BSplineCurve()
         				p.buildFromPolesMultsKnots(poles,(1,1,1,1,1),(0,0.25,0.5,0.75,1),True,2)
@@ -838,10 +838,10 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         """
 
     @typing.overload
-    def getCardinalSplineTangents(self, Points, Parameter: float) -> list[FreeCAD.Vector2d]: ...
+    def getCardinalSplineTangents(self, Points, Parameter: float) -> list: ...
 
     @typing.overload
-    def getCardinalSplineTangents(self, Points, Parameters) -> list[FreeCAD.Vector2d]:
+    def getCardinalSplineTangents(self, Points, Parameters) -> list:
         """Compute the tangents for a Cardinal spline"""
 
     def getKnot(self, arg1: int, /) -> float:
@@ -853,7 +853,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def getMultiplicities(self) -> list[int]:
+    def getMultiplicities(self):
         """
         Returns the multiplicities table M of the knots of this B-Spline curve.
 				
@@ -862,18 +862,18 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
 
     def getMultiplicity(self, arg1: int, /) -> int:
         """
-        Returns the multiplicity of the knot of index
+        Returns the multiplicity of the knot of index 
         from the knots table of this B-Spline curve.
         Possible exceptions: (Part.OCCError).
         """
 
-    def getPole(self, arg1: int, /) -> FreeCAD.Vector2d:
+    def getPole(self, arg1: int, /):
         """
         Get a pole of the B-Spline curve.
         Possible exceptions: (Part.OCCError).
         """
 
-    def getPoles(self) -> list[FreeCAD.Vector2d]:
+    def getPoles(self) -> list:
         """
         Get all poles of the B-Spline curve.
         Possible exceptions: (Part.OCCError).
@@ -881,7 +881,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
 
     def getPolesAndWeights(self) -> list[tuple[float, float, float]]:
         """
-        Returns the table of poles and weights in homogeneous coordinates.
+        Returns the table of poles and weights in homogenous ccordinates.
         Possible exceptions: (Part.OCCError).
         """
 
@@ -943,7 +943,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def insertKnot(self, u: float, mult: int = 1, tol: float = 0.0, /):
         """
         insertKnot(u, mult = 1, tol = 0.0)
-        				Inserts a knot value in the sequence of knots. If u is an existing knot the
+        				Inserts a knot value in the sequence of knots. If u is an existing knot the 
         				multiplicity is increased by mult. 
         Possible exceptions: (Part.OCCError).
         """
@@ -955,12 +955,12 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
 
         				For each u = list_of_floats[i], mult = list_of_ints[i]
 
-        				If u is an existing knot the multiplicity is increased by mult if bool_add is
+        				If u is an existing knot the multiplicity is increased by mult if bool_add is 
         				True, otherwise increased to mult.
 
         				If u is not on the parameter range nothing is done.
 
-        				If the multiplicity is negative or null nothing is done. The new multiplicity
+        				If the multiplicity is negative or null nothing is done. The new multiplicity 
         				is limited to the degree.
 
         				The tolerance criterion for knots equality is the max of Epsilon(U) and ParametricTolerance.
@@ -973,7 +973,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Replaces this B-Spline curve by interpolating a set of points.
         					The function accepts keywords as arguments.
 
-        					interpolate(Points = list_of_points)
+        					interpolate(Points = list_of_points) 
 
         					Optional arguments :
 
@@ -987,7 +987,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         					EndPoint Tangent constraints :
 
         					InitialTangent = vector, FinalTangent = vector
-        					specify tangent vectors for starting and ending points
+        					specify tangent vectors for starting and ending points 
         					of the BSpline. Either none, or both must be specified.
 
         					Full Tangent constraints :
@@ -998,7 +998,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         					TangentFlags (bool) activates or deactivates the corresponding tangent.
         					These arguments will be ignored if EndPoint Tangents (above) are also defined.
 
-        					Note : Continuity of the spline defaults to C2. However, if periodic, or tangents
+        					Note : Continuity of the spline defaults to C2. However, if periodic, or tangents 
         					are supplied, the continuity will drop to C1.
 				
         Possible exceptions: (Part.OCCError).
@@ -1026,11 +1026,11 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def makeC1Continuous(self, arg1: float = None, /):
         """
         makeC1Continuous(tol = 1e-6, ang_tol = 1e-7)
-        					Reduces as far as possible the multiplicities of the knots of this BSpline
-        					(keeping the geometry). It returns a new BSpline, which could still be C0.
-        					tol is a geometrical tolerance.
-        					The tol_ang is angular tolerance, in radians. It sets tolerable angle mismatch
-        					of the tangents on the left and on the right to decide if the curve is G1 or
+        					Reduces as far as possible the multiplicities of the knots of this BSpline 
+        					(keeping the geometry). It returns a new BSpline, which could still be C0. 
+        					tol is a geometrical tolerance. 
+        					The tol_ang is angular tolerance, in radians. It sets tolerable angle mismatch 
+        					of the tangents on the left and on the right to decide if the curve is G1 or 
         					not at a given point.
 				
         Possible exceptions: (Part.OCCError).
@@ -1043,7 +1043,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Index1 and Index2 are the indexes in the table of poles of this B-Spline curve
         of the first and last poles designated to be moved.
 
-        Returns: (FirstModifiedPole, LastModifiedPole). They are the indexes of the
+        Returns: (FirstModifiedPole, LastModifiedPole). They are the indexes of the 
         first and last poles which are effectively modified.
         Possible exceptions: (Part.OCCError).
         """
@@ -1123,7 +1123,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
 
     def toBiArcs(self, tolerance: float, /) -> list[Part.Geom2d.Geometry2d]:
         """
-        Build a list of arcs and lines to approximate the B-spline.
+        Build a list of arcs and lines to approximate the b-spline.
         					toBiArcs(tolerance) -> list.
 				
         Possible exceptions: (Part.OCCError).
@@ -1146,7 +1146,7 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
         """
 
     @property
-    def EndPoint(self) -> FreeCAD.Vector2d:
+    def EndPoint(self) -> object:
         """Returns the end point of this Bezier curve."""
 
     @property
@@ -1161,16 +1161,16 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
         """Returns the number of poles of this Bezier curve."""
 
     @property
-    def StartPoint(self) -> FreeCAD.Vector2d:
+    def StartPoint(self) -> object:
         """Returns the start point of this Bezier curve."""
 
-    def getPole(self, arg1: int, /) -> FreeCAD.Vector2d:
+    def getPole(self, arg1: int, /):
         """
         Get a pole of the Bezier curve.
         Possible exceptions: (Part.OCCError).
         """
 
-    def getPoles(self) -> list[FreeCAD.Vector2d]:
+    def getPoles(self) -> list:
         """
         Get all poles of the Bezier curve.
         Possible exceptions: (Part.OCCError).
@@ -1293,7 +1293,7 @@ class Parabola2d(Part.Geom2d.Conic2d):
     def Focal(self, value: float): ...
 
     @property
-    def Focus(self) -> FreeCAD.Vector2d:
+    def Focus(self) -> object:
         """
         The focus is on the positive side of the
         'X Axis' of the local coordinate system of the parabola.
@@ -1346,15 +1346,15 @@ class Line2d(Part.Geom2d.Curve2d):
         """
 
     @property
-    def Direction(self) -> FreeCAD.Vector2d:
+    def Direction(self) -> object:
         """Returns the direction of this line."""
 
     @Direction.setter
-    def Direction(self, value: FreeCAD.Vector2d): ...
+    def Direction(self, value: object): ...
 
     @property
-    def Location(self) -> FreeCAD.Vector2d:
+    def Location(self) -> object:
         """Returns the location of this line."""
 
     @Location.setter
-    def Location(self, value: FreeCAD.Vector2d): ...
+    def Location(self, value: object): ...

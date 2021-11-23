@@ -16,8 +16,8 @@ def PrintWarning(arg0, /) -> None:
 
 
 def SetStatus(arg0: str, arg1: str, arg2: int, /) -> None:
-    """Set the status for either Log, Msg, Wrn or Error for an observer"""
+    """Set the status for either Log, Msg, Wrn, or Error for an observer"""
 
 
 def GetStatus(arg0: str, arg1: str, /) -> int | None:
-    """Get the status for either Log, Msg, Wrn or Error for an observer"""
+    """Get the status for either Log, Msg, Wrn, or Error for an observer"""

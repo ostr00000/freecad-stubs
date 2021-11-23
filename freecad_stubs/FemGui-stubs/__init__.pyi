@@ -20,7 +20,7 @@ class ViewProviderFemMesh(FreeCADGui.ViewProviderDocumentObject):
     def ElementColor(self, value: dict): ...
 
     @property
-    def HighlightedNodes(self) -> list[int]:
+    def HighlightedNodes(self) -> list:
         """List of nodes which get highlighted."""
 
     @HighlightedNodes.setter
@@ -87,15 +87,6 @@ class ViewProviderFemMesh(FreeCADGui.ViewProviderDocumentObject):
     def ShowInner(self, value: int | bool): ...
 
     def applyDisplacement(self, arg1: float, /): ...
-
-    def resetHighlightedNodes(self):
-        """Reset highlighted nodes."""
-
-    def resetNodeColor(self):
-        """Reset color set by method setNodeColorByScalars."""
-
-    def resetNodeDisplacement(self):
-        """Reset displacements set by method setNodeDisplacementByVectors."""
 
     def setNodeColorByScalars(self, arg1: list, arg2: list, /):
         """
