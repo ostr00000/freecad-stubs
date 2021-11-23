@@ -1,4 +1,9 @@
 # freecad-stubs
+[![PyPI version](https://img.shields.io/pypi/v/freecad-stubs)](https://pypi.org/project/freecad-stubs/)
+[![GitHub license](https://img.shields.io/github/license/ostr00000/freecad-stubs)](https://github.com/ostr00000/freecad-stubs/blob/main/LICENSE)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/freecad-stubs)](https://pypi.python.org/pypi/freecad-stubs/)
+
+
 Python stubs generated from FreeCAD source code.
 
 ### Stub source
@@ -13,6 +18,12 @@ There are also many special cases
 therefore not all object are correctly mapped.
 Moreover, some of C function has errors - invalid types, missing arguments 
 (you can see more these errors if you change logger flag in configuration file `freecad-stubs/lib/freecad_stub_gen/config.py`) 
+
+### Install stubs
+You can install all stubs for freeCAD packages by running:
+```bash
+python -m pip install freecad-stubs 
+```
 
 ### Adding stubs to python path
 There are a lot of possible methods. This is only example: 
@@ -62,4 +73,32 @@ Checkout to desired branch and copy folder `/freecad_stubs`.
     ```shell
     pytohn freecad-stubs/lib/freecad_stub_gen/__main__.py
     ```
-   Recommended python version: `3.10`.
+   Required python version: `>=3.10`.
+
+
+### Progress
+
+#### Stub source
+- [x] generate class stub (xml files):
+  - [x] property in xml,
+  - [x] dynamic property added in cpp,
+  - [x] method (+ static/class method),
+  - [x] rich comparison (ex. `__eq__` method),
+  - [x] number protocol (ex. `__add__` method),
+- [x] generate class stub (cpp files):
+  - [x] dynamically added in `init_type()`,
+- [x] generate functions stub (cpp files):
+  - [x] declared in `PyMethodDef` array,
+  - [x] dynamically added in module constructor (subclass `Py::ExtensionModule`),
+
+#### Stub quality
+- [x] found class/function/method name,
+- [x] copy docstring (+ generate property docstring),
+- [x] guess argument names from docstrings,
+- [x] found function/method argument types based on [c-api](https://docs.python.org/3/c-api/arg.html),
+- [x] function/method return type,
+- [x] raised exception in docstrings,
+- [x] property getter type,
+- [x] property setter type,
+- [x] add comment "This class can be imported" for importable classes,
+- [x] exceptions,
