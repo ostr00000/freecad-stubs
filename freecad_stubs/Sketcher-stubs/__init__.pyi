@@ -2,6 +2,7 @@ import typing
 
 import FreeCAD
 import Part
+import Part as PartModule
 import Sketcher
 
 DocAndStr_t: typing.TypeAlias = tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]
@@ -12,7 +13,7 @@ LinkSubList_t: typing.TypeAlias = typing.Sequence[SequenceDoc_t | FreeCAD.Docume
 
 
 # SketchGeometryExtensionPy.xml
-class SketchGeometryExtension(Part.GeometryExtension):
+class SketchGeometryExtension(PartModule.GeometryExtension):
     """
     This class can be imported.
     Describes a SketchGeometryExtension
@@ -172,7 +173,7 @@ class Constraint(FreeCAD.Persistence):
 
 
 # SketchObjectSFPy.xml
-class SketchObjectSF(Part.Part2DObject):
+class SketchObjectSF(PartModule.Part2DObject):
     """With this objects you can handle sketches"""
 
     @property
@@ -184,7 +185,7 @@ class SketchObjectSF(Part.Part2DObject):
 
 
 # SketchObjectPy.xml
-class SketchObject(Part.Part2DObject):
+class SketchObject(PartModule.Part2DObject):
     """With this objects you can handle sketches"""
 
     @property
@@ -741,7 +742,7 @@ class Sketch(FreeCAD.Persistence):
         """Tuple of redundant constraints"""
 
     @property
-    def Shape(self) -> Part.Shape:
+    def Shape(self) -> PartModule.Shape:
         """Resulting shape from the sketch geometry"""
 
     def addConstraint(self, arg1, /) -> tuple[int, ...] | int:
@@ -783,7 +784,7 @@ class ExternalGeometryFacade(FreeCAD.BaseClass):
     Describes a GeometryFacade
     """
 
-    def __init__(self, arg1: Part.Geometry, /):
+    def __init__(self, arg1: PartModule.Geometry, /):
         """
         Describes a GeometryFacade
         Possible exceptions: (TypeError).
@@ -900,7 +901,7 @@ class ExternalGeometryFacade(FreeCAD.BaseClass):
         Possible exceptions: (Part.OCCError).
         """
 
-    def setExtension(self, arg1: Part.GeometryExtension, /):
+    def setExtension(self, arg1: PartModule.GeometryExtension, /):
         """
         Sets a geometry extension of the indicated type.
         Possible exceptions: (Part.OCCError).
@@ -933,7 +934,7 @@ class ExternalGeometryFacade(FreeCAD.BaseClass):
 
 
 # ExternalGeometryExtensionPy.xml
-class ExternalGeometryExtension(Part.GeometryExtension):
+class ExternalGeometryExtension(PartModule.GeometryExtension):
     """
     This class can be imported.
     Describes a ExternalGeometryExtension
@@ -972,7 +973,7 @@ class GeometryFacade(FreeCAD.BaseClass):
     Describes a GeometryFacade
     """
 
-    def __init__(self, arg1: Part.Geometry, /):
+    def __init__(self, arg1: PartModule.Geometry, /):
         """
         Describes a GeometryFacade
         Possible exceptions: (TypeError).
@@ -1082,7 +1083,7 @@ class GeometryFacade(FreeCAD.BaseClass):
         Possible exceptions: (Part.OCCError).
         """
 
-    def setExtension(self, arg1: Part.GeometryExtension, /):
+    def setExtension(self, arg1: PartModule.GeometryExtension, /):
         """
         Sets a geometry extension of the indicated type.
         Possible exceptions: (Part.OCCError).

@@ -2,7 +2,7 @@ import io
 import typing
 
 import FreeCAD
-import Part
+import Part as PartModule
 import TechDraw
 
 DocAndStr_t: typing.TypeAlias = tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]
@@ -1312,13 +1312,13 @@ class DrawViewPart(TechDraw.DrawView):
         Possible exceptions: (TypeError).
         """
 
-    def getEdgeByIndex(self, edgeIndex: int, /) -> Part.Edge:
+    def getEdgeByIndex(self, edgeIndex: int, /) -> PartModule.Edge:
         """
         getEdgeByIndex(edgeIndex). Returns Part.TopoShape.
         Possible exceptions: (TypeError, ValueError).
         """
 
-    def getEdgeBySelection(self, edgeName: str, /) -> Part.Edge:
+    def getEdgeBySelection(self, edgeName: str, /) -> PartModule.Edge:
         """
         getEdgeBySelection(edgeName). Returns Part.TopoShape.
         Possible exceptions: (TypeError, ValueError).
@@ -1327,13 +1327,13 @@ class DrawViewPart(TechDraw.DrawView):
     def getHiddenEdges(self):
         """getHiddenEdges() - get the hidden edges in the View as Part::TopoShapeEdges"""
 
-    def getVertexByIndex(self, vertexIndex: int, /) -> Part.Vertex:
+    def getVertexByIndex(self, vertexIndex: int, /) -> PartModule.Vertex:
         """
         getVertexByIndex(vertexIndex). Returns Part.TopoShape.
         Possible exceptions: (TypeError, ValueError).
         """
 
-    def getVertexBySelection(self, vertexName: str, /) -> Part.Vertex:
+    def getVertexBySelection(self, vertexName: str, /) -> PartModule.Vertex:
         """
         getVertexBySelection(vertexName). Returns Part.TopoShape.
         Possible exceptions: (TypeError, ValueError).
@@ -1802,15 +1802,15 @@ class GeomFormat(FreeCAD.PyObjectBase):
 
 
 # AppTechDrawPy.cpp
-def edgeWalker(edgePile: list, inclBiggest=None, /) -> list[Part.Wire] | None:
+def edgeWalker(edgePile: list, inclBiggest=None, /) -> list[PartModule.Wire] | None:
     """[wires] = edgeWalker(edgePile,inclBiggest) -- Planar graph traversal finds wires in edge pile."""
 
 
-def findOuterWire(edgeList: list, /) -> Part.Wire | None:
+def findOuterWire(edgeList: list, /) -> PartModule.Wire | None:
     """wire = findOuterWire(edgeList) -- Planar graph traversal finds OuterWire in edge pile."""
 
 
-def findShapeOutline(shape, scale: float, direction, /) -> Part.Wire | None:
+def findShapeOutline(shape, scale: float, direction, /) -> PartModule.Wire | None:
     """wire = findShapeOutline(shape,scale,direction) -- Project shape in direction and find outer wire of result."""
 
 
@@ -1846,5 +1846,5 @@ def makeDistanceDim3d(arg1, arg2, arg3, arg4, /) -> None:
     """makeDistanceDim(DrawViewPart, dimType, 3dFromPoint, 3dToPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 3d model points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."""
 
 
-def makeGeomHatch(face, patScale: float = None, patName: str = None, patFile: str = None, /) -> Part.Compound | None:
+def makeGeomHatch(face, patScale: float = None, patName: str = None, patFile: str = None, /) -> PartModule.Compound | None:
     """makeGeomHatch(face, [patScale], [patName], [patFile]) -- draw a geom hatch on a given face, using optionally the given scale (default 1) and a given pattern name (ex. Diamond) and .pat file (the default pattern name and/or .pat files set in preferences are used if none are given). Returns a Part compound shape."""

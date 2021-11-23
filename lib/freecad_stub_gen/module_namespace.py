@@ -41,7 +41,7 @@ class _ModuleNamespace:
         'Mesh': 'MeshModule',
         'Path': 'PathModule',
         'Points': 'PointsModule',
-        # 'Part': 'PartModule',
+        'Part': 'PartModule',
     }
 
     def getModFromAlias(self, alias: str, default=None):

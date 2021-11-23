@@ -1,9 +1,9 @@
 import FreeCAD
-import Part
+import Part as PartModule
 
 
 # BodyPy.xml
-class Body(Part.BodyBase):
+class Body(PartModule.BodyBase):
     """PartDesign body class"""
 
     @property
@@ -28,7 +28,7 @@ class Body(Part.BodyBase):
 
 
 # FeaturePy.xml
-class Feature(Part.Feature):
+class Feature(PartModule.Feature):
     """This is the father of all PartDesign object classes"""
 
     @property

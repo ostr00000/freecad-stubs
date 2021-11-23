@@ -1,5 +1,5 @@
 import Mesh as MeshModule
-import Part
+import Part as PartModule
 
 
 # AppCamPy.cpp
@@ -15,47 +15,47 @@ def read(arg0: str, /):
     """1"""
 
 
-def createTestBSPLINE() -> Part.Shape:
+def createTestBSPLINE() -> PartModule.Shape:
     """Creates a TopoShape with a test BSPLINE"""
 
 
-def createTestApproximate() -> Part.Shape:
+def createTestApproximate() -> PartModule.Shape:
     """1"""
 
 
-def offset(arg0: Part.Shape, arg1: float, /) -> Part.Shape:
+def offset(arg0: PartModule.Shape, arg1: float, /) -> PartModule.Shape:
     """1"""
 
 
-def tesselateShape(arg0: Part.Shape, arg1: float, /):
+def tesselateShape(arg0: PartModule.Shape, arg1: float, /):
     """1"""
 
 
-def tess_shape(arg0: Part.Shape, arg1: float, /) -> MeshModule.Mesh:
+def tess_shape(arg0: PartModule.Shape, arg1: float, /) -> MeshModule.Mesh:
     """1"""
 
 
-def createPlane(arg0: float, /) -> Part.Shape:
+def createPlane(arg0: float, /) -> PartModule.Shape:
     """1"""
 
 
-def best_fit_test(arg0: Part.Shape, /) -> MeshModule.Mesh:
+def best_fit_test(arg0: PartModule.Shape, /) -> MeshModule.Mesh:
     """1"""
 
 
-def best_fit_complete(arg0: MeshModule.Mesh, arg1: Part.Shape, /):
+def best_fit_complete(arg0: MeshModule.Mesh, arg1: PartModule.Shape, /):
     """1"""
 
 
-def best_fit_coarse(arg0: Part.Shape, /):
+def best_fit_coarse(arg0: PartModule.Shape, /):
     """1"""
 
 
-def createBox(arg0: float, arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, /) -> Part.Shape:
+def createBox(arg0: float, arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, /) -> PartModule.Shape:
     """1"""
 
 
-def spring_back(arg0: MeshModule.Mesh, arg1: Part.Shape, /) -> MeshModule.Mesh:
+def spring_back(arg0: MeshModule.Mesh, arg1: PartModule.Shape, /) -> MeshModule.Mesh:
     """1"""
 
 

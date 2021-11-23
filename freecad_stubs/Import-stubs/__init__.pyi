@@ -1,7 +1,7 @@
 import typing
 
 import FreeCAD
-import Part
+import Part as PartModule
 
 
 # StepShapePy.xml
@@ -37,7 +37,7 @@ def writeDXFShape(arg1: list, arg2: str, arg3: int = None, arg4=None, arg5: str 
 
 
 @typing.overload
-def writeDXFShape(arg1: Part.Shape, arg2: str, arg3: int = None, arg4=None, arg5: str = None, /) -> None:
+def writeDXFShape(arg1: PartModule.Shape, arg2: str, arg3: int = None, arg4=None, arg5: str = None, /) -> None:
     """writeDXFShape([shape],filename [version,usePolyline,optionSource]): Exports Shape(s) to a DXF file."""
 
 

@@ -2,6 +2,7 @@ import typing
 
 import FreeCAD
 import Part
+import Part as PartModule
 import Part.Geom2d
 
 
@@ -160,16 +161,16 @@ class Curve2d(Part.Geom2d.Geometry2d):
     def toShape(self, arg1: float, arg2: float, /) -> Part.Shape: ...
 
     @typing.overload
-    def toShape(self, arg1: Part.GeometrySurface, /) -> Part.Shape: ...
+    def toShape(self, arg1: PartModule.GeometrySurface, /) -> Part.Shape: ...
 
     @typing.overload
-    def toShape(self, arg1: Part.GeometrySurface, arg2: float, arg3: float, /) -> Part.Shape: ...
+    def toShape(self, arg1: PartModule.GeometrySurface, arg2: float, arg3: float, /) -> Part.Shape: ...
 
     @typing.overload
-    def toShape(self, arg1: Part.Face, /) -> Part.Shape: ...
+    def toShape(self, arg1: PartModule.Face, /) -> Part.Shape: ...
 
     @typing.overload
-    def toShape(self, arg1: Part.Face, arg2: float, arg3: float, /) -> Part.Shape:
+    def toShape(self, arg1: PartModule.Face, arg2: float, arg3: float, /) -> Part.Shape:
         """
         Return the shape for the geometry.
         Possible exceptions: (Part.OCCError, TypeError).

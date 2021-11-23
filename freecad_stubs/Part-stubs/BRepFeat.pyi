@@ -1,7 +1,7 @@
 import typing
 
 import FreeCAD
-import Part
+import Part as PartModule
 
 
 # MakePrismPy.xml
@@ -12,13 +12,13 @@ class MakePrism(FreeCAD.PyObjectBase):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, Sbase: Part.Shape, Pbase: Part.Shape, Skface: Part.Face, Direction: FreeCAD.Vector, Fuse: int, Modify: bool):
+    def __init__(self, Sbase: PartModule.Shape, Pbase: PartModule.Shape, Skface: PartModule.Face, Direction: FreeCAD.Vector, Fuse: int, Modify: bool):
         """
         Describes functions to build prism features.
         Possible exceptions: (RuntimeError, TypeError).
         """
 
-    def add(self, Edge: Part.Edge, Face: Part.Face):
+    def add(self, Edge: PartModule.Edge, Face: PartModule.Face):
         """
         Indicates that the edge will slide on the face.
         Raises ConstructionError if the  face does not belong to the
@@ -33,7 +33,7 @@ class MakePrism(FreeCAD.PyObjectBase):
     def curves(self) -> tuple[object, ...]:
         """Returns the list of curves S parallel to the axis of the prism."""
 
-    def init(self, Sbase: Part.Shape, Pbase: Part.Shape, Skface: Part.Face, Direction: FreeCAD.Vector, Fuse: int, Modify: bool):
+    def init(self, Sbase: PartModule.Shape, Pbase: PartModule.Shape, Skface: PartModule.Face, Direction: FreeCAD.Vector, Fuse: int, Modify: bool):
         """
         Initializes this algorithm for building prisms along surfaces.
         A face Pbase is selected in the shape Sbase
@@ -51,16 +51,16 @@ class MakePrism(FreeCAD.PyObjectBase):
         """
 
     @typing.overload
-    def perform(self, From: Part.Shape, Until: Part.Shape): ...
+    def perform(self, From: PartModule.Shape, Until: PartModule.Shape): ...
 
     @typing.overload
-    def perform(self, Until: Part.Shape): ...
+    def perform(self, Until: PartModule.Shape): ...
 
     @typing.overload
     def perform(self, Length: float):
         """Possible exceptions: (RuntimeError, TypeError)."""
 
-    def performFromEnd(self, arg1: Part.Shape, /):
+    def performFromEnd(self, arg1: PartModule.Shape, /):
         """
         Realizes a semi-infinite prism, limited by the face Funtil.
             
@@ -82,7 +82,7 @@ class MakePrism(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def performUntilHeight(self, arg1: Part.Shape, arg2: float, /):
+    def performUntilHeight(self, arg1: PartModule.Shape, arg2: float, /):
         """
         Assigns both a limiting shape, Until from TopoDS_Shape
         and a height, Length at which to stop generation of the prism feature.
@@ -90,7 +90,7 @@ class MakePrism(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def shape(self) -> Part.Shape:
+    def shape(self) -> PartModule.Shape:
         """
         Returns a shape built by the shape construction algorithm.
         Possible exceptions: (RuntimeError).

@@ -2,7 +2,7 @@ import typing
 
 import Fem
 import FreeCAD
-import Part
+import Part as PartModule
 
 LinkList_t: typing.TypeAlias = None | FreeCAD.DocumentObject
 
@@ -152,7 +152,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
         Possible exceptions: (TypeError, FreeCAD.FreeCADError).
         """
 
-    def addHypothesis(self, arg1, arg2: Part.Shape = None, /):
+    def addHypothesis(self, arg1, arg2: PartModule.Shape = None, /):
         """
         Add hypothesis
         Possible exceptions: (FreeCAD.FreeCADError).
@@ -193,7 +193,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
     def copy(self) -> Fem.FemMesh:
         """Make a copy of this FEM mesh."""
 
-    def getEdgesByEdge(self, arg1: Part.Edge, /) -> list[int]:
+    def getEdgesByEdge(self, arg1: PartModule.Edge, /) -> list[int]:
         """
         Return a list of edge IDs which belong to a TopoEdge
         Possible exceptions: (FreeCAD.FreeCADError).
@@ -211,7 +211,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
         Possible exceptions: (ValueError).
         """
 
-    def getFacesByFace(self, arg1: Part.Face, /) -> list[int]:
+    def getFacesByFace(self, arg1: PartModule.Face, /) -> list[int]:
         """
         Return a list of face IDs which belong to a TopoFace
         Possible exceptions: (FreeCAD.FreeCADError).
@@ -244,37 +244,37 @@ class FemMesh(FreeCAD.ComplexGeoData):
         Possible exceptions: (ValueError).
         """
 
-    def getNodesByEdge(self, arg1: Part.Edge, /) -> list[int]:
+    def getNodesByEdge(self, arg1: PartModule.Edge, /) -> list[int]:
         """
         Return a list of node IDs which belong to a TopoEdge
         Possible exceptions: (FreeCAD.FreeCADError).
         """
 
-    def getNodesByFace(self, arg1: Part.Face, /) -> list[int]:
+    def getNodesByFace(self, arg1: PartModule.Face, /) -> list[int]:
         """
         Return a list of node IDs which belong to a TopoFace
         Possible exceptions: (FreeCAD.FreeCADError).
         """
 
-    def getNodesBySolid(self, arg1: Part.Solid, /) -> list[int]:
+    def getNodesBySolid(self, arg1: PartModule.Solid, /) -> list[int]:
         """
         Return a list of node IDs which belong to a TopoSolid
         Possible exceptions: (FreeCAD.FreeCADError).
         """
 
-    def getNodesByVertex(self, arg1: Part.Vertex, /) -> list[int]:
+    def getNodesByVertex(self, arg1: PartModule.Vertex, /) -> list[int]:
         """
         Return a list of node IDs which belong to a TopoVertex
         Possible exceptions: (FreeCAD.FreeCADError).
         """
 
-    def getVolumesByFace(self, arg1: Part.Face, /) -> list[tuple[int, int]]:
+    def getVolumesByFace(self, arg1: PartModule.Face, /) -> list[tuple[int, int]]:
         """
         Return a dict of volume IDs and face IDs which belong to a TopoFace
         Possible exceptions: (FreeCAD.FreeCADError).
         """
 
-    def getccxVolumesByFace(self, arg1: Part.Face, /) -> list[tuple[int, int]]:
+    def getccxVolumesByFace(self, arg1: PartModule.Face, /) -> list[tuple[int, int]]:
         """
         Return a dict of volume IDs and ccx face numbers which belong to a TopoFace
         Possible exceptions: (FreeCAD.FreeCADError).
@@ -296,7 +296,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
                             Returns boolean.
         """
 
-    def setShape(self, arg1: Part.Shape, /):
+    def setShape(self, arg1: PartModule.Shape, /):
         """
         Set the Part shape to mesh
         Possible exceptions: (FreeCAD.FreeCADError).

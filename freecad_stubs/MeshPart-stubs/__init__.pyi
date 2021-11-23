@@ -2,11 +2,11 @@ import typing
 
 import FreeCAD
 import Mesh as MeshModule
-import Part
+import Part as PartModule
 
 
 # AppMeshPartPy.cpp
-def loftOnCurve(curve: Part.Shape, poly, upVector: typing.Sequence[float, float, float], MaxSize: float, /) -> MeshModule.Mesh:
+def loftOnCurve(curve: PartModule.Shape, poly, upVector: typing.Sequence[float, float, float], MaxSize: float, /) -> MeshModule.Mesh:
     """
     Creates a mesh loft based on a curve and an up vector
 
@@ -20,7 +20,7 @@ def loftOnCurve(curve: Part.Shape, poly, upVector: typing.Sequence[float, float,
     """
 
 
-def findSectionParameters(Edge: Part.Edge, Mesh: MeshModule.Mesh, Vector: FreeCAD.Vector, /) -> list[float]:
+def findSectionParameters(Edge: PartModule.Edge, Mesh: MeshModule.Mesh, Vector: FreeCAD.Vector, /) -> list[float]:
     """
     Find the parameters of the edge where when projecting the corresponding point
     will lie on an edge of the mesh
@@ -36,20 +36,20 @@ def projectPointsOnMesh(list_of_points, Mesh: MeshModule.Mesh, Vector: FreeCAD.V
     """
 
 
-def wireFromSegment(arg1: MeshModule.Mesh, arg2: list, /) -> list[Part.Wire]:
+def wireFromSegment(arg1: MeshModule.Mesh, arg2: list, /) -> list[PartModule.Wire]:
     """Create wire(s) from boundary of a mesh segment"""
 
 
-def wireFromMesh(arg1: MeshModule.Mesh, /) -> list[Part.Wire]:
+def wireFromMesh(arg1: MeshModule.Mesh, /) -> list[PartModule.Wire]:
     """Create wire(s) from boundary of a mesh"""
 
 
 @typing.overload
-def projectShapeOnMesh(Shape: Part.Shape, Mesh: MeshModule.Mesh, MaxDistance: float) -> list[list[FreeCAD.Vector]]: ...
+def projectShapeOnMesh(Shape: PartModule.Shape, Mesh: MeshModule.Mesh, MaxDistance: float) -> list[list[FreeCAD.Vector]]: ...
 
 
 @typing.overload
-def projectShapeOnMesh(Shape: Part.Shape, Mesh: MeshModule.Mesh, Direction: FreeCAD.Vector) -> list[list[FreeCAD.Vector]]: ...
+def projectShapeOnMesh(Shape: PartModule.Shape, Mesh: MeshModule.Mesh, Direction: FreeCAD.Vector) -> list[list[FreeCAD.Vector]]: ...
 
 
 @typing.overload
@@ -68,27 +68,27 @@ def projectShapeOnMesh(Polygons, Mesh: MeshModule.Mesh, Direction: FreeCAD.Vecto
 
 
 @typing.overload
-def meshFromShape(Shape: Part.Shape, /) -> MeshModule.Mesh: ...
+def meshFromShape(Shape: PartModule.Shape, /) -> MeshModule.Mesh: ...
 
 
 @typing.overload
-def meshFromShape(Shape: Part.Shape, MaxLength: float) -> MeshModule.Mesh: ...
+def meshFromShape(Shape: PartModule.Shape, MaxLength: float) -> MeshModule.Mesh: ...
 
 
 @typing.overload
-def meshFromShape(Shape: Part.Shape, MaxArea: float) -> MeshModule.Mesh: ...
+def meshFromShape(Shape: PartModule.Shape, MaxArea: float) -> MeshModule.Mesh: ...
 
 
 @typing.overload
-def meshFromShape(Shape: Part.Shape, LocalLength: float) -> MeshModule.Mesh: ...
+def meshFromShape(Shape: PartModule.Shape, LocalLength: float) -> MeshModule.Mesh: ...
 
 
 @typing.overload
-def meshFromShape(Shape: Part.Shape, Deflection: float) -> MeshModule.Mesh: ...
+def meshFromShape(Shape: PartModule.Shape, Deflection: float) -> MeshModule.Mesh: ...
 
 
 @typing.overload
-def meshFromShape(Shape: Part.Shape, MinLength: float, MaxLength: float) -> MeshModule.Mesh:
+def meshFromShape(Shape: PartModule.Shape, MinLength: float, MaxLength: float) -> MeshModule.Mesh:
     """
     Create surface mesh from shape
 

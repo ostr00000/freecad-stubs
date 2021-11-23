@@ -1,12 +1,12 @@
 import FreeCAD
-import Part
+import Part as PartModule
 
 
 # UnifySameDomainPy.xml
 class UnifySameDomain(FreeCAD.PyObjectBase):
     """This tool tries to unify faces and edges of the shape which lie on the same geometry."""
 
-    def __init__(self, Shape: Part.Shape, UnifyEdges: bool = None, UnifyFaces: bool = None, ConcatBSplines: bool = None):
+    def __init__(self, Shape: PartModule.Shape, UnifyEdges: bool = None, UnifyFaces: bool = None, ConcatBSplines: bool = None):
         """
         This tool tries to unify faces and edges of the shape which lie on the same geometry.
         Possible exceptions: (RuntimeError).
@@ -27,13 +27,13 @@ class UnifySameDomain(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def initialize(self, Shape: Part.Shape, UnifyEdges: bool = None, UnifyFaces: bool = None, ConcatBSplines: bool = None):
+    def initialize(self, Shape: PartModule.Shape, UnifyEdges: bool = None, UnifyFaces: bool = None, ConcatBSplines: bool = None):
         """
         Initializes with a shape and necessary flags
         Possible exceptions: (RuntimeError).
         """
 
-    def keepShape(self, arg1: Part.Shape, /):
+    def keepShape(self, arg1: PartModule.Shape, /):
         """
         Sets the shape for avoid merging of the faces/edges.
         Possible exceptions: (RuntimeError).
@@ -66,7 +66,7 @@ class UnifySameDomain(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def shape(self) -> Part.Shape:
+    def shape(self) -> PartModule.Shape:
         """
         Gives the resulting shape
         Possible exceptions: (RuntimeError).

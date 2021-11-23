@@ -3,6 +3,7 @@ import typing
 import FreeCAD
 import FreeCADGui
 import Part
+import Part as PartModule
 import Path as PathModule
 
 LinkList_t: typing.TypeAlias = None | FreeCAD.DocumentObject
@@ -200,7 +201,7 @@ class VoronoiEdge(FreeCAD.BaseClass):
     def Vertices(self) -> list[PathModule.VoronoiVertex | None]:
         """Begin and End voronoi vertex"""
 
-    def toShape(self, arg1: float = None, arg2: float = None, arg3: bool = None, /) -> Part.Edge | None:
+    def toShape(self, arg1: float = None, arg2: float = None, arg3: bool = None, /) -> PartModule.Edge | None:
         """
         Returns a shape for the edge
         Possible exceptions: (RuntimeError).
@@ -395,12 +396,12 @@ class Area(FreeCAD.BaseClass):
 
     def makePocket(self, index: int = None) -> Part.Shape: ...
 
-    def makeSections(self, heights=None, plane: Part.Shape = None) -> list[PathModule.Area]:
+    def makeSections(self, heights=None, plane: PartModule.Shape = None) -> list[PathModule.Area]:
         """Possible exceptions: (TypeError)."""
 
     def setParams(self) -> PathModule.Area: ...
 
-    def setPlane(self, shape: Part.Shape, /) -> PathModule.Area:
+    def setPlane(self, shape: PartModule.Shape, /) -> PathModule.Area:
         """
         setPlane(shape): Set the working plane.
 

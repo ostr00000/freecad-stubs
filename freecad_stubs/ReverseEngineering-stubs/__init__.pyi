@@ -1,11 +1,11 @@
 import FreeCAD
 import Mesh as MeshModule
-import Part
+import Part as PartModule
 import Points as PointsModule
 
 
 # AppReverseEngineering.cpp
-def approxSurface(Points, UDegree: int = None, VDegree: int = None, NbUPoles: int = None, NbVPoles: int = None, Smooth: bool = None, Weight: float = None, Grad: float = None, Bend: float = None, Curv: float = None, Iterations: int = None, Correction: bool = None, PatchFactor: float = None, UVDirs: tuple = None) -> Part.BSplineSurface:
+def approxSurface(Points, UDegree: int = None, VDegree: int = None, NbUPoles: int = None, NbVPoles: int = None, Smooth: bool = None, Weight: float = None, Grad: float = None, Bend: float = None, Curv: float = None, Iterations: int = None, Correction: bool = None, PatchFactor: float = None, UVDirs: tuple = None) -> PartModule.BSplineSurface:
     """
     approxSurface(Points=,UDegree=3,VDegree=3,NbUPoles=6,NbVPoles=6,Smooth=True,
     Weight=0.1,Grad=1.0,Bend=0.0,
@@ -37,7 +37,7 @@ def marchingCubesHoppe(Points: PointsModule.Points, KSearch: int = None, Normals
     """marchingCubesHoppe(PointKernel)."""
 
 
-def fitBSpline(Points: PointsModule.Points, Degree: int = None, Refinement: int = None, Iterations: int = None, InteriorSmoothness: float = None, InteriorWeight: float = None, BoundarySmoothness: float = None, BoundaryWeight: float = None) -> Part.BSplineSurface:
+def fitBSpline(Points: PointsModule.Points, Degree: int = None, Refinement: int = None, Iterations: int = None, InteriorSmoothness: float = None, InteriorWeight: float = None, BoundarySmoothness: float = None, BoundaryWeight: float = None) -> PartModule.BSplineSurface:
     """fitBSpline(PointKernel)."""
 
 

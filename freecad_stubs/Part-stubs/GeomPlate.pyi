@@ -1,5 +1,5 @@
 import FreeCAD
-import Part
+import Part as PartModule
 import Part.Geom2d
 import Part.GeomPlate
 
@@ -8,7 +8,7 @@ import Part.GeomPlate
 class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
     """This class provides an algorithm for constructing such a plate surface."""
 
-    def __init__(self, Surface: Part.GeometrySurface = None, Degree: int = None, NbPtsOnCur: int = None, NbIter: int = None, Tol2d: float = None, Tol3d: float = None, TolAng: float = None, TolCurv: float = None, Anisotropy: bool = None):
+    def __init__(self, Surface: PartModule.GeometrySurface = None, Degree: int = None, NbPtsOnCur: int = None, NbIter: int = None, Tol2d: float = None, Tol3d: float = None, TolAng: float = None, TolCurv: float = None, Anisotropy: bool = None):
         """
         This class provides an algorithm for constructing such a plate surface.
         Possible exceptions: (ReferenceError, RuntimeError).
@@ -70,7 +70,7 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def loadInitSurface(self, arg1: Part.GeometrySurface, /):
+    def loadInitSurface(self, arg1: PartModule.GeometrySurface, /):
         """
         Loads the initial surface
         Possible exceptions: (ReferenceError, RuntimeError).
@@ -120,7 +120,7 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
 class CurveConstraintPy(FreeCAD.PyObjectBase):
     """Defines curves as constraints to be used to deform a surface"""
 
-    def __init__(self, Boundary: Part.Curve, Order: int = None, NbPts: int = None, TolDist: float = None, TolAng: float = None, TolCurv: float = None):
+    def __init__(self, Boundary: PartModule.Curve, Order: int = None, NbPts: int = None, TolDist: float = None, TolAng: float = None, TolCurv: float = None):
         """
         Defines curves as constraints to be used to deform a surface
         Possible exceptions: (ReferenceError, RuntimeError).
