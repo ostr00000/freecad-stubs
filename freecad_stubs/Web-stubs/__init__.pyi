@@ -22,3 +22,15 @@ class BrowserView:
 
     def setHtml(self, arg1: str, arg2: str = None, /) -> None:
         """setHtml(str)"""
+
+    def load(self, url: str, /) -> None:
+        """load(url)"""
+
+    def stop(self) -> None:
+        """stop()"""
+
+    def url(self) -> str:
+        """url()"""
+
+    def cast_to_base(self):
+        """cast_to_base() cast to MDIView class"""

@@ -44,4 +44,5 @@ class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
             if doc:
                 doc = indent(formatDocstring(doc))
 
+            # TODO P2 add base classes? ex. MainWindowPy(QMainWindow)
             yield f"class {className}:\n{doc}\n{content}\n"

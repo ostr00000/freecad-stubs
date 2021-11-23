@@ -1037,6 +1037,21 @@ class Document(FreeCAD.Persistence):
 class MDIViewPy:
     """Python binding class for the MDI view class"""
 
+    def printView(self) -> None:
+        """printView()"""
+
+    def printPdf(self) -> None:
+        """printPdf()"""
+
+    def printPreview(self) -> None:
+        """printPreview()"""
+
+    def undoActions(self) -> list[str]:
+        """undoActions()"""
+
+    def redoActions(self) -> list[str]:
+        """redoActions()"""
+
     def message(self, arg1: str, /) -> bool:
         """deprecated: use sendMessage"""
 
@@ -1060,6 +1075,9 @@ class MDIViewPy:
         getActiveObject(name,resolve=True)
         returns the active object for the given type
         """
+
+    def cast_to_base(self):
+        """cast_to_base() cast to MDIView class"""
 
 
 # Application.cpp
@@ -1091,9 +1109,6 @@ def getSoDBVersion() -> str:
 # View3DPy.cpp
 class View3DInventorPy:
     """Python binding class for the Inventor viewer class"""
-
-    def message(self, arg1: str, /) -> None:
-        """message()"""
 
     def fitAll(self, arg1: float = None, /) -> None:
         """fitAll()"""
@@ -1380,6 +1395,21 @@ class View3DInventorPy:
     def graphicsView(self) -> qtpy.QtWidgets.QGraphicsView:
         """graphicsView(): Access this view as QGraphicsView"""
 
+    def setCornerCrossVisible(self, bool: int, /) -> None:
+        """setCornerCrossVisible(bool): Defines corner axis cross visibility"""
+
+    def isCornerCrossVisible(self) -> bool:
+        """isCornerCrossVisible(): Returns current corner axis cross visibility"""
+
+    def setCornerCrossSize(self, int: int, /) -> None:
+        """setCornerCrossSize(int): Defines corner axis cross size"""
+
+    def getCornerCrossSize(self) -> int:
+        """getCornerCrossSize(): Returns current corner axis cross size"""
+
+    def cast_to_base(self):
+        """cast_to_base() cast to MDIView class"""
+
     def boxZoom(self, XMin: int, YMin: int, XMax: int, YMax: int) -> None:
         """boxZoom()"""
 
@@ -1402,6 +1432,23 @@ class PyResource:
     def value(self, arg1: str, arg2: str, /) -> list | str | float | bool | int | None: ...
 
     def setValue(self, arg1: str, arg2: str, arg3, /) -> None: ...
+
+
+# MainWindowPy.cpp
+class MainWindowPy:
+    """Python binding class for the MainWindow class"""
+
+    def getWindows(self) -> list[MDIViewPy]:
+        """getWindows()"""
+
+    def getWindowsOfType(self, typeid: FreeCAD.TypeId, /) -> list[MDIViewPy]:
+        """getWindowsOfType(typeid)"""
+
+    def setActiveWindow(self, MDIView, /):
+        """setActiveWindow(MDIView)"""
+
+    def getActiveWindow(self) -> MDIViewPy | None:
+        """getActiveWindow()"""
 
 
 # UiLoader.cpp
@@ -1518,6 +1565,9 @@ class AbstractSplitViewPy:
 
     def close(self) -> None:
         """close()"""
+
+    def cast_to_base(self):
+        """cast_to_base() cast to MDIView class"""
 
 
 # SelectionFilter.cpp
@@ -1664,7 +1714,7 @@ def isIconCached(String: str, /) -> bool:
     """
 
 
-def getMainWindow() -> qtpy.QtWidgets.QMainWindow:
+def getMainWindow():
     """
     getMainWindow() -> QMainWindow
 

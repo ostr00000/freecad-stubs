@@ -1848,3 +1848,14 @@ def makeDistanceDim3d(arg1, arg2, arg3, arg4, /) -> None:
 
 def makeGeomHatch(face, patScale: float = None, patName: str = None, patFile: str = None, /) -> PartModule.Compound | None:
     """makeGeomHatch(face, [patScale], [patName], [patFile]) -- draw a geom hatch on a given face, using optionally the given scale (default 1) and a given pattern name (ex. Diamond) and .pat file (the default pattern name and/or .pat files set in preferences are used if none are given). Returns a Part compound shape."""
+
+
+# MDIViewPage.cpp
+class MDIViewPagePy:
+    """Python binding class for the MDI view page class"""
+
+    def getPage(self) -> TechDraw.DrawPage:
+        """getPage() returns the page being displayed"""
+
+    def cast_to_base(self):
+        """cast_to_base() cast to MDIView class"""

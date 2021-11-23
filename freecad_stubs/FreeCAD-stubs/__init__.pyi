@@ -1540,6 +1540,9 @@ class PropertyContainer(FreeCAD.Persistence):
         Possible exceptions: (TypeError, IOError).
         """
 
+    def setDocumentationOfProperty(self, arg1: str, arg2: str, /):
+        """Set the documentation string of a dynamic property of this class."""
+
     @typing.overload
     def setEditorMode(self, arg1: str, arg2: int, /): ...
 
@@ -1553,6 +1556,9 @@ class PropertyContainer(FreeCAD.Persistence):
                 
         Possible exceptions: (TypeError).
         """
+
+    def setGroupOfProperty(self, arg1: str, arg2: str, /):
+        """Set the name of the group of a dynamic property."""
 
     def setPropertyStatus(self, name: str, val, /):
         """
@@ -1714,8 +1720,16 @@ def getResourceDir() -> str:
     """Get the root directory of all resources"""
 
 
+def getTempPath() -> str:
+    """Get the root directory of cached files"""
+
+
+def getUserCachePath() -> str:
+    """Get the root path of cached files"""
+
+
 def getUserConfigDir() -> str:
-    """Get the root directory of user config files"""
+    """Get the root path of user config files"""
 
 
 def getUserAppDataDir() -> str:

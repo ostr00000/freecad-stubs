@@ -381,11 +381,13 @@ class Gui:
     AxisOrigin = 'Gui::AxisOrigin'
     BaseView = 'Gui::BaseView'
     BlankWorkbench = 'Gui::BlankWorkbench'
+    EditorView = 'Gui::EditorView'
     LinkView = 'Gui::LinkView'
     MDIView = 'Gui::MDIView'
     NoneWorkbench = 'Gui::NoneWorkbench'
     PythonBaseWorkbench = 'Gui::PythonBaseWorkbench'
     PythonBlankWorkbench = 'Gui::PythonBlankWorkbench'
+    PythonEditorView = 'Gui::PythonEditorView'
     PythonWorkbench = 'Gui::PythonWorkbench'
     SoFCDB = 'Gui::SoFCDB'
     SplitView3DInventor = 'Gui::SplitView3DInventor'
@@ -441,6 +443,7 @@ class Image:
 
 
 class ImageGui:
+    ImageView = 'ImageGui::ImageView'
     ViewProviderImagePlane = 'ImageGui::ViewProviderImagePlane'
     Workbench = 'ImageGui::Workbench'
 
@@ -689,6 +692,7 @@ class PartDesign:
     FeatureAddSubPython = 'PartDesign::FeatureAddSubPython'
     FeatureAdditivePython = 'PartDesign::FeatureAdditivePython'
     FeatureBase = 'PartDesign::FeatureBase'
+    FeatureExtrude = 'PartDesign::FeatureExtrude'
     FeaturePrimitive = 'PartDesign::FeaturePrimitive'
     FeaturePython = 'PartDesign::FeaturePython'
     FeatureSubtractivePython = 'PartDesign::FeatureSubtractivePython'
@@ -1094,6 +1098,7 @@ class TechDrawGui:
 
 
 class WebGui:
+    BrowserView = 'WebGui::BrowserView'
     Workbench = 'WebGui::Workbench'
 
 

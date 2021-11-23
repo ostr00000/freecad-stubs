@@ -1,15 +1,3 @@
-import FreeCAD
-import TechDraw
-
-
-# MDIViewPagePy.xml
-class MDIViewPage(FreeCAD.PyObjectBase):
-    """MDIViewPage object"""
-
-    def getPage(self) -> TechDraw.DrawPage:
-        """returns the page being displayed"""
-
-
 # AppTechDrawGuiPy.cpp
 def export(arg1, arg2: str, /) -> None:
     """TechDraw hook for FC Gui exporter."""
