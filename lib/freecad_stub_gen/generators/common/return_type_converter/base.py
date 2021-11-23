@@ -63,7 +63,8 @@ class ReturnTypeConverterBase:
                 return 'int'
             case StrWrapper('Py::Float' | 'PyFloat_From'):
                 return 'float'
-            case StrWrapper('Py::String' | 'PyUnicode_From' | 'Py::Char'
+            case StrWrapper('Py::String' | 'PyString_From'
+                            | 'PyUnicode_From' | 'Py::Char'
                             | 'PyUnicode_DecodeUTF8' | 'PYSTRING_FROMSTRING'):
                 return 'str'
             case StrWrapper('Py::TupleN'):
