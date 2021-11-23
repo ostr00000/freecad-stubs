@@ -3,16 +3,17 @@ import logging
 import re
 from abc import ABC
 from collections import defaultdict
+from inspect import Signature, Parameter
 from itertools import chain
-from typing import Any, Iterable, DefaultDict, Optional
+from typing import Any, Iterable, DefaultDict
 
-from freecad_stub_gen.generators.method.arg_suit_merger import mergeArgSuitesGen
-from freecad_stub_gen.generators.method.doc_string import generateArgSuitFromDocstring
-from freecad_stub_gen.generators.method.format_finder import FormatFinder
-from freecad_stub_gen.generators.method.function_finder import findFunctionCall, \
+from freecad_stub_gen.generators.common.signature_merger import mergeSignaturesGen
+from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
     generateExpressionUntilChar
+from freecad_stub_gen.generators.common.doc_string import generateSignaturesFromDocstring
+from freecad_stub_gen.generators.common.gen_method import MethodGenerator
 from freecad_stub_gen.logger import LEVEL_CODE
-from freecad_stub_gen.stub_container import StubContainer
+from freecad_stub_gen.module_container import Module
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +24,7 @@ class Method:
     pythonMethodName: str = ''
     cFunction: str = ''
     doc: str = None
-    pythonArgs: str = None
+    pythonSignature: Signature = None
 
     REG_WHITESPACE_WITH_APOSTROPHE = re.compile(r'"\s*"')
 
@@ -50,12 +51,17 @@ class Method:
         assert match
         return match.group('class') or '', match.group('func')
 
+    def insertParam(self, param: Parameter):
+        assert self.pythonSignature is not None
+        newParameters = [param] + list(self.pythonSignature.parameters.values())
+        self.pythonSignature = self.pythonSignature.replace(parameters=newParameters)
+
     def __repr__(self):
         return f'{self.cClass}::{self.cFunction}'
 
     def __str__(self):
-        assert self.pythonArgs is not None
-        return self.pythonArgs
+        assert self.pythonSignature is not None
+        return str(self.pythonSignature)
 
 
 @dataclasses.dataclass(repr=False)
@@ -67,50 +73,41 @@ class PyMethodDef(Method):
         self.flags = self.args[2]
 
 
-class FreecadStubGeneratorFromCpp(FormatFinder, ABC):
-    def getStub(self) -> Optional[StubContainer]:
-        if result := ''.join(self._genStub()).rstrip():
+class BaseGeneratorFromCpp(MethodGenerator, ABC):
+    def getStub(self, mod: Module, moduleName: str):
+        if (result := ''.join(self._genStub(moduleName))).rstrip():
             header = f'# {self.baseGenFilePath.name}\n'
-            return StubContainer(header + result + '\n\n', self.requiredImports)
+            newMod = Module(header + result, self.requiredImports)
 
-    def _genStub(self) -> Iterable:
+            if self.baseGenFilePath.name in ('Sequencer.cpp', 'GeometryPyCXX.cpp'):
+                # another exception from general rules:
+                # Base::Interpreter().addType(Base::ProgressIndicatorPy::type_object(),
+                #     pBaseModule,"ProgressIndicator");
+                # Base::Interpreter().addType(Base::Vector2dPy::type_object(),
+                #     pBaseModule, "Vector2d");
+                moduleName = 'FreeCAD.Base'
+
+            mod[moduleName].update(newMod)
+
+    def _genStub(self, moduleName: str) -> Iterable[str]:
         raise NotImplementedError
 
-    def _genAllMethods(self, it: Iterable[Method], firstArgName='',
+    def _genAllMethods(self, it: Iterable[Method], firstParam=None,
                        functionSpacing: int = 1) -> Iterable[str]:
         methodNameToMethod: DefaultDict[str, list[Method]] = defaultdict(list)
         for method in it:
             methodNameToMethod[method.pythonMethodName].append(method)
 
         for methods in methodNameToMethod.values():
-            if firstArgName:
+            if firstParam:
                 for m in methods:
-                    m.pythonArgs = f'{firstArgName}{", " if m.pythonArgs else ""}{m.pythonArgs}'
+                    m.insertParam(firstParam)
 
-            docContent = next((met.doc for met in methods if met.doc is not None), None)
+            docContent = next((met.doc for met in methods if met.doc is not None), '')
             uniqueMethods = list({str(m): m for m in methods}.values())
             yield self.convertMethodToStr(
                 methods[0].pythonMethodName, uniqueMethods,
                 docContent, functionSpacing=functionSpacing)
-
-    def _genMethodWithArgs(self, method: Method) -> Iterable[Method]:
-        if method.doc is None:
-            docSuites = []
-        else:
-            docSuites = list(generateArgSuitFromDocstring(
-                method.pythonMethodName, method.doc))
-        codeSuites = list(self.generateArgFromCode(method.cFunction, method.cClass))
-
-        yielded = False
-        for argList in mergeArgSuitesGen(codeSuites, docSuites):
-            yielded = True
-            yield dataclasses.replace(method, pythonArgs=argList)
-
-        if not yielded:
-            logger.debug(f"Not found args for {method=!r} {self.baseGenFilePath=}")
-            if logger.isEnabledFor(LEVEL_CODE):
-                logger.log(LEVEL_CODE, self.findFunctionBody(
-                    method.cFunction, method.cClass))
 
     REG_NOARGS_METHOD = re.compile('add_noargs_method')
     REG_VARGS_METHOD = re.compile('add_varargs_method')
@@ -123,8 +120,28 @@ class FreecadStubGeneratorFromCpp(FormatFinder, ABC):
                 self.REG_KEYWORD_METHOD.finditer(content),
         ):
             funcCall = findFunctionCall(
-                content, match.span()[0], bracketL='(', bracketR=')')
+                content, match.start(), bracketL='(', bracketR=')')
             funcCallStartPos = funcCall.find('(') + 1
             method = Method(list(generateExpressionUntilChar(
                 funcCall, funcCallStartPos, splitChar=',')))
             yield from self._genMethodWithArgs(method)
+
+    def _genMethodWithArgs(self, method: Method, argNumStart=1) -> Iterable[Method]:
+        if method.doc is None:
+            docSignatures = []
+        else:
+            docSignatures = list(generateSignaturesFromDocstring(
+                method.pythonMethodName, method.doc))
+        codeSignatures = list(self.generateSignaturesFromCode(
+            method.cFunction, method.cClass, argNumStart=argNumStart))
+
+        yielded = False
+        for sig in mergeSignaturesGen(codeSignatures, docSignatures):
+            yielded = True
+            yield dataclasses.replace(method, pythonSignature=sig)
+
+        if not yielded:
+            logger.debug(f"Not found args for {method=!r} {self.baseGenFilePath=}")
+            if logger.isEnabledFor(LEVEL_CODE):
+                logger.log(LEVEL_CODE, self.findFunctionBody(
+                    method.cFunction, method.cClass))

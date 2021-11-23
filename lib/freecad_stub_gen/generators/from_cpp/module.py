@@ -2,14 +2,13 @@ import re
 from collections.abc import Iterable
 from typing import Optional
 
-import more_itertools
+from freecad_stub_gen.generators.from_cpp.base import BaseGeneratorFromCpp
+from freecad_stub_gen.generators.common.cpp_function import findFunctionCall
+from freecad_stub_gen.module_container import Module
+from freecad_stub_gen.module_namespace import moduleNamespace
 
-from freecad_stub_gen.generators.from_cpp.base import FreecadStubGeneratorFromCpp
-from freecad_stub_gen.generators.method.function_finder import findFunctionCall
-from freecad_stub_gen.stub_container import StubContainer
 
-
-class FreecadStubGeneratorFromCppModule(FreecadStubGeneratorFromCpp):
+class FreecadStubGeneratorFromCppModule(BaseGeneratorFromCpp):
     """Generate functions from cpp code directly added to module."""
 
     def __init__(self, *args, **kwargs):
@@ -18,30 +17,23 @@ class FreecadStubGeneratorFromCppModule(FreecadStubGeneratorFromCpp):
 
     REG_MODULE_INIT = re.compile(r'Py::ExtensionModule<\w+>\("(\w+)"\)')
 
-    def getStub(self) -> Optional[StubContainer]:
-        hasStub, gen = more_itertools.spy(self._genStub())
-        if not hasStub:
-            return
+    def getStub(self, mod: Module, moduleName: str):
+        header = f'# {self.baseGenFilePath.name}\n'
 
-        mainStub = StubContainer()
-        for st in gen:
-            mainStub @= st
-        return mainStub
-
-    def _genStub(self) -> Iterable[StubContainer]:
-        for result in self._genModules():
-            if result := result.rstrip():
-                header = f'# {self.baseGenFilePath.name}\n'
+        for result in self._genStub(moduleName):
+            if result.rstrip():
+                # we prefer name with more details
                 assert self._modName
-                yield StubContainer(
-                    header + result + '\n\n',
-                    self.requiredImports, name=self._modName)
+                curModName = moduleName if '.' in moduleName else self._modName
+                curModName = moduleNamespace.convertNamespaceToModule(curModName)
+
+                mod[curModName].update(Module(
+                    header + result, self.requiredImports))
                 self.requiredImports = set()
 
-    def _genModules(self) -> Iterable[str]:
+    def _genStub(self, moduleName: str) -> Iterable[str]:
         for match in self.REG_MODULE_INIT.finditer(self.impContent):
-            start, end = match.span()
-            moduleInitBody = findFunctionCall(self.impContent, end)
+            moduleInitBody = findFunctionCall(self.impContent, match.end())
 
             gen = self._findFunctionCallsGen(moduleInitBody)
             if result := ''.join(self._genAllMethods(gen, functionSpacing=2)):
