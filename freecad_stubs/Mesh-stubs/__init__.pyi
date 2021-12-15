@@ -861,7 +861,10 @@ class Edge(FreeCAD.PyObjectBase):
 
 # AppMeshPy.cpp
 def read(arg1: str, /) -> MeshModule.Mesh:
-    """Read a mesh from a file and returns a Mesh object."""
+    """
+    Read a mesh from a file and returns a Mesh object.
+    Possible exceptions: (Exception).
+    """
 
 
 def open(string: str, /) -> None:
@@ -869,6 +872,7 @@ def open(string: str, /) -> None:
     open(string)
     Create a new document and a Mesh feature to load the file into
     the document.
+    Possible exceptions: (Exception).
     """
 
 
@@ -876,11 +880,15 @@ def insert(string_mesh: str, string: str = None, /) -> None:
     """
     insert(string|mesh,[string])
     Load or insert a mesh into the given or active document.
+    Possible exceptions: (Exception).
     """
 
 
 def show(shape: MeshModule.Mesh, string: str = None, /) -> None:
-    """show(shape,[string]) -- Add the mesh to the active document or create one if no document exists."""
+    """
+    show(shape,[string]) -- Add the mesh to the active document or create one if no document exists.
+    Possible exceptions: (Exception, ReferenceError).
+    """
 
 
 @typing.overload
@@ -889,31 +897,52 @@ def createBox(arg1: float = None, arg2: float = None, arg3: float = None, arg4: 
 
 @typing.overload
 def createBox(arg1: FreeCAD.BoundBox, /) -> MeshModule.Mesh:
-    """Create a solid mesh box"""
+    """
+    Create a solid mesh box
+    Possible exceptions: (TypeError, FreeCAD.FreeCADError).
+    """
 
 
 def createPlane(arg1: float = None, arg2: float = None, arg3: float = None, /) -> MeshModule.Mesh:
-    """Create a mesh XY plane normal +Z"""
+    """
+    Create a mesh XY plane normal +Z
+    Possible exceptions: (Exception).
+    """
 
 
 def createSphere(arg1: float = None, arg2: int = None, /) -> MeshModule.Mesh:
-    """Create a tessellated sphere"""
+    """
+    Create a tessellated sphere
+    Possible exceptions: (Exception, FreeCAD.FreeCADError).
+    """
 
 
 def createEllipsoid(arg1: float = None, arg2: float = None, arg3: int = None, /) -> MeshModule.Mesh:
-    """Create a tessellated ellipsoid"""
+    """
+    Create a tessellated ellipsoid
+    Possible exceptions: (Exception, FreeCAD.FreeCADError).
+    """
 
 
 def createCylinder(arg1: float = None, arg2: float = None, arg3: int = None, arg4: float = None, arg5: int = None, /) -> MeshModule.Mesh:
-    """Create a tessellated cylinder"""
+    """
+    Create a tessellated cylinder
+    Possible exceptions: (Exception, FreeCAD.FreeCADError).
+    """
 
 
 def createCone(arg1: float = None, arg2: float = None, arg3: float = None, arg4: int = None, arg5: float = None, arg6: int = None, /) -> MeshModule.Mesh:
-    """Create a tessellated cone"""
+    """
+    Create a tessellated cone
+    Possible exceptions: (Exception, FreeCAD.FreeCADError).
+    """
 
 
 def createTorus(arg1: float = None, arg2: float = None, arg3: int = None, /) -> MeshModule.Mesh:
-    """Create a tessellated torus"""
+    """
+    Create a tessellated torus
+    Possible exceptions: (Exception, FreeCAD.FreeCADError).
+    """
 
 
 def calculateEigenTransform(seq_Base_Vector_, /) -> FreeCAD.Placement:
@@ -924,11 +953,16 @@ def calculateEigenTransform(seq_Base_Vector_, /) -> FreeCAD.Placement:
     of gravity as origin. The local coordinate system is computed
     this way that u has minimum and w has maximum expansion.
     The local coordinate system is right-handed.
+
+    Possible exceptions: (Exception, TypeError).
     """
 
 
 def polynomialFit(seq_Base_Vector_, /) -> dict[str, float | tuple[float, float, float, float, float, float] | tuple[float, ...]]:
-    """polynomialFit(seq(Base.Vector)) -- Calculates a polynomial fit."""
+    """
+    polynomialFit(seq(Base.Vector)) -- Calculates a polynomial fit.
+    Possible exceptions: (Exception, TypeError).
+    """
 
 
 def minimumVolumeOrientedBox(seq_Base_Vector_, /) -> tuple[FreeCAD.Vector, FreeCAD.Vector, FreeCAD.Vector, FreeCAD.Vector, float, float, float]:
@@ -937,6 +971,8 @@ def minimumVolumeOrientedBox(seq_Base_Vector_, /) -> tuple[FreeCAD.Vector, FreeC
     volume oriented box containing all points. The return value is a
     tuple of seven items:
         center, u, v, w directions and the lengths of the three vectors.
+
+    Possible exceptions: (Exception, TypeError, RuntimeError).
     """
 
 
@@ -948,4 +984,6 @@ def export(objectList, filename: str, tolerance: float = 0.1, exportAmfCompresse
     between the specified objects and the exported mesh.
     exportAmfCompressed specifies whether exported AMF files should be
     compressed.
+
+    Possible exceptions: (Exception, TypeError, FreeCAD.FreeCADError).
     """

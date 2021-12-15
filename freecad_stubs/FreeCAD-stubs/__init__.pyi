@@ -363,7 +363,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
                             The first argument specifies the type, the second the
                             name of the property.
                 
-        Possible exceptions: (RuntimeError, Exception).
+        Possible exceptions: (RuntimeError, FreeCAD.FreeCADError).
         """
 
     def adjustRelativeLinks(self, parent: FreeCAD.DocumentObject, recursive=True, /) -> bool:
@@ -992,13 +992,13 @@ class ExtensionContainer(FreeCAD.PropertyContainer):
     def addExtension(self, arg1: str, arg2=None, /):
         """
         Adds an extension to the object. Requires the string identifier for the python extension as argument
-        Possible exceptions: (Exception, DeprecationWarning).
+        Possible exceptions: (FreeCAD.FreeCADError, DeprecationWarning).
         """
 
     def hasExtension(self, arg1: str, arg2=None, /) -> bool:
         """
         Returns if this object has the specified extension
-        Possible exceptions: (Exception).
+        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
 
@@ -1310,7 +1310,7 @@ class Document(FreeCAD.PropertyContainer):
                 to allow Python code to override view provider type. Once bound, and before adding to
                 the document, it will try to call Python binding object's attach(obj) method.
         viewType (String): override the view provider type directly, only effective when attach is False.
-        Possible exceptions: (Exception).
+        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
     def clearUndos(self):
@@ -1409,7 +1409,7 @@ class Document(FreeCAD.PropertyContainer):
         object: can either a single object or sequence of objects
         with_dependencies: if True, all internal dependent objects are copied too.
         
-        Possible exceptions: (Exception).
+        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
     def openTransaction(self, name=None, /):
@@ -1437,7 +1437,7 @@ class Document(FreeCAD.PropertyContainer):
     def removeObject(self, arg1: str, /):
         """
         Remove an object from the document
-        Possible exceptions: (Exception).
+        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
     def restore(self):
@@ -1665,6 +1665,7 @@ def saveParameter(config: str = 'User parameter', /) -> None:
     """
     saveParameter(config='User parameter') -> None
     Save parameter set to file. The default set is 'User parameter'
+    Possible exceptions: (ValueError, RuntimeError).
     """
 
 
@@ -1763,7 +1764,10 @@ def loadFile(arg0: str, arg1: str = None, arg2: str = None, /):
 
 
 def open(name: str, hidden=None):
-    """See openDocument(string)"""
+    """
+    See openDocument(string)
+    Possible exceptions: (IOError).
+    """
 
 
 def openDocument(name: str, hidden=False):
@@ -1775,6 +1779,7 @@ def openDocument(name: str, hidden=False):
               or the file cannot be loaded an I/O exception is thrown.
               In this case the document is kept alive.
     hidden: whether to hide document 3D view.
+    Possible exceptions: (IOError).
     """
 
 
@@ -1811,6 +1816,7 @@ def setActiveDocument(arg0: str, /):
     setActiveDocement(string) -> None
 
     Set the active document by its name.
+    Possible exceptions: (FreeCAD.FreeCADError).
     """
 
 
@@ -1868,6 +1874,8 @@ def getLinksTo(obj=None, options: int = 0, maxCount: int = 0, /) -> tuple[object
 
     options: 1: recursive, 2: check link array. Options can combine.
     maxCount: to limit the number of links returned
+
+    Possible exceptions: (TypeError).
     """
 
 
@@ -1879,6 +1887,7 @@ def getDependentObjects(arg0, arg1: int = None, /) -> tuple[object, ...]:
     options: can have the following bit flags,
              1: to sort the list in topological order.
              2: to exclude dependency of Link type object.
+    Possible exceptions: (TypeError).
     """
 
 
@@ -1930,4 +1939,4 @@ Wrn = FreeCAD.Console.PrintWarning
 # so may not exist when accessible until FreeCADGuiInit is initialized - use `getattr`
 GuiUp: typing.Literal[0, 1]
 Gui = FreeCADGui
-ActiveDocument: FreeCAD.Document
+ActiveDocument: FreeCAD.Document | None

@@ -3,15 +3,16 @@ import logging
 import re
 from abc import ABC
 from collections import defaultdict
-from inspect import Signature, Parameter
+from inspect import Parameter
 from itertools import chain
 from typing import Any, Iterable, DefaultDict
 
-from freecad_stub_gen.generators.common.signature_merger import mergeSignaturesGen
+from freecad_stub_gen.generators.common.annotation_parameter import SelfSignature
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
     generateExpressionUntilChar
 from freecad_stub_gen.generators.common.doc_string import generateSignaturesFromDocstring
 from freecad_stub_gen.generators.common.gen_method import MethodGenerator
+from freecad_stub_gen.generators.common.signature_merger import mergeSignaturesGen
 from freecad_stub_gen.logger import LEVEL_CODE
 from freecad_stub_gen.module_container import Module
 
@@ -24,7 +25,7 @@ class Method:
     pythonMethodName: str = ''
     cFunction: str = ''
     doc: str = None
-    pythonSignature: Signature = None
+    pythonSignature: SelfSignature = None
 
     REG_WHITESPACE_WITH_APOSTROPHE = re.compile(r'"\s*"')
 
@@ -104,6 +105,7 @@ class BaseGeneratorFromCpp(MethodGenerator, ABC):
                     m.insertParam(firstParam)
 
             docContent = next((met.doc for met in methods if met.doc is not None), '')
+            docContent += SelfSignature.getExceptionsDocs(m.pythonSignature for m in methods)
             uniqueMethods = list({str(m): m for m in methods}.values())
             yield self.convertMethodToStr(
                 methods[0].pythonMethodName, uniqueMethods,

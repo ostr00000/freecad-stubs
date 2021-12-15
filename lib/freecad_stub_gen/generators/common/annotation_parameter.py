@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from inspect import Parameter, formatannotation, Signature
-from typing import Optional, Sequence
+from typing import Optional, Sequence, Iterable
 
 from freecad_stub_gen.util import OrderedSet
 
@@ -116,7 +116,7 @@ class SelfSignature(Signature):
             raise
 
     @classmethod
-    def getExceptionsDocs(cls, signatures: list[SelfSignature]) -> str:
+    def getExceptionsDocs(cls, signatures: Iterable[SelfSignature]) -> str:
         uniqueExceptions = OrderedSet()
         for sig in signatures:
             uniqueExceptions.update(sig.exceptions)

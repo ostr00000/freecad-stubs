@@ -125,4 +125,7 @@ class ViewProviderMesh(FreeCADGui.ViewProviderDocumentObject):
 
 # AppMeshGui.cpp
 def convertToSTL(arg1: str, arg2: str, /) -> bool:
-    """Convert a scene into an STL."""
+    """
+    Convert a scene into an STL.
+    Possible exceptions: (Exception).
+    """

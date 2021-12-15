@@ -285,7 +285,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         --
         The first argument specifies the type, the second the name of the property.
                 
-        Possible exceptions: (RuntimeError, Exception).
+        Possible exceptions: (RuntimeError, FreeCAD.FreeCADError).
         """
 
     def canDragAndDropObject(self, obj: FreeCAD.DocumentObject, /) -> bool:
@@ -1086,6 +1086,7 @@ def subgraphFromObject(object: FreeCAD.DocumentObject, /) -> object | None:
     subgraphFromObject(object) -> Node
 
     Return the Inventor subgraph to an object
+    Possible exceptions: (RuntimeError).
     """
 
 
@@ -1094,6 +1095,7 @@ def exportSubgraph(Node, File_or_Buffer, Format: str = 'VRML', /) -> None:
     exportSubgraph(Node, File or Buffer, [Format='VRML']) -> None
 
     Exports the sub-graph in the requested formatThe format string can be VRML or IV
+    Possible exceptions: (RuntimeError).
     """
 
 
@@ -1622,6 +1624,7 @@ def activateWorkbench(string: str, /) -> bool:
     activateWorkbench(string) -> None
 
     Activate the workbench by name
+    Possible exceptions: (FreeCAD.FreeCADError, RuntimeError).
     """
 
 
@@ -1630,6 +1633,7 @@ def addWorkbench(arg0, /) -> None:
     addWorkbench(string, object) -> None
 
     Add a workbench under a defined name.
+    Possible exceptions: (TypeError).
     """
 
 
@@ -1662,6 +1666,7 @@ def activeWorkbench():
     activeWorkbench() -> object
 
     Return the active workbench object
+    Possible exceptions: (AssertionError).
     """
 
 
@@ -1695,6 +1700,7 @@ def addIcon(arg0: str, arg1: str, arg2: str = None, /) -> None:
     addIcon(string, string or list) -> None
 
     Add an icon as file name or in XPM format to the system
+    Possible exceptions: (AssertionError, FreeCAD.FreeCADError).
     """
 
 
@@ -1764,7 +1770,10 @@ def supportedLocales() -> dict[str, str]:
 
 
 def createDialog(string: str, /):
-    """createDialog(string) -- Open a UI file"""
+    """
+    createDialog(string) -- Open a UI file
+    Possible exceptions: (AssertionError).
+    """
 
 
 @typing.overload
@@ -1776,6 +1785,7 @@ def addPreferencePage(string: type, string1: str, /) -> None:
     """
     addPreferencePage(string,string) -- Add a UI form to the
     preferences dialog. The first argument specifies the file nameand the second specifies the group name
+    Possible exceptions: (RuntimeError).
     """
 
 
@@ -1784,6 +1794,7 @@ def addCommand(arg0: str, arg1, arg2: str = None, /) -> None:
     addCommand(string, object) -> None
 
     Add a command object
+    Possible exceptions: (Exception, ImportError, FreeCAD.FreeCADError).
     """
 
 
@@ -1857,6 +1868,7 @@ def setActiveDocument(string_or_App_Document: FreeCAD.Document, /):
     setActiveDocument(string or App.Document) -> None
 
     Activate the specified document
+    Possible exceptions: (TypeError).
     """
 
 
@@ -1894,6 +1906,7 @@ def getDocument(string: FreeCAD.Document, /) -> FreeCADGui.Document:
     getDocument(string) -> object
 
     Get a document by its name
+    Possible exceptions: (TypeError).
     """
 
 
@@ -1918,6 +1931,7 @@ def addModule(string: str, /) -> None:
     addModule(string) -> None
 
     Prints the given module import only once in the macro recording
+    Possible exceptions: (ImportError).
     """
 
 
@@ -2126,6 +2140,7 @@ def showMainWindow(arg0: bool = None, /) -> None:
     """
     showMainWindow() -- Show the main window
     If no main window does exist one gets created
+    Possible exceptions: (RuntimeError).
     """
 
 
@@ -2133,6 +2148,7 @@ def exec_loop() -> None:
     """
     exec_loop() -- Starts the event loop
     Note: this will block the call until the event loop has terminated
+    Possible exceptions: (RuntimeError).
     """
 
 
@@ -2140,13 +2156,19 @@ def setupWithoutGUI() -> None:
     """
     setupWithoutGUI() -- Uses this module without starting
     an event loop or showing up any GUI
+
+    Possible exceptions: (RuntimeError).
     """
 
 
 def embedToWindow(arg0: str, /) -> None:
-    """embedToWindow() -- Embeds the main window into another window"""
+    """
+    embedToWindow() -- Embeds the main window into another window
+
+    Possible exceptions: (FreeCAD.FreeCADError, NotImplementedError).
+    """
 
 
 Workbench: FreeCADGui.Workbench
-ActiveDocument: FreeCADGui.Document
+ActiveDocument: FreeCADGui.Document | None
 Control = ControlClass()  # hack to show this module in current module hints

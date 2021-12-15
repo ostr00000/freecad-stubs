@@ -1116,7 +1116,9 @@ class GeometryFacade(FreeCAD.BaseClass):
 
 
 # AppSketcherPy.cpp
-def open(arg1: str, /): ...
+def open(arg1: str, /):
+    """Possible exceptions: (Exception, RuntimeError)."""
 
 
-def insert(arg1: str, arg2: str, /) -> None: ...
+def insert(arg1: str, arg2: str, /) -> None:
+    """Possible exceptions: (Exception, RuntimeError)."""

@@ -10,39 +10,64 @@ def approxSurface(Points, UDegree: int = None, VDegree: int = None, NbUPoles: in
     approxSurface(Points=,UDegree=3,VDegree=3,NbUPoles=6,NbVPoles=6,Smooth=True,
     Weight=0.1,Grad=1.0,Bend=0.0,
     Iterations=5,Correction=True,PatchFactor=1.0)
+    Possible exceptions: (Exception, ValueError, RuntimeError).
     """
 
 
 def triangulate(Points: PointsModule.Points, SearchRadius: float, Mu: float = None, KSearch: int = None, Normals=None) -> MeshModule.Mesh:
-    """triangulate(PointKernel,searchRadius[,mu=2.5])."""
+    """
+    triangulate(PointKernel,searchRadius[,mu=2.5]).
+    Possible exceptions: (Exception).
+    """
 
 
 def poissonReconstruction(Points: PointsModule.Points, KSearch: int = None, OctreeDepth: int = None, SolverDivide: int = None, SamplesPerNode: float = None, Normals=None) -> MeshModule.Mesh:
-    """poissonReconstruction(PointKernel)."""
+    """
+    poissonReconstruction(PointKernel).
+    Possible exceptions: (Exception).
+    """
 
 
 def viewTriangulation(Points: PointsModule.Points, Width: int = None, Height: int = None) -> MeshModule.Mesh:
-    """viewTriangulation(PointKernel, width, height)."""
+    """
+    viewTriangulation(PointKernel, width, height).
+    Possible exceptions: (Exception, RuntimeError).
+    """
 
 
 def gridProjection(Points: PointsModule.Points, KSearch: int = None, Normals=None) -> MeshModule.Mesh:
-    """gridProjection(PointKernel)."""
+    """
+    gridProjection(PointKernel).
+    Possible exceptions: (Exception).
+    """
 
 
 def marchingCubesRBF(Points: PointsModule.Points, KSearch: int = None, Normals=None) -> MeshModule.Mesh:
-    """marchingCubesRBF(PointKernel)."""
+    """
+    marchingCubesRBF(PointKernel).
+    Possible exceptions: (Exception).
+    """
 
 
 def marchingCubesHoppe(Points: PointsModule.Points, KSearch: int = None, Normals=None) -> MeshModule.Mesh:
-    """marchingCubesHoppe(PointKernel)."""
+    """
+    marchingCubesHoppe(PointKernel).
+    Possible exceptions: (Exception).
+    """
 
 
 def fitBSpline(Points: PointsModule.Points, Degree: int = None, Refinement: int = None, Iterations: int = None, InteriorSmoothness: float = None, InteriorWeight: float = None, BoundarySmoothness: float = None, BoundaryWeight: float = None) -> PartModule.BSplineSurface:
-    """fitBSpline(PointKernel)."""
+    """
+    fitBSpline(PointKernel).
+    Possible exceptions: (Exception, RuntimeError).
+    """
 
 
 def filterVoxelGrid(Points: PointsModule.Points, DimX: float, DimY: float = None, DimZ: float = None) -> PointsModule.Points:
-    """filterVoxelGrid(dim)."""
+    """
+    filterVoxelGrid(dim).
+    Possible exceptions: (Exception).
+    """
 
 
 def normalEstimation(Points: PointsModule.Points, KSearch: int = 0, SearchRadius: float = 0) -> list[FreeCAD.Vector]:
@@ -63,16 +88,27 @@ def normalEstimation(Points: PointsModule.Points, KSearch: int = 0, SearchRadius
     f.Normal=nor
     f.ViewObject.Proxy=0
     f.ViewObject.DisplayMode=1
+
+    Possible exceptions: (Exception).
     """
 
 
 def regionGrowingSegmentation(Points: PointsModule.Points, KSearch: int = None, Normals=None) -> list[tuple[int, ...]]:
-    """regionGrowingSegmentation()."""
+    """
+    regionGrowingSegmentation().
+    Possible exceptions: (Exception).
+    """
 
 
 def featureSegmentation(Points: PointsModule.Points, KSearch: int = None) -> list[tuple[int, ...]]:
-    """featureSegmentation()."""
+    """
+    featureSegmentation().
+    Possible exceptions: (Exception).
+    """
 
 
 def sampleConsensus(SacModel: str, Points: PointsModule.Points, Normals=None) -> dict[str, float | tuple[float, ...] | tuple[int, ...]]:
-    """sampleConsensus()."""
+    """
+    sampleConsensus().
+    Possible exceptions: (Exception).
+    """

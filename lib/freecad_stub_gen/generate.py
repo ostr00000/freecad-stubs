@@ -101,7 +101,7 @@ Wrn = FreeCAD.Console.PrintWarning
     freeCad.imports.add('typing')
     freeCad += 'Gui = FreeCADGui'
     freeCad.imports.add('FreeCADGui')
-    freeCad += 'ActiveDocument: FreeCAD.Document'
+    freeCad += 'ActiveDocument: FreeCAD.Document | None'
     freeCad.imports.update((
         'FreeCAD.Console',
         'FreeCAD.Qt as Qt',
@@ -113,7 +113,7 @@ Wrn = FreeCAD.Console.PrintWarning
     _genModule(sourcesRoot, sourcePath / 'Main', sourcePath, moduleName='FreeCADGui')
     freeCadGui = sourcesRoot['FreeCADGui']
     freeCadGui += 'Workbench: FreeCADGui.Workbench'
-    freeCadGui += 'ActiveDocument: FreeCADGui.Document'
+    freeCadGui += 'ActiveDocument: FreeCADGui.Document | None'
     freeCadGui += 'Control = ControlClass()  # hack to show this module in current module hints'
     freeCadGui.imports.update((
         'FreeCADGui.Selection',

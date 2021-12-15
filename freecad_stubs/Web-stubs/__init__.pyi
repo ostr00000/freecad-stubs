@@ -1,6 +1,9 @@
 # AppWeb.cpp
 def startServer(address: str = None, port: int = 0, /) -> tuple[str, int]:
-    """startServer(address=127.0.0.1,port=0) -- Start a server."""
+    """
+    startServer(address=127.0.0.1,port=0) -- Start a server.
+    Possible exceptions: (Exception, OverflowError, RuntimeError).
+    """
 
 
 def waitForConnection(address: str = None, port: int = 0, timeout: int = 0, /) -> bool:
@@ -9,11 +12,15 @@ def waitForConnection(address: str = None, port: int = 0, timeout: int = 0, /) -
     Start a server, wait for connection and close server.
     Its use is disadvised in a the GUI version, since it will
     stop responding until the function returns.
+    Possible exceptions: (Exception, OverflowError, RuntimeError).
     """
 
 
 def registerServerFirewall(callable_string_, /) -> None:
-    """registerServerFirewall(callable(string)) -- Register a firewall."""
+    """
+    registerServerFirewall(callable(string)) -- Register a firewall.
+    Possible exceptions: (Exception).
+    """
 
 
 # BrowserView.cpp

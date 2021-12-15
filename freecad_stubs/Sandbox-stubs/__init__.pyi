@@ -4,11 +4,17 @@ import Sandbox
 
 # AppSandbox.cpp
 def DocumentProtector(Document: FreeCAD.Document, /) -> Sandbox.DocumentProtector:
-    """DocumentProtector(Document)"""
+    """
+    DocumentProtector(Document)
+    Possible exceptions: (Exception).
+    """
 
 
 def DocumentObjectProtector(DocumentObject: FreeCAD.DocumentObject, /) -> Sandbox.DocumentObjectProtector:
-    """DocumentObjectProtector(DocumentObject)"""
+    """
+    DocumentObjectProtector(DocumentObject)
+    Possible exceptions: (Exception).
+    """
 
 
 # DocumentProtectorPy.cpp

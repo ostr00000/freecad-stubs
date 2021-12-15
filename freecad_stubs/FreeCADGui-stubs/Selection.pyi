@@ -20,6 +20,7 @@ def addSelection(arg0: FreeCAD.DocumentObject, arg1, arg2: bool = None, /):
     addSelection(object,[string,float,float,float]
     --
     where string is the sub-element name and the three floats represent a 3d point
+    Possible exceptions: (FreeCAD.FreeCADError, ValueError).
     """
 
 
@@ -28,6 +29,7 @@ def updateSelection(show, object: FreeCAD.DocumentObject, string: str = None, /)
     update an object in the selection
     updateSelection(show,object,[string])
     --where string is the sub-element name and the three floats represent a 3d point
+    Possible exceptions: (FreeCAD.FreeCADError).
     """
 
 
@@ -37,7 +39,10 @@ def removeSelection(arg0: str, arg1: str, arg2: str = None, /): ...
 
 @typing.overload
 def removeSelection(arg0: FreeCAD.DocumentObject, arg1: str = None, /):
-    """Remove an object from the selectionremoveSelection(object)"""
+    """
+    Remove an object from the selectionremoveSelection(object)
+    Possible exceptions: (FreeCAD.FreeCADError).
+    """
 
 
 def clearSelection(docName: str = '', clearPreSelect: bool = True, /):
@@ -61,6 +66,7 @@ def setPreselection(obj: FreeCAD.DocumentObject, subname: str = None, x: float =
     """
     Set preselected object
     setPreselection()
+    Possible exceptions: (FreeCAD.FreeCADError, ValueError).
     """
 
 
@@ -141,6 +147,7 @@ def getSelectionObject(doc: str, obj: str, sub: str, arg3: tuple = None, /) -> F
     """
     Return a SelectionObject
     getSelectionObject(doc,obj,sub,(x,y,z))
+    Possible exceptions: (FreeCAD.FreeCADError).
     """
 
 
@@ -184,6 +191,7 @@ def addSelectionGate(String_Filter_Gate, resolve: int = 1, /):
       def allow(self,doc,obj,sub):
         return (sub[0:4] == 'Face')
     Gui.Selection.addSelectionGate(Gate())
+    Possible exceptions: (ValueError).
     """
 
 

@@ -32,6 +32,9 @@ def listSchemas(int: int, /) -> tuple[str, ...] | str:
     listSchemas() -> a tuple of schemas
 
     listSchemas(int) -> description of the given schema
+
+
+    Possible exceptions: (ValueError, TypeError).
     """
 
 
@@ -48,6 +51,7 @@ def setSchema(int: int, /):
     setSchema(int) -> None
 
     Sets the current schema to the given number, if possible
+    Possible exceptions: (ValueError).
     """
 
 
@@ -56,4 +60,5 @@ def schemaTranslate(Quantity: FreeCAD.Quantity, int: int, /) -> tuple[str, float
     schemaTranslate(Quantity, int) -> tuple
 
     Translate a quantity to a given schema
+    Possible exceptions: (ValueError).
     """

@@ -17,6 +17,8 @@ def loftOnCurve(curve: PartModule.Shape, poly, upVector: typing.Sequence[float, 
         poly (list of (x, y z) or (x, y) tuples of floats):
         upVector ((x, y, z) tuple):
         MaxSize (float):
+
+    Possible exceptions: (Exception, FreeCAD.FreeCADError).
     """
 
 
@@ -26,6 +28,8 @@ def findSectionParameters(Edge: PartModule.Edge, Mesh: MeshModule.Mesh, Vector: 
     will lie on an edge of the mesh
 
     findSectionParameters(Edge, Mesh, Vector) -> list
+
+    Possible exceptions: (Exception).
     """
 
 
@@ -33,15 +37,25 @@ def projectPointsOnMesh(list_of_points, Mesh: MeshModule.Mesh, Vector: FreeCAD.V
     """
     Projects points onto a mesh with a given direction
     and tolerance.projectPointsOnMesh(list of points, Mesh, Vector, [float]) -> list of points
+
+    Possible exceptions: (Exception).
     """
 
 
 def wireFromSegment(arg1: MeshModule.Mesh, arg2: list, /) -> list[PartModule.Wire]:
-    """Create wire(s) from boundary of a mesh segment"""
+    """
+    Create wire(s) from boundary of a mesh segment
+
+    Possible exceptions: (Exception).
+    """
 
 
 def wireFromMesh(arg1: MeshModule.Mesh, /) -> list[PartModule.Wire]:
-    """Create wire(s) from boundary of a mesh"""
+    """
+    Create wire(s) from boundary of a mesh
+
+    Possible exceptions: (Exception).
+    """
 
 
 @typing.overload
@@ -64,6 +78,8 @@ def projectShapeOnMesh(Polygons, Mesh: MeshModule.Mesh, Direction: FreeCAD.Vecto
     projectShapeOnMesh(Shape, Mesh, float) -> list of polygons
     projectShapeOnMesh(Shape, Mesh, Vector) -> list of polygons
     projectShapeOnMesh(list of polygons, Mesh, Vector) -> list of polygons
+
+    Possible exceptions: (TypeError).
     """
 
 
@@ -136,4 +152,6 @@ def meshFromShape(Shape: PartModule.Shape, MinLength: float, MaxLength: float) -
         GrowthRate (optional, float)
         SegPerEdge (optional, float)
         SegPerRadius (optional, float)
+
+    Possible exceptions: (FreeCAD.FreeCADError).
     """

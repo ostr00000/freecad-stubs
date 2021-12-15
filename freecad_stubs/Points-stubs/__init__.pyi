@@ -69,14 +69,20 @@ class Points(FreeCAD.ComplexGeoData):
 
 
 # AppPointsPy.cpp
-def open(arg1: str, /) -> None: ...
+def open(arg1: str, /) -> None:
+    """Possible exceptions: (Exception, RuntimeError)."""
 
 
-def insert(arg1: str, arg2: str, /) -> None: ...
+def insert(arg1: str, arg2: str, /) -> None:
+    """Possible exceptions: (Exception, RuntimeError)."""
 
 
-def export(arg1, arg2: str, /) -> None: ...
+def export(arg1, arg2: str, /) -> None:
+    """Possible exceptions: (Exception, RuntimeError)."""
 
 
 def show(points: PointsModule.Points, string: str = None, /) -> None:
-    """show(points,[string]) -- Add the points to the active document or create one if no document exists."""
+    """
+    show(points,[string]) -- Add the points to the active document or create one if no document exists.
+    Possible exceptions: (Exception, RuntimeError).
+    """

@@ -795,19 +795,31 @@ class FeaturePathCompound(FreeCAD.DocumentObject):
 
 # AppPathPy.cpp
 def write(object, filename: str, /) -> None:
-    """write(object,filename): Exports a given path object to a GCode file"""
+    """
+    write(object,filename): Exports a given path object to a GCode file
+    Possible exceptions: (Exception, RuntimeError).
+    """
 
 
 def read(filename: str, document: str = None, /) -> None:
-    """read(filename,[document]): Imports a GCode file into the given document"""
+    """
+    read(filename,[document]): Imports a GCode file into the given document
+    Possible exceptions: (Exception, RuntimeError).
+    """
 
 
 def show(path: PathModule.Path, string: str = None, /) -> None:
-    """show(path,[string]): Add the path to the active document or create one if no document exists"""
+    """
+    show(path,[string]): Add the path to the active document or create one if no document exists
+    Possible exceptions: (Exception, ReferenceError, RuntimeError).
+    """
 
 
 def fromShape(Shape, /) -> PathModule.Path:
-    """fromShape(Shape): Returns a Path object from a Part Shape (deprecated - use fromShapes() instead)"""
+    """
+    fromShape(Shape): Returns a Path object from a Part Shape (deprecated - use fromShapes() instead)
+    Possible exceptions: (Exception, TypeError, RuntimeError).
+    """
 
 
 def fromShapes(shapes, start: FreeCAD.Vector = None, return_end=None) -> PathModule.Path | tuple[PathModule.Path, FreeCAD.Vector]:
@@ -823,6 +835,7 @@ def fromShapes(shapes, start: FreeCAD.Vector = None, return_end=None) -> PathMod
     * return_end (False): if True, returns tuple (path, endPosition).
     "
                 PARAM_PY_DOC(ARG, AREA_PARAMS_PATH)
+    Possible exceptions: (Exception, TypeError).
     """
 
 
@@ -842,6 +855,7 @@ def sortWires(shapes, start: FreeCAD.Vector = None) -> tuple[list[Part.Shape], F
     "
                 PARAM_PY_DOC(ARG, AREA_PARAMS_ARC_PLANE)
                 PARAM_PY_DOC(ARG, AREA_PARAMS_SORT)
+    Possible exceptions: (Exception, TypeError).
     """
 
 
@@ -851,6 +865,8 @@ def setDefaultParams() -> None:
     setDefaultParams(key=value...):
     Static method to set the default parameters of all following Path.Area, plus the following
     additional parameters.
+
+    Possible exceptions: (ValueError).
     """
 
 

@@ -350,4 +350,7 @@ class RobotObject(FreeCAD.DocumentObject):
 
 # AppRobot.cpp
 def simulateToFile(Robot: Robot.Robot6Axis, Trajectory: Robot.Trajectory, TickSize: float, FileName: str, /) -> float:
-    """simulateToFile(Robot,Trajectory,TickSize,FileName) - runs the simulation and write the result to a file."""
+    """
+    simulateToFile(Robot,Trajectory,TickSize,FileName) - runs the simulation and write the result to a file.
+    Possible exceptions: (Exception, RuntimeError).
+    """

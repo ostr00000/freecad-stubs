@@ -1803,51 +1803,87 @@ class GeomFormat(FreeCAD.PyObjectBase):
 
 # AppTechDrawPy.cpp
 def edgeWalker(edgePile: list, inclBiggest=None, /) -> list[PartModule.Wire] | None:
-    """[wires] = edgeWalker(edgePile,inclBiggest) -- Planar graph traversal finds wires in edge pile."""
+    """
+    [wires] = edgeWalker(edgePile,inclBiggest) -- Planar graph traversal finds wires in edge pile.
+    Possible exceptions: (TypeError, Part.OCCError, FreeCAD.FreeCADError).
+    """
 
 
 def findOuterWire(edgeList: list, /) -> PartModule.Wire | None:
-    """wire = findOuterWire(edgeList) -- Planar graph traversal finds OuterWire in edge pile."""
+    """
+    wire = findOuterWire(edgeList) -- Planar graph traversal finds OuterWire in edge pile.
+    Possible exceptions: (TypeError, Part.OCCError, FreeCAD.FreeCADError).
+    """
 
 
 def findShapeOutline(shape, scale: float, direction, /) -> PartModule.Wire | None:
-    """wire = findShapeOutline(shape,scale,direction) -- Project shape in direction and find outer wire of result."""
+    """
+    wire = findShapeOutline(shape,scale,direction) -- Project shape in direction and find outer wire of result.
+    Possible exceptions: (TypeError, Part.OCCError, FreeCAD.FreeCADError).
+    """
 
 
 def viewPartAsDxf(DrawViewPart, /) -> str:
-    """string = viewPartAsDxf(DrawViewPart) -- Return the edges of a DrawViewPart in Dxf format."""
+    """
+    string = viewPartAsDxf(DrawViewPart) -- Return the edges of a DrawViewPart in Dxf format.
+    Possible exceptions: (TypeError, FreeCAD.FreeCADError).
+    """
 
 
 def viewPartAsSvg(DrawViewPart, /) -> str:
-    """string = viewPartAsSvg(DrawViewPart) -- Return the edges of a DrawViewPart in Svg format."""
+    """
+    string = viewPartAsSvg(DrawViewPart) -- Return the edges of a DrawViewPart in Svg format.
+    Possible exceptions: (TypeError, FreeCAD.FreeCADError).
+    """
 
 
 def writeDXFView(arg1, arg2: str, arg3=None, /) -> None:
-    """writeDXFView(view,filename): Exports a DrawViewPart to a DXF file."""
+    """
+    writeDXFView(view,filename): Exports a DrawViewPart to a DXF file.
+    Possible exceptions: (TypeError, RuntimeError).
+    """
 
 
 def writeDXFPage(page, filename: str, /) -> None:
-    """writeDXFPage(page,filename): Exports a DrawPage to a DXF file."""
+    """
+    writeDXFPage(page,filename): Exports a DrawPage to a DXF file.
+    Possible exceptions: (TypeError, RuntimeError).
+    """
 
 
 def findCentroid(shape, direction, /) -> FreeCAD.Vector | None:
-    """vector = findCentroid(shape,direction): finds geometric centroid of shape looking in direction."""
+    """
+    vector = findCentroid(shape,direction): finds geometric centroid of shape looking in direction.
+    Possible exceptions: (TypeError).
+    """
 
 
 def makeExtentDim(DrawViewPart, edges: list, direction: int, /) -> None:
-    """makeExtentDim(DrawViewPart, [edges], direction) -- draw horizontal or vertical extent dimension for edges (or all of DrawViewPart if edge list is empty. direction:  0 - Horizontal, 1 - Vertical."""
+    """
+    makeExtentDim(DrawViewPart, [edges], direction) -- draw horizontal or vertical extent dimension for edges (or all of DrawViewPart if edge list is empty. direction:  0 - Horizontal, 1 - Vertical.
+    Possible exceptions: (TypeError, Part.OCCError).
+    """
 
 
 def makeDistanceDim(DrawViewPart, dimType, fromPoint, toPoint, /) -> TechDraw.DrawViewDimension:
-    """makeDistanceDim(DrawViewPart, dimType, fromPoint, toPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 2d View points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."""
+    """
+    makeDistanceDim(DrawViewPart, dimType, fromPoint, toPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 2d View points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'.
+    Possible exceptions: (TypeError).
+    """
 
 
 def makeDistanceDim3d(arg1, arg2, arg3, arg4, /) -> None:
-    """makeDistanceDim(DrawViewPart, dimType, 3dFromPoint, 3dToPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 3d model points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."""
+    """
+    makeDistanceDim(DrawViewPart, dimType, 3dFromPoint, 3dToPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 3d model points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'.
+    Possible exceptions: (TypeError).
+    """
 
 
 def makeGeomHatch(face, patScale: float = None, patName: str = None, patFile: str = None, /) -> PartModule.Compound | None:
-    """makeGeomHatch(face, [patScale], [patName], [patFile]) -- draw a geom hatch on a given face, using optionally the given scale (default 1) and a given pattern name (ex. Diamond) and .pat file (the default pattern name and/or .pat files set in preferences are used if none are given). Returns a Part compound shape."""
+    """
+    makeGeomHatch(face, [patScale], [patName], [patFile]) -- draw a geom hatch on a given face, using optionally the given scale (default 1) and a given pattern name (ex. Diamond) and .pat file (the default pattern name and/or .pat files set in preferences are used if none are given). Returns a Part compound shape.
+    Possible exceptions: (TypeError, FreeCAD.FreeCADError).
+    """
 
 
 # MDIViewPage.cpp

@@ -393,31 +393,52 @@ class FemPostPipeline(FreeCAD.GeoFeature):
 
 # AppFemPy.cpp
 def open(string: str, /) -> None:
-    """open(string) -- Create a new document and a Mesh::Import feature to load the file into the document."""
+    """
+    open(string) -- Create a new document and a Mesh::Import feature to load the file into the document.
+    Possible exceptions: (Exception).
+    """
 
 
 def insert(string_mesh: str, string: str = None, /) -> None:
-    """insert(string|mesh,[string]) -- Load or insert a mesh into the given or active document."""
+    """
+    insert(string|mesh,[string]) -- Load or insert a mesh into the given or active document.
+    Possible exceptions: (Exception).
+    """
 
 
 def export(list, string: str, /) -> None:
-    """export(list,string) -- Export a list of objects into a single file."""
+    """
+    export(list,string) -- Export a list of objects into a single file.
+    Possible exceptions: (Exception).
+    """
 
 
 def read(arg1: str, /) -> Fem.FemMesh:
-    """Read a mesh from a file and returns a Mesh object."""
+    """
+    Read a mesh from a file and returns a Mesh object.
+    Possible exceptions: (Exception).
+    """
 
 
 def readResult(arg1: str, arg2: str = None, /) -> None:
-    """Read a CFD or Mechanical result (auto detect) from a file (file format detected from file suffix)"""
+    """
+    Read a CFD or Mechanical result (auto detect) from a file (file format detected from file suffix)
+    Possible exceptions: (Exception).
+    """
 
 
 def writeResult(arg1: str, arg2: FreeCAD.DocumentObject = None, /) -> None:
-    """write a CFD or FEM result (auto detect) to a file (file format detected from file suffix)"""
+    """
+    write a CFD or FEM result (auto detect) to a file (file format detected from file suffix)
+    Possible exceptions: (Exception).
+    """
 
 
 def show(shape: Fem.FemMesh, string: str = None, /) -> None:
-    """show(shape,[string]) -- Add the mesh to the active document or create one if no document exists."""
+    """
+    show(shape,[string]) -- Add the mesh to the active document or create one if no document exists.
+    Possible exceptions: (Exception).
+    """
 
 
 # HypothesisPy.cpp

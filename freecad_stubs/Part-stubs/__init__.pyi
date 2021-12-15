@@ -6694,56 +6694,88 @@ class ArcOfConic(PartModule.TrimmedCurve):
 
 # AppPartPy.cpp
 def open(string: str, /) -> None:
-    """open(string) -- Create a new document and load the file into the document."""
+    """
+    open(string) -- Create a new document and load the file into the document.
+    Possible exceptions: (Exception, RuntimeError).
+    """
 
 
 def insert(string: str, string1: str, /) -> None:
-    """insert(string,string) -- Insert the file into the given document."""
+    """
+    insert(string,string) -- Insert the file into the given document.
+    Possible exceptions: (Exception, RuntimeError).
+    """
 
 
 def export(list, string: str, /) -> None:
-    """export(list,string) -- Export a list of objects into a single file."""
+    """
+    export(list,string) -- Export a list of objects into a single file.
+    Possible exceptions: (Exception).
+    """
 
 
 def read(string: str, /) -> PartModule.Shape:
-    """read(string) -- Load the file and return the shape."""
+    """
+    read(string) -- Load the file and return the shape.
+    Possible exceptions: (Exception).
+    """
 
 
 def show(shape: PartModule.Shape, string: str = None, /) -> None:
-    """show(shape,[string]) -- Add the shape to the active document or create one if no document exists."""
+    """
+    show(shape,[string]) -- Add the shape to the active document or create one if no document exists.
+    Possible exceptions: (Exception).
+    """
 
 
 def getFacets(shape, /) -> list:
-    """getFacets(shape): simplified mesh generation"""
+    """
+    getFacets(shape): simplified mesh generation
+    Possible exceptions: (Exception).
+    """
 
 
 def makeCompound(list, /) -> PartModule.Compound:
-    """makeCompound(list) -- Create a compound out of a list of shapes."""
+    """
+    makeCompound(list) -- Create a compound out of a list of shapes.
+    Possible exceptions: (Exception).
+    """
 
 
 def makeShell(list, /) -> PartModule.Shell:
-    """makeShell(list) -- Create a shell out of a list of faces."""
+    """
+    makeShell(list) -- Create a shell out of a list of faces.
+    Possible exceptions: (Exception, Part.OCCError).
+    """
 
 
 def makeFace(list_of_shapes_or_compound, maker_class_name: str, /) -> PartModule.Shape:
     """
     makeFace(list_of_shapes_or_compound, maker_class_name) -- Create a face (faces) using facemaker class.
     maker_class_name is a string like 'Part::FaceMakerSimple'.
+    Possible exceptions: (TypeError, FreeCAD.FreeCADError, Part.OCCError).
     """
 
 
 def makeFilledFace(arg1, arg2: PartModule.Face = None, /) -> PartModule.Face:
-    """makeFilledFace(list) -- Create a face out of a list of edges."""
+    """
+    makeFilledFace(list) -- Create a face out of a list of edges.
+    Possible exceptions: (Exception, Part.OCCError).
+    """
 
 
 def makeSolid(shape: PartModule.Shape, /) -> PartModule.Solid | None:
-    """makeSolid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created."""
+    """
+    makeSolid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created.
+    Possible exceptions: (Exception, Part.OCCError).
+    """
 
 
 def makePlane(length: float, width: float, pnt: FreeCAD.Vector = None, dirZ: FreeCAD.Vector = None, dirX: FreeCAD.Vector = None, /) -> PartModule.Face:
     """
     makePlane(length,width,[pnt,dirZ,dirX]) -- Make a plane
     By default pnt=Vector(0,0,0) and dirZ=Vector(0,0,1), dirX is ignored in this case
+    Possible exceptions: (Exception, ValueError, Part.OCCDomainError, Part.OCCError).
     """
 
 
@@ -6752,6 +6784,7 @@ def makeBox(length: float, width: float, height: float, pnt: FreeCAD.Vector = No
     makeBox(length,width,height,[pnt,dir]) -- Make a box located
     in pnt with the dimensions (length,width,height)
     By default pnt=Vector(0,0,0) and dir=Vector(0,0,1)
+    Possible exceptions: (Exception, ValueError, Part.OCCDomainError).
     """
 
 
@@ -6761,6 +6794,7 @@ def makeWedge(arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, a
     xmax, ymax, zmax, z2max, x2max,[pnt,dir])
      -- Make a wedge located in pnt
     By default pnt=Vector(0,0,0) and dir=Vector(0,0,1)
+    Possible exceptions: (Exception, ValueError, Part.OCCDomainError).
     """
 
 
@@ -6778,6 +6812,8 @@ def makeLine(startpnt, endpnt, /) -> PartModule.Edge:
 
     Returns:
         Edge: Part.Edge object
+
+    Possible exceptions: (Exception, TypeError, Part.OCCError).
     """
 
 
@@ -6793,6 +6829,8 @@ def makePolygon(arg1, arg2: bool = None, /) -> PartModule.Wire:
         Wire: Part.Wire object. If the last point in the list is 
             not the same as the first point, the Wire will not be 
             closed and cannot be used to create a face.
+
+    Possible exceptions: (Exception, Part.OCCError).
     """
 
 
@@ -6800,6 +6838,7 @@ def makeCircle(radius: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = 
     """
     makeCircle(radius,[pnt,dir,angle1,angle2]) -- Make a circle with a given radius
     By default pnt=Vector(0,0,0), dir=Vector(0,0,1), angle1=0 and angle2=360
+    Possible exceptions: (Exception, Part.OCCError).
     """
 
 
@@ -6807,6 +6846,7 @@ def makeSphere(radius: float, pnt: FreeCAD.Vector = None, dir: FreeCAD.Vector = 
     """
     makeSphere(radius,[pnt, dir, angle1,angle2,angle3]) -- Make a sphere with a given radius
     By default pnt=Vector(0,0,0), dir=Vector(0,0,1), angle1=0, angle2=90 and angle3=360
+    Possible exceptions: (Exception, Part.OCCDomainError).
     """
 
 
@@ -6814,6 +6854,7 @@ def makeCylinder(radius: float, height: float, pnt: FreeCAD.Vector = None, dir: 
     """
     makeCylinder(radius,height,[pnt,dir,angle]) -- Make a cylinder with a given radius and height
     By default pnt=Vector(0,0,0),dir=Vector(0,0,1) and angle=360
+    Possible exceptions: (Exception, Part.OCCDomainError).
     """
 
 
@@ -6821,6 +6862,7 @@ def makeCone(radius1: float, radius2: float, height: float, pnt: FreeCAD.Vector 
     """
     makeCone(radius1,radius2,height,[pnt,dir,angle]) -- Make a cone with given radii and height
     By default pnt=Vector(0,0,0), dir=Vector(0,0,1) and angle=360
+    Possible exceptions: (Exception, Part.OCCDomainError).
     """
 
 
@@ -6828,6 +6870,7 @@ def makeTorus(radius1: float, radius2: float, pnt: FreeCAD.Vector = None, dir: F
     """
     makeTorus(radius1,radius2,[pnt,dir,angle1,angle2,angle]) -- Make a torus with a given radii and angles
     By default pnt=Vector(0,0,0),dir=Vector(0,0,1),angle1=0,angle1=360 and angle=360
+    Possible exceptions: (Exception, Part.OCCDomainError).
     """
 
 
@@ -6836,6 +6879,7 @@ def makeHelix(arg1: float, arg2: float, arg3: float, arg4: float = None, arg5: b
     makeHelix(pitch,height,radius,[angle]) -- Make a helix with a given pitch, height and radius
     By default a cylindrical surface is used to create the helix. If the fourth parameter is set
     (the apex given in degree) a conical surface is used instead
+    Possible exceptions: (Exception, Part.OCCError).
     """
 
 
@@ -6844,11 +6888,15 @@ def makeLongHelix(pitch: float, height: float, radius: float, angle: float = Non
     makeLongHelix(pitch,height,radius,[angle],[hand]) -- Make a (multi-edge) helix with a given pitch, height and radius
     By default a cylindrical surface is used to create the helix. If the fourth parameter is set
     (the apex given in degree) a conical surface is used instead.
+    Possible exceptions: (RuntimeError, Part.OCCError).
     """
 
 
 def makeThread(pitch: float, depth: float, height: float, radius: float, /) -> PartModule.Wire:
-    """makeThread(pitch,depth,height,radius) -- Make a thread with a given pitch, depth, height and radius"""
+    """
+    makeThread(pitch,depth,height,radius) -- Make a thread with a given pitch, depth, height and radius
+    Possible exceptions: (Exception, Part.OCCError).
+    """
 
 
 @typing.overload
@@ -6862,6 +6910,7 @@ def makeRevolution(Curve_or_Edge: PartModule.Shape, vmin: float = None, vmax: fl
     by rotating the curve or a portion of it around an axis given by (pnt,dir).
     By default vmin/vmax=bounds of the curve, angle=360, pnt=Vector(0,0,0),
     dir=Vector(0,0,1) and shapetype=Part.Solid
+    Possible exceptions: (TypeError, Part.OCCError, Part.OCCDomainError).
     """
 
 
@@ -6869,6 +6918,7 @@ def makeRuledSurface(Edge_Wire: PartModule.Shape, Edge_Wire1: PartModule.Shape, 
     """
     makeRuledSurface(Edge|Wire,Edge|Wire) -- Make a ruled surface
     Create a ruled surface out of two edges or wires. If wires are used thenthese must have the same number of edges.
+    Possible exceptions: (Exception, Part.OCCError).
     """
 
 
@@ -6876,6 +6926,7 @@ def makeShellFromWires(Wires, /) -> PartModule.Shell:
     """
     makeShellFromWires(Wires) -- Make a shell from wires.
     The wires must have the same number of edges.
+    Possible exceptions: (Exception, Part.OCCError).
     """
 
 
@@ -6883,19 +6934,29 @@ def makeTube(edge: PartModule.Shape, radius: float, continuity: str = None, max_
     """
     makeTube(edge,radius,[continuity,max degree,max segments]) -- Create a tube.
     continuity is a string which must be 'C0','C1','C2','C3','CN','G1' or 'G1',
+    Possible exceptions: (Exception, Part.OCCError).
     """
 
 
 def makeSweepSurface(arg1: PartModule.Shape, arg2: PartModule.Shape, arg3: float = None, arg4: int = None, /) -> PartModule.Face:
-    """makeSweepSurface(edge(path),edge(profile),[float]) -- Create a profile along a path."""
+    """
+    makeSweepSurface(edge(path),edge(profile),[float]) -- Create a profile along a path.
+    Possible exceptions: (Exception, Part.OCCError).
+    """
 
 
 def makeLoft(list_of_wires, solid: bool = False, ruled: bool = False, closed: bool = False, maxDegree: int = 5, /) -> PartModule.BSplineSurface | PartModule.Shape:
-    """makeLoft(list of wires,[solid=False,ruled=False,closed=False,maxDegree=5]) -- Create a loft shape."""
+    """
+    makeLoft(list of wires,[solid=False,ruled=False,closed=False,maxDegree=5]) -- Create a loft shape.
+    Possible exceptions: (Exception, Part.OCCError).
+    """
 
 
 def makeWireString(string, fontdir: str, fontfile: str, height: float, track: float = None, /):
-    """makeWireString(string,fontdir,fontfile,height,[track]) -- Make list of wires in the form of a string's characters."""
+    """
+    makeWireString(string,fontdir,fontfile,height,[track]) -- Make list of wires in the form of a string's characters.
+    Possible exceptions: (TypeError, Part.OCCDomainError, Part.OCCError, RuntimeError).
+    """
 
 
 def makeSplitShape(shape: PartModule.Shape, list_of_shape_pairs, check_Interior: bool = True, /) -> tuple[list[Part.Shape], list[Part.Shape]]:
@@ -6919,11 +6980,16 @@ def makeSplitShape(shape: PartModule.Shape, list_of_shape_pairs, check_Interior:
     r = Part.makeSplitShape(face, split)
     Part.show(r[0][0])
     Part.show(r[1][0])
+
+    Possible exceptions: (Exception, RuntimeError, TypeError, Part.OCCError).
     """
 
 
 def exportUnits(string: str = None, /) -> ReturnExportUnitsDict:
-    """exportUnits([string=MM|M|INCH|FT|MI|KM|MIL|UM|CM|UIN]) -- Set units for exporting STEP/IGES files and returns the units."""
+    """
+    exportUnits([string=MM|M|INCH|FT|MI|KM|MIL|UM|CM|UIN]) -- Set units for exporting STEP/IGES files and returns the units.
+    Possible exceptions: (Exception, RuntimeError).
+    """
 
 
 @typing.overload
@@ -6932,15 +6998,24 @@ def setStaticValue(string: str, string_int_float: str, /) -> None: ...
 
 @typing.overload
 def setStaticValue(string: str, string_int_float, /) -> None:
-    """setStaticValue(string,string|int|float) -- Set a name to a value The value can be a string, int or float."""
+    """
+    setStaticValue(string,string|int|float) -- Set a name to a value The value can be a string, int or float.
+    Possible exceptions: (RuntimeError, TypeError).
+    """
 
 
 def cast_to_shape(shape: PartModule.Shape, /) -> PartModule.Shape:
-    """cast_to_shape(shape) -- Cast to the actual shape type"""
+    """
+    cast_to_shape(shape) -- Cast to the actual shape type
+    Possible exceptions: (Exception).
+    """
 
 
 def getSortedClusters(list_of_edges, /) -> list[list[PartModule.Edge]]:
-    """getSortedClusters(list of edges) -- Helper method to sort and cluster a variety of edges"""
+    """
+    getSortedClusters(list of edges) -- Helper method to sort and cluster a variety of edges
+    Possible exceptions: (Part.OCCError, TypeError).
+    """
 
 
 def __sortEdges__(list_of_edges, /) -> list[PartModule.Edge]:
@@ -6951,6 +7026,7 @@ def __sortEdges__(list_of_edges, /) -> list[PartModule.Edge]:
     It returns a single list of edges and the algorithm stops after the first set of
     connected edges which means that the output list can be smaller than the input list.
     The sorted list can be used to create a Wire.
+    Possible exceptions: (TypeError).
     """
 
 
@@ -6959,19 +7035,29 @@ def sortEdges(list_of_edges, /) -> list[list[PartModule.Edge]]:
     sortEdges(list of edges) -- list of lists of edges
     It does basically the same as __sortEdges__ but sorts all input edges and thus returns
     a list of lists of edges
+    Possible exceptions: (Part.OCCError, TypeError).
     """
 
 
 def __toPythonOCC__(shape: PartModule.Shape, /):
-    """__toPythonOCC__(shape) -- Helper method to convert an internal shape to pythonocc shape"""
+    """
+    __toPythonOCC__(shape) -- Helper method to convert an internal shape to pythonocc shape
+    Possible exceptions: (Exception, Part.OCCError).
+    """
 
 
 def __fromPythonOCC__(occ, /) -> PartModule.Shape:
-    """__fromPythonOCC__(occ) -- Helper method to convert a pythonocc shape to an internal shape"""
+    """
+    __fromPythonOCC__(occ) -- Helper method to convert a pythonocc shape to an internal shape
+    Possible exceptions: (Exception, Part.OCCError).
+    """
 
 
 def clearShapeCache() -> 'object':
-    """clearShapeCache() -- Clears internal shape cache"""
+    """
+    clearShapeCache() -- Clears internal shape cache
+    Possible exceptions: (Exception).
+    """
 
 
 def splitSubname(subname: str, /) -> list[str]:
@@ -6982,11 +7068,16 @@ def splitSubname(subname: str, /) -> list[str]:
     sub: subname without any sub-element reference
     mapped: mapped element name, or '' if none
     subElement: old style element name, or '' if none
+    Possible exceptions: (Exception).
     """
 
 
 def joinSubname(sub: str, mapped: str, subElement: str, /) -> str:
-    """joinSubname(sub,mapped,subElement) -> subname"""
+    """
+    joinSubname(sub,mapped,subElement) -> subname
+
+    Possible exceptions: (Exception).
+    """
 
 
 def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matrix = None, needSubElement=None, transform=None, retType: int = None, noElementMap=None, refine=None) -> Part.Shape | tuple[Part.Shape, FreeCAD.Matrix, object]:
@@ -7005,16 +7096,23 @@ def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matr
                   and 'mat' is the accumulated transformation matrix of that sub-object.
                2: same as 1, but make sure 'subObj' is resolved if it is a link.
     * refine: refine the returned shape
+    Possible exceptions: (Exception).
     """
 
 
 # AttacherTexts.cpp
 def getModeStrings(attacher_type: str, mode_index: int, /) -> list[str]:
-    """getModeStrings(attacher_type, mode_index) - gets mode user-friendly name and brief description."""
+    """
+    getModeStrings(attacher_type, mode_index) - gets mode user-friendly name and brief description.
+    Possible exceptions: (TypeError, FreeCAD.FreeCADError).
+    """
 
 
 def getRefTypeUserFriendlyName(type_index: int, /) -> str:
-    """getRefTypeUserFriendlyName(type_index) - gets user-friendly name of AttachEngine's shape type."""
+    """
+    getRefTypeUserFriendlyName(type_index) - gets user-friendly name of AttachEngine's shape type.
+    Possible exceptions: (FreeCAD.FreeCADError).
+    """
 
 
 class OCCError(FreeCAD.Base.FreeCADError):
