@@ -1083,6 +1083,12 @@ class Face(PartModule.Shape):
         Possible exceptions: (Part.OCCError).
         """
 
+    def makeEvolved(self, Profile: PartModule.Wire, Join: int = None, AxeProf: bool = None, Solid: bool = None, ProfOnSpine: bool = None, Tolerance: float = None) -> Part.Shape:
+        """
+        Profile along the spine
+        Possible exceptions: (Part.OCCError).
+        """
+
     def makeHalfSpace(self, pos: FreeCAD.Vector, /) -> PartModule.Solid:
         """
         Make a half-space solid by this face and a reference point.
@@ -3327,6 +3333,12 @@ class Wire(PartModule.Shape):
         --
         A face and a tolerance can optionally be supplied to the algorithm:
                 
+        Possible exceptions: (Part.OCCError).
+        """
+
+    def makeEvolved(self, Profile: PartModule.Wire, Join: int = None, AxeProf: bool = None, Solid: bool = None, ProfOnSpine: bool = None, Tolerance: float = None) -> Part.Shape:
+        """
+        Profile along the spine
         Possible exceptions: (Part.OCCError).
         """
 

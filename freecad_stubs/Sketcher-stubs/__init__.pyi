@@ -44,6 +44,13 @@ class SketchGeometryExtension(PartModule.GeometryExtension):
     def Construction(self, value: bool): ...
 
     @property
+    def GeometryLayerId(self) -> int:
+        """Returns the Id of the geometry Layer in which the geometry is located."""
+
+    @GeometryLayerId.setter
+    def GeometryLayerId(self, value: int): ...
+
+    @property
     def Id(self) -> int:
         """Returns the Id of the SketchGeometryExtension."""
 
@@ -812,6 +819,13 @@ class ExternalGeometryFacade(FreeCAD.BaseClass):
     def Geometry(self, value: object): ...
 
     @property
+    def GeometryLayerId(self) -> int:
+        """Returns the Id of the geometry Layer in which the geometry is located."""
+
+    @GeometryLayerId.setter
+    def GeometryLayerId(self, value: int): ...
+
+    @property
     def Id(self) -> int:
         """Sets/returns the Internal Alignment Type of the Geometry."""
 
@@ -999,6 +1013,13 @@ class GeometryFacade(FreeCAD.BaseClass):
 
     @Geometry.setter
     def Geometry(self, value: object): ...
+
+    @property
+    def GeometryLayerId(self) -> int:
+        """Returns the Id of the geometry Layer in which the geometry is located."""
+
+    @GeometryLayerId.setter
+    def GeometryLayerId(self, value: int): ...
 
     @property
     def Id(self) -> int:

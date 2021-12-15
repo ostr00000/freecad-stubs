@@ -796,19 +796,6 @@ class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
     def ShowInTree(self, value: int | bool): ...
 
     @property
-    def TreeRank(self) -> int:
-        """
-        [Prop_Hidden] Property won't appear in the editor.
-        [Prop_NoPersist] Property won't be saved to file at all.
-        Property group: Display Options.
-        Property TypeId: App::PropertyInteger.
-        Tree view item ordering key.
-        """
-
-    @TreeRank.setter
-    def TreeRank(self, value: int): ...
-
-    @property
     def Visibility(self) -> bool:
         """
         Property group: Display Options.
@@ -1227,7 +1214,7 @@ class View3DInventorPy:
 
     def getViewDirection(self) -> FreeCAD.Vector:
         """
-        getViewDirection() --> tuple of integers
+        getViewDirection() --> tuple of floats
         returns the direction vector the view is currently pointing at as tuple with xyz values
         """
 
@@ -1289,8 +1276,11 @@ class View3DInventorPy:
         """getSize()"""
 
     def getPoint(self, arg1: int, arg2: int, /) -> FreeCAD.Vector:
+        """Same as getPointOnFocalPlane"""
+
+    def getPointOnFocalPlane(self, arg1: int, arg2: int, /) -> FreeCAD.Vector:
         """
-        getPoint(pixel coords (as integer)) -> 3D vector
+        getPointOnFocalPlane(pixel coords (as integer)) -> 3D vector
 
         Return the according 3D point on the focal plane to the given 2D point (in
         pixel coordinates).
@@ -1301,6 +1291,13 @@ class View3DInventorPy:
         getPointOnScreen(3D vector) -> pixel coords (as integer)
 
         Return the projected 3D point (in pixel coordinates).
+        """
+
+    def projectPointToLine(self, arg1: int, arg2: int, /) -> tuple[FreeCAD.Vector, FreeCAD.Vector]:
+        """
+        projectPointToLine(pixel coords (as integer)) -> line defined by two points
+
+        Return the projecting 3D line to the given 2D point
         """
 
     def addEventCallback(self, arg1: str, arg2, /) -> typing.Callable:
@@ -2092,8 +2089,11 @@ class View3DInventorViewerPy:
     def getFocalDistance(self) -> float:
         """getFocalDistance() -> float"""
 
-    def getPoint(self, x: int, y: int, /) -> FreeCAD.Vector:
-        """getPoint(x, y) -> Base::Vector(x,y,z)"""
+    def getPoint(self, arg1: int, arg2: int, /) -> FreeCAD.Vector:
+        """Same as getPointOnFocalPlane"""
+
+    def getPointOnFocalPlane(self, x: int, y: int, /) -> FreeCAD.Vector:
+        """getPointOnFocalPlane(x, y) -> Base::Vector(x,y,z)"""
 
     def getPickRadius(self) -> float:
         """getPickRadius(): returns radius of confusion in pixels for picking objects on screen (selection)."""

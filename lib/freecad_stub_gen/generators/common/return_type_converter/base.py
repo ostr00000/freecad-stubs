@@ -149,7 +149,7 @@ class ReturnTypeConverterBase:
                 # must be before identifier and should be after Py_BuildValue
                 return 'bool'
 
-            case StrWrapper('Py::asObject(' | 'Py::Object('):
+            case StrWrapper('Py::asObject(' | 'Py::Object(' | 'createPyObject('):
                 fc = findFunctionCall(
                     returnText, bodyStart=returnText.find('('),
                     bracketL='(', bracketR=')').removeprefix('(').removesuffix(')')

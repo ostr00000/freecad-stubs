@@ -241,6 +241,7 @@ class Common:
     voidBelongToGeom = 'voidBelongToGeom'
     voidDocumentProtector = 'voidDocumentProtector'
     voidDownloadItem = 'voidDownloadItem'
+    voidE57XmlParser = 'voidE57XmlParser'
     voidExpressionCompleter = 'voidExpressionCompleter'
     voidLyingOnGeom = 'voidLyingOnGeom'
     voidView3DInventorViewer = 'voidView3DInventorViewer'

@@ -1313,6 +1313,9 @@ class Document(FreeCAD.PropertyContainer):
         Possible exceptions: (FreeCAD.FreeCADError).
         """
 
+    def clearDocument(self):
+        """Clear the whole document"""
+
     def clearUndos(self):
         """Clear the undo stack of the document"""
 
@@ -1352,6 +1355,12 @@ class Document(FreeCAD.PropertyContainer):
         sort: whether to topologically sort the return list
         """
 
+    def getFileName(self) -> str:
+        """
+        For a regular document it returns its file name property.
+        For a temporary document it returns its transient directory.
+        """
+
     def getLinksTo(self, obj=None, options: int = 0, maxCount: int = 0, /) -> tuple[object, ...]:
         """
         getLinksTo(obj, options=0, maxCount=0): return objects linked to 'obj'
@@ -1375,6 +1384,9 @@ class Document(FreeCAD.PropertyContainer):
         NOTE: It's possible that several objects have the same label name.
         """
 
+    def getProgramVersion(self) -> str:
+        """Get the program version that a project file was created with"""
+
     def getTempFileName(self, arg1, /) -> str:
         """
         Returns a file name with path in the temp directory of the document.
@@ -1395,6 +1407,15 @@ class Document(FreeCAD.PropertyContainer):
         Possible exceptions: (TypeError).
         """
 
+    def isClosable(self) -> bool:
+        """Check if the document can be closed. The default value is True"""
+
+    def isSaved(self) -> bool:
+        """Checks if the document is saved"""
+
+    def isTouched(self) -> bool:
+        """Check if any object is in touched state"""
+
     def load(self, arg1: str, /):
         """Load the document from the given path"""
 
@@ -1412,6 +1433,9 @@ class Document(FreeCAD.PropertyContainer):
         Possible exceptions: (FreeCAD.FreeCADError).
         """
 
+    def mustExecute(self) -> bool:
+        """Check if any object must be recomputed"""
+
     def openTransaction(self, name=None, /):
         """
         openTransaction(name) - Open a new Undo/Redo transaction.
@@ -1424,6 +1448,9 @@ class Document(FreeCAD.PropertyContainer):
           
         Possible exceptions: (TypeError).
         """
+
+    def purgeTouched(self):
+        """Purge the touched state of all objects"""
 
     def recompute(self, arg1=None, arg2: bool = None, arg3: bool = None, /) -> int:
         """
@@ -1454,6 +1481,9 @@ class Document(FreeCAD.PropertyContainer):
 
     def saveCopy(self, arg1: str, /):
         """Save a copy of the document under a new name to disk"""
+
+    def setClosable(self, arg1: bool, /):
+        """Set a flag that allows or forbids to close a document"""
 
     def supportedTypes(self) -> list[str]:
         """A list of supported types of objects"""
