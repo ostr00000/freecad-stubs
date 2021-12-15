@@ -110,6 +110,7 @@ Wrn = FreeCAD.Console.PrintWarning
         'from FreeCAD.Base import *'))
 
     _genModule(sourcesRoot, sourcePath / 'Gui', sourcePath, moduleName='FreeCADGui')
+    _genModule(sourcesRoot, sourcePath / 'Main', sourcePath, moduleName='FreeCADGui')
     freeCadGui = sourcesRoot['FreeCADGui']
     freeCadGui += 'Workbench: FreeCADGui.Workbench'
     freeCadGui += 'ActiveDocument: FreeCADGui.Document'

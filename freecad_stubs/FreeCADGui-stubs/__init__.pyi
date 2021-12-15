@@ -2121,6 +2121,32 @@ class View3DInventorViewerPy:
         """
 
 
+# FreeCADGuiPy.cpp
+def showMainWindow(arg0: bool = None, /) -> None:
+    """
+    showMainWindow() -- Show the main window
+    If no main window does exist one gets created
+    """
+
+
+def exec_loop() -> None:
+    """
+    exec_loop() -- Starts the event loop
+    Note: this will block the call until the event loop has terminated
+    """
+
+
+def setupWithoutGUI() -> None:
+    """
+    setupWithoutGUI() -- Uses this module without starting
+    an event loop or showing up any GUI
+    """
+
+
+def embedToWindow(arg0: str, /) -> None:
+    """embedToWindow() -- Embeds the main window into another window"""
+
+
 Workbench: FreeCADGui.Workbench
 ActiveDocument: FreeCADGui.Document
 Control = ControlClass()  # hack to show this module in current module hints
