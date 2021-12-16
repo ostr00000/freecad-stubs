@@ -1,6 +1,5 @@
 import logging
 import xml.etree.ElementTree as ET
-from typing import Optional
 
 from freecad_stub_gen.importable_map import importableMap
 from freecad_stub_gen.module_namespace import moduleNamespace
@@ -90,7 +89,7 @@ def getClassWithModulesFromPointer(cTypePointer: str):
     return getClassWithModulesFromStem(cType, namespace or '')
 
 
-def validatePythonValue(value: str) -> Optional[str]:
+def validatePythonValue(value: str) -> str | None:
     try:
         eval(value, {}, {})
     except NameError:

@@ -12,13 +12,12 @@ Replace:
     def $1(self):\n        \"\"\"May be implemented in python\"\"\""""
 import typing
 
-from qtpy.QtWidgets import QDialogButtonBox
+import FreeCADGui
 from qtpy.QtCore import QObject
 from qtpy.QtGui import QIcon
-from qtpy.QtWidgets import QMenu
+from qtpy.QtWidgets import QDialogButtonBox, QMenu
 
 import FreeCAD
-import FreeCADGui
 
 
 # FeaturePython.cpp

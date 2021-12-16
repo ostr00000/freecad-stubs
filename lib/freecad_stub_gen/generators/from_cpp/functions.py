@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import Iterable
+from collections.abc import Iterable
 
 from more_itertools import islice_extended
 

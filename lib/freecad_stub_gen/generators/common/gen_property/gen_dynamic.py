@@ -1,8 +1,8 @@
 import re
 from abc import ABC
+from collections.abc import Iterable
 from functools import cached_property
 from itertools import chain
-from typing import Iterable
 
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
     generateExpressionUntilChar

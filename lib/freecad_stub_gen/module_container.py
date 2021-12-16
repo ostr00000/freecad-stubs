@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import logging
 import sys
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable
 
 from freecad_stub_gen.config import TARGET_DIR
 from freecad_stub_gen.module_namespace import moduleNamespace

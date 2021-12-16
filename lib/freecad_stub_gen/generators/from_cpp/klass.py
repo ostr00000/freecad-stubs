@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import Iterable
+from collections.abc import Iterable
 
 from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall

@@ -1,9 +1,8 @@
 import re
 from collections.abc import Iterable
-from typing import Optional
 
-from freecad_stub_gen.generators.from_cpp.base import BaseGeneratorFromCpp
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall
+from freecad_stub_gen.generators.from_cpp.base import BaseGeneratorFromCpp
 from freecad_stub_gen.module_container import Module
 from freecad_stub_gen.module_namespace import moduleNamespace
 
@@ -13,7 +12,7 @@ class FreecadStubGeneratorFromCppModule(BaseGeneratorFromCpp):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._modName: Optional[str] = None
+        self._modName: str | None = None
 
     REG_MODULE_INIT = re.compile(r'Py::ExtensionModule<\w+>\("(\w+)"\)')
 

@@ -3,9 +3,9 @@ import logging
 import re
 from abc import ABC
 from collections import defaultdict
+from collections.abc import Iterable
 from inspect import Parameter
 from itertools import chain
-from typing import Any, Iterable, DefaultDict
 
 from freecad_stub_gen.generators.common.annotation_parameter import SelfSignature
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
@@ -67,7 +67,7 @@ class Method:
 
 @dataclasses.dataclass(repr=False)
 class PyMethodDef(Method):
-    flags: Any = None
+    flags: str = None
 
     def __post_init__(self):
         super().__post_init__()
@@ -95,7 +95,7 @@ class BaseGeneratorFromCpp(MethodGenerator, ABC):
 
     def _genAllMethods(self, it: Iterable[Method], firstParam=None,
                        functionSpacing: int = 1) -> Iterable[str]:
-        methodNameToMethod: DefaultDict[str, list[Method]] = defaultdict(list)
+        methodNameToMethod: defaultdict[str, list[Method]] = defaultdict(list)
         for method in it:
             methodNameToMethod[method.pythonMethodName].append(method)
 

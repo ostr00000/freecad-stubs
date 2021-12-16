@@ -1,8 +1,9 @@
 import keyword
 import re
+from collections.abc import Iterator
 from inspect import Parameter
 from itertools import count
-from typing import Generator, Iterator
+from typing import Generator
 from xml.etree import ElementTree as ET
 
 from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam, RawRepr, \

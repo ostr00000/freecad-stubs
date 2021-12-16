@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import Iterable, Sequence
 from inspect import Parameter, formatannotation, Signature
-from typing import Optional, Sequence, Iterable
 
 from freecad_stub_gen.util import OrderedSet
 
@@ -85,7 +85,7 @@ class SelfSignature(Signature):
     """Skip separator if there is only self parameter"""
     __slots__ = ('exceptions',)
 
-    def __init__(self, parameters: Optional[Sequence[Parameter]] = None, *,
+    def __init__(self, parameters: Sequence[Parameter] | None = None, *,
                  return_annotation=Signature.empty, exceptions=(),
                  __validate_parameters__=True):
 

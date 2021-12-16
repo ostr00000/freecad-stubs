@@ -1,11 +1,11 @@
 import logging
 import xml.etree.ElementTree as ET
 from abc import ABC
+from collections.abc import Iterator
 from distutils.util import strtobool
 from functools import cached_property, lru_cache
 from inspect import Parameter
 from pathlib import Path
-from typing import Iterator
 
 from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam, SelfSignature
 from freecad_stub_gen.generators.common.doc_string import generateSignaturesFromDocstring, \
@@ -39,7 +39,8 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         isClassic = strtobool(node.attrib.get('Class', 'False'))
         firstParam = AnnotationParam.getFirstParam(isStatic, isClassic)
 
-        allSignatures = list(self._signatureArgGen(cFunName, cClassName, docsFunName, node, firstParam))
+        allSignatures = list(self._signatureArgGen(
+            cFunName, cClassName, docsFunName, node, firstParam))
         uniqueSignatures = dict.fromkeys(map(str, allSignatures))
         signatures = list(uniqueSignatures.keys())
 

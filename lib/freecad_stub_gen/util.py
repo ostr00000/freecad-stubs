@@ -1,7 +1,8 @@
 import re
 import textwrap
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable, TypeVar
+from typing import TypeVar
 
 from freecad_stub_gen.config import SOURCE_DIR
 

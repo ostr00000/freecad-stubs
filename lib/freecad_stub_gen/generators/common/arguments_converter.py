@@ -1,7 +1,7 @@
 import logging
 import re
+from collections.abc import Iterator
 from inspect import Parameter
-from typing import Iterator, Optional
 
 from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam, RawRepr
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
@@ -102,7 +102,7 @@ class TypesConverter:
         except InvalidPointerFormat as ex:
             logger.error(f'{ex}, {formatStr=}, {self.funCall=}, {self.xmlPath=}')
 
-    def _findPointerType(self, realArgNum: int) -> Optional[str]:
+    def _findPointerType(self, realArgNum: int) -> str | None:
         try:
             pointerArg = self.argumentStrings[realArgNum]
         except IndexError:  # some implementations are broken, example:
@@ -127,7 +127,7 @@ class TypesConverter:
 
         return 'object'
 
-    def _convertPointerToType(self, pointerArg: str) -> Optional[str]:
+    def _convertPointerToType(self, pointerArg: str) -> str | None:
         pointerArg = pointerArg.removeprefix('&').removeprefix('(').removesuffix(')')
 
         if pointerArg.endswith('::Type'):
@@ -150,7 +150,7 @@ class TypesConverter:
         # there are only two known cases, too much work to automate this
         raise NotImplementedError
 
-    def _getArgName(self, formatStr: str, kwargList: list[str], argNum: int) -> Optional[str]:
+    def _getArgName(self, formatStr: str, kwargList: list[str], argNum: int) -> str | None:
         if not self.onlyPositional:
             try:
                 return kwargList[argNum]
