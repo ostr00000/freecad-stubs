@@ -16,6 +16,27 @@ _T = typing.TypeVar("_T")
 Triple_t: typing.TypeAlias = tuple[_T, _T, _T]
 Quadruple_t: typing.TypeAlias = tuple[_T, _T, _T, _T]
 
+class ReturnGetAuthorDict(typing.TypedDict):
+    name: str
+    email: str
+
+
+class ReturnGetLicenseDict(typing.TypedDict):
+    name: str
+    file: str
+
+
+class ReturnGetMaintainerDict(typing.TypedDict):
+    name: str
+    email: str
+
+
+class ReturnGetUrlsDict(typing.TypedDict):
+    location: str
+    type: str
+    branch: str
+
+
 
 class PyObjectBase(object): ...
 
@@ -859,7 +880,9 @@ class Extension(FreeCAD.PyObjectBase):
 # MetadataPy.xml
 class Metadata(FreeCAD.PyObjectBase):
     """
-    Metadata
+    This class can be imported.
+
+            Metadata
             A Metadata object reads an XML-formatted package metadata file and provides read-only access to its contents.
 
             A single constructor is supported:
@@ -882,7 +905,7 @@ class Metadata(FreeCAD.PyObjectBase):
         """
 
     @property
-    def Author(self) -> list:
+    def Author(self) -> list[ReturnGetAuthorDict]:
         """List of author objects, each with a 'name' and a (potentially empty) 'email' string attribute"""
 
     @property
@@ -923,11 +946,11 @@ class Metadata(FreeCAD.PyObjectBase):
         """Relative path to an icon file"""
 
     @property
-    def License(self) -> list:
+    def License(self) -> list[ReturnGetLicenseDict]:
         """List of applicable licenses as objects with 'name' and 'file' string attributes"""
 
     @property
-    def Maintainer(self) -> list:
+    def Maintainer(self) -> list[ReturnGetMaintainerDict]:
         """List of maintainer objects with 'name' and 'email' string attributes"""
 
     @property
@@ -939,11 +962,15 @@ class Metadata(FreeCAD.PyObjectBase):
         """List of things this item is considered by its author to replace: format identical to dependencies"""
 
     @property
+    def Subdirectory(self) -> str:
+        """String: the name of the subdirectory this content item is located in. If empty, the item is in a directory named the same as the content item."""
+
+    @property
     def Tag(self) -> list[str]:
         """List of strings"""
 
     @property
-    def Url(self) -> list:
+    def Urls(self) -> list[ReturnGetUrlsDict]:
         """
         List of URLs as objects with 'location' and 'urltype' string attributes, where urltype is one of:
                   * website
