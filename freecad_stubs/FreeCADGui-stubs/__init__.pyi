@@ -9,6 +9,7 @@ import qtpy
 import qtpy.QtCore
 import qtpy.QtGui
 import qtpy.QtWidgets
+import qtpy.QtWidgets
 
 _T = typing.TypeVar("_T")
 Triple_t: typing.TypeAlias = tuple[_T, _T, _T]
@@ -1021,7 +1022,7 @@ class Document(FreeCAD.Persistence):
 
 
 # MDIViewPy.cpp
-class MDIViewPy:
+class MDIViewPy(qtpy.QtWidgets.QMainWindow):
     """Python binding class for the MDI view class"""
 
     def printView(self) -> None:
@@ -1434,7 +1435,7 @@ class PyResource:
 
 
 # MainWindowPy.cpp
-class MainWindowPy:
+class MainWindowPy(qtpy.QtWidgets.QMainWindow):
     """Python binding class for the MainWindow class"""
 
     def getWindows(self) -> list[MDIViewPy]:
@@ -1717,7 +1718,7 @@ def isIconCached(String: str, /) -> bool:
     """
 
 
-def getMainWindow():
+def getMainWindow() -> FreeCAD.MainWindowPy:
     """
     getMainWindow() -> QMainWindow
 

@@ -21,8 +21,6 @@ from freecad_stub_gen.util import OrderedSet
 logger = logging.getLogger(__name__)
 
 
-# TODO P3 add special case getMainWindow() -> MainWindowPy
-
 class ReturnTypeConverter(
     ReturnTypeInnerList, ReturnTypeInnerTuple, ReturnTypeInnerDict, ReturnTypeConverterBase
 ):

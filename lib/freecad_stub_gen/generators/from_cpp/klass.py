@@ -5,9 +5,10 @@ from collections.abc import Iterable
 from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall
 from freecad_stub_gen.generators.common.doc_string import formatDocstring
+from freecad_stub_gen.generators.common.names import getClassWithModulesFromPointer, getModuleName
 from freecad_stub_gen.generators.from_cpp.base import BaseGeneratorFromCpp
 from freecad_stub_gen.importable_map import importableMap
-from freecad_stub_gen.util import indent
+from freecad_stub_gen.util import indent, readContent
 
 logger = logging.getLogger(__name__)
 
@@ -44,5 +45,69 @@ class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
             if doc:
                 doc = indent(formatDocstring(doc))
 
-            # TODO P2 add base classes? ex. MainWindowPy(QMainWindow)
-            yield f"class {className}:\n{doc}\n{content}\n"
+            baseClasses = self._getBaseClasses(className)
+            yield f"class {className}{baseClasses}:\n{doc}\n{content}\n"
+
+    REG_BASE_CLASS_INHERITANCE = re.compile(r"""
+(?:public|protected|private)\s+     # access modifier
+(?P<baseClass>.+?)\s*            # there may be template class with many parameters
+(?:{|                               # either end of expression 
+,\s*(?:public|protected|private)    # or more base classes
+)""", re.VERBOSE)
+
+    def _getBaseClasses(self, className: str) -> str:
+        if className.endswith('Py'):
+            className = className.removesuffix('Py')
+        else:
+            return ''
+
+        if not (twinHeaderContent := self._getTwinHeaderContent()):
+            return ''
+
+        if not (match := re.search(rf"""
+class\s+            # keyword `class`
+(?:\w+\s+)?         # there may be optional macro: GuiExport|AppExport
+{className}\s*:\s*  # original class name
+(?P<inh>[^{{]*      # all inherited classes until {{
+{{)                 # terminating char {{
+""", twinHeaderContent, re.VERBOSE)):
+            return ''  # there is no inheritance
+
+        baseClasses = []
+        for baseClassMatch in re.finditer(
+                self.REG_BASE_CLASS_INHERITANCE, match.group('inh')):
+            baseClass = baseClassMatch.group('baseClass').strip()
+            if pythonClass := self._getPythonClass(baseClass):
+                baseClasses.append(pythonClass)
+
+        if baseClasses:
+            return f"({', '.join(baseClasses)})"
+        else:
+            return ''
+
+    def _getTwinHeaderContent(self) -> str | None:
+        currentName = self.baseGenFilePath.stem
+        if currentName.endswith('Py'):
+            twinName = currentName.removesuffix('Py')
+            twinFile = self.baseGenFilePath.with_stem(twinName).with_suffix('.h')
+            try:
+                return readContent(twinFile)
+            except IOError:
+                pass
+
+    def _getPythonClass(self, baseClass) -> str | None:
+        if baseClass.isidentifier() and baseClass.startswith('Q'):
+            match baseClass:
+                case 'QMainWindow':
+                    self.requiredImports.add('import qtpy.QtWidgets')
+                    return 'qtpy.QtWidgets.QMainWindow'
+                case _:
+                    raise ValueError("Unknown qt class")
+
+        elif baseClass.endswith('Py'):
+            classWithModule = getClassWithModulesFromPointer(baseClass)
+            self.requiredImports.add(getModuleName(classWithModule))
+            return classWithModule
+
+        else:
+            return  # Not a python class

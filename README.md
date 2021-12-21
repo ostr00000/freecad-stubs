@@ -10,7 +10,7 @@ Python stubs generated from FreeCAD source code.
 Stubs are generated based on several available info:
 - `*Py.xml` files - mainly docstrings, argument names, properties.
 - corresponding `*PyImp.cpp` file - argument types are extracted from C code.
-- other `*.cpp` files - functions for modules.
+- other `*.cpp` files - functions or modules.
 
 Unfortunately not all typing information may be generated. 
 For example some objects are added dynamically. 
@@ -54,6 +54,7 @@ Checkout to desired branch and copy folder `/freecad_stubs`.
     - /src/App
     - /src/Base
     - /src/Gui
+    - /src/Main
     - /src/Mod
 
 

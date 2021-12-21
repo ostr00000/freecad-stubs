@@ -100,6 +100,9 @@ class ReturnTypeConverterBase:
             case StrWrapper('shape2pyshape' | 'Part::shape2pyshape'):
                 return 'Part.Shape'
 
+            case StrWrapper('MainWindowPy::createWrapper'):
+                return 'FreeCAD.MainWindowPy'
+
             case StrWrapper('wrap.fromQObject('):
                 return 'qtpy.QtCore.QObject'
             case StrWrapper('wrap.fromQWidget('):
