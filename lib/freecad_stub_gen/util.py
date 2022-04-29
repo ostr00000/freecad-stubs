@@ -31,7 +31,7 @@ def removeComments(text):
 
 def readContent(file: Path):
     try:
-        content = file.read_text()
+        content = file.read_text('utf-8')
     except UnicodeDecodeError:
         content = file.read_text('iso8859-1')
 

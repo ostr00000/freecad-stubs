@@ -27,7 +27,7 @@ class DynamicPropertyGenerator(BasePropertyGenerator, ABC):
     REG_DYNAMIC_PROPERTY_EXP = re.compile(r'\bEXTENSION_ADD_PROPERTY\(')
     REG_DYNAMIC_PROPERTY_EXP_TYPE = re.compile(r'\bEXTENSION_ADD_PROPERTY_TYPE\(')
 
-    REG_PATTERN_CLASS_DEC = r'class .* {}[^{{]*'
+    REG_PATTERN_CLASS_DEC = r'class .*\b{}[^{{]*'
 
     def genDynamicProperties(self) -> Iterable[str]:
         """This function search for dynamic properties added in cpp code."""

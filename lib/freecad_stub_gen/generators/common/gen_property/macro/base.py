@@ -66,7 +66,6 @@ class PropertyMacroBase:
 
     @cached_property
     def TypeId(self) -> str | None:
-        # TODO P3 find declaration in parent
         reg = self.REG_PATTERN_PROP_DECLARATION.format(self.name)
         for classDecBody in self.classDeclarationBodies:
             if match := re.search(reg, classDecBody):

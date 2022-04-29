@@ -4,7 +4,7 @@ from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
     generateExpressionUntilChar
 
 
-@lru_cache()
+@lru_cache
 def parsePyBuildValues(formatText: str) -> str:
     formatText = formatText.replace(' ', '')
     results = []
@@ -31,7 +31,7 @@ def parsePyBuildValues(formatText: str) -> str:
         return 'None'
 
 
-@lru_cache()
+@lru_cache
 def _parsePyBuildComplexValue(formatText: str) -> tuple[str | None, int]:
     firstChar = formatText[0]
     lastChar = {'(': ')', '[': ']', '{': '}'}[firstChar]

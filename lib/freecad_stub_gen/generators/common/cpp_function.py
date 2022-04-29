@@ -12,7 +12,10 @@ def _skipAdditionalDirectiveBlocks(it: Iterator[tuple[int, str]]):
         if char in ' \n\t' and '#' in buffer:
             text = ''.join(buffer)[:-1]
             if text.endswith('#endif'):
-                directiveStack.pop()
+                if len(directiveStack) > 1:
+                    # there must exist at least one value,
+                    # maybe we started in the middle of directive
+                    directiveStack.pop()
                 buffer.clear()
             elif text.endswith('#elif') or text.endswith('#else'):
                 directiveStack[-1] = False

@@ -50,7 +50,7 @@ class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
 
     REG_BASE_CLASS_INHERITANCE = re.compile(r"""
 (?:public|protected|private)\s+     # access modifier
-(?P<baseClass>.+?)\s*            # there may be template class with many parameters
+(?P<baseClass>.+?)\s*               # there may be template class with many parameters
 (?:{|                               # either end of expression 
 ,\s*(?:public|protected|private)    # or more base classes
 )""", re.VERBOSE)
@@ -92,7 +92,7 @@ class\s+            # keyword `class`
             twinFile = self.baseGenFilePath.with_stem(twinName).with_suffix('.h')
             try:
                 return readContent(twinFile)
-            except IOError:
+            except OSError:
                 pass
 
     def _getPythonClass(self, baseClass) -> str | None:
