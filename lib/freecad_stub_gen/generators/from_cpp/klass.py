@@ -6,6 +6,7 @@ from freecad_stub_gen.generators.common.annotation_parameter import AnnotationPa
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall
 from freecad_stub_gen.generators.common.doc_string import formatDocstring
 from freecad_stub_gen.generators.common.names import getClassWithModulesFromPointer, getModuleName
+from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import StrWrapper
 from freecad_stub_gen.generators.from_cpp.base import BaseGeneratorFromCpp
 from freecad_stub_gen.importable_map import importableMap
 from freecad_stub_gen.util import indent, readContent
@@ -95,19 +96,17 @@ class\s+            # keyword `class`
             except OSError:
                 pass
 
-    def _getPythonClass(self, baseClass) -> str | None:
-        if baseClass.isidentifier() and baseClass.startswith('Q'):
-            match baseClass:
-                case 'QMainWindow':
-                    self.requiredImports.add('import qtpy.QtWidgets')
-                    return 'qtpy.QtWidgets.QMainWindow'
-                case _:
-                    raise ValueError("Unknown qt class")
+    def _getPythonClass(self, baseClass: str) -> str | None:
+        match StrWrapper(baseClass):
+            case 'QMainWindow':
+                classWithModule = 'qtpy.QtWidgets.QMainWindow'
+            case StrWrapper('Q'):
+                raise ValueError("Unknown qt class")
+            case StrWrapper(end='Py'):
+                classWithModule = getClassWithModulesFromPointer(baseClass)
+            case _:
+                return  # Not a python class
 
-        elif baseClass.endswith('Py'):
-            classWithModule = getClassWithModulesFromPointer(baseClass)
-            self.requiredImports.add(getModuleName(classWithModule))
-            return classWithModule
-
-        else:
-            return  # Not a python class
+        if mod := getModuleName(classWithModule):
+            self.requiredImports.add(mod)
+        return classWithModule

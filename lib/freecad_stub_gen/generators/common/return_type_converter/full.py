@@ -14,8 +14,7 @@ from freecad_stub_gen.generators.common.return_type_converter.inner_type_list im
     ReturnTypeInnerList
 from freecad_stub_gen.generators.common.return_type_converter.inner_type_tuple import \
     ReturnTypeInnerTuple
-from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import StrWrapper
-from freecad_stub_gen.module_namespace import moduleNamespace
+from freecad_stub_gen.generators.exceptions.container import exceptionContainer
 from freecad_stub_gen.util import OrderedSet
 
 logger = logging.getLogger(__name__)
@@ -58,7 +57,7 @@ class ReturnTypeConverter(
                 args = list(generateExpressionUntilChar(
                     exceptionArgs, 0, ',', bracketL='(', bracketR=')'))
                 if realExceptionName := args[0]:
-                    exceptions.add(self._getExceptionTypeFromArgument(realExceptionName))
+                    exceptions.add(exceptionContainer.getExceptionText(realExceptionName))
                     continue
 
             if validatePythonValue(exceptionName) is None:
@@ -69,35 +68,6 @@ class ReturnTypeConverter(
         for exceptionMatch in self.EXCEPTION_SET_STRING_REG.finditer(self.functionBody):
             funArgs = list(generateExpressionUntilChar(
                 exceptionMatch.group(1), 0, ',', bracketL='(', bracketR=')'))
-            exceptions.add(self._getExceptionTypeFromArgument(funArgs[0]))
+            exceptions.add(exceptionContainer.getExceptionText(funArgs[0]))
 
         return exceptions
-
-    def _getExceptionTypeFromArgument(self, exceptionArgument: str):
-        exception: str
-        match exceptionArgument.split('::'):
-            case [str(exception)]:
-                pass
-            case [_namespace, str(exception)]:
-                pass
-            case _:
-                raise ValueError
-
-        match StrWrapper(exception):
-            case StrWrapper('PyExc_'):
-                exceptionType = exception.removeprefix('PyExc_')
-
-            case StrWrapper('BaseException'):
-                exception = exception.removeprefix('BaseException')
-                exceptionType = f'FreeCAD.{exception}'
-                self.requiredImports.add('FreeCAD')
-
-            case StrWrapper('PartException'):
-                exception = exception.removeprefix('PartException')
-                exceptionType = f'Part.{exception}'
-                self.requiredImports.add(moduleNamespace.MODULE_TO_ALIAS['Part'])
-
-            case _:
-                raise ValueError(f'Unknown exception: "{exception}"')
-
-        return exceptionType

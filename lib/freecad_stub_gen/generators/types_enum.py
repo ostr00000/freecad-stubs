@@ -3,14 +3,14 @@ from collections import defaultdict
 from operator import itemgetter
 
 from freecad_stub_gen.additional import additionalPath
-from freecad_stub_gen.util import indent, readContent, genPyCppFiles
+from freecad_stub_gen.util import indent, readContent, genCppFiles
 
 initType = re.compile(r'(\w[\w: ]+?)\s*::init\(\)')
 
 
 def generateTypes():
     prefixToTypes: defaultdict[str, set[tuple[str, str]]] = defaultdict(set)
-    for filePath in genPyCppFiles():
+    for filePath in genCppFiles():
         fileContent = readContent(filePath)
 
         for match in initType.finditer(fileContent):

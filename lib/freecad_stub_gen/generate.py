@@ -1,52 +1,19 @@
-import inspect
 import logging
 import shutil
 from pathlib import Path
 
 from freecad_stub_gen.additional import additionalPath
 from freecad_stub_gen.config import SOURCE_DIR, TARGET_DIR
+from freecad_stub_gen.generators.exceptions.gen import ExceptionGenerator
 from freecad_stub_gen.generators.from_cpp.functions import FreecadStubGeneratorFromCppFunctions
 from freecad_stub_gen.generators.from_cpp.klass import FreecadStubGeneratorFromCppClass
 from freecad_stub_gen.generators.from_cpp.module import FreecadStubGeneratorFromCppModule
 from freecad_stub_gen.generators.from_xml.full import FreecadStubGeneratorFromXML
 from freecad_stub_gen.module_container import Module
 from freecad_stub_gen.module_namespace import moduleNamespace
-from freecad_stub_gen.util import genPyCppFiles, genXmlFiles
+from freecad_stub_gen.util import genCppFiles, genXmlFiles
 
 logger = logging.getLogger(__name__)
-
-
-def addExceptions(sourcesRoot: Module):
-    base = sourcesRoot['FreeCAD.Base']
-    base += inspect.cleandoc("""
-class FreeCADError(RuntimeError):
-    pass
-
-
-class FreeCADAbort(BaseException):
-    pass
-    """) + '\n'
-    part = sourcesRoot['Part']
-    part += inspect.cleandoc("""
-class OCCError(FreeCAD.Base.FreeCADError):
-    pass
-
-
-class OCCDomainError(OCCError):
-    pass
-
-
-class OCCRangeError(OCCDomainError):
-    pass
-
-
-class OCCConstructionError(OCCDomainError):
-    pass
-
-
-class OCCDimensionError(OCCDomainError):
-    pass
-    """) + '\n'
 
 
 def _genModule(sourcesRoot: Module, modulePath: Path, sourcePath=SOURCE_DIR,
@@ -56,10 +23,11 @@ def _genModule(sourcesRoot: Module, modulePath: Path, sourcePath=SOURCE_DIR,
             continue
         tg.getStub(sourcesRoot, moduleName, submodule=subModuleName)
 
-    for cppPath in genPyCppFiles(modulePath):
+    for cppPath in genCppFiles(modulePath):
         for cl in (FreecadStubGeneratorFromCppFunctions,
                    FreecadStubGeneratorFromCppClass,
-                   FreecadStubGeneratorFromCppModule):
+                   FreecadStubGeneratorFromCppModule,
+                   ExceptionGenerator):
             if not (mg := cl.safeCreate(cppPath, sourcePath)):
                 continue
 
@@ -96,7 +64,7 @@ Err = FreeCAD.Console.PrintError
 Wrn = FreeCAD.Console.PrintWarning
 # be careful with following variables -
 # some of them are set in FreeCADGui (GuiUp after InitApplications),
-# so may not exist when accessible until FreeCADGuiInit is initialized - use `getattr`"""
+# so may not exist until FreeCADGuiInit is initialized - use `getattr`"""
     freeCad += 'GuiUp: typing.Literal[0, 1]'
     freeCad.imports.add('typing')
     freeCad += 'Gui = FreeCADGui'
@@ -128,7 +96,6 @@ Wrn = FreeCAD.Console.PrintWarning
         _genModule(sourcesRoot, mod / 'App', sourcePath, moduleName=moduleName)
         _genModule(sourcesRoot, mod / 'Gui', sourcePath, moduleName=moduleName)
 
-    addExceptions(sourcesRoot)
     sourcesRoot['FreeCAD.Units'].imports.add(
         'from FreeCAD.Base import Unit as Unit, Quantity as Quantity')
     sourcesRoot.setSubModulesAsPackage()

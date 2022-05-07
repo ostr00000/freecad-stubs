@@ -8,7 +8,7 @@ from freecad_stub_gen.generators.common.names import getClassName, getClassWithM
     getModuleName
 from freecad_stub_gen.generators.common.py_build_converter import parsePyBuildValues
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import EmptyType, \
-    Empty, UnionArguments, RetType, InvalidReturnType
+    Empty, UnionArguments, RetType, InvalidReturnType, ListIter
 from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import StrWrapper
 from freecad_stub_gen.util import OrderedSet
 
@@ -99,9 +99,13 @@ class ReturnTypeConverterBase:
 
             case StrWrapper('shape2pyshape' | 'Part::shape2pyshape'):
                 return 'Part.Shape'
+            case StrWrapper('getShapes<'):
+                templateClass = returnText.removeprefix('getShapes<').split('>')[0]
+                innerClass = self._getReturnTypeForText(templateClass, endPos)
+                return f'list[{innerClass}]'
 
             case StrWrapper('MainWindowPy::createWrapper'):
-                return 'FreeCAD.MainWindowPy'
+                return 'FreeCADGui.MainWindowPy'
 
             case StrWrapper('wrap.fromQObject('):
                 return 'qtpy.QtCore.QObject'

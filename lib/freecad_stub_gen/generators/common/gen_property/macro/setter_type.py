@@ -5,6 +5,7 @@ from freecad_stub_gen.generators.common.cpp_function import generateExpressionUn
 from freecad_stub_gen.generators.common.gen_property.macro.alias import PropertyTypeAlias, \
     PropertyTypeVar
 from freecad_stub_gen.generators.common.gen_property.macro.base import PropertyMacroBase
+from freecad_stub_gen.generators.common.names import useAliasedModule
 from freecad_stub_gen.module_namespace import moduleNamespace
 
 logger = logging.getLogger(__name__)
@@ -156,7 +157,7 @@ class PropertyMacroSetter(PropertyMacroBase):
                 container = withoutContainer
 
         result = PropertyTypeAlias.join(requiredTypes)
-        result += container.format(t=innerType)
+        result += container.format(t=useAliasedModule(innerType))
         return result
 
     TYPE_DOC_AND_STR = PropertyTypeAlias(

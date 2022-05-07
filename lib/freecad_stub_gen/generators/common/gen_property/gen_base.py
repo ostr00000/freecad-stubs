@@ -3,6 +3,7 @@ from abc import ABC
 
 from freecad_stub_gen.generators.common.doc_string import formatDocstring
 from freecad_stub_gen.generators.common.gen_base import BaseGenerator
+from freecad_stub_gen.generators.common.names import getModuleName
 from freecad_stub_gen.util import indent
 
 
@@ -50,5 +51,6 @@ class BasePropertyGenerator(BaseGenerator, ABC):
                 if '...' == subType:
                     continue
 
-                requiredImport, _ = subType.split('.', maxsplit=1)
-                yield requiredImport
+                mod = getModuleName(subType)
+                assert mod is not None
+                yield mod

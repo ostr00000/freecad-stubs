@@ -38,7 +38,7 @@ def readContent(file: Path):
     return removeComments(content)
 
 
-def genPyCppFiles(sourcePath: Path = SOURCE_DIR):
+def genCppFiles(sourcePath: Path = SOURCE_DIR):
     yield from Path(sourcePath).glob('**/*.cpp')
 
 

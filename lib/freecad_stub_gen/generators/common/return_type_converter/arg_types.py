@@ -1,7 +1,7 @@
 from functools import cached_property
 from typing import TypeVar, Generator
 
-from freecad_stub_gen.generators.common.names import getModuleName
+from freecad_stub_gen.generators.common.names import getModuleName, useAliasedModule
 from freecad_stub_gen.util import OrderedSet, indent
 
 T = TypeVar('T')
@@ -37,8 +37,8 @@ class ArgumentsIter:
         """
         for argType in super().__iter__():
             match argType:
-                case str() if '[' not in argType and (mod := getModuleName(argType)):
-                    self.imports.add(mod)
+                case str() if '[' not in argType and getModuleName(argType):
+                    argType = useAliasedModule(argType, self.imports)
                 case UnionArguments() as ua:
                     self.imports.update(ua.imports)
             yield str(argType)
@@ -57,16 +57,16 @@ class UnionArguments(ArgumentsIter, OrderedSet):
 class TupleArgument(ArgumentsIter, list):
     def __init__(self, gen: Generator[T, None, bool | None] = ()):
         super().__init__()
-        while True:
-            try:
+        try:
+            while True:
                 self.append(next(gen))
-            except StopIteration as st:
-                self.repeated = len(self) == 1 and bool(st)
-                return
+        except StopIteration as st:
+            self.repeated = len(self) == 1 and st.value is True
 
     def __str__(self):
         if len(self) == 1 and self.repeated:
-            return f'tuple[{self[0]}, ...]'
+            # use iter instead of index [0] to map module
+            return f'tuple[{next(iter(self))}, ...]'
         elif self:
             return f'tuple[{", ".join(self)}]'
         return 'tuple'

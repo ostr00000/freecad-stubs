@@ -5,7 +5,7 @@ from functools import cached_property
 
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.module_namespace import moduleNamespace
-from freecad_stub_gen.util import readContent, genPyCppFiles
+from freecad_stub_gen.util import readContent, genCppFiles
 
 
 @dataclass
@@ -74,7 +74,7 @@ class ImportableClassMap(dict[str, str]):
     REG_ADD_TYPE = re.compile(r'Base\s*:\s*:\s*Interpreter\s*\(\s*\)\s*\.\s*addType\s*\(')
 
     def _genTypes(self):
-        for cppFile in genPyCppFiles():
+        for cppFile in genCppFiles():
             cppContent = readContent(cppFile)
             for match in self.REG_ADD_TYPE.finditer(cppContent):
                 addTypeList = [c.replace(' ', '').replace('\n', '')

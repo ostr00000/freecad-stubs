@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 
 from freecad_stub_gen.importable_map import importableMap
 from freecad_stub_gen.module_namespace import moduleNamespace
+from freecad_stub_gen.util import OrderedSet
 
 logger = logging.getLogger(__name__)
 
@@ -72,6 +73,18 @@ def getClassName(classWithModules: str):
 def getModuleName(classWithModules: str):
     if (splitIndex := classWithModules.rfind('.')) != -1:
         return classWithModules[:splitIndex]
+
+
+def useAliasedModule(classWithModules: str, requiredImports: OrderedSet = None) -> str:
+    mod = getModuleName(classWithModules)
+    if mod is None:
+        return classWithModules
+
+    cls = getClassName(classWithModules)
+    mod = moduleNamespace.convertNamespaceToModule(mod)
+    if requiredImports is not None:
+        requiredImports.add(mod)
+    return f'{mod}.{cls}'
 
 
 def getNamespaceWithClass(cTypeClass: str):
