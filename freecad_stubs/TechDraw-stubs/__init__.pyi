@@ -543,6 +543,18 @@ class DrawViewDimension(TechDraw.DrawView):
     """Feature for creating and manipulating Technical Drawing Dimensions"""
 
     @property
+    def AngleOverride(self) -> bool:
+        """
+        [Prop_Output] Modified property doesn't touch its parent container.
+        Property group: Override.
+        Property TypeId: App::PropertyBool.
+        User specified angles.
+        """
+
+    @AngleOverride.setter
+    def AngleOverride(self, value: int | bool): ...
+
+    @property
     def Arbitrary(self) -> bool:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
@@ -576,6 +588,18 @@ class DrawViewDimension(TechDraw.DrawView):
 
     @EqualTolerance.setter
     def EqualTolerance(self, value: int | bool): ...
+
+    @property
+    def ExtensionAngle(self) -> FreeCAD.Quantity:
+        """
+        [Prop_Output] Modified property doesn't touch its parent container.
+        Property group: Override.
+        Property TypeId: App::PropertyAngle.
+        Extension line angle.
+        """
+
+    @ExtensionAngle.setter
+    def ExtensionAngle(self, value: str | float | FreeCAD.Quantity): ...
 
     @property
     def FormatSpec(self) -> str:
@@ -623,6 +647,18 @@ class DrawViewDimension(TechDraw.DrawView):
 
     @Inverted.setter
     def Inverted(self, value: int | bool): ...
+
+    @property
+    def LineAngle(self) -> FreeCAD.Quantity:
+        """
+        [Prop_Output] Modified property doesn't touch its parent container.
+        Property group: Override.
+        Property TypeId: App::PropertyAngle.
+        Dimension line angle.
+        """
+
+    @LineAngle.setter
+    def LineAngle(self, value: str | float | FreeCAD.Quantity): ...
 
     @property
     def MeasureType(self) -> int:
@@ -833,8 +869,6 @@ class DrawView(FreeCAD.DocumentObject):
     @property
     def X(self) -> FreeCAD.Quantity:
         """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        [Prop_NoRecompute] Modified property doesn't touch its container for recompute.
         Property group: Base.
         Property TypeId: App::PropertyDistance.
         X position.
@@ -846,8 +880,6 @@ class DrawView(FreeCAD.DocumentObject):
     @property
     def Y(self) -> FreeCAD.Quantity:
         """
-        [Prop_Output] Modified property doesn't touch its parent container.
-        [Prop_NoRecompute] Modified property doesn't touch its container for recompute.
         Property group: Base.
         Property TypeId: App::PropertyDistance.
         Y position.
@@ -1805,35 +1837,35 @@ class GeomFormat(FreeCAD.PyObjectBase):
 def edgeWalker(edgePile: list, inclBiggest=None, /) -> list[PartModule.Wire] | None:
     """
     [wires] = edgeWalker(edgePile,inclBiggest) -- Planar graph traversal finds wires in edge pile.
-    Possible exceptions: (TypeError, Part.OCCError, FreeCAD.FreeCADError).
+    Possible exceptions: (TypeError, Part.OCCError, Exception).
     """
 
 
 def findOuterWire(edgeList: list, /) -> PartModule.Wire | None:
     """
     wire = findOuterWire(edgeList) -- Planar graph traversal finds OuterWire in edge pile.
-    Possible exceptions: (TypeError, Part.OCCError, FreeCAD.FreeCADError).
+    Possible exceptions: (TypeError, Part.OCCError, Exception).
     """
 
 
 def findShapeOutline(shape, scale: float, direction, /) -> PartModule.Wire | None:
     """
     wire = findShapeOutline(shape,scale,direction) -- Project shape in direction and find outer wire of result.
-    Possible exceptions: (TypeError, Part.OCCError, FreeCAD.FreeCADError).
+    Possible exceptions: (TypeError, Part.OCCError, Exception).
     """
 
 
 def viewPartAsDxf(DrawViewPart, /) -> str:
     """
     string = viewPartAsDxf(DrawViewPart) -- Return the edges of a DrawViewPart in Dxf format.
-    Possible exceptions: (TypeError, FreeCAD.FreeCADError).
+    Possible exceptions: (TypeError, Exception).
     """
 
 
 def viewPartAsSvg(DrawViewPart, /) -> str:
     """
     string = viewPartAsSvg(DrawViewPart) -- Return the edges of a DrawViewPart in Svg format.
-    Possible exceptions: (TypeError, FreeCAD.FreeCADError).
+    Possible exceptions: (TypeError, Exception).
     """
 
 
@@ -1882,7 +1914,47 @@ def makeDistanceDim3d(arg1, arg2, arg3, arg4, /) -> None:
 def makeGeomHatch(face, patScale: float = None, patName: str = None, patFile: str = None, /) -> PartModule.Compound | None:
     """
     makeGeomHatch(face, [patScale], [patName], [patFile]) -- draw a geom hatch on a given face, using optionally the given scale (default 1) and a given pattern name (ex. Diamond) and .pat file (the default pattern name and/or .pat files set in preferences are used if none are given). Returns a Part compound shape.
-    Possible exceptions: (TypeError, FreeCAD.FreeCADError).
+    Possible exceptions: (TypeError, Exception).
+    """
+
+
+def project(arg1: PartModule.Shape, arg2: FreeCAD.Vector = None, /) -> list[PartModule.Shape]:
+    """
+    [visiblyG0,visiblyG1,hiddenG0,hiddenG1] = project(TopoShape[,App.Vector Direction, string type])
+     -- Project a shape and return the visible/invisible parts of it.
+    Possible exceptions: (Exception).
+    """
+
+
+def projectEx(arg1: PartModule.Shape, arg2: FreeCAD.Vector = None, /) -> list[PartModule.Shape]:
+    """
+    [V,V1,VN,VO,VI,H,H1,HN,HO,HI] = projectEx(TopoShape[,App.Vector Direction, string type])
+     -- Project a shape and return the all parts of it.
+    Possible exceptions: (Exception).
+    """
+
+
+def projectToDXF(arg1: PartModule.Shape, arg2: FreeCAD.Vector = None, arg3: str = None, arg4: float = None, arg5: float = None, /) -> str:
+    """
+    string = projectToDXF(TopoShape[,App.Vector Direction, string type])
+     -- Project a shape and return the DXF representation as string.
+    Possible exceptions: (Exception).
+    """
+
+
+def removeSvgTags(string: str, /) -> str:
+    """
+    string = removeSvgTags(string) -- Removes the opening and closing svg tags
+    and other metatags from a svg code, making it embeddable
+    Possible exceptions: (Exception).
+    """
+
+
+def projectToSVG(topoShape: PartModule.Shape, direction: FreeCAD.Vector = None, type: str = None, tolerance: float = None, vStyle=None, v0Style=None, v1Style=None, hStyle=None, h0Style=None, h1Style=None) -> str:
+    """
+    string = projectToSVG(TopoShape[, App.Vector direction, string type, float tolerance, dict vStyle, dict v0Style, dict v1Style, dict hStyle, dict h0Style, dict h1Style])
+     -- Project a shape and return the SVG representation as string.
+    Possible exceptions: (Exception).
     """
 
 

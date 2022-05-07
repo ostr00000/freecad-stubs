@@ -1,8 +1,8 @@
 import typing
 
 import FreeCAD
-import Part
 import Part as PartModule
+import PartDesign
 
 
 class ReturnGetModeInfoDict(typing.TypedDict):
@@ -219,7 +219,7 @@ class AttachEngine(FreeCAD.BaseClass):
     def __init__(self, arg1: str, /):
         """
         AttachEngine abstract class - the functionality of AttachableObject, but outside of DocumentObject
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (FreeCAD.Base.FreeCADError, TypeError).
         """
 
     @property
@@ -822,6 +822,38 @@ class OffsetSurface(PartModule.GeometrySurface):
         """Sets or gets the offset value to offset the underlying surface."""
 
 
+# PrecisionPy.xml
+class Precision(FreeCAD.PyObjectBase):
+    """
+    This class can be imported.
+    This is the Type class
+    """
+
+    @staticmethod
+    def isInfinite(arg0: float, /) -> bool:
+        """Returns True if R may be considered as an infinite number"""
+
+    @staticmethod
+    def isNegativeInfinite(arg0: float, /) -> bool:
+        """Returns True if R may  be considered as a negative infinite number"""
+
+    @staticmethod
+    def isPositiveInfinite(arg0: float, /) -> bool:
+        """Returns True if R may  be considered as a positive infinite number"""
+
+    @staticmethod
+    @typing.overload
+    def parametric(arg0: float, /) -> float: ...
+
+    @staticmethod
+    @typing.overload
+    def parametric(arg0: float, arg1: float, /) -> float:
+        """
+        Convert a real space precision to a parametric space precision
+        Possible exceptions: (ValueError).
+        """
+
+
 # PlanePy.xml
 class Plane(PartModule.GeometrySurface):
     """
@@ -934,7 +966,7 @@ class Face(PartModule.Shape):
     def __init__(self, arg1, arg2: str, /):
         """
         TopoShapeFace is the OpenCasCade topological face wrapper
-        Possible exceptions: (Part.OCCError, TypeError, FreeCAD.FreeCADError).
+        Possible exceptions: (Part.OCCError, TypeError).
         """
 
     @property
@@ -1002,7 +1034,7 @@ class Face(PartModule.Shape):
         """
 
     @property
-    def Surface(self) -> object:
+    def Surface(self) -> object | None:
         """Returns the geometric surface of the face"""
 
     @property
@@ -1083,7 +1115,7 @@ class Face(PartModule.Shape):
         Possible exceptions: (Part.OCCError).
         """
 
-    def makeEvolved(self, Profile: PartModule.Wire, Join: int = None, AxeProf: bool = None, Solid: bool = None, ProfOnSpine: bool = None, Tolerance: float = None) -> Part.Shape:
+    def makeEvolved(self, Profile: PartModule.Wire, Join: int = None, AxeProf: bool = None, Solid: bool = None, ProfOnSpine: bool = None, Tolerance: float = None) -> PartModule.Shape:
         """
         Profile along the spine
         Possible exceptions: (Part.OCCError).
@@ -1450,19 +1482,19 @@ class Shape(FreeCAD.ComplexGeoData):
         """Total area of the faces of the shape."""
 
     @property
-    def CompSolids(self) -> list[FreeCAD.PyObjectBase]:
+    def CompSolids(self) -> list[PartModule.CompSolid]:
         """List of subsequent shapes in this shape."""
 
     @property
-    def Compounds(self) -> list[FreeCAD.PyObjectBase]:
+    def Compounds(self) -> list[PartModule.Compound]:
         """List of compounds in this shape."""
 
     @property
-    def Edges(self) -> list[FreeCAD.PyObjectBase]:
+    def Edges(self) -> list[PartModule.Edge]:
         """List of Edges in this shape."""
 
     @property
-    def Faces(self) -> list[FreeCAD.PyObjectBase]:
+    def Faces(self) -> list[PartModule.Face]:
         """List of faces in this shape."""
 
     @property
@@ -1481,19 +1513,19 @@ class Shape(FreeCAD.ComplexGeoData):
         """Returns the type of the shape."""
 
     @property
-    def Shells(self) -> list[FreeCAD.PyObjectBase]:
+    def Shells(self) -> list[PartModule.Shell]:
         """List of subsequent shapes in this shape."""
 
     @property
-    def Solids(self) -> list[FreeCAD.PyObjectBase]:
+    def Solids(self) -> list[PartModule.Solid]:
         """List of subsequent shapes in this shape."""
 
     @property
-    def SubShapes(self) -> list[Part.Shape]:
+    def SubShapes(self) -> list[PartModule.Shape]:
         """List of sub-shapes in this shape."""
 
     @property
-    def Vertexes(self) -> list[FreeCAD.PyObjectBase]:
+    def Vertexes(self) -> list[PartModule.Vertex]:
         """List of vertexes in this shape."""
 
     @property
@@ -1501,15 +1533,15 @@ class Shape(FreeCAD.ComplexGeoData):
         """Total volume of the solids of the shape."""
 
     @property
-    def Wires(self) -> list[FreeCAD.PyObjectBase]:
+    def Wires(self) -> list[PartModule.Wire]:
         """List of wires in this shape."""
 
-    def ancestorsOfType(self, shape: PartModule.Shape, shape_type: type, /) -> list[Part.Shape]:
+    def ancestorsOfType(self, shape: PartModule.Shape, shape_type: type, /) -> list[PartModule.Shape]:
         """
         For a sub-shape of this shape get its ancestors of a type.
         ancestorsOfType(shape, shape type) -> list
         
-        Possible exceptions: (ValueError, Part.OCCError).
+        Possible exceptions: (ValueError, TypeError, Part.OCCError).
         """
 
     def check(self, runBopCheck: bool = False, /):
@@ -1778,7 +1810,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (Part.OCCError, TypeError).
         """
 
-    def generalFuse(self, list_of_other_shapes, fuzzy_value: float = 0.0, /) -> tuple[Part.Shape, list[list[Part.Shape]]]:
+    def generalFuse(self, list_of_other_shapes, fuzzy_value: float = 0.0, /) -> tuple[PartModule.Shape, list[list[PartModule.Shape]]]:
         """
         Run general fuse algorithm (GFA) between this and given shapes.
         generalFuse(list_of_other_shapes, [fuzzy_value = 0.0]) -> (result, map)
@@ -1814,7 +1846,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Returns a SubElement
         getElement(elementName) -> Face | Edge | Vertex
         
-        Possible exceptions: (Part.OCCError).
+        Possible exceptions: (ValueError, Part.OCCError).
         """
 
     def getTolerance(self, mode: int, ShapeType: type = None, /) -> float:
@@ -1888,7 +1920,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (Part.OCCError).
         """
 
-    def inTolerance(self, arg1: float, arg2: float, arg3: type = None, /) -> tuple[Part.Shape, ...]:
+    def inTolerance(self, arg1: float, arg2: float, arg3: type = None, /) -> tuple[PartModule.Shape, ...]:
         """
         Determines which shapes have a tolerance within a given interval
         inTolerance(value, [ShapeType=Shape]) -> ShapeList
@@ -2013,7 +2045,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (Part.OCCError, TypeError).
         """
 
-    def makeOffset2D(self, offset: float, join: int = None, fill: bool = None, openResult: bool = None, intersection: bool = None) -> Part.Shape:
+    def makeOffset2D(self, offset: float, join: int = None, fill: bool = None, openResult: bool = None, intersection: bool = None) -> PartModule.Shape:
         """
         makes an offset shape (2d offsetting).
         makeOffset2D(offset, [join = 0, fill = False, openResult = false, intersection =
@@ -2108,7 +2140,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (Part.OCCError).
         """
 
-    def makeWires(self, op: str, /) -> Part.Shape:
+    def makeWires(self, op: str, /) -> PartModule.Shape:
         """
         make wire(s) using the edges of this shape
         makeWires([op=None])
@@ -2171,7 +2203,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (RuntimeError).
         """
 
-    def overTolerance(self, value: float, ShapeType: type = None, /) -> tuple[Part.Shape, ...]:
+    def overTolerance(self, value: float, ShapeType: type = None, /) -> tuple[PartModule.Shape, ...]:
         """
         Determines which shapes have a tolerance over the given value
         overTolerance(value, [ShapeType=Shape]) -> ShapeList
@@ -2420,7 +2452,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (Part.OCCError).
         """
 
-    def transformGeometry(self, matrix: FreeCAD.Matrix, /) -> PartModule.Shape:
+    def transformGeometry(self, arg1: FreeCAD.Matrix, arg2: bool = None, /) -> PartModule.Shape:
         """
         Apply geometric transformation on this or a copy the shape.
         transformGeometry(matrix) -> Shape
@@ -2454,7 +2486,7 @@ class Shape(FreeCAD.ComplexGeoData):
         scaling is detected.
         """
 
-    def transformed(self, matrix: FreeCAD.Matrix, copy=False, checkScale=False, op: str = None) -> Part.Shape:
+    def transformed(self, matrix: FreeCAD.Matrix, copy=False, checkScale=False, op: str = None) -> PartModule.Shape:
         """
         Create a new transformed shape
         transformed(Matrix,copy=False,checkScale=False,op=None) -> shape
@@ -3009,11 +3041,11 @@ class Feature(FreeCAD.GeoFeature):
     """
 
     @property
-    def Shape(self) -> Part.Shape:
+    def Shape(self) -> PartModule.Shape:
         """Property TypeId: Part::PropertyPartShape."""
 
     @Shape.setter
-    def Shape(self, value: Part.Shape): ...
+    def Shape(self, value: PartModule.Shape): ...
 
 
 # TrimmedCurvePy.xml
@@ -3192,11 +3224,11 @@ class Wire(PartModule.Shape):
         """
 
     @property
-    def OrderedEdges(self) -> list[Part.Shape]:
+    def OrderedEdges(self) -> list[PartModule.Shape]:
         """List of ordered edges in this shape."""
 
     @property
-    def OrderedVertexes(self) -> list[Part.Shape]:
+    def OrderedVertexes(self) -> list[PartModule.Shape]:
         """List of ordered vertexes in this shape."""
 
     @property
@@ -3336,7 +3368,7 @@ class Wire(PartModule.Shape):
         Possible exceptions: (Part.OCCError).
         """
 
-    def makeEvolved(self, Profile: PartModule.Wire, Join: int = None, AxeProf: bool = None, Solid: bool = None, ProfOnSpine: bool = None, Tolerance: float = None) -> Part.Shape:
+    def makeEvolved(self, Profile: PartModule.Wire, Join: int = None, AxeProf: bool = None, Solid: bool = None, ProfOnSpine: bool = None, Tolerance: float = None) -> PartModule.Shape:
         """
         Profile along the spine
         Possible exceptions: (Part.OCCError).
@@ -5892,7 +5924,7 @@ class Curve(PartModule.Geometry):
         Possible exceptions: (RuntimeError).
         """
 
-    def tangent(self, arg1: float, /) -> tuple[FreeCAD.Vector, ...]:
+    def tangent(self, arg1: float, /) -> tuple[FreeCAD.Vector]:
         """
         Computes the tangent of parameter u on this curve
         Possible exceptions: (Part.OCCError).
@@ -6171,7 +6203,7 @@ class AttachExtension(FreeCAD.DocumentObjectExtension):
         'Attacher::AttachEnginePlane'
         'Attacher::AttachEngineLine'
         'Attacher::AttachEnginePoint'
-        Possible exceptions: (Part.OCCError, FreeCAD.FreeCADError).
+        Possible exceptions: (Part.OCCError).
         """
 
     def positionBySupport(self) -> bool:
@@ -6179,7 +6211,7 @@ class AttachExtension(FreeCAD.DocumentObjectExtension):
         positionBySupport(): Reposition object based on Support, MapMode and MapPathParameter properties.
         Returns True if attachment calculation was successful, false if object is not attached and Placement wasn't updated,
         and raises an exception if attachment calculation fails.
-        Possible exceptions: (Part.OCCError, FreeCAD.FreeCADError).
+        Possible exceptions: (Part.OCCError).
         """
 
 
@@ -6795,9 +6827,9 @@ class HLRBRep_PolyAlgo(FreeCAD.PyObjectBase):
 
     def load(self, arg1: PartModule.Shape, /): ...
 
-    def moreHide(self): ...
+    def moreHide(self) -> bool: ...
 
-    def moreShow(self): ...
+    def moreShow(self) -> bool: ...
 
     def nbShapes(self) -> int: ...
 
@@ -6846,6 +6878,27 @@ class PolyHLRToShapePy(FreeCAD.PyObjectBase):
     def vCompound(self, arg1: PartModule.Shape = None, /) -> PartModule.Shape: ...
 
 
+# AppPart.cpp
+class OCCError(FreeCAD.FreeCADError):
+    pass
+
+
+class OCCDomainError(PartModule.OCCError):
+    pass
+
+
+class OCCRangeError(PartModule.OCCDomainError):
+    pass
+
+
+class OCCConstructionError(PartModule.OCCDomainError):
+    pass
+
+
+class OCCDimensionError(PartModule.OCCDomainError):
+    pass
+
+
 # AppPartPy.cpp
 def open(string: str, /) -> None:
     """
@@ -6875,7 +6928,7 @@ def read(string: str, /) -> PartModule.Shape:
     """
 
 
-def show(shape: PartModule.Shape, string: str = None, /) -> None:
+def show(shape: PartModule.Shape, string: str = None, /) -> PartDesign.Feature:
     """
     show(shape,[string]) -- Add the shape to the active document or create one if no document exists.
     Possible exceptions: (Exception).
@@ -6907,7 +6960,7 @@ def makeFace(list_of_shapes_or_compound, maker_class_name: str, /) -> PartModule
     """
     makeFace(list_of_shapes_or_compound, maker_class_name) -- Create a face (faces) using facemaker class.
     maker_class_name is a string like 'Part::FaceMakerSimple'.
-    Possible exceptions: (TypeError, FreeCAD.FreeCADError, Part.OCCError).
+    Possible exceptions: (TypeError, Part.OCCError, Exception).
     """
 
 
@@ -7113,7 +7166,7 @@ def makeWireString(string, fontdir: str, fontfile: str, height: float, track: fl
     """
 
 
-def makeSplitShape(shape: PartModule.Shape, list_of_shape_pairs, check_Interior: bool = True, /) -> tuple[list[Part.Shape], list[Part.Shape]]:
+def makeSplitShape(shape: PartModule.Shape, list_of_shape_pairs, check_Interior: bool = True, /) -> tuple[list[PartModule.Shape], list[PartModule.Shape]]:
     """
     makeSplitShape(shape, list of shape pairs,[check Interior=True]) -> two lists of shapes.
     The following shape pairs are supported:
@@ -7234,7 +7287,7 @@ def joinSubname(sub: str, mapped: str, subElement: str, /) -> str:
     """
 
 
-def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matrix = None, needSubElement=None, transform=None, retType: int = None, noElementMap=None, refine=None) -> Part.Shape | tuple[Part.Shape, FreeCAD.Matrix, object]:
+def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matrix = None, needSubElement=None, transform=None, retType: int = None, noElementMap=None, refine=None) -> PartModule.Shape | tuple[PartModule.Shape, FreeCAD.Matrix, object]:
     """
     getShape(obj,subname=None,mat=None,needSubElement=False,transform=True,retType=0):
     Obtain the the TopoShape of a given object with SubName reference
@@ -7258,32 +7311,9 @@ def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matr
 def getModeStrings(attacher_type: str, mode_index: int, /) -> list[str]:
     """
     getModeStrings(attacher_type, mode_index) - gets mode user-friendly name and brief description.
-    Possible exceptions: (TypeError, FreeCAD.FreeCADError).
+    Possible exceptions: (TypeError).
     """
 
 
 def getRefTypeUserFriendlyName(type_index: int, /) -> str:
-    """
-    getRefTypeUserFriendlyName(type_index) - gets user-friendly name of AttachEngine's shape type.
-    Possible exceptions: (FreeCAD.FreeCADError).
-    """
-
-
-class OCCError(FreeCAD.Base.FreeCADError):
-    pass
-
-
-class OCCDomainError(OCCError):
-    pass
-
-
-class OCCRangeError(OCCDomainError):
-    pass
-
-
-class OCCConstructionError(OCCDomainError):
-    pass
-
-
-class OCCDimensionError(OCCDomainError):
-    pass
+    """getRefTypeUserFriendlyName(type_index) - gets user-friendly name of AttachEngine's shape type."""

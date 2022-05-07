@@ -6,6 +6,28 @@
 
 Python stubs generated from FreeCAD source code.
 
+## Install stubs
+You can install all stubs for freeCAD packages by running:
+```bash
+python -m pip install freecad-stubs 
+```
+If you installed this package, 
+then you probably develop some FreeCAD components/scripts.
+You should remember to set up your IDE by adding path to the real FreeCAD libraries,
+especially for modules written mainly in python (ex. `Draft`), 
+because this package does not provide stubs for that module :confused: 
+(yet - you may contribute).
+
+Also note that `App` or `Gui` are only aliases available in FreeCAD. 
+To fully use advantage of stubs 
+you should always import a module you are referencing 
+(ex. `import FreeCADGui as Gui`).
+
+## Generating stubs manually
+Package on pypi always has stubs generated for the newest freecad (master branch).
+If you need older version you may try to install specific version from pypi 
+or manually run a tool from this repository to generate stubs. 
+
 ### Stub source
 Stubs are generated based on several available info:
 - `*Py.xml` files - mainly docstrings, argument names, properties.
@@ -19,32 +41,7 @@ therefore not all object are correctly mapped.
 Moreover, some of C function has errors - invalid types, missing arguments 
 (you can see more these errors if you change logger flag in configuration file `freecad-stubs/lib/freecad_stub_gen/config.py`) 
 
-### Install stubs
-You can install all stubs for freeCAD packages by running:
-```bash
-python -m pip install freecad-stubs 
-```
-
-### Adding stubs to python path
-There are a lot of possible methods. This is only example: 
-
-1. Copy stubs from a desired branch from this repository.  
-Checkout to desired branch and copy folder `/freecad_stubs`.
-   
-2. (Optional) Or [generate](#Stub-Generation) stubs manually.
-   Copy/move generated stubs to location of your choice. For example:
-   ```shell
-   cp -r ./freecad_stubs "$HOME/.local/lib/python3.9/freecad_stubs" 
-   ```
-
-3. Add location with stubs to python search path.
-   For example:
-   ```shell
-   echo "$HOME/.local/lib/python3.9/freecad_stubs" > "$HOME/.local/lib/python3.9/site-packages/freecad_stubs.pth" 
-   ```
-
 ### Stub Generation
-
 1. Clone [freecad repository](https://github.com/FreeCAD/FreeCAD).
     ```shell
     git clone https://github.com/FreeCAD/FreeCAD.git
@@ -77,7 +74,22 @@ Checkout to desired branch and copy folder `/freecad_stubs`.
    Required python version: `>=3.10`.
 
 
-### Progress
+### Adding stubs to python path
+At this point stubs must be already generated.
+There are a lot of possible methods. This is only example: 
+
+1. Copy stubs from `TARGET_DIR` to location of your choice. For example:.  
+   ```shell
+   cp -r ./freecad_stubs "$HOME/.local/lib/python3.9/freecad_stubs" 
+   ```
+
+2. Add location with stubs to python search path.
+   For example:
+   ```shell
+   echo "$HOME/.local/lib/python3.9/freecad_stubs" > "$HOME/.local/lib/python3.9/site-packages/freecad_stubs.pth" 
+   ```
+
+### Implementation progress
 
 #### Stub source
 - [x] generate class stub (xml files):
@@ -102,4 +114,4 @@ Checkout to desired branch and copy folder `/freecad_stubs`.
 - [x] property getter type,
 - [x] property setter type,
 - [x] add comment "This class can be imported" for importable classes,
-- [x] exceptions,
+- [x] dynamically generated exceptions,

@@ -5,10 +5,8 @@ import FreeCAD
 import FreeCADGui
 import FreeCADGui.Selection
 import FreeCADTemplates
-import qtpy
 import qtpy.QtCore
 import qtpy.QtGui
-import qtpy.QtWidgets
 import qtpy.QtWidgets
 
 _T = typing.TypeVar("_T")
@@ -85,6 +83,10 @@ class Workbench(FreeCAD.BaseClass):
 
     def name(self) -> str:
         """Return the workbench name"""
+
+    @staticmethod
+    def reloadActive():
+        """Reload the active workbench after changing menus or toolbars"""
 
 
 # LinkViewPy.xml
@@ -286,7 +288,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         --
         The first argument specifies the type, the second the name of the property.
                 
-        Possible exceptions: (RuntimeError, FreeCAD.FreeCADError).
+        Possible exceptions: (RuntimeError, TypeError).
         """
 
     def canDragAndDropObject(self, obj: FreeCAD.DocumentObject, /) -> bool:
@@ -413,7 +415,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         """
         Set a transformation on the Inventor node
 
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (TypeError).
         """
 
     def show(self):
@@ -557,6 +559,28 @@ class Command(FreeCAD.PyObjectBase):
     """FreeCAD Python wrapper of Command functions"""
 
     @staticmethod
+    def createCustomCommand(macrofile: str, menuText: str = None, tooltipText: str = None, whatsThisText: str = None, statustipText: str = None, pixmapText: str = None, shortcutText: str = None, /) -> str:
+        """
+        Create a custom command for a macro
+        createCustomCommand(macrofile, menuText, tooltipText, whatsThisText, statustipText, pixmapText, shortcutText) -> str
+        --
+        Only the macrofile argument is required, and should be the name of the macro file. All other arguments are
+        passed on to the command creation routines if they are provided. All arguments except the first accept None.
+
+        Returns the name of the created custom command.
+        """
+
+    @staticmethod
+    def findCustomCommand(name: str, /) -> object | str | None:
+        """
+        Find the name of a custom command, given a macro name
+        findCustomCommand(name) -> Optional[str]
+        --
+        Given the name of a macro, return the name of the custom command for that macro, or
+        None if there is no command matching that macro script name.
+        """
+
+    @staticmethod
     def get(string: str, /) -> FreeCADGui.Command:
         """
         Get a given command by name or None if it doesn't exist.
@@ -607,6 +631,18 @@ class Command(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
+    @staticmethod
+    def removeCustomCommand(name: str, /) -> bool:
+        """
+        Remove the custom command if it exists
+        removeCustomCommand(name) -> bool
+        --
+        Given the name of a custom command, this removes that command. It is not an error
+        to remove a non-existent command, the function simply does nothing in that case.
+
+        Returns True if something was removed, or False if not.
+        """
+
     def resetShortcut(self) -> bool:
         """
         Resets shortcut for given command back to the default, returns bool True for success.
@@ -635,7 +671,7 @@ class Command(FreeCAD.PyObjectBase):
 
 # PythonWorkbenchPy.xml
 class PythonWorkbench(FreeCADGui.Workbench):
-    """This class handles document objects in group"""
+    """This is the class for Python workbenches"""
 
     def appendCommandbar(self, arg1: str, arg2, /):
         """
@@ -878,146 +914,214 @@ class Document(FreeCAD.Persistence):
 
     @property
     def ActiveObject(self) -> FreeCADGui.ViewProvider | None:
-        """The active object of the document"""
+        """The active object of the document."""
 
     @ActiveObject.setter
     def ActiveObject(self, value: FreeCADGui.ViewProvider | None): ...
 
     @property
     def ActiveView(self) -> FreeCADGui.MDIViewPy | None:
-        """The active view of the document"""
+        """The active view of the document."""
 
     @ActiveView.setter
     def ActiveView(self, value: FreeCADGui.MDIViewPy | None): ...
 
     @property
     def Document(self) -> FreeCAD.Document:
-        """The related App document to this Gui document"""
+        """The related App document to this Gui document."""
 
     @property
     def EditMode(self) -> int:
-        """Current edit mode. Only meaningful when there is a current object in edit"""
+        """Current edit mode. Only meaningful when there is a current object in edit."""
 
     @property
     def EditingTransform(self) -> FreeCAD.Matrix:
-        """The editing transformation matrix"""
+        """The editing transformation matrix."""
 
     @property
     def InEditInfo(self) -> tuple[object, str, str, int] | None:
-        """A tuple(obj,subname,subElement,editMode) of editing object reference, or None if no object is in edit"""
+        """A tuple(obj,subname,subElement,editMode) of editing object reference, or None if no object is in edit."""
 
     @property
     def Modified(self) -> bool:
-        """Returns True if the document is marked as modified, and False otherwise"""
+        """Returns True if the document is marked as modified, and False otherwise."""
 
     @property
     def Transacting(self) -> bool:
-        """Indicate whether the document is undoing/redoing"""
+        """Indicate whether the document is undoing/redoing."""
 
     def activeObject(self) -> FreeCADGui.ViewProvider:
-        """deprecated -- use ActiveObject"""
+        """
+        activeObject() -> object or None
+
+        The active object of the document. Deprecated, use ActiveObject.
+        """
 
     def activeView(self) -> FreeCADGui.MDIViewPy:
-        """deprecated -- use ActiveView"""
-
-    def addAnnotation(self, AnnoName: str, FileName: str, ModName: str = None, /):
         """
-        Add an Inventor object
-        addAnnotation(AnnoName,FileName,[ModName]) -> None
+        activeView() -> object or None
+
+        The active view of the document. Deprecated, use ActiveView.
+        """
+
+    def addAnnotation(self, annoName: str, fileName: str, modName: str = None, /):
+        """
+        addAnnotation(annoName, fileName, modName) -> None
+
+        Add an Inventor object from a file.
+
+        annoName : str
+            Annotation name.
+        fileName : str
+            File name.
+        modName : str
+            Display mode name. Optional.
         """
 
     def getInEdit(self) -> FreeCADGui.ViewProvider:
         """
-        Returns the current object in edit mode or None if there is no such object
-        getInEdit() -> Object or None
+        getInEdit() -> Gui.ViewProviderDocumentObject or None
+
+        Returns the current object in edit mode or None if there is no such object.
         """
 
-    def getObject(self, Name: str, /) -> FreeCADGui.ViewProvider:
+    def getObject(self, objName: str, /) -> FreeCADGui.ViewProvider:
         """
-        Return the object with the given name
-        getObject(Name) -> Object or None
+        getObject(objName) -> object or None
+
+        Return the object with the given name. If no one exists, return None.
+
+        ObjName : str
+            Object name.
         """
 
-    def hide(self, arg1: str, /):
+    def hide(self, objName: str, /):
         """
-        Hide the object
-        hide() -> None
+        hide(objName) -> None
+
+        Hide an object.
+
+        objName : str
+            Name of the `Gui.ViewProvider` to hide.
         """
 
     def mdiViewsOfType(self, type: str, /) -> list[FreeCADGui.MDIViewPy]:
         """
-        Return a list if mdi views of a given type
         mdiViewsOfType(type) -> list of MDIView
+
+        Return a list of mdi views of a given type.
+
+        type : str
+            Type name.
         """
 
-    def mergeProject(self, filename: str, /):
+    def mergeProject(self, fileName: str, /):
         """
-        Merges this document with another project file
-        mergeProject(filename) -> None
+        mergeProject(fileName) -> None
+
+        Merges this document with another project file.
+
+        fileName : str
+            File name.
         """
 
     def resetEdit(self):
         """
-        Reset (end) the current editing.
         resetEdit() -> None
+
+        End the current editing.
         """
 
-    def scrollToTreeItem(self, ViewObject: FreeCADGui.ViewProviderDocumentObject, /):
+    def scrollToTreeItem(self, obj: FreeCADGui.ViewProviderDocumentObject, /):
         """
-        scroll the tree view to the item of a view object
-        scrollToTreeItem(ViewObject) -> None
+        scrollToTreeItem(obj) -> None
+
+        Scroll the tree view to the item of a view object.
+
+        obj : Gui.ViewProviderDocumentObject
         """
 
     def sendMsgToViews(self, msg: str, /):
         """
-        Send a message to all views of the document
         sendMsgToViews(msg) -> None
+
+        Send a message to all views of the document.
+
+        msg : str
         """
 
     @typing.overload
-    def setEdit(self, String_Name_ViewProvider_DocumentObject_: str, mod: int = None, subname: str = None, /) -> bool: ...
+    def setEdit(self, obj: str, mod: int = 0, subName: str = None, /) -> bool: ...
 
     @typing.overload
-    def setEdit(self, String_Name_ViewProvider_DocumentObject_, mod: int = None, subname: str = None, /) -> bool:
+    def setEdit(self, obj, mod: int = 0, subName: str = None, /) -> bool:
         """
-        Set the given object in edit mode.
-        setEdit([String:Name|ViewProvider|DocumentObject]|,mod,subname=None) -> Bool
+        setEdit(obj, mod=0, subName) -> bool
 
+        Set an object in edit mode.
+
+        obj : str, App.DocumentObject, Gui.ViewPrivider
+            Object to set in edit mode.
+        mod : int
+            Edit mode.
+        subName : str
+            Subelement name. Optional.
         Possible exceptions: (TypeError, ValueError).
         """
 
-    def setPos(self, arg1: str, arg2: FreeCAD.Matrix, /):
+    def setPos(self, objName: str, matrix: FreeCAD.Matrix, /):
         """
-        Set the position
-        setPos(matrix) -> None
+        setPos(objName, matrix) -> None
+
+        Set the position of an object.
+
+        objName : str
+            Name of the `Gui.ViewProvider`.
+
+        matrix : Base.Matrix
+            Transformation to apply on the object.
         """
 
-    def show(self, arg1: str, /):
+    def show(self, objName: str, /):
         """
-        Show the object
-        show() -> None
+        show(objName) -> None
+
+        Show an object.
+
+        objName : str
+            Name of the `Gui.ViewProvider` to show.
         """
 
-    def toggleInSceneGraph(self, ViewObject: FreeCADGui.ViewProvider, /):
+    def toggleInSceneGraph(self, obj: FreeCADGui.ViewProvider, /):
         """
-        Add or remove view object from scene graph of all views depending on its canAddToSceneGraph()
-        toggleInSceneGraph(ViewObject) -> None
+        toggleInSceneGraph(obj) -> None
+
+        Add or remove view object from scene graph of all views depending
+        on its canAddToSceneGraph().
+
+        obj : Gui.ViewProvider
         """
 
-    def toggleTreeItem(self, arg1: FreeCAD.DocumentObject, arg2: int = None, arg3: str = None, /):
+    def toggleTreeItem(self, obj: FreeCAD.DocumentObject, mod: int = 0, subName: str = None, /):
         """
+        toggleTreeItem(obj, mod=0, subName) -> None
+
         Change TreeItem of a document object.
-        toggleTreeItem(DocObject,[flag=0]) -> None
-        --
-        flag can be 0:Toggle, 1:Collaps, 2:Expand
 
-        Possible exceptions: (RuntimeError).
+        obj : App.DocumentObject
+        mod : int
+            Item mode.
+            0: Toggle, 1: Collapse, 2: Expand, 3: Expand path.
+        subName : str
+            Subelement name. Optional.
+        Possible exceptions: (ValueError).
         """
 
     def update(self):
         """
-        Update the view representations of all objects
         update() -> None
+
+        Update the view representations of all objects.
         """
 
 
@@ -1476,7 +1580,7 @@ class PythonStdout:
     def isatty(self):
         """isatty()"""
 
-    def write(self):
+    def write(self, arg1: str, /) -> None:
         """write()"""
 
     def flush(self):
@@ -1489,7 +1593,7 @@ class PythonStderr:
     def isatty(self):
         """isatty()"""
 
-    def write(self):
+    def write(self, arg1: str, /) -> None:
         """write()"""
 
     def flush(self):
@@ -1502,7 +1606,7 @@ class OutputStdout:
     def isatty(self):
         """isatty()"""
 
-    def write(self):
+    def write(self, arg1: str, /) -> None:
         """write()"""
 
     def flush(self):
@@ -1515,7 +1619,7 @@ class OutputStderr:
     def isatty(self):
         """isatty()"""
 
-    def write(self):
+    def write(self, arg1: str, /) -> None:
         """write()"""
 
     def flush(self):
@@ -1617,145 +1721,184 @@ class PythonDebugExcept:
 
     pass
 # ApplicationPy.cpp
-def activateWorkbench(string: str, /) -> bool:
+def activateWorkbench(name: str, /) -> bool:
     """
-    activateWorkbench(string) -> None
+    activateWorkbench(name) -> bool
 
-    Activate the workbench by name
-    Possible exceptions: (FreeCAD.FreeCADError, RuntimeError).
+    Activate workbench by its name. Return False if the workbench is
+    already active.
+
+    name : str
+        Name of the workbench to activate.
+    Possible exceptions: (FreeCAD.Base.FreeCADError, RuntimeError).
     """
 
 
-def addWorkbench(arg0, /) -> None:
+def addWorkbench(workbench, /):
     """
-    addWorkbench(string, object) -> None
+    addWorkbench(workbench) -> None
 
-    Add a workbench under a defined name.
+    Add a workbench.
+
+    workbench : Workbench, Workbench type
+        Instance of a Workbench subclass or subclass of the
+        Workbench class.
     Possible exceptions: (TypeError).
     """
 
 
-def removeWorkbench(string: str, /) -> None:
+def removeWorkbench(name: str, /):
     """
-    removeWorkbench(string) -> None
+    removeWorkbench(name) -> None
 
-    Remove the workbench with name
+    Remove a workbench.
+
+    name : str
+        Name of the workbench to remove.
     """
 
 
-def getWorkbench(string: str, /):
+def getWorkbench(name: str, /):
     """
-    getWorkbench(string) -> object
+    getWorkbench(name) -> Workbench
 
-    Get the workbench by its name
+    Get the workbench by its name.
+
+    name : str
+        Name of the workbench to return.
     """
 
 
 def listWorkbenches():
     """
-    listWorkbenches() -> list
+    listWorkbenches() -> dict
 
-    Show a list of all workbenches
+    Get a dictionary with all workbenches.
     """
 
 
 def activeWorkbench():
     """
-    activeWorkbench() -> object
+    activeWorkbench() -> Workbench
 
-    Return the active workbench object
+    Return the active workbench object.
     Possible exceptions: (AssertionError).
     """
 
 
-def addResourcePath(string: str, /) -> None:
+def addResourcePath(path: str, /):
     """
-    addResourcePath(string) -> None
+    addResourcePath(path) -> None
 
     Add a new path to the system where to find resource files
-    like icons or localization files
+    like icons or localization files.
+
+    path : str, bytes, bytearray
+        Path to resource files.
     """
 
 
-def addLanguagePath(string: str, /) -> None:
+def addLanguagePath(path: str, /):
     """
-    addLanguagePath(string) -> None
+    addLanguagePath(path) -> None
 
-    Add a new path to the system where to find language files
-    """
+    Add a new path to the system where to find language files.
 
-
-def addIconPath(string: str, /) -> None:
-    """
-    addIconPath(string) -> None
-
-    Add a new path to the system where to find icon files
+    path : str, bytes, bytearray
+        Path to language files.
     """
 
 
-def addIcon(arg0: str, arg1: str, arg2: str = None, /) -> None:
+def addIconPath(path: str, /):
     """
-    addIcon(string, string or list) -> None
+    addIconPath(path) -> None
 
-    Add an icon as file name or in XPM format to the system
-    Possible exceptions: (AssertionError, FreeCAD.FreeCADError).
-    """
+    Add a new path to the system where to find icon files.
 
-
-def getIcon(string: str, /) -> qtpy.QtGui.QIcon:
-    """
-    getIcon(string) -> QIcon
-
-    Get an icon in the system
+    path : str, bytes, bytearray
+        Path to icon files.
     """
 
 
-def isIconCached(String: str, /) -> bool:
+def addIcon(name: str, content: str, format: str = 'XPM', /):
     """
-    isIconCached(String) -> Bool
+    addIcon(name, content, format='XPM') -> None
 
-    Check if an icon with the given name is cached
+    Add an icon to the system.
+
+    name : str
+        Name of the icon.
+    content : str, bytes-like
+        Content of the icon.
+    format : str
+        Format of the icon.
+    Possible exceptions: (AssertionError, FreeCAD.Base.FreeCADError).
     """
 
 
-def getMainWindow() -> FreeCAD.MainWindowPy:
+def getIcon(name: str, /) -> qtpy.QtGui.QIcon:
+    """
+    getIcon(name) -> QIcon or None
+
+    Get an icon in the system. If the pixmap is null, return None.
+
+    name : str
+        Name of the icon.
+    """
+
+
+def isIconCached(name: str, /) -> bool:
+    """
+    isIconCached(name) -> Bool
+
+    Check if an icon with the given name is cached.
+
+    name : str
+        Name of the icon.
+    """
+
+
+def getMainWindow() -> FreeCADGui.MainWindowPy:
     """
     getMainWindow() -> QMainWindow
 
-    Return the main window instance
+    Return the main window instance.
     """
 
 
-def updateGui() -> None:
+def updateGui():
     """
     updateGui() -> None
 
-    Update the main window and all its windows
+    Update the main window and all its windows.
     """
 
 
-def updateLocale() -> None:
+def updateLocale():
     """
     updateLocale() -> None
 
-    Update the localization
+    Update the localization.
     """
 
 
 def getLocale() -> str:
     """
-    getLocale() -> string
+    getLocale() -> str
 
-    Returns the locale currently used by FreeCAD
+    Returns the locale currently used by FreeCAD.
     """
 
 
-def setLocale(arg0: str, /) -> None:
+def setLocale(name: str, /):
     """
-    getLocale(string) -> None
+    setLocale(name) -> None
 
-    Sets the locale used by FreeCAD. You can set it by
-    top-level domain (e.g. "de") or the language name (e.g. "German")
+    Sets the locale used by FreeCAD. Can be set by top-level
+    domain (e.g. "de") or the language name (e.g. "German").
+
+    name : str
+        Locale name.
     """
 
 
@@ -1763,217 +1906,361 @@ def supportedLocales() -> dict[str, str]:
     """
     supportedLocales() -> dict
 
-    Returns a dict of all supported languages/top-level domains
+    Returns a dict of all supported locales. The keys are the language
+    names and the values the top-level domains.
     """
 
 
-def createDialog(string: str, /):
+def createDialog(path: str, /):
     """
-    createDialog(string) -- Open a UI file
+    createDialog(path) -> PyResource
+
+    Open a UI file.
+
+    path : str
+        UI file path.
     Possible exceptions: (AssertionError).
     """
 
 
 @typing.overload
-def addPreferencePage(string: str, string1: str, /) -> None: ...
+def addPreferencePage(path: str, group: str, /): ...
 
 
 @typing.overload
-def addPreferencePage(string: type, string1: str, /) -> None:
+def addPreferencePage(path: type, group: str, /): ...
+
+
+@typing.overload
+def addPreferencePage(dialog: str, group: str, /): ...
+
+
+@typing.overload
+def addPreferencePage(dialog: type, group: str, /):
     """
-    addPreferencePage(string,string) -- Add a UI form to the
-    preferences dialog. The first argument specifies the file nameand the second specifies the group name
+    addPreferencePage(path, group) -> None
+    addPreferencePage(dialog, group) -> None
+
+    Add a UI form to the preferences dialog in the specified group.
+
+    path : str
+        UI file path.
+    group : str
+        Group name.
+    dialog : type
+        Preference page.
     Possible exceptions: (RuntimeError).
     """
 
 
-def addCommand(arg0: str, arg1, arg2: str = None, /) -> None:
+def addCommand(name: str, cmd, activation: str = None, /):
     """
-    addCommand(string, object) -> None
+    addCommand(name, cmd, activation) -> None
 
-    Add a command object
-    Possible exceptions: (Exception, ImportError, FreeCAD.FreeCADError).
-    """
+    Add a command object.
 
-
-def runCommand(arg0: str, arg1: int = None, /) -> None:
-    """
-    runCommand(string) -> None
-
-    Run command with name
-    """
-
-
-def SendMsgToActiveView(arg0: str, arg1: bool = None, /) -> str | None:
-    """deprecated -- use class View"""
-
-
-def sendMsgToFocusView(arg0: str, arg1: bool = None, /) -> str | None:
-    """send message to the focused view"""
-
-
-def hide(arg0: str, /):
-    """deprecated"""
-
-
-def show(arg0: str, /):
-    """deprecated"""
-
-
-def hideObject(object: FreeCAD.DocumentObject, /):
-    """
-    hideObject(object) -> None
-
-    Hide the view provider to the given object
+    name : str
+        Name of the command.
+    cmd : object
+        Command instance.
+    activation : str
+        Activation sequence. Optional.
+    Possible exceptions: (Exception, ImportError, FreeCAD.Base.FreeCADError).
     """
 
 
-def showObject(object: FreeCAD.DocumentObject, /):
+def runCommand(name: str, index: int = 0, /):
     """
-    showObject(object) -> None
+    runCommand(name, index=0) -> None
 
-    Show the view provider to the given object
+    Run command by its name.
+
+    name : str
+        Name of the command.
+    index : int
+        Index of the child command.
     """
 
 
-def open(arg0: str, /):
-    """Open a macro, Inventor or VRML file"""
+def SendMsgToActiveView(name: str, suppress: bool = False, /) -> str:
+    """
+    SendMsgToActiveView(name, suppress=False) -> str or None
+
+    Send message to the active view. Deprecated, use class View.
+
+    name : str
+        Name of the view command.
+    suppress : bool
+        If the sent message fail, suppress warning message.
+    """
 
 
-def insert(arg0: str, arg1: str = None, /):
-    """Open a macro, Inventor or VRML file"""
+def sendMsgToFocusView(name: str, suppress: bool = False, /) -> str:
+    """
+    sendMsgToFocusView(name, suppress=False) -> str or None
+
+    Send message to the focused view.
+
+    name : str
+        Name of the view command.
+    suppress : bool
+        If send message fail, suppress warning message.
+    """
 
 
-def export(arg0, arg1: str, /):
-    """save scene to Inventor or VRML file"""
+def hide(name: str, /):
+    """
+    hide(name) -> None
+
+    Hide the given feature. Deprecated.
+
+    name : str
+        Feature name.
+    """
+
+
+def show(name: str, /):
+    """
+    show(name) -> None
+
+    Show the given feature. Deprecated.
+
+    name : str
+        Feature name.
+    """
+
+
+def hideObject(obj: FreeCAD.DocumentObject, /):
+    """
+    hideObject(obj) -> None
+
+    Hide the view provider of the given object.
+
+    obj : App.DocumentObject
+    """
+
+
+def showObject(obj: FreeCAD.DocumentObject, /):
+    """
+    showObject(obj) -> None
+
+    Show the view provider of the given object.
+
+    obj : App.DocumentObject
+    """
+
+
+def open(fileName: str, /):
+    """
+    open(fileName) -> None
+
+    Open a macro, Inventor or VRML file.
+
+    fileName : str, bytes, bytearray
+        File name.
+    """
+
+
+def insert(fileName: str, docName: str = None, /):
+    """
+    insert(fileName, docName) -> None
+
+    Insert a macro, Inventor or VRML file. If no document name
+    is given the active document is used.
+
+    fileName : str, bytes, bytearray
+        File name.
+    docName : str
+        Document name.
+    """
+
+
+def export(objs, fileName: str, /):
+    """
+    export(objs, fileName) -> None
+
+    Save scene to Inventor or VRML file.
+
+    objs : sequence of App.DocumentObject
+        Sequence of objects to save.
+    fileName : str, bytes, bytearray
+        File name.
+    """
 
 
 def activeDocument() -> FreeCADGui.Document:
     """
-    activeDocument() -> object or None
+    activeDocument() -> Gui.Document or None
 
-    Return the active document or None if no one exists
+    Return the active document. If no one exists, return None.
     """
 
 
 @typing.overload
-def setActiveDocument(string_or_App_Document: str, /): ...
+def setActiveDocument(doc: str, /): ...
 
 
 @typing.overload
-def setActiveDocument(string_or_App_Document: FreeCAD.Document, /):
+def setActiveDocument(doc: FreeCAD.Document, /):
     """
-    setActiveDocument(string or App.Document) -> None
+    setActiveDocument(doc) -> None
 
-    Activate the specified document
+    Activate the specified document.
+
+    doc : str, App.Document
+        Document to activate.
     Possible exceptions: (TypeError).
     """
 
 
-def activeView(typename: str = None, /) -> FreeCADGui.MDIViewPy:
+def activeView(typeName: str = None, /) -> FreeCADGui.MDIViewPy:
     """
-    activeView(typename=None) -> object or None
+    activeView(typeName) -> object or None
 
-    Return the active view of the active document or None if no one exists
+    Return the active view of the active document. If no one
+    exists, return None.
+
+    typeName : str
+        Type name.
     """
 
 
-def activateView(arg0: str, arg1: bool, /):
+def activateView(typeName: str, create: bool, /):
     """
-    activateView(type)
+    activateView(typeName, create=False) -> None
 
-    Activate a view of the given type of the active document
+    Activate a view of the given type in the active document.
+    If a view of this type doesn't exist and create is True, a
+    new view of this type is created.
+
+    type : str
+        Type name.
+    create : bool
     """
 
 
 def editDocument() -> FreeCADGui.Document:
     """
-    editDocument() -> object or None
+    editDocument() -> Gui.Document or None
 
-    Return the current editing document or None if no one exists
+    Return the current editing document. If no one exists,
+    return None.
     """
 
 
 @typing.overload
-def getDocument(string: str, /) -> FreeCADGui.Document: ...
+def getDocument(doc: str, /) -> FreeCADGui.Document: ...
 
 
 @typing.overload
-def getDocument(string: FreeCAD.Document, /) -> FreeCADGui.Document:
+def getDocument(doc: FreeCAD.Document, /) -> FreeCADGui.Document:
     """
-    getDocument(string) -> object
+    getDocument(doc) -> Gui.Document
 
-    Get a document by its name
+    Get a document.
+
+    doc : str, App.Document
+        `App.Document` name or `App.Document` object.
     Possible exceptions: (TypeError).
     """
 
 
-def doCommand(string: str, /):
+def doCommand(cmd: str, /):
     """
-    doCommand(string) -> None
+    doCommand(cmd) -> None
+
+    Prints the given string in the python console and runs it.
+
+    cmd : str
+    """
+
+
+def doCommandGui(cmd: str, /):
+    """
+    doCommandGui(cmd) -> None
 
     Prints the given string in the python console and runs it
+    but doesn't record it in macros.
+
+    cmd : str
     """
 
 
-def doCommandGui(string: str, /):
+def addModule(mod: str, /):
     """
-    doCommandGui(string) -> None
+    addModule(mod) -> None
 
-    Prints the given string in the python console and runs it but doesn't record it in macros
-    """
+    Prints the given module import only once in the macro recording.
 
-
-def addModule(string: str, /) -> None:
-    """
-    addModule(string) -> None
-
-    Prints the given module import only once in the macro recording
+    mod : str
     Possible exceptions: (ImportError).
     """
 
 
-def showDownloads() -> None:
+def showDownloads():
     """
     showDownloads() -> None
 
-    Shows the downloads manager window
+    Show the downloads manager window.
     """
 
 
-def showPreferences(string: str = None, int: int = None, /) -> None:
+def showPreferences(grp: str = None, index: int = 0, /):
     """
-    showPreferences([string,int]) -> None
+    showPreferences(grp, index=0) -> None
 
-    Shows the preferences window. If string and int are provided, the given page index in the given group is shown.
-    """
+    Show the preferences window.
 
-
-def createViewer(arg0: int = None, arg1: str = None, /) -> object | FreeCADGui.AbstractSplitViewPy | None:
-    """
-    createViewer([int]) -> View3DInventor/SplitView3DInventor
-
-    shows and returns a viewer. If the integer argument is given and > 1: -> splitViewer
+    grp: str
+        Group to show.
+    index : int
+        Page index.
     """
 
 
-def getMarkerIndex(arg0: str = None, arg1: int = None, /) -> int:
-    """Get marker index according to marker size setting"""
-
-
-def addDocumentObserver(arg0, /):
+def createViewer(views: int = 1, name: str = None, /) -> object | FreeCADGui.AbstractSplitViewPy:
     """
-    addDocumentObserver() -> None
+    createViewer(views=1, name) -> View3DInventorPy or AbstractSplitViewPy
 
-    Add an observer to get notified about changes on documents.
+    Show and returns a viewer.
+
+    views : int
+        If > 1 a `AbstractSplitViewPy` object is returned.
+    name : str
+        Viewer title.
     """
 
 
-def removeDocumentObserver(arg0, /):
+def getMarkerIndex(marker: str, size: int = 9, /) -> int:
     """
-    removeDocumentObserver() -> None
+    getMarkerIndex(marker, size=9) -> int
+
+    Get marker index according to marker name and size.
+
+    marker : str
+        Marker style name.
+    size : int
+        Marker size.
+    """
+
+
+def addDocumentObserver(obj, /):
+    """
+    addDocumentObserver(obj) -> None
+
+    Add an observer to get notifications about changes on documents.
+
+    obj : object
+    """
+
+
+def removeDocumentObserver(obj, /):
+    """
+    removeDocumentObserver(obj) -> None
 
     Remove an added document observer.
+
+    obj : object
     """
 
 
@@ -1981,47 +2268,62 @@ def listUserEditModes() -> list[str]:
     """
     listUserEditModes() -> list
 
-    List available user edit modes
+    List available user edit modes.
     """
 
 
 def getUserEditMode() -> str:
     """
-    getUserEditMode() -> string
+    getUserEditMode() -> str
 
-    Get current user edit mode
+    Get current user edit mode.
     """
 
 
-def setUserEditMode(string: str, /) -> bool:
+def setUserEditMode(mode: str, /) -> bool:
     """
-    setUserEditMode(string=mode) -> Bool
+    setUserEditMode(mode) -> bool
 
-    Set user edit mode to 'mode', returns True if exists, false otherwise
+    Set user edit mode. Returns True if exists, False otherwise.
+
+    mode : str
     """
 
 
 def reload(name: str, /):
     """
-    reload(name) -> doc
+    reload(name) -> App.Document or None
 
-    Reload a partial opened document
+    Reload a partial opened document. If the document is not open,
+    return None.
+
+    name : str
+        `App.Document` name.
     """
 
 
-def loadFile(string: str, string1: str = None, /):
+def loadFile(fileName: str, module: str = None, /):
     """
-    loadFile(string=filename,[string=module]) -> None
+    loadFile(fileName, module) -> None
 
-    Loads an arbitrary file by delegating to the given Python module:
-    * If no module is given it will be determined by the file extension.
-    * If more than one module can load a file the first one will be taken.
-    * If no module exists to load the file an exception will be raised.
+    Loads an arbitrary file by delegating to the given Python module.
+    If no module is given it will be determined by the file extension.
+    If more than one module can load a file the first one will be taken.
+    If no module exists to load the file an exception will be raised.
+
+    fileName : str
+    module : str
     """
 
 
-def coinRemoveAllChildren(arg0, /):
-    """Remove all children from a group node"""
+def coinRemoveAllChildren(node, /):
+    """
+    coinRemoveAllChildren(node) -> None
+
+    Remove all children from a group node.
+
+    node : object
+    """
 
 
 # ExpressionBindingPy.cpp
@@ -2166,7 +2468,7 @@ def embedToWindow(arg0: str, /) -> None:
     """
     embedToWindow() -- Embeds the main window into another window
 
-    Possible exceptions: (FreeCAD.FreeCADError, NotImplementedError).
+    Possible exceptions: (FreeCAD.Base.FreeCADError, NotImplementedError).
     """
 
 

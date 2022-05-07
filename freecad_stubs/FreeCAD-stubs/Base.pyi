@@ -165,7 +165,7 @@ class Vector(FreeCAD.PyObjectBase):
         normalize()
         						  normalizes the vector to the length of 1.0
 				
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (FreeCAD.Base.FreeCADError).
         """
 
     def projectToLine(self, Vector_pnt, Vector_vec, /) -> FreeCAD.Vector:
@@ -322,7 +322,7 @@ class Rotation(FreeCAD.PyObjectBase):
         				   order of importance of the axes (e.g., 'ZXY' means z direction is
         				   followed strictly, x is used but corrected if necessary, y is ignored).
 			
-        Possible exceptions: (FreeCAD.FreeCADError, TypeError).
+        Possible exceptions: (FreeCAD.Base.FreeCADError, TypeError).
         """
 
     @property
@@ -504,7 +504,7 @@ class Persistence(FreeCAD.BaseClass):
         dumpContent() -- returns a byte array with full content
         dumpContent(Compression=1-9) -- Sets the data compression from 0 (no) to 9 (max)
                 
-        Possible exceptions: (IOError).
+        Possible exceptions: (NotImplementedError, IOError).
         """
 
     def restoreContent(self, buffer, /):
@@ -675,7 +675,7 @@ class BoundBox(FreeCAD.PyObjectBase):
         The Base point must lie inside the bounding box, if not an
         exception is thrown.
 			  
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (FreeCAD.Base.FreeCADError).
         """
 
     def getPoint(self, Int: int, /) -> FreeCAD.Vector:
@@ -827,7 +827,7 @@ class Placement(FreeCAD.PyObjectBase):
         Placement(Base, Rotation,Center) -- define position and rotation with center
         Placement(Base, Axis, Angle) -- define position and rotation
 		
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (TypeError).
         """
 
     @property
@@ -1041,7 +1041,7 @@ class Unit(FreeCAD.PyObjectBase):
          Unit(Unit)                    -- copy constructor
          Unit(string)                  -- parse the string for units
         
-        Possible exceptions: (RuntimeError, OverflowError, TypeError).
+        Possible exceptions: (ValueError, OverflowError, TypeError).
         """
 
     @property
@@ -1127,6 +1127,9 @@ class Quantity(FreeCAD.PyObjectBase):
 
     @typing.overload
     def __init__(self, Value: float, Unit: FreeCAD.Quantity, /): ...
+
+    @typing.overload
+    def __init__(self, Value: float, Unit: str, /): ...
 
     @typing.overload
     def __init__(self, Quantity: FreeCAD.Quantity, /): ...
@@ -1315,10 +1318,13 @@ class Matrix(FreeCAD.PyObjectBase):
     def __init__(self, arg1: float = None, arg2: float = None, arg3: float = None, arg4: float = None, arg5: float = None, arg6: float = None, arg7: float = None, arg8: float = None, arg9: float = None, arg10: float = None, arg11: float = None, arg12: float = None, arg13: float = None, arg14: float = None, arg15: float = None, arg16: float = None, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Matrix, /):
+    def __init__(self, arg1: FreeCAD.Matrix, /): ...
+
+    @typing.overload
+    def __init__(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: FreeCAD.Vector, arg4: FreeCAD.Vector = None, /):
         """
         A 4x4 Matrix
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (TypeError).
         """
 
     @property
@@ -1446,16 +1452,26 @@ class Matrix(FreeCAD.PyObjectBase):
         Analyzes the type of transformation.
         """
 
+    def col(self, index: int, /) -> FreeCAD.Vector:
+        """
+        col(index)
+        Return the vector of a column
+        
+        Possible exceptions: (TypeError).
+        """
+
     def determinant(self) -> float:
         """
         determinant() -> Float
         Compute the determinant of the matrix
         """
 
-    def hasScale(self, tol: float = None, /) -> int:
+    def hasScale(self, tol: float = 0.0, /):
         """
-        hasScale(tol=None)
-        Return 0 is no scale factor, 1 for uniform scaling, -1 for non-uniform scaling.
+        hasScale(tol=0.0)
+        Return an enum value of ScaleType. Possible values are:
+        Uniform, NonUniformLeft, NonUniformRight, NoScaling or Other
+        if it's not a scale matrix
         """
 
     def inverse(self) -> FreeCAD.Matrix:
@@ -1463,7 +1479,7 @@ class Matrix(FreeCAD.PyObjectBase):
         inverse() -> Matrix
         Compute the inverse matrix, if possible
         
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (FreeCAD.Base.FreeCADError).
         """
 
     def invert(self):
@@ -1471,8 +1487,11 @@ class Matrix(FreeCAD.PyObjectBase):
         invert() -> None
         Compute the inverse matrix, if possible
         
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (FreeCAD.Base.FreeCADError).
         """
+
+    def isNull(self) -> bool:
+        """isNull() - check if this is the null matrix"""
 
     def isOrthogonal(self, Float: float = None, /) -> float:
         """
@@ -1481,6 +1500,9 @@ class Matrix(FreeCAD.PyObjectBase):
         the multiple of the identity matrix. If it's not orthogonal 0 is returned.
         As argument you can set a tolerance which by default is 1.0e-6.
         """
+
+    def isUnity(self) -> bool:
+        """isUnity() - check if this is the unit matrix"""
 
     @typing.overload
     def move(self, Vector: tuple, /): ...
@@ -1507,8 +1529,11 @@ class Matrix(FreeCAD.PyObjectBase):
         multiply(Matrix|Vector)
         Multiply a matrix or vector with this matrix
         
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (TypeError).
         """
+
+    def nullify(self):
+        """nullify() - make this the null matrix"""
 
     @typing.overload
     def rotateX(self, float: FreeCAD.Quantity, /): ...
@@ -1540,6 +1565,17 @@ class Matrix(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError).
         """
 
+    def row(self, index: int, /) -> FreeCAD.Vector:
+        """
+        row(index)
+        Return the vector of a row
+        
+        Possible exceptions: (TypeError).
+        """
+
+    @typing.overload
+    def scale(self, Vector: float, /): ...
+
     @typing.overload
     def scale(self, Vector: tuple, /): ...
 
@@ -1550,12 +1586,42 @@ class Matrix(FreeCAD.PyObjectBase):
         Scale the matrix with the vector
         """
 
+    def setCol(self, index: int, Vector: FreeCAD.Vector, /):
+        """
+        setCol(index, Vector)
+        Set the vector of a column
+        
+        Possible exceptions: (TypeError).
+        """
+
+    def setRow(self, index: int, Vector: FreeCAD.Vector, /):
+        """
+        setRow(index, Vector)
+        Set the vector of a row
+        
+        Possible exceptions: (TypeError).
+        """
+
+    def setTrace(self, Vector: FreeCAD.Vector, /):
+        """
+        setTrace(Vector)
+        Set the trace of the 3x3 sub-matrix
+        
+        Possible exceptions: (TypeError).
+        """
+
     def submatrix(self, int: int, /) -> FreeCAD.Matrix:
         """
         submatrix(int) -> Matrix
         Get the sub-matrix. The parameter must be in the range [1,4].
         
         Possible exceptions: (IndexError).
+        """
+
+    def trace(self) -> FreeCAD.Vector:
+        """
+        trace()
+        Return the trace of the 3x3 sub-matrix as vector
         """
 
     def transform(self, Vector: FreeCAD.Vector, Matrix: FreeCAD.Matrix, /):
@@ -1725,7 +1791,7 @@ class TypeId(FreeCAD.PyObjectBase):
     def Name(self) -> str:
         """The name of the type id"""
 
-    def createInstance(self) -> FreeCAD.BaseClass:
+    def createInstance(self):
         """Creates an instance of this type"""
 
     @staticmethod
@@ -1810,7 +1876,7 @@ class Axis(FreeCAD.PyObjectBase):
         Axis(Axis) -- copy constructor
         Axis(Base, Direction) -- define position and direction
 		
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (TypeError).
         """
 
     @property
@@ -1872,11 +1938,3 @@ class ProgressIndicator:
 
     def stop(self) -> None:
         """stop()"""
-
-
-class FreeCADError(RuntimeError):
-    pass
-
-
-class FreeCADAbort(BaseException):
-    pass

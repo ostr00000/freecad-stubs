@@ -40,7 +40,7 @@ class Points(FreeCAD.ComplexGeoData):
     def addPoints(self, arg1, /):
         """
         add one or more (list of) points to the object
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (TypeError).
         """
 
     def copy(self) -> PointsModule.Points:
@@ -49,13 +49,13 @@ class Points(FreeCAD.ComplexGeoData):
     def fromSegment(self, arg1, /) -> PointsModule.Points:
         """
         Get a new point object from a given segment
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (TypeError).
         """
 
     def fromValid(self) -> PointsModule.Points:
         """
         Get a new point object from points with valid coordinates (i.e. that are not NaN)
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (TypeError).
         """
 
     def read(self, arg1: str, /):

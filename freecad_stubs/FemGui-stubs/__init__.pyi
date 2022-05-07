@@ -100,18 +100,18 @@ class ViewProviderFemMesh(FreeCADGui.ViewProviderDocumentObject):
     def setNodeColorByScalars(self, arg1: list, arg2: list, /):
         """
         Sets mesh node colors using element list and value list.
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (ValueError, TypeError).
         """
 
     def setNodeDisplacementByVectors(self, arg1: list, arg2: list, /):
-        """Possible exceptions: (FreeCAD.FreeCADError)."""
+        """Possible exceptions: (ValueError, TypeError)."""
 
 
 # AppFemGuiPy.cpp
 def setActiveAnalysis(AnalysisObject: FreeCAD.DocumentObject = None, /) -> None:
     """
     setActiveAnalysis(AnalysisObject) -- Set the Analysis object in work.
-    Possible exceptions: (FreeCAD.FreeCADError).
+    Possible exceptions: (FreeCAD.Base.FreeCADError).
     """
 
 

@@ -2,7 +2,6 @@ import typing
 
 import FreeCAD
 import FreeCADGui
-import Part
 import Part as PartModule
 import Path as PathModule
 
@@ -361,19 +360,19 @@ class Area(FreeCAD.BaseClass):
         """
 
     @property
-    def Sections(self) -> list[Part.Shape]:
+    def Sections(self) -> list[PartModule.Shape]:
         """List of sections in this area."""
 
     @property
-    def Shapes(self) -> list[tuple[Part.Shape, int]]:
+    def Shapes(self) -> list[tuple[PartModule.Shape, int]]:
         """A list of tuple: [(shape,op), ...] containing the added shapes together with their operation code"""
 
     @property
-    def Workplane(self) -> Part.Shape:
+    def Workplane(self) -> PartModule.Shape:
         """The current workplane. If no plane is set, it is derived from the added shapes."""
 
     @Workplane.setter
-    def Workplane(self, value: Part.Shape): ...
+    def Workplane(self, value: PartModule.Shape): ...
 
     def add(self, shape) -> PathModule.Area:
         """Possible exceptions: (TypeError)."""
@@ -381,7 +380,7 @@ class Area(FreeCAD.BaseClass):
     def getParams(self) -> dict:
         """Get current algorithm parameters as a dictionary."""
 
-    def getShape(self, index: int = -1, rebuild=False) -> Part.Shape:
+    def getShape(self, index: int = -1, rebuild=False) -> PartModule.Shape:
         """
         getShape(index=-1,rebuild=False): Return the resulting shape
 
@@ -392,9 +391,9 @@ class Area(FreeCAD.BaseClass):
         * rebuild: clean the internal cache and rebuild
         """
 
-    def makeOffset(self, index: int = None) -> Part.Shape: ...
+    def makeOffset(self, index: int = None) -> PartModule.Shape: ...
 
-    def makePocket(self, index: int = None) -> Part.Shape: ...
+    def makePocket(self, index: int = None) -> PartModule.Shape: ...
 
     def makeSections(self, heights=None, plane: PartModule.Shape = None) -> list[PathModule.Area]:
         """Possible exceptions: (TypeError)."""
@@ -690,11 +689,11 @@ class FeatureArea(FreeCAD.DocumentObject):
     """This class handles Path Area features"""
 
     @property
-    def WorkPlane(self) -> Part.Shape:
+    def WorkPlane(self) -> PartModule.Shape:
         """The current workplane. If no plane is set, it is derived from the added shapes."""
 
     @WorkPlane.setter
-    def WorkPlane(self, value: Part.Shape): ...
+    def WorkPlane(self, value: PartModule.Shape): ...
 
     @property
     def Sources(self) -> list[FreeCAD.DocumentObject | None]:
@@ -704,11 +703,11 @@ class FeatureArea(FreeCAD.DocumentObject):
     def Sources(self, value: LinkList_t): ...
 
     @property
-    def WorkPlane(self) -> Part.Shape:
+    def WorkPlane(self) -> PartModule.Shape:
         """Property TypeId: Part::PropertyPartShape."""
 
     @WorkPlane.setter
-    def WorkPlane(self, value: Part.Shape): ...
+    def WorkPlane(self, value: PartModule.Shape): ...
 
     def getArea(self) -> PathModule.Area:
         """Return a copy of the encapsulated Python Area object."""
@@ -783,13 +782,13 @@ class FeaturePathCompound(FreeCAD.DocumentObject):
     def addObject(self, arg1: FreeCAD.DocumentObject, /):
         """
         Add an object to the group
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (FreeCAD.Base.FreeCADError).
         """
 
     def removeObject(self, arg1: FreeCAD.DocumentObject, /):
         """
         Remove an object from the group
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (FreeCAD.Base.FreeCADError).
         """
 
 
@@ -839,7 +838,7 @@ def fromShapes(shapes, start: FreeCAD.Vector = None, return_end=None) -> PathMod
     """
 
 
-def sortWires(shapes, start: FreeCAD.Vector = None) -> tuple[list[Part.Shape], FreeCAD.Vector, int]:
+def sortWires(shapes, start: FreeCAD.Vector = None) -> tuple[list[PartModule.Shape], FreeCAD.Vector, int]:
     """
     sortWires(shapes, start=Vector(), "
                 PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_ARC_PLANE)

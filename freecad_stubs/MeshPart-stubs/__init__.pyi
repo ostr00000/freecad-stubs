@@ -18,7 +18,7 @@ def loftOnCurve(curve: PartModule.Shape, poly, upVector: typing.Sequence[float, 
         upVector ((x, y, z) tuple):
         MaxSize (float):
 
-    Possible exceptions: (Exception, FreeCAD.FreeCADError).
+    Possible exceptions: (Exception, TypeError, ValueError).
     """
 
 
@@ -153,5 +153,5 @@ def meshFromShape(Shape: PartModule.Shape, MinLength: float, MaxLength: float) -
         SegPerEdge (optional, float)
         SegPerRadius (optional, float)
 
-    Possible exceptions: (FreeCAD.FreeCADError).
+    Possible exceptions: (RuntimeError, TypeError).
     """

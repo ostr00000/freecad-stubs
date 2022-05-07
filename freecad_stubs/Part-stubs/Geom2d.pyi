@@ -1,7 +1,6 @@
 import typing
 
 import FreeCAD
-import Part
 import Part as PartModule
 import Part.Geom2d
 
@@ -155,22 +154,22 @@ class Curve2d(Part.Geom2d.Geometry2d):
         """
 
     @typing.overload
-    def toShape(self) -> Part.Shape: ...
+    def toShape(self) -> PartModule.Shape: ...
 
     @typing.overload
-    def toShape(self, arg1: float, arg2: float, /) -> Part.Shape: ...
+    def toShape(self, arg1: float, arg2: float, /) -> PartModule.Shape: ...
 
     @typing.overload
-    def toShape(self, arg1: PartModule.GeometrySurface, /) -> Part.Shape: ...
+    def toShape(self, arg1: PartModule.GeometrySurface, /) -> PartModule.Shape: ...
 
     @typing.overload
-    def toShape(self, arg1: PartModule.GeometrySurface, arg2: float, arg3: float, /) -> Part.Shape: ...
+    def toShape(self, arg1: PartModule.GeometrySurface, arg2: float, arg3: float, /) -> PartModule.Shape: ...
 
     @typing.overload
-    def toShape(self, arg1: PartModule.Face, /) -> Part.Shape: ...
+    def toShape(self, arg1: PartModule.Face, /) -> PartModule.Shape: ...
 
     @typing.overload
-    def toShape(self, arg1: PartModule.Face, arg2: float, arg3: float, /) -> Part.Shape:
+    def toShape(self, arg1: PartModule.Face, arg2: float, arg3: float, /) -> PartModule.Shape:
         """
         Return the shape for the geometry.
         Possible exceptions: (Part.OCCError, TypeError).
@@ -393,6 +392,10 @@ class Circle2d(Part.Geom2d.Conic2d):
 
     @Radius.setter
     def Radius(self, value: float): ...
+
+    @staticmethod
+    def getCircleCenter(arg0, arg1, arg2, /) -> FreeCAD.Vector2d:
+        """Get the circle center defined by three points"""
 
 
 # ArcOfParabola2dPy.xml

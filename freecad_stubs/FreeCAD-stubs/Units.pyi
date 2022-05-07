@@ -62,3 +62,17 @@ def schemaTranslate(Quantity: FreeCAD.Quantity, int: int, /) -> tuple[str, float
     Translate a quantity to a given schema
     Possible exceptions: (ValueError).
     """
+
+
+@typing.overload
+def toNumber(Quantity_or_float: FreeCAD.Quantity, format: str = 'g', decimals: int = -1, /) -> str: ...
+
+
+@typing.overload
+def toNumber(Quantity_or_float: float, format: str = 'g', decimals: int = -1, /) -> str:
+    """
+    toNumber(Quantity or float, [format='g', decimals=-1]) -> str
+
+    Convert a quantity or float to a string
+    Possible exceptions: (TypeError, ValueError).
+    """

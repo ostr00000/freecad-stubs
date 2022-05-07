@@ -59,6 +59,7 @@ class App:
     PropertyContainer = 'App::PropertyContainer'
     PropertyDirection = 'App::PropertyDirection'
     PropertyDistance = 'App::PropertyDistance'
+    PropertyElectricPotential = 'App::PropertyElectricPotential'
     PropertyEnumeration = 'App::PropertyEnumeration'
     PropertyExpressionContainer = 'App::PropertyExpressionContainer'
     PropertyExpressionEngine = 'App::PropertyExpressionEngine'
@@ -136,23 +137,6 @@ class App:
     VariableExpression = 'App::VariableExpression'
 
 
-class Assembly:
-    Constraint = 'Assembly::Constraint'
-    ConstraintGroup = 'Assembly::ConstraintGroup'
-    Item = 'Assembly::Item'
-    Product = 'Assembly::Product'
-    ProductRef = 'Assembly::ProductRef'
-
-
-class AssemblyGui:
-    ViewProviderConstraint = 'AssemblyGui::ViewProviderConstraint'
-    ViewProviderConstraintGroup = 'AssemblyGui::ViewProviderConstraintGroup'
-    ViewProviderItem = 'AssemblyGui::ViewProviderItem'
-    ViewProviderProduct = 'AssemblyGui::ViewProviderProduct'
-    ViewProviderProductRef = 'AssemblyGui::ViewProviderProductRef'
-    Workbench = 'AssemblyGui::Workbench'
-
-
 class Attacher:
     AttachEngine = 'Attacher::AttachEngine'
     AttachEngine3D = 'Attacher::AttachEngine3D'
@@ -167,10 +151,6 @@ class Base:
     Exception = 'Base::Exception'
     Persistence = 'Base::Persistence'
     Type = 'Base::Type'
-
-
-class CamGui:
-    Workbench = 'CamGui::Workbench'
 
 
 class CloudGui:
@@ -238,15 +218,16 @@ class Common:
     WorkflowManager = 'WorkflowManager'
     voidActionBox = 'voidActionBox'
     voidActionLabel = 'voidActionLabel'
+    voidBaseClass = 'voidBaseClass'
     voidBelongToGeom = 'voidBelongToGeom'
     voidDocumentProtector = 'voidDocumentProtector'
     voidDownloadItem = 'voidDownloadItem'
     voidE57XmlParser = 'voidE57XmlParser'
     voidExpressionCompleter = 'voidExpressionCompleter'
     voidLyingOnGeom = 'voidLyingOnGeom'
+    voidType = 'voidType'
     voidView3DInventorViewer = 'voidView3DInventorViewer'
     voidWorkflowManager = 'voidWorkflowManager'
-    voidiisTaskBox = 'voidiisTaskBox'
 
 
 class Data:
@@ -343,6 +324,7 @@ class FemGui:
     ViewProviderFemConstraintGear = 'FemGui::ViewProviderFemConstraintGear'
     ViewProviderFemConstraintHeatflux = 'FemGui::ViewProviderFemConstraintHeatflux'
     ViewProviderFemConstraintInitialTemperature = 'FemGui::ViewProviderFemConstraintInitialTemperature'
+    ViewProviderFemConstraintOnBoundary = 'FemGui::ViewProviderFemConstraintOnBoundary'
     ViewProviderFemConstraintPlaneRotation = 'FemGui::ViewProviderFemConstraintPlaneRotation'
     ViewProviderFemConstraintPressure = 'FemGui::ViewProviderFemConstraintPressure'
     ViewProviderFemConstraintPulley = 'FemGui::ViewProviderFemConstraintPulley'
@@ -720,6 +702,7 @@ class PartDesign:
     Solid = 'PartDesign::Solid'
     Sphere = 'PartDesign::Sphere'
     SubShapeBinder = 'PartDesign::SubShapeBinder'
+    SubShapeBinderPython = 'PartDesign::SubShapeBinderPython'
     SubtractiveBox = 'PartDesign::SubtractiveBox'
     SubtractiveCone = 'PartDesign::SubtractiveCone'
     SubtractiveCylinder = 'PartDesign::SubtractiveCylinder'
@@ -770,6 +753,7 @@ class PartDesignGui:
     ViewProviderShapeBinder = 'PartDesignGui::ViewProviderShapeBinder'
     ViewProviderSketchBased = 'PartDesignGui::ViewProviderSketchBased'
     ViewProviderSubShapeBinder = 'PartDesignGui::ViewProviderSubShapeBinder'
+    ViewProviderSubShapeBinderPython = 'PartDesignGui::ViewProviderSubShapeBinderPython'
     ViewProviderThickness = 'PartDesignGui::ViewProviderThickness'
     ViewProviderTransformed = 'PartDesignGui::ViewProviderTransformed'
     Workbench = 'PartDesignGui::Workbench'
@@ -1062,6 +1046,7 @@ class TechDraw:
     DrawViewSymbolPython = 'TechDraw::DrawViewSymbolPython'
     DrawWeldSymbol = 'TechDraw::DrawWeldSymbol'
     DrawWeldSymbolPython = 'TechDraw::DrawWeldSymbolPython'
+    FeatureProjection = 'TechDraw::FeatureProjection'
     GeomFormat = 'TechDraw::GeomFormat'
     LandmarkDimension = 'TechDraw::LandmarkDimension'
     PropertyCenterLineList = 'TechDraw::PropertyCenterLineList'

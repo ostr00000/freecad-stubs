@@ -6,190 +6,309 @@ import FreeCADGui
 
 # Selection.cpp
 @typing.overload
-def addSelection(arg0: str, arg1: str, arg2: str = None, arg3: float = None, arg4: float = None, arg5: float = None, arg6: bool = None, /): ...
+def addSelection(docName: str, objName: str, subName: str = None, x: float = 0, y: float = 0, z: float = 0, clear: bool = True, /): ...
 
 
 @typing.overload
-def addSelection(arg0: FreeCAD.DocumentObject, arg1: str = None, arg2: float = None, arg3: float = None, arg4: float = None, arg5: bool = None, /): ...
+def addSelection(obj: FreeCAD.DocumentObject, subName: str = None, x: float = 0, y: float = 0, z: float = 0, clear: bool = True, /): ...
 
 
 @typing.overload
-def addSelection(arg0: FreeCAD.DocumentObject, arg1, arg2: bool = None, /):
+def addSelection(obj: FreeCAD.DocumentObject, subNames, clear: bool = True, /):
     """
-    Add an object to the selection
-    addSelection(object,[string,float,float,float]
-    --
-    where string is the sub-element name and the three floats represent a 3d point
-    Possible exceptions: (FreeCAD.FreeCADError, ValueError).
+    addSelection(docName, objName, subName, x=0, y=0, z=0, clear=True) -> None
+    addSelection(obj, subName, x=0, y=0, z=0, clear=True) -> None
+    addSelection(obj, subNames, clear=True) -> None
+
+    Add an object to the selection.
+
+    docName : str
+        Name of the `App.Document`.
+    objName : str
+        Name of the `App.DocumentObject` to add.
+    obj : App.DocumentObject
+        Object to add.
+    subName : str
+        Subelement name.
+    x : float
+        Coordinate `x` of the point to pick.
+    y : float
+        Coordinate `y` of the point to pick.
+    z : float
+        Coordinate `z` of the point to pick.
+    subNames : list of str
+        List of subelement names.
+    clear : bool
+        Clear preselection.
+    Possible exceptions: (FreeCAD.Base.FreeCADError, ValueError).
     """
 
 
-def updateSelection(show, object: FreeCAD.DocumentObject, string: str = None, /):
+def updateSelection(show: bool, obj: FreeCAD.DocumentObject, subName: str = None, /):
     """
-    update an object in the selection
-    updateSelection(show,object,[string])
-    --where string is the sub-element name and the three floats represent a 3d point
-    Possible exceptions: (FreeCAD.FreeCADError).
+    updateSelection(show, obj, subName) -> None
+
+    Update an object in the selection.
+
+    show : bool
+        Show or hide the selection.
+    obj : App.DocumentObject
+        Object to update.
+    subName : str
+        Name of the subelement to update.
+    Possible exceptions: (FreeCAD.Base.FreeCADError).
     """
 
 
 @typing.overload
-def removeSelection(arg0: str, arg1: str, arg2: str = None, /): ...
+def removeSelection(obj: FreeCAD.DocumentObject, subName: str = None, /): ...
 
 
 @typing.overload
-def removeSelection(arg0: FreeCAD.DocumentObject, arg1: str = None, /):
+def removeSelection(docName: str, objName: str, subName: str = None, /):
     """
-    Remove an object from the selectionremoveSelection(object)
-    Possible exceptions: (FreeCAD.FreeCADError).
+    removeSelection(obj, subName) -> None
+    removeSelection(docName, objName, subName) -> None
+
+    Remove an object from the selection.
+
+    docName : str
+        Name of the `App.Document`.
+    objName : str
+        Name of the `App.DocumentObject` to remove.
+    obj : App.DocumentObject
+        Object to remove.
+    subName : str
+        Name of the subelement to remove.
+    Possible exceptions: (FreeCAD.Base.FreeCADError).
     """
 
 
-def clearSelection(docName: str = '', clearPreSelect: bool = True, /):
+@typing.overload
+def clearSelection(docName: str = None, clearPreSelect: bool = True, /): ...
+
+
+@typing.overload
+def clearSelection(clearPreSelect: bool = True, /):
     """
-    Clear the selection
-    clearSelection(docName='',clearPreSelect=True)
-    --
-    Clear the selection to the given document name. If no document is
+    clearSelection(docName, clearPreSelect=True) -> None
+    clearSelection(clearPreSelect=True) -> None
+
+    Clear the selection in the given document. If no document is
     given the complete selection is cleared.
+
+    docName : str
+        Name of the `App.Document`.
+    clearPreSelect : bool
+        Clear preselection.
     """
 
 
-def isSelected(arg0: FreeCAD.DocumentObject, arg1: str = None, arg2=None, /) -> bool:
+def isSelected(obj: FreeCAD.DocumentObject, subName: str = None, resolve: int = None, /) -> bool:
     """
-    Check if a given object is selected
-    isSelected(object,resolve=True)
+    isSelected(obj, subName, resolve=ResolveMode.OldStyleElement) -> bool
+
+    Check if a given object is selected.
+
+    obj : App.DocumentObject
+        Object to check.
+    subName : str
+        Name of the subelement.
+    resolve : int
+        Resolve subelement reference.
     """
 
 
-def setPreselection(obj: FreeCAD.DocumentObject, subname: str = None, x: float = None, y: float = None, z: float = None, tp: int = None):
+def setPreselection(obj: FreeCAD.DocumentObject, subname: str = None, x: float = 0, y: float = 0, z: float = 0, tp: int = 1):
     """
-    Set preselected object
-    setPreselection()
-    Possible exceptions: (FreeCAD.FreeCADError, ValueError).
+    setPreselection(obj, subName, x=0, y=0, z=0, type=1) -> None
+
+    Set preselected object.
+
+    obj : App.DocumentObject
+        Object to preselect.
+    subName : str
+        Subelement name.
+    x : float
+        Coordinate `x` of the point to preselect.
+    y : float
+        Coordinate `y` of the point to preselect.
+    z : float
+        Coordinate `z` of the point to preselect.
+    type : int
+    Possible exceptions: (FreeCAD.Base.FreeCADError, ValueError).
     """
 
 
 def getPreselection() -> FreeCADGui.SelectionObject:
     """
-    Get preselected object
-    getPreselection()
+    getPreselection() -> Gui.SelectionObject
+
+    Get preselected object.
     """
 
 
 def clearPreselection():
     """
-    Clear the preselection
-    clearPreselection()
+    clearPreselection() -> None
+
+    Clear the preselection.
     """
 
 
-def countObjectsOfType(string: str, string1: str = None, resolve: int = 1, /) -> int:
+def countObjectsOfType(type: str, docName: str = None, resolve: int = None, /) -> int:
     """
-    Get the number of selected objects
-    countObjectsOfType(string, [string],[resolve=1])
-    --
-    The first argument defines the object type e.g. "Part::Feature" and the
-    second argumeht defines the document name. If no document name is given the
-    currently active document is used
+    countObjectsOfType(type, docName, resolve=ResolveMode.OldStyleElement) -> int
+
+    Get the number of selected objects. If no document name is given the
+    active document is used and '*' means all documents.
+
+    type : str
+        Object type id name.
+    docName : str
+        Name of the `App.Document`.
+    resolve : int
     """
 
 
-def getSelection(docName: str = '', resolve: int = 1, single=False, /) -> list[FreeCAD.DocumentObject]:
+def getSelection(docName: str = None, resolve: int = None, single: bool = False, /) -> list[FreeCAD.DocumentObject]:
     """
-    Return a list of selected objects
-    getSelection(docName='',resolve=1,single=False)
-    --
-    docName - document name. Empty string means the active document, and '*' means all document
-    resolve - whether to resolve the subname references.
-              0: do not resolve, 1: resolve, 2: resolve with element map
-    single - only return if there is only one selection
+    getSelection(docName, resolve=ResolveMode.OldStyleElement, single=False) -> list
+
+    Return a list of selected objects. If no document name is given
+    the active document is used and '*' means all documents.
+
+    docName : str
+        Name of the `App.Document`.
+    resolve : int
+        Resolve the subname references.
+        0: do not resolve, 1: resolve, 2: resolve with element map.
+    single : bool
+        Only return if there is only one selection.
     """
 
 
-def getPickedList(docName: str = '', /) -> list[FreeCADGui.SelectionObject]:
+def getPickedList(docName: str = None, /) -> list[FreeCADGui.SelectionObject]:
     """
-    Return a list of objects under the last mouse click
-    getPickedList(docName='')
-    --
-    docName - document name. Empty string means the active document, and '*' means all document
+    getPickedList(docName) -> list of Gui.SelectionObject
+
+    Return a list of SelectionObjects generated by the last mouse click.
+    If no document name is given the active document is used and '*'
+    means all documents.
+
+    docName : str
+        Name of the `App.Document`.
     """
 
 
-def enablePickedList(boolean=None, /):
+def enablePickedList(enable: bool = True, /):
     """
-    Enable/disable pick list
-    enablePickedList(boolean)
+    enablePickedList(enable=True) -> None
+
+    Enable/disable pick list.
+
+    enable : bool
     """
 
 
-def getCompleteSelection(resolve: int = 1, /) -> list:
+def getCompleteSelection(resolve: int = None, /) -> list:
     """
-    Return a list of selected objects of all documents.
-    getCompleteSelection(resolve=1)
+    getCompleteSelection(resolve=ResolveMode.OldStyleElement) -> list
+
+    Return a list of selected objects across all documents.
+
+    resolve : int
     """
 
 
-def getSelectionEx(docName: str = '', resolve: int = 1, single=False, /) -> list[FreeCADGui.SelectionObject]:
+def getSelectionEx(docName: str = None, resolve: int = None, single: bool = False, /) -> list[FreeCADGui.SelectionObject]:
     """
-    Return a list of SelectionObjects
-    getSelectionEx(docName='',resolve=1, single=False)
-    --
-    docName - document name. Empty string means the active document, and '*' means all document
-    resolve - whether to resolve the subname references.
-              0: do not resolve, 1: resolve, 2: resolve with element map
-    single - only return if there is only one selection
-    The SelectionObjects contain a variety of information about the selection, e.g. sub-element names.
+    getSelectionEx(docName, resolve=ResolveMode.OldStyleElement, single=False) -> list of Gui.SelectionObject
+
+    Return a list of SelectionObjects. If no document name is given the
+    active document is used and '*' means all documents.
+    The SelectionObjects contain a variety of information about the selection,
+    e.g. subelement names.
+
+    docName : str
+        Name of the `App.Document`.
+    resolve : int
+        Resolve the subname references.
+        0: do not resolve, 1: resolve, 2: resolve with element map.
+    single : bool
+        Only return if there is only one selection.
     """
 
 
-def getSelectionObject(doc: str, obj: str, sub: str, arg3: tuple = None, /) -> FreeCADGui.SelectionObject:
+def getSelectionObject(docName: str, objName: str, subName: str, point: tuple = None, /) -> FreeCADGui.SelectionObject:
     """
-    Return a SelectionObject
-    getSelectionObject(doc,obj,sub,(x,y,z))
-    Possible exceptions: (FreeCAD.FreeCADError).
+    getSelectionObject(docName, objName, subName, point) -> Gui.SelectionObject
+
+    Return a SelectionObject.
+
+    docName : str
+        Name of the `App.Document`.
+    objName : str
+        Name of the `App.DocumentObject` to select.
+    subName : str
+        Subelement name.
+    point : tuple
+        Coordinates of the point to pick.
     """
 
 
-def addObserver(Object, resolve: int = 1, /):
+def addObserver(object, resolve: int = None, /):
     """
-    Install an observer
-    addObserver(Object, resolve=1)
+    addObserver(object, resolve=ResolveMode.OldStyleElement) -> None
+
+    Install an observer.
+
+    object : object
+        Python object instance.
+    resolve : int
     """
 
 
-def removeObserver(Object, /):
+def removeObserver(object, /):
     """
-    Uninstall an observer
-    removeObserver(Object)
+    removeObserver(object) -> None
+
+    Uninstall an observer.
+
+    object : object
+        Python object instance.
     """
 
 
 @typing.overload
-def addSelectionGate(String_Filter_Gate: str, resolve: int = 1, /): ...
+def addSelectionGate(filter: str, resolve: int = None, /): ...
 
 
 @typing.overload
-def addSelectionGate(String_Filter_Gate, resolve: int = 1, /):
+def addSelectionGate(filter, resolve: int = None, /):
     """
-    activate the selection gate.
-    addSelectionGate(String|Filter|Gate, resolve=1)
-    --
-    The selection gate will prohibit all selections which do not match
-    the given selection filter string.
-     Examples strings are:
-    'SELECT Part::Feature SUBELEMENT Edge',
-    'SELECT Robot::RobotObject'
+    addSelectionGate(filter, resolve=ResolveMode.OldStyleElement) -> None
 
-    You can also set an instance of SelectionFilter:
+    Activate the selection gate.
+    The selection gate will prohibit all selections that do not match
+    the given selection criteria.
+
+    filter : str, SelectionFilter, object
+    resolve : int
+
+    Examples strings are:
+    Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Edge')
+    Gui.Selection.addSelectionGate('SELECT Robot::RobotObject')
+
+    An instance of SelectionFilter can also be set:
     filter = Gui.Selection.Filter('SELECT Part::Feature SUBELEMENT Edge')
     Gui.Selection.addSelectionGate(filter)
 
-    And the most flexible approach is to write your own selection gate class
-    that implements the method 'allow'
+    The most flexible approach is to write a selection gate class that
+    implements the method 'allow':
     class Gate:
-      def allow(self,doc,obj,sub):
-        return (sub[0:4] == 'Face')
+        def allow(self,doc,obj,sub):
+            return (sub[0:4] == 'Face')
     Gui.Selection.addSelectionGate(Gate())
     Possible exceptions: (ValueError).
     """
@@ -197,52 +316,76 @@ def addSelectionGate(String_Filter_Gate, resolve: int = 1, /):
 
 def removeSelectionGate():
     """
-    remove the active selection gate
-    removeSelectionGate()
+    removeSelectionGate() -> None
+
+    Remove the active selection gate.
     """
 
 
 def setVisible(visible=None, /):
     """
-    set visibility of all selection items
-    setVisible(visible=None)
-    --
-    If 'visible' is None, then toggle visibility
+    setVisible(visible=None) -> None
+
+    Set visibility of all selection items.
+
+    visible : bool, None
+        If None, then toggle visibility.
+    Possible exceptions: (ValueError).
     """
 
 
-def pushSelStack(clearForward=True, overwrite=False, /):
+def pushSelStack(clearForward: bool = True, overwrite: bool = False, /):
     """
-    push current selection to stack
-    pushSelStack(clearForward=True, overwrite=False)
-    --
-    clearForward: whether to clear the forward selection stack.
-    overwrite: overwrite the top back selection stack with current selection.
+    pushSelStack(clearForward=True, overwrite=False) -> None
+
+    Push current selection to stack.
+
+    clearForward : bool
+        Clear the forward selection stack.
+    overwrite : bool
+        Overwrite the top back selection stack with current selection.
     """
 
 
-def hasSelection(docName: str = '', resolve=False, /) -> bool:
+def hasSelection(docName: str = None, resolve=None, /) -> bool:
     """
-    check if there is any selection
-    hasSelection(docName='', resolve=False)
+    hasSelection(docName, resolve=ResolveMode.NoResolve) -> bool
+
+    Check if there is any selection. If no document name is given,
+    checks selections in all documents.
+
+    docName : str
+        Name of the `App.Document`.
+    resolve : int
     """
 
 
-def hasSubSelection(docName: str = '', subElement: bool = False, /) -> bool:
+def hasSubSelection(docName: str = None, subElement: bool = False, /) -> bool:
     """
-    check if there is any selection with subname
-    hasSubSelection(docName='',subElement=False)
+    hasSubSelection(docName, subElement=False) -> bool
+
+    Check if there is any selection with subname. If no document name
+    is given the active document is used and '*' means all documents.
+
+    docName : str
+        Name of the `App.Document`.
+    subElement : bool
     """
 
 
-def getSelectionFromStack(docName: str = '', resolve: int = 1, index: int = 0, /) -> list:
+def getSelectionFromStack(docName: str = None, resolve: int = None, index: int = 0, /) -> list:
     """
-    Return a list of SelectionObjects from selection stack
-    getSelectionFromStack(docName='',resolve=1,index=0)
-    --
-    docName - document name. Empty string means the active document, and '*' means all document
-    resolve - whether to resolve the subname references.
-              0: do not resolve, 1: resolve, 2: resolve with element map
-    index - select stack index, 0 is the last pushed selection, positive index to trace further back,
-              and negative for forward stack item
+    getSelectionFromStack(docName, resolve=ResolveMode.OldStyleElement, index=0) -> list of Gui.SelectionObject
+
+    Return SelectionObjects from selection stack. If no document name is given
+    the active document is used and '*' means all documents.
+
+    docName : str
+        Name of the `App.Document`.
+    resolve : int
+        Resolve the subname references.
+        0: do not resolve, 1: resolve, 2: resolve with element map.
+    index : int
+        Select stack index.
+        0: last pushed selection, > 0: trace back, < 0: trace forward.
     """

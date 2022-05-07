@@ -8,9 +8,9 @@ import FreeCAD.Qt as Qt
 import FreeCAD.Units as Units
 import FreeCADGui
 import FreeCADTemplates
-import Mesh
-import Part
-import Points
+import Mesh as MeshModule
+import Part as PartModule
+import Points as PointsModule
 
 _T = typing.TypeVar("_T")
 Triple_t: typing.TypeAlias = tuple[_T, _T, _T]
@@ -47,6 +47,9 @@ class ParameterGrp:
 
     def GetGroup(self, str: str, /) -> FreeCAD.ParameterGrp:
         """GetGroup(str)"""
+
+    def GetGroupName(self) -> str:
+        """GetGroupName()"""
 
     def GetGroups(self) -> list[str]:
         """GetGroups()"""
@@ -251,7 +254,7 @@ class GeoFeature(FreeCAD.DocumentObject):
         If an object has no such property then None is returned.
         """
 
-    def getPropertyOfGeometry(self) -> Mesh.MeshObject | Part.Shape | Points.PointKernel | None:
+    def getPropertyOfGeometry(self) -> MeshModule.MeshObject | PartModule.Shape | PointsModule.PointKernel | None:
         """
         Returns the property of the actual geometry or None.
         For example for a part object it returns its Shape property,
@@ -383,12 +386,13 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         addProperty(string, string) -- Add a generic property.
                             The first argument specifies the type, the second the
                             name of the property.
-                
-        Possible exceptions: (RuntimeError, FreeCAD.FreeCADError).
         """
 
     def adjustRelativeLinks(self, parent: FreeCAD.DocumentObject, recursive=True, /) -> bool:
         """adjustRelativeLinks(parent,recursive=True) -- auto correct potential cyclic dependencies"""
+
+    def clearExpression(self, arg1: str, /):
+        """Clear the expression for a property"""
 
     def enforceRecompute(self):
         """Mark the object for recompute"""
@@ -516,8 +520,6 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         """
         removeProperty(string) -- Remove a generic property.
                             Note, you can only remove user-defined properties but not built-in ones.
-                
-        Possible exceptions: (RuntimeError).
         """
 
     def resolve(self, subname: str, /) -> tuple[object, object, str, str]:
@@ -770,14 +772,14 @@ class Part(FreeCAD.GeoFeature):
     def LicenseURL(self, value: str): ...
 
     @property
-    def Material(self) -> dict[str, str]:
+    def Material(self) -> FreeCAD.DocumentObject | None:
         """
-        Property TypeId: App::PropertyMap.
-        Map with material properties.
+        Property TypeId: App::PropertyLink.
+        The Material for this Part.
         """
 
     @Material.setter
-    def Material(self, value: dict[str, str]): ...
+    def Material(self, value: FreeCAD.DocumentObject | None): ...
 
     @property
     def Meta(self) -> dict[str, str]:
@@ -831,7 +833,7 @@ class GroupExtension(FreeCAD.DocumentObjectExtension):
     def addObject(self, arg1: FreeCAD.DocumentObject, /) -> list[FreeCAD.DocumentObject]:
         """
         Add an object to the group. Returns all objects that have been added.
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (FreeCAD.Base.FreeCADError).
         """
 
     def addObjects(self, arg1, /) -> list[FreeCAD.DocumentObject]:
@@ -847,7 +849,7 @@ class GroupExtension(FreeCAD.DocumentObjectExtension):
                         @param obj        the object to check for.
                         @param recursive  if true check also if the obj is child of some sub group (default is false).
             
-        Possible exceptions: (FreeCAD.FreeCADError, ValueError).
+        Possible exceptions: (FreeCAD.Base.FreeCADError, ValueError).
         """
 
     def newObject(self, arg1: str, arg2: str = None, /) -> FreeCAD.DocumentObject:
@@ -856,7 +858,7 @@ class GroupExtension(FreeCAD.DocumentObjectExtension):
     def removeObject(self, arg1: FreeCAD.DocumentObject, /) -> list[FreeCAD.DocumentObject]:
         """
         Remove an object from the group and returns all objects that have been removed.
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (FreeCAD.Base.FreeCADError).
         """
 
     def removeObjects(self, arg1, /) -> list[FreeCAD.DocumentObject]:
@@ -882,11 +884,11 @@ class Metadata(FreeCAD.PyObjectBase):
     """
     This class can be imported.
 
-            Metadata
-            A Metadata object reads an XML-formatted package metadata file and provides read-only access to its contents.
+    				Metadata
+    				A Metadata object reads an XML-formatted package metadata file and provides read-only access to its contents.
 
-            A single constructor is supported:
-            Metadata(file) -- Reads the XML file and provides access to the metadata it specifies.
+    				A single constructor is supported:
+    				Metadata(file) -- Reads the XML file and provides access to the metadata it specifies.
     """
 
     @typing.overload
@@ -896,12 +898,12 @@ class Metadata(FreeCAD.PyObjectBase):
     def __init__(self, file: FreeCAD.Metadata, /):
         """
         Metadata
-                A Metadata object reads an XML-formatted package metadata file and provides read-only access to its contents.
+        				A Metadata object reads an XML-formatted package metadata file and provides read-only access to its contents.
 
-                A single constructor is supported:
-                Metadata(file) -- Reads the XML file and provides access to the metadata it specifies.
-      
-        Possible exceptions: (FreeCAD.FreeCADError).
+        				A single constructor is supported:
+        				Metadata(file) -- Reads the XML file and provides access to the metadata it specifies.
+			
+        Possible exceptions: (FreeCAD.Base.XMLBaseException, FreeCAD.Base.FreeCADError).
         """
 
     @property
@@ -924,13 +926,13 @@ class Metadata(FreeCAD.PyObjectBase):
     def Depend(self) -> list:
         """
         List of dependencies, as objects with the following attributes:
-                  * package -- Required: must exactly match the contents of the 'name' element in the referenced package's package.xml file
-                  * version_lt -- Optional: The dependency to the package is restricted to versions less than the stated version number
-                  * version_lte -- Optional: The dependency to the package is restricted to versions less or equal than the stated version number
-                  * version_eq -- Optional: The dependency to the package is restricted to a version equal than the stated version number
-                  * version_gte -- Optional: The dependency to the package is restricted to versions greater or equal than the stated version number
-                  * version_gt -- Optional: The dependency to the package is restricted to versions greater than the stated version number
-                  * condition -- Optional: Conditional expression as documented in REP149
+        					* package -- Required: must exactly match the contents of the 'name' element in the referenced package's package.xml file
+        					* version_lt -- Optional: The dependency to the package is restricted to versions less than the stated version number
+        					* version_lte -- Optional: The dependency to the package is restricted to versions less or equal than the stated version number
+        					* version_eq -- Optional: The dependency to the package is restricted to a version equal than the stated version number
+        					* version_gte -- Optional: The dependency to the package is restricted to versions greater or equal than the stated version number
+        					* version_gt -- Optional: The dependency to the package is restricted to versions greater than the stated version number
+        					* condition -- Optional: Conditional expression as documented in REP149
         """
 
     @property
@@ -940,6 +942,14 @@ class Metadata(FreeCAD.PyObjectBase):
     @property
     def File(self) -> list[str]:
         """A list of files associated with this item -- the meaning of each file is implementation-defined"""
+
+    @property
+    def FreeCADMax(self) -> str:
+        """A string representing the maximum version of FreeCAD needed for this item. If unset it will be 0.0.0."""
+
+    @property
+    def FreeCADMin(self) -> str:
+        """A string representing the minimum version of FreeCAD needed for this item. If unset it will be 0.0.0."""
 
     @property
     def Icon(self) -> str:
@@ -972,24 +982,49 @@ class Metadata(FreeCAD.PyObjectBase):
     @property
     def Urls(self) -> list[ReturnGetUrlsDict]:
         """
-        List of URLs as objects with 'location' and 'urltype' string attributes, where urltype is one of:
-                  * website
-                  * repository
-                  * bugtracker
-                  * readme
-                  * documentation
+        List of URLs as objects with 'location' and 'type' string attributes, where type is one of:
+        					* website
+        					* repository
+        					* bugtracker
+        					* readme
+        					* documentation
         """
 
     @property
     def Version(self) -> str:
         """String: the version of this item in semantic triplet format"""
 
+    def getFirstSupportedFreeCADVersion(self) -> str | None:
+        """
+        getFirstSupportedFreeCADVersion()
+        Search through all content package items, and determine if a minimum supported version of FreeCAD
+        is set. Returns 0.0 if no minimum version is set, or if *any* content item fails to provide a
+        minimum version (implying that that content item will work with all known versions -- technically
+        limited to 0.20 as the lowest known version since the metadata standard was added then).
+        """
+
     def getGenericMetadata(self, name: str, /):
         """
         getGenericMetadata(name)
-                  Get the list of GenericMetadata objects with key 'name'. Generic metadata objects are Python objects with
-                  a string 'contents' and a dictionary of strings, 'attributes'. They represent unrecognized simple XML tags
-                  in the metadata file.
+        Get the list of GenericMetadata objects with key 'name'. Generic metadata objects are Python objects with
+        a string 'contents' and a dictionary of strings, 'attributes'. They represent unrecognized simple XML tags
+        in the metadata file.
+        """
+
+    def getLastSupportedFreeCADVersion(self) -> str | None:
+        """
+        getLastSupportedFreeCADVersion()
+        Search through all content package items, and determine if a maximum supported version of FreeCAD
+        is set. Returns None if no maximum version is set, or if *any* content item fails to provide a
+        maximum version (implying that that content item will work with all known versions).
+        """
+
+    def supportsCurrentFreeCAD(self) -> bool:
+        """
+        supportsCurrentFreeCAD()
+        Returns false if this metadata object directly indicates that it does not support the current
+        version of FreeCAD, or true if it makes no indication, or specifically indicates that it does
+        support the current version. Does not recurse into Content items.
         """
 
 
@@ -1019,13 +1054,13 @@ class ExtensionContainer(FreeCAD.PropertyContainer):
     def addExtension(self, arg1: str, arg2=None, /):
         """
         Adds an extension to the object. Requires the string identifier for the python extension as argument
-        Possible exceptions: (FreeCAD.FreeCADError, DeprecationWarning).
+        Possible exceptions: (TypeError, DeprecationWarning).
         """
 
     def hasExtension(self, arg1: str, arg2=None, /) -> bool:
         """
         Returns if this object has the specified extension
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (TypeError).
         """
 
 
@@ -1337,7 +1372,7 @@ class Document(FreeCAD.PropertyContainer):
                 to allow Python code to override view provider type. Once bound, and before adding to
                 the document, it will try to call Python binding object's attach(obj) method.
         viewType (String): override the view provider type directly, only effective when attach is False.
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (TypeError).
         """
 
     def clearDocument(self):
@@ -1403,7 +1438,10 @@ class Document(FreeCAD.PropertyContainer):
 
     @typing.overload
     def getObject(self, arg1: int, /) -> FreeCAD.DocumentObject:
-        """Return the object with the given name"""
+        """
+        Return the object with the given name
+        Possible exceptions: (TypeError).
+        """
 
     def getObjectsByLabel(self, arg1: str, /) -> list[FreeCAD.DocumentObject]:
         """
@@ -1457,7 +1495,7 @@ class Document(FreeCAD.PropertyContainer):
         object: can either a single object or sequence of objects
         with_dependencies: if True, all internal dependent objects are copied too.
         
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (ValueError).
         """
 
     def mustExecute(self) -> bool:
@@ -1491,7 +1529,7 @@ class Document(FreeCAD.PropertyContainer):
     def removeObject(self, arg1: str, /):
         """
         Remove an object from the document
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (ValueError).
         """
 
     def restore(self):
@@ -1700,7 +1738,7 @@ class ComplexGeoData(FreeCAD.Persistence):
         Possible exceptions: (RuntimeError).
         """
 
-    def getPoints(self, arg1: float, /) -> tuple[list[FreeCAD.Vector], list]:
+    def getPoints(self, arg1: float, /) -> tuple[list[FreeCAD.Vector], list[FreeCAD.Vector]]:
         """
         Return a tuple of points and normals with a given accuracy
         Possible exceptions: (RuntimeError).
@@ -1711,6 +1749,51 @@ class ComplexGeoData(FreeCAD.Persistence):
         Apply a transformation to the underlying geometry
         Possible exceptions: (RuntimeError).
         """
+
+
+# Application.cpp
+class FreeCADError(RuntimeError):
+    pass
+
+
+class FreeCADAbort(BaseException):
+    pass
+
+
+class XMLBaseException(Exception):
+    pass
+
+
+class XMLParseException(FreeCAD.XMLBaseException):
+    pass
+
+
+class XMLAttributeError(FreeCAD.XMLBaseException):
+    pass
+
+
+class UnknownProgramOption(BaseException):
+    pass
+
+
+class BadFormatError(FreeCAD.FreeCADError):
+    pass
+
+
+class BadGraphError(FreeCAD.FreeCADError):
+    pass
+
+
+class ExpressionError(FreeCAD.FreeCADError):
+    pass
+
+
+class ParserError(FreeCAD.FreeCADError):
+    pass
+
+
+class CADKernelError(FreeCAD.FreeCADError):
+    pass
 
 
 # ApplicationPy.cpp
@@ -1776,6 +1859,10 @@ def getExportType(arg0: str = None, /) -> list[str] | dict[object, str | list[st
 
 def getResourceDir() -> str:
     """Get the root directory of all resources"""
+
+
+def getLibraryDir() -> str:
+    """Get the directory of all extension modules"""
 
 
 def getTempPath() -> str:
@@ -1873,7 +1960,6 @@ def setActiveDocument(arg0: str, /):
     setActiveDocement(string) -> None
 
     Set the active document by its name.
-    Possible exceptions: (FreeCAD.FreeCADError).
     """
 
 
@@ -1981,7 +2067,7 @@ def checkAbort():
     This only works if there is an active sequencer (or ProgressIndicator in Python).
     There is an active sequencer during document restore and recomputation. User may
     abort the operation by pressing the ESC key. Once detected, this function will
-    trigger a BaseExceptionFreeCADAbort exception.
+    trigger a Base.FreeCADAbort exception.
     """
 
 
@@ -1993,7 +2079,7 @@ Err = FreeCAD.Console.PrintError
 Wrn = FreeCAD.Console.PrintWarning
 # be careful with following variables -
 # some of them are set in FreeCADGui (GuiUp after InitApplications),
-# so may not exist when accessible until FreeCADGuiInit is initialized - use `getattr`
+# so may not exist until FreeCADGuiInit is initialized - use `getattr`
 GuiUp: typing.Literal[0, 1]
 Gui = FreeCADGui
 ActiveDocument: FreeCAD.Document | None

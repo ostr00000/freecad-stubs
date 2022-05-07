@@ -20,7 +20,7 @@ packages = [
 
 setup(
     name='freecad-stubs',
-    version='1.0.10',
+    version='1.0.11',
     description="Python stubs for FreeCAD",
     long_description=readme,
     long_description_content_type='text/markdown',
@@ -40,6 +40,7 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
-        'Typing :: Typed',
+        'Programming Language :: Python :: 3.11',
+        'Typing :: Stubs Only',
     ],
 )

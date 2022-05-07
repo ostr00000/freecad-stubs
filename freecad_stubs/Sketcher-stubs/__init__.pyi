@@ -1,10 +1,11 @@
+import io
 import typing
 
 import FreeCAD
-import Part
 import Part as PartModule
 import Sketcher
 
+StrIO_t: typing.TypeAlias = str | bytes | io.IOBase
 DocAndStr_t: typing.TypeAlias = tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]
 LinkSub_t: typing.TypeAlias = FreeCAD.DocumentObject | None | tuple[()] | DocAndStr_t
 LinkList_t: typing.TypeAlias = None | FreeCAD.DocumentObject
@@ -184,11 +185,14 @@ class SketchObjectSF(PartModule.Part2DObject):
     """With this objects you can handle sketches"""
 
     @property
-    def SketchFlatFile(self):
-        """SketchFlat file (*.skf) which defines this sketch."""
+    def SketchFlatFile(self) -> str:
+        """
+        Property TypeId: App::PropertyFileIncluded.
+        SketchFlat file (*.skf) which defines this sketch.
+        """
 
     @SketchFlatFile.setter
-    def SketchFlatFile(self, value): ...
+    def SketchFlatFile(self, value: StrIO_t | tuple[StrIO_t, StrIO_t]): ...
 
 
 # SketchObjectPy.xml
@@ -280,7 +284,7 @@ class SketchObject(PartModule.Part2DObject):
         """
 
     @property
-    def Geometry(self) -> list[Part.Geometry]:
+    def Geometry(self) -> list[PartModule.Geometry]:
         """
         Property group: Sketch.
         Property TypeId: Part::PropertyGeometryList.
@@ -288,7 +292,7 @@ class SketchObject(PartModule.Part2DObject):
         """
 
     @Geometry.setter
-    def Geometry(self, value: typing.Iterable[Part.Geometry] | dict[int, Part.Geometry]): ...
+    def Geometry(self, value: typing.Iterable[PartModule.Geometry] | dict[int, PartModule.Geometry]): ...
 
     def DeleteUnusedInternalGeometry(self, arg1: int, /):
         """
@@ -573,6 +577,12 @@ class SketchObject(PartModule.Part2DObject):
     def increaseBSplineDegree(self, arg1: int, arg2: int = None, /):
         """
         Increases the given BSpline Degree by a number of degrees
+        Possible exceptions: (ValueError).
+        """
+
+    def insertBSplineKnot(self, arg1: int, arg2: float, arg3: int = None, /):
+        """
+        Inserts a knot into the BSpline at the given param with given multiplicity. If the knot already exists, this increases the knot multiplicity by the given multiplicity.
         Possible exceptions: (ValueError).
         """
 

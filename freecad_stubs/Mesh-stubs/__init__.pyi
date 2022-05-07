@@ -240,10 +240,7 @@ class Feature(FreeCAD.GeoFeature):
         """Repair any invalid indices"""
 
     def fixSelfIntersections(self):
-        """
-        Repair self-intersections
-        Possible exceptions: (FreeCAD.FreeCADError).
-        """
+        """Repair self-intersections"""
 
     def harmonizeNormals(self):
         """Adjust wrong oriented facets"""
@@ -255,16 +252,10 @@ class Feature(FreeCAD.GeoFeature):
         """Remove duplicated points"""
 
     def removeFoldsOnSurface(self):
-        """
-        Remove folds on surfaces
-        Possible exceptions: (FreeCAD.FreeCADError).
-        """
+        """Remove folds on surfaces"""
 
     def removeInvalidPoints(self):
-        """
-        Remove points with invalid coordinates (NaN)
-        Possible exceptions: (FreeCAD.FreeCADError).
-        """
+        """Remove points with invalid coordinates (NaN)"""
 
     def removeNonManifoldPoints(self):
         """Remove non-manifold points"""
@@ -312,7 +303,7 @@ class Mesh(FreeCAD.ComplexGeoData):
           f = d.addObject("Mesh::Feature", "Mesh") # Create a mesh feature
           f.Mesh = m # Assign the mesh object to the internal property
           d.recompute()
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (FreeCAD.Base.FreeCADError).
         """
 
     @property
@@ -367,7 +358,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def addFacet(self, arg1: MeshModule.Facet, /):
         """
         Add a facet to the mesh
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (TypeError).
         """
 
     @typing.overload
@@ -377,7 +368,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def addFacets(self, arg1: tuple, arg2: bool = None, /):
         """
         Add a list of facets to the mesh
-        Possible exceptions: (FreeCAD.FreeCADError).
+        Possible exceptions: (TypeError).
         """
 
     def addMesh(self, arg1: MeshModule.Mesh, /):
@@ -454,10 +445,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         """Difference of this and the given mesh object."""
 
     def fillupHoles(self, arg1: int, arg2: int = None, arg3: float = None, /):
-        """
-        Fillup holes
-        Possible exceptions: (FreeCAD.FreeCADError).
-        """
+        """Fillup holes"""
 
     def fixCaps(self, arg1: float = None, arg2: float = None, /):
         """Repair caps by swapping the edge"""
@@ -472,10 +460,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         """Repair any invalid indices"""
 
     def fixSelfIntersections(self):
-        """
-        Repair self-intersections
-        Possible exceptions: (FreeCAD.FreeCADError).
-        """
+        """Repair self-intersections"""
 
     def flipNormals(self):
         """Flip the mesh normals"""
@@ -506,7 +491,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         getPlanarSegments(dev,[min faces=0]) -> list
         Get all planes of the mesh as segment.
         In the worst case each triangle can be regarded as single
-        plane if none of its neighbors are coplanar.
+        plane if none of its neighbours is coplanar.
         """
 
     def getPointNormals(self) -> tuple[FreeCAD.Vector, ...]:
@@ -607,7 +592,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def meshFromSegment(self, arg1, /) -> MeshModule.Mesh:
         """Create a mesh from segment"""
 
-    def nearestFacetOnRay(self, tuple, tuple2, /) -> dict[int, tuple[float, float, float]]:
+    def nearestFacetOnRay(self, arg1, arg2, arg3: float = None, /) -> dict[int, tuple[float, float, float]]:
         """
         nearestFacetOnRay(tuple, tuple) -> dict
         Get the index and intersection point of the nearest facet to a ray.
@@ -666,19 +651,13 @@ class Mesh(FreeCAD.ComplexGeoData):
         """Remove a list of facet indices from the mesh"""
 
     def removeFoldsOnSurface(self):
-        """
-        Remove folds on surfaces
-        Possible exceptions: (FreeCAD.FreeCADError).
-        """
+        """Remove folds on surfaces"""
 
     def removeFullBoundaryFacets(self):
         """Remove facets whose all three points are on the boundary"""
 
     def removeInvalidPoints(self):
-        """
-        Remove points with invalid coordinates (NaN)
-        Possible exceptions: (FreeCAD.FreeCADError).
-        """
+        """Remove points with invalid coordinates (NaN)"""
 
     def removeNeedles(self, arg1: float, /):
         """Remove all edges that are smaller than a given length"""
@@ -695,7 +674,6 @@ class Mesh(FreeCAD.ComplexGeoData):
         Remove points that lie on edges.
         If FillBoundary is True then the holes by removing the affected facets
         will be re-filled.
-        Possible exceptions: (FreeCAD.FreeCADError).
         """
 
     def rotate(self, arg1: float, arg2: float, arg3: float, /):
@@ -899,7 +877,7 @@ def createBox(arg1: float = None, arg2: float = None, arg3: float = None, arg4: 
 def createBox(arg1: FreeCAD.BoundBox, /) -> MeshModule.Mesh:
     """
     Create a solid mesh box
-    Possible exceptions: (TypeError, FreeCAD.FreeCADError).
+    Possible exceptions: (TypeError, RuntimeError).
     """
 
 
@@ -913,35 +891,35 @@ def createPlane(arg1: float = None, arg2: float = None, arg3: float = None, /) -
 def createSphere(arg1: float = None, arg2: int = None, /) -> MeshModule.Mesh:
     """
     Create a tessellated sphere
-    Possible exceptions: (Exception, FreeCAD.FreeCADError).
+    Possible exceptions: (Exception, RuntimeError).
     """
 
 
 def createEllipsoid(arg1: float = None, arg2: float = None, arg3: int = None, /) -> MeshModule.Mesh:
     """
     Create a tessellated ellipsoid
-    Possible exceptions: (Exception, FreeCAD.FreeCADError).
+    Possible exceptions: (Exception, RuntimeError).
     """
 
 
 def createCylinder(arg1: float = None, arg2: float = None, arg3: int = None, arg4: float = None, arg5: int = None, /) -> MeshModule.Mesh:
     """
     Create a tessellated cylinder
-    Possible exceptions: (Exception, FreeCAD.FreeCADError).
+    Possible exceptions: (Exception, RuntimeError).
     """
 
 
 def createCone(arg1: float = None, arg2: float = None, arg3: float = None, arg4: int = None, arg5: float = None, arg6: int = None, /) -> MeshModule.Mesh:
     """
     Create a tessellated cone
-    Possible exceptions: (Exception, FreeCAD.FreeCADError).
+    Possible exceptions: (Exception, RuntimeError).
     """
 
 
 def createTorus(arg1: float = None, arg2: float = None, arg3: int = None, /) -> MeshModule.Mesh:
     """
     Create a tessellated torus
-    Possible exceptions: (Exception, FreeCAD.FreeCADError).
+    Possible exceptions: (Exception, RuntimeError).
     """
 
 
@@ -985,5 +963,5 @@ def export(objectList, filename: str, tolerance: float = 0.1, exportAmfCompresse
     exportAmfCompressed specifies whether exported AMF files should be
     compressed.
 
-    Possible exceptions: (Exception, TypeError, FreeCAD.FreeCADError).
+    Possible exceptions: (Exception, TypeError, ValueError).
     """
