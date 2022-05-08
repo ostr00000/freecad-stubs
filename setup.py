@@ -8,9 +8,9 @@ with open("README.md") as f:
 
 class StubPackageFinder(PackageFinder):
     @staticmethod
-    def _looks_like_package(path):
+    def _looks_like_package(path, *args, **kwargs):
         return os.path.isfile(os.path.join(path, '__init__.pyi')) \
-               or PackageFinder._looks_like_package(path)
+               or PackageFinder._looks_like_package(path, *args, **kwargs)
 
 
 freeCadStubPath = 'freecad_stubs'
