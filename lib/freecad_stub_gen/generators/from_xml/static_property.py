@@ -1,6 +1,5 @@
 import logging
 from abc import ABC
-from distutils.util import strtobool
 from functools import cached_property
 from xml.etree import ElementTree as ET
 
@@ -10,6 +9,7 @@ from freecad_stub_gen.generators.common.names import getClassNameFromNode
 from freecad_stub_gen.generators.common.return_type_converter.full import ReturnTypeConverter
 from freecad_stub_gen.generators.from_xml.base import BaseXmlGenerator
 from freecad_stub_gen.generators.from_xml.method import XmlMethodGenerator
+from freecad_stub_gen.util import toBool
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +19,7 @@ class XmlPropertyGenerator(XmlMethodGenerator, BaseXmlGenerator, BasePropertyGen
         """This function generate property based on xml file."""
         name = node.attrib['Name']
         docs = getDocFromNode(node)
-        readOnly = strtobool(node.attrib.get('ReadOnly', 'True'))
+        readOnly = toBool(node.attrib.get('ReadOnly', True))
 
         pythonType = self._findTypeBasedOnXmlDeclaration(node)
         pythonGetType = pythonSetType = self.__getReturnTypeForSpecialCase(name, pythonType)

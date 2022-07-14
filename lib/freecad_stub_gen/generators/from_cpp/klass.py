@@ -18,7 +18,7 @@ class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
     """Generate class from cpp code with methods."""
     REG_INIT_TYPE = re.compile(r'::init_type\([^{;]*{')
     REG_CLASS_NAME = re.compile(r'behaviors\(\)\.name\(\s*"([\w.]+)"\s*\);')
-    REG_CLASS_DOC = re.compile(r'behaviors\(\).doc\("((?:[^"\\]*(?:\\.)?(?:"\s*")?)+)"\);')
+    REG_CLASS_DOC = re.compile(r'behaviors\(\).doc\("((?:[^"\\]|\\.|"\s*")+)"\);')
 
     def _genStub(self, moduleName: str) -> Iterable[str]:
         for match in self.REG_INIT_TYPE.finditer(self.impContent):
@@ -52,7 +52,7 @@ class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
     REG_BASE_CLASS_INHERITANCE = re.compile(r"""
 (?:public|protected|private)\s+     # access modifier
 (?P<baseClass>.+?)\s*               # there may be template class with many parameters
-(?:{|                               # either end of expression 
+(?:{|                               # either end of expression
 ,\s*(?:public|protected|private)    # or more base classes
 )""", re.VERBOSE)
 

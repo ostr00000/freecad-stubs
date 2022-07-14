@@ -46,7 +46,7 @@ class ImportableClassMap(dict[str, str]):
 
     # there are some types that are renamed in code
     # https://github.com/FreeCAD/FreeCAD/blob/8ac722c1e89ef530564293efd30987db09017e12/src/Mod/Part/App/AppPart.cpp#L226
-    # regex to find non matching names:
+    # regex to find non-matching names:
     # Base::Interpreter\(\).addType\(\&\w+::(\w+)Py\s*::Type,\s*\w+,"(?!\1")
 
     def __init__(self):
@@ -57,8 +57,8 @@ class ImportableClassMap(dict[str, str]):
             del self[duplicatedKey]
 
     def isImportable(self, className: str):
-        return className in self.values() \
-               or any(className in duplicatedSet for duplicatedSet in self.dup.values())
+        return (className in self.values()
+                or any(className in duplicatedSet for duplicatedSet in self.dup.values()))
 
     def _filterDuplicatedKeys(self, it):
         seen = {}
@@ -77,8 +77,9 @@ class ImportableClassMap(dict[str, str]):
         for cppFile in genCppFiles():
             cppContent = readContent(cppFile)
             for match in self.REG_ADD_TYPE.finditer(cppContent):
-                addTypeList = [c.replace(' ', '').replace('\n', '')
-                               for c in generateExpressionUntilChar(
+                addTypeList = [
+                    c.replace(' ', '').replace('\n', '')
+                    for c in generateExpressionUntilChar(
                         cppContent, match.end(), ',', bracketL='(', bracketR=')')]
 
                 addTypeArgs = AddTypeArguments(*addTypeList)

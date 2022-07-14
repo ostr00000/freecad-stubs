@@ -27,7 +27,7 @@ class ReturnTypeInnerTuple(ReturnTypeConverterBase):
 
         raise ValueError("Cannot find inner type for tuple")
 
-    def _genInnerTypeTupleConstructorWithoutAssignment(self, startPos:int, endPos: int):
+    def _genInnerTypeTupleConstructorWithoutAssignment(self, startPos: int, endPos: int):
         """Py::TupleN(Py::Object(v.first->getPyObject(),true),Py::String(v.second))"""
         regex = re.compile(r'TupleN\s*\(([^;]+)\)')
         if match := regex.search(self.functionBody, startPos, endPos):
@@ -52,11 +52,11 @@ class ReturnTypeInnerTuple(ReturnTypeConverterBase):
         regex = re.compile(rf"""
         PyTuple_(?:SetItem|SET_ITEM)
         \s*\(\s*            # function or macro call
-        {variableName}      # tuple variable name, 
+        {variableName}      # tuple variable name,
         \s*,\s*             # next arg,
         (?P<index>[\w+]+)   # position index,
         \s*,\s*             # next arg,
-        (?P<value>[^;]+)    # tuple value. 
+        (?P<value>[^;]+)    # tuple value,
         \);                 # end function or macro call
         """, re.VERBOSE)
         variableLengthTuple = True

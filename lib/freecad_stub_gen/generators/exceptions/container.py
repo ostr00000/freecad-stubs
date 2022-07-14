@@ -63,9 +63,8 @@ class ExceptionContainer:
         self.exceptions = list(self._genExceptions())
 
     def checkAllExceptionsCorrect(self):
-        reprs = [repr(e) for e in self.exceptions]
-        strs = [str(e) for e in self.exceptions]
-        return
+        for e in self.exceptions:
+            repr(e)
 
     def _genExceptions(self):
         for file in genCppFiles():

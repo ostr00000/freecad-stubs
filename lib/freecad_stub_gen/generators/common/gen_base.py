@@ -25,6 +25,8 @@ class BaseGenerator:
         self.impContent = readContent(impPath)
 
     def getStub(self, mod: Module, moduleName: str):
-        """An argument `moduleName` may be optionally used
-        if the generator cannot determine correct package."""
+        """
+        An argument `moduleName` may be optionally used
+        if the generator cannot determine correct package.
+        """
         raise NotImplementedError

@@ -34,13 +34,17 @@ class TypesConverter:
         self.argumentStrings = list(generateExpressionUntilChar(sub, sub.find('(') + 1, ','))
         self._removeMacros()
 
-    # start with quotation mark as group 1: (["'])
-    # then match text that ends with same quotation mark as in group 1
-    # - skip escaped quotation mark from group 1: .*?(?!\\\1)\1)
-    # as 'text': (?P<text> )
-    # and do not consume it: (?= )
-    # then find again a group named 'text': (?P=text)
-    REG_STRING = re.compile(r"""(["'])(?=(?P<text>.*?(?!\\\1)\1))(?P=text)""")
+    REG_STRING = re.compile(r"""
+(["'])          # start with quotation mark as group 1,
+(?=             # do not consume matched characters - we match it after we are sure about it,
+  (?P<text>     # save matched chars as `text`,
+    .*?         # all chars but lazy,
+    (?!\\\1)    # skip escaped char from group 1,
+    \1          # matched text must ends with same char as group 1,
+  )
+)
+(?P=text)       # then find again a content of group named 'text'
+    """, re.VERBOSE)
     _FORBIDDEN_MACROS = ['PARAM_REF', 'PARAM_FARG', 'AREA_PARAMS_OPCODE']
 
     def _removeMacros(self):
@@ -120,7 +124,7 @@ class TypesConverter:
             exc = InvalidPointerFormat(f"Unknown pointer format {pointerArg=}")
             try:
                 if self._findPointerType(realArgNum + 1) is not None:
-                    exc = InvalidPointerFormat(f"Format has swapped type ")
+                    exc = InvalidPointerFormat("Format has swapped type")
             except Exception:
                 pass
             raise exc

@@ -2,7 +2,6 @@ import logging
 import xml.etree.ElementTree as ET
 from abc import ABC
 from collections.abc import Iterator
-from distutils.util import strtobool
 from functools import cached_property, lru_cache
 from inspect import Parameter
 from pathlib import Path
@@ -14,6 +13,7 @@ from freecad_stub_gen.generators.common.gen_method import MethodGenerator
 from freecad_stub_gen.generators.common.names import getClassNameFromNode
 from freecad_stub_gen.generators.common.signature_merger import mergeSignaturesGen
 from freecad_stub_gen.generators.from_xml.base import BaseXmlGenerator
+from freecad_stub_gen.util import toBool
 
 logger = logging.getLogger(__name__)
 
@@ -35,8 +35,8 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         pythonFunName = pythonFunName or node.attrib['Name']
         docsFunName = docsFunName or node.attrib['Name']
 
-        isStatic = strtobool(node.attrib.get('Static', 'False'))
-        isClassic = strtobool(node.attrib.get('Class', 'False'))
+        isStatic = toBool(node.attrib.get('Static', False))
+        isClassic = toBool(node.attrib.get('Class', False))
         firstParam = AnnotationParam.getFirstParam(isStatic, isClassic)
 
         allSignatures = list(self._signatureArgGen(

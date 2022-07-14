@@ -13,7 +13,7 @@ def mergeSignaturesGen(
         firstParam: Parameter = None,
 ) -> Iterator[SelfSignature]:
     if len(codeSignatures) == len(docSignatures) == 0:
-        return  # function does not exist neither in code nor xml
+        return  # function does not exist, neither in code nor xml
 
     retParam: list[Parameter] = []
     if firstParam:

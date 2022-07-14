@@ -200,8 +200,9 @@ class PropertyMacroSetter(PropertyMacroBase):
                 raise ValueError("Cannot find enum variable")
 
             literalsStart = literalsRaw.find('{') + 1
-            literalsArray = [exp.strip().removeprefix('"').removesuffix('"')
-                             for exp in generateExpressionUntilChar(
+            literalsArray = [
+                exp.strip().removeprefix('"').removesuffix('"')
+                for exp in generateExpressionUntilChar(
                     literalsRaw, literalsStart, ",", bracketL='{', bracketR='}')]
             literalsArray = literalsArray[:-1]  # remove NULL
 

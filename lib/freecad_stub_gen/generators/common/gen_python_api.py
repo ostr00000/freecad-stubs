@@ -2,7 +2,6 @@ import logging
 import re
 from abc import ABC
 from pathlib import Path
-from re import Pattern
 
 from freecad_stub_gen.generators.common.annotation_parameter import SelfSignature
 from freecad_stub_gen.generators.common.arguments_converter import TypesConverter
@@ -64,7 +63,7 @@ class PythonApiGenerator(BaseGenerator, ABC):
         yield from self._baseParse(pattern=self.REG_TUP_KW, formatStrPosition=2,
                                    minSize=4, onlyPositional=False)
 
-    def _baseParse(self, pattern: Pattern, formatStrPosition: int,
+    def _baseParse(self, pattern: re.Pattern, formatStrPosition: int,
                    minSize: int, onlyPositional: bool):
         for match in re.finditer(pattern, self._functionBody):
             funStart = match.start()

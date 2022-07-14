@@ -65,3 +65,13 @@ class OrderedSet(dict[T, None]):
 
     def __repr__(self):
         return '|'.join(self)
+
+
+def toBool(text: str | bool | None) -> bool:
+    match str(text).lower():
+        case 'y' | 'yes' | 't' | 'true' | 'on' | '1':
+            return True
+        case 'n' | 'no' | 'f' | 'false' | 'off' | '0' | 'none':
+            return False
+        case _:
+            raise ValueError(f"Unknown bool value: {text}")

@@ -1,5 +1,4 @@
 import inspect
-from distutils.util import strtobool
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
@@ -12,7 +11,7 @@ from freecad_stub_gen.generators.from_xml.method import XmlMethodGenerator
 from freecad_stub_gen.generators.from_xml.static_property import XmlPropertyGenerator
 from freecad_stub_gen.importable_map import importableMap
 from freecad_stub_gen.module_container import Module
-from freecad_stub_gen.util import indent
+from freecad_stub_gen.util import indent, toBool
 
 
 class FreecadStubGeneratorFromXML(
@@ -20,8 +19,10 @@ class FreecadStubGeneratorFromXML(
     XmlDynamicPropertyGenerator,
     XmlMethodGenerator
 ):
-    """Generate class defined in xml file.
-    Argument types are extracted from code."""
+    """
+    Generate class defined in xml file.
+    Argument types are extracted from code.
+    """
 
     def __init__(self, filePath: Path, sourceDir: Path = SOURCE_DIR):
         super().__init__(filePath, sourceDir)
@@ -69,9 +70,9 @@ class FreecadStubGeneratorFromXML(
         for methodNode in sorted(self.currentNode.findall('Methode'), key=self._nodeSort):
             classStr += indent(self.genMethod(methodNode))
 
-        if strtobool(self.currentNode.attrib.get('RichCompare', 'False')):
+        if toBool(self.currentNode.attrib.get('RichCompare', False)):
             classStr += indent(self.genRichCompare())
-        if strtobool(self.currentNode.attrib.get('NumberProtocol', 'False')):
+        if toBool(self.currentNode.attrib.get('NumberProtocol', False)):
             classStr += indent(self.genNumberProtocol(className))
 
         return classStr, self.classNameWithModules
@@ -114,27 +115,27 @@ class FreecadStubGeneratorFromXML(
 workbenchBody = inspect.cleandoc("""
     MenuText = ""
     ToolTip = ""
-    
+
     def Initialize(self):
         raise NotImplementedError
-    
+
     def ContextMenu(self, recipient): ...
-    
+
     def appendToolbar(self, name, cmds): ...
-    
+
     def removeToolbar(self, name): ...
-    
+
     def appendCommandbar(self, name, cmds): ...
-    
+
     def removeCommandbar(self, name): ...
-    
+
     def appendMenu(self, name, cmds): ...
-    
+
     def removeMenu(self, name): ...
-    
+
     def appendContextMenu(self, name, cmds): ...
-    
+
     def removeContextMenu(self, name): ...
-    
+
     def GetClassName(self): ...
 """)

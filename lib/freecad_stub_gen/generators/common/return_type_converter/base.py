@@ -8,7 +8,7 @@ from freecad_stub_gen.generators.common.names import getClassName, getClassWithM
     getModuleName
 from freecad_stub_gen.generators.common.py_build_converter import parsePyBuildValues
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import EmptyType, \
-    Empty, UnionArguments, RetType, InvalidReturnType, ListIter
+    Empty, UnionArguments, RetType, InvalidReturnType
 from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import StrWrapper
 from freecad_stub_gen.util import OrderedSet
 
