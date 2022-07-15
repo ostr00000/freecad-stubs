@@ -95,6 +95,11 @@ class XmlPropertyGenerator(XmlMethodGenerator, BaseXmlGenerator, BasePropertyGen
             case _, 'Document':
                 pythonType = 'FreeCADGui.Document' if self._isGuiFile else 'FreeCAD.Document'
 
+            case 'Document', 'ActiveView':
+                # we want to add more specified type: FreeCADGui.View3DInventor,
+                # because this is very common a real type
+                pythonType = 'FreeCADGui.MDIViewPy | FreeCADGui.View3DInventorPy | None'
+
             case _, 'Q':
                 pythonType = 'tuple[float, float, float, float]'
 
