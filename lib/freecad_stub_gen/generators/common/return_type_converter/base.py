@@ -102,6 +102,19 @@ class ReturnTypeConverterBase:
                 innerClass = self._getReturnTypeForText(templateClass, endPos)
                 return f'list[{innerClass}]'
 
+            case StrWrapper('Base::Interpreter().createSWIGPointerObj('):
+                fc = returnText.removeprefix('Base::Interpreter().createSWIGPointerObj(')
+                funArgs = [
+                    exp.strip().removeprefix('"').removesuffix('"')
+                    for exp in generateExpressionUntilChar(
+                        fc, 0, ',', bracketL='(', bracketR=')')]
+                module: str = funArgs[0]
+                klass: str = funArgs[1]
+                if not module.startswith('pivy') or '(' in klass:
+                    return Empty
+                klass = klass.removeprefix('_p_').removesuffix('*').strip()
+                return f'{module}.{klass}'
+
             case StrWrapper('MainWindowPy::createWrapper'):
                 return 'FreeCADGui.MainWindowPy'
 

@@ -5,6 +5,7 @@ import FreeCAD
 import FreeCADGui
 import FreeCADGui.Selection
 import FreeCADTemplates
+import pivy.coin
 import qtpy.QtCore
 import qtpy.QtGui
 import qtpy.QtWidgets
@@ -106,7 +107,7 @@ class LinkView(FreeCAD.BaseClass):
         """The owner view object of this link handle"""
 
     @property
-    def RootNode(self) -> object:
+    def RootNode(self) -> pivy.coin.SoSeparator:
         """A pivy node holding the cloned representation of the linked view object"""
 
     @property
@@ -126,7 +127,7 @@ class LinkView(FreeCAD.BaseClass):
     def getChildren(self) -> tuple[typing.Any, ...]:
         """Get children view objects"""
 
-    def getDetailPath(self, arg1: str, arg2, /):
+    def getDetailPath(self, arg1: str, arg2, /) -> pivy.coin.SoDetail:
         """
         getDetailPath(element): get the 3d path an detail of an element.
 
@@ -227,11 +228,11 @@ class ViewProvider(FreeCAD.ExtensionContainer):
     """This is the ViewProvider base class"""
 
     @property
-    def Annotation(self) -> object:
+    def Annotation(self) -> pivy.coin.SoSeparator:
         """A pivy Separator to add a custom scenegraph to this ViewProvider"""
 
     @Annotation.setter
-    def Annotation(self, value: object): ...
+    def Annotation(self, value: pivy.coin.SoSeparator): ...
 
     @property
     def CanRemoveChildrenFromRoot(self) -> bool:
@@ -261,18 +262,18 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         """Get/set visibilities of all links to this view object"""
 
     @property
-    def RootNode(self) -> object:
+    def RootNode(self) -> pivy.coin.SoSeparator:
         """A pivy Separator with the root of this ViewProvider"""
 
     @RootNode.setter
-    def RootNode(self, value: object): ...
+    def RootNode(self, value: pivy.coin.SoSeparator): ...
 
     @property
-    def SwitchNode(self) -> object:
+    def SwitchNode(self) -> pivy.coin.SoSwitch:
         """A pivy SoSwitch for the display mode switch of this ViewProvider"""
 
     @SwitchNode.setter
-    def SwitchNode(self, value: object): ...
+    def SwitchNode(self, value: pivy.coin.SoSwitch): ...
 
     def addDisplayMode(self, arg1, arg2: str, /):
         """
@@ -342,7 +343,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         view: the MDIView, default to active view
         """
 
-    def getDetailPath(self, subname: str, path, append=True, /) -> bool | typing.Any:
+    def getDetailPath(self, subname: str, path, append=True, /) -> bool | pivy.coin.SoDetail:
         """
         return Coin detail and path of an subelement
         getDetailPath(subname,path,append=True)
@@ -736,7 +737,7 @@ class AxisOrigin(FreeCAD.BaseClass):
         """Get/set the axis line width for rendering"""
 
     @property
-    def Node(self) -> object:
+    def Node(self) -> pivy.coin.SoGroup:
         """Get the Coin3D node"""
 
     @property
@@ -751,7 +752,7 @@ class AxisOrigin(FreeCAD.BaseClass):
     def Scale(self) -> float:
         """Get/set auto scaling factor, 0 to disable"""
 
-    def getDetailPath(self, subname: str, path, /) -> bool | typing.Any:
+    def getDetailPath(self, subname: str, path, /) -> bool | pivy.coin.SoDetail:
         """
         getDetailPath(subname,path): return Coin detail and path of an subelement
 
@@ -1417,7 +1418,7 @@ class View3DInventorPy:
     def removeAnnotation(self, arg1: str, /) -> None:
         """removeAnnotation()"""
 
-    def getSceneGraph(self):
+    def getSceneGraph(self) -> pivy.coin.SoSeparator:
         """getSceneGraph()"""
 
     def getViewer(self) -> FreeCADGui.View3DInventorViewerPy:
@@ -2353,7 +2354,7 @@ class ExpressionBinding:
 class View3DInventorViewerPy:
     """Python binding class for the 3D viewer class"""
 
-    def getSoRenderManager(self):
+    def getSoRenderManager(self) -> pivy.coin.SoRenderManager:
         """
         getSoRenderManager() -> SoRenderManager
         Returns the render manager which is used to handle everything related to
@@ -2361,7 +2362,7 @@ class View3DInventorViewerPy:
         render process
         """
 
-    def getSoEventManager(self):
+    def getSoEventManager(self) -> pivy.coin.SoEventManager:
         """
         getSoEventManager() -> SoEventManager
         Returns the event manager which is used to handle everything event related in
@@ -2369,7 +2370,7 @@ class View3DInventorViewerPy:
         done very carefully to not change the user interaction in an unpredictable manner.
         """
 
-    def getSceneGraph(self):
+    def getSceneGraph(self) -> pivy.coin.SoSeparator:
         """getSceneGraph() -> SoNode"""
 
     def setSceneGraph(self, SoNode, /) -> None:
