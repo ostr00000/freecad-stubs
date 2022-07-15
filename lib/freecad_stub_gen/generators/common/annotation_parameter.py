@@ -14,7 +14,7 @@ class RawRepr:
 
     def __new__(cls, *values):
         match values:
-            case () | (Parameter.empty | 'object', ):
+            case () | (Parameter.empty | 'typing.Any', ):
                 return Parameter.empty
         return super().__new__(cls)
 
@@ -68,7 +68,7 @@ class AnnotationParam(Parameter):
                 formatted = self.name
             case self.empty, _:
                 formatted = f'{self.name}: {formatannotation(self.annotation)}'
-            case _, (self.empty | 'object'):
+            case _, self.empty:
                 formatted = f'{self.name}={repr(self.default)}'
             case _:
                 formatted = f'{self.name}: {formatannotation(self.annotation)} = {repr(self.default)}'

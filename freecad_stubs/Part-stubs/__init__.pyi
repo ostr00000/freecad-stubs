@@ -8,8 +8,8 @@ import PartDesign
 class ReturnGetModeInfoDict(typing.TypedDict):
     ReferenceCombinations: list[list]
     ModeIndex: int
-    UserFriendlyName: object
-    BriefDocu: object
+    UserFriendlyName: typing.Any
+    BriefDocu: typing.Any
 
 
 class ReturnGetRefTypeInfoDict(typing.TypedDict):
@@ -24,7 +24,7 @@ class ReturnSuggestModesDict(typing.TypedDict):
     error: str
     message: str
     nextRefTypeHint: list[str]
-    reachableModes: dict[object, list[list[str]]]
+    reachableModes: dict[typing.Any, list[list[str]]]
     references_Types: list[str]
 
 
@@ -1034,7 +1034,7 @@ class Face(PartModule.Shape):
         """
 
     @property
-    def Surface(self) -> object | None:
+    def Surface(self) -> typing.Any | None:
         """Returns the geometric surface of the face"""
 
     @property
@@ -1062,7 +1062,7 @@ class Face(PartModule.Shape):
         Possible exceptions: (Part.OCCError).
         """
 
-    def curveOnSurface(self, Edge: PartModule.Edge, /) -> tuple[object, float, float]:
+    def curveOnSurface(self, Edge: PartModule.Edge, /) -> tuple[typing.Any, float, float]:
         """
         Returns the curve associated to the edge in the parametric space of the face.
         curveOnSurface(Edge) -> (curve, min, max) or None
@@ -2605,7 +2605,7 @@ class BSplineCurve(PartModule.BoundedCurve):
     def StartPoint(self) -> FreeCAD.Vector:
         """Returns the start point of this B-Spline curve."""
 
-    def __reduce__(self) -> tuple[object, tuple[typing.Callable, typing.Callable, typing.Callable, typing.Callable, object, typing.Callable, typing.Callable]]:
+    def __reduce__(self) -> tuple[typing.Any, tuple[typing.Callable, typing.Callable, typing.Callable, typing.Callable, typing.Any, typing.Callable, typing.Callable]]:
         """
         __reduce__()
         Serialization of Part.BSplineCurve objects
@@ -3374,7 +3374,7 @@ class Wire(PartModule.Shape):
         Possible exceptions: (Part.OCCError).
         """
 
-    def makeHomogenousWires(self, wire: PartModule.Wire, /) -> PartModule.Wire | object:
+    def makeHomogenousWires(self, wire: PartModule.Wire, /) -> PartModule.Wire | typing.Any:
         """
         Make this and the given wire homogeneous to have the same number of edges
         makeHomogenousWires(wire) -> Wire
@@ -4462,7 +4462,7 @@ class GeometrySurface(PartModule.Geometry):
         """Returns the global continuity of the surface."""
 
     @property
-    def Rotation(self) -> 'object' | FreeCAD.Rotation:
+    def Rotation(self) -> object | FreeCAD.Rotation:
         """Returns a rotation object to describe the orientation for surface that supports it"""
 
     def UPeriod(self) -> float:
@@ -4626,13 +4626,13 @@ class GeometrySurface(PartModule.Geometry):
         Possible exceptions: (Part.OCCError).
         """
 
-    def uIso(self, arg1: float, /) -> PartModule.Line | object:
+    def uIso(self, arg1: float, /) -> PartModule.Line | typing.Any:
         """
         Builds the U isoparametric curve
         Possible exceptions: (RuntimeError, Part.OCCError).
         """
 
-    def vIso(self, arg1: float, /) -> PartModule.Line | object:
+    def vIso(self, arg1: float, /) -> PartModule.Line | typing.Any:
         """
         Builds the V isoparametric curve
         Possible exceptions: (RuntimeError, Part.OCCError).
@@ -4819,7 +4819,7 @@ class Edge(PartModule.Shape):
         Possible exceptions: (Part.OCCError).
         """
 
-    def curveOnSurface(self, idx: int, /) -> tuple[object, object, FreeCAD.Placement, float, float]:
+    def curveOnSurface(self, idx: int, /) -> tuple[typing.Any, typing.Any, FreeCAD.Placement, float, float]:
         """
         Returns the 2D curve, the surface, the placement and the parameter range of index idx.
         curveOnSurface(idx) -> None or tuple
@@ -5701,7 +5701,7 @@ class Curve(PartModule.Geometry):
         """Returns the value of the last parameter."""
 
     @property
-    def Rotation(self) -> 'object' | FreeCAD.Rotation:
+    def Rotation(self) -> object | FreeCAD.Rotation:
         """Returns a rotation object to describe the orientation for curve that supports it"""
 
     def approximateBSpline(self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = 'C2', /) -> PartModule.BSplineCurve:
@@ -7260,7 +7260,7 @@ def __fromPythonOCC__(occ, /) -> PartModule.Shape:
     """
 
 
-def clearShapeCache() -> 'object':
+def clearShapeCache() -> object:
     """
     clearShapeCache() -- Clears internal shape cache
     Possible exceptions: (Exception).
@@ -7287,7 +7287,7 @@ def joinSubname(sub: str, mapped: str, subElement: str, /) -> str:
     """
 
 
-def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matrix = None, needSubElement=None, transform=None, retType: int = None, noElementMap=None, refine=None) -> PartModule.Shape | tuple[PartModule.Shape, FreeCAD.Matrix, object]:
+def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matrix = None, needSubElement=None, transform=None, retType: int = None, noElementMap=None, refine=None) -> PartModule.Shape | tuple[PartModule.Shape, FreeCAD.Matrix, typing.Any]:
     """
     getShape(obj,subname=None,mat=None,needSubElement=False,transform=True,retType=0):
     Obtain the the TopoShape of a given object with SubName reference

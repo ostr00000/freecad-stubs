@@ -1,3 +1,6 @@
+import typing
+
+
 # AppImportGuiPy.cpp
 def ocaf(string: str, /) -> None:
     """
@@ -6,14 +9,14 @@ def ocaf(string: str, /) -> None:
     """
 
 
-def open(name: str, docName: str = None, importHidden=None, merge=None, useLinkGroup=None, mode: int = None) -> 'object' | object | None:
+def open(name: str, docName: str = None, importHidden=None, merge=None, useLinkGroup=None, mode: int = None) -> object | typing.Any | None:
     """
     open(string) -- Open the file and create a new document.
     Possible exceptions: (Exception, IOError, FreeCAD.Base.FreeCADError).
     """
 
 
-def insert(name: str, docName: str = None, importHidden=None, merge=None, useLinkGroup=None, mode: int = None) -> 'object' | object | None:
+def insert(name: str, docName: str = None, importHidden=None, merge=None, useLinkGroup=None, mode: int = None) -> object | typing.Any | None:
     """
     insert(string,string) -- Insert the file into the given document.
     Possible exceptions: (Exception, IOError, FreeCAD.Base.FreeCADError).

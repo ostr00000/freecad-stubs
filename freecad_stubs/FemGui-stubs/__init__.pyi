@@ -115,7 +115,7 @@ def setActiveAnalysis(AnalysisObject: FreeCAD.DocumentObject = None, /) -> None:
     """
 
 
-def getActiveAnalysis() -> object | None:
+def getActiveAnalysis() -> typing.Any | None:
     """
     getActiveAnalysis() -- Returns the Analysis object in work.
     Possible exceptions: (Exception).

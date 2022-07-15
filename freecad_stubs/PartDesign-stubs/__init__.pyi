@@ -1,3 +1,5 @@
+import typing
+
 import FreeCAD
 import Part as PartModule
 
@@ -7,7 +9,7 @@ class Body(PartModule.BodyBase):
     """PartDesign body class"""
 
     @property
-    def VisibleFeature(self) -> object | 'object':
+    def VisibleFeature(self) -> typing.Any | object:
         """Return the the visible feature of this body"""
 
     def insertObject(self, feature: FreeCAD.DocumentObject, target, after: bool = False, /):

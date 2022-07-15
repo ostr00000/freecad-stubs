@@ -42,9 +42,7 @@ class ReturnTypeConverterBase:
             case '':
                 return Empty
             case 'Py::Object()':
-                # we cannot return `object` directly
-                # otherwise `object` may be ignored if there are no other types
-                return "'object'"
+                return 'object'
             case 'Py_None' | 'Py::None()' | 'Py_Return':
                 return 'None'
             case '0' | '-1' | 'NULL' | 'nullptr' | '0L':

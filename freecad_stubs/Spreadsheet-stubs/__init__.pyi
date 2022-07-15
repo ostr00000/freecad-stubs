@@ -73,7 +73,7 @@ class Sheet(FreeCAD.DocumentObject):
         Possible exceptions: (ValueError).
         """
 
-    def getAlignment(self, arg1: str, /) -> object | None:
+    def getAlignment(self, arg1: str, /) -> typing.Any | None:
         """
         Get alignment of the cell
         Possible exceptions: (ValueError).
@@ -121,7 +121,7 @@ class Sheet(FreeCAD.DocumentObject):
         Possible exceptions: (ValueError).
         """
 
-    def getStyle(self, arg1: str, /) -> object | None:
+    def getStyle(self, arg1: str, /) -> typing.Any | None:
         """
         Get style of the cell
         Possible exceptions: (ValueError).

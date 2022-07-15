@@ -59,14 +59,14 @@ def writeDXFObject(objects: FreeCAD.DocumentObject, filename_: str, version: int
     """
 
 
-def open(name: str, docName: str = None, importHidden=None, merge=None, useLinkGroup=None, mode: int = None) -> list[tuple[object, FreeCAD.PropertyColorList]] | None:
+def open(name: str, docName: str = None, importHidden=None, merge=None, useLinkGroup=None, mode: int = None) -> list[tuple[typing.Any, FreeCAD.PropertyColorList]] | None:
     """
     open(string) -- Open the file and create a new document.
     Possible exceptions: (Exception, IOError, FreeCAD.Base.FreeCADError).
     """
 
 
-def insert(name: str, docName: str = None, importHidden=None, merge=None, useLinkGroup=None, mode: int = None) -> list[tuple[object, FreeCAD.PropertyColorList]] | None:
+def insert(name: str, docName: str = None, importHidden=None, merge=None, useLinkGroup=None, mode: int = None) -> list[tuple[typing.Any, FreeCAD.PropertyColorList]] | None:
     """
     insert(string,string) -- Insert the file into the given document.
     Possible exceptions: (Exception, IOError, FreeCAD.Base.FreeCADError).

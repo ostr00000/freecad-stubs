@@ -17,7 +17,7 @@ class ReturnGetObjectInfoDict(typing.TypedDict):
     x: float
     y: float
     z: float
-    ParentObject: object
+    ParentObject: typing.Any
     SubName: str
     Document: str
     Object: str
@@ -28,7 +28,7 @@ class ReturnGetObjectsInfoDict(typing.TypedDict):
     x: float
     y: float
     z: float
-    ParentObject: object
+    ParentObject: typing.Any
     SubName: str
     Document: str
     Object: str
@@ -69,7 +69,7 @@ class Workbench(FreeCAD.BaseClass):
     def activate(self):
         """Activate this workbench"""
 
-    def getToolbarItems(self) -> dict[object, list[str]]:
+    def getToolbarItems(self) -> dict[typing.Any, list[str]]:
         """Show a dict of all toolbars and their commands"""
 
     def listCommandbars(self) -> list[str]:
@@ -98,11 +98,11 @@ class LinkView(FreeCAD.BaseClass):
         """Set the element size to create an array of linked object"""
 
     @property
-    def LinkedView(self) -> 'object' | object:
+    def LinkedView(self) -> object | typing.Any:
         """The linked view object"""
 
     @property
-    def Owner(self) -> 'object' | object:
+    def Owner(self) -> object | typing.Any:
         """The owner view object of this link handle"""
 
     @property
@@ -110,11 +110,11 @@ class LinkView(FreeCAD.BaseClass):
         """A pivy node holding the cloned representation of the linked view object"""
 
     @property
-    def SubNames(self) -> 'object' | tuple[str, ...]:
+    def SubNames(self) -> object | tuple[str, ...]:
         """The sub-object reference of the link"""
 
     @property
-    def Visibilities(self) -> 'object' | tuple[bool, ...]:
+    def Visibilities(self) -> object | tuple[bool, ...]:
         """Get/set the child element visibility"""
 
     def getBoundBox(self, vobj, /) -> FreeCAD.BoundBox:
@@ -123,7 +123,7 @@ class LinkView(FreeCAD.BaseClass):
         Possible exceptions: (TypeError).
         """
 
-    def getChildren(self) -> tuple[object, ...]:
+    def getChildren(self) -> tuple[typing.Any, ...]:
         """Get children view objects"""
 
     def getDetailPath(self, arg1: str, arg2, /):
@@ -342,7 +342,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         view: the MDIView, default to active view
         """
 
-    def getDetailPath(self, subname: str, path, append=True, /) -> bool | object:
+    def getDetailPath(self, subname: str, path, append=True, /) -> bool | typing.Any:
         """
         return Coin detail and path of an subelement
         getDetailPath(subname,path,append=True)
@@ -571,7 +571,7 @@ class Command(FreeCAD.PyObjectBase):
         """
 
     @staticmethod
-    def findCustomCommand(name: str, /) -> object | str | None:
+    def findCustomCommand(name: str, /) -> typing.Any | str | None:
         """
         Find the name of a custom command, given a macro name
         findCustomCommand(name) -> Optional[str]
@@ -751,7 +751,7 @@ class AxisOrigin(FreeCAD.BaseClass):
     def Scale(self) -> float:
         """Get/set auto scaling factor, 0 to disable"""
 
-    def getDetailPath(self, subname: str, path, /) -> bool | object:
+    def getDetailPath(self, subname: str, path, /) -> bool | typing.Any:
         """
         getDetailPath(subname,path): return Coin detail and path of an subelement
 
@@ -884,7 +884,7 @@ class SelectionObject(FreeCAD.BaseClass):
         """Name of the selected sub-element if any"""
 
     @property
-    def SubObjects(self) -> tuple[object, ...]:
+    def SubObjects(self) -> tuple[typing.Any, ...]:
         """Selected sub-element, if any"""
 
     @property
@@ -939,7 +939,7 @@ class Document(FreeCAD.Persistence):
         """The editing transformation matrix."""
 
     @property
-    def InEditInfo(self) -> tuple[object, str, str, int] | None:
+    def InEditInfo(self) -> tuple[typing.Any, str, str, int] | None:
         """A tuple(obj,subname,subElement,editMode) of editing object reference, or None if no object is in edit."""
 
     @property
@@ -1173,7 +1173,7 @@ class MDIViewPy(qtpy.QtWidgets.QMainWindow):
 
 
 # Application.cpp
-def subgraphFromObject(object: FreeCAD.DocumentObject, /) -> object | None:
+def subgraphFromObject(object: FreeCAD.DocumentObject, /) -> typing.Any | None:
     """
     subgraphFromObject(object) -> Node
 
@@ -2218,7 +2218,7 @@ def showPreferences(grp: str = None, index: int = 0, /):
     """
 
 
-def createViewer(views: int = 1, name: str = None, /) -> object | FreeCADGui.AbstractSplitViewPy:
+def createViewer(views: int = 1, name: str = None, /) -> typing.Any | FreeCADGui.AbstractSplitViewPy:
     """
     createViewer(views=1, name) -> View3DInventorPy or AbstractSplitViewPy
 

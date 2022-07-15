@@ -419,7 +419,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         Possible exceptions: (TypeError).
         """
 
-    def getParentGeoFeatureGroup(self) -> object | None:
+    def getParentGeoFeatureGroup(self) -> typing.Any | None:
         """
         Returns the GeoFeatureGroup, and hence the local coordinate system, the object 
                                   is in or None if it is not part of a group. Note that an object can only be 
@@ -451,7 +451,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         Possible exceptions: (RuntimeError).
         """
 
-    def getSubObject(self, subname, retType: int = 0, matrix=None, transform=True, depth: int = 0) -> object | FreeCAD.Placement | FreeCAD.Matrix | tuple[object, FreeCAD.Matrix, object] | tuple[object, object, 'object', FreeCAD.Placement, FreeCAD.Matrix, FreeCAD.Placement, FreeCAD.Matrix, tuple[object, FreeCAD.Matrix, object]]:
+    def getSubObject(self, subname, retType: int = 0, matrix=None, transform=True, depth: int = 0) -> typing.Any | FreeCAD.Placement | FreeCAD.Matrix | tuple[typing.Any, FreeCAD.Matrix, typing.Any] | tuple[typing.Any, typing.Any, object, FreeCAD.Placement, FreeCAD.Matrix, FreeCAD.Placement, FreeCAD.Matrix, tuple[typing.Any, FreeCAD.Matrix, typing.Any]]:
         """
         getSubObject(subname, retType=0, matrix=None, transform=True, depth=0)
 
@@ -522,7 +522,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
                             Note, you can only remove user-defined properties but not built-in ones.
         """
 
-    def resolve(self, subname: str, /) -> tuple[object, object, str, str]:
+    def resolve(self, subname: str, /) -> tuple[typing.Any, typing.Any, str, str]:
         """
         resolve(subname) -- resolve the sub object
 
@@ -533,7 +533,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         non-object sub-element name if any.
         """
 
-    def resolveSubElement(self, subname: str, append=None, type: int = None, /) -> tuple[object, str, str]:
+    def resolveSubElement(self, subname: str, append=None, type: int = None, /) -> tuple[typing.Any, str, str]:
         """
         resolveSubElement(subname,append,type) -- resolve both new and old style sub element
 
@@ -919,7 +919,7 @@ class Metadata(FreeCAD.PyObjectBase):
         """List of conflicts, format identical to dependencies"""
 
     @property
-    def Content(self) -> dict[object, list[FreeCAD.Metadata]]:
+    def Content(self) -> dict[typing.Any, list[FreeCAD.Metadata]]:
         """A dictionary of lists of content items: defined recursively, each item is itself a Metadata object -- see package.xml file format documentation for details"""
 
     @property
@@ -1384,7 +1384,7 @@ class Document(FreeCAD.PropertyContainer):
     def commitTransaction(self):
         """Commit an Undo/Redo transaction"""
 
-    def copyObject(self, object, with_dependencies=False, return_all=False, /) -> object | tuple[object, ...]:
+    def copyObject(self, object, with_dependencies=False, return_all=False, /) -> typing.Any | tuple[typing.Any, ...]:
         """
         copyObject(object, with_dependencies=False, return_all=False)
         Copy an object or objects from another document to this document. 
@@ -1423,7 +1423,7 @@ class Document(FreeCAD.PropertyContainer):
         For a temporary document it returns its transient directory.
         """
 
-    def getLinksTo(self, obj=None, options: int = 0, maxCount: int = 0, /) -> tuple[object, ...]:
+    def getLinksTo(self, obj=None, options: int = 0, maxCount: int = 0, /) -> tuple[typing.Any, ...]:
         """
         getLinksTo(obj, options=0, maxCount=0): return objects linked to 'obj'
 
@@ -1458,7 +1458,7 @@ class Document(FreeCAD.PropertyContainer):
         Possible exceptions: (TypeError).
         """
 
-    def importLinks(self, object_object_=None, /) -> tuple[object, ...]:
+    def importLinks(self, object_object_=None, /) -> tuple[typing.Any, ...]:
         """
         importLinks(object|[object...])
 
@@ -1595,7 +1595,7 @@ class PropertyContainer(FreeCAD.Persistence):
     def getGroupOfProperty(self, arg1: str, /) -> str:
         """Return the name of the group which the property belongs to in this class. The properties sorted in different named groups for convenience."""
 
-    def getPropertyByName(self, name: str, checkOwner: int = 0, /) -> FreeCAD.Property | tuple[object, FreeCAD.Property]:
+    def getPropertyByName(self, name: str, checkOwner: int = 0, /) -> FreeCAD.Property | tuple[typing.Any, FreeCAD.Property]:
         """
         getPropertyByName(name,checkOwner=0)
 
@@ -1833,7 +1833,7 @@ def changeImportModule(arg0: str, arg1: str, arg2: str, /):
     """Change the import module name of a registered filetype"""
 
 
-def getImportType(arg0: str = None, /) -> list[str] | dict[object, str | list[str] | None]:
+def getImportType(arg0: str = None, /) -> list[str] | dict[typing.Any, str | list[str] | None]:
     """Get the name of the module that can import the filetype"""
 
 
@@ -1841,7 +1841,7 @@ def EndingAdd(arg0: str, arg1: str, /):
     """deprecated -- use addImportType"""
 
 
-def EndingGet(arg0: str = None, /) -> list[str] | dict[object, str | list[str] | None]:
+def EndingGet(arg0: str = None, /) -> list[str] | dict[typing.Any, str | list[str] | None]:
     """deprecated -- use getImportType"""
 
 
@@ -1853,7 +1853,7 @@ def changeExportModule(arg0: str, arg1: str, arg2: str, /):
     """Change the export module name of a registered filetype"""
 
 
-def getExportType(arg0: str = None, /) -> list[str] | dict[object, str | list[str] | None]:
+def getExportType(arg0: str = None, /) -> list[str] | dict[typing.Any, str | list[str] | None]:
     """Get the name of the module that can export the filetype"""
 
 
@@ -2011,7 +2011,7 @@ def checkLinkDepth(depth: int, /) -> int:
     """checkLinkDepth(depth) -- check link recursion depth"""
 
 
-def getLinksTo(obj=None, options: int = 0, maxCount: int = 0, /) -> tuple[object, ...]:
+def getLinksTo(obj=None, options: int = 0, maxCount: int = 0, /) -> tuple[typing.Any, ...]:
     """
     getLinksTo(obj,options=0,maxCount=0) -- return the objects linked to 'obj'
 
@@ -2022,7 +2022,7 @@ def getLinksTo(obj=None, options: int = 0, maxCount: int = 0, /) -> tuple[object
     """
 
 
-def getDependentObjects(arg0, arg1: int = None, /) -> tuple[object, ...]:
+def getDependentObjects(arg0, arg1: int = None, /) -> tuple[typing.Any, ...]:
     """
     getDependentObjects(obj|[obj,...], options=0)
     Return a list of dependent objects including the given objects.

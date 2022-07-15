@@ -29,7 +29,10 @@ def _signatureGen(funDocString: str, argNumStart: int) -> Iterator[Parameter]:
         return
 
     uniqueNameGen = _uniqueArgNameGen(argNumStart)
-    next(uniqueNameGen)
+    try:
+        next(uniqueNameGen)
+    except StopIteration:
+        raise ValueError("Unique generator should never end")
 
     paramType = Parameter.POSITIONAL_ONLY
 

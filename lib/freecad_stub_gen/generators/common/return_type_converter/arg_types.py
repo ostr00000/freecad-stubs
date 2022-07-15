@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import TypeVar, Generator
+from typing import TypeVar, Generator, Protocol
 
 from freecad_stub_gen.generators.common.names import getModuleName, useAliasedModule
 from freecad_stub_gen.util import OrderedSet, indent
@@ -13,19 +13,32 @@ class EmptyType:
         return self
 
     def __eq__(self, other):
-        return other is None or other == 'object'
+        return other is Empty or other == 'typing.Any'
 
     def __hash__(self):
         return 1
 
     def __str__(self):
-        return 'object'
+        return 'typing.Any'
 
 
 Empty = EmptyType()
 
 
-class ArgumentsIter:
+class SizedIterable(Protocol):
+    """
+    We cannot use `Collection` from collections.abc,
+    because mro first chose collections over list/dict.
+    """
+
+    def __iter__(self):
+        return super().__iter__()
+
+    def __len__(self):
+        return super().__len__()
+
+
+class ArgumentsIter(SizedIterable):
     @cached_property
     def imports(self):
         return OrderedSet()
@@ -39,12 +52,14 @@ class ArgumentsIter:
             match argType:
                 case str() if '[' not in argType and getModuleName(argType):
                     argType = useAliasedModule(argType, self.imports)
+                case EmptyType() if len(self) > 1:
+                    self.imports.add('typing')
                 case UnionArguments() as ua:
                     self.imports.update(ua.imports)
             yield str(argType)
 
 
-class UnionArguments(ArgumentsIter, OrderedSet):
+class UnionArguments(ArgumentsIter, OrderedSet[T]):
     def __str__(self):
         values = list(self)
         if 'None' in values:
@@ -70,6 +85,11 @@ class TupleArgument(ArgumentsIter, list):
         elif self:
             return f'tuple[{", ".join(self)}]'
         return 'tuple'
+
+    def __eq__(self, other):
+        return isinstance(other, type(self)) \
+               and self.repeated == other.repeated \
+               and super().__eq__(other)
 
 
 RetType = UnionArguments[str] | EmptyType | str
@@ -137,3 +157,9 @@ class TypedDictGen(dict, ArgumentsIter):
         self.imports.update(listIter.imports)
         self.imports.add(fun)
         return typedDictName
+
+    def __eq__(self, other):
+        return isinstance(other, type(self)) \
+               and self.funName == other.funName \
+               and self.alternativeSyntax == other.alternativeSyntax \
+               and super().__eq__(other)

@@ -70,7 +70,7 @@ class Vector(FreeCAD.PyObjectBase):
     @z.setter
     def z(self, value: float): ...
 
-    def __reduce__(self) -> tuple[object, tuple[float, float, float]]:
+    def __reduce__(self) -> tuple[typing.Any, tuple[float, float, float]]:
         """
         __reduce__()
                               Serialization of Vector objects

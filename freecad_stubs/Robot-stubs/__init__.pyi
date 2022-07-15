@@ -122,11 +122,11 @@ class Robot6Axis(FreeCAD.Persistence):
     def Axis6(self, value: float): ...
 
     @property
-    def Base(self) -> 'object':
+    def Base(self) -> object:
         """Actual Base system in respect to the robot world system"""
 
     @Base.setter
-    def Base(self, value: 'object'): ...
+    def Base(self, value: object): ...
 
     @property
     def Tcp(self) -> FreeCAD.Placement:

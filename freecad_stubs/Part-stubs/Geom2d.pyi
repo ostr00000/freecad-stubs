@@ -1270,7 +1270,7 @@ class OffsetCurve2d(Part.Geom2d.Curve2d):
         """Possible exceptions: (TypeError, Part.OCCError)."""
 
     @property
-    def BasisCurve(self) -> object | None:
+    def BasisCurve(self) -> typing.Any | None:
         """Sets or gets the basic curve."""
 
     @property

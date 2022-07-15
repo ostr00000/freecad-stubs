@@ -133,6 +133,9 @@ parseTypeMap = {
 parseSizeMap = {k: len(v.split('[')[1].split(',')) for k, v in parseTypeMap.items()}
 parseTypeMap = {k: v.removeprefix('(').split(' ')[0].removesuffix(')').removesuffix(',')
                 for k, v in parseTypeMap.items()}
+_autoGenTypeToRealType = {'object': 'typing.Any'}
+parseTypeMap = {k: _autoGenTypeToRealType.get(v, v) for k, v in parseTypeMap.items()}
+
 
 if __name__ == '__main__':
     def testParsing():

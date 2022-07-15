@@ -129,7 +129,8 @@ class TypesConverter:
                 pass
             raise exc
 
-        return 'object'
+        self.requiredImports.add('typing')
+        return 'typing.Any'
 
     def _convertPointerToType(self, pointerArg: str) -> str | None:
         pointerArg = pointerArg.removeprefix('&').removeprefix('(').removesuffix(')')
@@ -250,5 +251,10 @@ parseTypeMap: dict[str, str] = {
 parseSizeMap = {k: len(v.split('[')[1].split(',')) for k, v in parseTypeMap.items()}
 parseTypeMap = {k: v.removeprefix('(').split(' ')[0].removesuffix(')').removesuffix(',')
                 for k, v in parseTypeMap.items()}
-_autoGenTypeToRealType = {'read-only': 'bytes', 'read-write': 'bytes', 'bytes-like': 'bytes'}
+_autoGenTypeToRealType = {
+    'read-only': 'bytes',
+    'read-write': 'bytes',
+    'bytes-like': 'bytes',
+    'object': 'typing.Any',
+}
 parseTypeMap = {k: _autoGenTypeToRealType.get(v, v) for k, v in parseTypeMap.items()}

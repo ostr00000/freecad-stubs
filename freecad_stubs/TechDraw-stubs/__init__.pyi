@@ -1520,7 +1520,7 @@ class CenterLine(FreeCAD.PyObjectBase):
         """Reverse the order of points for 2 point CenterLine."""
 
     @property
-    def Format(self) -> tuple[int, float, object, bool]:
+    def Format(self) -> tuple[int, float, typing.Any, bool]:
         """The appearance attributes (style, color, weight, visible) for this CenterLine."""
 
     @property
@@ -1784,7 +1784,7 @@ class CosmeticEdge(FreeCAD.PyObjectBase):
         """Gives the position of one end of this CosmeticEdge as vector."""
 
     @property
-    def Format(self) -> tuple[int, float, object, bool]:
+    def Format(self) -> tuple[int, float, typing.Any, bool]:
         """The appearance attributes (style, weight, color, visible) for this CosmeticEdge."""
 
     @property
