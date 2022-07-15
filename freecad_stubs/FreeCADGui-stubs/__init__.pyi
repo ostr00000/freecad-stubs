@@ -229,25 +229,25 @@ class ViewProvider(FreeCAD.ExtensionContainer):
 
     @property
     def Annotation(self) -> pivy.coin.SoSeparator:
-        """A pivy Separator to add a custom scenegraph to this ViewProvider"""
+        """A pivy Separator to add a custom scenegraph to this ViewProvider."""
 
     @Annotation.setter
     def Annotation(self, value: pivy.coin.SoSeparator): ...
 
     @property
     def CanRemoveChildrenFromRoot(self) -> bool:
-        """Tells the tree view whether to remove the children item from root or not"""
+        """Tells the tree view whether to remove the children item from root or not."""
 
     @property
     def DefaultMode(self) -> int:
-        """Get/Set the default display mode in turns of coin node index"""
+        """Get/Set the default display mode in turns of coin node index."""
 
     @DefaultMode.setter
     def DefaultMode(self, value: int): ...
 
     @property
     def DropPrefix(self) -> str:
-        """Subname referecing the sub-object for holding dropped object"""
+        """Subname referecing the sub-object for holding dropped object."""
 
     @property
     def IV(self) -> str:
@@ -255,181 +255,302 @@ class ViewProvider(FreeCAD.ExtensionContainer):
 
     @property
     def Icon(self) -> str | qtpy.QtGui.QIcon:
-        """The icon of this ViewProvider"""
+        """The icon of this ViewProvider."""
 
     @property
     def LinkVisibility(self) -> bool:
-        """Get/set visibilities of all links to this view object"""
+        """Get/set visibilities of all links to this view object."""
 
     @property
     def RootNode(self) -> pivy.coin.SoSeparator:
-        """A pivy Separator with the root of this ViewProvider"""
+        """A pivy Separator with the root of this ViewProvider."""
 
     @RootNode.setter
     def RootNode(self, value: pivy.coin.SoSeparator): ...
 
     @property
     def SwitchNode(self) -> pivy.coin.SoSwitch:
-        """A pivy SoSwitch for the display mode switch of this ViewProvider"""
+        """A pivy SoSwitch for the display mode switch of this ViewProvider."""
 
     @SwitchNode.setter
     def SwitchNode(self, value: pivy.coin.SoSwitch): ...
 
-    def addDisplayMode(self, arg1, arg2: str, /):
+    def addDisplayMode(self, obj, mode: str, /):
         """
-        Add a new display mode to the view provider
+        addDisplayMode(obj, mode) -> None
 
+        Add a new display mode to the view provider.
+
+        obj : coin.SoNode
+            Display mode.
+        mode : str
+            Name of the display mode.
         Possible exceptions: (RuntimeError).
         """
 
-    def addProperty(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, arg5: int = None, arg6: bool = None, arg7: bool = None, /) -> FreeCADGui.ViewProvider:
+    def addProperty(self, type: str, name: str = None, group: str = None, doc: str = None, attr: int = 0, ro: bool = False, hd: bool = False, /) -> FreeCADGui.ViewProvider:
         """
+        addProperty(type, name, group, doc, attr=0, ro=False, hd=False) -> ViewProvider
+
         Add a generic property.
-        addProperty(string, string)
-        --
-        The first argument specifies the type, the second the name of the property.
-                
+
+        type : str
+            Property type.
+        name : str
+            Property name. Optional.
+        group : str
+            Property group. Optional.
+        attr : int
+            Property attributes.
+        ro : bool
+            Read only property.
+        hd : bool
+            Hidden property.
         Possible exceptions: (RuntimeError, TypeError).
         """
 
     def canDragAndDropObject(self, obj: FreeCAD.DocumentObject, /) -> bool:
         """
-        Check whether the child object can be removed from other parent and added here by drag and drop
-        canDragAndDropObject(obj)
+        canDragAndDropObject(obj) -> bool
+
+        Check whether the child object can be removed from
+        other parent and added here by drag and drop.
+
+        obj : App.DocumentObject
+            Object to be dragged and dropped.
         """
 
-    def canDragObject(self, obj=None, /) -> bool:
+    def canDragObject(self, obj: FreeCAD.DocumentObject = None, /) -> bool:
         """
-        check whether the child object can be removed by dragging
-        canDragObject(obj=None)
+        canDragObject(obj) -> bool
 
-        Possible exceptions: (TypeError).
+        Check whether the child object can be removed by dragging.
+        If 'obj' is not given, check without filter by any particular object.
+
+        obj : App.DocumentObject
+            Object to be dragged. Optional.
         """
 
-    def canDropObject(self, arg1=None, arg2=None, arg3: str = None, arg4=None, /) -> bool:
+    def canDropObject(self, obj: FreeCAD.DocumentObject = None, owner: FreeCAD.DocumentObject = None, subname: str = None, elem=None) -> bool:
         """
-        check whether the child object can be added by dropping
-        canDropObject(obj=None,owner=None,subname=None)
+        canDropObject(obj, owner, subname, elem) -> bool
 
-        Possible exceptions: (TypeError).
+        Check whether the child object can be added by dropping.
+        If 'obj' is not given, check without filter by any particular object.
+
+        obj : App.DocumentObject
+            Object to be dropped. Optional.
+        owner : App.DocumentObject
+            Parent object of the dropping object. Optional.
+        subname : str
+            Subname reference to the dropping object. Optional.
+        elem : sequence of str
+            Non-objects subelements selected when the object is
+            being dropped. Optional.
+        Possible exceptions: (ValueError, TypeError).
         """
 
     def claimChildren(self) -> list[FreeCAD.DocumentObject | None]:
-        """Returns list of objects that are to be grouped in tree under this object."""
+        """
+        claimChildren() -> list
+
+        Returns list of objects that are to be grouped in tree under this object.
+        """
 
     def doubleClicked(self) -> bool:
-        """Trigger double clicking the corresponding tree item of this view object"""
+        """
+        doubleClicked() -> bool
+
+        Trigger double clicking the corresponding tree item of this view object.
+        """
 
     def dragObject(self, obj: FreeCAD.DocumentObject, /):
         """
-        remove a child object by dropping
-        dragObject(obj)
+        dragObject(obj) -> None
+
+        Remove a child object by dropping.
+
+        obj : App.DocumentObject
+            Object to be dragged.
         """
 
-    def dropObject(self, arg1: FreeCAD.DocumentObject, arg2=None, arg3: str = None, arg4=None, /) -> str:
+    def dropObject(self, obj: FreeCAD.DocumentObject, owner: FreeCAD.DocumentObject = None, subname: str = None, elem=None) -> str:
         """
-        add a child object by dropping
-        dropObject(obj,owner=None,subname=None)
+        dropObject(obj, owner, subname, elem) -> str
+
+        Add a child object by dropping.
+
+        obj : App.DocumentObject
+            Object to be dropped.
+        owner : App.DocumentObject
+            Parent object of the dropping object. Optional.
+        subname : str
+            Subname reference to the dropping object. Optional.
+        elem : sequence of str
+            Non-objects subelements selected when the object is
+            being dropped. Optional.
         Possible exceptions: (TypeError).
         """
 
-    def getBoundingBox(self, subname: str = None, transform=True, view=None, /) -> FreeCAD.BoundBox:
+    def getBoundingBox(self, subName: str = None, transform: bool = True, view=None, /) -> FreeCAD.BoundBox:
         """
-        obtain the bounding box of this view object
-        getBoundingBox(subname=None, transform=True, view=None)
-        --
-        subname: the optional subname referring a sub-object
-        transform: whether to apply the transformation matrix of this view provider
-        view: the MDIView, default to active view
+        getBoundingBox(subName, transform=True, view) -> Base.BoundBox
+
+        Obtain the bounding box of this view object.
+
+        subName : str
+            Name referring a sub-object. Optional.
+        transform: bool
+            Whether to apply the transformation matrix of this view provider.
+        view: View3DInventorPy
+            Default to active view. Optional.
         """
 
-    def getDetailPath(self, subname: str, path, append=True, /) -> bool | pivy.coin.SoDetail:
+    def getDetailPath(self, subelement: str, path, append: bool = True, /) -> pivy.coin.SoDetail:
         """
-        return Coin detail and path of an subelement
-        getDetailPath(subname,path,append=True)
-        --
-        subelement: dot separated string reference to the sub element
-        pPath: output coin path leading to the returned element detail
-        append: If true, path will be first appended with the root node and the mode
-        switch node of this view provider.
+        getDetailPath(subelement, path, append=True) -> coin.SoDetail or None
+
+        Return Coin detail and path of an subelement.
+
+        subname: str
+            Dot separated string reference to the sub element.
+        pPath: coin.SoPath
+            Output coin path leading to the returned element detail.
+        append: bool
+            If True, path will be first appended with the root node and the mode
+            switch node of this view provider.
         """
 
     def getElementColors(self, elementName: str = None, /) -> dict[str, tuple[float, float, float, float]]:
-        """getElementColors(elementName=None) -> dict(elementName:color)"""
+        """
+        getElementColors(elementName) -> dict
+
+        Get a dictionary of the form {elementName : (r,g,b,a)}.
+        If no element name is given a dictionary with all the elements is returned.
+
+        elementName : str
+            Name of the element. Optional.
+        """
 
     def getElementPicked(self, pickPoint, /) -> str:
         """
-        return the picked subelement
-        getElementPicked(pickPoint)
+        getElementPicked(pickPoint) -> str
+
+        Return the picked subelement.
+
+        pickPoint : coin.SoPickedPoint
         """
 
     def hide(self):
-        """Hide the object"""
+        """
+        show() -> None
+
+        Hide the object.
+        """
 
     def isVisible(self) -> bool:
-        """Check if the object is visible"""
+        """
+        isVisible() -> bool
+
+        Check if the object is visible.
+        """
 
     def listDisplayModes(self) -> list[str]:
-        """Show a list of all display modes"""
-
-    def partialRender(self, sub=None, clear=False, /) -> int:
         """
-        render only part of the object
-        partialRender(sub=None,clear=False)
-        --
-        sub: string or list of string refer to the subelement. If it is None then reset the partial rendering.
-        clear: true to add, or false to remove the subelement(s) for rendering.
+        listDisplayModes() -> list
+
+        Show a list of all display modes.
         """
 
-    def removeProperty(self, string: str, /) -> bool:
+    def partialRender(self, sub=None, clear: bool = False, /) -> int:
         """
+        partialRender(sub=None, clear=False) -> int
+
+        Render only part of the object.
+
+        sub: None, str, sequence of str
+            Refer to the subelement. If it is None then reset the partial rendering.
+        clear: bool
+            True to add, or False to remove the subelement(s) for rendering.
+        """
+
+    def removeProperty(self, name: str, /) -> bool:
+        """
+        removeProperty(name) -> bool
+
         Remove a generic property.
-        removeProperty(string)
-        --
-        Note, you can only remove user-defined properties, not built-in ones.
-                
+        Only user-defined properties can be removed, not built-in ones.
+
+        name : str
+            Property name.
         Possible exceptions: (RuntimeError).
         """
 
     def replaceObject(self, oldObj: FreeCAD.DocumentObject, newObj: FreeCAD.DocumentObject, /) -> int:
         """
-        replace a child object
-        replaceObject(oldObj, newObj) -> Int
-        --
-        Returns 1 if succeeded, 0 if not found, -1 if not supported
+        replaceObject(oldObj, newObj) -> int
+
+        Replace a child object.
+        Returns 1 if succeeded, 0 if not found, -1 if not supported.
+
+        oldObj : App.DocumentObject
+            Old object.
+        newObj : App.DocumentObject
+            New object.
         """
 
     def setElementColors(self, colors, /):
         """
-        setElementColors(colors): set element colors
-        --
-        colors: color dictionary of type elementName:(r,g,b,a)
-                
+        setElementColors(colors) -> None
+
+        Set element colors.
+
+        colors: dict
+            Color dictionary of the form {elementName:(r,g,b,a)}.
         Possible exceptions: (TypeError).
         """
 
     @typing.overload
-    def setTransformation(self, arg1: FreeCAD.Matrix, /): ...
+    def setTransformation(self, trans: FreeCAD.Matrix, /): ...
 
     @typing.overload
-    def setTransformation(self, arg1: FreeCAD.Placement, /):
+    def setTransformation(self, trans: FreeCAD.Placement, /):
         """
-        Set a transformation on the Inventor node
+        setTransformation(trans) -> None
 
+        Set a transformation on the Inventor node.
+
+        trans : Base.Placement, Base.Matrix
         Possible exceptions: (TypeError).
         """
 
     def show(self):
-        """Show the object"""
+        """
+        show() -> None
+
+        Show the object.
+        """
 
     def signalChangeIcon(self):
-        """Trigger icon changed signal"""
+        """
+        signalChangeIcon() -> None
+
+        Trigger icon changed signal.
+        """
 
     def supportedProperties(self) -> list[str]:
-        """A list of supported property types"""
+        """
+        supportedProperties() -> list
+
+        A list of supported property types.
+        """
 
     def toString(self) -> str:
-        """Return a string representation of the Inventor node"""
+        """
+        toString() -> str
+
+        Return a string representation of the Inventor node.
+        """
 
 
 # ViewProviderLinkPy.xml
@@ -560,113 +681,151 @@ class Command(FreeCAD.PyObjectBase):
     """FreeCAD Python wrapper of Command functions"""
 
     @staticmethod
-    def createCustomCommand(macrofile: str, menuText: str = None, tooltipText: str = None, whatsThisText: str = None, statustipText: str = None, pixmapText: str = None, shortcutText: str = None, /) -> str:
+    def createCustomCommand(macroFile: str, menuText: str = None, toolTip: str = None, whatsThis: str = None, statusTip: str = None, pixmap: str = None, shortcut: str = None) -> str:
         """
-        Create a custom command for a macro
-        createCustomCommand(macrofile, menuText, tooltipText, whatsThisText, statustipText, pixmapText, shortcutText) -> str
-        --
-        Only the macrofile argument is required, and should be the name of the macro file. All other arguments are
-        passed on to the command creation routines if they are provided. All arguments except the first accept None.
+        createCustomCommand(macroFile, menuText, toolTip, whatsThis, statusTip, pixmap, shortcut) -> str
 
-        Returns the name of the created custom command.
+        Create a custom command for a macro. Returns name of the created command.
+
+        macroFile : str
+            Macro file.
+        menuText : str
+            Menu text. Optional.
+        toolTip : str
+            Tool tip text. Optional.
+        whatsThis : str
+            `What's this?` text. Optional.
+        statusTip : str
+            Status tip text. Optional.
+        pixmap : str
+            Pixmap name. Optional.
+        shortcut : str
+            Shortcut key sequence. Optional.
         """
 
     @staticmethod
-    def findCustomCommand(name: str, /) -> typing.Any | str | None:
+    def findCustomCommand(name: str, /) -> typing.Any | str:
         """
-        Find the name of a custom command, given a macro name
-        findCustomCommand(name) -> Optional[str]
-        --
-        Given the name of a macro, return the name of the custom command for that macro, or
-        None if there is no command matching that macro script name.
+        findCustomCommand(name) -> str or None
+
+        Given the name of a macro, return the name of the custom command for that macro
+        or None if there is no command matching that macro script name.
+
+        name : str
+            Macro name.
         """
 
     @staticmethod
-    def get(string: str, /) -> FreeCADGui.Command:
+    def get(name: str, /) -> FreeCADGui.Command:
         """
+        get(name) -> Gui.Command or None
+
         Get a given command by name or None if it doesn't exist.
-        get(string) -> Command
+
+        name : str
+            Command name.
         """
 
     def getAction(self) -> list[qtpy.QtCore.QObject]:
         """
-        Return the associated QAction object.
         getAction() -> list of QAction
+
+        Return the associated QAction object.
         """
 
-    def getInfo(self) -> list[str]:
+    def getInfo(self) -> dict[str, str]:
         """
+        getInfo() -> dict
+
         Return information about this command.
-        getInfo() -> list of strings
-        --
-        Usage: menuText, tooltipText, whatsThisText, statustipText, pixmapText, shortcutText.
         """
 
     def getShortcut(self) -> str:
         """
+        getShortcut() -> str
+
         Returns string representing shortcut key accelerator for command.
-        getShortcut() -> string
         """
 
     def isActive(self) -> bool:
         """
-        Returns True if the command is active, False otherwise.
         isActive() -> bool
+
+        Returns True if the command is active, False otherwise.
         """
 
     @staticmethod
     def listAll() -> list[str]:
         """
+        listAll() -> list of str
+
         Returns the name of all commands.
-        listAll() -> list of strings
         """
 
     @staticmethod
-    def listByShortcut(string: str, bool_bUseRegExp: int = False, /) -> list[str]:
+    def listByShortcut(string: str, useRegExp: bool = False, /) -> list[str]:
         """
-        Returns a list of all commands, filtered by shortcut.
-        listByShortcut(string, bool bUseRegExp=False) -> list of strings
-        --
-        Shortcuts are converted to uppercase and spaces removed prior to comparison.
+        listByShortcut(string, useRegExp=False) -> list of str
 
+        Returns a list of all commands, filtered by shortcut.
+        Shortcuts are converted to uppercase and spaces removed
+        prior to comparison.
+
+        string :  str
+            Shortcut to be searched.
+        useRegExp : bool
+            Filter using regular expression.
         Possible exceptions: (RuntimeError).
         """
 
     @staticmethod
     def removeCustomCommand(name: str, /) -> bool:
         """
-        Remove the custom command if it exists
         removeCustomCommand(name) -> bool
-        --
-        Given the name of a custom command, this removes that command. It is not an error
-        to remove a non-existent command, the function simply does nothing in that case.
 
+        Remove the custom command if it exists.
+        Given the name of a custom command, this removes that command.
+        It is not an error to remove a non-existent command, the function
+        simply does nothing in that case.
         Returns True if something was removed, or False if not.
+
+        name : str
+            Command name.
         """
 
     def resetShortcut(self) -> bool:
         """
-        Resets shortcut for given command back to the default, returns bool True for success.
         resetShortcut() -> bool
+
+        Resets shortcut for given command back to the default, returns True for success.
         """
 
-    def run(self, arg1: int = None, /):
+    def run(self, item: int = 0, /):
         """
+        run(item=0) -> None
+
         Runs the given command.
-        run() -> None
+
+        item : int
+            Item to be run.
         """
 
     def setShortcut(self, string: str, /) -> bool:
         """
-        Sets shortcut for given command, returns bool True for success.
         setShortcut(string) -> bool
+
+        Sets shortcut for given command, returns True for success.
+
+        string : str
+            Shortcut to be set.
         """
 
     @staticmethod
     def update():
         """
-        Update active status of all commands.
         update() -> None
+
+        Update active status of all commands.
         """
 
 
@@ -713,16 +872,21 @@ class PythonWorkbench(FreeCADGui.Workbench):
 
 # AxisOriginPy.xml
 class AxisOrigin(FreeCAD.BaseClass):
-    """Class for creating a Coin3D representation of a coordinate system"""
+    """
+    Gui.AxisOrigin class.
+
+    Class for creating a Coin3D representation of a coordinate system.
+    """
 
     @property
     def AxisLength(self) -> float:
-        """Get/set the axis length"""
+        """Get/set the axis length."""
 
     @property
     def Labels(self) -> dict[str, str]:
         """
-        Get/set axis component names as a dictionary. Available keys are,
+        Get/set axis component names as a dictionary.
+        Available keys are:
         'O': origin
         'X': x axis
         'Y': y axis
@@ -734,34 +898,47 @@ class AxisOrigin(FreeCAD.BaseClass):
 
     @property
     def LineWidth(self) -> float:
-        """Get/set the axis line width for rendering"""
+        """Get/set the axis line width for rendering."""
 
     @property
     def Node(self) -> pivy.coin.SoGroup:
-        """Get the Coin3D node"""
+        """Get the Coin3D node."""
 
     @property
     def Plane(self) -> tuple[float, float]:
-        """Get/set axis plane size and distance to axis line"""
+        """Get/set axis plane size and distance to axis line."""
 
     @property
     def PointSize(self) -> float:
-        """Get/set the origin point size for rendering"""
+        """Get/set the origin point size for rendering."""
 
     @property
     def Scale(self) -> float:
-        """Get/set auto scaling factor, 0 to disable"""
+        """Get/set auto scaling factor, 0 to disable."""
 
-    def getDetailPath(self, subname: str, path, /) -> bool | pivy.coin.SoDetail:
+    def getDetailPath(self, subname: str, path, /) -> pivy.coin.SoDetail:
         """
-        getDetailPath(subname,path): return Coin detail and path of an subelement
+        getDetailPath(subname, path) -> coin.SoDetail or None
 
-        subelement: dot separated string reference to the sub element
-        pPath: output coin path leading to the returned element detail
+        Returns Coin detail of a subelement.
+        Note: Not fully implemented. Currently only returns None.
+
+        subname : str
+            String reference to the subelement.
+        path: coin.SoPath
+            Output Coin path leading to the returned element detail.
+        Possible exceptions: (TypeError).
         """
 
-    def getElementPicked(self, pickPoint, /) -> str:
-        """getElementPicked(pickPoint): return the picked subelement"""
+    def getElementPicked(self, pickedPoint, /) -> str:
+        """
+        getElementPicked(pickedPoint) -> str
+
+        Returns the picked element name.
+
+        pickedPoint : coin.SoPickedPoint
+        Possible exceptions: (TypeError).
+        """
 
 
 # ViewProviderDocumentObjectPy.xml
@@ -1731,7 +1908,7 @@ def activateWorkbench(name: str, /) -> bool:
 
     name : str
         Name of the workbench to activate.
-    Possible exceptions: (FreeCAD.Base.FreeCADError, RuntimeError).
+    Possible exceptions: (Exception, RuntimeError, FreeCAD.Base.FreeCADError).
     """
 
 
@@ -2460,8 +2637,6 @@ def setupWithoutGUI() -> None:
     """
     setupWithoutGUI() -- Uses this module without starting
     an event loop or showing up any GUI
-
-    Possible exceptions: (RuntimeError).
     """
 
 

@@ -89,20 +89,17 @@ class SelfSignature(Signature):
                  return_annotation=Signature.empty, exceptions=(),
                  __validate_parameters__=True):
 
-        if parameters is not None:
-            if len(parameters) == 1:
-                selfParam = parameters[0]
-                if selfParam.name == 'self' and selfParam.kind == Parameter.POSITIONAL_ONLY:
-                    parameters = list(parameters)
-                    parameters[0] = selfParam.replace(kind=Parameter.POSITIONAL_OR_KEYWORD)
-            elif len(parameters) >= 2:
-                selfParam = parameters[0]
-                secondParam = parameters[1]
-                if (selfParam.name == 'self'
-                        and selfParam.kind == Parameter.POSITIONAL_ONLY
-                        and secondParam.kind == Parameter.POSITIONAL_OR_KEYWORD):
-                    parameters = list(parameters)
-                    parameters[0] = selfParam.replace(kind=Parameter.POSITIONAL_OR_KEYWORD)
+        match parameters:
+            case [Parameter(name='self', kind=Parameter.POSITIONAL_ONLY) as selfParam]:
+                pass
+            case [Parameter(name='self', kind=Parameter.POSITIONAL_ONLY) as selfParam,
+                  Parameter(kind=Parameter.POSITIONAL_OR_KEYWORD), *_]:
+                pass
+            case _:
+                selfParam = None
+        if selfParam is not None:
+            parameters = list(parameters)
+            parameters[0] = selfParam.replace(kind=Parameter.POSITIONAL_OR_KEYWORD)
 
         try:
             super().__init__(parameters, return_annotation=return_annotation,

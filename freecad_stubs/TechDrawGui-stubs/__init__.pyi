@@ -1,3 +1,6 @@
+import TechDraw
+
+
 # AppTechDrawGuiPy.cpp
 def export(arg1, arg2: str, /) -> None:
     """
@@ -27,8 +30,15 @@ def copyActiveViewToSvgFile(arg1, arg2: str, arg3: float = None, arg4: float = N
     """
 
 
-def addQGIToView(View, QGraphicsItem, /) -> None:
+def addQGIToView(View: TechDraw.DrawView, QGraphicsItem, /) -> None:
     """
     addQGIToView(View, QGraphicsItem) -- insert graphics item into view's graphic.
-    Possible exceptions: (TypeError, Exception, RuntimeError).
+    Possible exceptions: (TypeError, RuntimeError, Exception).
+    """
+
+
+def addQGObjToView(View: TechDraw.DrawView, QGraphicsObject, /) -> None:
+    """
+    addQGObjToView(View, QGraphicsObject) -- insert graphics object into view's graphic. Use for QGraphicsItems that have QGraphicsObject as base class.
+    Possible exceptions: (TypeError, RuntimeError, Exception).
     """

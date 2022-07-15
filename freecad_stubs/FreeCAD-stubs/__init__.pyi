@@ -37,6 +37,11 @@ class ReturnGetUrlsDict(typing.TypedDict):
     branch: str
 
 
+class ReturnGetGenericMetadataDict(typing.TypedDict):
+    contents: str
+    attributes: dict[typing.Any, str]
+
+
 
 class PyObjectBase(object): ...
 
@@ -225,7 +230,13 @@ class DocumentObjectGroup(FreeCAD.DocumentObject, FreeCAD.GroupExtension):
 class GeoFeature(FreeCAD.DocumentObject):
     """
     This class can be imported.
-    This class does the whole placement and position handling
+    App.GeoFeature class.
+
+    Base class of all geometric document objects.
+    This class does the whole placement and position handling.
+    With the method `getPropertyOfGeometry` is possible to obtain
+    the main geometric property in general form, without reference
+    to any particular property name.
     """
 
     @property
@@ -240,28 +251,42 @@ class GeoFeature(FreeCAD.DocumentObject):
 
     def getGlobalPlacement(self) -> FreeCAD.Placement:
         """
-        Returns the placement of the object in the global coordinate space, respecting all stacked relationships. 
-                          Note: This function is not available during recompute, as there the placements of parents can change 
-                          after the execution of this object, rendering the result wrong.
+        getGlobalPlacement() -> Base.Placement
+
+        Returns the placement of the object in the global coordinate space, respecting all stacked
+        relationships.
+        Note: This function is not available during recompute, as there the placements of parents
+        can change after the execution of this object, rendering the result wrong.
         Possible exceptions: (RuntimeError).
+        """
+
+    def getPaths(self):
+        """
+        getPaths()
+
+        Returns all possible paths to the root of the document.
+        Note: Not implemented.
         """
 
     def getPropertyNameOfGeometry(self) -> str | None:
         """
-        Returns the property name of the actual geometry or None.
-        For example for a part object it returns the value Shape,
-        for a mesh the value Mesh and so on.
+        getPropertyNameOfGeometry() -> str or None
+
+        Returns the property name of the actual geometry.
+        For example for a Part feature it returns the value 'Shape', for a mesh feature the value
+        'Mesh' and so on.
         If an object has no such property then None is returned.
         """
 
     def getPropertyOfGeometry(self) -> MeshModule.MeshObject | PartModule.Shape | PointsModule.PointKernel | None:
         """
-        Returns the property of the actual geometry or None.
-        For example for a part object it returns its Shape property,
-        for a mesh its Mesh property and so on.
+        getPropertyOfGeometry() -> object or None
+
+        Returns the property of the actual geometry.
+        For example for a Part feature it returns its Shape property, for a Mesh feature its
+        Mesh property and so on.
         If an object has no such property then None is returned.
-        Unlike to getPropertyNameOfGeometry this function returns the geometry,
-        not its name.
+        Unlike to getPropertyNameOfGeometry this function returns the geometry, not its name.
         """
 
 
@@ -451,7 +476,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         Possible exceptions: (RuntimeError).
         """
 
-    def getSubObject(self, subname, retType: int = 0, matrix=None, transform=True, depth: int = 0) -> typing.Any | FreeCAD.Placement | FreeCAD.Matrix | tuple[typing.Any, FreeCAD.Matrix, typing.Any] | tuple[typing.Any, typing.Any, object, FreeCAD.Placement, FreeCAD.Matrix, FreeCAD.Placement, FreeCAD.Matrix, tuple[typing.Any, FreeCAD.Matrix, typing.Any]]:
+    def getSubObject(self, subname, retType: int = 0, matrix: FreeCAD.Matrix = None, transform=True, depth: int = 0) -> typing.Any | FreeCAD.Placement | FreeCAD.Matrix | tuple[typing.Any, FreeCAD.Matrix, typing.Any] | tuple[typing.Any, ...] | None:
         """
         getSubObject(subname, retType=0, matrix=None, transform=True, depth=0)
 
@@ -479,7 +504,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
 
         * depth: current recursive depth
                 
-        Possible exceptions: (TypeError).
+        Possible exceptions: (ValueError, TypeError).
         """
 
     def getSubObjectList(self, subname: str, /) -> list:
@@ -883,13 +908,34 @@ class Extension(FreeCAD.PyObjectBase):
 class Metadata(FreeCAD.PyObjectBase):
     """
     This class can be imported.
+    App.Metadata class.
 
-    				Metadata
-    				A Metadata object reads an XML-formatted package metadata file and provides read-only access to its contents.
+    A Metadata object reads an XML-formatted package metadata file and provides
+    read-only access to its contents.
 
-    				A single constructor is supported:
-    				Metadata(file) -- Reads the XML file and provides access to the metadata it specifies.
+    The following constructors are supported:
+
+    Metadata()
+    Empty constructor.
+
+    Metadata(metadata)
+    Copy constructor.
+    metadata : App.Metadata
+
+    Metadata(file)
+    Reads the XML file and provides access to the metadata it specifies.
+    file : str
+        XML file name.
     """
+
+    @typing.overload
+    def __init__(self): ...
+
+    @typing.overload
+    def __init__(self, metadata: str, /): ...
+
+    @typing.overload
+    def __init__(self, metadata: FreeCAD.Metadata, /): ...
 
     @typing.overload
     def __init__(self, file: str, /): ...
@@ -897,134 +943,195 @@ class Metadata(FreeCAD.PyObjectBase):
     @typing.overload
     def __init__(self, file: FreeCAD.Metadata, /):
         """
-        Metadata
-        				A Metadata object reads an XML-formatted package metadata file and provides read-only access to its contents.
+        App.Metadata class.
 
-        				A single constructor is supported:
-        				Metadata(file) -- Reads the XML file and provides access to the metadata it specifies.
-			
+        A Metadata object reads an XML-formatted package metadata file and provides
+        read-only access to its contents.
+
+        The following constructors are supported:
+
+        Metadata()
+        Empty constructor.
+
+        Metadata(metadata)
+        Copy constructor.
+        metadata : App.Metadata
+
+        Metadata(file)
+        Reads the XML file and provides access to the metadata it specifies.
+        file : str
+            XML file name.
         Possible exceptions: (FreeCAD.Base.XMLBaseException, FreeCAD.Base.FreeCADError).
         """
 
     @property
     def Author(self) -> list[ReturnGetAuthorDict]:
-        """List of author objects, each with a 'name' and a (potentially empty) 'email' string attribute"""
+        """
+        List of author objects, each with a 'name' and a (potentially empty) 'email'
+        string attribute.
+        """
 
     @property
     def Classname(self) -> str:
-        """String: the name of the main Python class this item creates/represents"""
+        """
+        String representing the name of the main Python class this item
+        creates/represents.
+        """
 
     @property
     def Conflict(self) -> list:
-        """List of conflicts, format identical to dependencies"""
+        """List of conflicts, format identical to dependencies."""
 
     @property
     def Content(self) -> dict[typing.Any, list[FreeCAD.Metadata]]:
-        """A dictionary of lists of content items: defined recursively, each item is itself a Metadata object -- see package.xml file format documentation for details"""
+        """
+        Dictionary of lists of content items: defined recursively, each item is itself
+        a Metadata object.
+        See package.xml file format documentation for details.
+        """
 
     @property
     def Depend(self) -> list:
         """
         List of dependencies, as objects with the following attributes:
-        					* package -- Required: must exactly match the contents of the 'name' element in the referenced package's package.xml file
-        					* version_lt -- Optional: The dependency to the package is restricted to versions less than the stated version number
-        					* version_lte -- Optional: The dependency to the package is restricted to versions less or equal than the stated version number
-        					* version_eq -- Optional: The dependency to the package is restricted to a version equal than the stated version number
-        					* version_gte -- Optional: The dependency to the package is restricted to versions greater or equal than the stated version number
-        					* version_gt -- Optional: The dependency to the package is restricted to versions greater than the stated version number
-        					* condition -- Optional: Conditional expression as documented in REP149
+        * package
+            Required. Must exactly match the contents of the 'name' element in the
+            referenced package's package.xml file.
+        * version_lt
+            Optional. The dependency to the package is restricted to versions less than
+            the stated version number.
+        * version_lte
+            Optional. The dependency to the package is restricted to versions less or
+            equal than the stated version number.
+        * version_eq
+            Optional. The dependency to the package is restricted to a version equal
+            than the stated version number.
+        * version_gte
+            Optional. The dependency to the package is restricted to versions greater
+            or equal than the stated version number.
+        * version_gt
+            Optional. The dependency to the package is restricted to versions greater
+            than the stated version number.
+        * condition
+            Optional. Conditional expression as documented in REP149.
         """
 
     @property
     def Description(self) -> str:
-        """String: the description of this item (text only, no markup allowed)"""
+        """String representing the description of this item (text only, no markup allowed)."""
 
     @property
     def File(self) -> list[str]:
-        """A list of files associated with this item -- the meaning of each file is implementation-defined"""
+        """
+        List of files associated with this item.
+        The meaning of each file is implementation-defined.
+        """
 
     @property
     def FreeCADMax(self) -> str:
-        """A string representing the maximum version of FreeCAD needed for this item. If unset it will be 0.0.0."""
+        """
+        String representing the maximum version of FreeCAD needed for this item.
+        If unset it will be 0.0.0.
+        """
 
     @property
     def FreeCADMin(self) -> str:
-        """A string representing the minimum version of FreeCAD needed for this item. If unset it will be 0.0.0."""
+        """
+        String representing the minimum version of FreeCAD needed for this item.
+        If unset it will be 0.0.0.
+        """
 
     @property
     def Icon(self) -> str:
-        """Relative path to an icon file"""
+        """Relative path to an icon file."""
 
     @property
     def License(self) -> list[ReturnGetLicenseDict]:
-        """List of applicable licenses as objects with 'name' and 'file' string attributes"""
+        """List of applicable licenses as objects with 'name' and 'file' string attributes."""
 
     @property
     def Maintainer(self) -> list[ReturnGetMaintainerDict]:
-        """List of maintainer objects with 'name' and 'email' string attributes"""
+        """List of maintainer objects with 'name' and 'email' string attributes."""
 
     @property
     def Name(self) -> str:
-        """String: the name of this item"""
+        """String representing the name of this item."""
 
     @property
     def Replace(self) -> list:
-        """List of things this item is considered by its author to replace: format identical to dependencies"""
+        """
+        List of things this item is considered by its author to replace. The format is
+        identical to dependencies.
+        """
 
     @property
     def Subdirectory(self) -> str:
-        """String: the name of the subdirectory this content item is located in. If empty, the item is in a directory named the same as the content item."""
+        """
+        String representing the name of the subdirectory this content item is located in.
+        If empty, the item is in a directory named the same as the content item.
+        """
 
     @property
     def Tag(self) -> list[str]:
-        """List of strings"""
+        """List of strings."""
 
     @property
     def Urls(self) -> list[ReturnGetUrlsDict]:
         """
-        List of URLs as objects with 'location' and 'type' string attributes, where type is one of:
-        					* website
-        					* repository
-        					* bugtracker
-        					* readme
-        					* documentation
+        List of URLs as objects with 'location' and 'type' string attributes, where type
+        is one of:
+        * website
+        * repository
+        * bugtracker
+        * readme
+        * documentation
         """
 
     @property
     def Version(self) -> str:
-        """String: the version of this item in semantic triplet format"""
+        """String representing the version of this item in semantic triplet format."""
 
     def getFirstSupportedFreeCADVersion(self) -> str | None:
         """
-        getFirstSupportedFreeCADVersion()
-        Search through all content package items, and determine if a minimum supported version of FreeCAD
-        is set. Returns 0.0 if no minimum version is set, or if *any* content item fails to provide a
-        minimum version (implying that that content item will work with all known versions -- technically
-        limited to 0.20 as the lowest known version since the metadata standard was added then).
+        getFirstSupportedFreeCADVersion() -> str or None
+
+        Search through all content package items, and determine if a minimum supported
+        version of FreeCAD is set.
+        Returns 0.0 if no minimum version is set, or if *any* content item fails to
+        provide a minimum version (implying that that content item will work with all
+        known versions. Technically limited to 0.20 as the lowest known version since
+        the metadata standard was added then).
         """
 
-    def getGenericMetadata(self, name: str, /):
+    def getGenericMetadata(self, name: str, /) -> list[ReturnGetGenericMetadataDict]:
         """
-        getGenericMetadata(name)
-        Get the list of GenericMetadata objects with key 'name'. Generic metadata objects are Python objects with
-        a string 'contents' and a dictionary of strings, 'attributes'. They represent unrecognized simple XML tags
+        getGenericMetadata(name) -> list
+
+        Get the list of GenericMetadata objects with key 'name'. 
+        Generic metadata objects are Python objects with a string 'contents' and a
+        dictionary of strings, 'attributes'. They represent unrecognized simple XML tags
         in the metadata file.
         """
 
     def getLastSupportedFreeCADVersion(self) -> str | None:
         """
-        getLastSupportedFreeCADVersion()
-        Search through all content package items, and determine if a maximum supported version of FreeCAD
-        is set. Returns None if no maximum version is set, or if *any* content item fails to provide a
-        maximum version (implying that that content item will work with all known versions).
+        getLastSupportedFreeCADVersion() -> str or None
+
+        Search through all content package items, and determine if a maximum supported
+        version of FreeCAD is set.
+        Returns None if no maximum version is set, or if *any* content item fails to
+        provide a maximum version (implying that that content item will work with all
+        known versions).
         """
 
     def supportsCurrentFreeCAD(self) -> bool:
         """
-        supportsCurrentFreeCAD()
-        Returns false if this metadata object directly indicates that it does not support the current
-        version of FreeCAD, or true if it makes no indication, or specifically indicates that it does
-        support the current version. Does not recurse into Content items.
+        supportsCurrentFreeCAD() -> bool
+
+        Returns False if this metadata object directly indicates that it does not
+        support the current version of FreeCAD, or True if it makes no indication, or
+        specifically indicates that it does support the current version. Does not
+        recurse into Content items.
         """
 
 
@@ -1561,111 +1668,199 @@ class Document(FreeCAD.PropertyContainer):
 class PropertyContainer(FreeCAD.Persistence):
     """
     This class can be imported.
-    This is a Persistence class
+    App.PropertyContainer class.
     """
 
     @property
     def PropertiesList(self) -> list[str]:
-        """A list of all property names"""
+        """A list of all property names."""
 
-    def dumpPropertyContent(self, Property: str, Compression: int = 1-9):
+    def dumpPropertyContent(self, Property: str, Compression: int = 3):
         """
-        Dumps the content of the property, both the XML representation as well as the additional datafiles  
-        required, into a byte representation. It will be returned as byte array.
-        dumpPropertyContent(propertyname) -- returns a byte array with full content
-        dumpPropertyContent(propertyname, [Compression=1-9]) -- Sets the data compression from 0 (no) to 9 (max)
-                
+        dumpPropertyContent(Property, Compression=3) -> bytearray
+
+        Dumps the content of the property, both the XML representation and the additional
+        data files required, into a byte representation.
+
+        Property : str
+            Property Name.
+        Compression : int
+            Set the data compression level in the range [0, 9]. Set to 0 for no compression.
         Possible exceptions: (IOError).
         """
 
-    def getDocumentationOfProperty(self, arg1: str, /) -> str:
-        """Return the documentation string of the property of this class."""
-
-    def getEditorMode(self, arg1: str, /) -> list[str]:
+    def getDocumentationOfProperty(self, name: str, /) -> str:
         """
+        getDocumentationOfProperty(name) -> str
+
+        Returns the documentation string of the property of this class.
+
+        name : str
+            Property name.
+        """
+
+    def getEditorMode(self, name: str, /) -> list[str]:
+        """
+        getEditorMode(name) -> list
+
         Get the behaviour of the property in the property editor.
-        It returns a list of strings with the current mode. If the list is empty there are no special restrictions.
-        If the list contains 'ReadOnly' then the item appears in the property editor but is disabled.
+        It returns a list of strings with the current mode. If the list is empty there are no
+        special restrictions.
+        If the list contains 'ReadOnly' then the item appears in the property editor but is
+        disabled.
         If the list contains 'Hidden' then the item even doesn't appear in the property editor.
+
+        name : str
+            Property name.
         """
 
-    def getEnumerationsOfProperty(self, arg1: str, /) -> list[str] | None:
-        """Return all enumeration strings of the property of this class or None if not a PropertyEnumeration."""
+    def getEnumerationsOfProperty(self, name: str, /) -> list[str]:
+        """
+        getEnumerationsOfProperty(name) -> list or  None
 
-    def getGroupOfProperty(self, arg1: str, /) -> str:
-        """Return the name of the group which the property belongs to in this class. The properties sorted in different named groups for convenience."""
+        Return all enumeration strings of the property of this class or None if not a
+        PropertyEnumeration.
+
+        name : str
+            Property name.
+        """
+
+    def getGroupOfProperty(self, name: str, /) -> str:
+        """
+        getGroupOfProperty(name) -> str
+
+        Returns the name of the group which the property belongs to in this class.
+        The properties are sorted in different named groups for convenience.
+
+        name : str
+            Property name.
+        """
 
     def getPropertyByName(self, name: str, checkOwner: int = 0, /) -> FreeCAD.Property | tuple[typing.Any, FreeCAD.Property]:
         """
-        getPropertyByName(name,checkOwner=0)
+        getPropertyByName(name, checkOwner=0) -> object or Tuple
 
-        Return the value of a named property. Note that the returned property may not
+        Returns the value of a named property. Note that the returned property may not
         always belong to this container (e.g. from a linked object).
 
-        * name: name of the property
-        * checkOwner:  0: just return the property
-                       1: raise exception if not found or the property 
-                          does not belong to this container
-                       2: return a tuple(owner,property_value)
+        name : str
+             Name of the property.
+        checkOwner : int
+            0: just return the property.
+            1: raise exception if not found or the property does not belong to this container.
+            2: return a tuple (owner, propertyValue).
+        Possible exceptions: (ValueError).
         """
 
     def getPropertyStatus(self, name: str = '', /) -> list[str | int]:
         """
-        getPropertyStatus(name=''): Get property status.
+        getPropertyStatus(name='') -> list
 
-        name(String): property name. If name is empty, return a list of supported
-        text names of the status.
+        Get property status.
+
+        name : str
+            Property name. If empty, returns a list of supported text names of the status.
         """
 
-    def getPropertyTouchList(self, arg1: str, /) -> tuple[int, ...]:
-        """Return a list of index of touched values for list type properties."""
-
-    def getTypeIdOfProperty(self, arg1: str, /) -> str:
-        """Returns the C++ class name of a named property."""
-
-    def getTypeOfProperty(self, arg1: str, /) -> list[str]:
-        """Return the type of a named property. This can be (Hidden,ReadOnly,Output) or any combination."""
-
-    def restorePropertyContent(self, propertyname: str, buffer, /):
+    def getPropertyTouchList(self, name: str, /) -> tuple[int, ...]:
         """
-        Restore the content of given property from a byte representation as stored by "dumpContent".
-        It could be restored from any python object implementing the buffer protocol.
-        restorePropertyContent(propertyname, buffer) -- restores from the given byte array
-                
+        getPropertyTouchList(name) -> tuple
+
+        Returns a list of index of touched values for list type properties.
+
+        name : str
+            Property name.
+        """
+
+    def getTypeIdOfProperty(self, name: str, /) -> str:
+        """
+        getTypeIdOfProperty(name) -> str
+
+        Returns the C++ class name of a named property.
+
+        name : str
+            Property name.
+        """
+
+    def getTypeOfProperty(self, name: str, /) -> list[str]:
+        """
+        getTypeOfProperty(name) -> list
+
+        Returns the type of a named property. This can be a list conformed by elements in
+        (Hidden, NoRecompute, NoPersist, Output, ReadOnly, Transient).
+
+        name : str
+            Property name.
+        """
+
+    def restorePropertyContent(self, name: str, obj, /):
+        """
+        restorePropertyContent(name, obj) -> None
+
+        Restore the content of the object from a byte representation as stored by `dumpPropertyContent`.
+        It could be restored from any Python object implementing the buffer protocol.
+
+        name : str
+            Property name.
+        obj : buffer
+            Object with buffer protocol support.
         Possible exceptions: (TypeError, IOError).
         """
 
-    def setDocumentationOfProperty(self, arg1: str, arg2: str, /):
-        """Set the documentation string of a dynamic property of this class."""
-
-    @typing.overload
-    def setEditorMode(self, arg1: str, arg2: int, /): ...
-
-    @typing.overload
-    def setEditorMode(self, arg1: str, arg2, /):
+    def setDocumentationOfProperty(self, name: str, docstring: str, /):
         """
+        setDocumentationOfProperty(name, docstring) -> None
+
+        Set the documentation string of a dynamic property of this class.
+
+        name : str
+            Property name.
+        docstring : str
+            Documentation string.
+        """
+
+    @typing.overload
+    def setEditorMode(self, name: str, type: int, /): ...
+
+    @typing.overload
+    def setEditorMode(self, name: str, type, /):
+        """
+        setEditorMode(name, type) -> None
+
         Set the behaviour of the property in the property editor.
-        0 - default behaviour
-        1 - item is ready-only
-        2 - item is hidden
-                
+
+        name : str
+            Property name.
+        type : int, sequence of str
+            Property type.
+            0: default behaviour. 1: item is ready-only. 2: item is hidden. 3: item is hidden and read-only.
+            If sequence, the available items are 'ReadOnly' and 'Hidden'.
         Possible exceptions: (TypeError).
         """
 
-    def setGroupOfProperty(self, arg1: str, arg2: str, /):
-        """Set the name of the group of a dynamic property."""
+    def setGroupOfProperty(self, name: str, group: str, /):
+        """
+        setGroupOfProperty(name, group) -> None
+
+        Set the name of the group of a dynamic property.
+
+        name : str
+            Property name.
+        group : str
+            Group name.
+        """
 
     def setPropertyStatus(self, name: str, val, /):
         """
-        setPropertyStatus(name,val): Set property status
+        setPropertyStatus(name, val) -> None
 
-        name(String): property name
+        Set property status.
 
-        val(String|Int|[String|Int...]): text or integer value, or list/tuple of
-        values. Call getPropertyStatus() to get a list of supported text value.
-        If the text start with '-' or the integer value is negative, then the
-        status is cleared.
-                
+        name : str
+            Property name.
+        val : int, str, sequence of str or int
+            Call getPropertyStatus() to get a list of supported text value.
+            If the text start with '-' or the integer value is negative, then the status is cleared.
         Possible exceptions: (TypeError).
         """
 

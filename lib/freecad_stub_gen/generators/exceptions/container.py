@@ -104,6 +104,12 @@ class ExceptionContainer:
         if cTypeExceptionText.startswith('PyExc_'):
             return cTypeExceptionText.removeprefix('PyExc_')
 
+        if 'getPyExceptionType()' in cTypeExceptionText:
+            # The return type of this c++ function is PyObject.
+            # An implementation return in this function various FreeCAD exceptions,
+            # but we are unable to determine which one is used.
+            return 'Exception'
+
         raise ValueError(f"Unknown exception {cTypeExceptionText=}")
 
 

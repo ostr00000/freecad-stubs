@@ -869,6 +869,7 @@ class DrawView(FreeCAD.DocumentObject):
     @property
     def X(self) -> FreeCAD.Quantity:
         """
+        [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Base.
         Property TypeId: App::PropertyDistance.
         X position.
@@ -880,6 +881,7 @@ class DrawView(FreeCAD.DocumentObject):
     @property
     def Y(self) -> FreeCAD.Quantity:
         """
+        [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Base.
         Property TypeId: App::PropertyDistance.
         Y position.
