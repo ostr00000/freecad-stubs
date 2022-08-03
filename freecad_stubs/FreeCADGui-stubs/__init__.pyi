@@ -41,31 +41,19 @@ class ReturnGetObjectsInfoDict(typing.TypedDict):
 class Workbench(FreeCAD.BaseClass):
     """This is the base class for workbenches"""
 
-    MenuText = ""
-    ToolTip = ""
+    MenuText: str = ''
+    ToolTip: str = ''
+    Icon: str = None  # path to the icon
 
     def Initialize(self):
         raise NotImplementedError
 
     def ContextMenu(self, recipient): ...
 
-    def appendToolbar(self, name, cmds): ...
+    def reloadActive(self): ...
 
-    def removeToolbar(self, name): ...
-
-    def appendCommandbar(self, name, cmds): ...
-
-    def removeCommandbar(self, name): ...
-
-    def appendMenu(self, name, cmds): ...
-
-    def removeMenu(self, name): ...
-
-    def appendContextMenu(self, name, cmds): ...
-
-    def removeContextMenu(self, name): ...
-
-    def GetClassName(self): ...
+    def GetClassName(self):
+        return 'Gui::PythonWorkbench'
 
     def activate(self):
         """Activate this workbench"""
@@ -1842,7 +1830,7 @@ class AbstractSplitViewPy:
     def viewIsometric(self) -> None:
         """viewIsometric()"""
 
-    def getViewer(self, index: int, /) -> FreeCADGui.View3DInventorViewer:
+    def getViewer(self, index: int, /) -> FreeCADGui.View3DInventorViewerPy:
         """getViewer(index)"""
 
     def close(self) -> None:
@@ -2648,6 +2636,6 @@ def embedToWindow(arg0: str, /) -> None:
     """
 
 
-Workbench: FreeCADGui.Workbench
+Workbench = FreeCADGui.PythonWorkbench  # noqa
 ActiveDocument: FreeCADGui.Document | None
 Control = ControlClass()  # hack to show this module in current module hints

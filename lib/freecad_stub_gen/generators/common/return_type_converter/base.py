@@ -202,14 +202,14 @@ class ReturnTypeConverterBase:
         cType = text.removeprefix('Py::asObject(new ').removeprefix('new ')
         cType = cType.split('(', maxsplit=1)[0]
         classWithModule = getClassWithModulesFromPointer(cType)
+        cl = getClassName(classWithModule)
 
-        match StrWrapper(classWithModule):
+        match StrWrapper(cl):
             case self.className:
                 return self.classNameWithModule
 
             # yet another exception from rules
-            case StrWrapper(contain='MDIView' | 'View3DInventorViewerPy'
-                                    | 'View3DInventorPy' | 'AbstractSplitViewPy'):
+            case 'MDIView' | 'View3DInventorViewerPy' | 'View3DInventorPy' | 'AbstractSplitViewPy':
                 return classWithModule + 'Py'
 
             case 'SplitView3DInventor':

@@ -113,29 +113,17 @@ class FreecadStubGeneratorFromXML(
 
 
 workbenchBody = inspect.cleandoc("""
-    MenuText = ""
-    ToolTip = ""
+    MenuText: str = ''
+    ToolTip: str = ''
+    Icon: str = None  # path to the icon
 
     def Initialize(self):
         raise NotImplementedError
 
     def ContextMenu(self, recipient): ...
+    
+    def reloadActive(self): ...
 
-    def appendToolbar(self, name, cmds): ...
-
-    def removeToolbar(self, name): ...
-
-    def appendCommandbar(self, name, cmds): ...
-
-    def removeCommandbar(self, name): ...
-
-    def appendMenu(self, name, cmds): ...
-
-    def removeMenu(self, name): ...
-
-    def appendContextMenu(self, name, cmds): ...
-
-    def removeContextMenu(self, name): ...
-
-    def GetClassName(self): ...
+    def GetClassName(self):
+        return 'Gui::PythonWorkbench'
 """)

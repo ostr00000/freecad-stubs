@@ -80,7 +80,7 @@ Wrn = FreeCAD.Console.PrintWarning
     _genModule(sourcesRoot, sourcePath / 'Gui', sourcePath, moduleName='FreeCADGui')
     _genModule(sourcesRoot, sourcePath / 'Main', sourcePath, moduleName='FreeCADGui')
     freeCadGui = sourcesRoot['FreeCADGui']
-    freeCadGui += 'Workbench: FreeCADGui.Workbench'
+    freeCadGui += 'Workbench = FreeCADGui.PythonWorkbench  # noqa'
     freeCadGui += 'ActiveDocument: FreeCADGui.Document | None'
     freeCadGui += 'Control = ControlClass()  # hack to show this module in current module hints'
     freeCadGui.imports.update((

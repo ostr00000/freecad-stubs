@@ -1,7 +1,6 @@
 import typing
 
 import FreeCAD
-import FreeCADGui
 import Part as PartModule
 import Path as PathModule
 
@@ -330,7 +329,7 @@ class Command(FreeCAD.Persistence):
         Possible exceptions: (TypeError).
         """
 
-    def transform(self, Placement: FreeCAD.Placement, /) -> FreeCADGui.Command:
+    def transform(self, Placement: FreeCAD.Placement, /) -> PathModule.Command:
         """
         transform(Placement): returns a copy of this command transformed by the given placement
         Possible exceptions: (TypeError).
