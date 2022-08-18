@@ -742,6 +742,9 @@ class Sketch(FreeCAD.Persistence):
     With this objects you can handle constraint sketches
     """
 
+    def __init__(self):
+        """With this objects you can handle constraint sketches"""
+
     @property
     def Conflicts(self) -> tuple[int, ...]:
         """Tuple of conflicting constraints"""

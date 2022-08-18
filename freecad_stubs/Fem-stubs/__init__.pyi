@@ -449,23 +449,29 @@ def show(shape: Fem.FemMesh, string: str = None, /) -> None:
 class StdMeshers_Arithmetic1D:
     """StdMeshers_Arithmetic1D"""
 
-    def setLength(self):
+    def setLength(self) -> None:
         """setLength()"""
 
     def getLength(self, arg1: int, /) -> float:
-        """getLength()"""
+        """
+        getLength()
+        Possible exceptions: (Exception).
+        """
 
 
 class StdMeshers_AutomaticLength:
     """StdMeshers_AutomaticLength"""
 
-    def setFineness(self):
+    def setFineness(self) -> None:
         """setFineness()"""
 
     def getFineness(self) -> float:
-        """getFineness()"""
+        """
+        getFineness()
+        Possible exceptions: (Exception).
+        """
 
-    def getLength(self):
+    def getLength(self) -> float:
         """getLength()"""
 
 
@@ -476,52 +482,73 @@ class StdMeshers_NotConformAllowed:
 class StdMeshers_MaxLength:
     """StdMeshers_MaxLength"""
 
-    def setLength(self):
+    def setLength(self) -> None:
         """setLength()"""
 
     def getLength(self) -> float:
-        """getLength()"""
+        """
+        getLength()
+        Possible exceptions: (Exception).
+        """
 
     def havePreestimatedLength(self) -> bool:
-        """havePreestimatedLength()"""
+        """
+        havePreestimatedLength()
+        Possible exceptions: (Exception).
+        """
 
     def getPreestimatedLength(self) -> float:
-        """getPreestimatedLength()"""
+        """
+        getPreestimatedLength()
+        Possible exceptions: (Exception).
+        """
 
-    def setPreestimatedLength(self):
+    def setPreestimatedLength(self) -> None:
         """setPreestimatedLength()"""
 
-    def setUsePreestimatedLength(self):
+    def setUsePreestimatedLength(self) -> None:
         """setUsePreestimatedLength()"""
 
     def getUsePreestimatedLength(self) -> bool:
-        """getUsePreestimatedLength()"""
+        """
+        getUsePreestimatedLength()
+        Possible exceptions: (Exception).
+        """
 
 
 class StdMeshers_LocalLength:
     """StdMeshers_LocalLength"""
 
-    def setLength(self):
+    def setLength(self) -> None:
         """setLength()"""
 
     def getLength(self) -> float:
-        """getLength()"""
+        """
+        getLength()
+        Possible exceptions: (Exception).
+        """
 
-    def setPrecision(self):
+    def setPrecision(self) -> None:
         """setPrecision()"""
 
     def getPrecision(self) -> float:
-        """getPrecision()"""
+        """
+        getPrecision()
+        Possible exceptions: (Exception).
+        """
 
 
 class StdMeshers_MaxElementArea:
     """StdMeshers_MaxElementArea"""
 
-    def setMaxArea(self):
+    def setMaxArea(self) -> None:
         """setMaxArea()"""
 
     def getMaxArea(self) -> float:
-        """getMaxArea()"""
+        """
+        getMaxArea()
+        Possible exceptions: (Exception).
+        """
 
 
 class StdMeshers_QuadranglePreference:
@@ -551,7 +578,7 @@ class StdMeshers_CompositeSegment_1D:
 class StdMeshers_Deflection1D:
     """StdMeshers_Deflection1D"""
 
-    def setDeflection(self):
+    def setDeflection(self) -> None:
         """setDeflection()"""
 
 
@@ -566,21 +593,24 @@ class StdMeshers_TrianglePreference:
 class StdMeshers_StartEndLength:
     """StdMeshers_StartEndLength"""
 
-    def setLength(self):
+    def setLength(self) -> None:
         """setLength()"""
 
-    def getLength(self):
+    def getLength(self) -> float:
         """getLength()"""
 
 
 class StdMeshers_SegmentLengthAroundVertex:
     """StdMeshers_SegmentLengthAroundVertex"""
 
-    def setLength(self):
+    def setLength(self) -> None:
         """setLength()"""
 
     def getLength(self) -> float:
-        """getLength()"""
+        """
+        getLength()
+        Possible exceptions: (Exception).
+        """
 
 
 class StdMeshers_SegmentAroundVertex_0D:
@@ -626,21 +656,27 @@ class StdMeshers_Prism_3D:
 class StdMeshers_NumberOfSegments:
     """StdMeshers_NumberOfSegments"""
 
-    def setNumberOfSegments(self):
+    def setNumberOfSegments(self) -> None:
         """setNumberOfSegments()"""
 
     def getNumberOfSegments(self) -> int:
-        """getNumberOfSegments()"""
+        """
+        getNumberOfSegments()
+        Possible exceptions: (Exception).
+        """
 
 
 class StdMeshers_NumberOfLayers:
     """StdMeshers_NumberOfLayers"""
 
-    def setNumberOfLayers(self):
+    def setNumberOfLayers(self) -> None:
         """setNumberOfLayers()"""
 
     def getNumberOfLayers(self) -> int:
-        """getNumberOfLayers()"""
+        """
+        getNumberOfLayers()
+        Possible exceptions: (Exception).
+        """
 
 
 class StdMeshers_MEFISTO_2D:
@@ -650,28 +686,40 @@ class StdMeshers_MEFISTO_2D:
 class StdMeshers_MaxElementVolume:
     """StdMeshers_MaxElementVolume"""
 
-    def setMaxVolume(self):
+    def setMaxVolume(self) -> None:
         """setMaxVolume()"""
 
     def getMaxVolume(self) -> float:
-        """getMaxVolume()"""
+        """
+        getMaxVolume()
+        Possible exceptions: (Exception).
+        """
 
 
 class StdMeshers_LengthFromEdges:
     """StdMeshers_LengthFromEdges"""
 
-    def setMode(self):
+    def setMode(self) -> None:
         """setMode()"""
 
     def getMode(self) -> int:
-        """getMode()"""
+        """
+        getMode()
+        Possible exceptions: (Exception).
+        """
 
 
 class StdMeshers_LayerDistribution:
     """StdMeshers_LayerDistribution"""
 
     def setLayerDistribution(self) -> None:
-        """setLayerDistribution()"""
+        """
+        setLayerDistribution()
+        Possible exceptions: (Exception).
+        """
 
     def getLayerDistribution(self) -> None:
-        """getLayerDistribution()"""
+        """
+        getLayerDistribution()
+        Possible exceptions: (Exception).
+        """

@@ -1,7 +1,10 @@
 import logging
 import re
 from abc import ABC
+from itertools import chain
 from pathlib import Path
+
+import more_itertools
 
 from freecad_stub_gen.generators.common.annotation_parameter import SelfSignature
 from freecad_stub_gen.generators.common.arguments_converter import TypesConverter
@@ -37,21 +40,34 @@ class PythonApiGenerator(BaseGenerator, ABC):
         self._cFunctionName = cFunctionName
         self._argNumStart = argNumStart
 
-        yield from self.__findParseTuple()
-        yield from self.__findParseTupleAndKeywords()
-        # TODO P5 PyArg_UnpackTuple
-        # https://docs.python.org/3/c-api/arg.html#c.PyArg_UnpackTuple
+        returnSig = self._getReturnSignature()
+        signatures = chain(
+            self.__findParseTuple(),
+            self.__findParseTupleAndKeywords(),
+            # TODO P5 PyArg_UnpackTuple
+            # https://docs.python.org/3/c-api/arg.html#c.PyArg_UnpackTuple
+        )
+        hasAnySig, sigIter = more_itertools.spy(signatures)
+        for sig in sigIter:
+            yield returnSig.replace(parameters=sig.parameters, unknown_parameters=False)
+
+        if not hasAnySig:
+            yield returnSig
 
     def findFunctionBody(self, cFuncName: str, cClassName: str) -> str | None:
         if res := self._findFunction(cFuncName, cClassName):
             return res
 
     def _findFunction(self, cFuncName: str, cClassName: str = '') -> str | None:
-        for searchRegex in (
-                fr'{cFuncName}\s*\(\s*PyObject\s*\*.*?\)',
-                fr'{cClassName}::{cFuncName}\s*\([^)]*\)',
-                fr'Py::Object {cFuncName}\s*\([^)]*\)',
-        ):
+        if cFuncName == 'PyMake':
+            regs = [re.compile(fr'{cFuncName}\s*\(\s*struct\s*_typeobject\s*\*')]
+        else:
+            regs = [
+                re.compile(fr'{cFuncName}\s*\(\s*PyObject\s*\*.*?\)'),
+                re.compile(fr'{cClassName}::{cFuncName}\s*\([^)]*\)'),
+                re.compile(fr'Py::Object {cFuncName}\s*\([^)]*\)'),
+            ]
+        for searchRegex in regs:
             if match := re.search(searchRegex, self.impContent):
                 return findFunctionCall(self.impContent, match.end())
 
@@ -62,6 +78,14 @@ class PythonApiGenerator(BaseGenerator, ABC):
     def __findParseTupleAndKeywords(self):
         yield from self._baseParse(pattern=self.REG_TUP_KW, formatStrPosition=2,
                                    minSize=4, onlyPositional=False)
+
+    def _getReturnSignature(self):
+        rtc = ReturnTypeConverter(
+            self.requiredImports, self._functionBody,
+            self.classNameWithModules, self._cFunctionName)
+        rt = rtc.getReturnType()
+        ex = rtc.getExceptionsFromCode()
+        return SelfSignature(unknown_parameters=True, return_annotation=rt, exceptions=ex)
 
     def _baseParse(self, pattern: re.Pattern, formatStrPosition: int,
                    minSize: int, onlyPositional: bool):

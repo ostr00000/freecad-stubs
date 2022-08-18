@@ -9,6 +9,9 @@ def writeProjectFile(arg1: typing.Sequence[str], /) -> None:
     """Possible exceptions: (Exception)."""
 
 
+def getProjectFile() -> str: ...
+
+
 def getPartAsPovray(arg1: str, arg2: PartModule.Shape, arg3: float = None, arg4: float = None, arg5: float = None, /) -> str:
     """Possible exceptions: (Exception)."""
 

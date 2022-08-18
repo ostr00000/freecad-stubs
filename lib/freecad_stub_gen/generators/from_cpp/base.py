@@ -12,7 +12,7 @@ from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
     generateExpressionUntilChar
 from freecad_stub_gen.generators.common.doc_string import generateSignaturesFromDocstring
 from freecad_stub_gen.generators.common.gen_method import MethodGenerator
-from freecad_stub_gen.generators.common.signature_merger import mergeSignaturesGen
+from freecad_stub_gen.generators.common.signature_merger import SignatureMerger
 from freecad_stub_gen.logger import LEVEL_CODE
 from freecad_stub_gen.module_container import Module
 
@@ -138,7 +138,8 @@ class BaseGeneratorFromCpp(MethodGenerator, ABC):
             method.cFunction, method.cClass, argNumStart=argNumStart))
 
         yielded = False
-        for sig in mergeSignaturesGen(codeSignatures, docSignatures):
+        sigMerger = SignatureMerger(codeSignatures, docSignatures, cFunName=method.cFunction)
+        for sig in sigMerger.genMergedCodeAndDocSignatures():
             yielded = True
             yield dataclasses.replace(method, pythonSignature=sig)
 

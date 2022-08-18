@@ -24,6 +24,8 @@ class StepShape(FreeCAD.PyObjectBase):
         """
         method read()
         Read a STEP file into memory and make it accessible
+			  
+        Possible exceptions: (NotImplementedError).
         """
 
 

@@ -50,3 +50,6 @@ class Feature(PartModule.Feature):
         Property group: Base.
         Property TypeId: App::PropertyLinkHidden.
         """
+
+    def getBaseObject(self) -> FreeCAD.DocumentObject | None:
+        """getBaseObject: returns feature this one fuses itself to, or None. Normally, this should be the same as BaseFeature property, except for legacy workflow. In legacy workflow, it will look up the support of referenced sketch."""

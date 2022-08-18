@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import logging
-from collections.abc import Iterable, Sequence
-from inspect import Parameter, formatannotation, Signature
+from collections.abc import Mapping, Iterable, Sequence
+from inspect import Parameter, formatannotation, Signature, _void
 
 from freecad_stub_gen.util import OrderedSet
 
@@ -83,10 +83,12 @@ class AnnotationParam(Parameter):
 
 class SelfSignature(Signature):
     """Skip separator if there is only self parameter"""
-    __slots__ = ('exceptions',)
+    __slots__ = ('exceptions', 'unknown_parameters')
 
     def __init__(self, parameters: Sequence[Parameter] | None = None, *,
-                 return_annotation=Signature.empty, exceptions=(),
+                 unknown_parameters=False,
+                 return_annotation=Signature.empty,
+                 exceptions=(),
                  __validate_parameters__=True):
 
         match parameters:
@@ -105,6 +107,7 @@ class SelfSignature(Signature):
             super().__init__(parameters, return_annotation=return_annotation,
                              __validate_parameters__=__validate_parameters__)
             self.exceptions: OrderedSet[str] | tuple[()] = exceptions
+            self.unknown_parameters = unknown_parameters
         except ValueError as v:
             if parameters is not None:
                 logger.error(v)
@@ -122,3 +125,29 @@ class SelfSignature(Signature):
             return ''
 
         return f"\nPossible exceptions: ({', '.join(uniqueExceptions)})."
+
+    __void = _void  # only to access in pattern matching
+
+    def replace(self, *, parameters: Sequence[Parameter] | Mapping[str, Parameter] = _void,
+                return_annotation=_void,
+                exceptions=_void,
+                unknown_parameters=_void,
+                ) -> SelfSignature:
+        match parameters:
+            case self.__void:
+                parameters = list(self.parameters.values())
+            case Mapping():
+                parameters = list(parameters.values())
+
+        if return_annotation is _void:
+            return_annotation = self.return_annotation
+        if exceptions is _void:
+            exceptions = self.exceptions
+        if unknown_parameters is _void:
+            unknown_parameters = self.unknown_parameters
+
+        return type(self)(parameters,
+                          unknown_parameters=unknown_parameters,
+                          return_annotation=return_annotation,
+                          exceptions=exceptions,
+                          )

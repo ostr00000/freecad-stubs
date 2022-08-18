@@ -70,7 +70,10 @@ class ReturnTypeInnerTuple(ReturnTypeConverterBase):
         regex = re.compile(rf"""
         {variableName}      # tuple variable name
         \s*\[\s*            # indexing start
-        (?P<index>\w+)      # position index
+        (?P<index>          # position index
+            \w+             # number or variable
+            (?:\+\+)?       # optional incrementing
+        )      
         \s*]\s*=\s*         # indexing end
         (?P<value>[^;]+)    # tuple value
         ;""", re.VERBOSE)

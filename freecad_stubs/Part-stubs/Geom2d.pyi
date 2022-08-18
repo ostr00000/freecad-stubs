@@ -1141,6 +1141,13 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
     				-- a rational Bezier curve is defined by a table of poles with varying weights
     """
 
+    def __init__(self):
+        """
+        Describes a rational or non-rational Bezier curve in 2d space:
+        				-- a non-rational Bezier curve is defined by a table of poles (also called control points)
+        				-- a rational Bezier curve is defined by a table of poles with varying weights
+        """
+
     @property
     def Degree(self) -> int:
         """

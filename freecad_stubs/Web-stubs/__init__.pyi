@@ -28,16 +28,28 @@ class BrowserView:
     """Python interface class to BrowserView"""
 
     def setHtml(self, arg1: str, arg2: str = None, /) -> None:
-        """setHtml(str)"""
+        """
+        setHtml(str)
+        Possible exceptions: (Exception).
+        """
 
     def load(self, url: str, /) -> None:
-        """load(url)"""
+        """
+        load(url)
+        Possible exceptions: (Exception).
+        """
 
     def stop(self) -> None:
-        """stop()"""
+        """
+        stop()
+        Possible exceptions: (Exception).
+        """
 
     def url(self) -> str:
-        """url()"""
+        """
+        url()
+        Possible exceptions: (Exception).
+        """
 
     def cast_to_base(self):
         """cast_to_base() cast to MDIView class"""

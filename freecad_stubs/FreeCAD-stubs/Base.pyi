@@ -1712,6 +1712,15 @@ class Quantity(FreeCAD.PyObjectBase):
     @Value.setter
     def Value(self, value: float): ...
 
+    def __round__(self) -> FreeCAD.Quantity:
+        """
+        Return the Integral closest to x, rounding half toward even.
+        When an argument is passed, work like built-in round(x, ndigits).
+        """
+
+    def getUserPreferred(self) -> tuple[str, float, str]:
+        """returns a quantity with the translation factor and a string with the prevered unit"""
+
     @typing.overload
     def getValueAs(self, arg1: FreeCAD.Quantity, /) -> FreeCAD.Quantity: ...
 
@@ -2771,10 +2780,19 @@ class ProgressIndicator:
     """
 
     def start(self, string: str, int: int, /) -> None:
-        """start(string,int)"""
+        """
+        start(string,int)
+        Possible exceptions: (Exception).
+        """
 
     def next(self, arg1: int = None, /) -> None:
-        """next()"""
+        """
+        next()
+        Possible exceptions: (Exception, RuntimeError).
+        """
 
     def stop(self) -> None:
-        """stop()"""
+        """
+        stop()
+        Possible exceptions: (Exception).
+        """

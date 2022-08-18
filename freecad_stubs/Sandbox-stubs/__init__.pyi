@@ -22,14 +22,20 @@ class DocumentProtectorPy:
     """Python binding class for the document protector class"""
 
     def addObject(self, type: str, name: str = None, /):
-        """addObject(type,name)"""
+        """
+        addObject(type,name)
+        Possible exceptions: (Exception, RuntimeError).
+        """
 
     def recompute(self) -> None:
-        """recompute()"""
+        """
+        recompute()
+        Possible exceptions: (Exception).
+        """
 
 
 class DocumentObjectProtectorPy:
     """Python binding class for the document object protector class"""
 
-    def purgeTouched(self):
+    def purgeTouched(self) -> None:
         """purgeTouched()"""

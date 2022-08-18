@@ -51,109 +51,214 @@ class ParameterGrp:
     """Python interface class to set parameters"""
 
     def GetGroup(self, str: str, /) -> FreeCAD.ParameterGrp:
-        """GetGroup(str)"""
+        """
+        GetGroup(str)
+        Possible exceptions: (Exception, RuntimeError).
+        """
 
     def GetGroupName(self) -> str:
-        """GetGroupName()"""
+        """
+        GetGroupName()
+        Possible exceptions: (Exception).
+        """
 
     def GetGroups(self) -> list[str]:
-        """GetGroups()"""
+        """
+        GetGroups()
+        Possible exceptions: (Exception).
+        """
 
     def RemGroup(self, str: str, /) -> None:
-        """RemGroup(str)"""
+        """
+        RemGroup(str)
+        Possible exceptions: (Exception).
+        """
 
     def HasGroup(self, str: str, /) -> bool:
-        """HasGroup(str)"""
+        """
+        HasGroup(str)
+        Possible exceptions: (Exception).
+        """
 
     def IsEmpty(self) -> bool:
-        """IsEmpty()"""
+        """
+        IsEmpty()
+        Possible exceptions: (Exception).
+        """
 
     def Clear(self) -> None:
-        """Clear()"""
+        """
+        Clear()
+        Possible exceptions: (Exception).
+        """
 
     def Attach(self, arg1, /) -> None:
-        """Attach()"""
+        """
+        Attach()
+        Possible exceptions: (Exception, TypeError, RuntimeError).
+        """
 
     def Detach(self, arg1, /) -> None:
-        """Detach()"""
+        """
+        Detach()
+        Possible exceptions: (Exception, TypeError).
+        """
 
     def Notify(self, arg1: str, /) -> None:
-        """Notify()"""
+        """
+        Notify()
+        Possible exceptions: (Exception).
+        """
 
     def NotifyAll(self) -> None:
-        """NotifyAll()"""
+        """
+        NotifyAll()
+        Possible exceptions: (Exception).
+        """
 
     def SetBool(self, arg1: str, arg2: int, /) -> None:
-        """SetBool()"""
+        """
+        SetBool()
+        Possible exceptions: (Exception).
+        """
 
     def GetBool(self, arg1: str, arg2: int = None, /) -> bool:
-        """GetBool()"""
+        """
+        GetBool()
+        Possible exceptions: (Exception).
+        """
 
     def GetBools(self, arg1: str = None, /) -> list[str]:
-        """GetBools()"""
+        """
+        GetBools()
+        Possible exceptions: (Exception).
+        """
 
     def RemBool(self, arg1: str, /) -> None:
-        """RemBool()"""
+        """
+        RemBool()
+        Possible exceptions: (Exception).
+        """
 
     def SetInt(self, arg1: str, arg2: int, /) -> None:
-        """SetInt()"""
+        """
+        SetInt()
+        Possible exceptions: (Exception).
+        """
 
     def GetInt(self, arg1: str, arg2: int = None, /) -> int:
-        """GetInt()"""
+        """
+        GetInt()
+        Possible exceptions: (Exception).
+        """
 
     def GetInts(self, arg1: str = None, /) -> list[str]:
-        """GetInts()"""
+        """
+        GetInts()
+        Possible exceptions: (Exception).
+        """
 
     def RemInt(self, arg1: str, /) -> None:
-        """RemInt()"""
+        """
+        RemInt()
+        Possible exceptions: (Exception).
+        """
 
     def SetUnsigned(self, arg1: str, arg2: int, /) -> None:
-        """SetUnsigned()"""
+        """
+        SetUnsigned()
+        Possible exceptions: (Exception).
+        """
 
     def GetUnsigned(self, arg1: str, arg2: int = None, /) -> int:
-        """GetUnsigned()"""
+        """
+        GetUnsigned()
+        Possible exceptions: (Exception).
+        """
 
     def GetUnsigneds(self, arg1: str = None, /) -> list[str]:
-        """GetUnsigneds()"""
+        """
+        GetUnsigneds()
+        Possible exceptions: (Exception).
+        """
 
     def RemUnsigned(self, arg1: str, /) -> None:
-        """RemUnsigned()"""
+        """
+        RemUnsigned()
+        Possible exceptions: (Exception).
+        """
 
     def SetFloat(self, arg1: str, arg2: float, /) -> None:
-        """SetFloat()"""
+        """
+        SetFloat()
+        Possible exceptions: (Exception).
+        """
 
     def GetFloat(self, arg1: str, arg2: float = None, /) -> float:
-        """GetFloat()"""
+        """
+        GetFloat()
+        Possible exceptions: (Exception).
+        """
 
     def GetFloats(self, arg1: str = None, /) -> list[str]:
-        """GetFloats()"""
+        """
+        GetFloats()
+        Possible exceptions: (Exception).
+        """
 
     def RemFloat(self, arg1: str, /) -> None:
-        """RemFloat()"""
+        """
+        RemFloat()
+        Possible exceptions: (Exception).
+        """
 
     def SetString(self, arg1: str, arg2: str, /) -> None:
-        """SetString()"""
+        """
+        SetString()
+        Possible exceptions: (Exception).
+        """
 
     def GetString(self, arg1: str, arg2: str = None, /) -> str:
-        """GetString()"""
+        """
+        GetString()
+        Possible exceptions: (Exception).
+        """
 
     def GetStrings(self, arg1: str = None, /) -> list[str]:
-        """GetStrings()"""
+        """
+        GetStrings()
+        Possible exceptions: (Exception).
+        """
 
     def RemString(self, arg1: str, /) -> None:
-        """RemString()"""
+        """
+        RemString()
+        Possible exceptions: (Exception).
+        """
 
     def Import(self, arg1: str, /) -> None:
-        """Import()"""
+        """
+        Import()
+        Possible exceptions: (Exception).
+        """
 
     def Insert(self, arg1: str, /) -> None:
-        """Insert()"""
+        """
+        Insert()
+        Possible exceptions: (Exception).
+        """
 
     def Export(self, arg1: str, /) -> None:
-        """Export()"""
+        """
+        Export()
+        Possible exceptions: (Exception).
+        """
 
     def GetContents(self) -> list[tuple[str, str, str] | tuple[str, str, int] | tuple[str, str, float] | tuple[str, str, bool]] | None:
-        """GetContents()"""
+        """
+        GetContents()
+        Possible exceptions: (Exception).
+        """
 
 
 # MaterialPy.xml
@@ -266,6 +371,7 @@ class GeoFeature(FreeCAD.DocumentObject):
 
         Returns all possible paths to the root of the document.
         Note: Not implemented.
+        Possible exceptions: (NotImplementedError).
         """
 
     def getPropertyNameOfGeometry(self) -> str | None:

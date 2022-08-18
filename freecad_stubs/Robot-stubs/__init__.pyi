@@ -79,6 +79,9 @@ class Robot6Axis(FreeCAD.Persistence):
     Robot6Axis class
     """
 
+    def __init__(self):
+        """Robot6Axis class"""
+
     @property
     def Axis1(self) -> float:
         """Pose of Axis 1 in degrees"""
@@ -134,6 +137,13 @@ class Robot6Axis(FreeCAD.Persistence):
 
     @Tcp.setter
     def Tcp(self, value: FreeCAD.Placement): ...
+
+    def check(self):
+        """
+        Checks the shape and report errors in the shape structure.
+        This is a more detailed check as done in isValid().
+        Possible exceptions: (NotImplementedError).
+        """
 
 
 # TrajectoryPy.xml
@@ -346,6 +356,14 @@ class RobotObject(FreeCAD.DocumentObject):
 
     @ToolShape.setter
     def ToolShape(self, value: FreeCAD.DocumentObject | None): ...
+
+    def getRobot(self):
+        """
+        Returns a copy of the robot. Be aware, the robot behaves the same
+        					like the robot of the object but is a copy!
+			
+        Possible exceptions: (NotImplementedError).
+        """
 
 
 # AppRobot.cpp

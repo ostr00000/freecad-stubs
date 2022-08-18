@@ -199,6 +199,30 @@ class VoronoiEdge(FreeCAD.BaseClass):
     def Vertices(self) -> list[PathModule.VoronoiVertex | None]:
         """Begin and End voronoi vertex"""
 
+    def getDistances(self) -> list:
+        """Returns the distance of the vertices to the input source"""
+
+    def getSegmentAngle(self) -> float | None:
+        """Returns the angle (in degree) of the segments if the edge was formed by two segments"""
+
+    def isCurved(self) -> bool:
+        """Returns true if edge is curved"""
+
+    def isFinite(self) -> bool:
+        """Returns true if both vertices are finite"""
+
+    def isInfinite(self) -> bool:
+        """Returns true if the end vertex is infinite"""
+
+    def isLinear(self) -> bool:
+        """Returns true if edge is straight"""
+
+    def isPrimary(self) -> bool:
+        """Returns false if edge goes through endpoint of the segment site"""
+
+    def isSecondary(self) -> bool:
+        """Returns true if edge goes through endpoint of the segment site"""
+
     def toShape(self, arg1: float = None, arg2: float = None, arg3: bool = None, /) -> PartModule.Edge | None:
         """
         Returns a shape for the edge
@@ -254,11 +278,20 @@ class VoronoiCell(FreeCAD.BaseClass):
     def SourceIndex(self) -> int:
         """Returns the index of the cell's source"""
 
+    def containsPoint(self) -> bool:
+        """Returns true if the cell contains a point site"""
+
+    def containsSegment(self) -> bool:
+        """Returns true if the cell contains a segment site"""
+
     def getSource(self, arg1: float = None, /) -> FreeCAD.Vector | list[FreeCAD.Vector]:
         """
         Returns the Source for the cell
         Possible exceptions: (TypeError).
         """
+
+    def isDegenerate(self) -> bool:
+        """Returns true if the cell doesn't have an incident edge"""
 
     def __eq__(self, other) -> bool: ...
 
@@ -373,11 +406,17 @@ class Area(FreeCAD.BaseClass):
     @Workplane.setter
     def Workplane(self, value: PartModule.Shape): ...
 
+    def abort(self): ...
+
     def add(self, shape) -> PathModule.Area:
         """Possible exceptions: (TypeError)."""
 
+    def getDefaultParams(self): ...
+
     def getParams(self) -> dict:
         """Get current algorithm parameters as a dictionary."""
+
+    def getParamsDesc(self): ...
 
     def getShape(self, index: int = -1, rebuild=False) -> PartModule.Shape:
         """
@@ -396,6 +435,8 @@ class Area(FreeCAD.BaseClass):
 
     def makeSections(self, heights=None, plane: PartModule.Shape = None) -> list[PathModule.Area]:
         """Possible exceptions: (TypeError)."""
+
+    def setDefaultParams(self): ...
 
     def setParams(self) -> PathModule.Area: ...
 
@@ -575,7 +616,7 @@ class Tooltable(FreeCAD.Persistence):
         adds a tool at the given position
         """
 
-    def templateAttrs(self):
+    def templateAttrs(self) -> dict[int, typing.Any]:
         """templateAttrs() ... returns a dictionary representing the receivers attributes for a template"""
 
 

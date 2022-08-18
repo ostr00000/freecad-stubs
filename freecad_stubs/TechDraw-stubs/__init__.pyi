@@ -733,19 +733,19 @@ class DrawViewDimension(TechDraw.DrawView):
     @UnderTolerance.setter
     def UnderTolerance(self, value: str | float | FreeCAD.Quantity): ...
 
-    def getAnglePoints(self):
+    def getAnglePoints(self) -> list[FreeCAD.Vector]:
         """getAnglePoints() - returns list of points for angle Dimension"""
 
-    def getArcPoints(self):
+    def getArcPoints(self) -> list[FreeCAD.Vector]:
         """getArcPoints() - returns list of points for circle/arc Dimension"""
 
-    def getArrowPositions(self):
+    def getArrowPositions(self) -> list[FreeCAD.Vector]:
         """getArrowPositions() - returns list of locations or Dimension Arrowheads. Locations are in unscaled coordinates of parent View"""
 
-    def getLinearPoints(self):
+    def getLinearPoints(self) -> list[FreeCAD.Vector]:
         """getLinearPoints() - returns list of points for linear Dimension"""
 
-    def getRawValue(self):
+    def getRawValue(self) -> float:
         """getRawValue() - returns Dimension value in mm."""
 
     def getText(self):
@@ -1090,7 +1090,7 @@ class DrawProjGroup(TechDraw.DrawViewCollection):
         Possible exceptions: (Exception).
         """
 
-    def purgeProjections(self):
+    def purgeProjections(self) -> int:
         """purgeProjections() - Remove all Projection Items from this Group. Returns int number of views in Group (0)."""
 
     def removeProjection(self, string_projectionType: str, /) -> int:
@@ -1292,16 +1292,16 @@ class DrawViewPart(TechDraw.DrawView):
     @XSource.setter
     def XSource(self, value: typing.Iterable[PropX_t] | dict[int, PropX_t]): ...
 
-    def clearCenterLines(self):
+    def clearCenterLines(self) -> None:
         """clearCenterLines() - remove all CenterLines from the View. Returns None."""
 
-    def clearCosmeticEdges(self):
+    def clearCosmeticEdges(self) -> None:
         """clearCosmeticEdges() - remove all CosmeticLines from the View. Returns None."""
 
-    def clearCosmeticVertices(self):
+    def clearCosmeticVertices(self) -> None:
         """clearCosmeticVertices() - remove all CosmeticVertices from the View. Returns None."""
 
-    def clearGeomFormats(self):
+    def clearGeomFormats(self) -> None:
         """clearGeomFormats() - remove all GeomFormats from the View. Returns None."""
 
     def formatGeometricEdge(self, index: int, style: int, weight: float, color, visible: int, /) -> None:
@@ -1358,7 +1358,7 @@ class DrawViewPart(TechDraw.DrawView):
         Possible exceptions: (TypeError, ValueError).
         """
 
-    def getHiddenEdges(self):
+    def getHiddenEdges(self) -> list[PartModule.Edge]:
         """getHiddenEdges() - get the hidden edges in the View as Part::TopoShapeEdges"""
 
     def getVertexByIndex(self, vertexIndex: int, /) -> PartModule.Vertex:
@@ -1373,7 +1373,7 @@ class DrawViewPart(TechDraw.DrawView):
         Possible exceptions: (TypeError, ValueError).
         """
 
-    def getVisibleEdges(self):
+    def getVisibleEdges(self) -> list[PartModule.Edge]:
         """getVisibleEdges() - get the visible edges in the View as Part::TopoShapeEdges"""
 
     def makeCenterLine(self, subNames, mode: int, /) -> str:
@@ -1443,16 +1443,16 @@ class DrawViewPart(TechDraw.DrawView):
         Possible exceptions: (TypeError).
         """
 
-    def replaceCenterLine(self, cl, /):
+    def replaceCenterLine(self, cl, /) -> bool:
         """replaceCenterLine(cl) - replacls CenterLine cl in View. Returns True/False."""
 
-    def replaceCosmeticEdge(self, ce, /):
+    def replaceCosmeticEdge(self, ce, /) -> bool:
         """replaceCosmeticEdge(ce) - replaces CosmeticEdge ce in View. Returns True/False."""
 
-    def replaceCosmeticVertex(self, cv, /):
+    def replaceCosmeticVertex(self, cv, /) -> bool:
         """rc = replaceCosmeticVertex(cv) - replaces CosmeticVertex in View. Returns True/False."""
 
-    def requestPaint(self):
+    def requestPaint(self) -> None:
         """requestPaint(). Redraw the graphic for this View."""
 
 
@@ -1699,14 +1699,35 @@ class DrawPage(FreeCAD.DocumentObject):
         Possible exceptions: (TypeError).
         """
 
-    def getAllViews(self):
+    def getAllViews(self) -> list[TechDraw.DrawProjGroupItem | TechDraw.DrawViewPart | TechDraw.DrawViewAnnotation | TechDraw.DrawView]:
         """getAllViews() - returns a list of all the views on page including Views inside Collections"""
+
+    def getPageHeight(self):
+        """
+        Return the height of this page
+        Possible exceptions: (NotImplementedError).
+        """
+
+    def getPageOrientation(self):
+        """
+        Return the orientation of this page
+        Possible exceptions: (NotImplementedError).
+        """
+
+    def getPageWidth(self):
+        """
+        Return the width of this page
+        Possible exceptions: (NotImplementedError).
+        """
 
     def removeView(self, DrawView: FreeCAD.DocumentObject, /) -> int:
         """
         removeView(DrawView) - Remove a View to this Page
         Possible exceptions: (TypeError).
         """
+
+    def requestPaint(self) -> None:
+        """Ask the Gui to redraw this page"""
 
 
 # DrawHatchPy.xml
@@ -1769,7 +1790,7 @@ class DrawProjGroupItem(TechDraw.DrawViewPart):
     @Type.setter
     def Type(self, value: typing.Literal['Front', 'Left', 'Right', 'Rear', 'Top', 'Bottom', 'FrontTopLeft', 'FrontTopRight', 'FrontBottomLeft', 'FrontBottomRight']): ...
 
-    def autoPosition(self):
+    def autoPosition(self) -> None:
         """autoPosition() - Move to AutoDistribute/Unlocked position on Page. Returns none."""
 
 
@@ -1965,7 +1986,10 @@ class MDIViewPagePy:
     """Python binding class for the MDI view page class"""
 
     def getPage(self) -> TechDraw.DrawPage:
-        """getPage() returns the page being displayed"""
+        """
+        getPage() returns the page being displayed
+        Possible exceptions: (Exception).
+        """
 
     def cast_to_base(self):
         """cast_to_base() cast to MDIView class"""

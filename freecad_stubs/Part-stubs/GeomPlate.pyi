@@ -191,6 +191,31 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
     def setCurve2dOnSurf(self, arg1: Part.Geom2d.Curve2d, /):
         """Possible exceptions: (ReferenceError, RuntimeError)."""
 
+    def setG0Criterion(self):
+        """
+        Allows you to set the G0 criterion. This is the law
+        defining the greatest distance allowed between the
+        constraint and the target surface for each point of the
+        constraint. If this criterion is not set, TolDist, the
+        distance tolerance from the constructor, is used.
+        
+        Possible exceptions: (NotImplementedError).
+        """
+
+    def setG1Criterion(self):
+        """
+        Allows you to set the G1 criterion. This is the law
+        defining the greatest angle allowed between the
+        constraint and the target surface. If this criterion is not
+        set, TolAng, the angular tolerance from the constructor, is used.
+        Raises an exception if  the  curve  is  not  on  a  surface
+        
+        Possible exceptions: (NotImplementedError).
+        """
+
+    def setG2Criterion(self):
+        """Possible exceptions: (NotImplementedError)."""
+
     def setOrder(self, arg1: int, /):
         """
         Allows you to set the order of continuity required for

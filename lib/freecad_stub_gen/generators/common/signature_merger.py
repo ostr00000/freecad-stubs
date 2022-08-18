@@ -1,73 +1,133 @@
-from collections.abc import Iterator
 from inspect import Parameter
 
 from freecad_stub_gen.generators.common.annotation_parameter import SelfSignature
 from freecad_stub_gen.generators.common.arguments_converter import DEFAULT_ARG_NAME
 
-NO_ANNOTATIONS = (None, 'object', Parameter.empty)
 
+class SignatureMerger:
+    NO_ANNOTATIONS = (None, 'object', Parameter.empty)
 
-def mergeSignaturesGen(
-        codeSignatures: list[SelfSignature],
-        docSignatures: list[SelfSignature],
-        firstParam: Parameter = None,
-) -> Iterator[SelfSignature]:
-    if len(codeSignatures) == len(docSignatures) == 0:
-        return  # function does not exist, neither in code nor xml
+    def __init__(self,
+                 codeSignatures: list[SelfSignature],
+                 docSignatures: list[SelfSignature],
+                 firstParam: Parameter = None,
+                 cFunName: str = '',
+                 ):
+        self.codeSignatures = codeSignatures
+        self.docSignatures = docSignatures
+        self.cFunName = cFunName
 
-    retParam: list[Parameter] = []
-    if firstParam:
-        retParam.append(firstParam)
+        self._retParam: list[Parameter] = []
+        self._yielded = False
 
-    yielded = False
-    for docS in docSignatures:
-        for codeS in codeSignatures:
-            compatible = True
-            matchedParam = list(retParam)
-            docSignatureIt = iter(docS.parameters.values())
+        if firstParam:
+            self._retParam.append(firstParam)
 
-            for codeParam in codeS.parameters.values():
-                try:
-                    docParam = next(docSignatureIt)
-                except StopIteration:
-                    compatible = False
-                    break
+    def genMergedCodeAndDocSignatures(self):
+        if len(self.codeSignatures) == len(self.docSignatures) == 0:
+            return  # function does not exist, neither in code nor xml
 
-                newArg = codeParam
-                if codeParam.name.startswith(DEFAULT_ARG_NAME) \
-                        and not docParam.name.startswith(DEFAULT_ARG_NAME):
-                    newArg = newArg.replace(name=docParam.name)
+        yield from self._mergeCodeWithUnknownParametersAndDocsSignatures()
+        if self._yielded:
+            return
 
-                if codeParam.default is None \
-                        and docParam.default not in (None, Parameter.empty):
-                    newArg = newArg.replace(default=docParam.default)
+        yield from self._mergeCodeAndDocsSignatures()
+        if self._yielded:
+            return
 
-                if codeParam.annotation in NO_ANNOTATIONS \
-                        and docParam.annotation not in NO_ANNOTATIONS:
-                    newArg = newArg.replace(annotation=docParam.annotation)
+        yield from self._genOnlyCodeSignatures()
+        if self._yielded:
+            return
 
-                matchedParam.append(newArg)
+        yield from self._genOnlyDocsSignatures()
+        if self._yielded:
+            return
 
-            if compatible and len(list(docSignatureIt)) == 0:
-                yield SelfSignature(matchedParam, return_annotation=codeS.return_annotation,
-                                    exceptions=codeS.exceptions)
-                yielded = True
+        # this should never be reachable
+        yield SelfSignature(self._retParam)
 
-    # maybe docSignatures is empty, try codeSignatures
-    if not yielded:
-        for codeS in codeSignatures:
-            yield SelfSignature(retParam + list(codeS.parameters.values()),
-                                return_annotation=codeS.return_annotation,
-                                exceptions=codeS.exceptions)
-            yielded = True
+    def _mergeCodeWithUnknownParametersAndDocsSignatures(self):
+        match self.codeSignatures:
+            case [SelfSignature(unknown_parameters=True) as codeS]:
+                pass
+            case _:
+                return
 
-    # maybe codeSignatures is empty, try docSignatures
-    if not yielded:
-        for docS in docSignatures:
-            yield SelfSignature(retParam + list(docS.parameters.values()),
-                                return_annotation=docS.return_annotation)
-            yielded = True
+        codeS: SelfSignature  # Pycharm typing problem
+        for docS in self.docSignatures:
+            joinedParams = list(self._mergeParamNamesGen(
+                list(codeS.parameters.values()),
+                list(docS.parameters.values())))
+            yield codeS.replace(parameters=self._retParam + joinedParams)
+            self._yielded = True
 
-    # this should never be reachable
-    if not yielded:
-        yield SelfSignature(retParam)
+    @classmethod
+    def _mergeParamNamesGen(cls, codeParams: list[Parameter], docsParams: list[Parameter]):
+        cParamIt = iter(codeParams)
+        pos = 0
+        # we iterate over `docsParams` first to not exhaust `cParamIt` iterator
+        for dp, cp in zip(docsParams, cParamIt):
+            if dp.kind == Parameter.VAR_POSITIONAL:
+                # docs are vague about params from this position, so we prefer code params
+                yield cp
+                break
+
+            toReplace = dict(name=dp.name)
+            if dp.default not in (Parameter.empty, None):
+                toReplace['default'] = dp.default
+            yield cp.replace(**toReplace)
+            pos += 1
+
+        # use yield only from one
+        yield from cParamIt
+        yield from docsParams[pos:]
+
+    def _mergeCodeAndDocsSignatures(self):
+        for docS in self.docSignatures:
+            for codeS in self.codeSignatures:
+                matchedParam = self._matchParameters(codeS.parameters, docS.parameters)
+                if matchedParam is not None:
+                    yield codeS.replace(parameters=matchedParam)
+                    self._yielded = True
+
+    def _matchParameters(self, codeParams, docParams) -> list[Parameter] | None:
+        matchedParam = list(self._retParam)
+        docSignatureIt = iter(docParams.values())
+
+        for codeParam in codeParams.values():
+            try:
+                docParam = next(docSignatureIt)
+            except StopIteration:
+                return
+
+            newArg = codeParam
+            if codeParam.name.startswith(DEFAULT_ARG_NAME) \
+                    and not docParam.name.startswith(DEFAULT_ARG_NAME):
+                newArg = newArg.replace(name=docParam.name)
+
+            if codeParam.default is None \
+                    and docParam.default not in (None, Parameter.empty):
+                newArg = newArg.replace(default=docParam.default)
+
+            if codeParam.annotation in self.NO_ANNOTATIONS \
+                    and docParam.annotation not in self.NO_ANNOTATIONS:
+                newArg = newArg.replace(annotation=docParam.annotation)
+
+            matchedParam.append(newArg)
+
+        if list(docSignatureIt):
+            return  # there remain more arguments
+
+        return matchedParam
+
+    def _genOnlyCodeSignatures(self):
+        """Maybe `docSignatures` is empty, in that case try gen `codeSignatures`."""
+        for codeS in self.codeSignatures:
+            yield codeS.replace(parameters=self._retParam + list(codeS.parameters.values()))
+            self._yielded = True
+
+    def _genOnlyDocsSignatures(self):
+        """Maybe `codeSignatures` is empty, in that case try gen `docSignatures`."""
+        for docS in self.docSignatures:
+            yield docS.replace(parameters=self._retParam + list(docS.parameters.values()))
+            self._yielded = True

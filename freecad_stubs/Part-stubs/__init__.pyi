@@ -830,6 +830,26 @@ class Precision(FreeCAD.PyObjectBase):
     """
 
     @staticmethod
+    def angular() -> float:
+        """Returns the recommended precision value when checking the equality of two angles (given in radians)"""
+
+    @staticmethod
+    def approximation() -> float:
+        """Returns the precision value in real space, frequently used by approximation algorithms"""
+
+    @staticmethod
+    def confusion() -> float:
+        """Returns the recommended precision value when checking coincidence of two points in real space"""
+
+    @staticmethod
+    def infinite() -> float:
+        """Returns a  big number that  can  be  considered as infinite"""
+
+    @staticmethod
+    def intersection() -> float:
+        """Returns the precision value in real space, frequently used by intersection algorithms"""
+
+    @staticmethod
     def isInfinite(arg0: float, /) -> bool:
         """Returns True if R may be considered as an infinite number"""
 
@@ -852,6 +872,10 @@ class Precision(FreeCAD.PyObjectBase):
         Convert a real space precision to a parametric space precision
         Possible exceptions: (ValueError).
         """
+
+    @staticmethod
+    def squareConfusion() -> float:
+        """Returns square of confusion"""
 
 
 # PlanePy.xml
@@ -1173,6 +1197,9 @@ class Face(PartModule.Shape):
 # BRepOffsetAPI_MakePipeShellPy.xml
 class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
     """Describes a portion of a circle"""
+
+    def __init__(self):
+        """Describes a portion of a circle"""
 
     @typing.overload
     def add(self, Profile: PartModule.Shape, WithContact: bool = False, WithCorrection: bool = False): ...
@@ -1535,6 +1562,15 @@ class Shape(FreeCAD.ComplexGeoData):
     @property
     def Wires(self) -> list[PartModule.Wire]:
         """List of wires in this shape."""
+
+    def __getstate__(self):
+        """Serialize the content of this shape to a string in BREP format."""
+
+    def __setstate__(self):
+        """
+        Deserialize the content of this shape from a string in BREP format.
+        Possible exceptions: (FreeCAD.Base.FreeCADError).
+        """
 
     def ancestorsOfType(self, shape: PartModule.Shape, shape_type: type, /) -> list[PartModule.Shape]:
         """
@@ -3697,6 +3733,9 @@ class BSplineSurface(PartModule.GeometrySurface):
     This class can be imported.
     Describes a B-Spline surface in 3D space
     """
+
+    def __init__(self):
+        """Describes a B-Spline surface in 3D space"""
 
     @property
     def FirstUKnotIndex(self) -> int:
@@ -6397,6 +6436,13 @@ class BezierSurface(PartModule.GeometrySurface):
     				-- A rational Bezier surface is defined by a table of poles with varying associated weights.
     """
 
+    def __init__(self):
+        """
+        Describes a rational or non-rational Bezier surface
+        				-- A non-rational Bezier surface is defined by a table of poles (also known as control points).
+        				-- A rational Bezier surface is defined by a table of poles with varying associated weights.
+        """
+
     @property
     def MaxDegree(self) -> int:
         """
@@ -6739,6 +6785,9 @@ class ArcOfConic(PartModule.TrimmedCurve):
 # HLRBRep_AlgoPy.xml
 class HLRBRep_Algo(FreeCAD.PyObjectBase):
     """Describes functions to use HLR algorithm."""
+
+    def __init__(self):
+        """Describes functions to use HLR algorithm."""
 
     def add(self, arg1: PartModule.Shape, arg2: int = None, /): ...
 

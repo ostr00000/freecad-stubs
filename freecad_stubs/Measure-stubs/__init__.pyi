@@ -8,6 +8,9 @@ class Measurement(FreeCAD.BaseClass):
     Make a measurement
     """
 
+    def __init__(self):
+        """Make a measurement"""
+
     def addReference3D(self, arg1: str, arg2: str, /):
         """
         add a geometric reference

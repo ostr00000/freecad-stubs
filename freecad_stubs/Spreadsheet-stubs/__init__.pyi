@@ -8,6 +8,9 @@ import Spreadsheet
 class Sheet(FreeCAD.DocumentObject):
     """With this object you can manipulate spreadsheets"""
 
+    def __init__(self):
+        """With this object you can manipulate spreadsheets"""
+
     @property
     def cells(self) -> Spreadsheet.Sheet:
         """
@@ -221,15 +224,24 @@ class Sheet(FreeCAD.DocumentObject):
 class PropertyRowHeights(FreeCAD.Persistence):
     """Internal spreadsheet object"""
 
+    def __init__(self):
+        """Internal spreadsheet object"""
+
 
 # PropertyColumnWidthsPy.xml
 class PropertyColumnWidths(FreeCAD.Persistence):
     """Internal spreadsheet object"""
 
+    def __init__(self):
+        """Internal spreadsheet object"""
+
 
 # PropertySheetPy.xml
 class PropertySheet(FreeCAD.Persistence):
     """Internal spreadsheet object"""
+
+    def __init__(self):
+        """Internal spreadsheet object"""
 
 
 # SpreadsheetView.cpp
@@ -237,10 +249,16 @@ class SheetViewPy:
     """Python binding class for the Sheet view class"""
 
     def selectedRanges(self) -> list[str]:
-        """selectedRanges(): Get a list of all selected ranges"""
+        """
+        selectedRanges(): Get a list of all selected ranges
+        Possible exceptions: (Exception).
+        """
 
     def selectedCells(self) -> list[str]:
-        """selectedCells(): Get a list of all selected cells"""
+        """
+        selectedCells(): Get a list of all selected cells
+        Possible exceptions: (Exception).
+        """
 
     @typing.overload
     def select(self, cell: str, flags: int, /) -> None: ...
@@ -253,13 +271,19 @@ class SheetViewPy:
         """
 
     def currentIndex(self) -> str:
-        """currentIndex(): Get the current index"""
+        """
+        currentIndex(): Get the current index
+        Possible exceptions: (Exception).
+        """
 
     def setCurrentIndex(self, cell: str, /) -> None:
         """setCurrentIndex(cell): Set the current index to the named cell (e.g. 'A1')"""
 
     def getSheet(self) -> Spreadsheet.Sheet:
-        """getSheet()"""
+        """
+        getSheet()
+        Possible exceptions: (Exception).
+        """
 
     def cast_to_base(self):
         """cast_to_base() cast to MDIView class"""

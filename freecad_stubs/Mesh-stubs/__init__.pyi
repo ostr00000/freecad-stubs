@@ -214,14 +214,6 @@ class Feature(FreeCAD.GeoFeature):
     d.addObject("Mesh::Feature").
     """
 
-    def __init__(self):
-        """
-        The Mesh::Feature class handles meshes.
-        The Mesh.MeshFeature() function is for internal use only and cannot be used to create instances of this class.
-        Therefore you must have a reference to a document, e.g. 'd' then you can create an instance with
-        d.addObject("Mesh::Feature").
-        """
-
     @property
     def Mesh(self) -> MeshModule.Mesh:
         """
@@ -232,6 +224,12 @@ class Feature(FreeCAD.GeoFeature):
 
     @Mesh.setter
     def Mesh(self, value: MeshModule.Mesh | list[list[float]]): ...
+
+    def countFacets(self) -> int:
+        """Return the number of facets of the mesh object"""
+
+    def countPoints(self) -> int:
+        """Return the number of vertices of the mesh object"""
 
     def fixDegenerations(self, arg1: float = None, /):
         """Remove degenerated facets"""

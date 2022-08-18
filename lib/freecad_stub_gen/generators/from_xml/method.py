@@ -1,3 +1,4 @@
+import contextlib
 import logging
 import xml.etree.ElementTree as ET
 from abc import ABC
@@ -11,7 +12,7 @@ from freecad_stub_gen.generators.common.doc_string import generateSignaturesFrom
     getDocFromNode
 from freecad_stub_gen.generators.common.gen_method import MethodGenerator
 from freecad_stub_gen.generators.common.names import getClassNameFromNode
-from freecad_stub_gen.generators.common.signature_merger import mergeSignaturesGen
+from freecad_stub_gen.generators.common.signature_merger import SignatureMerger
 from freecad_stub_gen.generators.from_xml.base import BaseXmlGenerator
 from freecad_stub_gen.util import toBool
 
@@ -19,10 +20,34 @@ logger = logging.getLogger(__name__)
 
 
 class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
+    @contextlib.contextmanager
+    def newImportContext(self):
+        oldImports = self.requiredImports
+        self.requiredImports = type(self.requiredImports)()
+        try:
+            yield
+        finally:
+            self.requiredImports = oldImports
+
     def genInit(self) -> str:
         """Generate stub for __init__ method."""
-        # maybe should check self.currentNode.attrib['Constructor']
         className = getClassNameFromNode(self.currentNode)
+
+        # Maybe we should check `self.currentNode.attrib['Constructor']`?
+        # Better check `PyMake` - it is possible to return something different from `nullptr`
+
+        with self.newImportContext():
+            makeSignatures = list(self.generateSignaturesFromCode('PyMake', cClassName=className))
+
+        if not makeSignatures:
+            # Cannot find `PyMake` signature, therefore we also do not find `PyInit`.
+            return ''
+
+        if all(ms.return_annotation == Parameter.empty for ms in makeSignatures):
+            # A return type of `PyMake` should not be empty,
+            # otherwise it means that the developer do not want to call `__init__`.
+            return ''
+
         return self.genMethod(self.currentNode, cFunName='PyInit',
                               cClassName=className, pythonFunName='__init__',
                               docsFunName=className)
@@ -65,7 +90,12 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         docSignatures = list(self._generateSignaturesFromDocString(
             docsFunName, node, argNumStart=len(parameters)))
 
-        yield from mergeSignaturesGen(codeSignatures, docSignatures, firstParam)
+        sigMerger = SignatureMerger(codeSignatures, docSignatures, firstParam, cFunName=cFunName)
+        if (n := node.find("./Documentation/UserDocu")) \
+                and 'listSchemas(int) -> description of the given schema' in n.text:
+            print()
+
+        yield from sigMerger.genMergedCodeAndDocSignatures()
 
     @classmethod
     def _generateSignaturesFromDocString(
