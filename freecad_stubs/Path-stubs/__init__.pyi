@@ -259,7 +259,7 @@ class Area(FreeCAD.BaseClass):
 
     def getParamsDesc(self): ...
 
-    def getShape(self, index: int = -1, rebuild: bool = False) -> PartModule.Shape:
+    def getShape(self, index: int = -1, rebuild=False) -> PartModule.Shape:
         """
         getShape(index=-1,rebuild=False): Return the resulting shape
 
@@ -595,10 +595,10 @@ def getDefaultParams() -> dict:
     """getDefaultParams(): Static method to return the current default parameters."""
 
 
-def abort(aborting: bool = None): ...
+def abort(aborting=None) -> None: ...
 
 
-def getParamsDesc(as_string: bool = False) -> str | dict:
+def getParamsDesc(as_string=False) -> str | dict:
     """
     getParamsDesc(as_string=False): Returns a list of supported parameters and their descriptions.
 

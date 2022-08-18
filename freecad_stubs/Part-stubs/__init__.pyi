@@ -822,6 +822,62 @@ class OffsetSurface(PartModule.GeometrySurface):
         """Sets or gets the offset value to offset the underlying surface."""
 
 
+# PrecisionPy.xml
+class Precision(FreeCAD.PyObjectBase):
+    """
+    This class can be imported.
+    This is the Type class
+    """
+
+    @staticmethod
+    def angular() -> float:
+        """Returns the recommended precision value when checking the equality of two angles (given in radians)"""
+
+    @staticmethod
+    def approximation() -> float:
+        """Returns the precision value in real space, frequently used by approximation algorithms"""
+
+    @staticmethod
+    def confusion() -> float:
+        """Returns the recommended precision value when checking coincidence of two points in real space"""
+
+    @staticmethod
+    def infinite() -> float:
+        """Returns a  big number that  can  be  considered as infinite"""
+
+    @staticmethod
+    def intersection() -> float:
+        """Returns the precision value in real space, frequently used by intersection algorithms"""
+
+    @staticmethod
+    def isInfinite(arg0: float, /) -> bool:
+        """Returns True if R may be considered as an infinite number"""
+
+    @staticmethod
+    def isNegativeInfinite(arg0: float, /) -> bool:
+        """Returns True if R may  be considered as a negative infinite number"""
+
+    @staticmethod
+    def isPositiveInfinite(arg0: float, /) -> bool:
+        """Returns True if R may  be considered as a positive infinite number"""
+
+    @staticmethod
+    @typing.overload
+    def parametric(arg0: float, /) -> float: ...
+
+    @staticmethod
+    @typing.overload
+    def parametric(arg0: float, arg1: float, /) -> float:
+        """
+        Convert a real space precision to a parametric space precision
+        Possible exceptions: (ValueError).
+        """
+
+    @staticmethod
+    def squareConfusion() -> float:
+        """Returns square of confusion"""
+
+
 # PlanePy.xml
 class Plane(PartModule.GeometrySurface):
     """
@@ -1225,7 +1281,11 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
         Possible exceptions: (Part.OCCError).
         """
 
-    def setAuxiliarySpine(self, wire: PartModule.Shape, CurvilinearEquivalence: bool, TypeOfContact: int, /):
+    @typing.overload
+    def setAuxiliarySpine(self, wire: PartModule.Shape, CurvilinearEquivalence: bool, TypeOfContact: int, /): ...
+
+    @typing.overload
+    def setAuxiliarySpine(self, wire: PartModule.Shape, CurvilinearEquivalence: bool, TypeOfContact: bool, /):
         """
         setAuxiliarySpine(wire, CurvilinearEquivalence, TypeOfContact)
         					Sets an auxiliary spine to define the Normal.
@@ -1261,7 +1321,7 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
         setForceApproxC1(bool)
         					Set the flag that indicates attempt to approximate a C1-continuous surface if a swept surface proved to be C0.
 				
-        Possible exceptions: (Part.OCCError).
+        Possible exceptions: (RuntimeError, Part.OCCError).
         """
 
     def setFrenetMode(self, True_False: bool, /):
@@ -1279,7 +1339,7 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
         setMaxDegree(int degree)
         					Define the maximum V degree of resulting surface. 
 				
-        Possible exceptions: (Part.OCCError).
+        Possible exceptions: (RuntimeError, Part.OCCError).
         """
 
     def setMaxSegments(self, int_num: int, /):
@@ -1287,7 +1347,7 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
         setMaxSegments(int num)
         					Define the maximum number of spans in V-direction on resulting surface.
 				
-        Possible exceptions: (Part.OCCError).
+        Possible exceptions: (RuntimeError, Part.OCCError).
         """
 
     def setSpineSupport(self, shape: PartModule.Shape, /) -> bool:
@@ -2202,7 +2262,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Returns two lists of Face indexes for the Faces involved in the intersection.
         proximity(shape,[tolerance]) -> (selfFaces, shapeFaces)
         
-        Possible exceptions: (ValueError, Part.OCCError).
+        Possible exceptions: (ValueError, Part.OCCError, NotImplementedError).
         """
 
     def read(self, filename: str, /):
@@ -2453,7 +2513,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (Part.OCCError).
         """
 
-    def transformShape(self, Matrix: FreeCAD.Matrix, boolean_copy: bool = False, checkScale: bool = False, /):
+    def transformShape(self, Matrix: FreeCAD.Matrix, boolean_copy: bool = False, checkScale=False, /):
         """
         Apply transformation on a shape without changing the underlying geometry.
         transformShape(Matrix,[boolean copy=False, checkScale=False]) -> None
@@ -2462,7 +2522,7 @@ class Shape(FreeCAD.ComplexGeoData):
         scaling is detected.
         """
 
-    def transformed(self, matrix: FreeCAD.Matrix, copy: bool = False, checkScale: bool = False, op: str = None) -> PartModule.Shape:
+    def transformed(self, matrix: FreeCAD.Matrix, copy=False, checkScale=False, op: str = None) -> PartModule.Shape:
         """
         Create a new transformed shape
         transformed(Matrix,copy=False,checkScale=False,op=None) -> shape
@@ -4125,16 +4185,6 @@ class BSplineSurface(PartModule.GeometrySurface):
         					knots located between U1 and U2 in the u parametric direction, and between
         					V1 and V2 in the v parametric direction are retained.
         					The degree of the surface in each parametric direction is not modified.
-				
-        Possible exceptions: (Part.OCCError).
-        """
-
-    def setBounds(self, u0: float = None, u1: float = None, v0: float = None, v1: float = None, /):
-        """
-        Changes the U and V parametric bounds of the surface.
-        					The geometry is not modified.
-        					bspline_surf.setBounds(u0, u1, v0, v1)
-        					Default arguments are 0.0, 1.0, 0.0, 1.0
 				
         Possible exceptions: (Part.OCCError).
         """
@@ -5900,21 +5950,6 @@ class Curve(PartModule.Geometry):
         Possible exceptions: (RuntimeError).
         """
 
-    def projectPoint(self, Point: FreeCAD.Vector, Method: str = None) -> FreeCAD.Vector | float | list[float] | list[FreeCAD.Vector]:
-        """
-        Computes the projection of a point on the curve
-
-        projectPoint(Point=Vector,[Method="NearestPoint"])
-        projectPoint(Vector,"NearestPoint") -> Vector
-        projectPoint(Vector,"LowerDistance") -> float
-        projectPoint(Vector,"LowerDistanceParameter") -> float
-        projectPoint(Vector,"Distance") -> list of floats
-        projectPoint(Vector,"Parameter") -> list of floats
-        projectPoint(Vector,"Point") -> list of points
-
-        Possible exceptions: (Part.OCCError).
-        """
-
     def reverse(self):
         """
         Changes the direction of parametrization of the curve.
@@ -7301,7 +7336,7 @@ def joinSubname(sub: str, mapped: str, subElement: str, /) -> str:
     """
 
 
-def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matrix = None, needSubElement: bool = None, transform: bool = None, retType: int = None, noElementMap: bool = None, refine: bool = None) -> PartModule.Shape | tuple[PartModule.Shape, FreeCAD.Matrix, typing.Any]:
+def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matrix = None, needSubElement=None, transform=None, retType: int = None, noElementMap=None, refine=None) -> PartModule.Shape | tuple[PartModule.Shape, FreeCAD.Matrix, typing.Any]:
     """
     getShape(obj,subname=None,mat=None,needSubElement=False,transform=True,retType=0):
     Obtain the the TopoShape of a given object with SubName reference

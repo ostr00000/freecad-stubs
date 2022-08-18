@@ -14,9 +14,7 @@ class App:
     ExtensionContainer = 'App::ExtensionContainer'
     FeaturePython = 'App::FeaturePython'
     FeatureTest = 'App::FeatureTest'
-    FeatureTestColumn = 'App::FeatureTestColumn'
     FeatureTestException = 'App::FeatureTestException'
-    FeatureTestPlacement = 'App::FeatureTestPlacement'
     FunctionExpression = 'App::FunctionExpression'
     GeoFeature = 'App::GeoFeature'
     GeoFeatureGroupExtension = 'App::GeoFeatureGroupExtension'
@@ -226,9 +224,7 @@ class Common:
     voidDownloadItem = 'voidDownloadItem'
     voidE57XmlParser = 'voidE57XmlParser'
     voidExpressionCompleter = 'voidExpressionCompleter'
-    voidLineGroup = 'voidLineGroup'
     voidLyingOnGeom = 'voidLyingOnGeom'
-    voidPATLineSpec = 'voidPATLineSpec'
     voidType = 'voidType'
     voidView3DInventorViewer = 'voidView3DInventorViewer'
     voidWorkflowManager = 'voidWorkflowManager'
@@ -1090,10 +1086,6 @@ class TechDrawGui:
 class WebGui:
     BrowserView = 'WebGui::BrowserView'
     Workbench = 'WebGui::Workbench'
-
-
-class voidApp:
-    Extension = 'voidApp::Extension'
 
 
 class voidGui:

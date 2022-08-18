@@ -155,15 +155,44 @@ class MeshPoint(FreeCAD.PyObjectBase):
 
     @property
     def x(self) -> float:
-        """The X component of the point."""
+        """
+        The X component of the point.
+        Setting this value also affects the mesh if this point is connected to it.
+        """
+
+    @x.setter
+    def x(self, value: float): ...
 
     @property
     def y(self) -> float:
-        """The Y component of the point."""
+        """
+        The Y component of the point.
+        Setting this value also affects the mesh if this point is connected to it.
+        """
+
+    @y.setter
+    def y(self, value: float): ...
 
     @property
     def z(self) -> float:
-        """The Z component of the point."""
+        """
+        The Z component of the point.
+        Setting this value also affects the mesh if this point is connected to it.
+        """
+
+    @z.setter
+    def z(self, value: float): ...
+
+    def move(self, Vector: FreeCAD.Vector, /):
+        """
+        method move(Vector)
+        This method moves the point in the mesh along the 
+        given vector. This affects the geometry of the mesh.
+        Be aware that after moving point(s) the mesh can 
+        have self intersections!
+              
+        Possible exceptions: (RuntimeError, IndexError, TypeError).
+        """
 
     def unbound(self):
         """
@@ -434,10 +463,10 @@ class Mesh(FreeCAD.ComplexGeoData):
     def flipNormals(self):
         """Flip the mesh normals"""
 
-    def foraminate(self, arg1, arg2, arg3: float = None, /) -> dict[int, tuple[float, float, float]]:
+    def foraminate(self, arg1, arg2, /) -> dict[int, tuple[float, float, float]]:
         """Get a list of facet indices and intersection points"""
 
-    def getCurvaturePerVertex(self) -> list[tuple[float, float, FreeCAD.Vector, FreeCAD.Vector]]:
+    def getCurvaturePerVertex(self) -> list[tuple[float, float, tuple[float, float, float], tuple[float, float, float]]]:
         """
         getCurvaturePerVertex() -> list
         The items in the list contains minimum and maximum curvature with their directions
@@ -561,17 +590,6 @@ class Mesh(FreeCAD.ComplexGeoData):
     def meshFromSegment(self, arg1, /) -> MeshModule.Mesh:
         """Create a mesh from segment"""
 
-    def movePoint(self, int: int, Vector: FreeCAD.Vector, /):
-        """
-        movePoint(int, Vector)
-          This method moves the point in the mesh along the
-          given vector. This affects the geometry of the mesh.
-          Be aware that after moving point(s) the mesh can
-          have self intersections!
-                
-        Possible exceptions: (TypeError).
-        """
-
     def nearestFacetOnRay(self, arg1, arg2, arg3: float = None, /) -> dict[int, tuple[float, float, float]]:
         """
         nearestFacetOnRay(tuple, tuple) -> dict
@@ -671,7 +689,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         					Sets the point at index.
         """
 
-    def smooth(self, Method: str = None, Iteration: int = None, Lambda: float = None, Micro: float = None, Maximum: float = None, Weight: int = None):
+    def smooth(self, Method: str = None, Iteration: int = None, Lambda: float = None, Micro: float = None):
         """
         Smooth the mesh
         smooth([iteration=1,maxError=FLT_MAX])

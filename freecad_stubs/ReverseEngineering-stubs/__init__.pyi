@@ -7,26 +7,9 @@ import Points as PointsModule
 # AppReverseEngineering.cpp
 def approxSurface(Points, UDegree: int = None, VDegree: int = None, NbUPoles: int = None, NbVPoles: int = None, Smooth: bool = None, Weight: float = None, Grad: float = None, Bend: float = None, Curv: float = None, Iterations: int = None, Correction: bool = None, PatchFactor: float = None, UVDirs: tuple = None) -> PartModule.BSplineSurface:
     """
-    approxSurface(Points, UDegree=3, VDegree=3, NbUPoles=6, NbVPoles=6,
-    Smooth=True, Weight=0.1, Grad=1.0, Bend=0.0, Curv=0.0
-    Iterations=5, Correction=True, PatchFactor=1.0, UVDirs=((ux, uy, uz), (vx, vy, vz)))
-
-    Points: the input data (e.g. a point cloud or mesh)
-    UDegree: the degree in u parametric direction
-    VDegree: the degree in v parametric direction
-    NbUPoles: the number of control points in u parametric direction
-    NbVPoles: the number of control points in v parametric direction
-    Smooth: use energy terms to create a smooth surface
-    Weight: weight of the energy terms altogether
-    Grad: weight of the gradient term
-    Bend: weight of the bending energy term
-    Curv: weight of the deviation of curvature term
-    Iterations: number of iterations
-    Correction: perform a parameter correction of each iteration step
-    PatchFactor: create an extended surface
-    UVDirs: set the u,v parameter directions as tuple of two vectors
-            If not set then they will be determined by computing a best-fit plane
-
+    approxSurface(Points=,UDegree=3,VDegree=3,NbUPoles=6,NbVPoles=6,Smooth=True,
+    Weight=0.1,Grad=1.0,Bend=0.0,
+    Iterations=5,Correction=True,PatchFactor=1.0)
     Possible exceptions: (Exception, ValueError, RuntimeError).
     """
 
