@@ -1,6 +1,6 @@
 import typing
 
-from FreeCAD.Base import Unit as Unit, Quantity as Quantity
+from FreeCAD.Base import Unit, Quantity
 import FreeCAD
 
 
@@ -76,3 +76,7 @@ def toNumber(Quantity_or_float: float, format: str = 'g', decimals: int = -1, /)
     Convert a quantity or float to a string
     Possible exceptions: (TypeError, ValueError).
     """
+
+
+Unit = Unit
+Quantity = Quantity

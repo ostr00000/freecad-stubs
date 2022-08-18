@@ -24,24 +24,23 @@ def _genModule(sourcesRoot: Module, modulePath: Path, sourcePath=SOURCE_DIR,
         tg.getStub(sourcesRoot, moduleName, submodule=subModuleName)
 
     for cppPath in genCppFiles(modulePath):
+        match cppPath.stem:
+            # this is special case when we create separate module
+            case 'Translate':
+                curModuleName = f'{moduleName}.Qt'
+            case 'UnitsApiPy':
+                curModuleName = f'{moduleName}.Units'
+            case ('Selection' | 'Console' | 'TaskDialogPython') as stem:
+                curModuleName = f'{moduleName}.{stem}'
+            case _:
+                curModuleName = moduleName
+
         for cl in (FreecadStubGeneratorFromCppFunctions,
                    FreecadStubGeneratorFromCppClass,
                    FreecadStubGeneratorFromCppModule,
                    ExceptionGenerator):
             if not (mg := cl.safeCreate(cppPath, sourcePath)):
                 continue
-
-            match cppPath.stem:
-                # this is special case when we create separate module
-                case 'Translate':
-                    curModuleName = f'{moduleName}.Qt'
-                case 'UnitsApiPy':
-                    curModuleName = f'{moduleName}.Units'
-                case ('Selection' | 'Console' | 'TaskDialogPython') as stem:
-                    curModuleName = f'{moduleName}.{stem}'
-                case _:
-                    curModuleName = moduleName
-
             mg.getStub(sourcesRoot, curModuleName)
 
 
@@ -96,8 +95,10 @@ Wrn = FreeCAD.Console.PrintWarning
         _genModule(sourcesRoot, mod / 'App', sourcePath, moduleName=moduleName)
         _genModule(sourcesRoot, mod / 'Gui', sourcePath, moduleName=moduleName)
 
-    sourcesRoot['FreeCAD.Units'].imports.add(
-        'from FreeCAD.Base import Unit as Unit, Quantity as Quantity')
+    freeCADUnits = sourcesRoot['FreeCAD.Units']
+    freeCADUnits.imports.add('from FreeCAD.Base import Unit, Quantity')
+    freeCADUnits += 'Unit = Unit'
+    freeCADUnits += 'Quantity = Quantity'
     sourcesRoot.setSubModulesAsPackage()
 
     shutil.rmtree(targetPath, ignore_errors=True)
