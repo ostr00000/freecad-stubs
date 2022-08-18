@@ -29,6 +29,7 @@ class TypesConverter:
         self.argNumStart = argNumStart
         self.realStartArgNum = realStartArgNum
         self.xmlPath = xmlPath
+        self.sequenceStack: list[list[str]] = []
 
         sub = re.sub(self.REG_REMOVE_WHITESPACES, '', funCall)  # remove whitespace
         self.argumentStrings = list(generateExpressionUntilChar(sub, sub.find('(') + 1, ','))
@@ -79,16 +80,23 @@ class TypesConverter:
                         parseTypeMap['O!'] = self._findPointerType(realArgNum)
 
                     elif curVal == '(':
-                        parseSizeMap['('], parseTypeMap['('], formatSize = \
-                            self._parseSequence(formatStr)
+                        self._startSequenceParsing()
+                        formatStr = formatStr[formatSize:]
+                        break
+
+                    elif curVal == ')':
+                        parseTypeMap[')'] = self._endSequenceParsing()
 
                     if objType := parseTypeMap.get(curVal):
-                        name = self._getArgName(formatStr, kwargList, argNum)
-                        yield AnnotationParam(
-                            name, parameterKind, default=default,
-                            annotation=RawRepr(objType))
+                        if self.sequenceStack:
+                            self._addElementToSequence(objType)
+                        else:
+                            name = self._getArgName(formatStr, kwargList, argNum)
+                            yield AnnotationParam(
+                                name, parameterKind, default=default,
+                                annotation=RawRepr(objType))
+                            argNum += 1
 
-                        argNum += 1
                         realArgNum += parseSizeMap[curVal]
                         formatStr = formatStr[formatSize:]
                         break
@@ -126,8 +134,9 @@ class TypesConverter:
                 if self._findPointerType(realArgNum + 1) is not None:
                     exc = InvalidPointerFormat("Format has swapped type")
             except Exception:
-                pass
-            raise exc
+                raise exc
+            else:
+                raise exc
 
         self.requiredImports.add('typing')
         return 'typing.Any'
@@ -144,16 +153,17 @@ class TypesConverter:
         else:
             logger.error(f"Unknown pointer kind {pointerArg=}")
 
-    def _parseSequence(self, sequence: str) -> tuple[int, str, int]:
-        """:return realArguments, type, skipSize"""
-        self.requiredImports.add('typing')
-        if sequence.startswith(f := '(s)'):
-            return len(f) - 2, 'typing.Sequence[str]', len(f)
-        elif sequence.startswith(f := '(fff)'):
-            return len(f) - 2, 'typing.Sequence[float, float, float]', len(f)
+    def _startSequenceParsing(self):
+        self.sequenceStack.append([])
 
-        # there are only two known cases, too much work to automate this
-        raise NotImplementedError
+    def _endSequenceParsing(self):
+        val = self.sequenceStack.pop()
+        # Probably in C this may be a `typing.Sequence`,
+        # but at this moment in `typing` only a tuple support variable length.
+        return f'tuple[{", ".join(val)}]'
+
+    def _addElementToSequence(self, objType: str):
+        self.sequenceStack[-1].append(objType)
 
     def _getArgName(self, formatStr: str, kwargList: list[str], argNum: int) -> str | None:
         if not self.onlyPositional:
@@ -244,11 +254,14 @@ O (object) [PyObject *]
 O! (object) [typeobject, PyObject *]
 O& (object) [converter, anything]
 p (bool) [int]
+( (tuple) []
+) (tuple) []
 """
 parseTypeMap: dict[str, str] = {
-    (keyAndValue := line.split(' ', maxsplit=1))[0]: keyAndValue[1]
+    (keyAndValue := line.split(' ', maxsplit=1))[0]: keyAndValue[1].strip()
     for line in parseTupleStr.splitlines() if line}
-parseSizeMap = {k: len(v.split('[')[1].split(',')) for k, v in parseTypeMap.items()}
+parseSizeMap = {k: len(spVal) if (spVal := v.split('[')[1].split(']')[0].split(',')) != [''] else 0
+                for k, v in parseTypeMap.items()}
 parseTypeMap = {k: v.removeprefix('(').split(' ')[0].removesuffix(')').removesuffix(',')
                 for k, v in parseTypeMap.items()}
 _autoGenTypeToRealType = {

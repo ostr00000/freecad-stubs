@@ -1,11 +1,9 @@
-import typing
-
 import FreeCAD
 import Part as PartModule
 
 
 # AppRaytracingPy.cpp
-def writeProjectFile(arg1: typing.Sequence[str], /) -> None:
+def writeProjectFile(arg1: tuple[str], /) -> None:
     """Possible exceptions: (Exception)."""
 
 

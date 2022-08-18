@@ -8,6 +8,17 @@ Triple_t: typing.TypeAlias = tuple[_T, _T, _T]
 Quadruple_t: typing.TypeAlias = tuple[_T, _T, _T, _T]
 
 
+# ViewProviderFemPostPipelinePy.xml
+class ViewProviderFemPostPipeline(FreeCADGui.ViewProviderDocumentObject):
+    """ViewProviderFemPostPipeline class"""
+
+    def transformField(self, arg1: str, arg2: float, /):
+        """Scales values of given result mesh field by given factor"""
+
+    def updateColorBars(self):
+        """Update coloring of pipeline and its childs"""
+
+
 # ViewProviderFemMeshPy.xml
 class ViewProviderFemMesh(FreeCADGui.ViewProviderDocumentObject):
     """ViewProviderFemMesh class"""

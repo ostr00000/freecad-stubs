@@ -779,6 +779,62 @@ class Persistence(FreeCAD.BaseClass):
         """
 
 
+# PrecisionPy.xml
+class Precision(FreeCAD.PyObjectBase):
+    """
+    This class can be imported.
+    This is the Precision class
+    """
+
+    @staticmethod
+    def angular() -> float:
+        """Returns the recommended precision value when checking the equality of two angles (given in radians)"""
+
+    @staticmethod
+    def approximation() -> float:
+        """Returns the precision value in real space, frequently used by approximation algorithms"""
+
+    @staticmethod
+    def confusion() -> float:
+        """Returns the recommended precision value when checking coincidence of two points in real space"""
+
+    @staticmethod
+    def infinite() -> float:
+        """Returns a  big number that  can  be  considered as infinite"""
+
+    @staticmethod
+    def intersection() -> float:
+        """Returns the precision value in real space, frequently used by intersection algorithms"""
+
+    @staticmethod
+    def isInfinite(arg0: float, /) -> bool:
+        """Returns True if R may be considered as an infinite number"""
+
+    @staticmethod
+    def isNegativeInfinite(arg0: float, /) -> bool:
+        """Returns True if R may  be considered as a negative infinite number"""
+
+    @staticmethod
+    def isPositiveInfinite(arg0: float, /) -> bool:
+        """Returns True if R may  be considered as a positive infinite number"""
+
+    @staticmethod
+    @typing.overload
+    def parametric(arg0: float, /) -> float: ...
+
+    @staticmethod
+    @typing.overload
+    def parametric(arg0: float, arg1: float, /) -> float:
+        """
+        Convert a real space precision to a parametric space precision
+        Possible exceptions: (ValueError).
+        """
+
+    @staticmethod
+    def squareConfusion() -> float:
+        """Returns square of confusion"""
+
+
 # BoundBoxPy.xml
 class BoundBox(FreeCAD.PyObjectBase):
     """
@@ -1236,7 +1292,7 @@ class Placement(FreeCAD.PyObjectBase):
     center : Base.Vector
 
     Placement(base, axis, angle)
-    define position and rotation
+    define position and rotation.
     base : Base.Vector
     axis : Base.Vector
     angle : float
@@ -1302,7 +1358,7 @@ class Placement(FreeCAD.PyObjectBase):
         center : Base.Vector
 
         Placement(base, axis, angle)
-        define position and rotation
+        define position and rotation.
         base : Base.Vector
         axis : Base.Vector
         angle : float
@@ -1352,6 +1408,14 @@ class Placement(FreeCAD.PyObjectBase):
         Matrix representation is the 4D identity matrix.
         """
 
+    def isSame(self, Base_Placement: FreeCAD.Placement, tol: float = 0.0, /) -> bool:
+        """
+        isSame(Base.Placement, [tol=0.0]) -> bool
+
+        Checks whether this and the given placement are the same.
+        The default tolerance is set to 0.0
+        """
+
     def move(self, vector: FreeCAD.Vector, /):
         """
         move(vector) -> None
@@ -1397,12 +1461,13 @@ class Placement(FreeCAD.PyObjectBase):
             the path shorter.
         """
 
-    def rotate(self, center, axis, angle: float, /):
+    def rotate(self, center: tuple[float, float, float], axis: tuple[float, float, float], angle: float, comp: bool = None):
         """
-        rotate(center, axis, angle) -> None
+        rotate(center, axis, angle, comp) -> None
 
         Rotate the current placement around center and axis with the given angle.
-        This method is compatible with TopoShape.rotate().
+        This method is compatible with TopoShape.rotate() if the (optional) keyword
+        argument comp is True (default=False).
 
         center : Base.Vector, sequence of float
             Rotation center.
@@ -1410,6 +1475,9 @@ class Placement(FreeCAD.PyObjectBase):
             Rotation axis.
         angle : float
             Rotation angle in degrees.
+        comp : bool
+            optional keyword only argument, if True (default=False),
+        behave like TopoShape.rotate() (i.e. the resulting placements are interchangeable).
         """
 
     def sclerp(self, placement2: FreeCAD.Placement, t: float, shorten: bool = True, /) -> FreeCAD.Placement:
@@ -1683,7 +1751,7 @@ class Quantity(FreeCAD.PyObjectBase):
         Quantity(Value,Unit) -- empty constructor
         Quantity(Quantity) -- copy constructor
         Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
-		
+        
         Possible exceptions: (TypeError, ValueError).
         """
 
@@ -1764,8 +1832,8 @@ class Quantity(FreeCAD.PyObjectBase):
 
                   Following parameters are allowed:
                   getValueAs('m/s')  # unit string to parse
-                  getValueAs(2.45,1) # translatrion value and unit signature
-                  getValueAs(FreeCAD.Units.Pascal) # predefined standard units 
+                  getValueAs(2.45,1) # translation value and unit signature
+                  getValueAs(FreeCAD.Units.Pascal) # predefined standard units
                   getValueAs(Qantity('N/m^2')) # a quantity
                   getValueAs(Unit(0,1,0,0,0,0,0,0)) # a unit
         
@@ -1854,12 +1922,12 @@ class Matrix(FreeCAD.PyObjectBase):
     Base.Matrix class.
 
     A 4x4 Matrix.
-    In particular, this matrix can represent an affine transformation, that is, given a
-    3D vector `x`, apply the transformation y = M*x + b, where the matrix `M` is a linear
-    map and the vector `b` is a translation.
-    `y` can be obtained using a linear transformation represented by the 4x4 matrix `A`
-    conformed by the augmented 3x4 matrix (M|b), augmented by row with (0,0,0,1), therefore:
-    (y, 1) = A*(x, 1).
+    In particular, this matrix can represent an affine transformation, that is,
+    given a 3D vector `x`, apply the transformation y = M*x + b, where the matrix
+    `M` is a linear map and the vector `b` is a translation.
+    `y` can be obtained using a linear transformation represented by the 4x4 matrix
+    `A` conformed by the augmented 3x4 matrix (M|b), augmented by row with
+    (0,0,0,1), therefore: (y, 1) = A*(x, 1).
 
     The following constructors are supported:
 
@@ -1876,8 +1944,9 @@ class Matrix(FreeCAD.PyObjectBase):
         The sequence can have up to 16 elements which complete the matrix by rows.
 
     Matrix(vector1, vector2, vector3, vector4)
-    Define from four 3D vectors which represent the columns of the 3x4 submatrix, useful
-    to represent an affine transformation. The fourth row is made up by (0,0,0,1).
+    Define from four 3D vectors which represent the columns of the 3x4 submatrix,
+    useful to represent an affine transformation. The fourth row is made up by
+    (0,0,0,1).
     vector1 : Base.Vector
     vector2 : Base.Vector
     vector3 : Base.Vector
@@ -1897,12 +1966,12 @@ class Matrix(FreeCAD.PyObjectBase):
         Base.Matrix class.
 
         A 4x4 Matrix.
-        In particular, this matrix can represent an affine transformation, that is, given a
-        3D vector `x`, apply the transformation y = M*x + b, where the matrix `M` is a linear
-        map and the vector `b` is a translation.
-        `y` can be obtained using a linear transformation represented by the 4x4 matrix `A`
-        conformed by the augmented 3x4 matrix (M|b), augmented by row with (0,0,0,1), therefore:
-        (y, 1) = A*(x, 1).
+        In particular, this matrix can represent an affine transformation, that is,
+        given a 3D vector `x`, apply the transformation y = M*x + b, where the matrix
+        `M` is a linear map and the vector `b` is a translation.
+        `y` can be obtained using a linear transformation represented by the 4x4 matrix
+        `A` conformed by the augmented 3x4 matrix (M|b), augmented by row with
+        (0,0,0,1), therefore: (y, 1) = A*(x, 1).
 
         The following constructors are supported:
 
@@ -1919,8 +1988,9 @@ class Matrix(FreeCAD.PyObjectBase):
             The sequence can have up to 16 elements which complete the matrix by rows.
 
         Matrix(vector1, vector2, vector3, vector4)
-        Define from four 3D vectors which represent the columns of the 3x4 submatrix, useful
-        to represent an affine transformation. The fourth row is made up by (0,0,0,1).
+        Define from four 3D vectors which represent the columns of the 3x4 submatrix,
+        useful to represent an affine transformation. The fourth row is made up by
+        (0,0,0,1).
         vector1 : Base.Vector
         vector2 : Base.Vector
         vector3 : Base.Vector
@@ -2061,6 +2131,7 @@ class Matrix(FreeCAD.PyObjectBase):
 
         Return the vector of a column, that is, the vector generated by the three
         first elements of the specified column.
+
         index : int
             Required column index.
         Possible exceptions: (ValueError).
@@ -2154,6 +2225,7 @@ class Matrix(FreeCAD.PyObjectBase):
         multVec(vector) -> Base.Vector
 
         Compute the transformed vector using the matrix.
+
         vector : Base.Vector
         """
 
@@ -2196,6 +2268,7 @@ class Matrix(FreeCAD.PyObjectBase):
         rotateX(angle) -> None
 
         Rotate around X axis.
+
         angle : float
             Angle in radians.
         Possible exceptions: (TypeError).
@@ -2210,6 +2283,7 @@ class Matrix(FreeCAD.PyObjectBase):
         rotateY(angle) -> None
 
         Rotate around Y axis.
+
         angle : float
             Angle in radians.
         Possible exceptions: (TypeError).
@@ -2224,6 +2298,7 @@ class Matrix(FreeCAD.PyObjectBase):
         rotateZ(angle) -> None
 
         Rotate around Z axis.
+
         angle : float
             Angle in radians.
         Possible exceptions: (TypeError).

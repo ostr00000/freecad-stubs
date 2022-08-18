@@ -6,7 +6,7 @@ import Part as PartModule
 
 
 # AppMeshPartPy.cpp
-def loftOnCurve(curve: PartModule.Shape, poly, upVector: typing.Sequence[float, float, float], MaxSize: float, /) -> MeshModule.Mesh:
+def loftOnCurve(curve: PartModule.Shape, poly, upVector: tuple[float, float, float], MaxSize: float, /) -> MeshModule.Mesh:
     """
     Creates a mesh loft based on a curve and an up vector
 

@@ -147,165 +147,6 @@ class Tool(FreeCAD.Persistence):
         """
 
 
-# VoronoiEdgePy.xml
-class VoronoiEdge(FreeCAD.BaseClass):
-    """
-    This class can be imported.
-    Edge of a Voronoi diagram
-    """
-
-    def __init__(self):
-        """
-        Edge of a Voronoi diagram
-        Possible exceptions: (RuntimeError).
-        """
-
-    @property
-    def Cell(self) -> PathModule.VoronoiCell:
-        """cell the edge belongs to"""
-
-    @property
-    def Color(self) -> int:
-        """Assigned color of the receiver."""
-
-    @Color.setter
-    def Color(self, value: int): ...
-
-    @property
-    def Index(self) -> int:
-        """Internal id of the element."""
-
-    @property
-    def Next(self) -> PathModule.VoronoiEdge:
-        """CCW next edge within voronoi cell"""
-
-    @property
-    def Prev(self) -> PathModule.VoronoiEdge:
-        """CCW previous edge within voronoi cell"""
-
-    @property
-    def RotNext(self) -> PathModule.VoronoiEdge:
-        """Rotated CCW next edge within voronoi cell"""
-
-    @property
-    def RotPrev(self) -> PathModule.VoronoiEdge:
-        """Rotated CCW previous edge within voronoi cell"""
-
-    @property
-    def Twin(self) -> PathModule.VoronoiEdge:
-        """Twin edge"""
-
-    @property
-    def Vertices(self) -> list[PathModule.VoronoiVertex | None]:
-        """Begin and End voronoi vertex"""
-
-    def getDistances(self) -> list:
-        """Returns the distance of the vertices to the input source"""
-
-    def getSegmentAngle(self) -> float | None:
-        """Returns the angle (in degree) of the segments if the edge was formed by two segments"""
-
-    def isCurved(self) -> bool:
-        """Returns true if edge is curved"""
-
-    def isFinite(self) -> bool:
-        """Returns true if both vertices are finite"""
-
-    def isInfinite(self) -> bool:
-        """Returns true if the end vertex is infinite"""
-
-    def isLinear(self) -> bool:
-        """Returns true if edge is straight"""
-
-    def isPrimary(self) -> bool:
-        """Returns false if edge goes through endpoint of the segment site"""
-
-    def isSecondary(self) -> bool:
-        """Returns true if edge goes through endpoint of the segment site"""
-
-    def toShape(self, arg1: float = None, arg2: float = None, arg3: bool = None, /) -> PartModule.Edge | None:
-        """
-        Returns a shape for the edge
-        Possible exceptions: (RuntimeError).
-        """
-
-    def __eq__(self, other) -> bool: ...
-
-    def __ne__(self, other) -> bool: ...
-
-    def __lt__(self, other) -> bool: ...
-
-    def __le__(self, other) -> bool: ...
-
-    def __ge__(self, other) -> bool: ...
-
-    def __gt__(self, other) -> bool: ...
-
-
-# VoronoiCellPy.xml
-class VoronoiCell(FreeCAD.BaseClass):
-    """
-    This class can be imported.
-    Cell of a Voronoi diagram
-    """
-
-    def __init__(self):
-        """
-        Cell of a Voronoi diagram
-        Possible exceptions: (RuntimeError).
-        """
-
-    @property
-    def Color(self) -> int:
-        """Assigned color of the receiver."""
-
-    @Color.setter
-    def Color(self, value: int): ...
-
-    @property
-    def IncidentEdge(self) -> PathModule.VoronoiEdge:
-        """Incident edge of the cell - if exists"""
-
-    @property
-    def Index(self) -> int:
-        """Internal id of the element."""
-
-    @property
-    def SourceCategory(self) -> int:
-        """Returns the index of the cell's source"""
-
-    @property
-    def SourceIndex(self) -> int:
-        """Returns the index of the cell's source"""
-
-    def containsPoint(self) -> bool:
-        """Returns true if the cell contains a point site"""
-
-    def containsSegment(self) -> bool:
-        """Returns true if the cell contains a segment site"""
-
-    def getSource(self, arg1: float = None, /) -> FreeCAD.Vector | list[FreeCAD.Vector]:
-        """
-        Returns the Source for the cell
-        Possible exceptions: (TypeError).
-        """
-
-    def isDegenerate(self) -> bool:
-        """Returns true if the cell doesn't have an incident edge"""
-
-    def __eq__(self, other) -> bool: ...
-
-    def __ne__(self, other) -> bool: ...
-
-    def __lt__(self, other) -> bool: ...
-
-    def __le__(self, other) -> bool: ...
-
-    def __ge__(self, other) -> bool: ...
-
-    def __gt__(self, other) -> bool: ...
-
-
 # CommandPy.xml
 class Command(FreeCAD.Persistence):
     """
@@ -418,7 +259,7 @@ class Area(FreeCAD.BaseClass):
 
     def getParamsDesc(self): ...
 
-    def getShape(self, index: int = -1, rebuild=False) -> PartModule.Shape:
+    def getShape(self, index: int = -1, rebuild: bool = False) -> PartModule.Shape:
         """
         getShape(index=-1,rebuild=False): Return the resulting shape
 
@@ -620,110 +461,6 @@ class Tooltable(FreeCAD.Persistence):
         """templateAttrs() ... returns a dictionary representing the receivers attributes for a template"""
 
 
-# VoronoiPy.xml
-class Voronoi(FreeCAD.BaseClass):
-    """
-    This class can be imported.
-    Voronoi([segments]): Create voronoi for given collection of line segments
-    """
-
-    def __init__(self, segments: float = None, /):
-        """
-        Voronoi([segments]): Create voronoi for given collection of line segments
-        Possible exceptions: (RuntimeError).
-        """
-
-    @property
-    def Cells(self) -> list[PathModule.VoronoiCell]:
-        """List of all cells of the voronoi diagram"""
-
-    @property
-    def Edges(self) -> list[PathModule.VoronoiEdge]:
-        """List of all edges of the voronoi diagram"""
-
-    @property
-    def Vertices(self) -> list[PathModule.VoronoiVertex]:
-        """List of all vertices of the voronoi diagram"""
-
-    def addPoint(self, vector_vector2d, /) -> None:
-        """addPoint(vector|vector2d) add given point to input collection"""
-
-    def addSegment(self, vector_vector2d, vector_vector2d2, /) -> None:
-        """addSegment(vector|vector2d, vector|vector2d) add given segment to input collection"""
-
-    def colorColinear(self, arg1: int, arg2: float = None, /) -> None:
-        """
-        assign given color to all edges sourced by two segments almost in line with each other (optional angle in degrees)
-        Possible exceptions: (RuntimeError).
-        """
-
-    def colorExterior(self, arg1: int, arg2=None, /) -> None:
-        """
-        assign given color to all exterior edges and vertices
-        Possible exceptions: (RuntimeError).
-        """
-
-    def colorTwins(self, arg1: int, /) -> None:
-        """
-        assign given color to all twins of edges (which one is considered a twin is arbitrary)
-        Possible exceptions: (RuntimeError).
-        """
-
-    def construct(self) -> None:
-        """
-        constructs the voronoi diagram from the input collections
-        Possible exceptions: (RuntimeError).
-        """
-
-    def getPoints(self, arg1: float = None, /) -> list[FreeCAD.Vector]:
-        """
-        Get list of all input points.
-        Possible exceptions: (RuntimeError).
-        """
-
-    def getSegments(self, arg1: float = None, /) -> list[tuple[FreeCAD.Vector, FreeCAD.Vector]]:
-        """
-        Get list of all input segments.
-        Possible exceptions: (RuntimeError).
-        """
-
-    def numCells(self) -> int:
-        """
-        Return number of cells
-        Possible exceptions: (RuntimeError).
-        """
-
-    def numEdges(self) -> int:
-        """
-        Return number of edges
-        Possible exceptions: (RuntimeError).
-        """
-
-    def numPoints(self) -> int:
-        """
-        Return number of input points
-        Possible exceptions: (RuntimeError).
-        """
-
-    def numSegments(self) -> int:
-        """
-        Return number of input segments
-        Possible exceptions: (RuntimeError).
-        """
-
-    def numVertices(self) -> int:
-        """
-        Return number of vertices
-        Possible exceptions: (RuntimeError).
-        """
-
-    def resetColor(self, arg1: int, /) -> None:
-        """
-        assign color 0 to all elements with the given color
-        Possible exceptions: (RuntimeError).
-        """
-
-
 # FeatureAreaPy.xml
 class FeatureArea(FreeCAD.DocumentObject):
     """This class handles Path Area features"""
@@ -758,61 +495,6 @@ class FeatureArea(FreeCAD.DocumentObject):
 
         Same usage as Path.Area.setParams(). This function stores the parameters in the properties.
         """
-
-
-# VoronoiVertexPy.xml
-class VoronoiVertex(FreeCAD.BaseClass):
-    """
-    This class can be imported.
-    Vertex of a Voronoi diagram
-    """
-
-    def __init__(self):
-        """
-        Vertex of a Voronoi diagram
-        Possible exceptions: (RuntimeError).
-        """
-
-    @property
-    def Color(self) -> int:
-        """Assigned color of the receiver."""
-
-    @Color.setter
-    def Color(self, value: int): ...
-
-    @property
-    def IncidentEdge(self) -> PathModule.VoronoiEdge:
-        """Y position"""
-
-    @property
-    def Index(self) -> int:
-        """Internal id of the element."""
-
-    @property
-    def X(self) -> float:
-        """X position"""
-
-    @property
-    def Y(self) -> float:
-        """Y position"""
-
-    def toPoint(self, arg1: float = None, /) -> FreeCAD.Vector | None:
-        """
-        Returns a Vector - or None if not possible
-        Possible exceptions: (RuntimeError).
-        """
-
-    def __eq__(self, other) -> bool: ...
-
-    def __ne__(self, other) -> bool: ...
-
-    def __lt__(self, other) -> bool: ...
-
-    def __le__(self, other) -> bool: ...
-
-    def __ge__(self, other) -> bool: ...
-
-    def __gt__(self, other) -> bool: ...
 
 
 # FeaturePathCompoundPy.xml
@@ -861,7 +543,7 @@ def fromShape(Shape, /) -> PathModule.Path:
     """
 
 
-def fromShapes(shapes, start: FreeCAD.Vector = None, return_end=None) -> PathModule.Path | tuple[PathModule.Path, FreeCAD.Vector]:
+def fromShapes(shapes, start: FreeCAD.Vector = None, return_end: bool = None) -> PathModule.Path | tuple[PathModule.Path, FreeCAD.Vector]:
     """
     fromShapes(shapes, start=Vector(), return_end=False" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_PATH) ")
 
@@ -873,7 +555,7 @@ def fromShapes(shapes, start: FreeCAD.Vector = None, return_end=None) -> PathMod
 
     * return_end (False): if True, returns tuple (path, endPosition).
     "
-                PARAM_PY_DOC(ARG, AREA_PARAMS_PATH)
+                  PARAM_PY_DOC(ARG, AREA_PARAMS_PATH)
     Possible exceptions: (Exception, TypeError).
     """
 
@@ -881,8 +563,8 @@ def fromShapes(shapes, start: FreeCAD.Vector = None, return_end=None) -> PathMod
 def sortWires(shapes, start: FreeCAD.Vector = None) -> tuple[list[PartModule.Shape], FreeCAD.Vector, int]:
     """
     sortWires(shapes, start=Vector(), "
-                PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_ARC_PLANE)
-                PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_SORT) ")
+                  PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_ARC_PLANE)
+                  PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_SORT) ")
 
     Returns (wires,end), where 'wires' is sorted across Z value and with optimized travel distance,
     and 'end' is the ending position of the whole wires. If arc_plane==1, it returns (wires,end,arc_plane),
@@ -892,8 +574,8 @@ def sortWires(shapes, start: FreeCAD.Vector = None) -> tuple[list[PartModule.Sha
 
     * start (Vector()): optional start position.
     "
-                PARAM_PY_DOC(ARG, AREA_PARAMS_ARC_PLANE)
-                PARAM_PY_DOC(ARG, AREA_PARAMS_SORT)
+                  PARAM_PY_DOC(ARG, AREA_PARAMS_ARC_PLANE)
+                  PARAM_PY_DOC(ARG, AREA_PARAMS_SORT)
     Possible exceptions: (Exception, TypeError).
     """
 
@@ -913,10 +595,10 @@ def getDefaultParams() -> dict:
     """getDefaultParams(): Static method to return the current default parameters."""
 
 
-def abort(aborting=None) -> None: ...
+def abort(aborting: bool = None): ...
 
 
-def getParamsDesc(as_string=False) -> str | dict:
+def getParamsDesc(as_string: bool = False) -> str | dict:
     """
     getParamsDesc(as_string=False): Returns a list of supported parameters and their descriptions.
 

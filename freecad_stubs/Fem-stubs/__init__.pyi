@@ -391,6 +391,9 @@ class FemPostPipeline(FreeCAD.GeoFeature):
     def read(self, arg1: str, /):
         """Read in vtk file"""
 
+    def recomputeChildren(self):
+        """Recomputes all children of the pipeline"""
+
     def scale(self, arg1: float, /):
         """scale the points of a loaded vtk file"""
 

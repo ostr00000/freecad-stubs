@@ -61,21 +61,21 @@ def writeDXFObject(objects: FreeCAD.DocumentObject, filename_: str, version: int
     """
 
 
-def open(name: str, docName: str = None, importHidden=None, merge=None, useLinkGroup=None, mode: int = None) -> list[tuple[typing.Any, FreeCAD.PropertyColorList]] | None:
+def open(name: str, docName: str = None, importHidden: bool = None, merge: bool = None, useLinkGroup: bool = None, mode: int = None) -> list[tuple[typing.Any, FreeCAD.PropertyColorList]] | None:
     """
     open(string) -- Open the file and create a new document.
     Possible exceptions: (Exception, IOError, FreeCAD.Base.FreeCADError).
     """
 
 
-def insert(name: str, docName: str = None, importHidden=None, merge=None, useLinkGroup=None, mode: int = None) -> list[tuple[typing.Any, FreeCAD.PropertyColorList]] | None:
+def insert(name: str, docName: str = None, importHidden: bool = None, merge: bool = None, useLinkGroup: bool = None, mode: int = None) -> list[tuple[typing.Any, FreeCAD.PropertyColorList]] | None:
     """
     insert(string,string) -- Insert the file into the given document.
     Possible exceptions: (Exception, IOError, FreeCAD.Base.FreeCADError).
     """
 
 
-def export(obj, name: str, exportHidden=None, legacy=None, keepPlacement=None) -> None:
+def export(obj, name: str, exportHidden: bool = None, legacy: bool = None, keepPlacement: bool = None) -> None:
     """
     export(list,string) -- Export a list of objects into a single file.
     Possible exceptions: (Exception, FreeCAD.Base.FreeCADError).

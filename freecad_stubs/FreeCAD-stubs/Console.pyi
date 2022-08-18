@@ -1,23 +1,79 @@
 # Console.cpp
-def PrintMessage(string, /) -> None:
-    """PrintMessage(string) -- Print a message to the output"""
+def PrintMessage(obj, /):
+    """
+    PrintMessage(obj) -> None
+
+    Print a message to the output.
+
+    obj : object
+        The string representation is printed.
+    """
 
 
-def PrintLog(string, /) -> None:
-    """PrintLog(string) -- Print a log message to the output"""
+def PrintLog(obj, /):
+    """
+    PrintLog(obj) -> None
+
+    Print a log message to the output.
+
+    obj : object
+        The string representation is printed.
+    """
 
 
-def PrintError(string, /) -> None:
-    """PrintError(string) -- Print an error message to the output"""
+def PrintError(obj, /):
+    """
+    PrintError(obj) -> None
+
+    Print an error message to the output.
+
+    obj : object
+        The string representation is printed.
+    """
 
 
-def PrintWarning(arg0, /) -> None:
-    """PrintWarning -- Print a warning to the output"""
+def PrintWarning(obj, /):
+    """
+    PrintWarning(obj) -> None
+
+    Print a warning message to the output.
+
+    obj : object
+        The string representation is printed.
+    """
 
 
-def SetStatus(arg0: str, arg1: str, arg2: int, /) -> None:
-    """Set the status for either Log, Msg, Wrn or Error for an observer"""
+def SetStatus(observer: str, type: str, status: bool, /):
+    """
+    SetStatus(observer, type, status) -> None
+
+    Set the status for either 'Log', 'Msg', 'Wrn' or 'Error' for an observer.
+
+    observer : str
+        Logging interface name.
+    type : str
+        Message type.
+    status : bool
+    """
 
 
-def GetStatus(arg0: str, arg1: str, /) -> int | None:
-    """Get the status for either Log, Msg, Wrn or Error for an observer"""
+def GetStatus(observer: str, type: str, /) -> bool:
+    """
+    GetStatus(observer, type) -> bool or None
+
+    Get the status for either 'Log', 'Msg', 'Wrn' or 'Error' for an observer.
+    Returns None if the specified observer doesn't exist.
+
+    observer : str
+        Logging interface name.
+    type : str
+        Message type.
+    """
+
+
+def GetObservers() -> list[str]:
+    """
+    GetObservers() -> list of str
+
+    Get the names of the current logging interfaces.
+    """

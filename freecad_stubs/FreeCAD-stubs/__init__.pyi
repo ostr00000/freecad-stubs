@@ -532,7 +532,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     def evalExpression(cls, arg1: str, /):
         """Evaluate an expression"""
 
-    def getLinkedObject(self, recursive=True, matrix=None, transform=True, depth: int = 0) -> tuple[FreeCAD.DocumentObject, FreeCAD.Matrix] | FreeCAD.DocumentObject:
+    def getLinkedObject(self, recursive: bool = True, matrix=None, transform: bool = True, depth: int = 0) -> tuple[FreeCAD.DocumentObject, FreeCAD.Matrix] | FreeCAD.DocumentObject:
         """
         getLinkedObject(recursive=True, matrix=None, transform=True, depth=0)
         Returns the linked object if there is one, or else return itself
@@ -582,7 +582,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         Possible exceptions: (RuntimeError).
         """
 
-    def getSubObject(self, subname, retType: int = 0, matrix: FreeCAD.Matrix = None, transform=True, depth: int = 0) -> typing.Any | FreeCAD.Placement | FreeCAD.Matrix | tuple[typing.Any, FreeCAD.Matrix, typing.Any] | tuple[typing.Any, ...] | None:
+    def getSubObject(self, subname, retType: int = 0, matrix: FreeCAD.Matrix = None, transform: bool = True, depth: int = 0) -> typing.Any | FreeCAD.Placement | FreeCAD.Matrix | tuple[typing.Any, FreeCAD.Matrix, typing.Any] | tuple[typing.Any, ...] | None:
         """
         getSubObject(subname, retType=0, matrix=None, transform=True, depth=0)
 
@@ -641,7 +641,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     def purgeTouched(self):
         """Mark the object as unchanged"""
 
-    def recompute(self, recursive=False, /) -> bool:
+    def recompute(self, recursive: bool = False, /) -> bool:
         """
         recompute(recursive=False): Recomputes this object
         Possible exceptions: (RuntimeError).
@@ -664,7 +664,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         non-object sub-element name if any.
         """
 
-    def resolveSubElement(self, subname: str, append=None, type: int = None, /) -> tuple[typing.Any, str, str]:
+    def resolveSubElement(self, subname: str, append: bool = None, type: int = None, /) -> tuple[typing.Any, str, str]:
         """
         resolveSubElement(subname,append,type) -- resolve both new and old style sub element
 
@@ -675,7 +675,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         Return tuple(obj,newElementName,oldElementName)
         """
 
-    def setElementVisible(self, element: str, visible=None, /) -> int:
+    def setElementVisible(self, element: str, visible: bool = None, /) -> int:
         """
         setElementVisible(element,visible): Set the visibility of a child element
         Return -1 if element visibility is not supported, 0 if element not found, 1 if success
@@ -973,14 +973,14 @@ class GroupExtension(FreeCAD.DocumentObjectExtension):
     def getObject(self, arg1: str, /) -> FreeCAD.DocumentObject:
         """Return the object with the given name"""
 
-    def hasObject(self, obj: FreeCAD.DocumentObject, recursive=False, /) -> bool:
+    def hasObject(self, obj: FreeCAD.DocumentObject, recursive: bool = False, /) -> bool:
         """
         hasObject(obj, recursive=false)
                         Checks if the group has a given object
                         @param obj        the object to check for.
                         @param recursive  if true check also if the obj is child of some sub group (default is false).
             
-        Possible exceptions: (FreeCAD.Base.FreeCADError, ValueError).
+        Possible exceptions: (FreeCAD.Base.FreeCADError).
         """
 
     def newObject(self, arg1: str, arg2: str = None, /) -> FreeCAD.DocumentObject:
@@ -1270,7 +1270,7 @@ class ExtensionContainer(FreeCAD.PropertyContainer):
         Possible exceptions: (TypeError, DeprecationWarning).
         """
 
-    def hasExtension(self, arg1: str, arg2=None, /) -> bool:
+    def hasExtension(self, arg1: str, arg2: bool = None, /) -> bool:
         """
         Returns if this object has the specified extension
         Possible exceptions: (TypeError).
@@ -1571,7 +1571,7 @@ class Document(FreeCAD.PropertyContainer):
     def abortTransaction(self):
         """Abort an Undo/Redo transaction (rollback)"""
 
-    def addObject(self, type: str, name: str = None, objProxy=None, viewProxy=None, attach=False, viewType: str = None) -> FreeCAD.DocumentObject:
+    def addObject(self, type: str, name: str = None, objProxy=None, viewProxy=None, attach: bool = False, viewType: str = None) -> FreeCAD.DocumentObject:
         """
         addObject(type, name=None, objProxy=None, viewProxy=None, attach=False, viewType=None)
 
@@ -1597,7 +1597,7 @@ class Document(FreeCAD.PropertyContainer):
     def commitTransaction(self):
         """Commit an Undo/Redo transaction"""
 
-    def copyObject(self, object, with_dependencies=False, return_all=False, /) -> typing.Any | tuple[typing.Any, ...]:
+    def copyObject(self, object, with_dependencies: bool = False, return_all: bool = False, /) -> typing.Any | tuple[typing.Any, ...]:
         """
         copyObject(object, with_dependencies=False, return_all=False)
         Copy an object or objects from another document to this document. 
@@ -1621,7 +1621,7 @@ class Document(FreeCAD.PropertyContainer):
         Possible exceptions: (RuntimeError).
         """
 
-    def getDependentDocuments(self, sort=True, /) -> list:
+    def getDependentDocuments(self, sort: bool = True, /) -> list:
         """
         getDependentDocuments(sort=True)
 
@@ -2138,14 +2138,6 @@ def getImportType(arg0: str = None, /) -> list[str] | dict[typing.Any, str | lis
     """Get the name of the module that can import the filetype"""
 
 
-def EndingAdd(arg0: str, arg1: str, /):
-    """deprecated -- use addImportType"""
-
-
-def EndingGet(arg0: str = None, /) -> list[str] | dict[typing.Any, str | list[str] | None]:
-    """deprecated -- use getImportType"""
-
-
 def addExportType(arg0: str, arg1: str, /):
     """Register filetype for export"""
 
@@ -2208,14 +2200,14 @@ def loadFile(arg0: str, arg1: str = None, arg2: str = None, /):
     """
 
 
-def open(name: str, hidden=None):
+def open(name: str, hidden: bool = None):
     """
     See openDocument(string)
     Possible exceptions: (IOError).
     """
 
 
-def openDocument(name: str, hidden=False):
+def openDocument(name: str, hidden: bool = False):
     """
     openDocument(filepath,hidden=False) -> object
     Create a document and load the project file into the document.
@@ -2228,7 +2220,7 @@ def openDocument(name: str, hidden=False):
     """
 
 
-def newDocument(name: str = None, label: str = None, hidden=False, temp=False) -> FreeCAD.Document:
+def newDocument(name: str = None, label: str = None, hidden: bool = False, temp: bool = False) -> FreeCAD.Document:
     """
     newDocument(name, label=None, hidden=False, temp=False) -> object
     Create a new document with a given name.
@@ -2273,7 +2265,7 @@ def getDocument(string: str, /) -> FreeCADGui.Document:
     """
 
 
-def listDocuments(sort=False, /) -> dict[str, FreeCAD.PyObjectBase]:
+def listDocuments(sort: bool = False, /) -> dict[str, FreeCAD.PyObjectBase]:
     """
     listDocuments(sort=False) -> list
 
@@ -2335,7 +2327,7 @@ def getDependentObjects(arg0, arg1: int = None, /) -> tuple[typing.Any, ...]:
     """
 
 
-def setActiveTransaction(name: str, persist=False, /) -> int:
+def setActiveTransaction(name: str, persist: bool = False, /) -> int:
     """
     setActiveTransaction(name, persist=False) -- setup active transaction with the given name
 
@@ -2353,7 +2345,7 @@ def getActiveTransaction() -> tuple[str, int]:
     """getActiveTransaction() -> (name,id) return the current active transaction name and ID"""
 
 
-def closeActiveTransaction(arg0=None, arg1: int = None, /):
+def closeActiveTransaction(arg0: bool = None, arg1: int = None, /):
     """closeActiveTransaction(abort=False) -- commit or abort current active transaction"""
 
 

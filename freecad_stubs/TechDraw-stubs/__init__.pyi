@@ -1443,15 +1443,6 @@ class DrawViewPart(TechDraw.DrawView):
         Possible exceptions: (TypeError).
         """
 
-    def replaceCenterLine(self, cl, /) -> bool:
-        """replaceCenterLine(cl) - replacls CenterLine cl in View. Returns True/False."""
-
-    def replaceCosmeticEdge(self, ce, /) -> bool:
-        """replaceCosmeticEdge(ce) - replaces CosmeticEdge ce in View. Returns True/False."""
-
-    def replaceCosmeticVertex(self, cv, /) -> bool:
-        """rc = replaceCosmeticVertex(cv) - replaces CosmeticVertex in View. Returns True/False."""
-
     def requestPaint(self) -> None:
         """requestPaint(). Redraw the graphic for this View."""
 

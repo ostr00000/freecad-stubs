@@ -203,7 +203,7 @@ class LinkView(FreeCAD.BaseClass):
         Possible exceptions: (TypeError).
         """
 
-    def setType(self, type: int, sublink=True, /):
+    def setType(self, type: int, sublink: bool = True, /):
         """
         setType(type, sublink=True): set the link type.
 
@@ -249,7 +249,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         """Represents the whole ViewProvider as an Inventor string."""
 
     @property
-    def Icon(self) -> str | qtpy.QtGui.QIcon:
+    def Icon(self) -> qtpy.QtGui.QIcon:
         """The icon of this ViewProvider."""
 
     @property
@@ -1403,7 +1403,7 @@ class MDIViewPy(qtpy.QtWidgets.QMainWindow):
         Possible exceptions: (Exception, TypeError).
         """
 
-    def getActiveObject(self, name: str, resolve=True, /) -> FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, FreeCAD.DocumentObject, str] | None:
+    def getActiveObject(self, name: str, resolve: bool = True, /) -> FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, FreeCAD.DocumentObject, str] | None:
         """
         getActiveObject(name,resolve=True)
         returns the active object for the given type
@@ -1598,7 +1598,7 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
-    def dump(self, filename: str, onlyVisible=False, /) -> None:
+    def dump(self, filename: str, onlyVisible: bool = False, /) -> None:
         """
         dump(filename, [onlyVisible=False])
         Possible exceptions: (Exception, RuntimeError).
@@ -1893,7 +1893,7 @@ class View3DInventorPy:
         Possible exceptions: (Exception, TypeError).
         """
 
-    def getActiveObject(self, name: str, resolve=True, /) -> FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, FreeCAD.DocumentObject, str] | None:
+    def getActiveObject(self, name: str, resolve: bool = True, /) -> FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, FreeCAD.DocumentObject, str] | None:
         """
         getActiveObject(name,resolve=True)
         returns the active object for the given type
@@ -1965,7 +1965,7 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
-    def toggleClippingPlane(self, toggle: int = None, beforeEditing=None, noManip=None, pla: FreeCAD.Placement = None) -> None:
+    def toggleClippingPlane(self, toggle: int = None, beforeEditing: bool = None, noManip: bool = None, pla: FreeCAD.Placement = None) -> None:
         """
         toggleClippingPlane(toggle=-1, beforeEditing=False, noManip=True, pla=App.Placement()
         Toggle a global clipping plane
@@ -2015,6 +2015,77 @@ class MainWindowPy(qtpy.QtWidgets.QMainWindow):
     def getActiveWindow(self) -> MDIViewPy | None:
         """
         getActiveWindow()
+        Possible exceptions: (Exception).
+        """
+
+
+# SoFCOffscreenRenderer.cpp
+class SoQtOffscreenRenderer:
+    """Python interface for SoQtOffscreenRenderer"""
+
+    def setViewportRegion(self, int: int, int1: int, /) -> None:
+        """
+        setViewportRegion(int, int)
+        Possible exceptions: (Exception).
+        """
+
+    def getViewportRegion(self) -> tuple[int, int]:
+        """
+        getViewportRegion() -> tuple
+        Possible exceptions: (Exception).
+        """
+
+    def setBackgroundColor(self, float: float, float1: float, float2: float, float3: float = None, /) -> None:
+        """
+        setBackgroundColor(float, float, float, [float])
+        Possible exceptions: (Exception).
+        """
+
+    def getBackgroundColor(self) -> tuple[float, float, float, float]:
+        """
+        getBackgroundColor() -> tuple
+        Possible exceptions: (Exception).
+        """
+
+    def setNumPasses(self, int: int, /) -> None:
+        """
+        setNumPasses(int)
+        Possible exceptions: (Exception).
+        """
+
+    def getNumPasses(self) -> int:
+        """
+        getNumPasses() -> int
+        Possible exceptions: (Exception).
+        """
+
+    def setInternalTextureFormat(self, int: int, /) -> None:
+        """
+        setInternalTextureFormat(int)
+        Possible exceptions: (Exception).
+        """
+
+    def getInternalTextureFormat(self) -> int:
+        """
+        getInternalTextureFormat() -> int
+        Possible exceptions: (Exception).
+        """
+
+    def render(self, node, /) -> bool:
+        """
+        render(node)
+        Possible exceptions: (Exception).
+        """
+
+    def writeToImage(self, string: str, /) -> None:
+        """
+        writeToImage(string)
+        Possible exceptions: (Exception).
+        """
+
+    def getWriteImageFiletypeInfo(self) -> tuple[str, ...]:
+        """
+        getWriteImageFiletypeInfo() -> tuple
         Possible exceptions: (Exception).
         """
 
@@ -2995,7 +3066,7 @@ class View3DInventorViewerPy:
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def resetEditingRoot(self, updateLinks=True, /) -> None:
+    def resetEditingRoot(self, updateLinks: bool = True, /) -> None:
         """
         resetEditingRoot(updateLinks=True): restore the editing ViewProvider's root node
         Possible exceptions: (Exception, RuntimeError).
