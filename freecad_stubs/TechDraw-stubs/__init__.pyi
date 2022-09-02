@@ -1382,25 +1382,25 @@ class DrawViewPart(TechDraw.DrawView):
         Possible exceptions: (TypeError, RuntimeError).
         """
 
-    def makeCosmeticCircle(self, arg1: FreeCAD.Vector, arg2: float, arg3: int = None, arg4: float = None, arg5=None, /) -> str:
+    def makeCosmeticCircle(self, center: FreeCAD.Vector, radius: float, arg3: int = None, arg4: float = None, arg5=None, /) -> str:
         """
         tag = makeCosmeticCircle(center, radius) - add a CosmeticEdge at center with radius radius(View coordinates). Returns tag of new CosmeticEdge.
         Possible exceptions: (TypeError, RuntimeError).
         """
 
-    def makeCosmeticCircleArc(self, arg1: FreeCAD.Vector, arg2: float, arg3: float, arg4: float, arg5: int = None, arg6: float = None, arg7=None, /) -> str:
+    def makeCosmeticCircleArc(self, center: FreeCAD.Vector, radius: float, start: float, end: float, arg5: int = None, arg6: float = None, arg7=None, /) -> str:
         """
         tag = makeCosmeticCircleArc(center, radius, start, end) - add a CosmeticEdge at center with radius radius(View coordinates) from start angle to end angle. Returns tag of new CosmeticEdge.
         Possible exceptions: (TypeError, RuntimeError).
         """
 
-    def makeCosmeticLine(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: int = None, arg4: float = None, arg5=None, /) -> str:
+    def makeCosmeticLine(self, p1: FreeCAD.Vector, p2: FreeCAD.Vector, arg3: int = None, arg4: float = None, arg5=None, /) -> str:
         """
         tag = makeCosmeticLine(p1, p2) - add a CosmeticEdge from p1 to p2(View coordinates). Returns tag of new CosmeticEdge.
         Possible exceptions: (TypeError, RuntimeError).
         """
 
-    def makeCosmeticLine3D(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: int = None, arg4: float = None, arg5=None, /) -> str:
+    def makeCosmeticLine3D(self, p1: FreeCAD.Vector, p2: FreeCAD.Vector, arg3: int = None, arg4: float = None, arg5=None, /) -> str:
         """
         tag = makeCosmeticLine3D(p1, p2) - add a CosmeticEdge from p1 to p2(3D coordinates). Returns tag of new CosmeticEdge.
         Possible exceptions: (TypeError, RuntimeError).
@@ -1883,7 +1883,7 @@ def viewPartAsSvg(DrawViewPart, /) -> str:
     """
 
 
-def writeDXFView(arg1, arg2: str, arg3=None, /) -> None:
+def writeDXFView(view, filename: str, arg3=None, /) -> None:
     """
     writeDXFView(view,filename): Exports a DrawViewPart to a DXF file.
     Possible exceptions: (TypeError, RuntimeError).
@@ -1932,6 +1932,11 @@ def makeGeomHatch(face, patScale: float = None, patName: str = None, patFile: st
     """
 
 
+@typing.overload
+def project(TopoShape_, App_Vector_Direction, string_type, /): ...
+
+
+@typing.overload
 def project(arg1: PartModule.Shape, arg2: FreeCAD.Vector = None, /) -> list[PartModule.Shape]:
     """
     [visiblyG0,visiblyG1,hiddenG0,hiddenG1] = project(TopoShape[,App.Vector Direction, string type])
@@ -1940,6 +1945,11 @@ def project(arg1: PartModule.Shape, arg2: FreeCAD.Vector = None, /) -> list[Part
     """
 
 
+@typing.overload
+def projectEx(TopoShape_, App_Vector_Direction, string_type, /): ...
+
+
+@typing.overload
 def projectEx(arg1: PartModule.Shape, arg2: FreeCAD.Vector = None, /) -> list[PartModule.Shape]:
     """
     [V,V1,VN,VO,VI,H,H1,HN,HO,HI] = projectEx(TopoShape[,App.Vector Direction, string type])
@@ -1948,7 +1958,7 @@ def projectEx(arg1: PartModule.Shape, arg2: FreeCAD.Vector = None, /) -> list[Pa
     """
 
 
-def projectToDXF(arg1: PartModule.Shape, arg2: FreeCAD.Vector = None, arg3: str = None, arg4: float = None, arg5: float = None, /) -> str:
+def projectToDXF(TopoShape_: PartModule.Shape, App_Vector_Direction: FreeCAD.Vector = None, string_type: str = None, arg4: float = None, arg5: float = None, /) -> str:
     """
     string = projectToDXF(TopoShape[,App.Vector Direction, string type])
      -- Project a shape and return the DXF representation as string.

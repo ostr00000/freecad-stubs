@@ -27,7 +27,7 @@ def registerServerFirewall(callable_string_, /) -> None:
 class BrowserView:
     """Python interface class to BrowserView"""
 
-    def setHtml(self, arg1: str, arg2: str = None, /) -> None:
+    def setHtml(self, str: str, arg2: str = None, /) -> None:
         """
         setHtml(str)
         Possible exceptions: (Exception).

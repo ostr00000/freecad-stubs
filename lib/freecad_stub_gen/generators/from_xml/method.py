@@ -91,10 +91,6 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
             docsFunName, node, argNumStart=len(parameters)))
 
         sigMerger = SignatureMerger(codeSignatures, docSignatures, firstParam, cFunName=cFunName)
-        if (n := node.find("./Documentation/UserDocu")) \
-                and 'listSchemas(int) -> description of the given schema' in n.text:
-            print()
-
         yield from sigMerger.genMergedCodeAndDocSignatures()
 
     @classmethod
@@ -150,17 +146,24 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         if res := super().findFunctionBody(cFuncName, cClassName):
             return res
 
-        if not (baseClass := type(self).safeCreate(self.parentXmlPath)):
-            if cFuncName == 'PyInit':
-                pass  # skip implicit constructor - probably inherited from PyObject
-            else:
-                logger.error(f"Cannot find {self.parentXmlPath=} for {self.baseGenFilePath=}")
+        try:
+            p = self.parentXmlPath
+        except AttributeError:
+            baseClass = None
+        else:
+            baseClass = type(self).safeCreate(p)
+
+        if baseClass:
+            return baseClass.findFunctionBody(cFuncName, cClassName)
+
+        if cFuncName in ('PyInit', 'PyMake'):
+            # skip implicit constructor - probably inherited from PyObject
             return
 
-        return baseClass.findFunctionBody(cFuncName, cClassName)
+        logger.error(f"Cannot find {self.parentXmlPath=} for {self.baseGenFilePath=}")
 
     @cached_property
     def parentXmlPath(self) -> Path:
-        fatherInclude = self.currentNode.attrib['FatherInclude'].replace('/', '.')
+        fatherInclude = self.currentNode.attrib['FatherInclude']
         parentFile = (self.sourceDir / fatherInclude).with_suffix('.xml')
         return parentFile

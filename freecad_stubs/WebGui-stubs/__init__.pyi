@@ -1,3 +1,5 @@
+import typing
+
 import WebGui
 
 
@@ -14,6 +16,11 @@ def openBrowserWindow(arg1: str = None, /) -> WebGui.BrowserView:
     """Possible exceptions: (Exception)."""
 
 
+@typing.overload
+def open(htmlcode, baseurl, title, iconpath, /): ...
+
+
+@typing.overload
 def open(arg1: str, /) -> None:
     """
     open(htmlcode,baseurl,[title,iconpath])

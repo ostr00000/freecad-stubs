@@ -455,6 +455,10 @@ class StdMeshers_Arithmetic1D:
     def setLength(self) -> None:
         """setLength()"""
 
+    @typing.overload
+    def getLength(self): ...
+
+    @typing.overload
     def getLength(self, arg1: int, /) -> float:
         """
         getLength()

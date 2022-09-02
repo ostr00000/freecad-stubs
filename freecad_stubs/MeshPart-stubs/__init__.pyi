@@ -88,6 +88,14 @@ def meshFromShape(Shape: PartModule.Shape, /) -> MeshModule.Mesh: ...
 
 
 @typing.overload
+def meshFromShape(Shape: PartModule.Shape, GrowthRate: float = None, SegPerEdge: float = None, SegPerRadius: float = None, SecondOrder: int = None, Optimize: int = None, AllowQuad: int = None, MinLength: float = None, MaxLength: float = None) -> MeshModule.Mesh: ...
+
+
+@typing.overload
+def meshFromShape(Shape: PartModule.Shape, LinearDeflection: float, AngularDeflection: float = None, Relative: bool = None, Segments: bool = None, GroupColors=None) -> MeshModule.Mesh: ...
+
+
+@typing.overload
 def meshFromShape(Shape: PartModule.Shape, MaxLength: float) -> MeshModule.Mesh: ...
 
 
@@ -101,6 +109,10 @@ def meshFromShape(Shape: PartModule.Shape, LocalLength: float) -> MeshModule.Mes
 
 @typing.overload
 def meshFromShape(Shape: PartModule.Shape, Deflection: float) -> MeshModule.Mesh: ...
+
+
+@typing.overload
+def meshFromShape(Shape: PartModule.Shape, Fineness: int, SecondOrder: int = None, Optimize: int = None, AllowQuad: int = None, MinLength: float = None, MaxLength: float = None) -> MeshModule.Mesh: ...
 
 
 @typing.overload

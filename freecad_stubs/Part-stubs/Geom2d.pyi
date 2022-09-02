@@ -62,7 +62,28 @@ class Curve2d(Part.Geom2d.Geometry2d):
     def discretize(self, QuasiNumber: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
 
     @typing.overload
-    def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]:
+    def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
+
+    @typing.overload
+    def discretize(self, Angular: float, Curvature: float, First: float = None, Last: float = None, Minimum: int = None) -> list[FreeCAD.Vector2d]: ...
+
+    @typing.overload
+    def discretize(self, Number: int, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector2d]: ...
+
+    @typing.overload
+    def discretize(self, Distance: float, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector2d]: ...
+
+    @typing.overload
+    def discretize(self, Deflection: float, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector2d]: ...
+
+    @typing.overload
+    def discretize(self, QuasiNumber: int, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector2d]: ...
+
+    @typing.overload
+    def discretize(self, QuasiDeflection: float, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector2d]: ...
+
+    @typing.overload
+    def discretize(self, Angular: float, Curvature: float, First: float = 3.14, Last: float = 100, Minimum: int = None) -> list[FreeCAD.Vector2d]:
         """
         Discretizes the curve and returns a list of points.
         The function accepts keywords as argument:
@@ -442,7 +463,13 @@ class Line2dSegment(Part.Geom2d.Curve2d):
     def __init__(self, Line: Part.Geom2d.Line2dSegment, /): ...
 
     @typing.overload
-    def __init__(self, Point1, Point2, /):
+    def __init__(self, Point1, Point2, /): ...
+
+    @typing.overload
+    def __init__(self, arg1: Part.Geom2d.Line2dSegment, arg2: float, arg3: float, /): ...
+
+    @typing.overload
+    def __init__(self, arg1: Part.Geom2d.Line2d, arg2: float, arg3: float, /):
         """
         Describes a line segment in 2D space
         To create a line there are several ways:
@@ -920,6 +947,10 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
+    @typing.overload
+    def increaseMultiplicity(self, int_index: int, int_mult: int, arg3: int = None, /): ...
+
+    @typing.overload
     def increaseMultiplicity(self, int_start: int, int_end: int, int_mult: int = None, /):
         """
         increaseMultiplicity(int index, int mult)
@@ -1026,6 +1057,10 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def join(self, arg1: Part.Geom2d.BSplineCurve2d, /) -> bool:
         """Build a new spline by joining this and a second spline."""
 
+    @typing.overload
+    def makeC1Continuous(self, tol=1e-6, ang_tol=1e-7): ...
+
+    @typing.overload
     def makeC1Continuous(self, arg1: float = None, /):
         """
         makeC1Continuous(tol = 1e-6, ang_tol = 1e-7)

@@ -89,7 +89,7 @@ class SelfSignature(Signature):
                  unknown_parameters=False,
                  return_annotation=Signature.empty,
                  exceptions=(),
-                 __validate_parameters__=True):
+                 ):
 
         match parameters:
             case [Parameter(name='self', kind=Parameter.POSITIONAL_ONLY) as selfParam]:
@@ -104,8 +104,7 @@ class SelfSignature(Signature):
             parameters[0] = selfParam.replace(kind=Parameter.POSITIONAL_OR_KEYWORD)
 
         try:
-            super().__init__(parameters, return_annotation=return_annotation,
-                             __validate_parameters__=__validate_parameters__)
+            super().__init__(parameters, return_annotation=return_annotation)
             self.exceptions: OrderedSet[str] | tuple[()] = exceptions
             self.unknown_parameters = unknown_parameters
         except ValueError as v:

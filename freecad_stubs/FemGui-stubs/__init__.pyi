@@ -133,7 +133,7 @@ def getActiveAnalysis() -> typing.Any | None:
     """
 
 
-def open(arg1: str, arg2: str = None, /) -> None:
+def open(string: str, arg2: str = None, /) -> None:
     """
     open(string) -- Opens an Abaqus file in a text editor.
     Possible exceptions: (Exception).

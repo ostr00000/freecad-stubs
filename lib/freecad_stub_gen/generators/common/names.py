@@ -34,6 +34,11 @@ def getClassWithModulesFromStem(stem: str, namespace: str):
     return getClassWithModulesFromNode(exportElement)
 
 
+CLASS_TO_ALIAS = {
+    'Workbench': 'WorkbenchC',
+}
+
+
 def getClassWithModulesFromNode(currentNode: ET.Element) -> str:
     """
     Return class name preceded by all modules, ex. `FreeCAD.Vector`.
@@ -59,6 +64,7 @@ def getClassWithModulesFromNode(currentNode: ET.Element) -> str:
 
     namespace = currentNode.attrib.get('Namespace')
     namespace = moduleNamespace.convertNamespaceToModule(namespace)
+    name = CLASS_TO_ALIAS.get(name, name)
     return f'{namespace}.{name}'
 
 

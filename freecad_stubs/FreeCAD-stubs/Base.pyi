@@ -39,10 +39,16 @@ class Vector(FreeCAD.PyObjectBase):
     def __init__(self, x: float = 0, y: float = 0, z: float = 0, /): ...
 
     @typing.overload
+    def __init__(self, vector: float = None, arg2: float = None, arg3: float = None, /): ...
+
+    @typing.overload
     def __init__(self, vector: FreeCAD.Vector, /): ...
 
     @typing.overload
     def __init__(self, vector, /): ...
+
+    @typing.overload
+    def __init__(self, seq: float = None, arg2: float = None, arg3: float = None, /): ...
 
     @typing.overload
     def __init__(self, seq: FreeCAD.Vector, /): ...
@@ -435,6 +441,9 @@ class Rotation(FreeCAD.PyObjectBase):
     def __init__(self, angle1: float, angle2: float, angle3: float, /): ...
 
     @typing.overload
+    def __init__(self, angle1: FreeCAD.Vector, angle2: FreeCAD.Vector, angle3: FreeCAD.Vector, arg4: str = None, /): ...
+
+    @typing.overload
     def __init__(self, seq: float, angle1: float, angle2: float, angle3: float, /): ...
 
     @typing.overload
@@ -471,7 +480,13 @@ class Rotation(FreeCAD.PyObjectBase):
     def __init__(self, arg1: FreeCAD.Rotation, /): ...
 
     @typing.overload
-    def __init__(self, arg1: FreeCAD.Matrix, /):
+    def __init__(self, arg1: FreeCAD.Matrix, /): ...
+
+    @typing.overload
+    def __init__(self, arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, arg6: float, arg7: float, arg8: float, arg9: float, arg10: float, arg11: float, arg12: float, arg13: float, arg14: float, arg15: float, arg16: float, /): ...
+
+    @typing.overload
+    def __init__(self, arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, arg6: float, arg7: float, arg8: float, arg9: float, /):
         """
         Base.Rotation class.
 
@@ -887,10 +902,16 @@ class BoundBox(FreeCAD.PyObjectBase):
     def __init__(self): ...
 
     @typing.overload
+    def __init__(self, boundBox: float, arg2: float = None, arg3: float = None, arg4: float = None, arg5: float = None, arg6: float = None, /): ...
+
+    @typing.overload
     def __init__(self, boundBox: FreeCAD.BoundBox, /): ...
 
     @typing.overload
     def __init__(self, xMin: float, yMin: float = 0, zMin: float = 0, xMax: float = 0, yMax: float = 0, zMax: float = 0, /): ...
+
+    @typing.overload
+    def __init__(self, min: float, max: float = None, arg3: float = None, arg4: float = None, arg5: float = None, arg6: float = None, /): ...
 
     @typing.overload
     def __init__(self, min: tuple, max: tuple, /): ...
@@ -1461,7 +1482,11 @@ class Placement(FreeCAD.PyObjectBase):
             the path shorter.
         """
 
-    def rotate(self, center: tuple[float, float, float], axis: tuple[float, float, float], angle: float, comp: bool = None):
+    @typing.overload
+    def rotate(self, center: tuple[float, float, float], axis: tuple[float, float, float], angle: float, comp: bool = None): ...
+
+    @typing.overload
+    def rotate(self):
         """
         rotate(center, axis, angle, comp) -> None
 
@@ -1601,6 +1626,9 @@ class Unit(FreeCAD.PyObjectBase):
     """
 
     @typing.overload
+    def __init__(self, arg1: int = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, /): ...
+
+    @typing.overload
     def __init__(self, i1: int = None, i2: int = None, i3: int = None, i4: int = None, i5: int = None, i6: int = None, i7: int = None, i8: int = None, /): ...
 
     @typing.overload
@@ -1613,6 +1641,9 @@ class Unit(FreeCAD.PyObjectBase):
     def __init__(self, Quantity: str, /): ...
 
     @typing.overload
+    def __init__(self, Quantity: int = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, /): ...
+
+    @typing.overload
     def __init__(self, Unit: FreeCAD.Quantity, /): ...
 
     @typing.overload
@@ -1622,13 +1653,19 @@ class Unit(FreeCAD.PyObjectBase):
     def __init__(self, Unit: str, /): ...
 
     @typing.overload
+    def __init__(self, Unit: int = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, /): ...
+
+    @typing.overload
     def __init__(self, string: FreeCAD.Quantity, /): ...
 
     @typing.overload
     def __init__(self, string: FreeCAD.Unit, /): ...
 
     @typing.overload
-    def __init__(self, string: str, /):
+    def __init__(self, string: str, /): ...
+
+    @typing.overload
+    def __init__(self, string: int = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, /):
         """
         Unit
          defines a unit type, calculate and compare.
@@ -1716,7 +1753,13 @@ class Quantity(FreeCAD.PyObjectBase):
     """
 
     @typing.overload
+    def __init__(self, arg1: float = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /): ...
+
+    @typing.overload
     def __init__(self, Value: FreeCAD.Quantity, /): ...
+
+    @typing.overload
+    def __init__(self, Value: float = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /): ...
 
     @typing.overload
     def __init__(self, Value: str, /): ...
@@ -1728,16 +1771,25 @@ class Quantity(FreeCAD.PyObjectBase):
     def __init__(self, Value: float, Unit: FreeCAD.Quantity, /): ...
 
     @typing.overload
+    def __init__(self, Value: float = None, Unit: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /): ...
+
+    @typing.overload
     def __init__(self, Value: float, Unit: str, /): ...
 
     @typing.overload
     def __init__(self, Quantity: FreeCAD.Quantity, /): ...
 
     @typing.overload
+    def __init__(self, Quantity: float = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /): ...
+
+    @typing.overload
     def __init__(self, Quantity: str, /): ...
 
     @typing.overload
     def __init__(self, string: FreeCAD.Quantity, /): ...
+
+    @typing.overload
+    def __init__(self, string: float = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /): ...
 
     @typing.overload
     def __init__(self, string: str, /):
@@ -1796,6 +1848,9 @@ class Quantity(FreeCAD.PyObjectBase):
     def getValueAs(self, arg1: FreeCAD.Unit, /) -> FreeCAD.Quantity: ...
 
     @typing.overload
+    def getValueAs(self, arg1: float, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /) -> FreeCAD.Quantity: ...
+
+    @typing.overload
     def getValueAs(self, arg1: str, /) -> FreeCAD.Quantity: ...
 
     @typing.overload
@@ -1808,6 +1863,9 @@ class Quantity(FreeCAD.PyObjectBase):
     def getValueAs(self, FreeCAD_Units_Pascal: FreeCAD.Unit, /) -> FreeCAD.Quantity: ...
 
     @typing.overload
+    def getValueAs(self, FreeCAD_Units_Pascal: float, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /) -> FreeCAD.Quantity: ...
+
+    @typing.overload
     def getValueAs(self, FreeCAD_Units_Pascal: str, /) -> FreeCAD.Quantity: ...
 
     @typing.overload
@@ -1817,6 +1875,9 @@ class Quantity(FreeCAD.PyObjectBase):
     def getValueAs(self, Qantity_N_m_2_: FreeCAD.Unit, /) -> FreeCAD.Quantity: ...
 
     @typing.overload
+    def getValueAs(self, Qantity_N_m_2_: float, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /) -> FreeCAD.Quantity: ...
+
+    @typing.overload
     def getValueAs(self, Qantity_N_m_2_: str, /) -> FreeCAD.Quantity: ...
 
     @typing.overload
@@ -1824,6 +1885,9 @@ class Quantity(FreeCAD.PyObjectBase):
 
     @typing.overload
     def getValueAs(self, Unit_0_1_0_0_0_0_0_0_: FreeCAD.Unit, /) -> FreeCAD.Quantity: ...
+
+    @typing.overload
+    def getValueAs(self, Unit_0_1_0_0_0_0_0_0_: float, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /) -> FreeCAD.Quantity: ...
 
     @typing.overload
     def getValueAs(self, Unit_0_1_0_0_0_0_0_0_: str, /) -> FreeCAD.Quantity:
@@ -1955,10 +2019,19 @@ class Matrix(FreeCAD.PyObjectBase):
     """
 
     @typing.overload
+    def __init__(self, arg1: float = None, arg2: float = None, arg3: float = None, arg4: float = None, arg5: float = None, arg6: float = None, arg7: float = None, arg8: float = None, arg9: float = None, arg10: float = None, arg11: float = None, arg12: float = None, arg13: float = None, arg14: float = None, arg15: float = None, arg16: float = None, /): ...
+
+    @typing.overload
+    def __init__(self, matrix: float = None, arg2: float = None, arg3: float = None, arg4: float = None, arg5: float = None, arg6: float = None, arg7: float = None, arg8: float = None, arg9: float = None, arg10: float = None, arg11: float = None, arg12: float = None, arg13: float = None, arg14: float = None, arg15: float = None, arg16: float = None, /): ...
+
+    @typing.overload
     def __init__(self, matrix: FreeCAD.Matrix, /): ...
 
     @typing.overload
     def __init__(self, arg1: FreeCAD.Matrix, /): ...
+
+    @typing.overload
+    def __init__(self, vector1: float = None, vector2: float = None, vector3: float = None, vector4: float = None, arg5: float = None, arg6: float = None, arg7: float = None, arg8: float = None, arg9: float = None, arg10: float = None, arg11: float = None, arg12: float = None, arg13: float = None, arg14: float = None, arg15: float = None, arg16: float = None, /): ...
 
     @typing.overload
     def __init__(self, vector1: FreeCAD.Vector, vector2: FreeCAD.Vector, vector3: FreeCAD.Vector, vector4: FreeCAD.Vector = None, /):

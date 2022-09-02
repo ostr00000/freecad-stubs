@@ -30,7 +30,7 @@ class StepShape(FreeCAD.PyObjectBase):
 
 
 # AppImportPy.cpp
-def readDXF(arg1: str, arg2: str = None, arg3: int = None, arg4: str = None, /) -> None:
+def readDXF(filename: str, document: str = None, ignore_errors: int = None, arg4: str = None, /) -> None:
     """
     readDXF(filename,[document,ignore_errors]): Imports a DXF file into the given document. ignore_errors is True by default.
     Possible exceptions: (Exception, RuntimeError).
@@ -38,11 +38,11 @@ def readDXF(arg1: str, arg2: str = None, arg3: int = None, arg4: str = None, /) 
 
 
 @typing.overload
-def writeDXFShape(arg1: list, arg2: str, arg3: int = None, arg4=None, arg5: str = None, /) -> None: ...
+def writeDXFShape(shape: list, filename_version: str, usePolyline: int = None, optionSource=None, arg5: str = None, /) -> None: ...
 
 
 @typing.overload
-def writeDXFShape(arg1: PartModule.Shape, arg2: str, arg3: int = None, arg4=None, arg5: str = None, /) -> None:
+def writeDXFShape(shape: PartModule.Shape, filename_version: str, usePolyline: int = None, optionSource=None, arg5: str = None, /) -> None:
     """
     writeDXFShape([shape],filename [version,usePolyline,optionSource]): Exports Shape(s) to a DXF file.
     Possible exceptions: (RuntimeError, TypeError).

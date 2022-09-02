@@ -10,7 +10,19 @@ def addSelection(docName: str, objName: str, subName: str = None, x: float = 0, 
 
 
 @typing.overload
+def addSelection(obj: str, subName: str, x: str = 0, y: float = 0, z: float = 0, clear: float = True, arg6: bool = None, /): ...
+
+
+@typing.overload
 def addSelection(obj: FreeCAD.DocumentObject, subName: str = None, x: float = 0, y: float = 0, z: float = 0, clear: bool = True, /): ...
+
+
+@typing.overload
+def addSelection(obj: str, subNames: str, clear: str = True, arg3: float = None, arg4: float = None, arg5: float = None, arg6: bool = None, /): ...
+
+
+@typing.overload
+def addSelection(obj: FreeCAD.DocumentObject, subNames: str = None, clear: float = True, arg3: float = None, arg4: float = None, arg5: bool = None, /): ...
 
 
 @typing.overload
@@ -61,6 +73,10 @@ def updateSelection(show: bool, obj: FreeCAD.DocumentObject, subName: str = None
 
 
 @typing.overload
+def removeSelection(obj: str, subName: str, arg2: str = None, /): ...
+
+
+@typing.overload
 def removeSelection(obj: FreeCAD.DocumentObject, subName: str = None, /): ...
 
 
@@ -89,7 +105,11 @@ def clearSelection(docName: str = None, clearPreSelect: bool = True, /): ...
 
 
 @typing.overload
-def clearSelection(clearPreSelect: bool = True, /):
+def clearSelection(clearPreSelect: bool = True, /): ...
+
+
+@typing.overload
+def clearSelection(clearPreSelect: str = True, arg1: bool = None, /):
     """
     clearSelection(docName, clearPreSelect=True) -> None
     clearSelection(clearPreSelect=True) -> None
@@ -285,7 +305,31 @@ def addSelectionGate(filter: str, resolve: int = None, /): ...
 
 
 @typing.overload
-def addSelectionGate(filter, resolve: int = None, /):
+def addSelectionGate(filter, resolve: int = None, /): ...
+
+
+@typing.overload
+def addSelectionGate(arg0: str, arg1: int = None, /): ...
+
+
+@typing.overload
+def addSelectionGate(arg0, arg1: int = None, /): ...
+
+
+@typing.overload
+def addSelectionGate(filter: str, arg1: int = None, /): ...
+
+
+@typing.overload
+def addSelectionGate(filter, arg1: int = None, /): ...
+
+
+@typing.overload
+def addSelectionGate(Gate_: str, arg1: int = None, /): ...
+
+
+@typing.overload
+def addSelectionGate(Gate_, arg1: int = None, /):
     """
     addSelectionGate(filter, resolve=ResolveMode.OldStyleElement) -> None
 

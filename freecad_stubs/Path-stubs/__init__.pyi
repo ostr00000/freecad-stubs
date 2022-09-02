@@ -191,6 +191,10 @@ class Command(FreeCAD.Persistence):
     @Placement.setter
     def Placement(self, value: FreeCAD.Placement): ...
 
+    @typing.overload
+    def setFromGCode(self): ...
+
+    @typing.overload
     def setFromGCode(self, arg1: str, /) -> None:
         """
         setFromGCode(): sets the path from the contents of the given GCode string
@@ -222,7 +226,7 @@ class Area(FreeCAD.BaseClass):
     All arguments are optional.
     """
 
-    def __init__(self, key=None, /):
+    def __init__(self, key=None):
         """
         FreeCAD python wrapper of libarea
 
@@ -489,6 +493,10 @@ class FeatureArea(FreeCAD.DocumentObject):
     def getArea(self) -> PathModule.Area:
         """Return a copy of the encapsulated Python Area object."""
 
+    @typing.overload
+    def setParams(self, key=None): ...
+
+    @typing.overload
     def setParams(self) -> None:
         """
         setParams(key=value...): Convenient function to configure this feature.
@@ -560,6 +568,11 @@ def fromShapes(shapes, start: FreeCAD.Vector = None, return_end: bool = None) ->
     """
 
 
+@typing.overload
+def sortWires(shapes, /, start=None, arg2=None): ...
+
+
+@typing.overload
 def sortWires(shapes, start: FreeCAD.Vector = None) -> tuple[list[PartModule.Shape], FreeCAD.Vector, int]:
     """
     sortWires(shapes, start=Vector(), "
@@ -581,6 +594,11 @@ def sortWires(shapes, start: FreeCAD.Vector = None) -> tuple[list[PartModule.Sha
 
 
 # AreaPyImp.cpp
+@typing.overload
+def setDefaultParams(key=None): ...
+
+
+@typing.overload
 def setDefaultParams() -> None:
     """
     setDefaultParams(key=value...):

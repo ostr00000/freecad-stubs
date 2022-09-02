@@ -461,7 +461,11 @@ class Solid(PartModule.Shape):
     Part.Solid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created.
     """
 
-    def __init__(self, shape: PartModule.Shape, /):
+    @typing.overload
+    def __init__(self, shape: PartModule.Shape, /): ...
+
+    @typing.overload
+    def __init__(self):
         """
         Part.Solid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created.
         Possible exceptions: (Part.OCCError).
@@ -1107,6 +1111,10 @@ class Face(PartModule.Shape):
         Possible exceptions: (Part.OCCError).
         """
 
+    @typing.overload
+    def normalAt(self, pos, /): ...
+
+    @typing.overload
     def normalAt(self, arg1: float, arg2: float, /) -> FreeCAD.Vector:
         """
         Get the normal vector at the given parameter [0|Length] if defined
@@ -1147,6 +1155,9 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
 
     @typing.overload
     def add(self, Profile: PartModule.Shape, WithContact: bool = False, WithCorrection: bool = False): ...
+
+    @typing.overload
+    def add(self, Profile: PartModule.Shape, Location: PartModule.Vertex, WithContact: bool = False, WithCorrection: bool = None): ...
 
     @typing.overload
     def add(self, Profile: PartModule.Shape, Location: PartModule.Vertex, WithContact: bool = False, WithCorrection: bool = False):
@@ -1560,6 +1571,9 @@ class Shape(FreeCAD.ComplexGeoData):
     def common(self, tool: PartModule.Shape, /) -> PartModule.Shape: ...
 
     @typing.overload
+    def common(self, tool, arg2: float = None, /) -> PartModule.Shape: ...
+
+    @typing.overload
     def common(self, arg1: PartModule.Shape, tolerance: float, /) -> PartModule.Shape: ...
 
     @typing.overload
@@ -1607,6 +1621,9 @@ class Shape(FreeCAD.ComplexGeoData):
 
     @typing.overload
     def cut(self, tool: PartModule.Shape, /) -> PartModule.Shape: ...
+
+    @typing.overload
+    def cut(self, tool, arg2: float = None, /) -> PartModule.Shape: ...
 
     @typing.overload
     def cut(self, arg1: PartModule.Shape, tolerance: float, /) -> PartModule.Shape: ...
@@ -1717,13 +1734,17 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (Part.OCCError).
         """
 
-    def exportStl(self, arg1: str, arg2: float = None, /):
+    def exportStl(self, filename: str, arg2: float = None, /):
         """
         Export the content of this shape to an STL mesh file.
         exportStl(filename)
         Possible exceptions: (Part.OCCError).
         """
 
+    @typing.overload
+    def extrude(self, direction, length, /): ...
+
+    @typing.overload
     def extrude(self, arg1: FreeCAD.Vector, /) -> PartModule.Compound | PartModule.CompSolid | PartModule.Solid | PartModule.Shell | PartModule.Face | PartModule.Edge:
         """
         Extrude the shape along a direction.
@@ -1763,6 +1784,9 @@ class Shape(FreeCAD.ComplexGeoData):
 
     @typing.overload
     def fuse(self, tool: PartModule.Shape, /) -> PartModule.Shape: ...
+
+    @typing.overload
+    def fuse(self, tool, arg2: float = None, /) -> PartModule.Shape: ...
 
     @typing.overload
     def fuse(self, arg1: PartModule.Shape, tolerance: float, /) -> PartModule.Shape: ...
@@ -1896,7 +1920,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (Part.OCCError).
         """
 
-    def inTolerance(self, arg1: float, arg2: float, arg3: type = None, /) -> tuple[PartModule.Shape, ...]:
+    def inTolerance(self, value: float, ShapeType: float, arg3: type = None, /) -> tuple[PartModule.Shape, ...]:
         """
         Determines which shapes have a tolerance within a given interval
         inTolerance(value, [ShapeType=Shape]) -> ShapeList
@@ -2097,7 +2121,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (Part.OCCError).
         """
 
-    def makeShapeFromMesh(self, arg1: tuple, arg2: float = None, arg3: bool = None, /):
+    def makeShapeFromMesh(self, arg1: tuple, tolerance: float = None, arg3: bool = None, /):
         """
         Make a compound shape out of mesh data.
         makeShapeFromMesh((vertex,facets),tolerance) -> Shape
@@ -2105,7 +2129,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Note: This should be used for rather small meshes only.
         """
 
-    def makeThickness(self, arg1, arg2: float, arg3: float, arg4: bool = None, arg5: bool = None, arg6: int = None, arg7: int = None, /) -> PartModule.Solid:
+    def makeThickness(self, List_of_faces, Offset_Float_: float, Tolerance_Float_: float, arg4: bool = None, arg5: bool = None, arg6: int = None, arg7: int = None, /) -> PartModule.Solid:
         """
         Hollow a solid according to given thickness and faces.
         makeThickness(List of faces, Offset (Float), Tolerance (Float)) -> Shape
@@ -2365,6 +2389,12 @@ class Shape(FreeCAD.ComplexGeoData):
     def section(self, tool: PartModule.Shape, approximation: bool = False, /) -> PartModule.Shape: ...
 
     @typing.overload
+    def section(self, tool: PartModule.Shape, approximation: float, arg3: bool = None, /) -> PartModule.Shape: ...
+
+    @typing.overload
+    def section(self, tool, approximation: float = False, arg3: bool = None, /) -> PartModule.Shape: ...
+
+    @typing.overload
     def section(self, arg1: PartModule.Shape, tolerance: float, approximation: bool = False, /) -> PartModule.Shape: ...
 
     @typing.overload
@@ -2409,6 +2439,10 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (Part.OCCError).
         """
 
+    @typing.overload
+    def tessellate(self): ...
+
+    @typing.overload
     def tessellate(self, arg1: float, arg2: bool = None, /) -> tuple[list[FreeCAD.Vector], list[tuple[int, int, int]]]:
         """
         Tessellate the shape and return a list of vertices and face indices
@@ -2428,7 +2462,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (Part.OCCError).
         """
 
-    def transformGeometry(self, arg1: FreeCAD.Matrix, arg2: bool = None, /) -> PartModule.Shape:
+    def transformGeometry(self, matrix: FreeCAD.Matrix, arg2: bool = None, /) -> PartModule.Shape:
         """
         Apply geometric transformation on this or a copy the shape.
         transformGeometry(matrix) -> Shape
@@ -2625,7 +2659,11 @@ class BSplineCurve(PartModule.BoundedCurve):
         Possible exceptions: (Part.OCCError).
         """
 
-    def buildFromPoles(self, arg1, arg2: bool = None, arg3: int = None, arg4: bool = None, /):
+    @typing.overload
+    def buildFromPoles(self, poles, arg2: bool = None, arg3: int = None, arg4: bool = None, /): ...
+
+    @typing.overload
+    def buildFromPoles(self, poles, True_: bool = None, arg3: int = None, arg4: bool = None, /):
         """
         Builds a B-Spline by a list of poles.
         					arguments: poles (sequence of Base.Vector), [periodic (default is False), degree (default is 3), interpolate (default is False)]
@@ -2760,6 +2798,10 @@ class BSplineCurve(PartModule.BoundedCurve):
         done if Degree is less than or equal to the current degree.
         """
 
+    @typing.overload
+    def increaseMultiplicity(self, int_index: int, int_mult: int, arg3: int = None, /): ...
+
+    @typing.overload
     def increaseMultiplicity(self, int_start: int, int_end: int, int_mult: int = None, /):
         """
         increaseMultiplicity(int index, int mult)
@@ -2783,7 +2825,7 @@ class BSplineCurve(PartModule.BoundedCurve):
         Possible exceptions: (Part.OCCError).
         """
 
-    def insertKnot(self, arg1: float, arg2: int = None, arg3: float = None, arg4: bool = None, /):
+    def insertKnot(self, u: float, mult: int = 1, tol: float = 0.0, arg4: bool = None, /):
         """
         insertKnot(u, mult = 1, tol = 0.0)
         				Inserts a knot value in the sequence of knots. If u is an existing knot the
@@ -3249,21 +3291,6 @@ class Wire(PartModule.Shape):
     def discretize(self, kwargs, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Number, /) -> list[FreeCAD.Vector]: ...
-
-    @typing.overload
-    def discretize(self, QuasiNumber, /) -> list[FreeCAD.Vector]: ...
-
-    @typing.overload
-    def discretize(self, Distance, /) -> list[FreeCAD.Vector]: ...
-
-    @typing.overload
-    def discretize(self, Deflection, /) -> list[FreeCAD.Vector]: ...
-
-    @typing.overload
-    def discretize(self, QuasiDeflection, /) -> list[FreeCAD.Vector]: ...
-
-    @typing.overload
     def discretize(self, Number: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
@@ -3279,6 +3306,24 @@ class Wire(PartModule.Shape):
     def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
+    def discretize(self, Number, /) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, QuasiNumber, /) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, Distance, /) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, Deflection, /) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, QuasiDeflection, /) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, Angular: float, Curvature: float, First: float = None, Last: float = None, Minimum: int = None) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
     def discretize(self, Number: int, First: float = 0.01, Last: float = 100) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
@@ -3286,6 +3331,9 @@ class Wire(PartModule.Shape):
 
     @typing.overload
     def discretize(self, Deflection: float, First: float = 0.01, Last: float = 100) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, Angular: float, Curvature: float, First: float = 100, Last: float = None, Minimum: int = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
     def discretize(self, QuasiNumber: int, First: float = 0.01, Last: float = 100) -> list[FreeCAD.Vector]: ...
@@ -3998,6 +4046,10 @@ class BSplineSurface(PartModule.GeometrySurface):
         Possible exceptions: (Part.OCCError).
         """
 
+    @typing.overload
+    def interpolate(self, points, arg2: float = None, arg3: float = None, arg4: float = None, arg5: float = None, /): ...
+
+    @typing.overload
     def interpolate(self, zpoints, X0: float = None, dX: float = None, Y0: float = None, dY: float = None, /):
         """
         interpolate(points)
@@ -4958,6 +5010,21 @@ class Edge(PartModule.Shape):
     def discretize(self, kwargs, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
+    def discretize(self, Number: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, Distance: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, Deflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, QuasiNumber: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
     def discretize(self, Number, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
@@ -4973,19 +5040,25 @@ class Edge(PartModule.Shape):
     def discretize(self, QuasiDeflection, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Number: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
+    def discretize(self, Angular: float, Curvature: float, First: float = None, Last: float = None, Minimum: int = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Distance: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
+    def discretize(self, Number: int, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, Deflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
+    def discretize(self, Distance: float, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, QuasiNumber: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
+    def discretize(self, Deflection: float, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector]:
+    def discretize(self, QuasiNumber: int, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, QuasiDeflection: float, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, Angular: float, Curvature: float, First: float = 3.14, Last: float = 100, Minimum: int = None) -> list[FreeCAD.Vector]:
         """
         Discretizes the edge and returns a list of points.
         discretize(kwargs) -> list
@@ -5114,7 +5187,7 @@ class Edge(PartModule.Shape):
         Possible exceptions: (Part.OCCError).
         """
 
-    def parameterAt(self, arg1: PartModule.Vertex, arg2: PartModule.Face = None, /) -> float:
+    def parameterAt(self, Vertex: PartModule.Vertex, arg2: PartModule.Face = None, /) -> float:
         """
         Get the parameter at the given vertex if lying on the edge
         parameterAt(Vertex) -> Float
@@ -5364,6 +5437,10 @@ class BezierCurve(PartModule.BoundedCurve):
         Possible exceptions: (Part.OCCError).
         """
 
+    @typing.overload
+    def interpolate(self, arg1, deriv11, deriv12, pt2, arg5, pt3, deriv31_, arg8, arg9, arg10, /): ...
+
+    @typing.overload
     def interpolate(self, arg1, arg2=None, /):
         """
         Interpolates a list of constraints.
@@ -5527,7 +5604,13 @@ class LineSegment(PartModule.TrimmedCurve):
     def __init__(self, LineSegment: PartModule.LineSegment, /): ...
 
     @typing.overload
-    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, /):
+    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, /): ...
+
+    @typing.overload
+    def __init__(self, arg1: PartModule.LineSegment, arg2: float, arg3: float, /): ...
+
+    @typing.overload
+    def __init__(self, arg1: PartModule.Line, arg2: float, arg3: float, /):
         """
         Describes a line segment
         To create a line segment there are several ways:
@@ -5723,18 +5806,6 @@ class Curve(PartModule.Geometry):
     def discretize(self, Number, /) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, QuasiNumber, /) -> list[FreeCAD.Vector]: ...
-
-    @typing.overload
-    def discretize(self, Distance, /) -> list[FreeCAD.Vector]: ...
-
-    @typing.overload
-    def discretize(self, Deflection, /) -> list[FreeCAD.Vector]: ...
-
-    @typing.overload
-    def discretize(self, QuasiDeflection, /) -> list[FreeCAD.Vector]: ...
-
-    @typing.overload
     def discretize(self, Number: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
@@ -5747,7 +5818,40 @@ class Curve(PartModule.Geometry):
     def discretize(self, QuasiNumber: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
 
     @typing.overload
-    def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector]:
+    def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, QuasiNumber, /) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, Distance, /) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, Deflection, /) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, QuasiDeflection, /) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, Angular: float, Curvature: float, First: float = None, Last: float = None, Minimum: int = None) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, Number: int, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, Distance: float, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, Deflection: float, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, QuasiNumber: int, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, QuasiDeflection: float, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector]: ...
+
+    @typing.overload
+    def discretize(self, Angular: float, Curvature: float, First: float = 3.14, Last: float = 100, Minimum: int = None) -> list[FreeCAD.Vector]:
         """
         Discretizes the curve and returns a list of points.
         The function accepts keywords as argument:
@@ -6005,6 +6109,9 @@ class Cone(PartModule.GeometrySurface):
 
     @typing.overload
     def __init__(self): ...
+
+    @typing.overload
+    def __init__(self, Cone, /): ...
 
     @typing.overload
     def __init__(self, Cone: PartModule.Cone, Distance: float): ...
@@ -6315,6 +6422,9 @@ class BRepOffsetAPI_MakeFilling(FreeCAD.PyObjectBase):
     def add(self, Constraint: PartModule.Edge, Order: int, IsBound: bool = True): ...
 
     @typing.overload
+    def add(self, Constraint: PartModule.Edge, Support: PartModule.Face, Order: int, IsBound: bool = None): ...
+
+    @typing.overload
     def add(self, Constraint: PartModule.Edge, Support: PartModule.Face, Order: int, IsBound: bool = True): ...
 
     @typing.overload
@@ -6324,10 +6434,10 @@ class BRepOffsetAPI_MakeFilling(FreeCAD.PyObjectBase):
     def add(self, Support: PartModule.Face, Order: int): ...
 
     @typing.overload
-    def add(self, Point: FreeCAD.Vector): ...
+    def add(self, Constraint: PartModule.Edge, Order: int, IsBound: bool = None): ...
 
     @typing.overload
-    def add(self, Constraint: PartModule.Edge, Support: PartModule.Face, Order: int, IsBound: bool = None):
+    def add(self, Point: FreeCAD.Vector):
         """
         add(Edge, Order, IsBound=True)
                           add(Edge, Support, Order, IsBound=True)
@@ -6978,7 +7088,7 @@ def makeFace(list_of_shapes_or_compound, maker_class_name: str, /) -> PartModule
     """
 
 
-def makeFilledFace(arg1, arg2: PartModule.Face = None, /) -> PartModule.Face:
+def makeFilledFace(list, arg2: PartModule.Face = None, /) -> PartModule.Face:
     """
     makeFilledFace(list) -- Create a face out of a list of edges.
     Possible exceptions: (Exception, Part.OCCError).
@@ -7038,7 +7148,7 @@ def makeLine(startpnt, endpnt, /) -> PartModule.Edge:
     """
 
 
-def makePolygon(arg1, arg2: bool = None, /) -> PartModule.Wire:
+def makePolygon(pntslist, arg2: bool = None, /) -> PartModule.Wire:
     """
     makePolygon(pntslist) -- Make a polygon from a list of points
 
@@ -7095,7 +7205,7 @@ def makeTorus(radius1: float, radius2: float, pnt: FreeCAD.Vector = None, dir: F
     """
 
 
-def makeHelix(arg1: float, arg2: float, arg3: float, arg4: float = None, arg5: bool = None, arg6: bool = None, /) -> PartModule.Wire:
+def makeHelix(pitch: float, height: float, radius: float, angle: float = None, arg5: bool = None, arg6: bool = None, /) -> PartModule.Wire:
     """
     makeHelix(pitch,height,radius,[angle]) -- Make a helix with a given pitch, height and radius
     By default a cylindrical surface is used to create the helix. If the fourth parameter is set
@@ -7159,28 +7269,43 @@ def makeTube(edge: PartModule.Shape, radius: float, continuity: str = None, max_
     """
 
 
-def makeSweepSurface(arg1: PartModule.Shape, arg2: PartModule.Shape, arg3: float = None, arg4: int = None, /) -> PartModule.Face:
+def makeSweepSurface(edge_path_: PartModule.Shape, edge_profile_: PartModule.Shape, float: float = None, arg4: int = None, /) -> PartModule.Face:
     """
     makeSweepSurface(edge(path),edge(profile),[float]) -- Create a profile along a path.
     Possible exceptions: (Exception, Part.OCCError).
     """
 
 
-def makeLoft(list_of_wires, solid: bool = False, ruled: bool = False, closed: bool = False, maxDegree: int = 5, /) -> PartModule.BSplineSurface | PartModule.Shape:
+@typing.overload
+def makeLoft(list_of_wires, solid: bool = False, ruled: bool = False, closed: bool = False, maxDegree: int = 5, /) -> PartModule.BSplineSurface | PartModule.Shape: ...
+
+
+@typing.overload
+def makeLoft(arg1, /) -> PartModule.BSplineSurface | PartModule.Shape:
     """
     makeLoft(list of wires,[solid=False,ruled=False,closed=False,maxDegree=5]) -- Create a loft shape.
     Possible exceptions: (Exception, Part.OCCError).
     """
 
 
-def makeWireString(string, fontdir: str, fontfile: str, height: float, track: float = None, /):
+@typing.overload
+def makeWireString(string, fontdir: str, fontfile: str, height: float, track: float = None, /): ...
+
+
+@typing.overload
+def makeWireString(arg1, arg2: str, arg3: float, arg4: float = None, /):
     """
     makeWireString(string,fontdir,fontfile,height,[track]) -- Make list of wires in the form of a string's characters.
     Possible exceptions: (TypeError, Part.OCCDomainError, Part.OCCError, RuntimeError).
     """
 
 
-def makeSplitShape(shape: PartModule.Shape, list_of_shape_pairs, check_Interior: bool = True, /) -> tuple[list[PartModule.Shape], list[PartModule.Shape]]:
+@typing.overload
+def makeSplitShape(shape: PartModule.Shape, list_of_shape_pairs, check_Interior: bool = True, /) -> tuple[list[PartModule.Shape], list[PartModule.Shape]]: ...
+
+
+@typing.overload
+def makeSplitShape(face: PartModule.Shape, split, arg3: bool = None, /) -> tuple[list[PartModule.Shape], list[PartModule.Shape]]:
     """
     makeSplitShape(shape, list of shape pairs,[check Interior=True]) -> two lists of shapes.
     The following shape pairs are supported:
@@ -7301,7 +7426,7 @@ def joinSubname(sub: str, mapped: str, subElement: str, /) -> str:
     """
 
 
-def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matrix = None, needSubElement: bool = None, transform: bool = None, retType: int = None, noElementMap: bool = None, refine: bool = None) -> PartModule.Shape | tuple[PartModule.Shape, FreeCAD.Matrix, typing.Any]:
+def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matrix = None, needSubElement: bool = False, transform: bool = True, retType: int = 0, noElementMap: bool = None, refine: bool = None) -> PartModule.Shape | tuple[PartModule.Shape, FreeCAD.Matrix, typing.Any]:
     """
     getShape(obj,subname=None,mat=None,needSubElement=False,transform=True,retType=0):
     Obtain the the TopoShape of a given object with SubName reference

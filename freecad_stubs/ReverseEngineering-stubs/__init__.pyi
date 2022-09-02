@@ -1,3 +1,5 @@
+import typing
+
 import FreeCAD
 import Mesh as MeshModule
 import Part as PartModule
@@ -31,7 +33,7 @@ def approxSurface(Points, UDegree: int = None, VDegree: int = None, NbUPoles: in
     """
 
 
-def triangulate(Points: PointsModule.Points, SearchRadius: float, Mu: float = None, KSearch: int = None, Normals=None) -> MeshModule.Mesh:
+def triangulate(Points: PointsModule.Points, SearchRadius: float, Mu: float = 2.5, KSearch: int = None, Normals=None) -> MeshModule.Mesh:
     """
     triangulate(PointKernel,searchRadius[,mu=2.5]).
     Possible exceptions: (Exception).
@@ -80,6 +82,11 @@ def fitBSpline(Points: PointsModule.Points, Degree: int = None, Refinement: int 
     """
 
 
+@typing.overload
+def filterVoxelGrid(dim, /): ...
+
+
+@typing.overload
 def filterVoxelGrid(Points: PointsModule.Points, DimX: float, DimY: float = None, DimZ: float = None) -> PointsModule.Points:
     """
     filterVoxelGrid(dim).
@@ -87,7 +94,12 @@ def filterVoxelGrid(Points: PointsModule.Points, DimX: float, DimY: float = None
     """
 
 
-def normalEstimation(Points: PointsModule.Points, KSearch: int = 0, SearchRadius: float = 0) -> list[FreeCAD.Vector]:
+@typing.overload
+def normalEstimation(Points: PointsModule.Points, KSearch: int = 0, SearchRadius: float = 0) -> list[FreeCAD.Vector]: ...
+
+
+@typing.overload
+def normalEstimation(Points: PointsModule.Points, KSearch: int = 5, SearchRadius: float = None) -> list[FreeCAD.Vector]:
     """
     normalEstimation(Points,[KSearch=0, SearchRadius=0]) -> Normals
     KSearch is an int and used to search the k-nearest neighbours in
@@ -110,6 +122,11 @@ def normalEstimation(Points: PointsModule.Points, KSearch: int = 0, SearchRadius
     """
 
 
+@typing.overload
+def regionGrowingSegmentation(): ...
+
+
+@typing.overload
 def regionGrowingSegmentation(Points: PointsModule.Points, KSearch: int = None, Normals=None) -> list[tuple[int, ...]]:
     """
     regionGrowingSegmentation().
@@ -117,6 +134,11 @@ def regionGrowingSegmentation(Points: PointsModule.Points, KSearch: int = None, 
     """
 
 
+@typing.overload
+def featureSegmentation(): ...
+
+
+@typing.overload
 def featureSegmentation(Points: PointsModule.Points, KSearch: int = None) -> list[tuple[int, ...]]:
     """
     featureSegmentation().
@@ -124,6 +146,11 @@ def featureSegmentation(Points: PointsModule.Points, KSearch: int = None) -> lis
     """
 
 
+@typing.overload
+def sampleConsensus(): ...
+
+
+@typing.overload
 def sampleConsensus(SacModel: str, Points: PointsModule.Points, Normals=None) -> dict[str, float | tuple[float, ...] | tuple[int, ...]]:
     """
     sampleConsensus().

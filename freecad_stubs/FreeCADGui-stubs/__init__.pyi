@@ -38,7 +38,7 @@ class ReturnGetObjectsInfoDict(typing.TypedDict):
 
 
 # WorkbenchPy.xml
-class Workbench(FreeCAD.BaseClass):
+class WorkbenchC(FreeCAD.BaseClass):
     """This is the base class for workbenches"""
 
     MenuText: str = ''
@@ -122,6 +122,10 @@ class LinkView(FreeCAD.BaseClass):
     def getChildren(self) -> tuple[typing.Any, ...]:
         """Get children view objects"""
 
+    @typing.overload
+    def getDetailPath(self, element, /): ...
+
+    @typing.overload
     def getDetailPath(self, arg1: str, arg2, /) -> pivy.coin.SoDetail:
         """
         getDetailPath(element): get the 3d path an detail of an element.
@@ -155,7 +159,14 @@ class LinkView(FreeCAD.BaseClass):
            2: override none.
         """
 
-    def setLink(self, object, subname=None, /):
+    @typing.overload
+    def setLink(self, object, arg2=None, /): ...
+
+    @typing.overload
+    def setLink(self, object, subname=None, /): ...
+
+    @typing.overload
+    def setLink(self, object, subname, /, *args):
         """
         setLink(object): Set the link
 
@@ -173,7 +184,14 @@ class LinkView(FreeCAD.BaseClass):
         Possible exceptions: (TypeError).
         """
 
-    def setMaterial(self, Material, /):
+    @typing.overload
+    def setMaterial(self, Material, /): ...
+
+    @typing.overload
+    def setMaterial(self, Material, /, *args): ...
+
+    @typing.overload
+    def setMaterial(self, arg1, arg2, /):
         """
         setMaterial(Material): set the override material of the entire linked object
 
@@ -190,7 +208,14 @@ class LinkView(FreeCAD.BaseClass):
         Possible exceptions: (TypeError).
         """
 
-    def setTransform(self, matrix, /):
+    @typing.overload
+    def setTransform(self, matrix, /): ...
+
+    @typing.overload
+    def setTransform(self, matrix, /, *args): ...
+
+    @typing.overload
+    def setTransform(self, arg1, arg2, /):
         """
         setTransform(matrix): set transformation of the linked object
 
@@ -825,7 +850,7 @@ class Command(FreeCAD.PyObjectBase):
 
 
 # PythonWorkbenchPy.xml
-class PythonWorkbench(FreeCADGui.Workbench):
+class PythonWorkbench(FreeCADGui.WorkbenchC):
     """This is the class for Python workbenches"""
 
     def AppendCommandbar(self):
@@ -1562,6 +1587,10 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def startAnimating(self): ...
+
+    @typing.overload
     def startAnimating(self, arg1: float, arg2: float, arg3: float, arg4: float, /) -> None:
         """
         startAnimating()
@@ -1574,6 +1603,10 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def setAnimationEnabled(self): ...
+
+    @typing.overload
     def setAnimationEnabled(self, arg1: int, /) -> None:
         """
         setAnimationEnabled()
@@ -1586,6 +1619,10 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def setPopupMenuEnabled(self): ...
+
+    @typing.overload
     def setPopupMenuEnabled(self, arg1: int, /) -> None:
         """
         setPopupMenuEnabled()
@@ -1611,6 +1648,9 @@ class View3DInventorPy:
         """
 
     @typing.overload
+    def setStereoType(self): ...
+
+    @typing.overload
     def setStereoType(self, arg1: int, /) -> None: ...
 
     @typing.overload
@@ -1632,12 +1672,20 @@ class View3DInventorPy:
         Possible exceptions: (Exception, RuntimeError).
         """
 
+    @typing.overload
+    def saveImage(self): ...
+
+    @typing.overload
     def saveImage(self, arg1: str, arg2: int = None, arg3: int = None, arg4: str = None, arg5: str = None, arg6: int = None, /) -> None:
         """
         saveImage()
         Possible exceptions: (Exception, RuntimeError).
         """
 
+    @typing.overload
+    def saveVectorGraphic(self): ...
+
+    @typing.overload
     def saveVectorGraphic(self, arg1: str, arg2: int = None, arg3: str = None, /) -> None:
         """
         saveVectorGraphic()
@@ -1672,12 +1720,20 @@ class View3DInventorPy:
         Possible exceptions: (Exception, ValueError, RuntimeError).
         """
 
+    @typing.overload
+    def setCamera(self): ...
+
+    @typing.overload
     def setCamera(self, arg1: str, /) -> None:
         """
         setCamera()
         Possible exceptions: (Exception, RuntimeError).
         """
 
+    @typing.overload
+    def setCameraOrientation(self): ...
+
+    @typing.overload
     def setCameraOrientation(self, arg1, arg2: bool = None, /) -> None:
         """
         setCameraOrientation()
@@ -1695,6 +1751,9 @@ class View3DInventorPy:
         getCameraType()
         Possible exceptions: (Exception, RuntimeError, TypeError).
         """
+
+    @typing.overload
+    def setCameraType(self): ...
 
     @typing.overload
     def setCameraType(self, arg1: int, /) -> None: ...
@@ -1755,6 +1814,10 @@ class View3DInventorPy:
         Possible exceptions: (RuntimeError).
         """
 
+    @typing.overload
+    def getPointOnFocalPlane(self, pixel_coords_as_integer_, /): ...
+
+    @typing.overload
     def getPointOnFocalPlane(self, arg1: int, arg2: int, /) -> FreeCAD.Vector:
         """
         getPointOnFocalPlane(pixel coords (as integer)) -> 3D vector
@@ -1765,7 +1828,11 @@ class View3DInventorPy:
         Possible exceptions: (RuntimeError).
         """
 
-    def getPointOnScreen(self, arg1: FreeCAD.Vector, /) -> tuple[int, int]:
+    @typing.overload
+    def getPointOnScreen(self, arg1: FreeCAD.Vector, /) -> tuple[int, int]: ...
+
+    @typing.overload
+    def getPointOnScreen(self, arg1: float, arg2: float, arg3: float, /) -> tuple[int, int]:
         """
         getPointOnScreen(3D vector) -> pixel coords (as integer)
 
@@ -1774,6 +1841,10 @@ class View3DInventorPy:
         Possible exceptions: (TypeError, RuntimeError).
         """
 
+    @typing.overload
+    def projectPointToLine(self, pixel_coords_as_integer_, /): ...
+
+    @typing.overload
     def projectPointToLine(self, arg1: int, arg2: int, /) -> tuple[FreeCAD.Vector, FreeCAD.Vector]:
         """
         projectPointToLine(pixel coords (as integer)) -> line defined by two points
@@ -1782,24 +1853,40 @@ class View3DInventorPy:
         Possible exceptions: (RuntimeError).
         """
 
+    @typing.overload
+    def addEventCallback(self): ...
+
+    @typing.overload
     def addEventCallback(self, arg1: str, arg2, /) -> typing.Callable:
         """
         addEventCallback()
         Possible exceptions: (Exception, TypeError).
         """
 
+    @typing.overload
+    def removeEventCallback(self): ...
+
+    @typing.overload
     def removeEventCallback(self, arg1: str, arg2, /) -> None:
         """
         removeEventCallback()
         Possible exceptions: (Exception, RuntimeError, TypeError).
         """
 
+    @typing.overload
+    def setAnnotation(self): ...
+
+    @typing.overload
     def setAnnotation(self, arg1: str, arg2: str, /) -> None:
         """
         setAnnotation()
         Possible exceptions: (Exception, RuntimeError).
         """
 
+    @typing.overload
+    def removeAnnotation(self): ...
+
+    @typing.overload
     def removeAnnotation(self, arg1: str, /) -> None:
         """
         removeAnnotation()
@@ -1818,12 +1905,20 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def addEventCallbackPivy(self): ...
+
+    @typing.overload
     def addEventCallbackPivy(self, arg1, arg2, arg3: int = None, /) -> typing.Callable:
         """
         addEventCallbackPivy()
         Possible exceptions: (Exception, RuntimeError, TypeError).
         """
 
+    @typing.overload
+    def removeEventCallbackPivy(self): ...
+
+    @typing.overload
     def removeEventCallbackPivy(self, arg1, arg2, arg3: int = None, /) -> typing.Callable:
         """
         removeEventCallbackPivy()
@@ -1848,6 +1943,10 @@ class View3DInventorPy:
     def getNavigationType(self) -> str:
         """getNavigationType()"""
 
+    @typing.overload
+    def setNavigationType(self): ...
+
+    @typing.overload
     def setNavigationType(self, arg1: str, /) -> None:
         """
         setNavigationType()
@@ -1959,13 +2058,17 @@ class View3DInventorPy:
     def cast_to_base(self):
         """cast_to_base() cast to MDIView class"""
 
+    @typing.overload
+    def boxZoom(self): ...
+
+    @typing.overload
     def boxZoom(self, XMin: int, YMin: int, XMax: int, YMax: int) -> None:
         """
         boxZoom()
         Possible exceptions: (Exception).
         """
 
-    def toggleClippingPlane(self, toggle: int = None, beforeEditing: bool = None, noManip: bool = None, pla: FreeCAD.Placement = None) -> None:
+    def toggleClippingPlane(self, toggle: int = -1, beforeEditing: bool = False, noManip: bool = True, pla: FreeCAD.Placement = None) -> None:
         """
         toggleClippingPlane(toggle=-1, beforeEditing=False, noManip=True, pla=App.Placement()
         Toggle a global clipping plane
@@ -2095,10 +2198,10 @@ class UiLoader:
     """UiLoader to create widgets"""
 
     @typing.overload
-    def load(self, string, QWidget_parent=None, /) -> qtpy.QtWidgets.QWidget | None: ...
+    def load(self, string, /, QWidget_parent=None) -> qtpy.QtWidgets.QWidget | None: ...
 
     @typing.overload
-    def load(self, QIODevice, QWidget_parent=None, /) -> qtpy.QtWidgets.QWidget | None:
+    def load(self, QIODevice, /, QWidget_parent=None) -> qtpy.QtWidgets.QWidget | None:
         """
         load(string, QWidget parent=None) -> QWidget
         load(QIODevice, QWidget parent=None) -> QWidget
@@ -2116,6 +2219,10 @@ class PythonStdout:
     def isatty(self) -> bool:
         """isatty()"""
 
+    @typing.overload
+    def write(self): ...
+
+    @typing.overload
     def write(self, arg1: str, /) -> None:
         """
         write()
@@ -2132,6 +2239,10 @@ class PythonStderr:
     def isatty(self) -> bool:
         """isatty()"""
 
+    @typing.overload
+    def write(self): ...
+
+    @typing.overload
     def write(self, arg1: str, /) -> None:
         """
         write()
@@ -2148,6 +2259,10 @@ class OutputStdout:
     def isatty(self) -> bool:
         """isatty()"""
 
+    @typing.overload
+    def write(self): ...
+
+    @typing.overload
     def write(self, arg1: str, /) -> None:
         """
         write()
@@ -2164,6 +2279,10 @@ class OutputStderr:
     def isatty(self) -> bool:
         """isatty()"""
 
+    @typing.overload
+    def write(self): ...
+
+    @typing.overload
     def write(self, arg1: str, /) -> None:
         """
         write()
@@ -3056,7 +3175,7 @@ class View3DInventorViewerPy:
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def setupEditingRoot(self, arg1=None, arg2: FreeCAD.Matrix = None, /) -> None:
+    def setupEditingRoot(self, matrix=None, arg2: FreeCAD.Matrix = None, /) -> None:
         """
         setupEditingRoot(matrix=None): setup the editing ViewProvider's root node.
         All child coin nodes of the current editing ViewProvider will be transferred to
@@ -3134,6 +3253,11 @@ def setupWithoutGUI() -> None:
     """
 
 
+@typing.overload
+def embedToWindow(): ...
+
+
+@typing.overload
 def embedToWindow(arg0: str, /) -> None:
     """
     embedToWindow() -- Embeds the main window into another window

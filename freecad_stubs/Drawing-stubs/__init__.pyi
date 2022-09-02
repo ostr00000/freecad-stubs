@@ -1,8 +1,15 @@
+import typing
+
 import FreeCAD
 import Part as PartModule
 
 
 # AppDrawingPy.cpp
+@typing.overload
+def project(TopoShape_, App_Vector_Direction, string_type, /): ...
+
+
+@typing.overload
 def project(arg1: PartModule.Shape, arg2: FreeCAD.Vector = None, /) -> list[PartModule.Shape]:
     """
     [visiblyG0,visiblyG1,hiddenG0,hiddenG1] = project(TopoShape[,App.Vector Direction, string type])
@@ -11,6 +18,11 @@ def project(arg1: PartModule.Shape, arg2: FreeCAD.Vector = None, /) -> list[Part
     """
 
 
+@typing.overload
+def projectEx(TopoShape_, App_Vector_Direction, string_type, /): ...
+
+
+@typing.overload
 def projectEx(arg1: PartModule.Shape, arg2: FreeCAD.Vector = None, /) -> list[PartModule.Shape]:
     """
     [V,V1,VN,VO,VI,H,H1,HN,HO,HI] = projectEx(TopoShape[,App.Vector Direction, string type])
@@ -19,7 +31,7 @@ def projectEx(arg1: PartModule.Shape, arg2: FreeCAD.Vector = None, /) -> list[Pa
     """
 
 
-def projectToDXF(arg1: PartModule.Shape, arg2: FreeCAD.Vector = None, arg3: str = None, arg4: float = None, arg5: float = None, /) -> str:
+def projectToDXF(TopoShape_: PartModule.Shape, App_Vector_Direction: FreeCAD.Vector = None, string_type: str = None, arg4: float = None, arg5: float = None, /) -> str:
     """
     string = projectToDXF(TopoShape[,App.Vector Direction, string type])
      -- Project a shape and return the DXF representation as string.

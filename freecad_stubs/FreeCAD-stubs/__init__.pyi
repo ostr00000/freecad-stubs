@@ -92,18 +92,30 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def Attach(self): ...
+
+    @typing.overload
     def Attach(self, arg1, /) -> None:
         """
         Attach()
         Possible exceptions: (Exception, TypeError, RuntimeError).
         """
 
+    @typing.overload
+    def Detach(self): ...
+
+    @typing.overload
     def Detach(self, arg1, /) -> None:
         """
         Detach()
         Possible exceptions: (Exception, TypeError).
         """
 
+    @typing.overload
+    def Notify(self): ...
+
+    @typing.overload
     def Notify(self, arg1: str, /) -> None:
         """
         Notify()
@@ -116,12 +128,20 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def SetBool(self): ...
+
+    @typing.overload
     def SetBool(self, arg1: str, arg2: int, /) -> None:
         """
         SetBool()
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def GetBool(self): ...
+
+    @typing.overload
     def GetBool(self, arg1: str, arg2: int = None, /) -> bool:
         """
         GetBool()
@@ -134,18 +154,30 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def RemBool(self): ...
+
+    @typing.overload
     def RemBool(self, arg1: str, /) -> None:
         """
         RemBool()
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def SetInt(self): ...
+
+    @typing.overload
     def SetInt(self, arg1: str, arg2: int, /) -> None:
         """
         SetInt()
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def GetInt(self): ...
+
+    @typing.overload
     def GetInt(self, arg1: str, arg2: int = None, /) -> int:
         """
         GetInt()
@@ -158,18 +190,30 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def RemInt(self): ...
+
+    @typing.overload
     def RemInt(self, arg1: str, /) -> None:
         """
         RemInt()
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def SetUnsigned(self): ...
+
+    @typing.overload
     def SetUnsigned(self, arg1: str, arg2: int, /) -> None:
         """
         SetUnsigned()
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def GetUnsigned(self): ...
+
+    @typing.overload
     def GetUnsigned(self, arg1: str, arg2: int = None, /) -> int:
         """
         GetUnsigned()
@@ -182,18 +226,30 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def RemUnsigned(self): ...
+
+    @typing.overload
     def RemUnsigned(self, arg1: str, /) -> None:
         """
         RemUnsigned()
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def SetFloat(self): ...
+
+    @typing.overload
     def SetFloat(self, arg1: str, arg2: float, /) -> None:
         """
         SetFloat()
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def GetFloat(self): ...
+
+    @typing.overload
     def GetFloat(self, arg1: str, arg2: float = None, /) -> float:
         """
         GetFloat()
@@ -206,18 +262,30 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def RemFloat(self): ...
+
+    @typing.overload
     def RemFloat(self, arg1: str, /) -> None:
         """
         RemFloat()
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def SetString(self): ...
+
+    @typing.overload
     def SetString(self, arg1: str, arg2: str, /) -> None:
         """
         SetString()
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def GetString(self): ...
+
+    @typing.overload
     def GetString(self, arg1: str, arg2: str = None, /) -> str:
         """
         GetString()
@@ -230,24 +298,40 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def RemString(self): ...
+
+    @typing.overload
     def RemString(self, arg1: str, /) -> None:
         """
         RemString()
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def Import(self): ...
+
+    @typing.overload
     def Import(self, arg1: str, /) -> None:
         """
         Import()
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def Insert(self): ...
+
+    @typing.overload
     def Insert(self, arg1: str, /) -> None:
         """
         Insert()
         Possible exceptions: (Exception).
         """
 
+    @typing.overload
+    def Export(self): ...
+
+    @typing.overload
     def Export(self, arg1: str, /) -> None:
         """
         Export()
@@ -512,7 +596,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     @Visibility.setter
     def Visibility(self, value: int | bool): ...
 
-    def addProperty(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, arg5: int = None, arg6: bool = None, arg7: bool = None, /) -> FreeCAD.DocumentObject:
+    def addProperty(self, string: str, string2: str = None, arg3: str = None, arg4: str = None, arg5: int = None, arg6: bool = None, arg7: bool = None, /) -> FreeCAD.DocumentObject:
         """
         addProperty(string, string) -- Add a generic property.
                             The first argument specifies the type, the second the
@@ -751,7 +835,7 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
         """
 
     @typing.overload
-    def configLinkProperty(self, key=None, /, *args): ...
+    def configLinkProperty(self, key=None, *args): ...
 
     @typing.overload
     def configLinkProperty(self, key, /, *args): ...
@@ -832,7 +916,7 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
         """
 
     @typing.overload
-    def setLink(self, obj, subName=None, subElements=None, /): ...
+    def setLink(self, obj, /, subName=None, subElements=None): ...
 
     @typing.overload
     def setLink(self, obj, /, *args): ...
@@ -1700,6 +1784,10 @@ class Document(FreeCAD.PropertyContainer):
     def mergeProject(self, arg1: str, /):
         """Merges this document with another project file"""
 
+    @typing.overload
+    def moveObject(self, object, /, bool_with_dependencies=False): ...
+
+    @typing.overload
     def moveObject(self, arg1: str, /):
         """
         moveObject(object, bool with_dependencies = False)
@@ -1730,7 +1818,7 @@ class Document(FreeCAD.PropertyContainer):
     def purgeTouched(self):
         """Purge the touched state of all objects"""
 
-    def recompute(self, arg1=None, arg2: bool = None, arg3: bool = None, /) -> int:
+    def recompute(self, objs=None, arg2: bool = None, arg3: bool = None, /) -> int:
         """
         recompute(objs=None): Recompute the document and returns the amount of recomputed features
         Possible exceptions: (TypeError).
@@ -2189,7 +2277,7 @@ def getHomePath() -> str:
     """Get the home path, i.e. the parent directory of the executable"""
 
 
-def loadFile(arg0: str, arg1: str = None, arg2: str = None, /):
+def loadFile(string: str, string1: str = None, arg2: str = None, /):
     """
     loadFile(string=filename,[string=module]) -> None
 
@@ -2273,6 +2361,11 @@ def listDocuments(sort: bool = False, /) -> dict[str, FreeCAD.PyObjectBase]:
     """
 
 
+@typing.overload
+def addDocumentObserver(): ...
+
+
+@typing.overload
 def addDocumentObserver(arg0, /):
     """
     addDocumentObserver() -> None
@@ -2281,6 +2374,11 @@ def addDocumentObserver(arg0, /):
     """
 
 
+@typing.overload
+def removeDocumentObserver(): ...
+
+
+@typing.overload
 def removeDocumentObserver(arg0, /):
     """
     removeDocumentObserver() -> None
@@ -2315,6 +2413,11 @@ def getLinksTo(obj=None, options: int = 0, maxCount: int = 0, /) -> tuple[typing
     """
 
 
+@typing.overload
+def getDependentObjects(obj_obj, /, *args, options=0): ...
+
+
+@typing.overload
 def getDependentObjects(arg0, arg1: int = None, /) -> tuple[typing.Any, ...]:
     """
     getDependentObjects(obj|[obj,...], options=0)
@@ -2345,7 +2448,7 @@ def getActiveTransaction() -> tuple[str, int]:
     """getActiveTransaction() -> (name,id) return the current active transaction name and ID"""
 
 
-def closeActiveTransaction(arg0: bool = None, arg1: int = None, /):
+def closeActiveTransaction(abort: bool = False, arg1: int = None, /):
     """closeActiveTransaction(abort=False) -- commit or abort current active transaction"""
 
 

@@ -397,7 +397,10 @@ class Mesh(FreeCAD.ComplexGeoData):
     def decimate(self, tolerance_Float_: float, reduction_Float_: float, /): ...
 
     @typing.overload
-    def decimate(self, arg1: float, arg2: float, /):
+    def decimate(self, arg1: float, arg2: float, /): ...
+
+    @typing.overload
+    def decimate(self, arg1: int, /):
         """
         Decimate the mesh
         					decimate(tolerance(Float), reduction(Float))
@@ -478,7 +481,11 @@ class Mesh(FreeCAD.ComplexGeoData):
         Possible exceptions: (IndexError).
         """
 
-    def getSegmentsByCurvature(self, list, /) -> list[list[int]]:
+    @typing.overload
+    def getSegmentsByCurvature(self, list, /) -> list[list[int]]: ...
+
+    @typing.overload
+    def getSegmentsByCurvature(self, c, p, /):
         """
         getSegmentsByCurvature(list) -> list
         The argument list gives a list if tuples where it defines the preferred maximum curvature,
@@ -561,7 +568,11 @@ class Mesh(FreeCAD.ComplexGeoData):
     def meshFromSegment(self, arg1, /) -> MeshModule.Mesh:
         """Create a mesh from segment"""
 
-    def movePoint(self, int: int, Vector: FreeCAD.Vector, /):
+    @typing.overload
+    def movePoint(self, int: int, Vector: FreeCAD.Vector, /): ...
+
+    @typing.overload
+    def movePoint(self, arg1: int, arg2: float, arg3: float, arg4: float, /):
         """
         movePoint(int, Vector)
           This method moves the point in the mesh along the
@@ -572,7 +583,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         Possible exceptions: (TypeError).
         """
 
-    def nearestFacetOnRay(self, arg1, arg2, arg3: float = None, /) -> dict[int, tuple[float, float, float]]:
+    def nearestFacetOnRay(self, tuple, tuple2, arg3: float = None, /) -> dict[int, tuple[float, float, float]]:
         """
         nearestFacetOnRay(tuple, tuple) -> dict
         Get the index and intersection point of the nearest facet to a ray.
@@ -671,7 +682,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         					Sets the point at index.
         """
 
-    def smooth(self, Method: str = None, Iteration: int = None, Lambda: float = None, Micro: float = None, Maximum: float = None, Weight: int = None):
+    def smooth(self, Method: str = 1, Iteration: int = None, Lambda: float = None, Micro: float = None, Maximum: float = None, Weight: int = None):
         """
         Smooth the mesh
         smooth([iteration=1,maxError=FLT_MAX])
@@ -758,7 +769,7 @@ class Edge(FreeCAD.PyObjectBase):
     mesh and calling getEdge(index).
     """
 
-    def __init__(self, arg1: FreeCAD.Vector = None, arg2: FreeCAD.Vector = None, /):
+    def __init__(self, index: FreeCAD.Vector = None, arg2: FreeCAD.Vector = None, /):
         """
         Edge in mesh
         This is an edge of a facet in a MeshObject. You can get it by e.g. iterating over the facets of a
