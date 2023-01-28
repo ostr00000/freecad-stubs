@@ -81,7 +81,7 @@ class PythonApiGenerator(BaseGenerator, ABC):
 
     def _getReturnSignature(self):
         rtc = ReturnTypeConverter(
-            self.requiredImports, self._functionBody,
+            self._functionBody, self.requiredImports,
             self.classNameWithModules, self._cFunctionName)
         rt = rtc.getReturnType()
         ex = rtc.getExceptionsFromCode()
@@ -91,27 +91,13 @@ class PythonApiGenerator(BaseGenerator, ABC):
                    minSize: int, onlyPositional: bool):
         for match in re.finditer(pattern, self._functionBody):
             funStart = match.start()
-            funCall = findFunctionCall(self._functionBody, funStart, bracketL='(', bracketR=')')
             tc = TypesConverter(
-                funCall, self.requiredImports, onlyPositional, formatStrPosition,
-                argNumStart=self._argNumStart, realStartArgNum=minSize,
-                xmlPath=self.baseGenFilePath)
+                self._functionBody, funStart, self.requiredImports,
+                onlyPositional, formatStrPosition, self._argNumStart,
+                realStartArgNum=minSize, xmlPath=self.baseGenFilePath,
+                functionName=self._cFunctionName)
 
             assert minSize <= len(tc.argumentStrings), "Invalid format - expected bigger size"
 
-            kwargsList = []
-            if not onlyPositional:
-                kwargsArgumentName = tc.argumentStrings[formatStrPosition + 1]
-                kwargsDeclaration = self._functionBody[:funStart]
-                matches: list[str] = re.findall(
-                    rf'{kwargsArgumentName}\s*\[\s*]\s*=\s*{{((?:.|\s)*?)}}', kwargsDeclaration)
-                if matches:
-                    # take the latest match and remove whitespaces
-                    kwargsStr = ''.join(matches[-1].split())
-                    kwargsList = [
-                        kw[1:-1]
-                        for kw in generateExpressionUntilChar(kwargsStr, 0, ',')
-                        if kw.startswith('"') and kw.endswith('"')]
-
-            params = list(tc.convertFormatToTypes(kwargsList))
+            params = list(tc.convertFormatToTypes())
             yield SelfSignature(params)

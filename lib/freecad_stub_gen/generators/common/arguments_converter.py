@@ -1,15 +1,18 @@
 import logging
 import re
 from collections.abc import Iterator
+from functools import cached_property
 from inspect import Parameter
 
 from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam, RawRepr
-from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
+from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar, \
+    findFunctionCall
 from freecad_stub_gen.generators.common.names import getClassWithModulesFromPointer, getModuleName
+from freecad_stub_gen.generators.common.return_type_converter.full import ReturnTypeConverter
 
 logger = logging.getLogger(__name__)
-
 DEFAULT_ARG_NAME = 'arg'
+ParameterKind = type(Parameter.POSITIONAL_ONLY)
 
 
 class InvalidPointerFormat(ValueError):
@@ -17,23 +20,43 @@ class InvalidPointerFormat(ValueError):
 
 
 class TypesConverter:
-    REG_REMOVE_WHITESPACES = re.compile(r'\s+')
+    def __init__(self, functionBody: str,
+                 funStart: int,
+                 requiredImports: set[str],
+                 onlyPositional: bool,
+                 formatStrPosition: int,
+                 argNumStart=1, *,
+                 realStartArgNum: int = 2,
+                 xmlPath=None,
+                 functionName='',
+                 ):
+        self._functionBody = functionBody
+        self._funStart = funStart
+        self._funCall = self._getFunCall()
 
-    def __init__(self, funCall: str, requiredImports: set[str],
-                 onlyPositional: bool, formatStrPosition: int, *,
-                 argNumStart=1, realStartArgNum: int = 2, xmlPath=None):
-        self.funCall = funCall
         self.requiredImports = requiredImports
         self.onlyPositional = onlyPositional
         self.formatStrPosition = formatStrPosition
         self.argNumStart = argNumStart
         self.realStartArgNum = realStartArgNum
-        self.xmlPath = xmlPath
-        self.sequenceStack: list[list[str]] = []
 
-        sub = re.sub(self.REG_REMOVE_WHITESPACES, '', funCall)  # remove whitespace
-        self.argumentStrings = list(generateExpressionUntilChar(sub, sub.find('(') + 1, ','))
+        self.xmlPath = xmlPath
+        self.functionName = functionName
+        self._sequenceStack: list[list[str]] = []
+
+        self.argumentStrings = self._getArgumentString()
         self._removeMacros()
+        self._kwargList = self._getKwargList()
+
+    def _getFunCall(self):
+        return findFunctionCall(
+            self._functionBody, self._funStart, bracketL='(', bracketR=')')
+
+    REG_REMOVE_WHITESPACES = re.compile(r'\s+')
+
+    def _getArgumentString(self):
+        sub = re.sub(self.REG_REMOVE_WHITESPACES, '', self._funCall)  # remove whitespace
+        return list(generateExpressionUntilChar(sub, sub.find('(') + 1, ','))
 
     REG_STRING = re.compile(r"""
 (["'])          # start with quotation mark as group 1,
@@ -55,19 +78,41 @@ class TypesConverter:
             clearFormat += strVal.group().removesuffix('"').removeprefix('"')
         self.argumentStrings[self.formatStrPosition] = clearFormat
 
-        if 'PARAM_REF(' in self.funCall:
+        if 'PARAM_REF(' in self._funCall:
             varArg = slice(self.formatStrPosition + 1, None)
             self.argumentStrings[varArg] = [
                 argS for argS in self.argumentStrings[varArg]
                 if all(fm not in argS for fm in self._FORBIDDEN_MACROS)]
 
-    def convertFormatToTypes(self, kwargList: list[str]) -> Iterator[Parameter]:
+    @property
+    def _varDeclarationCode(self):
+        return self._functionBody[:self._funStart]
+
+    def _getKwargList(self):
+        if self.onlyPositional:
+            return []
+
+        kwargsArgumentName = self.argumentStrings[self.formatStrPosition + 1]
+        matches: list[str] = re.findall(
+            rf'{kwargsArgumentName}\s*\[\s*]\s*=\s*{{((?:.|\s)*?)}}',
+            self._varDeclarationCode)
+        if not matches:
+            return []
+
+        # take the latest match and remove whitespaces
+        kwargsStr = ''.join(matches[-1].split())
+        return [
+            kw[1:-1]
+            for kw in generateExpressionUntilChar(kwargsStr, 0, ',')
+            if kw.startswith('"') and kw.endswith('"')]
+
+    def convertFormatToTypes(self) -> Iterator[Parameter]:
         formatStr = self.argumentStrings[self.formatStrPosition]
         realArgNum = self.realStartArgNum
         argNum = 0
+        isArgOptional = False
 
-        default = Parameter.empty
-        if kwargList:
+        if self._kwargList:
             parameterKind = Parameter.POSITIONAL_OR_KEYWORD
         else:
             parameterKind = Parameter.POSITIONAL_ONLY
@@ -88,10 +133,11 @@ class TypesConverter:
                         parseTypeMap[')'] = self._endSequenceParsing()
 
                     if objType := parseTypeMap.get(curVal):
-                        if self.sequenceStack:
+                        if self._sequenceStack:
                             self._addElementToSequence(objType)
                         else:
-                            name = self._getArgName(formatStr, kwargList, argNum)
+                            name = self._getArgName(formatStr, argNum)
+                            default = self._getDefaultValue(isArgOptional)
                             yield AnnotationParam(
                                 name, parameterKind, default=default,
                                 annotation=RawRepr(objType))
@@ -103,8 +149,9 @@ class TypesConverter:
                 else:
                     curVal = formatStr[0]
                     if curVal == '|':
-                        default = None
+                        isArgOptional = True
                     elif curVal == '$':
+                        isArgOptional = True
                         parameterKind = Parameter.KEYWORD_ONLY
                     elif curVal in ':;':
                         formatStr = []
@@ -112,7 +159,7 @@ class TypesConverter:
                         logger.error(f"Unknown format: {formatStr}")
                     formatStr = formatStr[1:]
         except InvalidPointerFormat as ex:
-            logger.error(f'{ex}, {formatStr=}, {self.funCall=}, {self.xmlPath=}')
+            logger.error(f'{ex}, {formatStr=}, {self._funCall=}, {self.xmlPath=}')
 
     def _findPointerType(self, realArgNum: int) -> str | None:
         try:
@@ -121,7 +168,7 @@ class TypesConverter:
             # PyObject* BSplineCurve2dPy::insertKnot(PyObject * args)
             # with expectedArg=7, but providedArg=5, code:
             # if (!PyArg_ParseTuple(args, "d|idO!", &U, &M, &tol))
-            raise InvalidPointerFormat(f"Function has not enough arguments {self.funCall}")
+            raise InvalidPointerFormat(f"Function has not enough arguments {self._funCall}")
 
         if pointerArg[0] == '&':
             if (typ := self._convertPointerToType(pointerArg[1:])) is not None:
@@ -154,25 +201,36 @@ class TypesConverter:
             logger.error(f"Unknown pointer kind {pointerArg=}")
 
     def _startSequenceParsing(self):
-        self.sequenceStack.append([])
+        self._sequenceStack.append([])
 
     def _endSequenceParsing(self):
-        val = self.sequenceStack.pop()
+        val = self._sequenceStack.pop()
         # Probably in C this may be a `typing.Sequence`,
         # but at this moment in `typing` only a tuple support variable length.
         return f'tuple[{", ".join(val)}]'
 
     def _addElementToSequence(self, objType: str):
-        self.sequenceStack[-1].append(objType)
+        self._sequenceStack[-1].append(objType)
 
-    def _getArgName(self, formatStr: str, kwargList: list[str], argNum: int) -> str | None:
+    def _getArgName(self, formatStr: str, argNum: int) -> str | None:
         if not self.onlyPositional:
             try:
-                return kwargList[argNum]
+                return self._kwargList[argNum]
             except IndexError:
                 logger.error(
-                    f"Too few kw arguments for {formatStr=}, {self.funCall=}, {self.xmlPath=}")
+                    f"Too few kw arguments for {formatStr=}, {self._funCall=}, {self.xmlPath=}")
         return f'{DEFAULT_ARG_NAME}{self.argNumStart + argNum}'
+
+    def _getDefaultValue(self, isArgOptional: bool):
+        if isArgOptional:
+            # TODO extract from c code
+            return None
+        else:
+            return Parameter.empty
+
+    @cached_property
+    def _typeFinder(self):
+        return ReturnTypeConverter(self._varDeclarationCode, functionName=self.functionName)
 
 
 # based on https://pyo3.rs/v0.11.1/conversions.html

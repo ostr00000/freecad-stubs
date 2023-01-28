@@ -34,7 +34,7 @@ class ReturnTypeInnerTuple(ReturnTypeConverterBase):
             funArgs = list(generateExpressionUntilChar(
                 match.group(1), 0, ',', bracketL='(', bracketR=')'))
             for arg in funArgs:
-                yield self._getReturnTypeForText(arg, endPos=endPos)
+                yield self.getExpressionType(arg, endPos=endPos)
 
     def _genInnerTypeTupleSetItem(self, variableName: str, startPos: int, endPos: int):
         """Example: `list.setItem(0, Py::Float(7.0));`"""
@@ -44,7 +44,7 @@ class ReturnTypeInnerTuple(ReturnTypeConverterBase):
             funArgs = list(generateExpressionUntilChar(
                 variableMatch.group(1), 0, ',', bracketL='(', bracketR=')'))
             variableLengthTuple &= not funArgs[0].isnumeric()
-            yield self._getReturnTypeForText(funArgs[1], endPos)
+            yield self.getExpressionType(funArgs[1], endPos)
         return variableLengthTuple
 
     def _genInnerTypePyTupleSetItem(self, variableName: str, startPos: int, endPos: int):
@@ -62,7 +62,7 @@ class ReturnTypeInnerTuple(ReturnTypeConverterBase):
         variableLengthTuple = True
         for variableMatch in regex.finditer(self.functionBody, startPos, endpos=endPos):
             variableLengthTuple &= not variableMatch.group('index').isnumeric()
-            yield self._getReturnTypeForText(variableMatch.group('value'), endPos)
+            yield self.getExpressionType(variableMatch.group('value'), endPos)
         return variableLengthTuple
 
     def _genInnerTypeTupleAssignItem(self, variableName: str, startPos: int, endPos: int):
@@ -80,7 +80,7 @@ class ReturnTypeInnerTuple(ReturnTypeConverterBase):
         variableLengthTuple = True
         for variableMatch in regex.finditer(self.functionBody, startPos, endpos=endPos):
             variableLengthTuple &= not variableMatch.group('index').isnumeric()
-            yield self._getReturnTypeForText(variableMatch.group('value'), endPos)
+            yield self.getExpressionType(variableMatch.group('value'), endPos)
         return variableLengthTuple
 
     def _genInnerTypeTupleConstructor(self, variableName: str, startPos: int, endPos: int):
@@ -90,4 +90,4 @@ class ReturnTypeInnerTuple(ReturnTypeConverterBase):
             funArgs = list(generateExpressionUntilChar(
                 match.group(1), 0, ',', bracketL='(', bracketR=')'))
             for fa in funArgs:
-                yield self._getReturnTypeForText(fa, endPos)
+                yield self.getExpressionType(fa, endPos)

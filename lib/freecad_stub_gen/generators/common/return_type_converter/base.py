@@ -1,7 +1,7 @@
+import logging
 import re
 from functools import cached_property
 
-from freecad_stub_gen.generators.common.arguments_converter import logger
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
     generateExpressionUntilChar
 from freecad_stub_gen.generators.common.names import getClassName, getClassWithModulesFromPointer, \
@@ -12,11 +12,13 @@ from freecad_stub_gen.generators.common.return_type_converter.arg_types import E
 from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import StrWrapper
 from freecad_stub_gen.util import OrderedSet
 
+logger = logging.getLogger(__name__)
+
 
 class ReturnTypeConverterBase:
-    def __init__(self, requiredImports: OrderedSet, functionBody: str,
-                 classNameWithModule: str, functionName: str):
-        self.requiredImports = requiredImports
+    def __init__(self, functionBody: str, requiredImports: OrderedSet = None,
+                 classNameWithModule: str = '', functionName: str = ''):
+        self.requiredImports = OrderedSet() if requiredImports is None else requiredImports
         self.functionBody = functionBody
         self.classNameWithModule = classNameWithModule
         self.functionName = functionName
@@ -25,20 +27,20 @@ class ReturnTypeConverterBase:
     def className(self):
         return getClassName(self.classNameWithModule)
 
-    def _getReturnTypeForText(self, returnText: str, endPos: int, onlyLiteral=False) -> RetType:
-        returnText = returnText.strip()
-        if returnText.endswith(')') \
-                and (returnText.startswith('new_reference_to(')
-                     or returnText.startswith('Py::new_reference_to(')):
-            returnText = returnText \
+    def getExpressionType(self, varText: str, endPos: int, onlyLiteral=False) -> RetType:
+        varText = varText.strip()
+        if varText.endswith(')') \
+                and (varText.startswith('new_reference_to(')
+                     or varText.startswith('Py::new_reference_to(')):
+            varText = varText \
                 .removeprefix('Py::') \
                 .removeprefix('new_reference_to(') \
                 .removesuffix(')').strip()
 
-        if returnText.startswith('*'):
-            returnText = returnText.removeprefix('*').strip()
+        if varText.startswith('*'):
+            varText = varText.removeprefix('*').strip()
 
-        match StrWrapper(returnText):
+        match StrWrapper(varText):
             case '':
                 return Empty
             case 'Py::Object()':
@@ -69,7 +71,7 @@ class ReturnTypeConverterBase:
                 if onlyLiteral:
                     return 'tuple'
                 else:
-                    return self.getInnerType('tuple', variableName=returnText, decStartPos=0,
+                    return self.getInnerType('tuple', variableName=varText, decStartPos=0,
                                              decEndPos=endPos, endPos=endPos)
             case StrWrapper('Py::Tuple' | 'PyTuple_New'):
                 return 'tuple'
@@ -98,12 +100,12 @@ class ReturnTypeConverterBase:
             case StrWrapper('shape2pyshape' | 'Part::shape2pyshape'):
                 return 'Part.Shape'
             case StrWrapper('getShapes<'):
-                templateClass = returnText.removeprefix('getShapes<').split('>')[0]
-                innerClass = self._getReturnTypeForText(templateClass, endPos)
+                templateClass = varText.removeprefix('getShapes<').split('>')[0]
+                innerClass = self.getExpressionType(templateClass, endPos)
                 return f'list[{innerClass}]'
 
             case StrWrapper('Base::Interpreter().createSWIGPointerObj('):
-                fc = returnText.removeprefix('Base::Interpreter().createSWIGPointerObj(')
+                fc = varText.removeprefix('Base::Interpreter().createSWIGPointerObj(')
                 funArgs = [
                     exp.strip().removeprefix('"').removesuffix('"')
                     for exp in generateExpressionUntilChar(
@@ -122,7 +124,7 @@ class ReturnTypeConverterBase:
                 return 'qtpy.QtCore.QObject'
             case StrWrapper('wrap.fromQWidget('):
                 fc = findFunctionCall(
-                    returnText, bodyStart=returnText.find('('),
+                    varText, bodyStart=varText.find('('),
                     bracketL='(', bracketR=')').removeprefix('(').removesuffix(')')
                 funArgs = list(generateExpressionUntilChar(
                     fc, 0, ',', bracketL='(', bracketR=')'))
@@ -138,23 +140,23 @@ class ReturnTypeConverterBase:
                 return Empty
 
             case StrWrapper('new ' | 'Py::asObject(new '):
-                return self._findClassWithModule(returnText)
+                return self._findClassWithModule(varText)
             case StrWrapper(end='Py') as i if i.isidentifier() and i[0].isupper():
-                return self._findClassWithModule(returnText)
+                return self._findClassWithModule(varText)
 
             case StrWrapper(end='->getPyObject()' | '.getPyObject()'):
-                expText = returnText \
+                expText = varText \
                     .removesuffix('getPyObject()') \
                     .removesuffix('.') \
                     .removesuffix('->') \
                     .removesuffix(')')
                 varTextStartPos = expText.rfind('(') + 1
                 varText = expText[varTextStartPos:]
-                return self._getReturnTypeForText(varText, endPos=endPos)
+                return self.getExpressionType(varText, endPos=endPos)
 
             case StrWrapper('Py_BuildValue("'):
                 fc = findFunctionCall(
-                    returnText, bodyStart=len('Py_BuildValue'), bracketL='(', bracketR=')',
+                    varText, bodyStart=len('Py_BuildValue'), bracketL='(', bracketR=')',
                 ).removeprefix('(').removesuffix(')')
                 funArgs = list(generateExpressionUntilChar(
                     fc, 0, ',', bracketL='(', bracketR=')'))
@@ -162,7 +164,7 @@ class ReturnTypeConverterBase:
                 if pythonType := parsePyBuildValues(formatText):
                     if pythonType == Empty:
                         objArg = funArgs[1].strip()
-                        pythonType = self._getReturnTypeForText(objArg, endPos, onlyLiteral=True)
+                        pythonType = self.getExpressionType(objArg, endPos, onlyLiteral=True)
                     return pythonType
 
             case StrWrapper(contain='Py_True' | 'Py_False'):
@@ -171,33 +173,33 @@ class ReturnTypeConverterBase:
 
             case StrWrapper('Py::asObject(' | 'Py::Object(' | 'createPyObject('):
                 fc = findFunctionCall(
-                    returnText, bodyStart=returnText.find('('),
+                    varText, bodyStart=varText.find('('),
                     bracketL='(', bracketR=')').removeprefix('(').removesuffix(')')
                 funArgs = list(generateExpressionUntilChar(
                     fc, 0, ',', bracketL='(', bracketR=')'))
                 rawReturnVarName = funArgs[0]
-                return self._getReturnTypeForText(rawReturnVarName, endPos)
+                return self.getExpressionType(rawReturnVarName, endPos)
 
             case _ if onlyLiteral:
-                if all(i.isidentifier() for i in returnText.split('::')):
-                    maybeClass = returnText
+                if all(i.isidentifier() for i in varText.split('::')):
+                    maybeClass = varText
                     if not maybeClass.endswith('Py'):
                         maybeClass += 'Py'
-                    return self._findClassWithModule(maybeClass, mustDiffer=returnText)
+                    return self._findClassWithModule(maybeClass, mustDiffer=varText)
                 return Empty
 
-            case _ if returnText.isidentifier():
-                return self._findVariableType(returnText, endPos)
+            case _ if varText.isidentifier():
+                return self._findVariableType(varText, endPos)
 
             case StrWrapper('(', end=')'):
-                return self._getReturnTypeForText(
-                    returnText.removeprefix('(').removesuffix(')'), endPos, onlyLiteral)
+                return self.getExpressionType(varText.removeprefix('(').removesuffix(')'), endPos,
+                                              onlyLiteral)
 
             case StrWrapper(contain='=='):
                 return 'bool'
 
             case _:
-                logger.warning(f"Unknown return variable: '{returnText}'")
+                logger.warning(f"Unknown return variable: '{varText}'")
         return Empty
 
     def _findClassWithModule(self, text: str, mustDiffer: str = '') -> RetType:
@@ -259,17 +261,17 @@ class ReturnTypeConverterBase:
             elif varTypeDec in ('auto', 'PyObject', 'Py::Object'):
                 if assignValue := declarationMatch.group('val'):
                     #  we can try resolve real type by checking right side
-                    varType = self._getReturnTypeForText(assignValue, endPos, onlyLiteral=True)
+                    varType = self.getExpressionType(assignValue, endPos, onlyLiteral=True)
                 elif varTypeDec != 'auto' and (argsValue := declarationMatch.group('args')):
                     funArgs = list(generateExpressionUntilChar(
                         argsValue, 0, ',', bracketL='(', bracketR=')'))
                     #  we can try resolve real type from constructor argument
-                    varType = self._getReturnTypeForText(funArgs[0], endPos, onlyLiteral=False)
+                    varType = self.getExpressionType(funArgs[0], endPos, onlyLiteral=False)
                 else:
                     varType = Empty
 
             else:
-                varType = self._getReturnTypeForText(varTypeDec, endPos, onlyLiteral=True)
+                varType = self.getExpressionType(varTypeDec, endPos, onlyLiteral=True)
 
             if (isNone := (varType == 'None')) or varType == Empty:
                 varType = self._getRetTypeFromAssignment(
@@ -288,7 +290,7 @@ class ReturnTypeConverterBase:
 
             return varType
 
-        return self._getReturnTypeForText(variableName, endPos, onlyLiteral=True)
+        return self.getExpressionType(variableName, endPos, onlyLiteral=True)
 
     def _getRetTypeFromAssignment(self, variableName: str, startPos: int, endPos: int) -> RetType:
         """Example: `myVar = Py::Float(7.0)`."""
@@ -303,7 +305,7 @@ class ReturnTypeConverterBase:
         """General match function by regex between declaration and `return` keyword."""
         for variableMatch in regex.finditer(self.functionBody, startPos, endpos=endPos):
             variableTypeText = variableMatch.group(1)
-            varType = self._getReturnTypeForText(variableTypeText, endPos, onlyLiteral=onlyLiteral)
+            varType = self.getExpressionType(variableTypeText, endPos, onlyLiteral=onlyLiteral)
             match varType:
                 case UnionArguments():
                     yield from varType
