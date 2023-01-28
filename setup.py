@@ -26,11 +26,14 @@ setup(
     long_description_content_type='text/markdown',
     license='GPL-3.0',
     url='https://github.com/ostr00000/freecad-stubs',
+
     package_dir={'': freeCadStubPath},
     package_data={'': ['*.pyi']},
     packages=packages,
     python_requires='>=3.6',
     install_requires=['qtpy'],
+    extras_require={'generate': ['more-itertools']},
+
     classifiers=[
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',

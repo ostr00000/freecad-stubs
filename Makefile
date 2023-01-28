@@ -1,4 +1,4 @@
-PYTHON=python3.10
+PYTHON=python3.11
 ENV_NAME=freecad_env
 PYTHON_ENV=./$(ENV_NAME)/bin/python
 
@@ -16,7 +16,7 @@ setup_env:
 install_in_env:
 	$(PYTHON_ENV) -m pip install --upgrade pip
 	$(PYTHON_ENV) -m pip install PyQt5
-	$(PYTHON_ENV) -m pip install -e .
+	$(PYTHON_ENV) -m pip install -e .[generate]
 
 prepare_freecad:
 	git -C FreeCAD pull || git clone https://github.com/FreeCAD/FreeCAD FreeCAD

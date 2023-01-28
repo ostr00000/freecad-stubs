@@ -1,12 +1,23 @@
 import enum
 
 
-class PropertyType(enum.Flag):
-    def __new__(cls, value, description):
-        member = object.__new__(cls)
+class PropertyType(enum.IntFlag):
+    description: str
+
+    def __new__(cls, value, description=None):
+        member = int.__new__(cls, value)
         member._value_ = value
+
+        if description is None:
+            description = '\n'.join(flag.description for flag in member)
         member.description = description
+
         return member
+
+    def __iter__(self):
+        for e in type(self):
+            if e.value & self.value:
+                yield e
 
     Prop_None = 0, "No special property type"
     Prop_ReadOnly = 1, "Property is read-only in the editor"
