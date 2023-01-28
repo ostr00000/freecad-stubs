@@ -101,13 +101,13 @@ class ViewProviderMesh(FreeCADGui.ViewProviderDocumentObject):
     @PointSize.setter
     def PointSize(self, value: float | Quadruple_t[float]): ...
 
-    def addSelection(self, arg1, /):
+    def addSelection(self, obj, /):
         """Add list of facets to selection"""
 
     def clearSelection(self):
         """Clear the selection"""
 
-    def highlightSegments(self, arg1, /):
+    def highlightSegments(self, list, /):
         """
         Highlights the segments of a mesh with a given list of colors.
         The number of elements of this list must be equal to the number of mesh segments.
@@ -116,15 +116,15 @@ class ViewProviderMesh(FreeCADGui.ViewProviderDocumentObject):
     def invertSelection(self):
         """Invert the selection"""
 
-    def removeSelection(self, arg1, /):
+    def removeSelection(self, obj, /):
         """Remove list of facets from selection"""
 
-    def setSelection(self, arg1, /):
+    def setSelection(self, obj, /):
         """Select list of facets"""
 
 
 # AppMeshGui.cpp
-def convertToSTL(arg1: str, arg2: str, /) -> bool:
+def convertToSTL(inname: str, outname: str, /) -> bool:
     """
     Convert a scene into an STL.
     Possible exceptions: (Exception).

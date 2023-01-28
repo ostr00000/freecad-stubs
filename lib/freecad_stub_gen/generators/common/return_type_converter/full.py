@@ -40,7 +40,7 @@ class ReturnTypeConverter(
     def _genReturnType(self):
         for match in self.REG_RETURN.finditer(self.functionBody):
             try:
-                retType = self._getReturnTypeForText(match.group(1), match.end())
+                retType = self.getExpressionType(match.group(1), match.end())
                 if isinstance(retType, UnionArguments):
                     yield from retType
                 else:

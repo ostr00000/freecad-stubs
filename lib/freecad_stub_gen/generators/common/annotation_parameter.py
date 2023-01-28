@@ -45,6 +45,11 @@ class RawRepr:
             raise NotImplementedError
 
 
+class RawStringRepresentation(str):
+    def __repr__(self):
+        return str(self)
+
+
 class AnnotationParam(Parameter):
     """Add annotation in __str__ method."""
 
@@ -61,25 +66,6 @@ class AnnotationParam(Parameter):
         else:
             return cls.SELF_PARAM
 
-    def __str__(self):
-        # in current implementation (3.10) there is lack of annotation formatting
-        match self.default, self.annotation:
-            case self.empty, self.empty:
-                formatted = self.name
-            case self.empty, _:
-                formatted = f'{self.name}: {formatannotation(self.annotation)}'
-            case _, self.empty:
-                formatted = f'{self.name}={repr(self.default)}'
-            case _:
-                formatted = f'{self.name}: {formatannotation(self.annotation)} = {repr(self.default)}'
-
-        if (kind := self.kind) == self.VAR_POSITIONAL:
-            formatted = '*' + formatted
-        elif kind == self.VAR_KEYWORD:
-            formatted = '**' + formatted
-
-        return formatted
-
 
 class SelfSignature(Signature):
     """Skip separator if there is only self parameter"""
@@ -89,7 +75,7 @@ class SelfSignature(Signature):
                  unknown_parameters=False,
                  return_annotation=Signature.empty,
                  exceptions=(),
-                 __validate_parameters__=True):
+                 ):
 
         match parameters:
             case [Parameter(name='self', kind=Parameter.POSITIONAL_ONLY) as selfParam]:
@@ -104,8 +90,7 @@ class SelfSignature(Signature):
             parameters[0] = selfParam.replace(kind=Parameter.POSITIONAL_OR_KEYWORD)
 
         try:
-            super().__init__(parameters, return_annotation=return_annotation,
-                             __validate_parameters__=__validate_parameters__)
+            super().__init__(parameters, return_annotation=return_annotation)
             self.exceptions: OrderedSet[str] | tuple[()] = exceptions
             self.unknown_parameters = unknown_parameters
         except ValueError as v:

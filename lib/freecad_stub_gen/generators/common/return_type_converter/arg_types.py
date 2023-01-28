@@ -76,10 +76,10 @@ class TupleArgument(ArgumentsIter, list):
             while True:
                 self.append(next(gen))
         except StopIteration as st:
-            self.repeated = len(self) == 1 and st.value is True
+            self.repeated = st.value is True and len(set(self)) == 1
 
     def __str__(self):
-        if len(self) == 1 and self.repeated:
+        if self.repeated:
             # use iter instead of index [0] to map module
             return f'tuple[{next(iter(self))}, ...]'
         elif self:

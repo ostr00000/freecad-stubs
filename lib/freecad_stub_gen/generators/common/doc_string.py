@@ -17,11 +17,14 @@ from freecad_stub_gen.generators.common.names import validatePythonValue
 def generateSignaturesFromDocstring(name: str, docString: str, argNumStart: int = 0):
     for match in re.finditer(fr'{name}\((.*?)\):?', docString):
         funCall = findFunctionCall(docString, match.start(), bracketL='(', bracketR=')')
-        funCall = funCall.removeprefix(name).removeprefix('(').removesuffix(')')
+        funCall = funCall.removeprefix(name).removeprefix('(')
+        if funCall.endswith(')'):
+            funCall = funCall.removesuffix(')')
+        else:
+            # missed ending bracket
+            funCall = funCall.split('\n', maxsplit=1)[0]
 
-        # these parameters often are not valid, but we fix it in signature_merger
-        yield SelfSignature(list(_signatureGen(funCall, argNumStart)),
-                            __validate_parameters__=False)
+        yield SelfSignature(list(_signatureGen(funCall, argNumStart)))
 
 
 def _signatureGen(funDocString: str, argNumStart: int) -> Iterator[Parameter]:
@@ -61,10 +64,14 @@ def _signatureGen(funDocString: str, argNumStart: int) -> Iterator[Parameter]:
         else:
             argName, defValue = argText, Parameter.empty
 
+        if defValue is Parameter.empty and paramType != Parameter.POSITIONAL_ONLY:
+            defValue = None
+        if defValue is not Parameter.empty and paramType == Parameter.POSITIONAL_ONLY:
+            paramType = Parameter.POSITIONAL_OR_KEYWORD
+
         uniqueName, argNum = uniqueNameGen.send(argName)
         yield AnnotationParam(
-            uniqueName, paramType,
-            default=RawRepr(defValue), annotation=RawRepr(annotation))
+            uniqueName, paramType, default=RawRepr(defValue), annotation=RawRepr(annotation))
 
 
 REG_ALL_EXCEPT_WORLD = re.compile(r'\W+')

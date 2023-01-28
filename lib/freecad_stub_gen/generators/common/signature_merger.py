@@ -19,6 +19,7 @@ class SignatureMerger:
 
         self._retParam: list[Parameter] = []
         self._yielded = False
+        self._remainingSig = []
 
         if firstParam:
             self._retParam.append(firstParam)
@@ -32,19 +33,13 @@ class SignatureMerger:
             return
 
         yield from self._mergeCodeAndDocsSignatures()
-        if self._yielded:
-            return
-
-        yield from self._genOnlyCodeSignatures()
-        if self._yielded:
-            return
-
-        yield from self._genOnlyDocsSignatures()
+        yield from self._genRemainingCodeSignatures()
         if self._yielded:
             return
 
         # this should never be reachable
         yield SelfSignature(self._retParam)
+        raise NotImplementedError
 
     def _mergeCodeWithUnknownParametersAndDocsSignatures(self):
         match self.codeSignatures:
@@ -83,12 +78,24 @@ class SignatureMerger:
         yield from docsParams[pos:]
 
     def _mergeCodeAndDocsSignatures(self):
+        usedCodeSignatures = []
         for docS in self.docSignatures:
+            docYielded = False
+
             for codeS in self.codeSignatures:
                 matchedParam = self._matchParameters(codeS.parameters, docS.parameters)
                 if matchedParam is not None:
+                    usedCodeSignatures.append(codeS)
                     yield codeS.replace(parameters=matchedParam)
                     self._yielded = True
+                    docYielded = True
+
+            if not docYielded:
+                yield docS.replace(parameters=self._retParam + list(docS.parameters.values()))
+                self._yielded = True
+
+        self._remainingSig = [codeS for codeS in self.codeSignatures
+                              if codeS not in usedCodeSignatures]
 
     def _matchParameters(self, codeParams, docParams) -> list[Parameter] | None:
         matchedParam = list(self._retParam)
@@ -98,7 +105,12 @@ class SignatureMerger:
             try:
                 docParam = next(docSignatureIt)
             except StopIteration:
-                return
+                if codeParam.default is not Parameter.empty:
+                    # maybe docs have only required params
+                    matchedParam.append(codeParam)
+                    continue
+                else:
+                    return
 
             newArg = codeParam
             if codeParam.name.startswith(DEFAULT_ARG_NAME) \
@@ -120,14 +132,8 @@ class SignatureMerger:
 
         return matchedParam
 
-    def _genOnlyCodeSignatures(self):
+    def _genRemainingCodeSignatures(self):
         """Maybe `docSignatures` is empty, in that case try gen `codeSignatures`."""
-        for codeS in self.codeSignatures:
+        for codeS in self._remainingSig:
             yield codeS.replace(parameters=self._retParam + list(codeS.parameters.values()))
-            self._yielded = True
-
-    def _genOnlyDocsSignatures(self):
-        """Maybe `codeSignatures` is empty, in that case try gen `docSignatures`."""
-        for docS in self.docSignatures:
-            yield docS.replace(parameters=self._retParam + list(docS.parameters.values()))
             self._yielded = True

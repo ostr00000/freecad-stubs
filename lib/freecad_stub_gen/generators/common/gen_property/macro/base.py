@@ -56,7 +56,8 @@ class PropertyMacroBase:
             .replace('App::', '') \
             .replace('(', '') \
             .replace(')', '') \
-            .removeprefix('PropertyType')
+            .removeprefix('PropertyType') \
+            .removeprefix('::')
 
         for t in newTypes.split('|'):
             if t:

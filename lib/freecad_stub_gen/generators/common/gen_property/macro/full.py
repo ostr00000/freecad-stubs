@@ -8,9 +8,8 @@ class PropertyMacro(PropertyMacroGetter, PropertyMacroSetter):
     def docs(self):
         result = '\n'
 
-        for p in PropertyType:
-            if p & self.type:
-                result += f'[{p.name}] {p.description}.\n'
+        for p in self.type:
+            result += f'[{p.name}] {p.description}.\n'
 
         if self.group:
             result += f'Property group: {self.group}.\n'

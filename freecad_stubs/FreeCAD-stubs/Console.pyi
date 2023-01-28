@@ -1,23 +1,23 @@
 # Console.cpp
-def PrintMessage(string, /) -> None:
+def PrintMessage(output, /) -> None:
     """PrintMessage(string) -- Print a message to the output"""
 
 
-def PrintLog(string, /) -> None:
+def PrintLog(output, /) -> None:
     """PrintLog(string) -- Print a log message to the output"""
 
 
-def PrintError(string, /) -> None:
+def PrintError(output, /) -> None:
     """PrintError(string) -- Print an error message to the output"""
 
 
-def PrintWarning(arg0, /) -> None:
+def PrintWarning(output, /) -> None:
     """PrintWarning -- Print a warning to the output"""
 
 
-def SetStatus(arg0: str, arg1: str, arg2: int, /) -> None:
+def SetStatus(pstr1: str, pstr2: str, Bool: int, /) -> None:
     """Set the status for either Log, Msg, Wrn or Error for an observer"""
 
 
-def GetStatus(arg0: str, arg1: str, /) -> int | None:
+def GetStatus(pstr1: str, pstr2: str, /) -> int | None:
     """Get the status for either Log, Msg, Wrn or Error for an observer"""

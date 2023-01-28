@@ -91,10 +91,6 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
             docsFunName, node, argNumStart=len(parameters)))
 
         sigMerger = SignatureMerger(codeSignatures, docSignatures, firstParam, cFunName=cFunName)
-        if (n := node.find("./Documentation/UserDocu")) \
-                and 'listSchemas(int) -> description of the given schema' in n.text:
-            print()
-
         yield from sigMerger.genMergedCodeAndDocSignatures()
 
     @classmethod
@@ -118,29 +114,46 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
 
     @classmethod
     def genNumberProtocol(cls, className: str) -> str:
+        """
+        Source: find `PyNumberMethods` in `src/Tools/generateTemplates/templateClassPyExport.py`
+        https://github.com/FreeCAD/FreeCAD/blob/master/src/Tools/generateTemplates/templateClassPyExport.py
+        https://docs.python.org/3/c-api/typeobj.html#c.PyNumberMethods
+        https://docs.python.org/3/c-api/typeobj.html#sub-slots
+        """
+        # TODO P3 find real IN and OUT types - ex.:
+        #  assert isinstance(FreeCAD.Vector(1, 2, 3) * FreeCAD.Vector(1, 2, 3), int)
+        # TODO P3 remove fake methods - methods that always raise exception when called
+        # TODO P3 implement other Protocols - ex. PySequenceMethods
         ret = ''
-        ret += cls._genEmptyMethod('__add__', 'other', retType=className)
-        ret += cls._genEmptyMethod('__sub__', 'other', retType=className)
-        ret += cls._genEmptyMethod('__mul__', 'other', retType=className)
-        ret += cls._genEmptyMethod('__floordiv__', 'other')
-        ret += cls._genEmptyMethod('__divmod__', 'other')
-        ret += cls._genEmptyMethod('__truediv__', 'other', retType=className)
-        ret += cls._genEmptyMethod('__pow__', 'power', 'modulo=None')
+        ret += cls._genEmptyMethod('__add__', 'other', retType=className, reflected=True)
+        ret += cls._genEmptyMethod('__sub__', 'other', retType=className, reflected=True)
+        ret += cls._genEmptyMethod('__mul__', 'other', retType=className, reflected=True)
+        ret += cls._genEmptyMethod('__mod__', 'other', reflected=True)
+        ret += cls._genEmptyMethod('__divmod__', 'other', reflected=True)
+        ret += cls._genEmptyMethod('__pow__', 'power', 'modulo=None', reflected=True)
         ret += cls._genEmptyMethod('__neg__', retType=className)
         ret += cls._genEmptyMethod('__pos__', retType=className)
         ret += cls._genEmptyMethod('__abs__', retType=className)
+        ret += cls._genEmptyMethod('__bool__', retType=className)
         ret += cls._genEmptyMethod('__invert__')
-        ret += cls._genEmptyMethod('__lshift__', 'other')
-        ret += cls._genEmptyMethod('__rshift__', 'other')
-        ret += cls._genEmptyMethod('__and__', 'other')
-        ret += cls._genEmptyMethod('__xor__', 'other')
-        ret += cls._genEmptyMethod('__or__', 'other')
+        ret += cls._genEmptyMethod('__lshift__', 'other', reflected=True)
+        ret += cls._genEmptyMethod('__rshift__', 'other', reflected=True)
+        ret += cls._genEmptyMethod('__and__', 'other', reflected=True)
+        ret += cls._genEmptyMethod('__xor__', 'other', reflected=True)
+        ret += cls._genEmptyMethod('__or__', 'other', reflected=True)
         ret += cls._genEmptyMethod('__int__')
         ret += cls._genEmptyMethod('__float__')
+        ret += cls._genEmptyMethod('__truediv__', 'other', retType=className, reflected=True)
         return ret
 
     @classmethod
-    def _genEmptyMethod(cls, name: str, *args, retType=None) -> str:
+    def _genEmptyMethod(cls, name: str, *args, retType=None, reflected=False) -> str:
+        if reflected:
+            reflectedName = '__r' + name[2:]
+            ret = cls._genEmptyMethod(name, *args, retType=retType)
+            ret += cls._genEmptyMethod(reflectedName, *args, retType=retType)
+            return ret
+
         retType = f' -> {retType}' if retType else ''
         return f'def {name}({", ".join(("self",) + args)}){retType}: ...\n\n'
 
@@ -150,17 +163,24 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         if res := super().findFunctionBody(cFuncName, cClassName):
             return res
 
-        if not (baseClass := type(self).safeCreate(self.parentXmlPath)):
-            if cFuncName == 'PyInit':
-                pass  # skip implicit constructor - probably inherited from PyObject
-            else:
-                logger.error(f"Cannot find {self.parentXmlPath=} for {self.baseGenFilePath=}")
+        try:
+            p = self.parentXmlPath
+        except AttributeError:
+            baseClass = None
+        else:
+            baseClass = type(self).safeCreate(p)
+
+        if baseClass:
+            return baseClass.findFunctionBody(cFuncName, cClassName)
+
+        if cFuncName in ('PyInit', 'PyMake'):
+            # skip implicit constructor - probably inherited from PyObject
             return
 
-        return baseClass.findFunctionBody(cFuncName, cClassName)
+        logger.error(f"Cannot find {self.parentXmlPath=} for {self.baseGenFilePath=}")
 
     @cached_property
     def parentXmlPath(self) -> Path:
-        fatherInclude = self.currentNode.attrib['FatherInclude'].replace('/', '.')
+        fatherInclude = self.currentNode.attrib['FatherInclude']
         parentFile = (self.sourceDir / fatherInclude).with_suffix('.xml')
         return parentFile

@@ -60,7 +60,7 @@ class MakePrism(FreeCAD.PyObjectBase):
     def perform(self, Length: float):
         """Possible exceptions: (RuntimeError, TypeError)."""
 
-    def performFromEnd(self, arg1: PartModule.Shape, /):
+    def performFromEnd(self, Until: PartModule.Shape, /):
         """
         Realizes a semi-infinite prism, limited by the face Funtil.
             
@@ -82,7 +82,7 @@ class MakePrism(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def performUntilHeight(self, arg1: PartModule.Shape, arg2: float, /):
+    def performUntilHeight(self, Until: PartModule.Shape, length: float, /):
         """
         Assigns both a limiting shape, Until from TopoDS_Shape
         and a height, Length at which to stop generation of the prism feature.

@@ -6,15 +6,23 @@ import FreeCADGui
 
 # Selection.cpp
 @typing.overload
-def addSelection(docName: str, objName: str, subName: str = None, x: float = 0, y: float = 0, z: float = 0, clear: bool = True, /): ...
+def addSelection(docname: str, objname: str, subname: str = None, x: float = 0, y: float = 0, z: float = 0, clearPreselect: bool = True, /): ...
 
 
 @typing.overload
-def addSelection(obj: FreeCAD.DocumentObject, subName: str = None, x: float = 0, y: float = 0, z: float = 0, clear: bool = True, /): ...
+def addSelection(docname: str, objname: str, subname: str = 0, x: float = 0, y: float = 0, z: float = 0, clearPreselect: bool = True, /): ...
 
 
 @typing.overload
-def addSelection(obj: FreeCAD.DocumentObject, subNames, clear: bool = True, /):
+def addSelection(object: FreeCAD.DocumentObject, subname: str = None, x: float = 0, y: float = 0, z: float = 0, clearPreselect: bool = True, /): ...
+
+
+@typing.overload
+def addSelection(docname: str, objname: str, subname: str = True, x: float = 0, y: float = 0, z: float = 0, clearPreselect: bool = True, /): ...
+
+
+@typing.overload
+def addSelection(object: FreeCAD.DocumentObject, sequence, clearPreselect: bool = True, /):
     """
     addSelection(docName, objName, subName, x=0, y=0, z=0, clear=True) -> None
     addSelection(obj, subName, x=0, y=0, z=0, clear=True) -> None
@@ -44,7 +52,7 @@ def addSelection(obj: FreeCAD.DocumentObject, subNames, clear: bool = True, /):
     """
 
 
-def updateSelection(show: bool, obj: FreeCAD.DocumentObject, subName: str = None, /):
+def updateSelection(show: bool, object: FreeCAD.DocumentObject, subname: str = None, /):
     """
     updateSelection(show, obj, subName) -> None
 
@@ -61,11 +69,11 @@ def updateSelection(show: bool, obj: FreeCAD.DocumentObject, subName: str = None
 
 
 @typing.overload
-def removeSelection(obj: FreeCAD.DocumentObject, subName: str = None, /): ...
+def removeSelection(docname: str, objname: str, subname: str = None, /): ...
 
 
 @typing.overload
-def removeSelection(docName: str, objName: str, subName: str = None, /):
+def removeSelection(object: FreeCAD.DocumentObject, subname: str = None, /):
     """
     removeSelection(obj, subName) -> None
     removeSelection(docName, objName, subName) -> None
@@ -85,11 +93,15 @@ def removeSelection(docName: str, objName: str, subName: str = None, /):
 
 
 @typing.overload
-def clearSelection(docName: str = None, clearPreSelect: bool = True, /): ...
+def clearSelection(documentName: str = None, clearPreSelect: bool = True, /): ...
 
 
 @typing.overload
-def clearSelection(clearPreSelect: bool = True, /):
+def clearSelection(clearPreSelect: bool = True, /): ...
+
+
+@typing.overload
+def clearSelection(documentName: str = True, clearPreSelect: bool = True, /):
     """
     clearSelection(docName, clearPreSelect=True) -> None
     clearSelection(clearPreSelect=True) -> None
@@ -104,7 +116,7 @@ def clearSelection(clearPreSelect: bool = True, /):
     """
 
 
-def isSelected(obj: FreeCAD.DocumentObject, subName: str = None, resolve: int = None, /) -> bool:
+def isSelected(object: FreeCAD.DocumentObject, subname: str = None, resolve: int = 1, /) -> bool:
     """
     isSelected(obj, subName, resolve=ResolveMode.OldStyleElement) -> bool
 
@@ -156,7 +168,7 @@ def clearPreselection():
     """
 
 
-def countObjectsOfType(type: str, docName: str = None, resolve: int = None, /) -> int:
+def countObjectsOfType(objecttype: str, document: str = None, resolve: int = 1, /) -> int:
     """
     countObjectsOfType(type, docName, resolve=ResolveMode.OldStyleElement) -> int
 
@@ -171,7 +183,7 @@ def countObjectsOfType(type: str, docName: str = None, resolve: int = None, /) -
     """
 
 
-def getSelection(docName: str = None, resolve: int = None, single: bool = False, /) -> list[FreeCAD.DocumentObject]:
+def getSelection(documentName: str = None, resolve: int = 1, single: bool = False, /) -> list[FreeCAD.DocumentObject]:
     """
     getSelection(docName, resolve=ResolveMode.OldStyleElement, single=False) -> list
 
@@ -188,7 +200,7 @@ def getSelection(docName: str = None, resolve: int = None, single: bool = False,
     """
 
 
-def getPickedList(docName: str = None, /) -> list[FreeCADGui.SelectionObject]:
+def getPickedList(documentName: str = None, /) -> list[FreeCADGui.SelectionObject]:
     """
     getPickedList(docName) -> list of Gui.SelectionObject
 
@@ -211,7 +223,7 @@ def enablePickedList(enable: bool = True, /):
     """
 
 
-def getCompleteSelection(resolve: int = None, /) -> list:
+def getCompleteSelection(resolve: int = 1, /) -> list[FreeCADGui.SelectionObject]:
     """
     getCompleteSelection(resolve=ResolveMode.OldStyleElement) -> list
 
@@ -221,7 +233,7 @@ def getCompleteSelection(resolve: int = None, /) -> list:
     """
 
 
-def getSelectionEx(docName: str = None, resolve: int = None, single: bool = False, /) -> list[FreeCADGui.SelectionObject]:
+def getSelectionEx(documentName: str = None, resolve: int = 1, single: bool = False, /) -> list[FreeCADGui.SelectionObject]:
     """
     getSelectionEx(docName, resolve=ResolveMode.OldStyleElement, single=False) -> list of Gui.SelectionObject
 
@@ -240,7 +252,7 @@ def getSelectionEx(docName: str = None, resolve: int = None, single: bool = Fals
     """
 
 
-def getSelectionObject(docName: str, objName: str, subName: str, point: tuple = None, /) -> FreeCADGui.SelectionObject:
+def getSelectionObject(docName: str, objName: str, subName: str, tuple: tuple = None, /) -> FreeCADGui.SelectionObject:
     """
     getSelectionObject(docName, objName, subName, point) -> Gui.SelectionObject
 
@@ -257,7 +269,7 @@ def getSelectionObject(docName: str, objName: str, subName: str, point: tuple = 
     """
 
 
-def addObserver(object, resolve: int = None, /):
+def addObserver(o, resolve: int = 1, /):
     """
     addObserver(object, resolve=ResolveMode.OldStyleElement) -> None
 
@@ -269,7 +281,7 @@ def addObserver(object, resolve: int = None, /):
     """
 
 
-def removeObserver(object, /):
+def removeObserver(o, /):
     """
     removeObserver(object) -> None
 
@@ -281,11 +293,15 @@ def removeObserver(object, /):
 
 
 @typing.overload
-def addSelectionGate(filter: str, resolve: int = None, /): ...
+def addSelectionGate(filter: str, resolve: int = 1, /): ...
 
 
 @typing.overload
-def addSelectionGate(filter, resolve: int = None, /):
+def addSelectionGate(filterPy, resolve: int = 1, /): ...
+
+
+@typing.overload
+def addSelectionGate(gate, resolve: int = 1, /):
     """
     addSelectionGate(filter, resolve=ResolveMode.OldStyleElement) -> None
 
@@ -334,7 +350,7 @@ def setVisible(visible=None, /):
     """
 
 
-def pushSelStack(clearForward: bool = True, overwrite: bool = False, /):
+def pushSelStack(clear: bool = True, overwrite: bool = False, /):
     """
     pushSelStack(clearForward=True, overwrite=False) -> None
 
@@ -347,7 +363,12 @@ def pushSelStack(clearForward: bool = True, overwrite: bool = False, /):
     """
 
 
-def hasSelection(docName: str = None, resolve=None, /) -> bool:
+@typing.overload
+def hasSelection(docName, /, resolve=None): ...
+
+
+@typing.overload
+def hasSelection(doc: str = None, /) -> bool:
     """
     hasSelection(docName, resolve=ResolveMode.NoResolve) -> bool
 
@@ -360,7 +381,7 @@ def hasSelection(docName: str = None, resolve=None, /) -> bool:
     """
 
 
-def hasSubSelection(docName: str = None, subElement: bool = False, /) -> bool:
+def hasSubSelection(doc: str = None, subElement: bool = False, /) -> bool:
     """
     hasSubSelection(docName, subElement=False) -> bool
 
@@ -373,7 +394,7 @@ def hasSubSelection(docName: str = None, subElement: bool = False, /) -> bool:
     """
 
 
-def getSelectionFromStack(docName: str = None, resolve: int = None, index: int = 0, /) -> list:
+def getSelectionFromStack(documentName: str = None, resolve: int = 1, index: int = 0, /) -> list:
     """
     getSelectionFromStack(docName, resolve=ResolveMode.OldStyleElement, index=0) -> list of Gui.SelectionObject
 

@@ -1,12 +1,12 @@
 # AppRaytracingGuiPy.cpp
-def open(arg1: str, arg2: str = None, /) -> None:
+def open(Name: str, DocName: str = None, /) -> None:
     """
     open(string) -- Create a new text document and load the file into the document.
     Possible exceptions: (Exception, RuntimeError).
     """
 
 
-def insert(string: str, string1: str = None, /) -> None:
+def insert(Name: str, DocName: str = None, /) -> None:
     """
     insert(string,string) -- Create a new text document and load the file into the document.
     Possible exceptions: (Exception, RuntimeError).

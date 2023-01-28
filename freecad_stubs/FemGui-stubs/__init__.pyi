@@ -12,7 +12,7 @@ Quadruple_t: typing.TypeAlias = tuple[_T, _T, _T, _T]
 class ViewProviderFemPostPipeline(FreeCADGui.ViewProviderDocumentObject):
     """ViewProviderFemPostPipeline class"""
 
-    def transformField(self, arg1: str, arg2: float, /):
+    def transformField(self, FieldName: str, FieldFactor: float, /):
         """Scales values of given result mesh field by given factor"""
 
     def updateColorBars(self):
@@ -97,7 +97,7 @@ class ViewProviderFemMesh(FreeCADGui.ViewProviderDocumentObject):
     @ShowInner.setter
     def ShowInner(self, value: int | bool): ...
 
-    def applyDisplacement(self, arg1: float, /): ...
+    def applyDisplacement(self, factor: float, /): ...
 
     def resetHighlightedNodes(self):
         """Reset highlighted nodes."""
@@ -119,7 +119,7 @@ class ViewProviderFemMesh(FreeCADGui.ViewProviderDocumentObject):
 
 
 # AppFemGuiPy.cpp
-def setActiveAnalysis(AnalysisObject: FreeCAD.DocumentObject = None, /) -> None:
+def setActiveAnalysis(object: FreeCAD.DocumentObject = None, /) -> None:
     """
     setActiveAnalysis(AnalysisObject) -- Set the Analysis object in work.
     Possible exceptions: (FreeCAD.Base.FreeCADError).
@@ -133,14 +133,14 @@ def getActiveAnalysis() -> typing.Any | None:
     """
 
 
-def open(arg1: str, arg2: str = None, /) -> None:
+def open(Name: str, DocName: str = None, /) -> None:
     """
     open(string) -- Opens an Abaqus file in a text editor.
     Possible exceptions: (Exception).
     """
 
 
-def insert(string: str, string1: str = None, /) -> None:
+def insert(Name: str, DocName: str = None, /) -> None:
     """
     insert(string,string) -- Opens an Abaqus file in a text editor.
     Possible exceptions: (Exception).

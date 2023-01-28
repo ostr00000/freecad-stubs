@@ -32,7 +32,7 @@ class ReturnTypeInnerList(ReturnTypeConverterBase):
         arg = UnionArguments()
         regex = re.compile(rf'PyList_SetItem\s*\(\s*{variableName}\s*,\s*[\w+]+\s*,([^;]+)\);')
         for variableMatch in regex.finditer(self.functionBody, startPos, endpos=endPos):
-            varType = self._getReturnTypeForText(variableMatch.group(1), endPos)
+            varType = self.getExpressionType(variableMatch.group(1), endPos)
             assert varType != Empty
             arg.add(varType)
         return arg

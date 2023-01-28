@@ -54,7 +54,7 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
         for match in regex.finditer(self.functionBody, startPos, endPos):
             funArgs = list(generateExpressionUntilChar(
                 match.group(1), 0, ',', bracketL='(', bracketR=')'))
-            value = self._getReturnTypeForText(funArgs[2], endPos)
+            value = self.getExpressionType(funArgs[2], endPos)
             da.add('str', value)
         return da
 
@@ -66,8 +66,8 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
         for match in regex.finditer(self.functionBody, startPos, endPos):
             funArgs = list(generateExpressionUntilChar(
                 match.group(1), 0, ',', bracketL='(', bracketR=')'))
-            key = self._getReturnTypeForText(funArgs[1], endPos)
-            value = self._getReturnTypeForText(funArgs[2], endPos)
+            key = self.getExpressionType(funArgs[1], endPos)
+            value = self.getExpressionType(funArgs[2], endPos)
             da.add(key, value)
         return da
 
@@ -82,13 +82,13 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
             funArgs = list(generateExpressionUntilChar(
                 match.group(1), 0, ',', bracketL='(', bracketR=')'))
 
-            value = self._getReturnTypeForText(funArgs[1], endPos)
+            value = self.getExpressionType(funArgs[1], endPos)
             key = funArgs[0]
             if key.startswith('"') and key.endswith('"'):
                 key = key.removeprefix('"').removesuffix('"')
                 tdg.add(key, value)
             else:
-                key = self._getReturnTypeForText(key, endPos)
+                key = self.getExpressionType(key, endPos)
                 da.add(key, value)
 
         if tdg:
@@ -102,7 +102,7 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
         regex = re.compile(rf'{variableName}\b\[\"(\w+)\"]\s*=\s*([^;]*);')
         for match in regex.finditer(self.functionBody, startPos, endPos):
             key = match.group(1)
-            value = self._getReturnTypeForText(match.group(2), endPos)
+            value = self.getExpressionType(match.group(2), endPos)
             tdg.add(key, value)
 
         return tdg
@@ -113,7 +113,7 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
         da = DictArgument()
         regex = re.compile(rf'{variableName}\b\[(.*)]\s*=\s*([^;]*);')
         for match in regex.finditer(self.functionBody, startPos, endPos):
-            key = self._getReturnTypeForText(match.group(1), endPos)
-            value = self._getReturnTypeForText(match.group(2), endPos)
+            key = self.getExpressionType(match.group(1), endPos)
+            value = self.getExpressionType(match.group(2), endPos)
             da.add(key, value)
         return da

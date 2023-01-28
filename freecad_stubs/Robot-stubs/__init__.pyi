@@ -14,7 +14,7 @@ class Waypoint(FreeCAD.Persistence):
     Waypoint class
     """
 
-    def __init__(self, Pos: FreeCAD.Placement, type: str = None, name: str = None, vel=None, cont: int = None, tool: int = None, base: int = None, acc=None):
+    def __init__(self, Pos: FreeCAD.Placement, type: str = 'PTP', name: str = 'P', vel=None, cont: int = 0, tool: int = 0, base: int = 0, acc=None):
         """Waypoint class"""
 
     @property
@@ -153,7 +153,7 @@ class Trajectory(FreeCAD.Persistence):
     Trajectory class
     """
 
-    def __init__(self, arg1: list = None, /):
+    def __init__(self, pcObj: list = None, /):
         """Trajectory class"""
 
     @property
@@ -171,26 +171,26 @@ class Trajectory(FreeCAD.Persistence):
     @Waypoints.setter
     def Waypoints(self, value: list): ...
 
-    def deleteLast(self, n: int = None, /) -> Robot.Trajectory:
+    def deleteLast(self, n: int = 1, /) -> Robot.Trajectory:
         """
         deleteLast(n) - delete n waypoints at the end
                   deleteLast()  - delete the last waypoint
         """
 
     @typing.overload
-    def insertWaypoints(self, arg1: FreeCAD.Placement, /) -> Robot.Trajectory: ...
+    def insertWaypoints(self, o: FreeCAD.Placement, /) -> Robot.Trajectory: ...
 
     @typing.overload
-    def insertWaypoints(self, arg1: Robot.Waypoint, /) -> Robot.Trajectory: ...
+    def insertWaypoints(self, o: Robot.Waypoint, /) -> Robot.Trajectory: ...
 
     @typing.overload
-    def insertWaypoints(self, arg1: list, /) -> Robot.Trajectory:
+    def insertWaypoints(self, o: list, /) -> Robot.Trajectory:
         """adds one or a list of waypoint to the end of the trajectory"""
 
-    def position(self, arg1: float, /) -> FreeCAD.Placement:
+    def position(self, pos: float, /) -> FreeCAD.Placement:
         """returns a Frame to a given time in the trajectory"""
 
-    def velocity(self, arg1: float, /) -> float:
+    def velocity(self, pos: float, /) -> float:
         """returns the velocity to a given time in the trajectory"""
 
 
@@ -367,7 +367,7 @@ class RobotObject(FreeCAD.DocumentObject):
 
 
 # AppRobot.cpp
-def simulateToFile(Robot: Robot.Robot6Axis, Trajectory: Robot.Trajectory, TickSize: float, FileName: str, /) -> float:
+def simulateToFile(pcRobObj: Robot.Robot6Axis, pcTracObj: Robot.Trajectory, tick: float, FileName: str, /) -> float:
     """
     simulateToFile(Robot,Trajectory,TickSize,FileName) - runs the simulation and write the result to a file.
     Possible exceptions: (Exception, RuntimeError).

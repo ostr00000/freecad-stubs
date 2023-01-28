@@ -106,7 +106,7 @@ class FreecadStubGeneratorFromXML(
             ret += self.getProperty('Group', 'list[DocumentObject]',
                                     'list[DocumentObject]', readOnly=False)
 
-        elif className == 'Workbench':
+        elif className == 'WorkbenchC':
             ret += workbenchBody + '\n\n'
 
         return ret

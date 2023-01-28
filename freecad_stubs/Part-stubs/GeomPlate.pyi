@@ -8,37 +8,37 @@ import Part.GeomPlate
 class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
     """This class provides an algorithm for constructing such a plate surface."""
 
-    def __init__(self, Surface: PartModule.GeometrySurface = None, Degree: int = None, NbPtsOnCur: int = None, NbIter: int = None, Tol2d: float = None, Tol3d: float = None, TolAng: float = None, TolCurv: float = None, Anisotropy: bool = None):
+    def __init__(self, Surface: PartModule.GeometrySurface = None, Degree: int = 3, NbPtsOnCur: int = 10, NbIter: int = 3, Tol2d: float = 1e-05, Tol3d: float = 0.0001, TolAng: float = 0.01, TolCurv: float = 0.1, Anisotropy: bool = False):
         """
         This class provides an algorithm for constructing such a plate surface.
         Possible exceptions: (ReferenceError, RuntimeError).
         """
 
-    def G0Error(self, arg1: int = None, /) -> float:
+    def G0Error(self, index: int = 0, /) -> float:
         """
         Returns the max distance between the result and the constraints
         Possible exceptions: (RuntimeError).
         """
 
-    def G1Error(self, arg1: int = None, /) -> float:
+    def G1Error(self, index: int = 0, /) -> float:
         """
         Returns the max angle between the result and the constraints
         Possible exceptions: (RuntimeError).
         """
 
-    def G2Error(self, arg1: int = None, /) -> float:
+    def G2Error(self, index: int = 0, /) -> float:
         """
         Returns the max difference of curvature between the result and the constraints
         Possible exceptions: (RuntimeError).
         """
 
-    def add(self, arg1, /):
+    def add(self, cont, /):
         """
         Adds a linear or point constraint
         Possible exceptions: (TypeError, RuntimeError).
         """
 
-    def curveConstraint(self, arg1: int, /) -> Part.GeomPlate.CurveConstraintPy:
+    def curveConstraint(self, index: int, /) -> Part.GeomPlate.CurveConstraintPy:
         """
         Returns the curve constraint of order
         Possible exceptions: (RuntimeError).
@@ -52,10 +52,10 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def disc2dContour(self, arg1: int, /) -> list[tuple[float, float]]:
+    def disc2dContour(self, index: int, /) -> list[tuple[float, float]]:
         """Possible exceptions: (RuntimeError)."""
 
-    def disc3dContour(self, arg1: int, arg2: int, /) -> list[tuple[float, float, float]]:
+    def disc3dContour(self, index: int, order: int, /) -> list[tuple[float, float, float]]:
         """Possible exceptions: (RuntimeError)."""
 
     def init(self):
@@ -70,7 +70,7 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def loadInitSurface(self, arg1: PartModule.GeometrySurface, /):
+    def loadInitSurface(self, surf: PartModule.GeometrySurface, /):
         """
         Loads the initial surface
         Possible exceptions: (ReferenceError, RuntimeError).
@@ -88,7 +88,7 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def pointConstraint(self, arg1: int, /) -> Part.GeomPlate.PointConstraintPy:
+    def pointConstraint(self, index: int, /) -> Part.GeomPlate.PointConstraintPy:
         """
         Returns the point constraint of order
         Possible exceptions: (RuntimeError).
@@ -100,7 +100,7 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def setNbBounds(self, arg1: int, /):
+    def setNbBounds(self, count: int, /):
         """Possible exceptions: (RuntimeError)."""
 
     def surfInit(self):
@@ -120,7 +120,7 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
 class CurveConstraintPy(FreeCAD.PyObjectBase):
     """Defines curves as constraints to be used to deform a surface"""
 
-    def __init__(self, Boundary: PartModule.Curve, Order: int = None, NbPts: int = None, TolDist: float = None, TolAng: float = None, TolCurv: float = None):
+    def __init__(self, Boundary: PartModule.Curve = None, Order: int = 0, NbPts: int = 10, TolDist: float = 0.0001, TolAng: float = 0.01, TolCurv: float = 0.1):
         """
         Defines curves as constraints to be used to deform a surface
         Possible exceptions: (ReferenceError, RuntimeError).
@@ -144,7 +144,7 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
         the number of points.
         """
 
-    def G0Criterion(self, arg1: float, /) -> float:
+    def G0Criterion(self, u: float, /) -> float:
         """
         Returns the G0 criterion at the parametric point U on
         the curve. This is the greatest distance allowed between
@@ -153,7 +153,7 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def G1Criterion(self, arg1: float, /) -> float:
+    def G1Criterion(self, u: float, /) -> float:
         """
         Returns the G1 criterion at the parametric point U on
         the curve. This is the greatest angle allowed between
@@ -163,7 +163,7 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def G2Criterion(self, arg1: float, /) -> float:
+    def G2Criterion(self, u: float, /) -> float:
         """
         Returns the G2 criterion at the parametric point U on
         the curve. This is the greatest difference in curvature
@@ -188,7 +188,7 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
     def projectedCurve(self):
         """Possible exceptions: (RuntimeError)."""
 
-    def setCurve2dOnSurf(self, arg1: Part.Geom2d.Curve2d, /):
+    def setCurve2dOnSurf(self, c: Part.Geom2d.Curve2d, /):
         """Possible exceptions: (ReferenceError, RuntimeError)."""
 
     def setG0Criterion(self):
@@ -216,7 +216,7 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
     def setG2Criterion(self):
         """Possible exceptions: (NotImplementedError)."""
 
-    def setOrder(self, arg1: int, /):
+    def setOrder(self, order: int, /):
         """
         Allows you to set the order of continuity required for
         the constraints: G0, G1, and G2, controlled
@@ -225,7 +225,7 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def setProjectedCurve(self, arg1: Part.Geom2d.Curve2d, arg2: float, arg3: float, /):
+    def setProjectedCurve(self, c: Part.Geom2d.Curve2d, tolU: float, tolV: float, /):
         """Possible exceptions: (ReferenceError, RuntimeError)."""
 
 
@@ -233,7 +233,7 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
 class PointConstraintPy(FreeCAD.PyObjectBase):
     """Defines points as constraints to be used to deform a surface"""
 
-    def __init__(self, Point: FreeCAD.Vector, Order: int = None, TolDist: float = None):
+    def __init__(self, Point: FreeCAD.Vector, Order: int = 0, TolDist: float = 0.0001):
         """
         Defines points as constraints to be used to deform a surface
         Possible exceptions: (RuntimeError).
@@ -280,7 +280,7 @@ class PointConstraintPy(FreeCAD.PyObjectBase):
     def pnt2dOnSurf(self) -> tuple[float, float]:
         """Possible exceptions: (RuntimeError)."""
 
-    def setG0Criterion(self, arg1: float, /):
+    def setG0Criterion(self, tolDist: float, /):
         """
         Allows you to set the G0 criterion. This is the law
         defining the greatest distance allowed between the
@@ -291,7 +291,7 @@ class PointConstraintPy(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def setG1Criterion(self, arg1: float, /):
+    def setG1Criterion(self, tolAng: float, /):
         """
         Allows you to set the G1 criterion. This is the law
         defining the greatest angle allowed between the
@@ -302,10 +302,10 @@ class PointConstraintPy(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def setG2Criterion(self, arg1: float, /):
+    def setG2Criterion(self, tolCurv: float, /):
         """Possible exceptions: (RuntimeError)."""
 
-    def setOrder(self, arg1: int, /):
+    def setOrder(self, order: int, /):
         """
         Allows you to set the order of continuity required for
         the constraints: G0, G1, and G2, controlled
@@ -314,5 +314,5 @@ class PointConstraintPy(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def setPnt2dOnSurf(self, arg1: float, arg2: float, /):
+    def setPnt2dOnSurf(self, x: float, y: float, /):
         """Possible exceptions: (RuntimeError)."""

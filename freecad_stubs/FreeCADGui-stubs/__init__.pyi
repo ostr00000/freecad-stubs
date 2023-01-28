@@ -38,7 +38,7 @@ class ReturnGetObjectsInfoDict(typing.TypedDict):
 
 
 # WorkbenchPy.xml
-class Workbench(FreeCAD.BaseClass):
+class WorkbenchC(FreeCAD.BaseClass):
     """This is the base class for workbenches"""
 
     MenuText: str = ''
@@ -113,7 +113,7 @@ class LinkView(FreeCAD.BaseClass):
     def Visibilities(self) -> object | tuple[bool, ...]:
         """Get/set the child element visibility"""
 
-    def getBoundBox(self, vobj, /) -> FreeCAD.BoundBox:
+    def getBoundBox(self, vobj=None, /) -> FreeCAD.BoundBox:
         """
         getBoundBox(vobj=None): get the bounding box. 
         Possible exceptions: (TypeError).
@@ -122,7 +122,11 @@ class LinkView(FreeCAD.BaseClass):
     def getChildren(self) -> tuple[typing.Any, ...]:
         """Get children view objects"""
 
-    def getDetailPath(self, arg1: str, arg2, /) -> pivy.coin.SoDetail:
+    @typing.overload
+    def getDetailPath(self, element, /): ...
+
+    @typing.overload
+    def getDetailPath(self, sub: str, path, /) -> pivy.coin.SoDetail:
         """
         getDetailPath(element): get the 3d path an detail of an element.
 
@@ -131,7 +135,7 @@ class LinkView(FreeCAD.BaseClass):
         Possible exceptions: (TypeError).
         """
 
-    def getElementPicked(self, pickPoint, /) -> str:
+    def getElementPicked(self, obj, /) -> str:
         """
         getElementPicked(pickPoint): get the element under a 3d pick point. 
         Possible exceptions: (TypeError).
@@ -140,7 +144,7 @@ class LinkView(FreeCAD.BaseClass):
     def reset(self):
         """Reset the link view and clear the links"""
 
-    def setChildren(self, obj_, vis: list = None, type: str = 0, /):
+    def setChildren(self, pyObj, pyVis: list = None, type: str = 0, /):
         """
         setChildren([obj...],vis=[],type=0)
         Group a list of children objects. Note, this mode of operation is incompatible 
@@ -155,7 +159,11 @@ class LinkView(FreeCAD.BaseClass):
            2: override none.
         """
 
-    def setLink(self, object, subname=None, /):
+    @typing.overload
+    def setLink(self, pyObj, pySubName=None, /): ...
+
+    @typing.overload
+    def setLink(self, object, subname, /, *args):
         """
         setLink(object): Set the link
 
@@ -173,7 +181,14 @@ class LinkView(FreeCAD.BaseClass):
         Possible exceptions: (TypeError).
         """
 
-    def setMaterial(self, Material, /):
+    @typing.overload
+    def setMaterial(self, pyObj, /): ...
+
+    @typing.overload
+    def setMaterial(self, Material, /, *args): ...
+
+    @typing.overload
+    def setMaterial(self, arg1, arg2, /):
         """
         setMaterial(Material): set the override material of the entire linked object
 
@@ -190,7 +205,14 @@ class LinkView(FreeCAD.BaseClass):
         Possible exceptions: (TypeError).
         """
 
-    def setTransform(self, matrix, /):
+    @typing.overload
+    def setTransform(self, pyObj, /): ...
+
+    @typing.overload
+    def setTransform(self, matrix, /, *args): ...
+
+    @typing.overload
+    def setTransform(self, arg1, arg2, /):
         """
         setTransform(matrix): set transformation of the linked object
 
@@ -283,7 +305,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         Possible exceptions: (RuntimeError).
         """
 
-    def addProperty(self, type: str, name: str = None, group: str = None, doc: str = None, attr: int = 0, ro: bool = False, hd: bool = False, /) -> FreeCADGui.ViewProvider:
+    def addProperty(self, sType: str, sName: str = None, sGroup: str = None, sDoc: str = None, attr: int = 0, ro: bool = False, hd: bool = False, /) -> FreeCADGui.ViewProvider:
         """
         addProperty(type, name, group, doc, attr=0, ro=False, hd=False) -> ViewProvider
 
@@ -315,33 +337,34 @@ class ViewProvider(FreeCAD.ExtensionContainer):
             Object to be dragged and dropped.
         """
 
-    def canDragObject(self, obj: FreeCAD.DocumentObject = None, /) -> bool:
+    def canDragObject(self, obj=None, /) -> bool:
         """
-        canDragObject(obj) -> bool
+        canDragObject(obj=None) -> bool
 
         Check whether the child object can be removed by dragging.
         If 'obj' is not given, check without filter by any particular object.
 
-        obj : App.DocumentObject
-            Object to be dragged. Optional.
+        obj : App.DocumentObject or None
+            Object to be dragged.
+        Possible exceptions: (TypeError).
         """
 
-    def canDropObject(self, obj: FreeCAD.DocumentObject = None, owner: FreeCAD.DocumentObject = None, subname: str = None, elem=None) -> bool:
+    def canDropObject(self, obj=None, owner=None, subname: str = None, elem=None) -> bool:
         """
-        canDropObject(obj, owner, subname, elem) -> bool
+        canDropObject(obj=None, owner=None, subname, elem=None) -> bool
 
         Check whether the child object can be added by dropping.
         If 'obj' is not given, check without filter by any particular object.
 
-        obj : App.DocumentObject
-            Object to be dropped. Optional.
-        owner : App.DocumentObject
-            Parent object of the dropping object. Optional.
+        obj : App.DocumentObject or None
+            Object to be dropped.
+        owner : App.DocumentObject or None
+            Parent object of the dropping object.
         subname : str
             Subname reference to the dropping object. Optional.
-        elem : sequence of str
+        elem : sequence of str or None
             Non-objects subelements selected when the object is
-            being dropped. Optional.
+            being dropped.
         Possible exceptions: (ValueError, TypeError).
         """
 
@@ -369,25 +392,25 @@ class ViewProvider(FreeCAD.ExtensionContainer):
             Object to be dragged.
         """
 
-    def dropObject(self, obj: FreeCAD.DocumentObject, owner: FreeCAD.DocumentObject = None, subname: str = None, elem=None) -> str:
+    def dropObject(self, obj: FreeCAD.DocumentObject, owner=None, subname: str = None, elem=None) -> str:
         """
-        dropObject(obj, owner, subname, elem) -> str
+        dropObject(obj, owner=None, subname, elem=None) -> str
 
         Add a child object by dropping.
 
         obj : App.DocumentObject
             Object to be dropped.
-        owner : App.DocumentObject
-            Parent object of the dropping object. Optional.
+        owner : App.DocumentObject or None
+            Parent object of the dropping object.
         subname : str
             Subname reference to the dropping object. Optional.
-        elem : sequence of str
+        elem : sequence of str or None
             Non-objects subelements selected when the object is
-            being dropped. Optional.
+            being dropped.
         Possible exceptions: (TypeError).
         """
 
-    def getBoundingBox(self, subName: str = None, transform: bool = True, view=None, /) -> FreeCAD.BoundBox:
+    def getBoundingBox(self, subname: str = None, transform: bool = True, pyView=None, /) -> FreeCAD.BoundBox:
         """
         getBoundingBox(subName, transform=True, view) -> Base.BoundBox
 
@@ -401,7 +424,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
             Default to active view. Optional.
         """
 
-    def getDetailPath(self, subelement: str, path, append: bool = True, /) -> pivy.coin.SoDetail:
+    def getDetailPath(self, sub: str, path, append: bool = True, /) -> pivy.coin.SoDetail:
         """
         getDetailPath(subelement, path, append=True) -> coin.SoDetail or None
 
@@ -416,7 +439,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
             switch node of this view provider.
         """
 
-    def getElementColors(self, elementName: str = None, /) -> dict[str, tuple[float, float, float, float]]:
+    def getElementColors(self, element: str = None, /) -> dict[str, tuple[float, float, float, float]]:
         """
         getElementColors(elementName) -> dict
 
@@ -427,7 +450,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
             Name of the element. Optional.
         """
 
-    def getElementPicked(self, pickPoint, /) -> str:
+    def getElementPicked(self, obj, /) -> str:
         """
         getElementPicked(pickPoint) -> str
 
@@ -457,7 +480,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         Show a list of all display modes.
         """
 
-    def partialRender(self, sub=None, clear: bool = False, /) -> int:
+    def partialRender(self, value=None, clear: bool = False, /) -> int:
         """
         partialRender(sub=None, clear=False) -> int
 
@@ -469,7 +492,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
             True to add, or False to remove the subelement(s) for rendering.
         """
 
-    def removeProperty(self, name: str, /) -> bool:
+    def removeProperty(self, sName: str, /) -> bool:
         """
         removeProperty(name) -> bool
 
@@ -494,7 +517,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
             New object.
         """
 
-    def setElementColors(self, colors, /):
+    def setElementColors(self, pyObj, /):
         """
         setElementColors(colors) -> None
 
@@ -506,10 +529,10 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         """
 
     @typing.overload
-    def setTransformation(self, trans: FreeCAD.Matrix, /): ...
+    def setTransformation(self, p: FreeCAD.Matrix, /): ...
 
     @typing.overload
-    def setTransformation(self, trans: FreeCAD.Placement, /):
+    def setTransformation(self, p: FreeCAD.Placement, /):
         """
         setTransformation(trans) -> None
 
@@ -658,13 +681,13 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
 class ViewProviderExtension(FreeCAD.Extension):
     """Base class for all view provider extensions"""
 
-    def ignoreOverlayIcon(self, arg1: str, /) -> bool:
+    def ignoreOverlayIcon(self, name: str = None, /) -> bool:
         """
         Ignore the overlay icon of an extension
         Possible exceptions: (NameError).
         """
 
-    def setIgnoreOverlayIcon(self, arg1: bool, arg2: str, /):
+    def setIgnoreOverlayIcon(self, ignore: bool, name: str = None, /):
         """
         Ignore the overlay icon of an extension
         Possible exceptions: (NameError).
@@ -699,7 +722,7 @@ class Command(FreeCAD.PyObjectBase):
         """
 
     @staticmethod
-    def findCustomCommand(name: str, /) -> typing.Any | str:
+    def findCustomCommand(macroScriptName: str = None, /) -> typing.Any | str:
         """
         findCustomCommand(name) -> str or None
 
@@ -711,7 +734,7 @@ class Command(FreeCAD.PyObjectBase):
         """
 
     @staticmethod
-    def get(name: str, /) -> FreeCADGui.Command:
+    def get(pName: str, /) -> FreeCADGui.Command:
         """
         get(name) -> Gui.Command or None
 
@@ -758,7 +781,7 @@ class Command(FreeCAD.PyObjectBase):
         """
 
     @staticmethod
-    def listByShortcut(string: str, useRegExp: bool = False, /) -> list[str]:
+    def listByShortcut(string: str, bIsRegularExp: bool = False, /) -> list[str]:
         """
         listByShortcut(string, useRegExp=False) -> list of str
 
@@ -774,7 +797,7 @@ class Command(FreeCAD.PyObjectBase):
         """
 
     @staticmethod
-    def removeCustomCommand(name: str, /) -> bool:
+    def removeCustomCommand(actionName: str = None, /) -> bool:
         """
         removeCustomCommand(name) -> bool
 
@@ -805,7 +828,7 @@ class Command(FreeCAD.PyObjectBase):
             Item to be run.
         """
 
-    def setShortcut(self, string: str, /) -> bool:
+    def setShortcut(self, pShortcut: str, /) -> bool:
         """
         setShortcut(string) -> bool
 
@@ -825,7 +848,7 @@ class Command(FreeCAD.PyObjectBase):
 
 
 # PythonWorkbenchPy.xml
-class PythonWorkbench(FreeCADGui.Workbench):
+class PythonWorkbench(FreeCADGui.WorkbenchC):
     """This is the class for Python workbenches"""
 
     def AppendCommandbar(self):
@@ -861,40 +884,40 @@ class PythonWorkbench(FreeCADGui.Workbench):
     def RemoveToolbar(self):
         """deprecated -- use removeToolbar"""
 
-    def appendCommandbar(self, arg1: str, arg2, /):
+    def appendCommandbar(self, psToolBar: str, pObject, /):
         """
         Append a new command bar
         Possible exceptions: (AssertionError).
         """
 
-    def appendContextMenu(self, arg1, arg2, /):
+    def appendContextMenu(self, pPath, pItems, /):
         """
         Append a new context menu item
         Possible exceptions: (AssertionError).
         """
 
-    def appendMenu(self, arg1, arg2, /):
+    def appendMenu(self, pPath, pItems, /):
         """
         Append a new menu
         Possible exceptions: (AssertionError).
         """
 
-    def appendToolbar(self, arg1: str, arg2, /):
+    def appendToolbar(self, psToolBar: str, pObject, /):
         """
         Append a new toolbar
         Possible exceptions: (AssertionError).
         """
 
-    def removeCommandbar(self, arg1: str, /):
+    def removeCommandbar(self, psToolBar: str, /):
         """Remove a command bar"""
 
-    def removeContextMenu(self, arg1: str, /):
+    def removeContextMenu(self, psMenu: str, /):
         """Remove a context menu item"""
 
-    def removeMenu(self, arg1: str, /):
+    def removeMenu(self, psMenu: str, /):
         """Remove a menu"""
 
-    def removeToolbar(self, arg1: str, /):
+    def removeToolbar(self, psToolBar: str, /):
         """Remove a toolbar"""
 
 
@@ -951,7 +974,7 @@ class AxisOrigin(FreeCAD.BaseClass):
     def Scale(self) -> float:
         """Get/set auto scaling factor, 0 to disable."""
 
-    def getDetailPath(self, subname: str, path, /) -> pivy.coin.SoDetail:
+    def getDetailPath(self, sub: str, path, /) -> pivy.coin.SoDetail:
         """
         getDetailPath(subname, path) -> coin.SoDetail or None
 
@@ -965,7 +988,7 @@ class AxisOrigin(FreeCAD.BaseClass):
         Possible exceptions: (TypeError).
         """
 
-    def getElementPicked(self, pickedPoint, /) -> str:
+    def getElementPicked(self, obj, /) -> str:
         """
         getElementPicked(pickedPoint) -> str
 
@@ -1177,7 +1200,7 @@ class Document(FreeCAD.Persistence):
         The active view of the document. Deprecated, use ActiveView.
         """
 
-    def addAnnotation(self, annoName: str, fileName: str, modName: str = None, /):
+    def addAnnotation(self, psAnnoName: str, psFileName: str, psModName: str = None, /):
         """
         addAnnotation(annoName, fileName, modName) -> None
 
@@ -1198,7 +1221,7 @@ class Document(FreeCAD.Persistence):
         Returns the current object in edit mode or None if there is no such object.
         """
 
-    def getObject(self, objName: str, /) -> FreeCADGui.ViewProvider:
+    def getObject(self, sName: str, /) -> FreeCADGui.ViewProvider:
         """
         getObject(objName) -> object or None
 
@@ -1208,7 +1231,7 @@ class Document(FreeCAD.Persistence):
             Object name.
         """
 
-    def hide(self, objName: str, /):
+    def hide(self, psFeatStr: str, /):
         """
         hide(objName) -> None
 
@@ -1218,7 +1241,7 @@ class Document(FreeCAD.Persistence):
             Name of the `Gui.ViewProvider` to hide.
         """
 
-    def mdiViewsOfType(self, type: str, /) -> list[FreeCADGui.MDIViewPy]:
+    def mdiViewsOfType(self, sType: str, /) -> list[FreeCADGui.MDIViewPy]:
         """
         mdiViewsOfType(type) -> list of MDIView
 
@@ -1228,7 +1251,7 @@ class Document(FreeCAD.Persistence):
             Type name.
         """
 
-    def mergeProject(self, fileName: str, /):
+    def mergeProject(self, filename: str, /):
         """
         mergeProject(fileName) -> None
 
@@ -1245,7 +1268,7 @@ class Document(FreeCAD.Persistence):
         End the current editing.
         """
 
-    def scrollToTreeItem(self, obj: FreeCADGui.ViewProviderDocumentObject, /):
+    def scrollToTreeItem(self, view: FreeCADGui.ViewProviderDocumentObject, /):
         """
         scrollToTreeItem(obj) -> None
 
@@ -1264,10 +1287,10 @@ class Document(FreeCAD.Persistence):
         """
 
     @typing.overload
-    def setEdit(self, obj: str, mod: int = 0, subName: str = None, /) -> bool: ...
+    def setEdit(self, psFeatStr: str, mod: int = 0, subname: str = None, /) -> bool: ...
 
     @typing.overload
-    def setEdit(self, obj, mod: int = 0, subName: str = None, /) -> bool:
+    def setEdit(self, pyObj, mod: int = 0, subname: str = None, /) -> bool:
         """
         setEdit(obj, mod=0, subName) -> bool
 
@@ -1282,7 +1305,7 @@ class Document(FreeCAD.Persistence):
         Possible exceptions: (TypeError, ValueError).
         """
 
-    def setPos(self, objName: str, matrix: FreeCAD.Matrix, /):
+    def setPos(self, psFeatStr: str, pcMatObj: FreeCAD.Matrix, /):
         """
         setPos(objName, matrix) -> None
 
@@ -1295,7 +1318,7 @@ class Document(FreeCAD.Persistence):
             Transformation to apply on the object.
         """
 
-    def show(self, objName: str, /):
+    def show(self, psFeatStr: str, /):
         """
         show(objName) -> None
 
@@ -1305,7 +1328,7 @@ class Document(FreeCAD.Persistence):
             Name of the `Gui.ViewProvider` to show.
         """
 
-    def toggleInSceneGraph(self, obj: FreeCADGui.ViewProvider, /):
+    def toggleInSceneGraph(self, view: FreeCADGui.ViewProvider, /):
         """
         toggleInSceneGraph(obj) -> None
 
@@ -1315,7 +1338,7 @@ class Document(FreeCAD.Persistence):
         obj : Gui.ViewProvider
         """
 
-    def toggleTreeItem(self, obj: FreeCAD.DocumentObject, mod: int = 0, subName: str = None, /):
+    def toggleTreeItem(self, object: FreeCAD.DocumentObject, mod: int = 0, subname: str = None, /):
         """
         toggleTreeItem(obj, mod=0, subName) -> None
 
@@ -1372,19 +1395,19 @@ class MDIViewPy(qtpy.QtWidgets.QMainWindow):
         Possible exceptions: (Exception).
         """
 
-    def message(self, arg1: str, /) -> bool:
+    def message(self, psMsgStr: str, /) -> bool:
         """
         deprecated: use sendMessage
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def sendMessage(self, str: str, /) -> bool:
+    def sendMessage(self, psMsgStr: str, /) -> bool:
         """
         sendMessage(str)
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def supportMessage(self, str: str, /) -> bool:
+    def supportMessage(self, psMsgStr: str, /) -> bool:
         """
         supportMessage(str)
         Possible exceptions: (Exception, RuntimeError).
@@ -1396,7 +1419,7 @@ class MDIViewPy(qtpy.QtWidgets.QMainWindow):
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def setActiveObject(self, name: str, object=None, subname: str = None, /) -> None:
+    def setActiveObject(self, name: str, docObject=None, subname: str = None, /) -> None:
         """
         setActiveObject(name,object,subname=None)
         add or set a new active object
@@ -1415,7 +1438,7 @@ class MDIViewPy(qtpy.QtWidgets.QMainWindow):
 
 
 # Application.cpp
-def subgraphFromObject(object: FreeCAD.DocumentObject, /) -> typing.Any | None:
+def subgraphFromObject(o: FreeCAD.DocumentObject, /) -> typing.Any | None:
     """
     subgraphFromObject(object) -> Node
 
@@ -1424,7 +1447,7 @@ def subgraphFromObject(object: FreeCAD.DocumentObject, /) -> typing.Any | None:
     """
 
 
-def exportSubgraph(Node, File_or_Buffer, Format: str = 'VRML', /) -> None:
+def exportSubgraph(proxy, output, format: str = 'VRML', /) -> None:
     """
     exportSubgraph(Node, File or Buffer, [Format='VRML']) -> None
 
@@ -1446,7 +1469,7 @@ def getSoDBVersion() -> str:
 class View3DInventorPy:
     """Python binding class for the Inventor viewer class"""
 
-    def fitAll(self, arg1: float = None, /) -> None:
+    def fitAll(self, factor: float = 1.0, /) -> None:
         """
         fitAll()
         Possible exceptions: (Exception, RuntimeError).
@@ -1518,7 +1541,7 @@ class View3DInventorPy:
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def viewDefaultOrientation(self, ori_str: str = '', scale: float = -1.0, /) -> None:
+    def viewDefaultOrientation(self, view: str = '', scale: float = -1.0, /) -> None:
         """
         viewDefaultOrientation(ori_str = '', scale = -1.0): sets camera rotation to a predefined one, 
         and camera position and zoom to show certain amount of model space. 
@@ -1556,13 +1579,17 @@ class View3DInventorPy:
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def viewPosition(self, arg1: FreeCAD.Placement = None, arg2: int = None, arg3: int = None, /) -> FreeCAD.Placement | None:
+    def viewPosition(self, p: FreeCAD.Placement = None, steps: int = 20, ms: int = 30, /) -> FreeCAD.Placement | None:
         """
         viewPosition()
         Possible exceptions: (Exception).
         """
 
-    def startAnimating(self, arg1: float, arg2: float, arg3: float, arg4: float, /) -> None:
+    @typing.overload
+    def startAnimating(self): ...
+
+    @typing.overload
+    def startAnimating(self, x: float, y: float, z: float, velocity: float, /) -> None:
         """
         startAnimating()
         Possible exceptions: (Exception).
@@ -1574,7 +1601,11 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
-    def setAnimationEnabled(self, arg1: int, /) -> None:
+    @typing.overload
+    def setAnimationEnabled(self): ...
+
+    @typing.overload
+    def setAnimationEnabled(self, ok: int, /) -> None:
         """
         setAnimationEnabled()
         Possible exceptions: (Exception).
@@ -1586,7 +1617,11 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
-    def setPopupMenuEnabled(self, arg1: int, /) -> None:
+    @typing.overload
+    def setPopupMenuEnabled(self): ...
+
+    @typing.overload
+    def setPopupMenuEnabled(self, ok: int, /) -> None:
         """
         setPopupMenuEnabled()
         Possible exceptions: (Exception).
@@ -1604,17 +1639,17 @@ class View3DInventorPy:
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def dumpNode(self, node, /) -> str:
+    def dumpNode(self, object, /) -> str:
         """
         dumpNode(node)
         Possible exceptions: (Exception, RuntimeError).
         """
 
     @typing.overload
-    def setStereoType(self, arg1: int, /) -> None: ...
+    def setStereoType(self, stereomode: int = -1, /) -> None: ...
 
     @typing.overload
-    def setStereoType(self, arg1: str, /) -> None:
+    def setStereoType(self, modename: str, /) -> None:
         """
         setStereoType()
         Possible exceptions: (Exception, NameError, IndexError, RuntimeError).
@@ -1632,13 +1667,21 @@ class View3DInventorPy:
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def saveImage(self, arg1: str, arg2: int = None, arg3: int = None, arg4: str = None, arg5: str = None, arg6: int = None, /) -> None:
+    @typing.overload
+    def saveImage(self): ...
+
+    @typing.overload
+    def saveImage(self, cFileName: str, w: int = -1, h: int = -1, cColor: str = 'Current', cComment: str = '$MIBA', s: int = None, /) -> None:
         """
         saveImage()
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def saveVectorGraphic(self, arg1: str, arg2: int = None, arg3: str = None, /) -> None:
+    @typing.overload
+    def saveVectorGraphic(self): ...
+
+    @typing.overload
+    def saveVectorGraphic(self, filename: str, ps: int = 4, name: str = 'white', /) -> None:
         """
         saveVectorGraphic()
         Possible exceptions: (Exception, RuntimeError).
@@ -1664,7 +1707,7 @@ class View3DInventorPy:
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def setViewDirection(self, tuple, /) -> None:
+    def setViewDirection(self, object, /) -> None:
         """
         setViewDirection(tuple) --> None
         Sets the direction the view is pointing at. The direction must be given as tuple with
@@ -1672,13 +1715,21 @@ class View3DInventorPy:
         Possible exceptions: (Exception, ValueError, RuntimeError).
         """
 
-    def setCamera(self, arg1: str, /) -> None:
+    @typing.overload
+    def setCamera(self): ...
+
+    @typing.overload
+    def setCamera(self, buffer: str, /) -> None:
         """
         setCamera()
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def setCameraOrientation(self, arg1, arg2: bool = None, /) -> None:
+    @typing.overload
+    def setCameraOrientation(self): ...
+
+    @typing.overload
+    def setCameraOrientation(self, o, m: bool = False, /) -> None:
         """
         setCameraOrientation()
         Possible exceptions: (Exception, ValueError, RuntimeError).
@@ -1697,10 +1748,10 @@ class View3DInventorPy:
         """
 
     @typing.overload
-    def setCameraType(self, arg1: int, /) -> None: ...
+    def setCameraType(self, cameratype: int = -1, /) -> None: ...
 
     @typing.overload
-    def setCameraType(self, arg1: str, /) -> None:
+    def setCameraType(self, modename: str, /) -> None:
         """
         setCameraType()
         Possible exceptions: (Exception, NameError, IndexError).
@@ -1722,7 +1773,7 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
-    def getObjectInfo(self, tuple_int_int_, pick_radius: float = None, /) -> ReturnGetObjectInfoDict | None:
+    def getObjectInfo(self, object, r: float = None, /) -> ReturnGetObjectInfoDict | None:
         """
         getObjectInfo(tuple(int,int), [pick_radius]) -> dictionary or None
 
@@ -1734,7 +1785,7 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
-    def getObjectsInfo(self, tuple_int_int_, pick_radius: float = None, /) -> ReturnGetObjectsInfoDict | list[ReturnGetObjectsInfoDict] | None:
+    def getObjectsInfo(self, object, r: float = None, /) -> ReturnGetObjectsInfoDict | list[ReturnGetObjectsInfoDict] | None:
         """
         getObjectsInfo(tuple(int,int), [pick_radius]) -> dictionary or None
 
@@ -1749,13 +1800,17 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
-    def getPoint(self, arg1: int, arg2: int, /) -> FreeCAD.Vector:
+    def getPoint(self, x: int, y: int, /) -> FreeCAD.Vector:
         """
         Same as getPointOnFocalPlane
         Possible exceptions: (RuntimeError).
         """
 
-    def getPointOnFocalPlane(self, arg1: int, arg2: int, /) -> FreeCAD.Vector:
+    @typing.overload
+    def getPointOnFocalPlane(self, pixel_coords_as_integer_, /): ...
+
+    @typing.overload
+    def getPointOnFocalPlane(self, x: int, y: int, /) -> FreeCAD.Vector:
         """
         getPointOnFocalPlane(pixel coords (as integer)) -> 3D vector
 
@@ -1765,7 +1820,11 @@ class View3DInventorPy:
         Possible exceptions: (RuntimeError).
         """
 
-    def getPointOnScreen(self, arg1: FreeCAD.Vector, /) -> tuple[int, int]:
+    @typing.overload
+    def getPointOnScreen(self, v: FreeCAD.Vector, /) -> tuple[int, int]: ...
+
+    @typing.overload
+    def getPointOnScreen(self, vx: float, vy: float, vz: float, /) -> tuple[int, int]:
         """
         getPointOnScreen(3D vector) -> pixel coords (as integer)
 
@@ -1774,7 +1833,11 @@ class View3DInventorPy:
         Possible exceptions: (TypeError, RuntimeError).
         """
 
-    def projectPointToLine(self, arg1: int, arg2: int, /) -> tuple[FreeCAD.Vector, FreeCAD.Vector]:
+    @typing.overload
+    def projectPointToLine(self, pixel_coords_as_integer_, /): ...
+
+    @typing.overload
+    def projectPointToLine(self, x: int, y: int, /) -> tuple[FreeCAD.Vector, FreeCAD.Vector]:
         """
         projectPointToLine(pixel coords (as integer)) -> line defined by two points
 
@@ -1782,25 +1845,41 @@ class View3DInventorPy:
         Possible exceptions: (RuntimeError).
         """
 
-    def addEventCallback(self, arg1: str, arg2, /) -> typing.Callable:
+    @typing.overload
+    def addEventCallback(self): ...
+
+    @typing.overload
+    def addEventCallback(self, eventtype: str, method, /) -> typing.Callable:
         """
         addEventCallback()
         Possible exceptions: (Exception, TypeError).
         """
 
-    def removeEventCallback(self, arg1: str, arg2, /) -> None:
+    @typing.overload
+    def removeEventCallback(self): ...
+
+    @typing.overload
+    def removeEventCallback(self, eventtype: str, method, /) -> None:
         """
         removeEventCallback()
         Possible exceptions: (Exception, RuntimeError, TypeError).
         """
 
-    def setAnnotation(self, arg1: str, arg2: str, /) -> None:
+    @typing.overload
+    def setAnnotation(self): ...
+
+    @typing.overload
+    def setAnnotation(self, psAnnoName: str, psBuffer: str, /) -> None:
         """
         setAnnotation()
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def removeAnnotation(self, arg1: str, /) -> None:
+    @typing.overload
+    def removeAnnotation(self): ...
+
+    @typing.overload
+    def removeAnnotation(self, psAnnoName: str, /) -> None:
         """
         removeAnnotation()
         Possible exceptions: (Exception, KeyError).
@@ -1818,25 +1897,33 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
-    def addEventCallbackPivy(self, arg1, arg2, arg3: int = None, /) -> typing.Callable:
+    @typing.overload
+    def addEventCallbackPivy(self): ...
+
+    @typing.overload
+    def addEventCallbackPivy(self, proxy, method, ex: int = 1, /) -> typing.Callable:
         """
         addEventCallbackPivy()
         Possible exceptions: (Exception, RuntimeError, TypeError).
         """
 
-    def removeEventCallbackPivy(self, arg1, arg2, arg3: int = None, /) -> typing.Callable:
+    @typing.overload
+    def removeEventCallbackPivy(self): ...
+
+    @typing.overload
+    def removeEventCallbackPivy(self, proxy, method, ex: int = 1, /) -> typing.Callable:
         """
         removeEventCallbackPivy()
         Possible exceptions: (Exception, RuntimeError, TypeError).
         """
 
-    def addEventCallbackSWIG(self, arg1, arg2, arg3: int = None, /) -> typing.Callable:
+    def addEventCallbackSWIG(self, proxy, method, ex: int = 1, /) -> typing.Callable:
         """
         Deprecated -- use addEventCallbackPivy()
         Possible exceptions: (Exception, RuntimeError, TypeError).
         """
 
-    def removeEventCallbackSWIG(self, arg1, arg2, arg3: int = None, /) -> typing.Callable:
+    def removeEventCallbackSWIG(self, proxy, method, ex: int = 1, /) -> typing.Callable:
         """
         Deprecated -- use removeEventCallbackPivy()
         Possible exceptions: (Exception, RuntimeError, TypeError).
@@ -1848,13 +1935,17 @@ class View3DInventorPy:
     def getNavigationType(self) -> str:
         """getNavigationType()"""
 
-    def setNavigationType(self, arg1: str, /) -> None:
+    @typing.overload
+    def setNavigationType(self): ...
+
+    @typing.overload
+    def setNavigationType(self, style: str, /) -> None:
         """
         setNavigationType()
         Possible exceptions: (Exception).
         """
 
-    def setAxisCross(self, arg1: int, /) -> None:
+    def setAxisCross(self, ok: int, /) -> None:
         """
         switch the big axis-cross on and off
         Possible exceptions: (Exception).
@@ -1866,7 +1957,7 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
-    def addDraggerCallback(self, SoDragger, String_CallbackType: str, function, /) -> typing.Callable:
+    def addDraggerCallback(self, dragger, type: str, method, /) -> typing.Callable:
         """
         addDraggerCallback(SoDragger, String CallbackType, function)
         Add a DraggerCalback function to the coin node
@@ -1876,7 +1967,7 @@ class View3DInventorPy:
         Possible exceptions: (Exception, TypeError).
         """
 
-    def removeDraggerCallback(self, SoDragger, String_CallbackType: str, function, /) -> typing.Callable:
+    def removeDraggerCallback(self, dragger, type: str, method, /) -> typing.Callable:
         """
         removeDraggerCallback(SoDragger, String CallbackType, function)
         Remove the DraggerCalback function from the coin node
@@ -1886,7 +1977,7 @@ class View3DInventorPy:
         Possible exceptions: (Exception, TypeError).
         """
 
-    def setActiveObject(self, name: str, object=None, subname: str = None, /) -> None:
+    def setActiveObject(self, name: str, docObject=None, subname: str = None, /) -> None:
         """
         setActiveObject(name,object,subname=None)
         add or set a new active object
@@ -1913,7 +2004,7 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
-    def setName(self, str: str, /) -> None:
+    def setName(self, buffer: str, /) -> None:
         """
         setName(str): sets a name to this viewer
         The name sets the widget's windowTitle and appears on the viewer tab
@@ -1932,7 +2023,7 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
-    def setCornerCrossVisible(self, bool: int, /) -> None:
+    def setCornerCrossVisible(self, ok: int, /) -> None:
         """
         setCornerCrossVisible(bool): Defines corner axis cross visibility
         Possible exceptions: (Exception).
@@ -1944,7 +2035,7 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
-    def setCornerCrossSize(self, int: int, /) -> None:
+    def setCornerCrossSize(self, size: int = 0, /) -> None:
         """
         setCornerCrossSize(int): Defines corner axis cross size
         Possible exceptions: (Exception).
@@ -1959,13 +2050,17 @@ class View3DInventorPy:
     def cast_to_base(self):
         """cast_to_base() cast to MDIView class"""
 
+    @typing.overload
+    def boxZoom(self): ...
+
+    @typing.overload
     def boxZoom(self, XMin: int, YMin: int, XMax: int, YMax: int) -> None:
         """
         boxZoom()
         Possible exceptions: (Exception).
         """
 
-    def toggleClippingPlane(self, toggle: int = None, beforeEditing=None, noManip=None, pla: FreeCAD.Placement = None) -> None:
+    def toggleClippingPlane(self, toggle: int = -1, beforeEditing=False, noManip=True, pla: FreeCAD.Placement = None) -> None:
         """
         toggleClippingPlane(toggle=-1, beforeEditing=False, noManip=True, pla=App.Placement()
         Toggle a global clipping plane
@@ -1982,10 +2077,10 @@ class View3DInventorPy:
 class PyResource:
     """PyResource"""
 
-    def value(self, arg1: str, arg2: str, /) -> list | str | float | bool | int | None:
+    def value(self, psName: str, psProperty: str, /) -> list | str | float | bool | int | None:
         """Possible exceptions: (Exception)."""
 
-    def setValue(self, arg1: str, arg2: str, arg3, /) -> None:
+    def setValue(self, psName: str, psProperty: str, psValue, /) -> None:
         """Possible exceptions: (Exception, TypeError)."""
 
     def show(self) -> None: ...
@@ -2003,7 +2098,7 @@ class MainWindowPy(qtpy.QtWidgets.QMainWindow):
         Possible exceptions: (Exception).
         """
 
-    def getWindowsOfType(self, typeid: FreeCAD.TypeId, /) -> list[MDIViewPy]:
+    def getWindowsOfType(self, t: FreeCAD.TypeId, /) -> list[MDIViewPy]:
         """
         getWindowsOfType(typeid)
         Possible exceptions: (Exception).
@@ -2024,10 +2119,10 @@ class UiLoader:
     """UiLoader to create widgets"""
 
     @typing.overload
-    def load(self, string, QWidget_parent=None, /) -> qtpy.QtWidgets.QWidget | None: ...
+    def load(self, string, /, QWidget_parent=None) -> qtpy.QtWidgets.QWidget | None: ...
 
     @typing.overload
-    def load(self, QIODevice, QWidget_parent=None, /) -> qtpy.QtWidgets.QWidget | None:
+    def load(self, QIODevice, /, QWidget_parent=None) -> qtpy.QtWidgets.QWidget | None:
         """
         load(string, QWidget parent=None) -> QWidget
         load(QIODevice, QWidget parent=None) -> QWidget
@@ -2045,7 +2140,11 @@ class PythonStdout:
     def isatty(self) -> bool:
         """isatty()"""
 
-    def write(self, arg1: str, /) -> None:
+    @typing.overload
+    def write(self): ...
+
+    @typing.overload
+    def write(self, output: str, /) -> None:
         """
         write()
         Possible exceptions: (TypeError).
@@ -2061,7 +2160,11 @@ class PythonStderr:
     def isatty(self) -> bool:
         """isatty()"""
 
-    def write(self, arg1: str, /) -> None:
+    @typing.overload
+    def write(self): ...
+
+    @typing.overload
+    def write(self, output: str, /) -> None:
         """
         write()
         Possible exceptions: (TypeError).
@@ -2077,7 +2180,11 @@ class OutputStdout:
     def isatty(self) -> bool:
         """isatty()"""
 
-    def write(self, arg1: str, /) -> None:
+    @typing.overload
+    def write(self): ...
+
+    @typing.overload
+    def write(self, output: str, /) -> None:
         """
         write()
         Possible exceptions: (TypeError).
@@ -2093,7 +2200,11 @@ class OutputStderr:
     def isatty(self) -> bool:
         """isatty()"""
 
-    def write(self, arg1: str, /) -> None:
+    @typing.overload
+    def write(self): ...
+
+    @typing.overload
+    def write(self, output: str, /) -> None:
         """
         write()
         Possible exceptions: (TypeError).
@@ -2168,7 +2279,7 @@ class AbstractSplitViewPy:
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def getViewer(self, index: int, /) -> FreeCADGui.View3DInventorViewerPy:
+    def getViewer(self, viewIndex: int, /) -> FreeCADGui.View3DInventorViewerPy:
         """
         getViewer(index)
         Possible exceptions: (Exception, IndexError, RuntimeError).
@@ -2203,7 +2314,7 @@ class SelectionFilter:
     def result(self) -> list[tuple[FreeCADGui.SelectionObject, ...]]:
         """If match() returns True then with result() you get a list of the matching objects"""
 
-    def test(self, Feature: FreeCAD.DocumentObject, SubName: str = '', /) -> bool:
+    def test(self, pcObj: FreeCAD.DocumentObject, text: str = '', /) -> bool:
         """
         test(Feature, SubName='')
         Test if a given object is described in the filter.
@@ -2211,7 +2322,7 @@ class SelectionFilter:
         Possible exceptions: (Exception).
         """
 
-    def setFilter(self, arg1: str, /) -> None:
+    def setFilter(self, text: str = None, /) -> None:
         """
         Set a new selection filter
         Possible exceptions: (Exception, SyntaxError).
@@ -2222,7 +2333,7 @@ class SelectionFilter:
 class PythonDebugStdout:
     """Redirection of stdout to FreeCAD's Python debugger window"""
 
-    def write(self, arg1: str, /) -> None:
+    def write(self, msg: str, /) -> None:
         """
         write to stdout
         Possible exceptions: (Exception).
@@ -2235,7 +2346,7 @@ class PythonDebugStdout:
 class PythonDebugStderr:
     """Redirection of stderr to FreeCAD's Python debugger window"""
 
-    def write(self, arg1: str, /) -> None:
+    def write(self, msg: str, /) -> None:
         """
         write to stderr
         Possible exceptions: (Exception).
@@ -2253,7 +2364,7 @@ class PythonDebugExcept:
 
 
 # ApplicationPy.cpp
-def activateWorkbench(name: str, /) -> bool:
+def activateWorkbench(psKey: str, /) -> bool:
     """
     activateWorkbench(name) -> bool
 
@@ -2266,7 +2377,7 @@ def activateWorkbench(name: str, /) -> bool:
     """
 
 
-def addWorkbench(workbench, /):
+def addWorkbench(pcObject, /):
     """
     addWorkbench(workbench) -> None
 
@@ -2279,7 +2390,7 @@ def addWorkbench(workbench, /):
     """
 
 
-def removeWorkbench(name: str, /):
+def removeWorkbench(psKey: str, /):
     """
     removeWorkbench(name) -> None
 
@@ -2290,7 +2401,7 @@ def removeWorkbench(name: str, /):
     """
 
 
-def getWorkbench(name: str, /):
+def getWorkbench(psKey: str, /):
     """
     getWorkbench(name) -> Workbench
 
@@ -2318,7 +2429,7 @@ def activeWorkbench():
     """
 
 
-def addResourcePath(path: str, /):
+def addResourcePath(filePath: str, /):
     """
     addResourcePath(path) -> None
 
@@ -2330,7 +2441,7 @@ def addResourcePath(path: str, /):
     """
 
 
-def addLanguagePath(path: str, /):
+def addLanguagePath(filePath: str, /):
     """
     addLanguagePath(path) -> None
 
@@ -2341,7 +2452,7 @@ def addLanguagePath(path: str, /):
     """
 
 
-def addIconPath(path: str, /):
+def addIconPath(filePath: str, /):
     """
     addIconPath(path) -> None
 
@@ -2352,7 +2463,7 @@ def addIconPath(path: str, /):
     """
 
 
-def addIcon(name: str, content: str, format: str = 'XPM', /):
+def addIcon(iconName: str, content: str, format: str = 'XPM', /):
     """
     addIcon(name, content, format='XPM') -> None
 
@@ -2368,7 +2479,7 @@ def addIcon(name: str, content: str, format: str = 'XPM', /):
     """
 
 
-def getIcon(name: str, /) -> qtpy.QtGui.QIcon:
+def getIcon(iconName: str, /) -> qtpy.QtGui.QIcon:
     """
     getIcon(name) -> QIcon or None
 
@@ -2379,7 +2490,7 @@ def getIcon(name: str, /) -> qtpy.QtGui.QIcon:
     """
 
 
-def isIconCached(name: str, /) -> bool:
+def isIconCached(iconName: str, /) -> bool:
     """
     isIconCached(name) -> Bool
 
@@ -2443,7 +2554,7 @@ def supportedLocales() -> dict[str, str]:
     """
 
 
-def createDialog(path: str, /):
+def createDialog(fn: str = None, /):
     """
     createDialog(path) -> PyResource
 
@@ -2456,19 +2567,11 @@ def createDialog(path: str, /):
 
 
 @typing.overload
-def addPreferencePage(path: str, group: str, /): ...
+def addPreferencePage(fn: str, grp: str, /): ...
 
 
 @typing.overload
-def addPreferencePage(path: type, group: str, /): ...
-
-
-@typing.overload
-def addPreferencePage(dialog: str, group: str, /): ...
-
-
-@typing.overload
-def addPreferencePage(dialog: type, group: str, /):
+def addPreferencePage(dlg: type, grp: str, /):
     """
     addPreferencePage(path, group) -> None
     addPreferencePage(dialog, group) -> None
@@ -2485,7 +2588,7 @@ def addPreferencePage(dialog: type, group: str, /):
     """
 
 
-def addCommand(name: str, cmd, activation: str = None, /):
+def addCommand(pName: str, pcCmdObj, pSource: str = None, /):
     """
     addCommand(name, cmd, activation) -> None
 
@@ -2501,7 +2604,7 @@ def addCommand(name: str, cmd, activation: str = None, /):
     """
 
 
-def runCommand(name: str, index: int = 0, /):
+def runCommand(pName: str, item: int = 0, /):
     """
     runCommand(name, index=0) -> None
 
@@ -2514,7 +2617,7 @@ def runCommand(name: str, index: int = 0, /):
     """
 
 
-def SendMsgToActiveView(name: str, suppress: bool = False, /) -> str:
+def SendMsgToActiveView(psCommandStr: str, suppress: bool = False, /) -> str:
     """
     SendMsgToActiveView(name, suppress=False) -> str or None
 
@@ -2527,7 +2630,7 @@ def SendMsgToActiveView(name: str, suppress: bool = False, /) -> str:
     """
 
 
-def sendMsgToFocusView(name: str, suppress: bool = False, /) -> str:
+def sendMsgToFocusView(psCommandStr: str, suppress: bool = False, /) -> str:
     """
     sendMsgToFocusView(name, suppress=False) -> str or None
 
@@ -2540,7 +2643,7 @@ def sendMsgToFocusView(name: str, suppress: bool = False, /) -> str:
     """
 
 
-def hide(name: str, /):
+def hide(psFeatStr: str, /):
     """
     hide(name) -> None
 
@@ -2551,7 +2654,7 @@ def hide(name: str, /):
     """
 
 
-def show(name: str, /):
+def show(psFeatStr: str, /):
     """
     show(name) -> None
 
@@ -2562,7 +2665,7 @@ def show(name: str, /):
     """
 
 
-def hideObject(obj: FreeCAD.DocumentObject, /):
+def hideObject(object: FreeCAD.DocumentObject, /):
     """
     hideObject(obj) -> None
 
@@ -2572,7 +2675,7 @@ def hideObject(obj: FreeCAD.DocumentObject, /):
     """
 
 
-def showObject(obj: FreeCAD.DocumentObject, /):
+def showObject(object: FreeCAD.DocumentObject, /):
     """
     showObject(obj) -> None
 
@@ -2582,7 +2685,7 @@ def showObject(obj: FreeCAD.DocumentObject, /):
     """
 
 
-def open(fileName: str, /):
+def open(Name: str, /):
     """
     open(fileName) -> None
 
@@ -2593,7 +2696,7 @@ def open(fileName: str, /):
     """
 
 
-def insert(fileName: str, docName: str = None, /):
+def insert(Name: str, DocName: str = None, /):
     """
     insert(fileName, docName) -> None
 
@@ -2607,7 +2710,7 @@ def insert(fileName: str, docName: str = None, /):
     """
 
 
-def export(objs, fileName: str, /):
+def export(object, Name: str, /):
     """
     export(objs, fileName) -> None
 
@@ -2629,7 +2732,7 @@ def activeDocument() -> FreeCADGui.Document:
 
 
 @typing.overload
-def setActiveDocument(doc: str, /): ...
+def setActiveDocument(pstr: str = None, /): ...
 
 
 @typing.overload
@@ -2657,7 +2760,7 @@ def activeView(typeName: str = None, /) -> FreeCADGui.MDIViewPy:
     """
 
 
-def activateView(typeName: str, create: bool, /):
+def activateView(typeStr: str, create: bool = False, /):
     """
     activateView(typeName, create=False) -> None
 
@@ -2681,7 +2784,7 @@ def editDocument() -> FreeCADGui.Document:
 
 
 @typing.overload
-def getDocument(doc: str, /) -> FreeCADGui.Document: ...
+def getDocument(pstr: str = None, /) -> FreeCADGui.Document: ...
 
 
 @typing.overload
@@ -2697,7 +2800,7 @@ def getDocument(doc: FreeCAD.Document, /) -> FreeCADGui.Document:
     """
 
 
-def doCommand(cmd: str, /):
+def doCommand(sCmd: str = None, /):
     """
     doCommand(cmd) -> None
 
@@ -2707,7 +2810,7 @@ def doCommand(cmd: str, /):
     """
 
 
-def doCommandGui(cmd: str, /):
+def doCommandGui(sCmd: str = None, /):
     """
     doCommandGui(cmd) -> None
 
@@ -2718,7 +2821,7 @@ def doCommandGui(cmd: str, /):
     """
 
 
-def addModule(mod: str, /):
+def addModule(pstr: str, /):
     """
     addModule(mod) -> None
 
@@ -2737,7 +2840,7 @@ def showDownloads():
     """
 
 
-def showPreferences(grp: str = None, index: int = 0, /):
+def showPreferences(pstr: str = None, idx: int = 0, /):
     """
     showPreferences(grp, index=0) -> None
 
@@ -2750,7 +2853,7 @@ def showPreferences(grp: str = None, index: int = 0, /):
     """
 
 
-def createViewer(views: int = 1, name: str = None, /) -> typing.Any | FreeCADGui.AbstractSplitViewPy:
+def createViewer(views: int = 1, title: str = None, /) -> typing.Any | FreeCADGui.AbstractSplitViewPy:
     """
     createViewer(views=1, name) -> View3DInventorPy or AbstractSplitViewPy
 
@@ -2763,7 +2866,7 @@ def createViewer(views: int = 1, name: str = None, /) -> typing.Any | FreeCADGui
     """
 
 
-def getMarkerIndex(marker: str, size: int = 9, /) -> int:
+def getMarkerIndex(pstr: str, defSize: int = 9, /) -> int:
     """
     getMarkerIndex(marker, size=9) -> int
 
@@ -2776,7 +2879,7 @@ def getMarkerIndex(marker: str, size: int = 9, /) -> int:
     """
 
 
-def addDocumentObserver(obj, /):
+def addDocumentObserver(o, /):
     """
     addDocumentObserver(obj) -> None
 
@@ -2786,7 +2889,7 @@ def addDocumentObserver(obj, /):
     """
 
 
-def removeDocumentObserver(obj, /):
+def removeDocumentObserver(o, /):
     """
     removeDocumentObserver(obj) -> None
 
@@ -2812,7 +2915,7 @@ def getUserEditMode() -> str:
     """
 
 
-def setUserEditMode(mode: str, /) -> bool:
+def setUserEditMode(mode: str = '', /) -> bool:
     """
     setUserEditMode(mode) -> bool
 
@@ -2834,7 +2937,7 @@ def reload(name: str, /):
     """
 
 
-def loadFile(fileName: str, module: str = None, /):
+def loadFile(path: str, mod: str = '', /):
     """
     loadFile(fileName, module) -> None
 
@@ -2848,7 +2951,7 @@ def loadFile(fileName: str, module: str = None, /):
     """
 
 
-def coinRemoveAllChildren(node, /):
+def coinRemoveAllChildren(pynode, /):
     """
     coinRemoveAllChildren(node) -> None
 
@@ -2862,7 +2965,7 @@ def coinRemoveAllChildren(node, /):
 class ExpressionBinding:
     """Python interface class for ExpressionBinding"""
 
-    def bind(self, arg1: FreeCAD.DocumentObject, arg2: str, /) -> None:
+    def bind(self, py: FreeCAD.DocumentObject, str: str, /) -> None:
         """
         Bind with an expression
         Possible exceptions: (Exception, RuntimeError).
@@ -2874,7 +2977,7 @@ class ExpressionBinding:
         Possible exceptions: (Exception).
         """
 
-    def apply(self, arg1: str, /) -> bool:
+    def apply(self, str: str, /) -> bool:
         """
         apply
         Possible exceptions: (Exception).
@@ -2892,7 +2995,7 @@ class ExpressionBinding:
         Possible exceptions: (Exception).
         """
 
-    def setAutoApply(self, arg1: bool, /) -> None:
+    def setAutoApply(self, b: bool, /) -> None:
         """
         setAutoApply
         Possible exceptions: (Exception).
@@ -2929,13 +3032,13 @@ class View3DInventorViewerPy:
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def setSceneGraph(self, SoNode, /) -> None:
+    def setSceneGraph(self, proxy, /) -> None:
         """
         setSceneGraph(SoNode)
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def seekToPoint(self, tuple, /) -> None:
+    def seekToPoint(self, object, /) -> None:
         """
         seekToPoint(tuple) -> None
         Initiate a seek action towards the 3D intersection of the scene and the
@@ -2947,7 +3050,7 @@ class View3DInventorViewerPy:
         Possible exceptions: (Exception).
         """
 
-    def setFocalDistance(self, float: float, /) -> None:
+    def setFocalDistance(self, distance: float, /) -> None:
         """
         setFocalDistance(float) -> None
 
@@ -2961,7 +3064,7 @@ class View3DInventorViewerPy:
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def getPoint(self, arg1: int, arg2: int, /) -> FreeCAD.Vector:
+    def getPoint(self, x: int, y: int, /) -> FreeCAD.Vector:
         """
         Same as getPointOnFocalPlane
         Possible exceptions: (RuntimeError).
@@ -2979,13 +3082,13 @@ class View3DInventorViewerPy:
         Possible exceptions: (Exception).
         """
 
-    def setPickRadius(self, new_radius: float, /) -> None:
+    def setPickRadius(self, r: float = 0.0, /) -> None:
         """
         setPickRadius(new_radius): sets radius of confusion in pixels for picking objects on screen (selection).
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def setupEditingRoot(self, arg1=None, arg2: FreeCAD.Matrix = None, /) -> None:
+    def setupEditingRoot(self, pynode=None, pymat: FreeCAD.Matrix = None, /) -> None:
         """
         setupEditingRoot(matrix=None): setup the editing ViewProvider's root node.
         All child coin nodes of the current editing ViewProvider will be transferred to
@@ -3001,13 +3104,13 @@ class View3DInventorViewerPy:
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def setBackgroundColor(self, r: float, g: float, b: float, /) -> None:
+    def setBackgroundColor(self, r: float, g: float, b: float = 0.0, /) -> None:
         """
         setBackgroundColor(r,g,b): sets the background color of the current viewer.
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def setRedirectToSceneGraph(self, bool: bool, /) -> None:
+    def setRedirectToSceneGraph(self, m: bool = False, /) -> None:
         """
         setRedirectToSceneGraph(bool): enables or disables to redirect events directly to the scene graph.
         Possible exceptions: (Exception).
@@ -3019,7 +3122,7 @@ class View3DInventorViewerPy:
         Possible exceptions: (Exception).
         """
 
-    def setEnabledNaviCube(self, bool: bool, /) -> None:
+    def setEnabledNaviCube(self, m: bool = False, /) -> None:
         """
         setEnabledNaviCube(bool): enables or disables the navi cube of the viewer.
         Possible exceptions: (Exception).
@@ -3031,7 +3134,7 @@ class View3DInventorViewerPy:
         Possible exceptions: (Exception).
         """
 
-    def setNaviCubeCorner(self, int: int, /) -> None:
+    def setNaviCubeCorner(self, pos: int, /) -> None:
         """
         setNaviCubeCorner(int): sets the corner where to show the navi cube:
         0=top left, 1=top right, 2=bottom left, 3=bottom right
@@ -3040,7 +3143,7 @@ class View3DInventorViewerPy:
 
 
 # FreeCADGuiPy.cpp
-def showMainWindow(arg0: bool = None, /) -> None:
+def showMainWindow(inThread: bool = False, /) -> None:
     """
     showMainWindow() -- Show the main window
     If no main window does exist one gets created
@@ -3063,7 +3166,12 @@ def setupWithoutGUI() -> None:
     """
 
 
-def embedToWindow(arg0: str, /) -> None:
+@typing.overload
+def embedToWindow(): ...
+
+
+@typing.overload
+def embedToWindow(pointer: str, /) -> None:
     """
     embedToWindow() -- Embeds the main window into another window
 
