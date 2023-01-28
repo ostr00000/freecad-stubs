@@ -70,7 +70,7 @@ class Sheet(FreeCAD.DocumentObject):
     def get(self, address: str, address2: str = None, /) -> tuple[FreeCAD.Property, ...] | FreeCAD.Property:
         """Get evaluated cell contents"""
 
-    def getAlias(self, strAddress: str, /) -> str | None:
+    def getAlias(self, strAddress: str, /) -> str:
         """
         Get alias for cell address
         Possible exceptions: (ValueError).
@@ -88,7 +88,7 @@ class Sheet(FreeCAD.DocumentObject):
         Possible exceptions: (ValueError).
         """
 
-    def getCellFromAlias(self, alias: str, /) -> str | None:
+    def getCellFromAlias(self, alias: str, /) -> str:
         """
         Get cell address given an alias
         Possible exceptions: (ValueError).
@@ -118,6 +118,23 @@ class Sheet(FreeCAD.DocumentObject):
         Possible exceptions: (ValueError).
         """
 
+    def getNonEmptyCells(self) -> list[str]:
+        """
+        getNonEmptyCells()
+
+        Get a list of the names of all cells with data in them.
+        """
+
+    def getNonEmptyRange(self) -> tuple[str, str]:
+        """
+        getNonEmptyRange()
+
+        Get a the total range of the used cells in a sheet, as a pair of cell addresses
+        representing the lowest row and column that contain data, and the highest row and
+        column that contain data (inclusive). Note that the actual first and last cell
+        of the block do not necessarily contain anything.
+        """
+
     def getRowHeight(self, rowStr: str, /) -> int:
         """
         Get given spreadsheet row height
@@ -128,6 +145,24 @@ class Sheet(FreeCAD.DocumentObject):
         """
         Get style of the cell
         Possible exceptions: (ValueError).
+        """
+
+    def getUsedCells(self) -> list[str]:
+        """
+        getUsedCells()
+
+        Get a list of the names of all cells that are marked as used. These cells may
+        or may not have a non-empty string content.
+        """
+
+    def getUsedRange(self) -> tuple[str, str]:
+        """
+        getUsedRange()
+
+        Get a the total range of the used cells in a sheet, as a pair of strings
+        representing the lowest row and column that are used, and the highest row and
+        column that are used (inclusive). Note that the actual first and last cell
+        of the block are not necessarily used.
         """
 
     def importFile(self, filename: str, delimiter: str = '\t', quoteChar: str = '"', escapeChar: str = '\\', /) -> bool:

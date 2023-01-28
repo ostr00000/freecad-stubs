@@ -5,7 +5,7 @@ from xml.etree import ElementTree as ET
 
 from freecad_stub_gen.generators.common.doc_string import getDocFromNode
 from freecad_stub_gen.generators.common.gen_property.gen_base import BasePropertyGenerator
-from freecad_stub_gen.generators.common.names import getClassNameFromNode
+from freecad_stub_gen.generators.common.names import getClassNameFromNode, getModuleName
 from freecad_stub_gen.generators.common.return_type_converter.full import ReturnTypeConverter
 from freecad_stub_gen.generators.from_xml.base import BaseXmlGenerator
 from freecad_stub_gen.generators.from_xml.method import XmlMethodGenerator
@@ -32,11 +32,11 @@ class XmlPropertyGenerator(XmlMethodGenerator, BaseXmlGenerator, BasePropertyGen
 
     def _findTypeBasedOnXmlDeclaration(self, node: ET.Element):
         pythonType = None
-        if (parm := node.find('Parameter')) is not None:
-            xmlType = parm.attrib.get('Type')
+        if (param := node.find('Parameter')) is not None:
+            xmlType = param.attrib.get('Type')
             pythonType = xmlTypeToPythonType[xmlType]
-            if 'typing' in pythonType:
-                self.requiredImports.add('typing')
+            if mn := getModuleName(pythonType):
+                self.requiredImports.add(mn)
         return pythonType
 
     def _getExtendedTypeFromCode(self, pythonType: str, cFuncName: str) -> str:
@@ -123,4 +123,5 @@ xmlTypeToPythonType = {
     'Sequence': 'typing.Sequence',
     'String': 'str',
     'Tuple': 'tuple',
+    'Vector': 'FreeCAD.Vector',
 }

@@ -128,10 +128,13 @@ class ReturnTypeConverterBase:
                     bracketL='(', bracketR=')').removeprefix('(').removesuffix(')')
                 funArgs = list(generateExpressionUntilChar(
                     fc, 0, ',', bracketL='(', bracketR=')'))
-                assert len(funArgs) == 2
-                widgetType = funArgs[1].strip().removeprefix('"').removesuffix('"')
-                if not widgetType.startswith('Q'):
+                if len(funArgs) == 1:
                     widgetType = 'QWidget'
+                else:
+                    assert len(funArgs) == 2
+                    widgetType = funArgs[1].strip().removeprefix('"').removesuffix('"')
+                    if not widgetType.startswith('Q'):
+                        widgetType = 'QWidget'
                 return f'qtpy.QtWidgets.{widgetType}'
             case StrWrapper('wrap.fromQIcon('):
                 return 'qtpy.QtGui.QIcon'

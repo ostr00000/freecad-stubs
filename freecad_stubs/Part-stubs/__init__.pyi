@@ -1232,15 +1232,15 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
         """
         setAuxiliarySpine(wire, CurvilinearEquivalence, TypeOfContact)
         					Sets an auxiliary spine to define the Normal.
-					
+
         					CurvilinearEquivalence = bool
         					For each Point of the Spine P, an Point Q is evalued on AuxiliarySpine.
         					If CurvilinearEquivalence=True Q split AuxiliarySpine with the same length ratio than P split Spine.
-					
+
         					* OCC before 6.7
         					TypeOfContact = bool
         					True = keep Contact
-					
+
         					* OCC >= 6.7
         					TypeOfContact = long
         					0: No contact
@@ -1280,7 +1280,7 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
     def setMaxDegree(self, degree: int, /):
         """
         setMaxDegree(int degree)
-        					Define the maximum V degree of resulting surface. 
+        					Define the maximum V degree of resulting surface.
 				
         Possible exceptions: (Part.OCCError).
         """
@@ -1325,7 +1325,7 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
         """
         setTrihedronMode(point,direction)
         					Sets a fixed trihedron to perform the sweeping.
-        					All sections will be parallel. 
+        					All sections will be parallel.
 				
         Possible exceptions: (Part.OCCError).
         """
@@ -2594,87 +2594,87 @@ class BSplineCurve(PartModule.BoundedCurve):
     def approximate(self, Points, DegMax: int = 8, Continuity: str = 'C2', Tolerance: float = 0.001, DegMin: int = 3, ParamType: str = 'ChordLength', Parameters=None, LengthWeight: float = 0, CurvatureWeight: float = 0, TorsionWeight: float = 0) -> bool:
         """
         Replaces this B-Spline curve by approximating a set of points.
-        					The function accepts keywords as arguments.
+                            The function accepts keywords as arguments.
 
-        					approximate(Points = list_of_points)
+                            approximate(Points = list_of_points)
 
-        					Optional arguments :
+                            Optional arguments :
 
-        					DegMin = integer (3) : Minimum degree of the curve.
-        					DegMax = integer (8) : Maximum degree of the curve.
-        					Tolerance = float (1e-3) : approximating tolerance.
-        					Continuity = string ('C2') : Desired continuity of the curve.
-        					Possible values : 'C0','G1','C1','G2','C2','C3','CN'
+                            DegMin = integer (3) : Minimum degree of the curve.
+                            DegMax = integer (8) : Maximum degree of the curve.
+                            Tolerance = float (1e-3) : approximating tolerance.
+                            Continuity = string ('C2') : Desired continuity of the curve.
+                            Possible values : 'C0','G1','C1','G2','C2','C3','CN'
 
-        					LengthWeight = float, CurvatureWeight = float, TorsionWeight = float
-        					If one of these arguments is not null, the functions approximates the
-        					points using variational smoothing algorithm, which tries to minimize
-        					additional criterium:
-        					LengthWeight*CurveLength + CurvatureWeight*Curvature + TorsionWeight*Torsion
+                            LengthWeight = float, CurvatureWeight = float, TorsionWeight = float
+                            If one of these arguments is not null, the functions approximates the
+                            points using variational smoothing algorithm, which tries to minimize
+                            additional criterium:
+                            LengthWeight*CurveLength + CurvatureWeight*Curvature + TorsionWeight*Torsion
                                                 Continuity must be C0, C1(with DegMax >= 3) or C2(with DegMax >= 5).
 
-        					Parameters = list of floats : knot sequence of the approximated points.
-        					This argument is only used if the weights above are all null.
+                            Parameters = list of floats : knot sequence of the approximated points.
+                            This argument is only used if the weights above are all null.
 
-        					ParamType = string ('Uniform','Centripetal' or 'ChordLength')
-        					Parameterization type. Only used if weights and Parameters above aren't specified.
+                            ParamType = string ('Uniform','Centripetal' or 'ChordLength')
+                            Parameterization type. Only used if weights and Parameters above aren't specified.
 
-        					Note : Continuity of the spline defaults to C2. However, it may not be applied if
-        					it conflicts with other parameters ( especially DegMax ).
-				
+                            Note : Continuity of the spline defaults to C2. However, it may not be applied if
+                            it conflicts with other parameters ( especially DegMax ).
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def buildFromPoles(self, obj, periodic: bool = False, degree: int = 3, interpolate: bool = False, /):
         """
         Builds a B-Spline by a list of poles.
-        					arguments: poles (sequence of Base.Vector), [periodic (default is False), degree (default is 3), interpolate (default is False)]
+                            arguments: poles (sequence of Base.Vector), [periodic (default is False), degree (default is 3), interpolate (default is False)]
 
-        					Examples:
-        					from FreeCAD import Base
-        					import Part
-        					V = Base.Vector
-        					poles = [V(-2, 2, 0),V(0, 2, 1),V(2, 2, 0),V(2, -2, 0),V(0, -2, 1),V(-2, -2, 0)]
+                            Examples:
+                            from FreeCAD import Base
+                            import Part
+                            V = Base.Vector
+                            poles = [V(-2, 2, 0),V(0, 2, 1),V(2, 2, 0),V(2, -2, 0),V(0, -2, 1),V(-2, -2, 0)]
 
-        					# non-periodic spline
-        					n=Part.BSplineCurve()
-        					n.buildFromPoles(poles)
-        					Part.show(n.toShape())
+                            # non-periodic spline
+                            n=Part.BSplineCurve()
+                            n.buildFromPoles(poles)
+                            Part.show(n.toShape())
 
-        					# periodic spline
-        					n=Part.BSplineCurve()
-        					n.buildFromPoles(poles, True)
-        					Part.show(n.toShape())
-				
+                            # periodic spline
+                            n=Part.BSplineCurve()
+                            n.buildFromPoles(poles, True)
+                            Part.show(n.toShape())
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def buildFromPolesMultsKnots(self, poles=None, mults=None, knots=None, periodic: bool = False, degree: int = 3, weights=None, CheckRational: bool = True):
         """
         Builds a B-Spline by a lists of Poles, Mults, Knots.
-        				arguments: poles (sequence of Base.Vector), [mults , knots, periodic, degree, weights (sequence of float), CheckRational]
+                        arguments: poles (sequence of Base.Vector), [mults , knots, periodic, degree, weights (sequence of float), CheckRational]
 
-        				Examples:
-        				from FreeCAD import Base
-        				import Part
-        				V=Base.Vector
-        				poles=[V(-10,-10),V(10,-10),V(10,10),V(-10,10)]
+                        Examples:
+                        from FreeCAD import Base
+                        import Part
+                        V=Base.Vector
+                        poles=[V(-10,-10),V(10,-10),V(10,10),V(-10,10)]
 
-        				# non-periodic spline
-        				n=Part.BSplineCurve()
-        				n.buildFromPolesMultsKnots(poles,(3,1,3),(0,0.5,1),False,2)
-        				Part.show(n.toShape())
+                        # non-periodic spline
+                        n=Part.BSplineCurve()
+                        n.buildFromPolesMultsKnots(poles,(3,1,3),(0,0.5,1),False,2)
+                        Part.show(n.toShape())
 
-        				# periodic spline
-        				p=Part.BSplineCurve()
-        				p.buildFromPolesMultsKnots(poles,(1,1,1,1,1),(0,0.25,0.5,0.75,1),True,2)
-        				Part.show(p.toShape())
+                        # periodic spline
+                        p=Part.BSplineCurve()
+                        p.buildFromPolesMultsKnots(poles,(1,1,1,1,1),(0,0.25,0.5,0.75,1),True,2)
+                        Part.show(p.toShape())
 
-        				# periodic and rational spline
-        				r=Part.BSplineCurve()
-        				r.buildFromPolesMultsKnots(poles,(1,1,1,1,1),(0,0.25,0.5,0.75,1),True,2,(1,0.8,0.7,0.2))
-        				Part.show(r.toShape())
-			
+                        # periodic and rational spline
+                        r=Part.BSplineCurve()
+                        r.buildFromPolesMultsKnots(poles,(1,1,1,1,1),(0,0.25,0.5,0.75,1),True,2,(1,0.8,0.7,0.2))
+                        Part.show(r.toShape())
+            
         Possible exceptions: (Part.OCCError).
         """
 
@@ -2700,7 +2700,7 @@ class BSplineCurve(PartModule.BoundedCurve):
     def getMultiplicities(self) -> list[int]:
         """
         Returns the multiplicities table M of the knots of this B-Spline curve.
-				
+                
         Possible exceptions: (Part.OCCError).
         """
 
@@ -2763,94 +2763,94 @@ class BSplineCurve(PartModule.BoundedCurve):
     def increaseMultiplicity(self, start: int, end: int, mult: int = -1, /):
         """
         increaseMultiplicity(int index, int mult)
-        				increaseMultiplicity(int start, int end, int mult)
-        				Increases multiplicity of knots up to mult.
+                        increaseMultiplicity(int start, int end, int mult)
+                        Increases multiplicity of knots up to mult.
 
-        				index: the index of a knot to modify (1-based)
-        				start, end: index range of knots to modify.
-        				If mult is lower or equal to the current multiplicity nothing is done. If mult is higher than the degree the degree is used.
-				
+                        index: the index of a knot to modify (1-based)
+                        start, end: index range of knots to modify.
+                        If mult is lower or equal to the current multiplicity nothing is done. If mult is higher than the degree the degree is used.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def incrementMultiplicity(self, start: int, end: int, mult: int, /):
         """
         incrementMultiplicity(int start, int end, int mult)
-        				Raises multiplicity of knots by mult.
+                        Raises multiplicity of knots by mult.
 
-        				start, end: index range of knots to modify.
-				
+                        start, end: index range of knots to modify.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def insertKnot(self, U: float, M: int = 1, tol: float = 0.0, add: bool = True, /):
         """
         insertKnot(u, mult = 1, tol = 0.0)
-        				Inserts a knot value in the sequence of knots. If u is an existing knot the
-        				multiplicity is increased by mult. 
+                        Inserts a knot value in the sequence of knots. If u is an existing knot the
+                        multiplicity is increased by mult. 
         Possible exceptions: (Part.OCCError).
         """
 
     def insertKnots(self, obj1, obj2, tol: float = 0.0, add: bool = True, /):
         """
         insertKnots(list_of_floats, list_of_ints, tol = 0.0, bool_add = True)
-        				Inserts a set of knots values in the sequence of knots.
+                        Inserts a set of knots values in the sequence of knots.
 
-        				For each u = list_of_floats[i], mult = list_of_ints[i]
+                        For each u = list_of_floats[i], mult = list_of_ints[i]
 
-        				If u is an existing knot the multiplicity is increased by mult if bool_add is
-        				True, otherwise increased to mult.
+                        If u is an existing knot the multiplicity is increased by mult if bool_add is
+                        True, otherwise increased to mult.
 
-        				If u is not on the parameter range nothing is done.
+                        If u is not on the parameter range nothing is done.
 
-        				If the multiplicity is negative or null nothing is done. The new multiplicity
-        				is limited to the degree.
+                        If the multiplicity is negative or null nothing is done. The new multiplicity
+                        is limited to the degree.
 
-        				The tolerance criterion for knots equality is the max of Epsilon(U) and ParametricTolerance.
-				
+                        The tolerance criterion for knots equality is the max of Epsilon(U) and ParametricTolerance.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def interpolate(self, Points, PeriodicFlag: bool = False, Tolerance: float = None, InitialTangent: FreeCAD.Vector = None, FinalTangent: FreeCAD.Vector = None, Tangents=None, TangentFlags=None, Parameters=None, Scale: bool = True):
         """
         Replaces this B-Spline curve by interpolating a set of points.
-        					The function accepts keywords as arguments.
+                            The function accepts keywords as arguments.
 
-        					interpolate(Points = list_of_points)
+                            interpolate(Points = list_of_points)
 
-        					Optional arguments :
+                            Optional arguments :
 
-        					PeriodicFlag = bool (False) : Sets the curve closed or opened.
-        					Tolerance = float (1e-6) : interpolating tolerance
+                            PeriodicFlag = bool (False) : Sets the curve closed or opened.
+                            Tolerance = float (1e-6) : interpolating tolerance
 
-        					Parameters : knot sequence of the interpolated points.
-        					If not supplied, the function defaults to chord-length parameterization.
-        					If PeriodicFlag == True, one extra parameter must be appended.
+                            Parameters : knot sequence of the interpolated points.
+                            If not supplied, the function defaults to chord-length parameterization.
+                            If PeriodicFlag == True, one extra parameter must be appended.
 
-        					EndPoint Tangent constraints :
+                            EndPoint Tangent constraints :
 
-        					InitialTangent = vector, FinalTangent = vector
-        					specify tangent vectors for starting and ending points
-        					of the BSpline. Either none, or both must be specified.
+                            InitialTangent = vector, FinalTangent = vector
+                            specify tangent vectors for starting and ending points
+                            of the BSpline. Either none, or both must be specified.
 
-        					Full Tangent constraints :
+                            Full Tangent constraints :
 
-        					Tangents = list_of_vectors, TangentFlags = list_of_bools
-        					Both lists must have the same length as Points list.
-        					Tangents specifies the tangent vector of each point in Points list.
-        					TangentFlags (bool) activates or deactivates the corresponding tangent.
-        					These arguments will be ignored if EndPoint Tangents (above) are also defined.
+                            Tangents = list_of_vectors, TangentFlags = list_of_bools
+                            Both lists must have the same length as Points list.
+                            Tangents specifies the tangent vector of each point in Points list.
+                            TangentFlags (bool) activates or deactivates the corresponding tangent.
+                            These arguments will be ignored if EndPoint Tangents (above) are also defined.
 
-        					Note : Continuity of the spline defaults to C2. However, if periodic, or tangents
-        					are supplied, the continuity will drop to C1.
-				
+                            Note : Continuity of the spline defaults to C2. However, if periodic, or tangents
+                            are supplied, the continuity will drop to C1.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def isClosed(self) -> bool:
         """
         Returns true if the distance between the start point and end point of
-        					this B-Spline curve is less than or equal to gp::Resolution().
+                            this B-Spline curve is less than or equal to gp::Resolution().
         """
 
     def isPeriodic(self) -> bool:
@@ -2859,34 +2859,34 @@ class BSplineCurve(PartModule.BoundedCurve):
     def isRational(self) -> bool:
         """
         Returns true if this B-Spline curve is rational.
-        					A B-Spline curve is rational if, at the time of construction,
-        					the weight table has been initialized.
+                            A B-Spline curve is rational if, at the time of construction,
+                            the weight table has been initialized.
         """
 
     def join(self, c: PartModule.BSplineCurve, /) -> bool:
         """
         Build a new spline by joining this and a second spline.
-				
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def makeC1Continuous(self, tol: float = 1e-6, ang_tol: float = 1e-7, /):
         """
         makeC1Continuous(tol = 1e-6, ang_tol = 1e-7)
-        					Reduces as far as possible the multiplicities of the knots of this BSpline
-        					(keeping the geometry). It returns a new BSpline, which could still be C0.
-        					tol is a geometrical tolerance.
-        					The tol_ang is angular tolerance, in radians. It sets tolerable angle mismatch
-        					of the tangents on the left and on the right to decide if the curve is G1 or
-        					not at a given point.
-				
+                            Reduces as far as possible the multiplicities of the knots of this BSpline
+                            (keeping the geometry). It returns a new BSpline, which could still be C0.
+                            tol is a geometrical tolerance.
+                            The tol_ang is angular tolerance, in radians. It sets tolerable angle mismatch
+                            of the tangents on the left and on the right to decide if the curve is G1 or
+                            not at a given point.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def movePoint(self, U: float, pnt: FreeCAD.Vector, index1: int, index2: int, /) -> tuple[int, int]:
         """
         movePoint(U, P, Index1, Index2)
-        				Moves the point of parameter U of this B-Spline curve to P.
+                        Moves the point of parameter U of this B-Spline curve to P.
         Index1 and Index2 are the indexes in the table of poles of this B-Spline curve
         of the first and last poles designated to be moved.
 
@@ -2899,26 +2899,36 @@ class BSplineCurve(PartModule.BoundedCurve):
         """
         removeKnot(Index, M, tol)
 
-        					Reduces the multiplicity of the knot of index Index to M.
-        					If M is equal to 0, the knot is removed.
-        					With a modification of this type, the array of poles is also modified.
-        					Two different algorithms are systematically used to compute the new
-        					poles of the curve. If, for each pole, the distance between the pole
-        					calculated using the first algorithm and the same pole calculated using
-        					the second algorithm, is less than Tolerance, this ensures that the curve
-        					is not modified by more than Tolerance. Under these conditions, true is
-        					returned; otherwise, false is returned.
+                            Reduces the multiplicity of the knot of index Index to M.
+                            If M is equal to 0, the knot is removed.
+                            With a modification of this type, the array of poles is also modified.
+                            Two different algorithms are systematically used to compute the new
+                            poles of the curve. If, for each pole, the distance between the pole
+                            calculated using the first algorithm and the same pole calculated using
+                            the second algorithm, is less than Tolerance, this ensures that the curve
+                            is not modified by more than Tolerance. Under these conditions, true is
+                            returned; otherwise, false is returned.
 
-        					A low tolerance is used to prevent modification of the curve.
-        					A high tolerance is used to 'smooth' the curve.
-				
+                            A low tolerance is used to prevent modification of the curve.
+                            A high tolerance is used to 'smooth' the curve.
+                
+        Possible exceptions: (Part.OCCError).
+        """
+
+    def scaleKnotsToBounds(self, u0: float = 0.0, u1: float = 1.0, /):
+        """
+        Scales the knots list to fit the specified bounds.
+                            The shape of the curve is not modified.
+                            bspline_curve.scaleKnotsToBounds(u0, u1)
+                            Default arguments are (0.0, 1.0)
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def segment(self, u1: float, u2: float, /):
         """
         segment(u1,u2)
-        					Modifies this B-Spline curve by segmenting it.
+                            Modifies this B-Spline curve by segmenting it.
         Possible exceptions: (Part.OCCError).
         """
 
@@ -2971,15 +2981,15 @@ class BSplineCurve(PartModule.BoundedCurve):
     def toBezier(self) -> list[PartModule.BezierCurve]:
         """
         Build a list of Bezier splines.
-				
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def toBiArcs(self, tolerance: float = 0.001, /) -> list[PartModule.Geometry]:
         """
         Build a list of arcs and lines to approximate the B-spline.
-        					toBiArcs(tolerance) -> list.
-				
+                            toBiArcs(tolerance) -> list.
+                
         Possible exceptions: (Part.OCCError).
         """
 
@@ -3681,68 +3691,68 @@ class BSplineSurface(PartModule.GeometrySurface):
     def FirstUKnotIndex(self) -> int:
         """
         Returns the index in the knot array associated with the u parametric direction,
-        					which corresponds to the first parameter of this B-Spline surface in the specified
-        					parametric direction.
+                            which corresponds to the first parameter of this B-Spline surface in the specified
+                            parametric direction.
 
-        					The isoparametric curves corresponding to these values are the boundary curves of
-        					this surface.
+                            The isoparametric curves corresponding to these values are the boundary curves of
+                            this surface.
 
-        					Note: The index does not correspond to the first knot of the surface in the specified
-        					parametric direction unless the multiplicity of the first knot is equal to Degree + 1,
-        					where Degree is the degree of this surface in the corresponding parametric direction.
+                            Note: The index does not correspond to the first knot of the surface in the specified
+                            parametric direction unless the multiplicity of the first knot is equal to Degree + 1,
+                            where Degree is the degree of this surface in the corresponding parametric direction.
         """
 
     @property
     def FirstVKnotIndex(self) -> int:
         """
         Returns the index in the knot array associated with the v parametric direction,
-        					which corresponds to the first parameter of this B-Spline surface in the specified
-        					parametric direction.
+                            which corresponds to the first parameter of this B-Spline surface in the specified
+                            parametric direction.
 
-        					The isoparametric curves corresponding to these values are the boundary curves of
-        					this surface.
+                            The isoparametric curves corresponding to these values are the boundary curves of
+                            this surface.
 
-        					Note: The index does not correspond to the first knot of the surface in the specified
-        					parametric direction unless the multiplicity of the first knot is equal to Degree + 1,
-        					where Degree is the degree of this surface in the corresponding parametric direction.
+                            Note: The index does not correspond to the first knot of the surface in the specified
+                            parametric direction unless the multiplicity of the first knot is equal to Degree + 1,
+                            where Degree is the degree of this surface in the corresponding parametric direction.
         """
 
     @property
     def LastUKnotIndex(self) -> int:
         """
         Returns the index in the knot array associated with the u parametric direction,
-        					which corresponds to the last parameter of this B-Spline surface in the specified
-        					parametric direction.
+                            which corresponds to the last parameter of this B-Spline surface in the specified
+                            parametric direction.
 
-        					The isoparametric curves corresponding to these values are the boundary curves of
-        					this surface.
+                            The isoparametric curves corresponding to these values are the boundary curves of
+                            this surface.
 
-        					Note: The index does not correspond to the first knot of the surface in the specified
-        					parametric direction unless the multiplicity of the last knot is equal to Degree + 1,
-        					where Degree is the degree of this surface in the corresponding parametric direction.
+                            Note: The index does not correspond to the first knot of the surface in the specified
+                            parametric direction unless the multiplicity of the last knot is equal to Degree + 1,
+                            where Degree is the degree of this surface in the corresponding parametric direction.
         """
 
     @property
     def LastVKnotIndex(self) -> int:
         """
         Returns the index in the knot array associated with the v parametric direction,
-        					which corresponds to the last parameter of this B-Spline surface in the specified
-        					parametric direction.
+                            which corresponds to the last parameter of this B-Spline surface in the specified
+                            parametric direction.
 
-        					The isoparametric curves corresponding to these values are the boundary curves of
-        					this surface.
+                            The isoparametric curves corresponding to these values are the boundary curves of
+                            this surface.
 
-        					Note: The index does not correspond to the first knot of the surface in the specified
-        					parametric direction unless the multiplicity of the last knot is equal to Degree + 1,
-        					where Degree is the degree of this surface in the corresponding parametric direction.
+                            Note: The index does not correspond to the first knot of the surface in the specified
+                            parametric direction unless the multiplicity of the last knot is equal to Degree + 1,
+                            where Degree is the degree of this surface in the corresponding parametric direction.
         """
 
     @property
     def MaxDegree(self) -> int:
         """
         Returns the value of the maximum polynomial degree of any
-        					B-Spline surface surface in either parametric directions.
-        					This value is 25.
+                            B-Spline surface surface in either parametric directions.
+                            This value is 25.
         """
 
     @property
@@ -3769,7 +3779,7 @@ class BSplineSurface(PartModule.GeometrySurface):
     def UKnotSequence(self) -> list[float]:
         """
         Returns the knots sequence of this B-Spline surface in
-        						the u direction.
+                                the u direction.
         """
 
     @property
@@ -3780,29 +3790,29 @@ class BSplineSurface(PartModule.GeometrySurface):
     def VKnotSequence(self) -> list[float]:
         """
         Returns the knots sequence of this B-Spline surface in
-        					the v direction.
+                            the v direction.
         """
 
     def approximate(self, Points, DegMin: int = 3, DegMax: int = 8, Continuity: int = 2, Tolerance: float = None, X0: float = 0, dX: float = 0, Y0: float = 0, dY: float = 0, ParamType: str = 'None', LengthWeight: float = 1.0, CurvatureWeight: float = 1.0, TorsionWeight: float = 1.0):
         """
         Replaces this B-Spline surface by approximating a set of points.
-        					This method uses keywords :
-        					- Points = 2Darray of points (or floats, in combination with X0, dX, Y0, dY)
-        					- DegMin (int), DegMax (int)
-        					- Continuity = 0,1 or 2 (for C0, C1, C2)
-        					- Tolerance (float)
-        					- X0, dX, Y0, dY (floats) with Points = 2Darray of floats
-        					- ParamType = 'Uniform','Centripetal' or 'ChordLength'
-        					- LengthWeight, CurvatureWeight, TorsionWeight (floats)
-        					(with this smoothing algorithm, continuity C1 requires DegMax >= 3 and C2, DegMax >=5)
+                            This method uses keywords :
+                            - Points = 2Darray of points (or floats, in combination with X0, dX, Y0, dY)
+                            - DegMin (int), DegMax (int)
+                            - Continuity = 0,1 or 2 (for C0, C1, C2)
+                            - Tolerance (float)
+                            - X0, dX, Y0, dY (floats) with Points = 2Darray of floats
+                            - ParamType = 'Uniform','Centripetal' or 'ChordLength'
+                            - LengthWeight, CurvatureWeight, TorsionWeight (floats)
+                            (with this smoothing algorithm, continuity C1 requires DegMax >= 3 and C2, DegMax >=5)
 
-        					Possible combinations :
-        					- approximate(Points, DegMin, DegMax, Continuity, Tolerance)
-        					- approximate(Points, DegMin, DegMax, Continuity, Tolerance, X0, dX, Y0, dY)
-        					With explicit keywords :
-        					- approximate(Points, DegMin, DegMax, Continuity, Tolerance, ParamType)
-        					- approximate(Points, DegMax, Continuity, Tolerance, LengthWeight, CurvatureWeight, TorsionWeight)
-				
+                            Possible combinations :
+                            - approximate(Points, DegMin, DegMax, Continuity, Tolerance)
+                            - approximate(Points, DegMin, DegMax, Continuity, Tolerance, X0, dX, Y0, dY)
+                            With explicit keywords :
+                            - approximate(Points, DegMin, DegMax, Continuity, Tolerance, ParamType)
+                            - approximate(Points, DegMax, Continuity, Tolerance, LengthWeight, CurvatureWeight, TorsionWeight)
+                
         Possible exceptions: (Part.OCCError).
         """
 
@@ -3812,33 +3822,33 @@ class BSplineSurface(PartModule.GeometrySurface):
     def buildFromNSections(self, list, refSurf: bool = False, /):
         """
         Builds a B-Spline from a list of control curves
-				
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def buildFromPolesMultsKnots(self, poles=None, umults=None, vmults=None, uknots=None, vknots=None, uperiodic: bool = False, vperiodic: bool = False, udegree: int = 3, vdegree: int = 3, weights=None):
         """
         Builds a B-Spline by a lists of Poles, Mults and Knots
-        					arguments: poles (sequence of sequence of Base.Vector), umults, vmults, [uknots, vknots, uperiodic, vperiodic, udegree, vdegree, weights (sequence of sequence of float)]
-				
+                            arguments: poles (sequence of sequence of Base.Vector), umults, vmults, [uknots, vknots, uperiodic, vperiodic, udegree, vdegree, weights (sequence of sequence of float)]
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def exchangeUV(self):
         """
         Exchanges the u and v parametric directions on this B-Spline surface.
-        					As a consequence:
-        					-- the poles and weights tables are transposed,
-        					-- the knots and multiplicities tables are exchanged,
-        					-- degrees of continuity and rational, periodic and uniform
-        					   characteristics are exchanged and
-        					-- the orientation of the surface is reversed.
+                            As a consequence:
+                            -- the poles and weights tables are transposed,
+                            -- the knots and multiplicities tables are exchanged,
+                            -- degrees of continuity and rational, periodic and uniform
+                               characteristics are exchanged and
+                            -- the orientation of the surface is reversed.
         """
 
     def getPole(self, uindex: int, vindex: int, /) -> FreeCAD.Vector:
         """
         Returns the pole of index (UIndex,VIndex) of this B-Spline surface.
-				
+                
         Possible exceptions: (Part.OCCError).
         """
 
@@ -3857,84 +3867,84 @@ class BSplineSurface(PartModule.GeometrySurface):
     def getResolution(self, tol: float, /) -> tuple[float, float]:
         """
         Computes two tolerance values for this B-Spline surface, based on the
-        					given tolerance in 3D space Tolerance3D. The tolerances computed are:
-        					-- UTolerance in the u parametric direction and
-        					-- VTolerance in the v parametric direction.
+                            given tolerance in 3D space Tolerance3D. The tolerances computed are:
+                            -- UTolerance in the u parametric direction and
+                            -- VTolerance in the v parametric direction.
 
-        					If f(u,v) is the equation of this B-Spline surface, UTolerance and
-        					VTolerance guarantee that:
-        					|u1 - u0| < UTolerance
-        					|v1 - v0| < VTolerance
-        					====> ||f(u1, v1) - f(u2, v2)|| < Tolerance3D
-				
+                            If f(u,v) is the equation of this B-Spline surface, UTolerance and
+                            VTolerance guarantee that:
+                            |u1 - u0| < UTolerance
+                            |v1 - v0| < VTolerance
+                            ====> ||f(u1, v1) - f(u2, v2)|| < Tolerance3D
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def getUKnot(self, Index: int, /) -> float:
         """
         Returns, for this B-Spline surface, in the u parametric direction
-        					the knot of index UIndex of the knots table.
+                            the knot of index UIndex of the knots table.
         """
 
     def getUKnots(self) -> list[float]:
         """
         Returns, for this B-Spline surface, the knots table
-        					in the u parametric direction
-				
+                            in the u parametric direction
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def getUMultiplicities(self) -> list[int]:
         """
         Returns, for this B-Spline surface, the table of
-        					multiplicities in the u parametric direction
-				
+                            multiplicities in the u parametric direction
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def getUMultiplicity(self, index: int, /) -> int:
         """
         Returns, for this B-Spline surface, the multiplicity of
-        					the knot of index UIndex in the u parametric direction.
-				
+                            the knot of index UIndex in the u parametric direction.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def getVKnot(self, Index: int, /) -> float:
         """
         Returns, for this B-Spline surface, in the v parametric direction
-        					the knot of index VIndex of the knots table.
+                            the knot of index VIndex of the knots table.
         """
 
     def getVKnots(self) -> list[float]:
         """
         Returns, for this B-Spline surface, the knots table
-        					in the v parametric direction
-				
+                            in the v parametric direction
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def getVMultiplicities(self) -> list[int]:
         """
         Returns, for this B-Spline surface, the table of
-        					multiplicities in the v parametric direction
-				
+                            multiplicities in the v parametric direction
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def getVMultiplicity(self, index: int, /) -> int:
         """
         Returns, for this B-Spline surface, the multiplicity of
-        					the knot of index VIndex in the v parametric direction.
-				
+                            the knot of index VIndex in the v parametric direction.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def getWeight(self, uindex: int, vindex: int, /) -> float:
         """
         Return the weight of the pole of index (UIndex,VIndex)
-        					in the poles table for this B-Spline surface.
-				
+                            in the poles table for this B-Spline surface.
+                
         Possible exceptions: (Part.OCCError).
         """
 
@@ -3947,13 +3957,13 @@ class BSplineSurface(PartModule.GeometrySurface):
     def increaseDegree(self, udegree: int, vdegree: int, /):
         """
         increase(Int=UDegree, int=VDegree)
-        					Increases the degrees of this B-Spline surface to UDegree and VDegree
-        					in the u and v parametric directions respectively.
-        					As a result, the tables of poles, weights and multiplicities are modified.
-        					The tables of knots is not changed.
+                            Increases the degrees of this B-Spline surface to UDegree and VDegree
+                            in the u and v parametric directions respectively.
+                            As a result, the tables of poles, weights and multiplicities are modified.
+                            The tables of knots is not changed.
 
-        					Note: Nothing is done if the given degree is less than or equal to the
-        					current degree in the corresponding parametric direction.
+                            Note: Nothing is done if the given degree is less than or equal to the
+                            current degree in the corresponding parametric direction.
         """
 
     def increaseUMultiplicity(self, start: int, end: int, mult: int = -1, /):
@@ -4001,26 +4011,26 @@ class BSplineSurface(PartModule.GeometrySurface):
     def interpolate(self, obj, X0: float = 0, dX: float = 0, Y0: float = 0, dY: float = 0, /):
         """
         interpolate(points)
-        					interpolate(zpoints, X0, dX, Y0, dY)
+                            interpolate(zpoints, X0, dX, Y0, dY)
 
-        					Replaces this B-Spline surface by interpolating a set of points.
-        					The resulting surface is of degree 3 and continuity C2.
-        					Arguments:
-        					a 2 dimensional array of vectors, that the surface passes through
-        					or
-        					a 2 dimensional array of floats with the z values,
-        					the x starting point X0 (float),
-        					the x increment dX (float),
-        					the y starting point Y0 and increment dY
-				
+                            Replaces this B-Spline surface by interpolating a set of points.
+                            The resulting surface is of degree 3 and continuity C2.
+                            Arguments:
+                            a 2 dimensional array of vectors, that the surface passes through
+                            or
+                            a 2 dimensional array of floats with the z values,
+                            the x starting point X0 (float),
+                            the x increment dX (float),
+                            the y starting point Y0 and increment dY
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def isUClosed(self) -> bool:
         """
         Checks if this surface is closed in the u parametric direction.
-        					Returns true if, in the table of poles the first row and the last
-        					row are identical.
+                            Returns true if, in the table of poles the first row and the last
+                            row are identical.
         """
 
     def isUPeriodic(self) -> bool:
@@ -4029,16 +4039,16 @@ class BSplineSurface(PartModule.GeometrySurface):
     def isURational(self) -> bool:
         """
         Returns false if the equation of this B-Spline surface is polynomial
-        					(e.g. non-rational) in the u or v parametric direction.
-        					In other words, returns false if for each row of poles, the associated
-        					weights are identical
+                            (e.g. non-rational) in the u or v parametric direction.
+                            In other words, returns false if for each row of poles, the associated
+                            weights are identical
         """
 
     def isVClosed(self) -> bool:
         """
         Checks if this surface is closed in the v parametric direction.
-        					Returns true if, in the table of poles the first column and the
-        					last column are identical.
+                            Returns true if, in the table of poles the first column and the
+                            last column are identical.
         """
 
     def isVPeriodic(self) -> bool:
@@ -4047,64 +4057,64 @@ class BSplineSurface(PartModule.GeometrySurface):
     def isVRational(self) -> bool:
         """
         Returns false if the equation of this B-Spline surface is polynomial
-        					(e.g. non-rational) in the u or v parametric direction.
-        					In other words, returns false if for each column of poles, the associated
-        					weights are identical
+                            (e.g. non-rational) in the u or v parametric direction.
+                            In other words, returns false if for each column of poles, the associated
+                            weights are identical
         """
 
     def movePoint(self, U: float, V: float, pnt: FreeCAD.Vector, uindex1: int, uindex2: int, vindex1: int, vindex2: int, /) -> tuple[int, int, int, int]:
         """
         Moves the point of parameters (U, V) of this B-Spline surface to P.
-        					UIndex1, UIndex2, VIndex1 and VIndex2 are the indexes in the poles
-        					table of this B-Spline surface, of the first and last poles which
-        					can be moved in each parametric direction.
-        					The returned indexes UFirstIndex, ULastIndex, VFirstIndex and
-        					VLastIndex are the indexes of the first and last poles effectively
-        					modified in each parametric direction.
-        					In the event of incompatibility between UIndex1, UIndex2, VIndex1,
-        					VIndex2 and the values U and V:
-        					-- no change is made to this B-Spline surface, and
-        					-- UFirstIndex, ULastIndex, VFirstIndex and VLastIndex are set to
-        					   null.
-				
+                            UIndex1, UIndex2, VIndex1 and VIndex2 are the indexes in the poles
+                            table of this B-Spline surface, of the first and last poles which
+                            can be moved in each parametric direction.
+                            The returned indexes UFirstIndex, ULastIndex, VFirstIndex and
+                            VLastIndex are the indexes of the first and last poles effectively
+                            modified in each parametric direction.
+                            In the event of incompatibility between UIndex1, UIndex2, VIndex1,
+                            VIndex2 and the values U and V:
+                            -- no change is made to this B-Spline surface, and
+                            -- UFirstIndex, ULastIndex, VFirstIndex and VLastIndex are set to
+                               null.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def removeUKnot(self, Index: int, M: int, tol: float, /) -> bool:
         """
         Reduces to M the multiplicity of the knot of index Index in the given
-        				parametric direction. If M is 0, the knot is removed.
-        				With a modification of this type, the table of poles is also modified.
-        				Two different algorithms are used systematically to compute the new
-        				poles of the surface. For each pole, the distance between the pole
-        				calculated using the first algorithm and the same pole calculated using
-        				the second algorithm, is checked. If this distance is less than Tolerance
-        				it ensures that the surface is not modified by more than Tolerance.
-        				Under these conditions, the function returns true; otherwise, it returns
-        				false.
+                        parametric direction. If M is 0, the knot is removed.
+                        With a modification of this type, the table of poles is also modified.
+                        Two different algorithms are used systematically to compute the new
+                        poles of the surface. For each pole, the distance between the pole
+                        calculated using the first algorithm and the same pole calculated using
+                        the second algorithm, is checked. If this distance is less than Tolerance
+                        it ensures that the surface is not modified by more than Tolerance.
+                        Under these conditions, the function returns true; otherwise, it returns
+                        false.
 
-        				A low tolerance prevents modification of the surface. A high tolerance
-        				'smoothes' the surface.
-				
+                        A low tolerance prevents modification of the surface. A high tolerance
+                        'smoothes' the surface.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def removeVKnot(self, Index: int, M: int, tol: float, /) -> bool:
         """
         Reduces to M the multiplicity of the knot of index Index in the given
-        				parametric direction. If M is 0, the knot is removed.
-        				With a modification of this type, the table of poles is also modified.
-        				Two different algorithms are used systematically to compute the new
-        				poles of the surface. For each pole, the distance between the pole
-        				calculated using the first algorithm and the same pole calculated using
-        				the second algorithm, is checked. If this distance is less than Tolerance
-        				it ensures that the surface is not modified by more than Tolerance.
-        				Under these conditions, the function returns true; otherwise, it returns
-        				false.
+                        parametric direction. If M is 0, the knot is removed.
+                        With a modification of this type, the table of poles is also modified.
+                        Two different algorithms are used systematically to compute the new
+                        poles of the surface. For each pole, the distance between the pole
+                        calculated using the first algorithm and the same pole calculated using
+                        the second algorithm, is checked. If this distance is less than Tolerance
+                        it ensures that the surface is not modified by more than Tolerance.
+                        Under these conditions, the function returns true; otherwise, it returns
+                        false.
 
-        				A low tolerance prevents modification of the surface. A high tolerance
-        				'smoothes' the surface.
-				
+                        A low tolerance prevents modification of the surface. A high tolerance
+                        'smoothes' the surface.
+                
         Possible exceptions: (Part.OCCError).
         """
 
@@ -4114,230 +4124,230 @@ class BSplineSurface(PartModule.GeometrySurface):
         Possible exceptions: (Part.OCCError).
         """
 
-    def segment(self, u1: float, u2: float, v1: float, v2: float, /):
+    def scaleKnotsToBounds(self, u0: float = 0.0, u1: float = 1.0, v0: float = 0.0, v1: float = 1.0, /):
         """
-        Modifies this B-Spline surface by segmenting it between U1 and U2 in the
-        					u parametric direction and between V1 and V2 in the v parametric direction.
-        					Any of these values can be outside the bounds of this surface, but U2 must
-        					be greater than U1 and V2 must be greater than V1.
-
-        					All the data structure tables of this B-Spline surface are modified but the
-        					knots located between U1 and U2 in the u parametric direction, and between
-        					V1 and V2 in the v parametric direction are retained.
-        					The degree of the surface in each parametric direction is not modified.
-				
+        Scales the U and V knots lists to fit the specified bounds.
+                            The shape of the surface is not modified.
+                            bspline_surf.scaleKnotsToBounds(u0, u1, v0, v1)
+                            Default arguments are 0.0, 1.0, 0.0, 1.0
+                
         Possible exceptions: (Part.OCCError).
         """
 
-    def setBounds(self, u0: float = 0.0, u1: float = 1.0, v0: float = 0.0, v1: float = 1.0, /):
+    def segment(self, u1: float, u2: float, v1: float, v2: float, /):
         """
-        Changes the U and V parametric bounds of the surface.
-        					The geometry is not modified.
-        					bspline_surf.setBounds(u0, u1, v0, v1)
-        					Default arguments are 0.0, 1.0, 0.0, 1.0
-				
+        Modifies this B-Spline surface by segmenting it between U1 and U2 in the
+                            u parametric direction and between V1 and V2 in the v parametric direction.
+                            Any of these values can be outside the bounds of this surface, but U2 must
+                            be greater than U1 and V2 must be greater than V1.
+
+                            All the data structure tables of this B-Spline surface are modified but the
+                            knots located between U1 and U2 in the u parametric direction, and between
+                            V1 and V2 in the v parametric direction are retained.
+                            The degree of the surface in each parametric direction is not modified.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def setPole(self, uindex: int, vindex: int, p: FreeCAD.Vector, weight: float = -1.0, /):
         """
         Modifies this B-Spline surface by assigning P to the pole of
-        					index (UIndex, VIndex) in the poles table.
-        					The second syntax allows you also to change the weight of the
-        					modified pole. The weight is set to Weight. This syntax must
-        					only be used for rational surfaces.
-        					Modifies this B-Spline curve by assigning P to the pole of
-        					index Index in the poles table.
-				
+                            index (UIndex, VIndex) in the poles table.
+                            The second syntax allows you also to change the weight of the
+                            modified pole. The weight is set to Weight. This syntax must
+                            only be used for rational surfaces.
+                            Modifies this B-Spline curve by assigning P to the pole of
+                            index Index in the poles table.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def setPoleCol(self, vindex: int, obj, obj2=None, /):
         """
         Modifies this B-Spline surface by assigning values to all or part
-        					of the column of poles of index VIndex, of this B-Spline surface.
-        					You can also change the weights of the modified poles. The weights
-        					are set to the corresponding values of CPoleWeights.
-        					These syntaxes must only be used for rational surfaces.
-				
+                            of the column of poles of index VIndex, of this B-Spline surface.
+                            You can also change the weights of the modified poles. The weights
+                            are set to the corresponding values of CPoleWeights.
+                            These syntaxes must only be used for rational surfaces.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def setPoleRow(self, uindex: int, obj, obj2=None, /):
         """
         Modifies this B-Spline surface by assigning values to all or part
-        					of the row of poles of index VIndex, of this B-Spline surface.
-        					You can also change the weights of the modified poles. The weights
-        					are set to the corresponding values of CPoleWeights.
-        					These syntaxes must only be used for rational surfaces.
-				
+                            of the row of poles of index VIndex, of this B-Spline surface.
+                            You can also change the weights of the modified poles. The weights
+                            are set to the corresponding values of CPoleWeights.
+                            These syntaxes must only be used for rational surfaces.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def setUKnot(self, Index: int, K: float, M: int = -1, /):
         """
         Modifies this B-Spline surface by assigning the value K to the knot of index
-        					UIndex of the knots table corresponding to the u parametric direction.
-        					This modification remains relatively local, since K must lie between the values
-        					of the knots which frame the modified knot.
+                            UIndex of the knots table corresponding to the u parametric direction.
+                            This modification remains relatively local, since K must lie between the values
+                            of the knots which frame the modified knot.
 
-        					You can also increase the multiplicity of the modified knot to M. Note however
-        					that it is not possible to decrease the multiplicity of a knot with this function.
+                            You can also increase the multiplicity of the modified knot to M. Note however
+                            that it is not possible to decrease the multiplicity of a knot with this function.
         """
 
     def setUKnots(self, obj, /):
         """
         Changes all knots of this B-Spline surface in the u parametric
-        					direction. The multiplicity of the knots is not modified.
-				
+                            direction. The multiplicity of the knots is not modified.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def setUNotPeriodic(self):
         """
         Changes this B-Spline surface into a non-periodic one in the u parametric direction.
-        					If this B-Spline surface is already non-periodic in the given parametric direction,
-        					it is not modified.
-        					If this B-Spline surface is periodic in the given parametric direction, the boundaries
-        					of the surface are not given by the first and last rows (or columns) of poles (because
-        					the multiplicity of the first knot and of the last knot in the given parametric direction
-        					are not modified, nor are they equal to Degree+1, where Degree is the degree of this
-        					B-Spline surface in the given parametric direction). Only the function Segment ensures
-        					this property.
+                            If this B-Spline surface is already non-periodic in the given parametric direction,
+                            it is not modified.
+                            If this B-Spline surface is periodic in the given parametric direction, the boundaries
+                            of the surface are not given by the first and last rows (or columns) of poles (because
+                            the multiplicity of the first knot and of the last knot in the given parametric direction
+                            are not modified, nor are they equal to Degree+1, where Degree is the degree of this
+                            B-Spline surface in the given parametric direction). Only the function Segment ensures
+                            this property.
 
-        					Note: the poles and knots tables are modified.
-				
+                            Note: the poles and knots tables are modified.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def setUOrigin(self, index: int, /):
         """
         Assigns the knot of index Index in the knots table
-        					in the u parametric direction to be the origin of
-        					this periodic B-Spline surface. As a consequence,
-        					the knots and poles tables are modified.
-				
+                            in the u parametric direction to be the origin of
+                            this periodic B-Spline surface. As a consequence,
+                            the knots and poles tables are modified.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def setUPeriodic(self):
         """
         Modifies this surface to be periodic in the u parametric direction.
-        					To become periodic in a given parametric direction a surface must
-        					be closed in that parametric direction, and the knot sequence relative
-        					to that direction must be periodic.
-        					To generate this periodic sequence of knots, the functions FirstUKnotIndex
-        					and LastUKnotIndex are used to compute I1 and I2. These are the indexes,
-        					in the knot array associated with the given parametric direction, of the
-        					knots that correspond to the first and last parameters of this B-Spline
-        					surface in the given parametric direction. Hence the period is:
+                            To become periodic in a given parametric direction a surface must
+                            be closed in that parametric direction, and the knot sequence relative
+                            to that direction must be periodic.
+                            To generate this periodic sequence of knots, the functions FirstUKnotIndex
+                            and LastUKnotIndex are used to compute I1 and I2. These are the indexes,
+                            in the knot array associated with the given parametric direction, of the
+                            knots that correspond to the first and last parameters of this B-Spline
+                            surface in the given parametric direction. Hence the period is:
 
-        					Knots(I1) - Knots(I2)
+                            Knots(I1) - Knots(I2)
 
-        					As a result, the knots and poles tables are modified.
-				
+                            As a result, the knots and poles tables are modified.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def setVKnot(self, Index: int, K: float, M: int = -1, /):
         """
         Modifies this B-Spline surface by assigning the value K to the knot of index
-        					VIndex of the knots table corresponding to the v parametric direction.
-        					This modification remains relatively local, since K must lie between the values
-        					of the knots which frame the modified knot.
+                            VIndex of the knots table corresponding to the v parametric direction.
+                            This modification remains relatively local, since K must lie between the values
+                            of the knots which frame the modified knot.
 
-        					You can also increase the multiplicity of the modified knot to M. Note however
-        					that it is not possible to decrease the multiplicity of a knot with this function.
+                            You can also increase the multiplicity of the modified knot to M. Note however
+                            that it is not possible to decrease the multiplicity of a knot with this function.
         """
 
     def setVKnots(self, obj, /):
         """
         Changes all knots of this B-Spline surface in the v parametric
-        					direction. The multiplicity of the knots is not modified.
-				
+                            direction. The multiplicity of the knots is not modified.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def setVNotPeriodic(self):
         """
         Changes this B-Spline surface into a non-periodic one in the v parametric direction.
-        					If this B-Spline surface is already non-periodic in the given parametric direction,
-        					it is not modified.
-        					If this B-Spline surface is periodic in the given parametric direction, the boundaries
-        					of the surface are not given by the first and last rows (or columns) of poles (because
-        					the multiplicity of the first knot and of the last knot in the given parametric direction
-        					are not modified, nor are they equal to Degree+1, where Degree is the degree of this
-        					B-Spline surface in the given parametric direction). Only the function Segment ensures
-        					this property.
+                            If this B-Spline surface is already non-periodic in the given parametric direction,
+                            it is not modified.
+                            If this B-Spline surface is periodic in the given parametric direction, the boundaries
+                            of the surface are not given by the first and last rows (or columns) of poles (because
+                            the multiplicity of the first knot and of the last knot in the given parametric direction
+                            are not modified, nor are they equal to Degree+1, where Degree is the degree of this
+                            B-Spline surface in the given parametric direction). Only the function Segment ensures
+                            this property.
 
-        					Note: the poles and knots tables are modified.
-				
+                            Note: the poles and knots tables are modified.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def setVOrigin(self, index: int, /):
         """
         Assigns the knot of index Index in the knots table
-        					in the v parametric direction to be the origin of
-        					this periodic B-Spline surface. As a consequence,
-        					the knots and poles tables are modified.
-				
+                            in the v parametric direction to be the origin of
+                            this periodic B-Spline surface. As a consequence,
+                            the knots and poles tables are modified.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def setVPeriodic(self):
         """
         Modifies this surface to be periodic in the v parametric direction.
-        					To become periodic in a given parametric direction a surface must
-        					be closed in that parametric direction, and the knot sequence relative
-        					to that direction must be periodic.
-        					To generate this periodic sequence of knots, the functions FirstUKnotIndex
-        					and LastUKnotIndex are used to compute I1 and I2. These are the indexes,
-        					in the knot array associated with the given parametric direction, of the
-        					knots that correspond to the first and last parameters of this B-Spline
-        					surface in the given parametric direction. Hence the period is:
+                            To become periodic in a given parametric direction a surface must
+                            be closed in that parametric direction, and the knot sequence relative
+                            to that direction must be periodic.
+                            To generate this periodic sequence of knots, the functions FirstUKnotIndex
+                            and LastUKnotIndex are used to compute I1 and I2. These are the indexes,
+                            in the knot array associated with the given parametric direction, of the
+                            knots that correspond to the first and last parameters of this B-Spline
+                            surface in the given parametric direction. Hence the period is:
 
-        					Knots(I1) - Knots(I2)
+                            Knots(I1) - Knots(I2)
 
-        					As a result, the knots and poles tables are modified.
-				
+                            As a result, the knots and poles tables are modified.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def setWeight(self, uindex: int, vindex: int, weight: float, /):
         """
         Modifies this B-Spline surface by assigning the value Weight to the weight
-        					of the pole of index (UIndex, VIndex) in the poles tables of this B-Spline
-        					surface.
+                            of the pole of index (UIndex, VIndex) in the poles tables of this B-Spline
+                            surface.
 
-        					This function must only be used for rational surfaces.
-				
+                            This function must only be used for rational surfaces.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def setWeightCol(self, vindex: int, obj, /):
         """
         Modifies this B-Spline surface by assigning values to all or part of the
-        					weights of the column of poles of index VIndex of this B-Spline surface.
+                            weights of the column of poles of index VIndex of this B-Spline surface.
 
-        					The modified part of the column of weights is defined by the bounds
-        					of the array CPoleWeights.
+                            The modified part of the column of weights is defined by the bounds
+                            of the array CPoleWeights.
 
-        					This function must only be used for rational surfaces.
-				
+                            This function must only be used for rational surfaces.
+                
         Possible exceptions: (Part.OCCError).
         """
 
     def setWeightRow(self, uindex: int, obj, /):
         """
         Modifies this B-Spline surface by assigning values to all or part of the
-        					weights of the row of poles of index UIndex of this B-Spline surface.
+                            weights of the row of poles of index UIndex of this B-Spline surface.
 
-        					The modified part of the row of weights is defined by the bounds of the
-        					array CPoleWeights.
+                            The modified part of the row of weights is defined by the bounds of the
+                            array CPoleWeights.
 
-        					This function must only be used for rational surfaces.
-				
+                            This function must only be used for rational surfaces.
+                
         Possible exceptions: (Part.OCCError).
         """
 
@@ -4589,7 +4599,7 @@ class GeometrySurface(PartModule.Geometry):
 
     def toBSpline(self, Tol3d: float = None, UContinuity: str = 'C1', VContinuity: str = 'C1', MaxDegreeU: int = None, MaxDegreeV: int = None, MaxSegments: int = 1000, PrecisCode: int = 0) -> PartModule.BSplineSurface:
         """
-        Returns a B-Spline representation of this surface. 
+        Returns a B-Spline representation of this surface.
         					The optional arguments are:
         					* tolerance (default=1e-7)
         					* continuity in u (as string e.g. C0, G0, G1, C1, G2, C3, CN) (default='C1')
@@ -6624,14 +6634,14 @@ class BezierSurface(PartModule.GeometrySurface):
         					in the u parametric direction, and between V1 and V2 in the v
         					parametric direction.
         					U1, U2, V1, and V2 can be outside the bounds of this surface.
-					
+
         					-- U1 and U2 isoparametric Bezier curves, segmented between
         					   V1 and V2, become the two bounds of the surface in the v
         					   parametric direction (0. and 1. u isoparametric curves).
         					-- V1 and V2 isoparametric Bezier curves, segmented between
         					   U1 and U2, become the two bounds of the surface in the u
         					   parametric direction (0. and 1. v isoparametric curves).
-					
+
         					The poles and weights tables are modified, but the degree of
         					this surface in the u and v parametric directions does not
         					change.U1 can be greater than U2, and V1 can be greater than V2.
@@ -6988,6 +6998,13 @@ def makeFace(pcPyShapeOrList=None, className: str = None, /) -> PartModule.Shape
     """
 
 
+def makeFilledSurface(obj, tolerance: float, /):
+    """
+    makeFilledSurface(list of curves, tolerance) -- Create a surface out of a list of curves.
+    Possible exceptions: (Exception, Part.OCCError).
+    """
+
+
 def makeFilledFace(obj, surf: PartModule.Face = None, /) -> PartModule.Face:
     """
     makeFilledFace(list) -- Create a face out of a list of edges.
@@ -7324,7 +7341,7 @@ def joinSubname(sub: str, mapped: str, element: str, /) -> str:
 def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matrix = None, needSubElement: bool = False, transform: bool = True, retType: int = 0, noElementMap: bool = False, refine: bool = False) -> PartModule.Shape | tuple[PartModule.Shape, FreeCAD.Matrix, typing.Any]:
     """
     getShape(obj,subname=None,mat=None,needSubElement=False,transform=True,retType=0):
-    Obtain the the TopoShape of a given object with SubName reference
+    Obtain the TopoShape of a given object with SubName reference
 
     * obj: the input object
     * subname: dot separated sub-object reference

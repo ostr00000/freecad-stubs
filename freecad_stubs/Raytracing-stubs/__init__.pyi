@@ -3,7 +3,7 @@ import Part as PartModule
 
 
 # AppRaytracingPy.cpp
-def writeProjectFile(fromPython: tuple[str], /) -> None:
+def writeProjectFile(fromPython: tuple[str] = ('FreeCAD.pov',), /) -> None:
     """Possible exceptions: (Exception)."""
 
 

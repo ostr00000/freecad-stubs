@@ -239,7 +239,7 @@ class Vector(FreeCAD.PyObjectBase):
         Projects `point` on a line that goes through the origin with the direction `dir`.
         The result is the vector from `point` to the projected point.
         The operation is equivalent to dir_n.cross(dir_n.cross(point)), where `dir_n` is
-        the vector `dir` normalized. 
+        the vector `dir` normalized.
         The method modifies this vector instance according to result and does not
         depend on the vector itself.
 
@@ -410,7 +410,7 @@ class Rotation(FreeCAD.PyObjectBase):
 
     Rotation(dir1, dir2, dir3, seq)
     Define from three vectors that define rotated axes directions plus an optional
-    3-characher string of capital letters 'X', 'Y', 'Z' that sets the order of 
+    3-characher string of capital letters 'X', 'Y', 'Z' that sets the order of
     importance of the axes (e.g., 'ZXY' means z direction is followed strictly,
     x is used but corrected if necessary, y is ignored).
     dir1 : Base.Vector
@@ -512,7 +512,7 @@ class Rotation(FreeCAD.PyObjectBase):
 
         Rotation(dir1, dir2, dir3, seq)
         Define from three vectors that define rotated axes directions plus an optional
-        3-characher string of capital letters 'X', 'Y', 'Z' that sets the order of 
+        3-characher string of capital letters 'X', 'Y', 'Z' that sets the order of
         importance of the axes (e.g., 'ZXY' means z direction is followed strictly,
         x is used but corrected if necessary, y is ignored).
         dir1 : Base.Vector
@@ -578,11 +578,14 @@ class Rotation(FreeCAD.PyObjectBase):
         Returns the inverse of the rotation.
         """
 
-    def isIdentity(self) -> bool:
+    def isIdentity(self, tol: float = 0.0, /) -> bool:
         """
-        isIdentity() -> bool
+        isIdentity(tol=0) -> bool
 
         Returns True if the rotation equals the 4D identity matrix.
+        tol : float
+            Tolerance used to check for identity.
+            If tol is negative or zero, no tolerance is used.
         """
 
     def isNull(self) -> bool:
@@ -1405,12 +1408,15 @@ class Placement(FreeCAD.PyObjectBase):
         Compute the inverse placement.
         """
 
-    def isIdentity(self) -> bool:
+    def isIdentity(self, tol: float = 0.0, /) -> bool:
         """
-        isIdentity() -> bool
+        isIdentity([tol=0.0]) -> bool
 
         Returns True if the placement has no displacement and no rotation.
         Matrix representation is the 4D identity matrix.
+        tol : float
+            Tolerance used to check for identity.
+            If tol is negative or zero, no tolerance is used.
         """
 
     def isSame(self, plm: FreeCAD.Placement, tol: float = 0.0, /) -> bool:
@@ -2894,27 +2900,3 @@ class Vector2d:
     """This class can be imported."""
 
     pass
-# Sequencer.cpp
-class ProgressIndicator:
-    """
-    This class can be imported.
-    Progress indicator
-    """
-
-    def start(self, text: str, steps: int, /) -> None:
-        """
-        start(string,int)
-        Possible exceptions: (Exception).
-        """
-
-    def next(self, b: int = 0, /) -> None:
-        """
-        next()
-        Possible exceptions: (Exception, RuntimeError).
-        """
-
-    def stop(self) -> None:
-        """
-        stop()
-        Possible exceptions: (Exception).
-        """

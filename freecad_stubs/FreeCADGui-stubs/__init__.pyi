@@ -114,10 +114,7 @@ class LinkView(FreeCAD.BaseClass):
         """Get/set the child element visibility"""
 
     def getBoundBox(self, vobj=None, /) -> FreeCAD.BoundBox:
-        """
-        getBoundBox(vobj=None): get the bounding box. 
-        Possible exceptions: (TypeError).
-        """
+        """getBoundBox(vobj=None): get the bounding box."""
 
     def getChildren(self) -> tuple[typing.Any, ...]:
         """Get children view objects"""
@@ -147,15 +144,15 @@ class LinkView(FreeCAD.BaseClass):
     def setChildren(self, pyObj, pyVis: list = None, type: str = 0, /):
         """
         setChildren([obj...],vis=[],type=0)
-        Group a list of children objects. Note, this mode of operation is incompatible 
+        Group a list of children objects. Note, this mode of operation is incompatible
         with link array. Calling this function will deactivate link array. And calling
         setSize() will reset all linked children.
 
         vis: initial visibility status of the children
 
-        type: children linking type, 
-           0: override transformation and visibility, 
-           1: override visibility, 
+        type: children linking type,
+           0: override transformation and visibility,
+           1: override visibility,
            2: override none.
         """
 
@@ -193,10 +190,10 @@ class LinkView(FreeCAD.BaseClass):
         setMaterial(Material): set the override material of the entire linked object
 
         setMaterial([Material,...]): set the materials for the elements of the link
-                                     array/group. 
+                                     array/group.
 
         setMaterial({Int:Material,...}): set the material for the elements of the
-                                         link array/group by index. 
+                                         link array/group by index.
 
         If material is None, then the material is unset. If the material of an element
         is unset, it defaults to the override material of the linked object, if there
@@ -337,33 +334,33 @@ class ViewProvider(FreeCAD.ExtensionContainer):
             Object to be dragged and dropped.
         """
 
-    def canDragObject(self, obj: FreeCAD.DocumentObject = None, /) -> bool:
+    def canDragObject(self, obj=None, /) -> bool:
         """
-        canDragObject(obj) -> bool
+        canDragObject(obj=None) -> bool
 
         Check whether the child object can be removed by dragging.
         If 'obj' is not given, check without filter by any particular object.
 
         obj : App.DocumentObject
-            Object to be dragged. Optional.
+            Object to be dragged.
         """
 
-    def canDropObject(self, obj: FreeCAD.DocumentObject = None, owner: FreeCAD.DocumentObject = None, subname: str = None, elem=None) -> bool:
+    def canDropObject(self, obj=None, owner=None, subname: str = None, elem=None) -> bool:
         """
-        canDropObject(obj, owner, subname, elem) -> bool
+        canDropObject(obj=None, owner=None, subname, elem=None) -> bool
 
         Check whether the child object can be added by dropping.
         If 'obj' is not given, check without filter by any particular object.
 
         obj : App.DocumentObject
-            Object to be dropped. Optional.
+            Object to be dropped.
         owner : App.DocumentObject
-            Parent object of the dropping object. Optional.
+            Parent object of the dropping object.
         subname : str
             Subname reference to the dropping object. Optional.
         elem : sequence of str
             Non-objects subelements selected when the object is
-            being dropped. Optional.
+            being dropped.
         Possible exceptions: (ValueError, TypeError).
         """
 
@@ -391,21 +388,21 @@ class ViewProvider(FreeCAD.ExtensionContainer):
             Object to be dragged.
         """
 
-    def dropObject(self, obj: FreeCAD.DocumentObject, owner: FreeCAD.DocumentObject = None, subname: str = None, elem=None) -> str:
+    def dropObject(self, obj: FreeCAD.DocumentObject, owner=None, subname: str = None, elem=None) -> str:
         """
-        dropObject(obj, owner, subname, elem) -> str
+        dropObject(obj, owner=None, subname, elem=None) -> str
 
         Add a child object by dropping.
 
         obj : App.DocumentObject
             Object to be dropped.
         owner : App.DocumentObject
-            Parent object of the dropping object. Optional.
+            Parent object of the dropping object.
         subname : str
             Subname reference to the dropping object. Optional.
         elem : sequence of str
             Non-objects subelements selected when the object is
-            being dropped. Optional.
+            being dropped.
         Possible exceptions: (TypeError).
         """
 
@@ -1240,7 +1237,7 @@ class Document(FreeCAD.Persistence):
             Name of the `Gui.ViewProvider` to hide.
         """
 
-    def mdiViewsOfType(self, sType: str, /) -> list[FreeCADGui.MDIViewPy]:
+    def mdiViewsOfType(self, sType: str, /) -> list:
         """
         mdiViewsOfType(type) -> list of MDIView
 
@@ -1265,6 +1262,20 @@ class Document(FreeCAD.Persistence):
         resetEdit() -> None
 
         End the current editing.
+        """
+
+    def save(self) -> bool:
+        """
+        save() -> bool
+
+        Attempts to save the document
+        """
+
+    def saveAs(self) -> bool:
+        """
+        saveAs() -> bool
+
+        Attempts to save the document under a new name
         """
 
     def scrollToTreeItem(self, view: FreeCADGui.ViewProviderDocumentObject, /):
@@ -1422,7 +1433,7 @@ class MDIViewPy(qtpy.QtWidgets.QMainWindow):
         """
         setActiveObject(name,object,subname=None)
         add or set a new active object
-        Possible exceptions: (Exception, TypeError).
+        Possible exceptions: (Exception).
         """
 
     def getActiveObject(self, name: str, resolve: bool = True, /) -> FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, FreeCAD.DocumentObject, str] | None:
@@ -1980,7 +1991,7 @@ class View3DInventorPy:
         """
         setActiveObject(name,object,subname=None)
         add or set a new active object
-        Possible exceptions: (Exception, TypeError).
+        Possible exceptions: (Exception).
         """
 
     def getActiveObject(self, name: str, resolve: bool = True, /) -> FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, FreeCAD.DocumentObject, str] | None:
@@ -1990,7 +2001,7 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
-    def getViewProvidersOfType(self, name: str, /) -> list[FreeCADGui.ViewProvider]:
+    def getViewProvidersOfType(self, name: str, /) -> list:
         """
         getViewProvidersOfType(name)
         returns a list of view providers for the given type
@@ -2091,13 +2102,13 @@ class PyResource:
 class MainWindowPy(qtpy.QtWidgets.QMainWindow):
     """Python binding class for the MainWindow class"""
 
-    def getWindows(self) -> list[MDIViewPy]:
+    def getWindows(self) -> list:
         """
         getWindows()
         Possible exceptions: (Exception).
         """
 
-    def getWindowsOfType(self, t: FreeCAD.TypeId, /) -> list[MDIViewPy]:
+    def getWindowsOfType(self, t: FreeCAD.TypeId, /) -> list:
         """
         getWindowsOfType(typeid)
         Possible exceptions: (Exception).
@@ -2109,6 +2120,18 @@ class MainWindowPy(qtpy.QtWidgets.QMainWindow):
     def getActiveWindow(self) -> MDIViewPy | None:
         """
         getActiveWindow()
+        Possible exceptions: (Exception).
+        """
+
+    def addWindow(self, obj, /) -> typing.Any | None:
+        """
+        addWindow(MDIView)
+        Possible exceptions: (Exception).
+        """
+
+    def removeWindow(self, obj, /) -> None:
+        """
+        removeWindow(MDIView)
         Possible exceptions: (Exception).
         """
 
@@ -2245,7 +2268,7 @@ class PythonStderr:
 
 
 class OutputStdout:
-    """Redirection of stdout to FreeCAD's output window"""
+    """Redirection of stdout to FreeCAD's report view"""
 
     def isatty(self) -> bool:
         """isatty()"""
@@ -2265,7 +2288,7 @@ class OutputStdout:
 
 
 class OutputStderr:
-    """Redirection of stdout to FreeCAD's output window"""
+    """Redirection of stdout to FreeCAD's report view"""
 
     def isatty(self) -> bool:
         """isatty()"""

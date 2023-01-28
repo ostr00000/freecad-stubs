@@ -7,153 +7,13 @@ import Path as PathModule
 LinkList_t: typing.TypeAlias = None | FreeCAD.DocumentObject
 
 
-# ToolPy.xml
-class Tool(FreeCAD.Persistence):
-    """
-    This class can be imported.
-    The Tool objects holds the properties of a CNC tool.
-    optional attributes:
-      name: a user-defined name for this tool
-      tooltype: Drill, CenterDrill, CounterSink, CounterBore, Reamer, Tap, EndMill, SlotCutter, BallEndMill, ChamferMill, CornerRound, Engraver or Undefined
-      material: HighSpeedSteel, HighCarbonToolSteel, Carbide, CastAlloy, Ceramics, Diamond, Sialon or Undefined
-      diameter : the diameter of this tool
-      lengthOffset
-      flatRadius
-      cornerRadius
-      cuttingEdgeAngle
-      cuttingEdgeHeight
-    """
-
-    @typing.overload
-    def __init__(self, dict: dict = None, /): ...
-
-    @typing.overload
-    def __init__(self, name: str = 'Default tool', tooltype: str = 'Undefined', material: str = 'Undefined', diameter=None, lengthOffset=None, flatRadius=None, cornerRadius=None, cuttingEdgeAngle=None, cuttingEdgeHeight=None, version: int = 1): ...
-
-    @typing.overload
-    def __init__(self, name: str = 'Default tool', tooltype: str = 'Undefined', material: str = 'Undefined', diameter=None, lengthOffset=None, flatRadius=None, cornerRadius=None, cuttingEdgeAngle=None, cuttingEdgeHeight=None):
-        """
-        The Tool objects holds the properties of a CNC tool.
-        optional attributes:
-          name: a user-defined name for this tool
-          tooltype: Drill, CenterDrill, CounterSink, CounterBore, Reamer, Tap, EndMill, SlotCutter, BallEndMill, ChamferMill, CornerRound, Engraver or Undefined
-          material: HighSpeedSteel, HighCarbonToolSteel, Carbide, CastAlloy, Ceramics, Diamond, Sialon or Undefined
-          diameter : the diameter of this tool
-          lengthOffset
-          flatRadius
-          cornerRadius
-          cuttingEdgeAngle
-          cuttingEdgeHeight
-        Possible exceptions: (TypeError).
-        """
-
-    @property
-    def CornerRadius(self) -> float:
-        """the corner radius of this tool in mm"""
-
-    @CornerRadius.setter
-    def CornerRadius(self, value: float): ...
-
-    @property
-    def CuttingEdgeAngle(self) -> float:
-        """the cutting edge angle of this tool"""
-
-    @CuttingEdgeAngle.setter
-    def CuttingEdgeAngle(self, value: float): ...
-
-    @property
-    def CuttingEdgeHeight(self) -> float:
-        """the cutting edge height of this tool in mm"""
-
-    @CuttingEdgeHeight.setter
-    def CuttingEdgeHeight(self, value: float): ...
-
-    @property
-    def Diameter(self) -> float:
-        """the diameter of this tool in mm"""
-
-    @Diameter.setter
-    def Diameter(self, value: float): ...
-
-    @property
-    def FlatRadius(self) -> float:
-        """the flat radius of this tool in mm"""
-
-    @FlatRadius.setter
-    def FlatRadius(self, value: float): ...
-
-    @property
-    def LengthOffset(self) -> float:
-        """the length offset of this tool in mm"""
-
-    @LengthOffset.setter
-    def LengthOffset(self, value: float): ...
-
-    @property
-    def Material(self) -> str:
-        """
-        the material of this tool: Steel, Carbide, HighSpeedSteel,
-        HighCarbonToolSteel CastAlloy, Ceramics, Diamond, Sialon or Undefined
-        """
-
-    @Material.setter
-    def Material(self, value: str): ...
-
-    @property
-    def Name(self) -> str:
-        """the name of this tool in mm"""
-
-    @Name.setter
-    def Name(self, value: str): ...
-
-    @property
-    def ToolType(self) -> str:
-        """
-        the type of this tool: Drill, CenterDrill, CounterSink, CounterBore, Reamer, Tap,
-        EndMill, SlotCutter, BallEndMill, ChamferMill, CornerRound, Engraver or Undefined
-        """
-
-    @ToolType.setter
-    def ToolType(self, value: str): ...
-
-    def copy(self) -> PathModule.Tool:
-        """
-        returns a copy of this tool
-        Possible exceptions: (TypeError).
-        """
-
-    def getToolMaterials(self) -> list[str]:
-        """
-        returns all available tool materials
-        Possible exceptions: (TypeError).
-        """
-
-    def getToolTypes(self) -> list[str]:
-        """
-        returns all available tool types
-        Possible exceptions: (TypeError).
-        """
-
-    def setFromTemplate(self, pstr: str = None, /):
-        """
-        setFromTemplate(xmlString|dictionary) ... fills receiver with values from the template string or dictionary
-        Possible exceptions: (TypeError).
-        """
-
-    def templateAttrs(self) -> dict[str, int | str | float]:
-        """
-        templateAttrs() ... returns a dictionary with all attributes
-        Possible exceptions: (TypeError).
-        """
-
-
 # CommandPy.xml
 class Command(FreeCAD.Persistence):
     """
     This class can be imported.
     Command([name],[parameters]): Represents a basic Gcode command
     name (optional) is the name of the command, ex. G1
-    parameters (optional) is a dictionary containing string:number 
+    parameters (optional) is a dictionary containing string:number
     pairs, or a placement, or a vector
     """
 
@@ -165,7 +25,7 @@ class Command(FreeCAD.Persistence):
         """
         Command([name],[parameters]): Represents a basic Gcode command
         name (optional) is the name of the command, ex. G1
-        parameters (optional) is a dictionary containing string:number 
+        parameters (optional) is a dictionary containing string:number
         pairs, or a placement, or a vector
         Possible exceptions: (ValueError, TypeError).
         """
@@ -379,88 +239,6 @@ class Path(FreeCAD.Persistence):
         """
 
 
-# TooltablePy.xml
-class Tooltable(FreeCAD.Persistence):
-    """
-    This class can be imported.
-    The Tooltable object holds a table of CNC tools
-    """
-
-    @typing.overload
-    def __init__(self): ...
-
-    @typing.overload
-    def __init__(self, pcObj: dict, /): ...
-
-    @typing.overload
-    def __init__(self, pcObj: list, /):
-        """
-        The Tooltable object holds a table of CNC tools
-        Possible exceptions: (TypeError).
-        """
-
-    @property
-    def Name(self) -> str:
-        """the name of this tool table"""
-
-    @Name.setter
-    def Name(self, value: str): ...
-
-    @property
-    def Tools(self) -> dict[int, PathModule.Tool]:
-        """the dictionary of tools of this table"""
-
-    @Tools.setter
-    def Tools(self, value: dict): ...
-
-    @property
-    def Version(self) -> int:
-        """the version of this tooltable"""
-
-    @Version.setter
-    def Version(self, value: int): ...
-
-    @typing.overload
-    def addTools(self, o: PathModule.Tool, /) -> None: ...
-
-    @typing.overload
-    def addTools(self, o: list, /) -> None:
-        """adds a tool or a list of tools at the end of the table"""
-
-    def copy(self) -> PathModule.Tooltable:
-        """
-        returns a copy of this tooltable
-        Possible exceptions: (TypeError).
-        """
-
-    def deleteTool(self, pos: int = -1, /) -> None:
-        """
-        deleteTool(int):
-        deletes the tool found at the given position
-        """
-
-    def getTool(self, pos: int = -1, /) -> PathModule.Tool | None:
-        """
-        getTool(int):
-        returns the tool found at the given position, or  None
-        """
-
-    def setFromTemplate(self, dict: dict = None, /):
-        """
-        setFromTemplate(dict) ... restores receiver from given template attribute dictionary
-        Possible exceptions: (TypeError).
-        """
-
-    def setTool(self, pos: int = -1, o: PathModule.Tool = None, /) -> None:
-        """
-        setTool(int,tool):
-        adds a tool at the given position
-        """
-
-    def templateAttrs(self) -> dict[int, typing.Any]:
-        """templateAttrs() ... returns a dictionary representing the receivers attributes for a template"""
-
-
 # FeatureAreaPy.xml
 class FeatureArea(FreeCAD.DocumentObject):
     """This class handles Path Area features"""
@@ -516,77 +294,6 @@ class FeaturePathCompound(FreeCAD.DocumentObject):
         Remove an object from the group
         Possible exceptions: (FreeCAD.Base.FreeCADError).
         """
-
-
-# AppPathPy.cpp
-def write(pObj, Name: str, /) -> None:
-    """
-    write(object,filename): Exports a given path object to a GCode file
-    Possible exceptions: (Exception, RuntimeError).
-    """
-
-
-def read(Name: str, DocName: str = None, /) -> None:
-    """
-    read(filename,[document]): Imports a GCode file into the given document
-    Possible exceptions: (Exception, RuntimeError).
-    """
-
-
-def show(pcObj: PathModule.Path, name: str = 'Path', /) -> None:
-    """
-    show(path,[string]): Add the path to the active document or create one if no document exists
-    Possible exceptions: (Exception, ReferenceError, RuntimeError).
-    """
-
-
-def fromShape(pcObj, /) -> PathModule.Path:
-    """
-    fromShape(Shape): Returns a Path object from a Part Shape (deprecated - use fromShapes() instead)
-    Possible exceptions: (Exception, TypeError, RuntimeError).
-    """
-
-
-def fromShapes(shapes=None, start: FreeCAD.Vector = None, return_end: bool = None) -> PathModule.Path | tuple[PathModule.Path, FreeCAD.Vector]:
-    """
-    fromShapes(shapes, start=Vector(), return_end=False" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_PATH) ")
-
-    Returns a Path object from a list of shapes
-
-    * shapes: input list of shapes.
-
-    * start (Vector()): feed start position, and also serves as a hint of path entry.
-
-    * return_end (False): if True, returns tuple (path, endPosition).
-    "
-                  PARAM_PY_DOC(ARG, AREA_PARAMS_PATH)
-    Possible exceptions: (Exception, TypeError).
-    """
-
-
-@typing.overload
-def sortWires(shapes, /, start=None, arg2=None): ...
-
-
-@typing.overload
-def sortWires(shapes=None, start: FreeCAD.Vector = None) -> tuple[list[PartModule.Shape], FreeCAD.Vector, int]:
-    """
-    sortWires(shapes, start=Vector(), "
-                  PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_ARC_PLANE)
-                  PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_SORT) ")
-
-    Returns (wires,end), where 'wires' is sorted across Z value and with optimized travel distance,
-    and 'end' is the ending position of the whole wires. If arc_plane==1, it returns (wires,end,arc_plane),
-    where arc_plane is the found plane if any, or unchanged.
-
-    * shapes: input shape list
-
-    * start (Vector()): optional start position.
-    "
-                  PARAM_PY_DOC(ARG, AREA_PARAMS_ARC_PLANE)
-                  PARAM_PY_DOC(ARG, AREA_PARAMS_SORT)
-    Possible exceptions: (Exception, TypeError).
-    """
 
 
 # AreaPyImp.cpp

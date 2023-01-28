@@ -11,21 +11,14 @@ def export(object, Name: str, /) -> None:
 
 def exportPageAsPdf(pageObj, name: str, /) -> None:
     """
-    exportPageAsPdf(DrawPageObject,FilePath) -- print page as Pdf to file.
+    exportPageAsPdf(DrawPageObject, FilePath) -- print page as Pdf to file.
     Possible exceptions: (TypeError, Exception).
     """
 
 
 def exportPageAsSvg(pageObj, name: str, /) -> None:
     """
-    exportPageAsSvg(DrawPageObject,FilePath) -- print page as Svg to file.
-    Possible exceptions: (TypeError, Exception).
-    """
-
-
-def copyActiveViewToSvgFile(docObj=None, name: str = None, outWidth: float = 138.5, outHeight: float = 95.0, paintObj=True, colorObj=None, lineWidth: float = 1.0, border: float = 0.0, mode: int = 0, /) -> float:
-    """
-    copyActiveViewToSvgFile(DrawPageObject,FilePath) -- copy ActiveView to Svg file.
+    exportPageAsSvg(DrawPageObject, FilePath) -- print page as Svg to file.
     Possible exceptions: (TypeError, Exception).
     """
 

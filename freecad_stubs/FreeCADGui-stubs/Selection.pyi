@@ -183,7 +183,7 @@ def countObjectsOfType(objecttype: str, document: str = None, resolve: int = 1, 
     """
 
 
-def getSelection(documentName: str = None, resolve: int = 1, single: bool = False, /) -> list[FreeCAD.DocumentObject]:
+def getSelection(documentName: str = None, resolve: int = 1, single: bool = False, /) -> list:
     """
     getSelection(docName, resolve=ResolveMode.OldStyleElement, single=False) -> list
 
@@ -200,7 +200,7 @@ def getSelection(documentName: str = None, resolve: int = 1, single: bool = Fals
     """
 
 
-def getPickedList(documentName: str = None, /) -> list[FreeCADGui.SelectionObject]:
+def getPickedList(documentName: str = None, /) -> list:
     """
     getPickedList(docName) -> list of Gui.SelectionObject
 
@@ -223,7 +223,7 @@ def enablePickedList(enable: bool = True, /):
     """
 
 
-def getCompleteSelection(resolve: int = 1, /) -> list:
+def getCompleteSelection(resolve: int = 1, /) -> list[FreeCADGui.SelectionObject]:
     """
     getCompleteSelection(resolve=ResolveMode.OldStyleElement) -> list
 
@@ -233,7 +233,7 @@ def getCompleteSelection(resolve: int = 1, /) -> list:
     """
 
 
-def getSelectionEx(documentName: str = None, resolve: int = 1, single: bool = False, /) -> list[FreeCADGui.SelectionObject]:
+def getSelectionEx(documentName: str = None, resolve: int = 1, single: bool = False, /) -> list:
     """
     getSelectionEx(docName, resolve=ResolveMode.OldStyleElement, single=False) -> list of Gui.SelectionObject
 
@@ -346,7 +346,6 @@ def setVisible(visible=None, /):
 
     visible : bool, None
         If None, then toggle visibility.
-    Possible exceptions: (ValueError).
     """
 
 

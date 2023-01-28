@@ -596,6 +596,12 @@ class SketchObject(PartModule.Part2DObject):
         Possible exceptions: (ValueError).
         """
 
+    def join(self, GeoId1: int, PosId1: int, GeoId2: int, PosId2: int, /):
+        """
+        join two curves at the given end points
+        Possible exceptions: (ValueError).
+        """
+
     def makeMissingEquality(self, onebyone: bool = True, /):
         """Applies the detected / set Equality constraints. If the argument is True, then solving and redundant removal is done after each individual addition."""
 

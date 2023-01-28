@@ -149,7 +149,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
 
     def parameterAtDistance(self, abscissa: float, u: float = 0, /) -> float:
         """
-        Returns the parameter on the curve of a point at the given distance from a starting parameter. 
+        Returns the parameter on the curve of a point at the given distance from a starting parameter.
         parameterAtDistance([abscissa, startingParameter]) -> Float the
         Possible exceptions: (Part.OCCError).
         """

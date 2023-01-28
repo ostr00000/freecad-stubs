@@ -17,6 +17,13 @@ LinkSubList_t: typing.TypeAlias = typing.Sequence[SequenceDoc_t | FreeCAD.Docume
 SequenceNone_t: typing.TypeAlias = tuple[None, typing.Any]
 PropX_t: typing.TypeAlias = None | FreeCAD.DocumentObject | SequenceNone_t | SequenceDoc_t
 
+class ReturnGetFormatDict(typing.TypedDict):
+    style: int
+    weight: float
+    color: tuple
+    visible: bool
+
+
 
 # DrawGeomHatchPy.xml
 class DrawGeomHatch(FreeCAD.DocumentObject):
@@ -54,6 +61,28 @@ class DrawGeomHatch(FreeCAD.DocumentObject):
 
     @PatIncluded.setter
     def PatIncluded(self, value: StrIO_t | tuple[StrIO_t, StrIO_t]): ...
+
+    @property
+    def PatternOffset(self) -> FreeCAD.Vector:
+        """
+        Property group: GeomHatch.
+        Property TypeId: App::PropertyVector.
+        Pattern offset.
+        """
+
+    @PatternOffset.setter
+    def PatternOffset(self, value: FreeCAD.Vector | Triple_t[float]): ...
+
+    @property
+    def PatternRotation(self) -> float:
+        """
+        Property group: GeomHatch.
+        Property TypeId: App::PropertyFloat.
+        Pattern rotation in degrees anticlockwise.
+        """
+
+    @PatternRotation.setter
+    def PatternRotation(self, value: float): ...
 
     @property
     def ScalePattern(self) -> float:
@@ -273,13 +302,13 @@ class DrawViewClip(TechDraw.DrawView):
     @Width.setter
     def Width(self, value: str | float | FreeCAD.Quantity): ...
 
-    def addView(self, pcDocObj: FreeCAD.DocumentObject, /):
+    def addView(self, pcDocObj: TechDraw.DrawView, /):
         """addView(DrawView) - Add a View to this ClipView"""
 
     def getChildViewNames(self) -> list[str]:
         """getChildViewNames() - get a list of the DrawViews in this ClipView"""
 
-    def removeView(self, pcDocObj: FreeCAD.DocumentObject, /):
+    def removeView(self, pcDocObj: TechDraw.DrawView, /):
         """removeView(DrawView) - Remove specified View to this ClipView"""
 
 
@@ -312,7 +341,7 @@ class DrawViewSymbol(TechDraw.DrawView):
     def dumpSymbol(self, fileSpec: str, /):
         """
         dumpSymbol(fileSpec) - dump the contents of Symbol to a file
-        Possible exceptions: (TypeError, RuntimeError).
+        Possible exceptions: (RuntimeError).
         """
 
 
@@ -331,17 +360,11 @@ class DrawViewCollection(TechDraw.DrawView):
     @Views.setter
     def Views(self, value: LinkList_t): ...
 
-    def addView(self, pcDocObj: FreeCAD.DocumentObject, /) -> int:
-        """
-        addView(DrawView object) - Add a new View to this Group. Returns count of views.
-        Possible exceptions: (TypeError).
-        """
+    def addView(self, pcDocObj: TechDraw.DrawView, /) -> int:
+        """addView(DrawView object) - Add a new View to this Group. Returns count of views."""
 
-    def removeView(self, pcDocObj: FreeCAD.DocumentObject, /) -> int:
-        """
-        removeView(DrawView object) - Remove specified Viewfrom this Group. Returns count of views in Group.
-        Possible exceptions: (TypeError).
-        """
+    def removeView(self, pcDocObj: TechDraw.DrawView, /) -> int:
+        """removeView(DrawView object) - Remove specified Viewfrom this Group. Returns count of views in Group."""
 
 
 # CosmeticExtensionPy.xml
@@ -428,7 +451,7 @@ class DrawViewDimExtent(TechDraw.DrawViewDimension):
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property TypeId: App::PropertyLinkSubList.
-        View (Edges) to dimension.
+        View containing the  dimension.
         """
 
     @Source.setter
@@ -439,7 +462,7 @@ class DrawViewDimExtent(TechDraw.DrawViewDimension):
         """
         [Prop_Output] Modified property doesn't touch its parent container.
         Property TypeId: App::PropertyLinkSubList.
-        View (Edges) to dimension.
+        3d geometry to be dimensioned.
         """
 
     @Source3d.setter
@@ -845,7 +868,6 @@ class DrawView(FreeCAD.DocumentObject):
     @property
     def Scale(self) -> float:
         """
-        [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Base.
         Property TypeId: App::PropertyFloatConstraint.
         Scale factor of the view. Scale factors like 1:100 can be written as =1/100.
@@ -869,7 +891,6 @@ class DrawView(FreeCAD.DocumentObject):
     @property
     def X(self) -> FreeCAD.Quantity:
         """
-        [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Base.
         Property TypeId: App::PropertyDistance.
         X position.
@@ -881,7 +902,6 @@ class DrawView(FreeCAD.DocumentObject):
     @property
     def Y(self) -> FreeCAD.Quantity:
         """
-        [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Base.
         Property TypeId: App::PropertyDistance.
         Y position.
@@ -901,7 +921,7 @@ class DrawSVGTemplate(TechDraw.DrawTemplate):
         [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Template.
         Property TypeId: App::PropertyFileIncluded.
-        Current SVG code for template.
+        Embedded SVG code for template. For system use.
         """
 
     @PageResult.setter
@@ -910,10 +930,9 @@ class DrawSVGTemplate(TechDraw.DrawTemplate):
     @property
     def Template(self) -> str:
         """
-        [Prop_Transient] Property content won't be saved to file, but still saves name, type and status.
         Property group: Template.
         Property TypeId: App::PropertyFile.
-        Template for the page.
+        Template file name.
         """
 
     @Template.setter
@@ -922,7 +941,7 @@ class DrawSVGTemplate(TechDraw.DrawTemplate):
     def getEditFieldContent(self, fieldName: str, /) -> str:
         """getEditFieldContent(EditFieldName) - returns the content of a specific Editable Text Field"""
 
-    def setEditFieldContent(self, fieldName: str, newContent: str, /) -> bool:
+    def setEditFieldContent(self, fieldName: str, newContent: str, /):
         """setEditFieldContent(EditFieldName, NewContent) - sets a specific Editable Text Field to a new value"""
 
 
@@ -1139,15 +1158,15 @@ class DrawViewPart(TechDraw.DrawView):
     def CoarseView(self, value: int | bool): ...
 
     @property
-    def Direction(self) -> FreeCAD.Vector:
+    def Direction(self):
         """
         Property group: Projection.
-        Property TypeId: App::PropertyVector.
+        Property TypeId: TechDraw::.
         Projection Plane normal. The direction you are looking from.
         """
 
     @Direction.setter
-    def Direction(self, value: FreeCAD.Vector | Triple_t[float]): ...
+    def Direction(self, value): ...
 
     @property
     def Focus(self) -> FreeCAD.Quantity:
@@ -1187,7 +1206,7 @@ class DrawViewPart(TechDraw.DrawView):
         """
         Property group: HLR Parameters.
         Property TypeId: App::PropertyBool.
-        Show Hidden Iso u,v lines.
+        Show Hidden Iso u, v lines.
         """
 
     @IsoHidden.setter
@@ -1198,7 +1217,7 @@ class DrawViewPart(TechDraw.DrawView):
         """
         Property group: HLR Parameters.
         Property TypeId: App::PropertyBool.
-        Show Visible Iso u,v lines.
+        Show Visible Iso u, v lines.
         """
 
     @IsoVisible.setter
@@ -1292,70 +1311,49 @@ class DrawViewPart(TechDraw.DrawView):
     @XSource.setter
     def XSource(self, value: typing.Iterable[PropX_t] | dict[int, PropX_t]): ...
 
-    def clearCenterLines(self) -> None:
+    def clearCenterLines(self):
         """clearCenterLines() - remove all CenterLines from the View. Returns None."""
 
-    def clearCosmeticEdges(self) -> None:
+    def clearCosmeticEdges(self):
         """clearCosmeticEdges() - remove all CosmeticLines from the View. Returns None."""
 
-    def clearCosmeticVertices(self) -> None:
+    def clearCosmeticVertices(self):
         """clearCosmeticVertices() - remove all CosmeticVertices from the View. Returns None."""
 
-    def clearGeomFormats(self) -> None:
+    def clearGeomFormats(self):
         """clearGeomFormats() - remove all GeomFormats from the View. Returns None."""
 
-    def formatGeometricEdge(self, idx: int = -1, style: int = None, weight: float = 0.5, pColor=None, visible: int = 1, /) -> None:
-        """
-        formatGeometricEdge(index, style, weight, color, visible). Returns None.
-        Possible exceptions: (TypeError).
-        """
+    def formatGeometricEdge(self, idx: int = -1, style: int = None, weight: float = 0.5, pColor=None, visible: int = 1, /):
+        """formatGeometricEdge(index, style, weight, color, visible). Returns None."""
 
-    def getCenterLine(self, tag: str, /) -> TechDraw.CenterLine | None:
-        """
-        cl = getCenterLine(id) - returns CenterLine with unique id.
-        Possible exceptions: (TypeError).
-        """
+    def getCenterLine(self, tag: str, /) -> TechDraw.CenterLine:
+        """cl = getCenterLine(id) - returns CenterLine with unique id."""
 
-    def getCenterLineBySelection(self, tag: str, /) -> TechDraw.CenterLine | None:
-        """
-        cl = getCenterLineBySelection(name) - returns CenterLine by name (Edge25).  Used in selections
-        Possible exceptions: (TypeError).
-        """
+    def getCenterLineBySelection(self, tag: str, /) -> TechDraw.CenterLine:
+        """cl = getCenterLineBySelection(name) - returns CenterLine by name (Edge25).  Used in selections"""
 
-    def getCosmeticEdge(self, tag: str, /) -> TechDraw.CosmeticEdge | None:
-        """
-        ce = getCosmeticEdge(id) - returns CosmeticEdge with unique id.
-        Possible exceptions: (TypeError).
-        """
+    def getCosmeticEdge(self, tag: str, /) -> TechDraw.CosmeticEdge:
+        """ce = getCosmeticEdge(id) - returns CosmeticEdge with unique id."""
 
-    def getCosmeticEdgeBySelection(self, name: str, /) -> TechDraw.CosmeticEdge | None:
-        """
-        ce = getCosmeticEdgeBySelection(name) - returns CosmeticEdge by name (Edge25).  Used in selections
-        Possible exceptions: (TypeError).
-        """
+    def getCosmeticEdgeBySelection(self, name: str, /) -> TechDraw.CosmeticEdge:
+        """ce = getCosmeticEdgeBySelection(name) - returns CosmeticEdge by name (Edge25).  Used in selections"""
 
-    def getCosmeticVertex(self, id: str, /) -> TechDraw.CosmeticVertex | None:
-        """
-        cv = getCosmeticVertex(id) - returns CosmeticVertex with unique id.
-        Possible exceptions: (TypeError).
-        """
+    def getCosmeticVertex(self, id: str, /) -> TechDraw.CosmeticVertex:
+        """cv = getCosmeticVertex(id) - returns CosmeticVertex with unique id."""
 
-    def getCosmeticVertexBySelection(self, selName: str, /) -> TechDraw.CosmeticVertex | None:
-        """
-        cv = getCosmeticVertexBySelection(name) - returns CosmeticVertex with name (Vertex6).  Used in selections.
-        Possible exceptions: (TypeError).
-        """
+    def getCosmeticVertexBySelection(self, selName: str, /) -> TechDraw.CosmeticVertex:
+        """cv = getCosmeticVertexBySelection(name) - returns CosmeticVertex with name (Vertex6).  Used in selections."""
 
     def getEdgeByIndex(self, edgeIndex: int = 0, /) -> PartModule.Edge:
         """
         getEdgeByIndex(edgeIndex). Returns Part.TopoShape.
-        Possible exceptions: (TypeError, ValueError).
+        Possible exceptions: (ValueError).
         """
 
     def getEdgeBySelection(self, selName: str, /) -> PartModule.Edge:
         """
         getEdgeBySelection(edgeName). Returns Part.TopoShape.
-        Possible exceptions: (TypeError, ValueError).
+        Possible exceptions: (ValueError).
         """
 
     def getHiddenEdges(self) -> list[PartModule.Edge]:
@@ -1364,86 +1362,81 @@ class DrawViewPart(TechDraw.DrawView):
     def getVertexByIndex(self, vertexIndex: int = 0, /) -> PartModule.Vertex:
         """
         getVertexByIndex(vertexIndex). Returns Part.TopoShape.
-        Possible exceptions: (TypeError, ValueError).
+        Possible exceptions: (ValueError).
         """
 
     def getVertexBySelection(self, selName: str, /) -> PartModule.Vertex:
         """
         getVertexBySelection(vertexName). Returns Part.TopoShape.
-        Possible exceptions: (TypeError, ValueError).
+        Possible exceptions: (ValueError).
         """
 
     def getVisibleEdges(self) -> list[PartModule.Edge]:
         """getVisibleEdges() - get the visible edges in the View as Part::TopoShapeEdges"""
 
-    def makeCenterLine(self, pSubs, mode: int = 0, /) -> str:
+    def makeCenterLine(self, pSubs: list, mode: int = 0, /) -> str:
         """
         makeCenterLine(subNames, mode) - draw a center line on this viewPart. SubNames is a list of n Faces, 2 Edges or 2 Vertices (ex [Face1,Face2,Face3]. Returns unique tag of added CenterLine.
         Possible exceptions: (TypeError, RuntimeError).
         """
 
-    def makeCosmeticCircle(self, pPnt1: FreeCAD.Vector = None, radius: float = 5.0, style: int = None, weight: float = None, pColor=None, /) -> str:
+    def makeCosmeticCircle(self, pPnt1: FreeCAD.Vector = None, radius: float = 5.0, style: int = None, weight: float = None, pColor: tuple = None, /) -> str:
         """
         tag = makeCosmeticCircle(center, radius) - add a CosmeticEdge at center with radius radius(View coordinates). Returns tag of new CosmeticEdge.
-        Possible exceptions: (TypeError, RuntimeError).
+        Possible exceptions: (RuntimeError).
         """
 
-    def makeCosmeticCircleArc(self, pPnt1: FreeCAD.Vector = None, radius: float = 5.0, angle1: float = 0.0, angle2: float = 360.0, style: int = None, weight: float = None, pColor=None, /) -> str:
+    def makeCosmeticCircleArc(self, pPnt1: FreeCAD.Vector = None, radius: float = 5.0, angle1: float = 0.0, angle2: float = 360.0, style: int = None, weight: float = None, pColor: tuple = None, /) -> str:
         """
         tag = makeCosmeticCircleArc(center, radius, start, end) - add a CosmeticEdge at center with radius radius(View coordinates) from start angle to end angle. Returns tag of new CosmeticEdge.
-        Possible exceptions: (TypeError, RuntimeError).
+        Possible exceptions: (RuntimeError).
         """
 
-    def makeCosmeticLine(self, pPnt1: FreeCAD.Vector = None, pPnt2: FreeCAD.Vector = None, style: int = None, weight: float = None, pColor=None, /) -> str:
+    def makeCosmeticLine(self, pPnt1: FreeCAD.Vector = None, pPnt2: FreeCAD.Vector = None, style: int = None, weight: float = None, pColor: tuple = None, /) -> str:
         """
         tag = makeCosmeticLine(p1, p2) - add a CosmeticEdge from p1 to p2(View coordinates). Returns tag of new CosmeticEdge.
-        Possible exceptions: (TypeError, RuntimeError).
+        Possible exceptions: (RuntimeError).
         """
 
-    def makeCosmeticLine3D(self, pPnt1: FreeCAD.Vector = None, pPnt2: FreeCAD.Vector = None, style: int = None, weight: float = None, pColor=None, /) -> str:
+    def makeCosmeticLine3D(self, pPnt1: FreeCAD.Vector = None, pPnt2: FreeCAD.Vector = None, style: int = None, weight: float = None, pColor: tuple = None, /) -> str:
         """
         tag = makeCosmeticLine3D(p1, p2) - add a CosmeticEdge from p1 to p2(3D coordinates). Returns tag of new CosmeticEdge.
-        Possible exceptions: (TypeError, RuntimeError).
+        Possible exceptions: (RuntimeError).
         """
 
     def makeCosmeticVertex(self, pPnt1: FreeCAD.Vector = None, /) -> str:
-        """
-        id = makeCosmeticVertex(p1) - add a CosmeticVertex at p1 (View coordinates). Returns unique id vertex.
-        Possible exceptions: (TypeError).
-        """
+        """id = makeCosmeticVertex(p1) - add a CosmeticVertex at p1 (View coordinates). Returns unique id vertex."""
 
     def makeCosmeticVertex3d(self, pPnt1: FreeCAD.Vector = None, /) -> str:
+        """id = makeCosmeticVertex3d(p1) - add a CosmeticVertex at p1 (3d model coordinates). Returns unique id vertex."""
+
+    def projectPoint(self, pPoint: FreeCAD.Vector = None, pInvert: bool = False, /) -> FreeCAD.Vector:
         """
-        id = makeCosmeticVertex3d(p1) - add a CosmeticVertex at p1 (3d model coordinates). Returns unique id vertex.
-        Possible exceptions: (TypeError).
+        projectPoint(vector3d point, [bool invert]). Returns the projection of point in the
+                projection coordinate system of this DrawViewPart. Optionally inverts the Y coordinate of the
+                result.
         """
 
-    def removeCenterLine(self, tag: str, /) -> None:
-        """
-        removeCenterLine(cl) - remove CenterLine cl from View. Returns None.
-        Possible exceptions: (TypeError).
-        """
+    def removeCenterLine(self, tag: str, /):
+        """removeCenterLine(cl) - remove CenterLine cl from View. Returns None."""
 
-    def removeCosmeticEdge(self, tag: str, /) -> None:
-        """
-        removeCosmeticEdge(ce) - remove CosmeticEdge ce from View. Returns None.
-        Possible exceptions: (TypeError).
-        """
+    def removeCosmeticEdge(self, tag: str, /):
+        """removeCosmeticEdge(ce) - remove CosmeticEdge ce from View. Returns None."""
 
     @typing.overload
-    def removeCosmeticVertex(self, tag: str, /) -> None: ...
+    def removeCosmeticVertex(self, tag: str, /): ...
 
     @typing.overload
-    def removeCosmeticVertex(self, pCVToDelete: TechDraw.CosmeticVertex = None, /) -> None: ...
+    def removeCosmeticVertex(self, pCVToDelete: TechDraw.CosmeticVertex = None, /): ...
 
     @typing.overload
-    def removeCosmeticVertex(self, pDelList=None, /) -> None:
+    def removeCosmeticVertex(self, pDelList=None, /):
         """
         removeCosmeticVertex(cv) - remove CosmeticVertex from View. Returns None.
         Possible exceptions: (TypeError).
         """
 
-    def requestPaint(self) -> None:
+    def requestPaint(self):
         """requestPaint(). Redraw the graphic for this View."""
 
 
@@ -1497,7 +1490,7 @@ class CenterLine(FreeCAD.PyObjectBase):
     """CenterLine specifies additional mark up edges in a View"""
 
     @property
-    def Edges(self) -> list[str]:
+    def Edges(self) -> list:
         """The names of source edges for this CenterLine."""
 
     @property
@@ -1505,7 +1498,7 @@ class CenterLine(FreeCAD.PyObjectBase):
         """The additional length to be added to this CenterLine."""
 
     @property
-    def Faces(self) -> list[str]:
+    def Faces(self) -> list:
         """The names of source Faces for this CenterLine."""
 
     @property
@@ -1513,7 +1506,7 @@ class CenterLine(FreeCAD.PyObjectBase):
         """Reverse the order of points for 2 point CenterLine."""
 
     @property
-    def Format(self) -> tuple[int, float, typing.Any, bool]:
+    def Format(self) -> ReturnGetFormatDict:
         """The appearance attributes (style, color, weight, visible) for this CenterLine."""
 
     @property
@@ -1525,7 +1518,7 @@ class CenterLine(FreeCAD.PyObjectBase):
         """0 - vert/ 1 - horiz/ 2 - aligned."""
 
     @property
-    def Points(self) -> list[str]:
+    def Points(self) -> list:
         """The names of source Points for this CenterLine."""
 
     @property
@@ -1547,13 +1540,13 @@ class CenterLine(FreeCAD.PyObjectBase):
     def clone(self):
         """
         Create a clone of this centerline
-        Possible exceptions: (TypeError).
+        Possible exceptions: (RuntimeError).
         """
 
     def copy(self):
         """
         Create a copy of this centerline
-        Possible exceptions: (TypeError).
+        Possible exceptions: (RuntimeError).
         """
 
 
@@ -1622,6 +1615,18 @@ class DrawPage(FreeCAD.DocumentObject):
     """Feature for creating and manipulating Technical Drawing Pages"""
 
     @property
+    def PageHeight(self) -> float:
+        """Returns the height of this page"""
+
+    @property
+    def PageOrientation(self) -> str:
+        """Returns the orientation of this page"""
+
+    @property
+    def PageWidth(self) -> float:
+        """Returns the width of this page"""
+
+    @property
     def KeepUpdated(self) -> bool:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
@@ -1684,40 +1689,16 @@ class DrawPage(FreeCAD.DocumentObject):
     @Views.setter
     def Views(self, value: LinkList_t): ...
 
-    def addView(self, pcDocObj: FreeCAD.DocumentObject, /) -> int:
-        """
-        addView(DrawView) - Add a View to this Page
-        Possible exceptions: (TypeError).
-        """
+    def addView(self, pcDocObj: TechDraw.DrawView, /) -> int:
+        """addView(DrawView) - Add a View to this Page"""
 
     def getAllViews(self) -> list[TechDraw.DrawProjGroupItem | TechDraw.DrawViewPart | TechDraw.DrawViewAnnotation | TechDraw.DrawView]:
         """getAllViews() - returns a list of all the views on page including Views inside Collections"""
 
-    def getPageHeight(self):
-        """
-        Return the height of this page
-        Possible exceptions: (NotImplementedError).
-        """
+    def removeView(self, pcDocObj: TechDraw.DrawView, /) -> int:
+        """removeView(DrawView) - Remove a View to this Page"""
 
-    def getPageOrientation(self):
-        """
-        Return the orientation of this page
-        Possible exceptions: (NotImplementedError).
-        """
-
-    def getPageWidth(self):
-        """
-        Return the width of this page
-        Possible exceptions: (NotImplementedError).
-        """
-
-    def removeView(self, pcDocObj: FreeCAD.DocumentObject, /) -> int:
-        """
-        removeView(DrawView) - Remove a View to this Page
-        Possible exceptions: (TypeError).
-        """
-
-    def requestPaint(self) -> None:
+    def requestPaint(self):
         """Ask the Gui to redraw this page"""
 
 
@@ -1781,7 +1762,7 @@ class DrawProjGroupItem(TechDraw.DrawViewPart):
     @Type.setter
     def Type(self, value: typing.Literal['Front', 'Left', 'Right', 'Rear', 'Top', 'Bottom', 'FrontTopLeft', 'FrontTopRight', 'FrontBottomLeft', 'FrontBottomRight']): ...
 
-    def autoPosition(self) -> None:
+    def autoPosition(self):
         """autoPosition() - Move to AutoDistribute/Unlocked position on Page. Returns none."""
 
 
@@ -1798,7 +1779,7 @@ class CosmeticEdge(FreeCAD.PyObjectBase):
         """Gives the position of one end of this CosmeticEdge as vector."""
 
     @property
-    def Format(self) -> tuple[int, float, typing.Any, bool]:
+    def Format(self) -> ReturnGetFormatDict:
         """The appearance attributes (style, weight, color, visible) for this CosmeticEdge."""
 
     @property
@@ -1816,13 +1797,13 @@ class CosmeticEdge(FreeCAD.PyObjectBase):
     def clone(self):
         """
         Create a clone of this CosmeticEdge
-        Possible exceptions: (TypeError).
+        Possible exceptions: (RuntimeError).
         """
 
     def copy(self):
         """
         Create a copy of this CosmeticEdge
-        Possible exceptions: (TypeError).
+        Possible exceptions: (RuntimeError).
         """
 
 
@@ -1837,25 +1818,25 @@ class GeomFormat(FreeCAD.PyObjectBase):
     def clone(self):
         """
         Create a clone of this geomformat
-        Possible exceptions: (TypeError).
+        Possible exceptions: (RuntimeError).
         """
 
     def copy(self):
         """
         Create a copy of this geomformat
-        Possible exceptions: (TypeError).
+        Possible exceptions: (RuntimeError).
         """
 
 
 # AppTechDrawPy.cpp
-def edgeWalker(pcObj: list, inclBig=True, /) -> list[PartModule.Wire] | None:
+def edgeWalker(pcObj: list = None, inclBig=True, /) -> list[PartModule.Wire] | None:
     """
-    [wires] = edgeWalker(edgePile,inclBiggest) -- Planar graph traversal finds wires in edge pile.
+    [wires] = edgeWalker(edgePile, inclBiggest) -- Planar graph traversal finds wires in edge pile.
     Possible exceptions: (TypeError, Part.OCCError, Exception).
     """
 
 
-def findOuterWire(pcObj: list, /) -> PartModule.Wire | None:
+def findOuterWire(pcObj: list = None, /) -> PartModule.Wire | None:
     """
     wire = findOuterWire(edgeList) -- Planar graph traversal finds OuterWire in edge pile.
     Possible exceptions: (TypeError, Part.OCCError, Exception).
@@ -1864,7 +1845,7 @@ def findOuterWire(pcObj: list, /) -> PartModule.Wire | None:
 
 def findShapeOutline(pcObjShape, scale: float, pcObjDir, /) -> PartModule.Wire | None:
     """
-    wire = findShapeOutline(shape,scale,direction) -- Project shape in direction and find outer wire of result.
+    wire = findShapeOutline(shape, scale, direction) -- Project shape in direction and find outer wire of result.
     Possible exceptions: (TypeError, Part.OCCError, Exception).
     """
 
@@ -1885,21 +1866,21 @@ def viewPartAsSvg(viewObj, /) -> str:
 
 def writeDXFView(viewObj, name: str, alignObj=True, /) -> None:
     """
-    writeDXFView(view,filename): Exports a DrawViewPart to a DXF file.
+    writeDXFView(view, filename): Exports a DrawViewPart to a DXF file.
     Possible exceptions: (TypeError, RuntimeError).
     """
 
 
 def writeDXFPage(pageObj, name: str, /) -> None:
     """
-    writeDXFPage(page,filename): Exports a DrawPage to a DXF file.
+    writeDXFPage(page, filename): Exports a DrawPage to a DXF file.
     Possible exceptions: (TypeError, RuntimeError).
     """
 
 
 def findCentroid(pcObjShape, pcObjDir, /) -> FreeCAD.Vector | None:
     """
-    vector = findCentroid(shape,direction): finds geometric centroid of shape looking in direction.
+    vector = findCentroid(shape, direction): finds geometric centroid of shape looking in direction.
     Possible exceptions: (TypeError).
     """
 
@@ -1939,7 +1920,7 @@ def project(TopoShape_, App_Vector_Direction, string_type, /): ...
 @typing.overload
 def project(pcObjShape: PartModule.Shape, pcObjDir: FreeCAD.Vector = None, /) -> list[PartModule.Shape]:
     """
-    [visiblyG0,visiblyG1,hiddenG0,hiddenG1] = project(TopoShape[,App.Vector Direction, string type])
+    [visiblyG0, visiblyG1, hiddenG0, hiddenG1] = project(TopoShape[, App.Vector Direction, string type])
      -- Project a shape and return the visible/invisible parts of it.
     Possible exceptions: (Exception).
     """
@@ -1952,7 +1933,7 @@ def projectEx(TopoShape_, App_Vector_Direction, string_type, /): ...
 @typing.overload
 def projectEx(pcObjShape: PartModule.Shape, pcObjDir: FreeCAD.Vector = None, /) -> list[PartModule.Shape]:
     """
-    [V,V1,VN,VO,VI,H,H1,HN,HO,HI] = projectEx(TopoShape[,App.Vector Direction, string type])
+    [V, V1, VN, VO, VI, H,H1, HN, HO, HI] = projectEx(TopoShape[, App.Vector Direction, string type])
      -- Project a shape and return the all parts of it.
     Possible exceptions: (Exception).
     """
@@ -1960,7 +1941,7 @@ def projectEx(pcObjShape: PartModule.Shape, pcObjDir: FreeCAD.Vector = None, /) 
 
 def projectToDXF(pcObjShape: PartModule.Shape, pcObjDir: FreeCAD.Vector = None, type: str = None, scale: float = 1.0, tol: float = 0.1, /) -> str:
     """
-    string = projectToDXF(TopoShape[,App.Vector Direction, string type])
+    string = projectToDXF(TopoShape[, App.Vector Direction, string type])
      -- Project a shape and return the DXF representation as string.
     Possible exceptions: (Exception).
     """

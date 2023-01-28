@@ -10,7 +10,7 @@ class Body(PartModule.BodyBase):
 
     @property
     def VisibleFeature(self) -> typing.Any | object:
-        """Return the the visible feature of this body"""
+        """Return the visible feature of this body"""
 
     def insertObject(self, featurePy: FreeCAD.DocumentObject, targetPy, afterPy: bool = False, /):
         """

@@ -80,6 +80,18 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
+    def Manager(self) -> FreeCAD.ParameterGrp | None:
+        """
+        Manager()
+        Possible exceptions: (Exception).
+        """
+
+    def Parent(self) -> FreeCAD.ParameterGrp | None:
+        """
+        Parent()
+        Possible exceptions: (Exception).
+        """
+
     def IsEmpty(self) -> bool:
         """
         IsEmpty()
@@ -100,6 +112,32 @@ class ParameterGrp:
         """
         Attach()
         Possible exceptions: (Exception, TypeError, RuntimeError).
+        """
+
+    def AttachManager(self, obj, /) -> None:
+        """
+        AttachManager(observer) -- attach parameter manager for notification
+
+        This method attaches a user defined observer to the manager (i.e. the root)
+        of the current parameter group to receive notification of all its parameters
+        and those from its sub-groups
+
+        The method expects the observer to have a callable attribute as shown below
+               slotParamChanged(param, tp, name, value)
+        where 'param' is the parameter group causing the change, 'tp' is the type of
+        the parameter, 'name' is the name of the parameter, and 'value' is the current
+        value.
+
+        The possible value of type are, 'FCBool', 'FCInt', 'FCUint', 'FCFloat', 'FCText',
+        and 'FCParamGroup'. The notification is triggered when value is changed, in which
+        case 'value' contains the new value in text form, or, when the parameter is removed,
+        in which case 'value' is empty.
+
+        For 'FCParamGroup' type, the observer will be notified in the following events.
+        * Group creation: both 'name' and 'value' contain the name of the new group
+        * Group removal: both 'name' and 'value' are empty
+        * Group rename: 'name' is the new name, and 'value' is the old name
+        Possible exceptions: (Exception, RuntimeError, TypeError).
         """
 
     @typing.overload
@@ -341,6 +379,32 @@ class ParameterGrp:
     def GetContents(self) -> list[tuple[str, str, str] | tuple[str, str, int] | tuple[str, str, float] | tuple[str, str, bool]] | None:
         """
         GetContents()
+        Possible exceptions: (Exception).
+        """
+
+
+# ProgressIndicatorPy.cpp
+class ProgressIndicator:
+    """
+    This class can be imported.
+    Progress indicator
+    """
+
+    def start(self, text: str, steps: int, /) -> None:
+        """
+        start(string,int)
+        Possible exceptions: (Exception).
+        """
+
+    def next(self, b: int = 0, /) -> None:
+        """
+        next()
+        Possible exceptions: (Exception, RuntimeError).
+        """
+
+    def stop(self) -> None:
+        """
+        stop()
         Possible exceptions: (Exception).
         """
 
@@ -630,8 +694,6 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         containing the accumulated transformation matrix
 
         * depth: current recursive depth
-                
-        Possible exceptions: (TypeError).
         """
 
     def getParentGeoFeatureGroup(self) -> typing.Any | None:
@@ -850,7 +912,7 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
         Pattern. The extension operates on a predefined set of properties,
         but it relies on the extended object to supply the actual property by
         calling this methode. You can choose a sub set of functionality of
-        this extension by supplying only some of the supported properties. 
+        this extension by supplying only some of the supported properties.
 
         The 'key' are names used to refer to properties supported by this
         extension, and 'val' is the actual name of the property of your
@@ -862,7 +924,7 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
         object.
 
         If 'val' is omitted, i.e. calling configLinkProperty(key,...), then
-        it is assumed the the actually property name is the same as 'key'
+        it is assumed that the actual property name is the same as 'key'
         """
 
     def expandSubname(self, subname: str, /) -> str:
@@ -930,7 +992,7 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
 
         obj (DocumentObject): the object to link to. If this is None, then the link is cleared
 
-        subName (String): Dot separated object path. 
+        subName (String): Dot separated object path.
 
         subElements (String|tuple(String)): non-object sub-elements, e.g. Face1, Edge2.
         """
@@ -1095,7 +1157,7 @@ class Metadata(FreeCAD.PyObjectBase):
     App.Metadata class.
 
     A Metadata object reads an XML-formatted package metadata file and provides
-    read-only access to its contents.
+    read and write access to its contents.
 
     The following constructors are supported:
 
@@ -1124,7 +1186,7 @@ class Metadata(FreeCAD.PyObjectBase):
         App.Metadata class.
 
         A Metadata object reads an XML-formatted package metadata file and provides
-        read-only access to its contents.
+        read and write access to its contents.
 
         The following constructors are supported:
 
@@ -1167,6 +1229,10 @@ class Metadata(FreeCAD.PyObjectBase):
         a Metadata object.
         See package.xml file format documentation for details.
         """
+
+    @property
+    def Date(self) -> str:
+        """String representing the date of this item in YYYY-MM-DD format (format not currently programmatically enforced)"""
 
     @property
     def Depend(self) -> list:
@@ -1236,6 +1302,13 @@ class Metadata(FreeCAD.PyObjectBase):
         """String representing the name of this item."""
 
     @property
+    def PythonMin(self) -> str:
+        """
+        String representing the minimum version of Python needed for this item.
+        If unset it will be 0.0.0.
+        """
+
+    @property
     def Replace(self) -> list:
         """
         List of things this item is considered by its author to replace. The format is
@@ -1269,6 +1342,99 @@ class Metadata(FreeCAD.PyObjectBase):
     def Version(self) -> str:
         """String representing the version of this item in semantic triplet format."""
 
+    def addAuthor(self, name: str = None, email: str = None, /) -> None:
+        """
+        addAuthor(name, email)
+
+        Add a new Author with name 'name', and optionally email 'email'. 
+        Possible exceptions: (Exception).
+        """
+
+    @typing.overload
+    def addConflict(self, name, kind, /): ...
+
+    @typing.overload
+    def addConflict(self, dictionary: dict = None, /) -> None:
+        """
+        addConflict(name, kind)
+
+        Add a new Conflict. See documentation for addDepend(). 
+        Possible exceptions: (Exception).
+        """
+
+    def addContentItem(self, contentType: str = None, contentItem: FreeCAD.Metadata = None, /) -> None:
+        """
+        addContentItem(content_type,metadata)
+
+        Add a new content item of type 'content_type' with metadata 'metadata'.
+        """
+
+    @typing.overload
+    def addDepend(self, name, kind, optional, /): ...
+
+    @typing.overload
+    def addDepend(self, dictionary: dict = None, /) -> None:
+        """
+        addDepend(name, kind, optional)
+
+        Add a new Dependency on package 'name' of kind 'kind' (optional, one of 'auto' (the default),
+
+        'internal', 'addon', or 'python'). 
+        Possible exceptions: (Exception).
+        """
+
+    def addFile(self, file: str = None, /) -> None:
+        """
+        addFile(filename)
+
+        Add a new File. 
+        Possible exceptions: (Exception).
+        """
+
+    def addLicense(self, shortCode: str = None, path: str = None, /) -> None:
+        """
+        addLicense(short_code,path)
+
+        Add a new License. 
+        Possible exceptions: (Exception).
+        """
+
+    def addMaintainer(self, name: str = None, email: str = None, /) -> None:
+        """
+        addMaintainer(name, email)
+
+        Add a new Maintainer. 
+        Possible exceptions: (Exception).
+        """
+
+    def addReplace(self, dictionary: dict = None, /) -> None:
+        """
+        addReplace(name)
+
+        Add a new Replace. 
+        Possible exceptions: (Exception).
+        """
+
+    def addTag(self, tag: str = None, /) -> None:
+        """
+        addTag(tag)
+
+        Add a new Tag. 
+        Possible exceptions: (Exception).
+        """
+
+    def addUrl(self, urlTypeCharStar: str = None, link: str = None, branch: str = None, /) -> None:
+        """
+        addUrl(url_type,url,branch)
+
+        Add a new Url or type 'url_type' (which should be one of 'repository', 'readme',
+
+        'bugtracker', 'documentation', or 'webpage') If type is 'repository' you
+
+        must also specify the 'branch' parameter. 
+        Possible exceptions: (Exception).
+        """
+
     def getFirstSupportedFreeCADVersion(self) -> str | None:
         """
         getFirstSupportedFreeCADVersion() -> str or None
@@ -1285,7 +1451,7 @@ class Metadata(FreeCAD.PyObjectBase):
         """
         getGenericMetadata(name) -> list
 
-        Get the list of GenericMetadata objects with key 'name'. 
+        Get the list of GenericMetadata objects with key 'name'.
         Generic metadata objects are Python objects with a string 'contents' and a
         dictionary of strings, 'attributes'. They represent unrecognized simple XML tags
         in the metadata file.
@@ -1302,6 +1468,95 @@ class Metadata(FreeCAD.PyObjectBase):
         known versions).
         """
 
+    def removeAuthor(self, name: str = None, email: str = None, /) -> None:
+        """
+        removeAuthor(name, email)
+
+        Remove the Author. 
+        Possible exceptions: (Exception).
+        """
+
+    @typing.overload
+    def removeConflict(self, name, kind, /): ...
+
+    @typing.overload
+    def removeConflict(self, dictionary: dict = None, /) -> None:
+        """
+        removeConflict(name, kind)
+
+        Remove the Conflict. See documentation for removeDepend().
+        Possible exceptions: (Exception).
+        """
+
+    def removeContentItem(self, contentType: str = None, contentName: str = None, /) -> None:
+        """
+        removeContentItem(content_type,name)
+
+        Remove the content item of type 'content_type' with name 'name'.
+        """
+
+    @typing.overload
+    def removeDepend(self, name, kind, /): ...
+
+    @typing.overload
+    def removeDepend(self, dictionary: dict = None, /) -> None:
+        """
+        removeDepend(name, kind)
+
+        Remove the Dependency on package 'name' of kind 'kind' (optional - if unspecified any
+
+        matching name is removed). 
+        Possible exceptions: (Exception).
+        """
+
+    def removeFile(self, file: str = None, /) -> None:
+        """
+        removeFile(filename)
+
+        Remove the File. 
+        Possible exceptions: (Exception).
+        """
+
+    def removeLicense(self, shortCode: str = None, path: str = None, /) -> None:
+        """
+        removeLicense(short_code)
+
+        Remove the License. 
+        Possible exceptions: (Exception).
+        """
+
+    def removeMaintainer(self, name: str = None, email: str = None, /) -> None:
+        """
+        removeMaintainer(name, email)
+
+        Remove the Maintainer. 
+        Possible exceptions: (Exception).
+        """
+
+    def removeReplace(self, dictionary: dict = None, /) -> None:
+        """
+        removeReplace(name)
+
+        Remove the Replace. 
+        Possible exceptions: (Exception).
+        """
+
+    def removeTag(self, tag: str = None, /) -> None:
+        """
+        removeTag(tag)
+
+        Remove the Tag. 
+        Possible exceptions: (Exception).
+        """
+
+    def removeUrl(self, urlTypeCharStar: str = None, link: str = None, branch: str = None, /) -> None:
+        """
+        removeUrl(url_type,url)
+
+        Remove the Url. 
+        Possible exceptions: (Exception).
+        """
+
     def supportsCurrentFreeCAD(self) -> bool:
         """
         supportsCurrentFreeCAD() -> bool
@@ -1310,6 +1565,13 @@ class Metadata(FreeCAD.PyObjectBase):
         support the current version of FreeCAD, or True if it makes no indication, or
         specifically indicates that it does support the current version. Does not
         recurse into Content items.
+        """
+
+    def write(self, filename: str = None, /) -> None:
+        """
+        write(filename)
+
+        Write the metadata to the given file as XML data.
         """
 
 
@@ -1714,8 +1976,6 @@ class Document(FreeCAD.PropertyContainer):
 
         options: 1: recursive, 2: check link array. Options can combine.
         maxCount: to limit the number of links returned
-            
-        Possible exceptions: (TypeError).
         """
 
     @typing.overload
@@ -2396,8 +2656,6 @@ def getLinksTo(pyobj=None, options: int = 0, count: int = 0, /) -> tuple[typing.
 
     options: 1: recursive, 2: check link array. Options can combine.
     maxCount: to limit the number of links returned
-
-    Possible exceptions: (TypeError).
     """
 
 

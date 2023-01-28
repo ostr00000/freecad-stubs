@@ -96,7 +96,7 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
 
     def sense(self) -> list[int]:
         """
-        Returns the orientation of the curves in the the array returned by curves2d
+        Returns the orientation of the curves in the array returned by curves2d
         Possible exceptions: (RuntimeError).
         """
 

@@ -102,10 +102,6 @@ class TypesConverter:
                 argS for argS in self.argumentStrings[varArg]
                 if all(fm not in argS for fm in self._FORBIDDEN_MACROS)]
 
-    @property
-    def _varDeclarationCode(self):
-        return self._functionBody[:self._funStart]
-
     def _getKwargList(self):
         if self.onlyPositional:
             return []
@@ -123,6 +119,10 @@ class TypesConverter:
             kw[1:-1]
             for kw in generateExpressionUntilChar(kwargsStr, 0, ',')
             if kw.startswith('"') and kw.endswith('"')]
+
+    @property
+    def _varDeclarationCode(self):
+        return self._functionBody[:self._funStart]
 
     def _getInitialParameterKind(self):
         if self._kwargList:
@@ -236,6 +236,9 @@ class TypesConverter:
     def _startSequenceParsing(self):
         self._sequenceStack.append([])
 
+    def _addElementToSequence(self, objType: str, pythonArgName: str, default):
+        self._sequenceStack[-1].append(StackVal(objType, pythonArgName, default))
+
     def _endSequenceParsing(self):
         stackVals = self._sequenceStack.pop()
         # Probably in C this may be a `typing.Sequence`,
@@ -256,16 +259,13 @@ class TypesConverter:
             # there is no argument
             objDefault = Parameter.empty
         else:
-            content = ['None' if s.default is UNKNOWN_DEFAULT_ARG else str(s.default)
+            content = ['None' if s.default is UNKNOWN_DEFAULT_ARG else repr(s.default)
                        for s in stackVals]
-            if content == 1:
+            if len(content) == 1:
                 content[0] = f'{content[0]},'
             objDefault = RawStringRepresentation(f'({", ".join(content)})')
 
         return objType, objName, objDefault
-
-    def _addElementToSequence(self, objType: str, pythonArgName: str, default):
-        self._sequenceStack[-1].append(StackVal(objType, pythonArgName, default))
 
     def _getPythonArgName(self, curFormat: str, cArgNum: int, pythonArgNum: int) -> str:
         if not self.onlyPositional:
