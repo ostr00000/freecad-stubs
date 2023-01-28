@@ -1,12 +1,12 @@
 # AppWeb.cpp
-def startServer(address: str = None, port: int = 0, /) -> tuple[str, int]:
+def startServer(addr: str = '127.0.0.1', port: int = 0, /) -> tuple[str, int]:
     """
     startServer(address=127.0.0.1,port=0) -- Start a server.
     Possible exceptions: (Exception, OverflowError, RuntimeError).
     """
 
 
-def waitForConnection(address: str = None, port: int = 0, timeout: int = 0, /) -> bool:
+def waitForConnection(addr: str = '127.0.0.1', port: int = 0, timeout: int = 0, /) -> bool:
     """
     waitForConnection(address=127.0.0.1,port=0,timeout=0)
     Start a server, wait for connection and close server.
@@ -16,7 +16,7 @@ def waitForConnection(address: str = None, port: int = 0, timeout: int = 0, /) -
     """
 
 
-def registerServerFirewall(callable_string_, /) -> None:
+def registerServerFirewall(obj, /) -> None:
     """
     registerServerFirewall(callable(string)) -- Register a firewall.
     Possible exceptions: (Exception).
@@ -27,13 +27,13 @@ def registerServerFirewall(callable_string_, /) -> None:
 class BrowserView:
     """Python interface class to BrowserView"""
 
-    def setHtml(self, str: str, arg2: str = None, /) -> None:
+    def setHtml(self, HtmlCode: str, BaseUrl: str = None, /) -> None:
         """
         setHtml(str)
         Possible exceptions: (Exception).
         """
 
-    def load(self, url: str, /) -> None:
+    def load(self, BaseUrl: str, /) -> None:
         """
         load(url)
         Possible exceptions: (Exception).

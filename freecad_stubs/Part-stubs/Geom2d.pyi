@@ -29,7 +29,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
     def Periodic(self) -> bool:
         """Returns true if the curve is periodic."""
 
-    def approximateBSpline(self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = 'C2', /) -> Part.Geom2d.BSplineCurve2d:
+    def approximateBSpline(self, tolerance: float, maxSegment: int, maxDegree: int, order: str = 'C2', /) -> Part.Geom2d.BSplineCurve2d:
         """
         Approximates a curve of any type to a B-Spline curve
         					approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -> B-Spline curve
@@ -37,23 +37,23 @@ class Curve2d(Part.Geom2d.Geometry2d):
         Possible exceptions: (RuntimeError, Part.OCCError).
         """
 
-    def centerOfCurvature(self, float_pos: float, /) -> FreeCAD.Vector2d:
+    def centerOfCurvature(self, u: float, /) -> FreeCAD.Vector2d:
         """
         Vector = centerOfCurvature(float pos) - Get the center of curvature at the given parameter [First|Last] if defined
         Possible exceptions: (Part.OCCError).
         """
 
-    def curvature(self, pos: float, /) -> float:
+    def curvature(self, u: float, /) -> float:
         """
         Float = curvature(pos) - Get the curvature at the given parameter [First|Last] if defined
         Possible exceptions: (Part.OCCError).
         """
 
     @typing.overload
-    def discretize(self, Number: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
+    def discretize(self, Number: int = -1, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
 
     @typing.overload
-    def discretize(self, Distance: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
+    def discretize(self, Distance: float = -1, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
 
     @typing.overload
     def discretize(self, Deflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
@@ -65,13 +65,13 @@ class Curve2d(Part.Geom2d.Geometry2d):
     def discretize(self, QuasiDeflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
 
     @typing.overload
-    def discretize(self, Angular: float, Curvature: float, First: float = None, Last: float = None, Minimum: int = None) -> list[FreeCAD.Vector2d]: ...
+    def discretize(self, Angular: float, Curvature: float, First: float = None, Last: float = None, Minimum: int = 2) -> list[FreeCAD.Vector2d]: ...
 
     @typing.overload
-    def discretize(self, Number: int, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector2d]: ...
+    def discretize(self, Number: int = -1, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector2d]: ...
 
     @typing.overload
-    def discretize(self, Distance: float, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector2d]: ...
+    def discretize(self, Distance: float = -1, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector2d]: ...
 
     @typing.overload
     def discretize(self, Deflection: float, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector2d]: ...
@@ -83,7 +83,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
     def discretize(self, QuasiDeflection: float, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector2d]: ...
 
     @typing.overload
-    def discretize(self, Angular: float, Curvature: float, First: float = 3.14, Last: float = 100, Minimum: int = None) -> list[FreeCAD.Vector2d]:
+    def discretize(self, Angular: float, Curvature: float, First: float = 3.14, Last: float = 100, Minimum: int = 2) -> list[FreeCAD.Vector2d]:
         """
         Discretizes the curve and returns a list of points.
         The function accepts keywords as argument:
@@ -120,34 +120,34 @@ class Curve2d(Part.Geom2d.Geometry2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def intersectCC(self, arg1: Part.Geom2d.Curve2d, arg2: float = None, /) -> list | list[FreeCAD.Vector2d]:
+    def intersectCC(self, p: Part.Geom2d.Curve2d, prec: float = None, /) -> list | list[FreeCAD.Vector2d]:
         """
         Returns all intersection points between this curve and the given curve.
                 
         Possible exceptions: (RuntimeError, TypeError).
         """
 
-    def length(self, uMin: float = None, uMax: float = None, Tol: float = None, /) -> float:
+    def length(self, u: float = None, v: float = None, t: float = None, /) -> float:
         """
         Computes the length of a curve
         length([uMin,uMax,Tol]) -> Float
         Possible exceptions: (Part.OCCError).
         """
 
-    def normal(self, pos: float, /) -> FreeCAD.Vector2d:
+    def normal(self, u: float, /) -> FreeCAD.Vector2d:
         """
         Vector = normal(pos) - Get the normal vector at the given parameter [First|Last] if defined
         Possible exceptions: (Part.OCCError).
         """
 
-    def parameter(self, arg1, /) -> float:
+    def parameter(self, p, /) -> float:
         """
         Returns the parameter on the curve
         of the nearest orthogonal projection of the point.
         Possible exceptions: (Part.OCCError).
         """
 
-    def parameterAtDistance(self, abscissa: float, startingParameter: float = None, /) -> float:
+    def parameterAtDistance(self, abscissa: float, u: float = 0, /) -> float:
         """
         Returns the parameter on the curve of a point at the given distance from a starting parameter. 
         parameterAtDistance([abscissa, startingParameter]) -> Float the
@@ -160,13 +160,13 @@ class Curve2d(Part.Geom2d.Geometry2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def tangent(self, arg1: float, /) -> FreeCAD.Vector2d:
+    def tangent(self, u: float, /) -> FreeCAD.Vector2d:
         """
         Computes the tangent of parameter u on this curve
         Possible exceptions: (Part.OCCError).
         """
 
-    def toBSpline(self, Float: float = None, Float2: float = None, /) -> Part.Geom2d.BSplineCurve2d:
+    def toBSpline(self, u: float = None, v: float = None, /) -> Part.Geom2d.BSplineCurve2d:
         """
         Converts a curve of any type (only part from First to Last)
         					toBSpline([Float=First, Float=Last]) -> B-Spline curve
@@ -178,25 +178,25 @@ class Curve2d(Part.Geom2d.Geometry2d):
     def toShape(self) -> PartModule.Shape: ...
 
     @typing.overload
-    def toShape(self, arg1: float, arg2: float, /) -> PartModule.Shape: ...
+    def toShape(self, u1: float, u2: float, /) -> PartModule.Shape: ...
 
     @typing.overload
-    def toShape(self, arg1: PartModule.GeometrySurface, /) -> PartModule.Shape: ...
+    def toShape(self, p: PartModule.GeometrySurface, /) -> PartModule.Shape: ...
 
     @typing.overload
-    def toShape(self, arg1: PartModule.GeometrySurface, arg2: float, arg3: float, /) -> PartModule.Shape: ...
+    def toShape(self, p: PartModule.GeometrySurface, u1: float, u2: float, /) -> PartModule.Shape: ...
 
     @typing.overload
-    def toShape(self, arg1: PartModule.Face, /) -> PartModule.Shape: ...
+    def toShape(self, p: PartModule.Face, /) -> PartModule.Shape: ...
 
     @typing.overload
-    def toShape(self, arg1: PartModule.Face, arg2: float, arg3: float, /) -> PartModule.Shape:
+    def toShape(self, p: PartModule.Face, u1: float, u2: float, /) -> PartModule.Shape:
         """
         Return the shape for the geometry.
         Possible exceptions: (Part.OCCError, TypeError).
         """
 
-    def value(self, arg1: float, /) -> FreeCAD.Vector2d:
+    def value(self, u: float, /) -> FreeCAD.Vector2d:
         """
         Computes the point of parameter u on this curve
         Possible exceptions: (Part.OCCError).
@@ -207,7 +207,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
 class ArcOfEllipse2d(Part.Geom2d.ArcOfConic2d):
     """Describes a portion of an ellipse"""
 
-    def __init__(self, arg1: Part.Geom2d.Ellipse2d, arg2: float, arg3: float, arg4: bool = None, /):
+    def __init__(self, o: Part.Geom2d.Ellipse2d, u1: float, u2: float, sense: bool = True, /):
         """
         Describes a portion of an ellipse
         Possible exceptions: (Part.OCCError, TypeError).
@@ -320,31 +320,31 @@ class Geometry2d(FreeCAD.PyObjectBase):
         """
 
     @typing.overload
-    def mirror(self, arg1, /): ...
+    def mirror(self, o, /): ...
 
     @typing.overload
-    def mirror(self, arg1, arg2, /):
+    def mirror(self, o, axis, /):
         """
         Performs the symmetrical transformation of this geometric object
         Possible exceptions: (Part.OCCError).
         """
 
-    def rotate(self, arg1, arg2: float, /):
+    def rotate(self, o, angle: float, /):
         """
         Rotates this geometric object at angle Ang (in radians) around a point
         Possible exceptions: (Part.OCCError).
         """
 
-    def scale(self, arg1, arg2: float, /):
+    def scale(self, o, scale: float, /):
         """
         Applies a scaling transformation on this geometric object with a center and scaling factor
         Possible exceptions: (Part.OCCError).
         """
 
-    def transform(self, arg1, /):
+    def transform(self, o, /):
         """Applies a transformation to this geometric object"""
 
-    def translate(self, arg1, /):
+    def translate(self, o, /):
         """
         Translates this geometric object
         Possible exceptions: (Part.OCCError).
@@ -415,7 +415,7 @@ class Circle2d(Part.Geom2d.Conic2d):
     def Radius(self, value: float): ...
 
     @staticmethod
-    def getCircleCenter(arg0, arg1, arg2, /) -> FreeCAD.Vector2d:
+    def getCircleCenter(p1, p2, p3, /) -> FreeCAD.Vector2d:
         """Get the circle center defined by three points"""
 
 
@@ -423,7 +423,7 @@ class Circle2d(Part.Geom2d.Conic2d):
 class ArcOfParabola2d(Part.Geom2d.ArcOfConic2d):
     """Describes a portion of a parabola"""
 
-    def __init__(self, arg1: Part.Geom2d.Parabola2d, arg2: float, arg3: float, arg4: bool = None, /):
+    def __init__(self, o: Part.Geom2d.Parabola2d, u1: float, u2: float, sense: bool = True, /):
         """
         Describes a portion of a parabola
         Possible exceptions: (Part.OCCError, TypeError).
@@ -460,16 +460,16 @@ class Line2dSegment(Part.Geom2d.Curve2d):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, Line: Part.Geom2d.Line2dSegment, /): ...
+    def __init__(self, pLine: Part.Geom2d.Line2dSegment, /): ...
 
     @typing.overload
-    def __init__(self, Point1, Point2, /): ...
+    def __init__(self, pV1, pV2, /): ...
 
     @typing.overload
-    def __init__(self, arg1: Part.Geom2d.Line2dSegment, arg2: float, arg3: float, /): ...
+    def __init__(self, pLine: Part.Geom2d.Line2dSegment, first: float, last: float, /): ...
 
     @typing.overload
-    def __init__(self, arg1: Part.Geom2d.Line2d, arg2: float, arg3: float, /):
+    def __init__(self, pLine: Part.Geom2d.Line2d, first: float, last: float, /):
         """
         Describes a line segment in 2D space
         To create a line there are several ways:
@@ -498,7 +498,7 @@ class Line2dSegment(Part.Geom2d.Curve2d):
     @StartPoint.setter
     def StartPoint(self, value: FreeCAD.Vector2d): ...
 
-    def setParameterRange(self, arg1: float, arg2: float, /):
+    def setParameterRange(self, first: float, last: float, /):
         """
         Set the parameter range of the underlying line segment geometry
         Possible exceptions: (Part.OCCError).
@@ -600,10 +600,10 @@ class ArcOfCircle2d(Part.Geom2d.ArcOfConic2d):
     """Describes a portion of a circle"""
 
     @typing.overload
-    def __init__(self, arg1: Part.Geom2d.Circle2d, arg2: float, arg3: float, arg4: bool = None, /): ...
+    def __init__(self, o: Part.Geom2d.Circle2d, u1: float, u2: float, sense: bool = True, /): ...
 
     @typing.overload
-    def __init__(self, arg1, arg2, arg3, /):
+    def __init__(self, pV1, pV2, pV3, /):
         """
         Describes a portion of a circle
         Possible exceptions: (Part.OCCError, TypeError).
@@ -625,7 +625,7 @@ class ArcOfCircle2d(Part.Geom2d.ArcOfConic2d):
 class ArcOfHyperbola2d(Part.Geom2d.ArcOfConic2d):
     """Describes a portion of an hyperbola"""
 
-    def __init__(self, arg1: Part.Geom2d.Hyperbola2d, arg2: float, arg3: float, arg4: bool = None, /):
+    def __init__(self, o: Part.Geom2d.Hyperbola2d, u1: float, u2: float, sense: bool = True, /):
         """
         Describes a portion of an hyperbola
         Possible exceptions: (Part.OCCError, TypeError).
@@ -797,7 +797,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def StartPoint(self) -> FreeCAD.Vector2d:
         """Returns the start point of this B-Spline curve."""
 
-    def approximate(self, Points, DegMax: int = None, Continuity: str = None, Tolerance: float = None, DegMin: int = None, ParamType: str = None, Parameters=None, LengthWeight: float = None, CurvatureWeight: float = None, TorsionWeight: float = None):
+    def approximate(self, Points, DegMax: int = 8, Continuity: str = 'C2', Tolerance: float = 0.001, DegMin: int = 3, ParamType: str = 'ChordLength', Parameters=None, LengthWeight: float = 0, CurvatureWeight: float = 0, TorsionWeight: float = 0):
         """
         Replaces this B-Spline curve by approximating a set of points.
         					The function accepts keywords as arguments.
@@ -831,14 +831,14 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def buildFromPoles(self, arg1, arg2: bool = None, arg3: int = None, arg4: bool = None, /):
+    def buildFromPoles(self, obj, periodic: bool = False, degree: int = 3, interpolate: bool = False, /):
         """
         Builds a B-Spline by a list of poles.
 				
         Possible exceptions: (Part.OCCError).
         """
 
-    def buildFromPolesMultsKnots(self, poles, mults=None, knots=None, periodic: bool = None, degree: int = None, weights=None):
+    def buildFromPolesMultsKnots(self, poles=None, mults=None, knots=None, periodic: bool = False, degree: int = 3, weights=None):
         """
         Builds a B-Spline by a lists of Poles, Mults, Knots.
         				arguments: poles (sequence of Base.Vector), [mults , knots, periodic, degree, weights (sequence of float), CheckRational]
@@ -874,7 +874,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def getCardinalSplineTangents(self, Points, Parameters) -> list[FreeCAD.Vector2d]:
         """Compute the tangents for a Cardinal spline"""
 
-    def getKnot(self, arg1: int, /) -> float:
+    def getKnot(self, Index: int, /) -> float:
         """Get a knot of the B-Spline curve."""
 
     def getKnots(self) -> list[float]:
@@ -890,14 +890,14 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def getMultiplicity(self, arg1: int, /) -> int:
+    def getMultiplicity(self, index: int, /) -> int:
         """
         Returns the multiplicity of the knot of index
         from the knots table of this B-Spline curve.
         Possible exceptions: (Part.OCCError).
         """
 
-    def getPole(self, arg1: int, /) -> FreeCAD.Vector2d:
+    def getPole(self, index: int, /) -> FreeCAD.Vector2d:
         """
         Get a pole of the B-Spline curve.
         Possible exceptions: (Part.OCCError).
@@ -915,7 +915,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def getResolution(self, arg1: float, /) -> float:
+    def getResolution(self, tol: float, /) -> float:
         """
         Computes for this B-Spline curve the parametric tolerance (UTolerance)
         for a given 3D tolerance (Tolerance3D).
@@ -925,7 +925,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def getWeight(self, arg1: int, /) -> float:
+    def getWeight(self, index: int, /) -> float:
         """
         Get a weight of the B-Spline curve.
         Possible exceptions: (Part.OCCError).
@@ -937,7 +937,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def increaseDegree(self, arg1: int, /):
+    def increaseDegree(self, degree: int, /):
         """
         increase(Int=Degree)
         Increases the degree of this B-Spline curve to Degree.
@@ -947,11 +947,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    @typing.overload
-    def increaseMultiplicity(self, int_index: int, int_mult: int, arg3: int = None, /): ...
-
-    @typing.overload
-    def increaseMultiplicity(self, int_start: int, int_end: int, int_mult: int = None, /):
+    def increaseMultiplicity(self, start: int, end: int, mult: int = -1, /):
         """
         increaseMultiplicity(int index, int mult)
         				increaseMultiplicity(int start, int end, int mult)
@@ -964,7 +960,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def incrementMultiplicity(self, int_start: int, int_end: int, int_mult: int, /):
+    def incrementMultiplicity(self, start: int, end: int, mult: int, /):
         """
         incrementMultiplicity(int start, int end, int mult)
         				Raises multiplicity of knots by mult.
@@ -974,7 +970,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def insertKnot(self, u: float, mult: int = 1, tol: float = 0.0, /):
+    def insertKnot(self, U: float, M: int = 1, tol: float = 0.0, /):
         """
         insertKnot(u, mult = 1, tol = 0.0)
         				Inserts a knot value in the sequence of knots. If u is an existing knot the
@@ -982,7 +978,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def insertKnots(self, list_of_floats, list_of_ints, tol: float = 0.0, bool_add: bool = True, /):
+    def insertKnots(self, obj1, obj2, tol: float = 0.0, add: bool = True, /):
         """
         insertKnots(list_of_floats, list_of_ints, tol = 0.0, bool_add = True)
         				Inserts a set of knots values in the sequence of knots.
@@ -1002,7 +998,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def interpolate(self, Points, PeriodicFlag: bool = None, Tolerance: float = None, InitialTangent=None, FinalTangent=None, Tangents=None, TangentFlags=None, Parameters=None):
+    def interpolate(self, Points, PeriodicFlag: bool = False, Tolerance: float = None, InitialTangent=None, FinalTangent=None, Tangents=None, TangentFlags=None, Parameters=None):
         """
         Replaces this B-Spline curve by interpolating a set of points.
         					The function accepts keywords as arguments.
@@ -1054,14 +1050,14 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         					the weight table has been initialized.
         """
 
-    def join(self, arg1: Part.Geom2d.BSplineCurve2d, /) -> bool:
+    def join(self, c: Part.Geom2d.BSplineCurve2d, /) -> bool:
         """Build a new spline by joining this and a second spline."""
 
     @typing.overload
     def makeC1Continuous(self, tol=1e-6, ang_tol=1e-7): ...
 
     @typing.overload
-    def makeC1Continuous(self, arg1: float = None, /):
+    def makeC1Continuous(self, tol: float = None, /):
         """
         makeC1Continuous(tol = 1e-6, ang_tol = 1e-7)
         					Reduces as far as possible the multiplicities of the knots of this BSpline
@@ -1074,7 +1070,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def movePoint(self, U: float, P, Index1: int, Index2: int, /) -> tuple[int, int]:
+    def movePoint(self, U: float, pnt, index1: int, index2: int, /) -> tuple[int, int]:
         """
         movePoint(U, P, Index1, Index2)
         				Moves the point of parameter U of this B-Spline curve to P.
@@ -1113,10 +1109,10 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def setKnot(self, arg1: int, arg2: float, arg3: int = None, /):
+    def setKnot(self, Index: int, K: float, M: int = -1, /):
         """Set a knot of the B-Spline curve."""
 
-    def setKnots(self, arg1, /):
+    def setKnots(self, obj, /):
         """
         Set knots of the B-Spline curve.
         Possible exceptions: (Part.OCCError).
@@ -1129,7 +1125,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def setOrigin(self, arg1: int, /):
+    def setOrigin(self, index: int, /):
         """
         Assigns the knot of index Index in the knots table
         as the origin of this periodic B-Spline curve. As a consequence,
@@ -1143,14 +1139,14 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def setPole(self, arg1: int, arg2, arg3: float = None, /):
+    def setPole(self, index: int, p, weight: float = -1.0, /):
         """
         Modifies this B-Spline curve by assigning P
         to the pole of index Index in the poles table.
         Possible exceptions: (Part.OCCError).
         """
 
-    def setWeight(self, arg1: int, arg2: float, /):
+    def setWeight(self, index: int, weight: float, /):
         """
         Set a weight of the B-Spline curve.
         Possible exceptions: (Part.OCCError).
@@ -1159,7 +1155,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def toBezier(self) -> list[Part.Geom2d.BezierCurve2d]:
         """Build a list of Bezier splines."""
 
-    def toBiArcs(self, tolerance: float, /) -> list[Part.Geom2d.Geometry2d]:
+    def toBiArcs(self, tolerance: float = 0.001, /) -> list[Part.Geom2d.Geometry2d]:
         """
         Build a list of arcs and lines to approximate the B-spline.
         					toBiArcs(tolerance) -> list.
@@ -1209,7 +1205,7 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
     def StartPoint(self) -> FreeCAD.Vector2d:
         """Returns the start point of this Bezier curve."""
 
-    def getPole(self, arg1: int, /) -> FreeCAD.Vector2d:
+    def getPole(self, index: int, /) -> FreeCAD.Vector2d:
         """
         Get a pole of the Bezier curve.
         Possible exceptions: (Part.OCCError).
@@ -1221,7 +1217,7 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def getResolution(self, arg1: float, /) -> float:
+    def getResolution(self, tol: float, /) -> float:
         """
         Computes for this Bezier curve the parametric tolerance (UTolerance)
         for a given 3D tolerance (Tolerance3D).
@@ -1231,7 +1227,7 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def getWeight(self, arg1: int, /) -> float:
+    def getWeight(self, index: int, /) -> float:
         """
         Get a weight of the Bezier curve.
         Possible exceptions: (Part.OCCError).
@@ -1243,20 +1239,20 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def increase(self, Int: int, /):
+    def increase(self, degree: int, /):
         """
         increase(Int=Degree)
         Increases the degree of this Bezier curve to Degree.
         As a result, the poles and weights tables are modified.
         """
 
-    def insertPoleAfter(self, arg1: int, arg2, arg3: float = None, /):
+    def insertPoleAfter(self, index: int, p, weight: float = 1.0, /):
         """
         Inserts after the pole of index.
         Possible exceptions: (Part.OCCError).
         """
 
-    def insertPoleBefore(self, arg1: int, arg2, arg3: float = None, /):
+    def insertPoleBefore(self, index: int, p, weight: float = 1.0, /):
         """
         Inserts before the pole of index.
         Possible exceptions: (Part.OCCError).
@@ -1274,32 +1270,32 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
     def isRational(self) -> bool:
         """Returns false if the weights of all the poles of this Bezier curve are equal."""
 
-    def removePole(self, arg1: int, /):
+    def removePole(self, index: int, /):
         """
         Removes the pole of index Index from the table of poles of this Bezier curve.
         If this Bezier curve is rational, it can become non-rational.
         Possible exceptions: (Part.OCCError).
         """
 
-    def segment(self, arg1: float, arg2: float, /):
+    def segment(self, u1: float, u2: float, /):
         """
         Modifies this Bezier curve by segmenting it.
         Possible exceptions: (Part.OCCError).
         """
 
-    def setPole(self, arg1: int, arg2, arg3: float = None, /):
+    def setPole(self, index: int, p, weight: float = -1.0, /):
         """
         Set a pole of the Bezier curve.
         Possible exceptions: (Part.OCCError).
         """
 
-    def setPoles(self, arg1, /):
+    def setPoles(self, plist, /):
         """
         Set the poles of the Bezier curve.
         Possible exceptions: (Part.OCCError).
         """
 
-    def setWeight(self, arg1: int, arg2: float, /):
+    def setWeight(self, index: int, weight: float, /):
         """
         Set a weight of the Bezier curve.
         Possible exceptions: (Part.OCCError).
@@ -1308,7 +1304,7 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
 
 # OffsetCurve2dPy.xml
 class OffsetCurve2d(Part.Geom2d.Curve2d):
-    def __init__(self, arg1: Part.Geom2d.Curve2d, arg2: float, /):
+    def __init__(self, pGeom: Part.Geom2d.Curve2d, offset: float, /):
         """Possible exceptions: (TypeError, Part.OCCError)."""
 
     @property
@@ -1372,10 +1368,10 @@ class Line2d(Part.Geom2d.Curve2d):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, Line: Part.Geom2d.Line2d, /): ...
+    def __init__(self, pLine: Part.Geom2d.Line2d, /): ...
 
     @typing.overload
-    def __init__(self, Point, Dir, /):
+    def __init__(self, pV1, pV2, /):
         """
         Describes an infinite line in 2D space
         To create a line there are several ways:

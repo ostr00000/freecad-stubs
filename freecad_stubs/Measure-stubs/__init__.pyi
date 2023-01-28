@@ -11,7 +11,7 @@ class Measurement(FreeCAD.BaseClass):
     def __init__(self):
         """Make a measurement"""
 
-    def addReference3D(self, arg1: str, arg2: str, /):
+    def addReference3D(self, ObjectName: str, SubName: str, /):
         """
         add a geometric reference
         Possible exceptions: (ValueError).

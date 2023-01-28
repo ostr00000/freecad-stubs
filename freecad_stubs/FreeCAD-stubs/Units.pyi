@@ -5,12 +5,7 @@ import FreeCAD
 
 
 # UnitsApiPy.cpp
-@typing.overload
-def parseQuantity(string: str, /) -> FreeCAD.Quantity: ...
-
-
-@typing.overload
-def parseQuantity(arg0: str, /) -> FreeCAD.Quantity:
+def parseQuantity(pstr: str, /) -> FreeCAD.Quantity:
     """
     parseQuantity(string) -> Base.Quantity()
 
@@ -27,7 +22,7 @@ def listSchemas() -> tuple[str, ...] | str: ...
 
 
 @typing.overload
-def listSchemas(int: int, /) -> tuple[str, ...] | str:
+def listSchemas(index: int, /) -> tuple[str, ...] | str:
     """
     listSchemas() -> a tuple of schemas
 
@@ -46,7 +41,7 @@ def getSchema() -> int:
     """
 
 
-def setSchema(int: int, /):
+def setSchema(index: int, /):
     """
     setSchema(int) -> None
 
@@ -55,7 +50,7 @@ def setSchema(int: int, /):
     """
 
 
-def schemaTranslate(Quantity: FreeCAD.Quantity, int: int, /) -> tuple[str, float, str]:
+def schemaTranslate(q: FreeCAD.Quantity, index: int, /) -> tuple[str, float, str]:
     """
     schemaTranslate(Quantity, int) -> tuple
 
@@ -65,11 +60,11 @@ def schemaTranslate(Quantity: FreeCAD.Quantity, int: int, /) -> tuple[str, float
 
 
 @typing.overload
-def toNumber(Quantity_or_float: FreeCAD.Quantity, format: str = 'g', decimals: int = -1, /) -> str: ...
+def toNumber(q: FreeCAD.Quantity, format: str = 'g', decimals: int = -1, /) -> str: ...
 
 
 @typing.overload
-def toNumber(Quantity_or_float: float, format: str = 'g', decimals: int = -1, /) -> str:
+def toNumber(value: float, format: str = 'g', decimals: int = -1, /) -> str:
     """
     toNumber(Quantity or float, [format='g', decimals=-1]) -> str
 

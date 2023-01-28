@@ -1,3 +1,4 @@
+import sys
 import typing
 
 import FreeCAD
@@ -36,25 +37,13 @@ class Vector(FreeCAD.PyObjectBase):
     """
 
     @typing.overload
-    def __init__(self, x: float = 0, y: float = 0, z: float = 0, /): ...
+    def __init__(self, x: float = 0.0, y: float = 0.0, z: float = 0.0, /): ...
 
     @typing.overload
-    def __init__(self, vector: float = None, arg2: float = None, arg3: float = None, /): ...
+    def __init__(self, object: FreeCAD.Vector, /): ...
 
     @typing.overload
-    def __init__(self, vector: FreeCAD.Vector, /): ...
-
-    @typing.overload
-    def __init__(self, vector, /): ...
-
-    @typing.overload
-    def __init__(self, seq: float = None, arg2: float = None, arg3: float = None, /): ...
-
-    @typing.overload
-    def __init__(self, seq: FreeCAD.Vector, /): ...
-
-    @typing.overload
-    def __init__(self, seq, /):
+    def __init__(self, object, /):
         """
         Base.Vector class.
 
@@ -113,7 +102,7 @@ class Vector(FreeCAD.PyObjectBase):
         Serialization of Vector objects.
         """
 
-    def add(self, vector2: FreeCAD.Vector, /) -> FreeCAD.Vector:
+    def add(self, obj: FreeCAD.Vector, /) -> FreeCAD.Vector:
         """
         add(vector2) -> Base.Vector
 
@@ -122,7 +111,7 @@ class Vector(FreeCAD.PyObjectBase):
         vector2 : Base.Vector
         """
 
-    def cross(self, vector2: FreeCAD.Vector, /) -> FreeCAD.Vector:
+    def cross(self, obj: FreeCAD.Vector, /) -> FreeCAD.Vector:
         """
         cross(vector2) -> Base.Vector
 
@@ -131,7 +120,7 @@ class Vector(FreeCAD.PyObjectBase):
         vector2 : Base.Vector
         """
 
-    def distanceToLine(self, base, dir, /) -> float:
+    def distanceToLine(self, base, line, /) -> float:
         """
         distanceToLine(base, dir) -> float
 
@@ -144,7 +133,7 @@ class Vector(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError).
         """
 
-    def distanceToLineSegment(self, point1, point2, /) -> FreeCAD.Vector:
+    def distanceToLineSegment(self, base, line, /) -> FreeCAD.Vector:
         """
         distanceToLineSegment(point1, point2) -> Base.Vector
 
@@ -157,7 +146,7 @@ class Vector(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError).
         """
 
-    def distanceToPlane(self, base, normal, /) -> float:
+    def distanceToPlane(self, base, line, /) -> float:
         """
         distanceToPlane(base, normal) -> float
 
@@ -169,7 +158,7 @@ class Vector(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError).
         """
 
-    def distanceToPoint(self, point2: FreeCAD.Vector, /) -> float:
+    def distanceToPoint(self, pnt: FreeCAD.Vector, /) -> float:
         """
         distanceToPoint(point2) -> float
 
@@ -178,7 +167,7 @@ class Vector(FreeCAD.PyObjectBase):
         point : Base.Vector
         """
 
-    def dot(self, vector2: FreeCAD.Vector, /) -> float:
+    def dot(self, obj: FreeCAD.Vector, /) -> float:
         """
         dot(vector2) -> float
 
@@ -187,7 +176,7 @@ class Vector(FreeCAD.PyObjectBase):
         vector2 : Base.Vector
         """
 
-    def getAngle(self, vector2: FreeCAD.Vector, /) -> float:
+    def getAngle(self, obj: FreeCAD.Vector, /) -> float:
         """
         getAngle(vector2) -> float
 
@@ -196,7 +185,7 @@ class Vector(FreeCAD.PyObjectBase):
         vector2 : Base.Vector
         """
 
-    def isEqual(self, vector2: FreeCAD.Vector, tol: float, /) -> bool:
+    def isEqual(self, obj: FreeCAD.Vector, tolerance: float = 0, /) -> bool:
         """
         isEqual(vector2, tol=0) -> bool
 
@@ -207,7 +196,7 @@ class Vector(FreeCAD.PyObjectBase):
         tol : float
         """
 
-    def isOnLineSegment(self, vector1, vector2, /) -> bool:
+    def isOnLineSegment(self, start, end, /) -> bool:
         """
         isOnLineSegment(vector1, vector2) -> bool
 
@@ -243,7 +232,7 @@ class Vector(FreeCAD.PyObjectBase):
         Possible exceptions: (FreeCAD.Base.FreeCADError).
         """
 
-    def projectToLine(self, point, dir, /) -> FreeCAD.Vector:
+    def projectToLine(self, base, line, /) -> FreeCAD.Vector:
         """
         projectToLine(point, dir) -> Base.Vector
 
@@ -259,7 +248,7 @@ class Vector(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError).
         """
 
-    def projectToPlane(self, base, normal, /) -> FreeCAD.Vector:
+    def projectToPlane(self, base, line, /) -> FreeCAD.Vector:
         """
         projectToPlane(base, normal) -> Base.Vector
 
@@ -271,7 +260,7 @@ class Vector(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError).
         """
 
-    def scale(self, x: float, y: float, z: float, /) -> FreeCAD.Vector:
+    def scale(self, factorX: float, factorY: float, factorZ: float, /) -> FreeCAD.Vector:
         """
         scale(x, y, z) -> Base.Vector
 
@@ -285,7 +274,7 @@ class Vector(FreeCAD.PyObjectBase):
             z-component factor scale.
         """
 
-    def sub(self, vector2: FreeCAD.Vector, /) -> FreeCAD.Vector:
+    def sub(self, obj: FreeCAD.Vector, /) -> FreeCAD.Vector:
         """
         sub(vector2) -> Base.Vector
 
@@ -443,13 +432,19 @@ class Rotation(FreeCAD.PyObjectBase):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, rotation: FreeCAD.Rotation, /): ...
+    def __init__(self, a11: float = 1.0, a12: float = 0.0, a13: float = 0.0, a14: float = 0.0, a21: float = 0.0, a22: float = 1.0, a23: float = 0.0, a24: float = 0.0, a31: float = 0.0, a32: float = 0.0, a33: float = 1.0, a34: float = 0.0, a41: float = 0.0, a42: float = 0.0, a43: float = 0.0, a44: float = 1.0, /): ...
 
     @typing.overload
-    def __init__(self, rotation: FreeCAD.Matrix, /): ...
+    def __init__(self, a11: float = 1.0, a12: float = 0.0, a13: float = 0.0, a21: float = 0.0, a22: float = 1.0, a23: float = 0.0, a31: float = 0.0, a32: float = 0.0, a33: float = 1.0, /): ...
 
     @typing.overload
-    def __init__(self, Axis: FreeCAD.Vector, Radian: FreeCAD.Vector, /): ...
+    def __init__(self, o: FreeCAD.Rotation, /): ...
+
+    @typing.overload
+    def __init__(self, o: FreeCAD.Matrix, /): ...
+
+    @typing.overload
+    def __init__(self, v1: FreeCAD.Vector, v2: FreeCAD.Vector, /): ...
 
     @typing.overload
     def __init__(self, Axis: FreeCAD.Vector, Degree: float): ...
@@ -458,61 +453,16 @@ class Rotation(FreeCAD.PyObjectBase):
     def __init__(self, Axis: FreeCAD.Vector, Radian: float): ...
 
     @typing.overload
-    def __init__(self, Axis: FreeCAD.Vector, Degree: FreeCAD.Vector, /): ...
+    def __init__(self, y: float, p: float, r: float, /): ...
 
     @typing.overload
-    def __init__(self, vector_start: FreeCAD.Vector, vector_end: FreeCAD.Vector, /): ...
+    def __init__(self, v1: FreeCAD.Vector, v2: FreeCAD.Vector, v3: FreeCAD.Vector, priority: str = None, /): ...
 
     @typing.overload
-    def __init__(self, angle1: float, angle2: float, angle3: float, /): ...
+    def __init__(self, q0: float, q1: float, q2: float, q3: float, /): ...
 
     @typing.overload
-    def __init__(self, angle1: FreeCAD.Vector, angle2: FreeCAD.Vector, angle3: FreeCAD.Vector, arg4: str = None, /): ...
-
-    @typing.overload
-    def __init__(self, seq: float, angle1: float, angle2: float, angle3: float, /): ...
-
-    @typing.overload
-    def __init__(self, seq: str, angle1: float, angle2: float, angle3: float, /): ...
-
-    @typing.overload
-    def __init__(self, seq: FreeCAD.Vector, angle1: FreeCAD.Vector, angle2: FreeCAD.Vector, angle3: str = None, /): ...
-
-    @typing.overload
-    def __init__(self, x: float, y: float, z: float, w: float, /): ...
-
-    @typing.overload
-    def __init__(self, x: str, y: float, z: float, w: float, /): ...
-
-    @typing.overload
-    def __init__(self, x: FreeCAD.Vector, y: FreeCAD.Vector, z: FreeCAD.Vector, w: str = None, /): ...
-
-    @typing.overload
-    def __init__(self, dir1: float, dir2: float, dir3: float, seq: float, /): ...
-
-    @typing.overload
-    def __init__(self, dir1: str, dir2: float, dir3: float, seq: float, /): ...
-
-    @typing.overload
-    def __init__(self, dir1: FreeCAD.Vector, dir2: FreeCAD.Vector, dir3: FreeCAD.Vector, seq: str = None, /): ...
-
-    @typing.overload
-    def __init__(self, matrix: FreeCAD.Rotation, /): ...
-
-    @typing.overload
-    def __init__(self, matrix: FreeCAD.Matrix, /): ...
-
-    @typing.overload
-    def __init__(self, arg1: FreeCAD.Rotation, /): ...
-
-    @typing.overload
-    def __init__(self, arg1: FreeCAD.Matrix, /): ...
-
-    @typing.overload
-    def __init__(self, arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, arg6: float, arg7: float, arg8: float, arg9: float, arg10: float, arg11: float, arg12: float, arg13: float, arg14: float, arg15: float, arg16: float, /): ...
-
-    @typing.overload
-    def __init__(self, arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, arg6: float, arg7: float, arg8: float, arg9: float, /):
+    def __init__(self, seq: str, a: float, b: float, c: float, /):
         """
         Base.Rotation class.
 
@@ -642,7 +592,7 @@ class Rotation(FreeCAD.PyObjectBase):
         Returns True if all values in the quaternion representation are zero.
         """
 
-    def isSame(self, rotation: FreeCAD.Rotation, tol: float = 0, /) -> bool:
+    def isSame(self, rot: FreeCAD.Rotation, tol: float = 0.0, /) -> bool:
         """
         isSame(rotation, tol=0) -> bool
 
@@ -654,7 +604,7 @@ class Rotation(FreeCAD.PyObjectBase):
             If tol is negative or zero, no tolerance is used.
         """
 
-    def multVec(self, vector: FreeCAD.Vector, /) -> FreeCAD.Vector:
+    def multVec(self, obj: FreeCAD.Vector, /) -> FreeCAD.Vector:
         """
         multVec(vector) -> Base.Vector
 
@@ -664,7 +614,7 @@ class Rotation(FreeCAD.PyObjectBase):
             Vector to be transformed.
         """
 
-    def multiply(self, rotation: FreeCAD.Rotation, /) -> FreeCAD.Rotation:
+    def multiply(self, rot: FreeCAD.Rotation, /) -> FreeCAD.Rotation:
         """
         multiply(rotation) -> Base.Rotation
 
@@ -674,7 +624,7 @@ class Rotation(FreeCAD.PyObjectBase):
             Rotation by which to multiply this rotation.
         """
 
-    def setEulerAngles(self, seq: str, angle1: float, angle2: float, angle3: float, /):
+    def setEulerAngles(self, seq: str, A: float, B: float, C: float, /):
         """
         setEulerAngles(seq, angle1, angle2, angle3) -> None
 
@@ -688,7 +638,7 @@ class Rotation(FreeCAD.PyObjectBase):
         angle3 : float
         """
 
-    def setYawPitchRoll(self, angle1: float, angle2: float, angle3: float, /):
+    def setYawPitchRoll(self, A: float, B: float, C: float, /):
         """
         setYawPitchRoll(angle1, angle2, angle3) -> None
 
@@ -702,7 +652,7 @@ class Rotation(FreeCAD.PyObjectBase):
             Angle around roll axis in degrees.
         """
 
-    def slerp(self, rotation2: FreeCAD.Rotation, t: float, /) -> FreeCAD.Rotation:
+    def slerp(self, rot: FreeCAD.Rotation, t: float, /) -> FreeCAD.Rotation:
         """
         slerp(rotation2, t) -> Base.Rotation
 
@@ -833,7 +783,7 @@ class Persistence(FreeCAD.BaseClass):
         Possible exceptions: (NotImplementedError, IOError).
         """
 
-    def restoreContent(self, obj, /):
+    def restoreContent(self, buffer, /):
         """
         restoreContent(obj) -> None
 
@@ -874,24 +824,24 @@ class Precision(FreeCAD.PyObjectBase):
         """Returns the precision value in real space, frequently used by intersection algorithms"""
 
     @staticmethod
-    def isInfinite(arg0: float, /) -> bool:
+    def isInfinite(v: float, /) -> bool:
         """Returns True if R may be considered as an infinite number"""
 
     @staticmethod
-    def isNegativeInfinite(arg0: float, /) -> bool:
+    def isNegativeInfinite(v: float, /) -> bool:
         """Returns True if R may  be considered as a negative infinite number"""
 
     @staticmethod
-    def isPositiveInfinite(arg0: float, /) -> bool:
+    def isPositiveInfinite(v: float, /) -> bool:
         """Returns True if R may  be considered as a positive infinite number"""
 
     @staticmethod
     @typing.overload
-    def parametric(arg0: float, /) -> float: ...
+    def parametric(p: float, /) -> float: ...
 
     @staticmethod
     @typing.overload
-    def parametric(arg0: float, arg1: float, /) -> float:
+    def parametric(p: float, t: float, /) -> float:
         """
         Convert a real space precision to a parametric space precision
         Possible exceptions: (ValueError).
@@ -954,22 +904,16 @@ class BoundBox(FreeCAD.PyObjectBase):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, boundBox: float, arg2: float = None, arg3: float = None, arg4: float = None, arg5: float = None, arg6: float = None, /): ...
+    def __init__(self, xMin: float = 0.0, yMin: float = 0.0, zMin: float = 0.0, xMax: float = 0.0, yMax: float = 0.0, zMax: float = 0.0, /): ...
 
     @typing.overload
-    def __init__(self, boundBox: FreeCAD.BoundBox, /): ...
+    def __init__(self, object1: FreeCAD.BoundBox, /): ...
 
     @typing.overload
-    def __init__(self, xMin: float, yMin: float = 0, zMin: float = 0, xMax: float = 0, yMax: float = 0, zMax: float = 0, /): ...
+    def __init__(self, object1: tuple, object2: tuple, /): ...
 
     @typing.overload
-    def __init__(self, min: float, max: float = None, arg3: float = None, arg4: float = None, arg5: float = None, arg6: float = None, /): ...
-
-    @typing.overload
-    def __init__(self, min: tuple, max: tuple, /): ...
-
-    @typing.overload
-    def __init__(self, min: FreeCAD.Vector, max: FreeCAD.Vector, /):
+    def __init__(self, object1: FreeCAD.Vector, object2: FreeCAD.Vector, /):
         """
         Base.BoundBox class.
 
@@ -1079,13 +1023,13 @@ class BoundBox(FreeCAD.PyObjectBase):
     def ZMin(self, value: float): ...
 
     @typing.overload
-    def add(self, minMax: tuple, /): ...
+    def add(self, object: tuple, /): ...
 
     @typing.overload
-    def add(self, minMax: FreeCAD.Vector, /): ...
+    def add(self, object: FreeCAD.Vector, /): ...
 
     @typing.overload
-    def add(self, minMax: FreeCAD.BoundBox, /): ...
+    def add(self, object: FreeCAD.BoundBox, /): ...
 
     @typing.overload
     def add(self, x: float, y: float, z: float, /):
@@ -1109,10 +1053,10 @@ class BoundBox(FreeCAD.PyObjectBase):
         """
 
     @typing.overload
-    def closestPoint(self, point: tuple, /) -> FreeCAD.Vector: ...
+    def closestPoint(self, object: tuple, /) -> FreeCAD.Vector: ...
 
     @typing.overload
-    def closestPoint(self, point: FreeCAD.Vector, /) -> FreeCAD.Vector: ...
+    def closestPoint(self, object: FreeCAD.Vector, /) -> FreeCAD.Vector: ...
 
     @typing.overload
     def closestPoint(self, x: float, y: float, z: float, /) -> FreeCAD.Vector:
@@ -1133,7 +1077,7 @@ class BoundBox(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError).
         """
 
-    def enlarge(self, variation: float, /):
+    def enlarge(self, s: float, /):
         """
         enlarge(variation) -> None
 
@@ -1153,7 +1097,7 @@ class BoundBox(FreeCAD.PyObjectBase):
         index : int
         """
 
-    def getIntersectionPoint(self, base: FreeCAD.Vector, dir: FreeCAD.Vector, epsilon: float = 0.0001, /) -> FreeCAD.Vector:
+    def getIntersectionPoint(self, object: FreeCAD.Vector, object2: FreeCAD.Vector, epsilon: float = 0.0001, /) -> FreeCAD.Vector:
         """
         getIntersectionPoint(base, dir, epsilon=0.0001) -> Base.Vector
 
@@ -1180,10 +1124,10 @@ class BoundBox(FreeCAD.PyObjectBase):
         """
 
     @typing.overload
-    def intersect(self, boundBox2: FreeCAD.BoundBox, /) -> bool: ...
+    def intersect(self, object: FreeCAD.BoundBox, /) -> bool: ...
 
     @typing.overload
-    def intersect(self, base: FreeCAD.Vector, dir: FreeCAD.Vector, /) -> bool:
+    def intersect(self, object: FreeCAD.Vector, object2: FreeCAD.Vector, /) -> bool:
         """
         intersect(boundBox2) -> bool
         intersect(base, dir) -> bool
@@ -1197,7 +1141,7 @@ class BoundBox(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError).
         """
 
-    def intersected(self, boundBox2: FreeCAD.BoundBox, /) -> FreeCAD.BoundBox:
+    def intersected(self, object: FreeCAD.BoundBox, /) -> FreeCAD.BoundBox:
         """
         intersected(boundBox2) -> Base.BoundBox
 
@@ -1206,7 +1150,7 @@ class BoundBox(FreeCAD.PyObjectBase):
         boundBox2 : Base.BoundBox
         """
 
-    def isCutPlane(self, base: FreeCAD.Vector, normal: FreeCAD.Vector, /) -> bool:
+    def isCutPlane(self, object: FreeCAD.Vector, object2: FreeCAD.Vector, /) -> bool:
         """
         isCutPlane(base, normal) -> bool
 
@@ -1253,10 +1197,10 @@ class BoundBox(FreeCAD.PyObjectBase):
         """
 
     @typing.overload
-    def move(self, displacement: tuple, /): ...
+    def move(self, object: tuple, /): ...
 
     @typing.overload
-    def move(self, displacement: FreeCAD.Vector, /): ...
+    def move(self, object: FreeCAD.Vector, /): ...
 
     @typing.overload
     def move(self, x: float, y: float, z: float, /):
@@ -1278,10 +1222,10 @@ class BoundBox(FreeCAD.PyObjectBase):
         """
 
     @typing.overload
-    def scale(self, factor: tuple, /): ...
+    def scale(self, object: tuple, /): ...
 
     @typing.overload
-    def scale(self, factor: FreeCAD.Vector, /): ...
+    def scale(self, object: FreeCAD.Vector, /): ...
 
     @typing.overload
     def scale(self, x: float, y: float, z: float, /):
@@ -1309,7 +1253,7 @@ class BoundBox(FreeCAD.PyObjectBase):
         Invalidate the bounding box.
         """
 
-    def transformed(self, matrix: FreeCAD.Matrix, /) -> FreeCAD.BoundBox:
+    def transformed(self, mat: FreeCAD.Matrix, /) -> FreeCAD.BoundBox:
         """
         transformed(matrix) -> Base.BoundBox
 
@@ -1321,7 +1265,7 @@ class BoundBox(FreeCAD.PyObjectBase):
         Possible exceptions: (FloatingPointError).
         """
 
-    def united(self, boundBox2: FreeCAD.BoundBox, /) -> FreeCAD.BoundBox:
+    def united(self, object: FreeCAD.BoundBox, /) -> FreeCAD.BoundBox:
         """
         united(boundBox2) -> Base.BoundBox
 
@@ -1375,31 +1319,19 @@ class Placement(FreeCAD.PyObjectBase):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, placement: FreeCAD.Matrix, /): ...
+    def __init__(self, o: FreeCAD.Matrix, /): ...
 
     @typing.overload
-    def __init__(self, placement: FreeCAD.Placement, /): ...
+    def __init__(self, o: FreeCAD.Placement, /): ...
 
     @typing.overload
-    def __init__(self, matrix: FreeCAD.Matrix, /): ...
+    def __init__(self, o: FreeCAD.Vector, d: FreeCAD.Rotation, /): ...
 
     @typing.overload
-    def __init__(self, matrix: FreeCAD.Placement, /): ...
+    def __init__(self, o: FreeCAD.Vector, d: FreeCAD.Vector, angle: float, /): ...
 
     @typing.overload
-    def __init__(self, base: FreeCAD.Vector, rotation: FreeCAD.Rotation, /): ...
-
-    @typing.overload
-    def __init__(self, base: FreeCAD.Vector, rotation: FreeCAD.Vector, center: float, /): ...
-
-    @typing.overload
-    def __init__(self, base: FreeCAD.Vector, rotation: FreeCAD.Rotation, center: FreeCAD.Vector, /): ...
-
-    @typing.overload
-    def __init__(self, base: FreeCAD.Vector, axis: FreeCAD.Vector, angle: float, /): ...
-
-    @typing.overload
-    def __init__(self, base: FreeCAD.Vector, axis: FreeCAD.Rotation, angle: FreeCAD.Vector, /):
+    def __init__(self, o: FreeCAD.Vector, d: FreeCAD.Rotation, c: FreeCAD.Vector, /):
         """
         Base.Placement class.
 
@@ -1481,7 +1413,7 @@ class Placement(FreeCAD.PyObjectBase):
         Matrix representation is the 4D identity matrix.
         """
 
-    def isSame(self, Base_Placement: FreeCAD.Placement, tol: float = 0.0, /) -> bool:
+    def isSame(self, plm: FreeCAD.Placement, tol: float = 0.0, /) -> bool:
         """
         isSame(Base.Placement, [tol=0.0]) -> bool
 
@@ -1489,7 +1421,7 @@ class Placement(FreeCAD.PyObjectBase):
         The default tolerance is set to 0.0
         """
 
-    def move(self, vector: FreeCAD.Vector, /):
+    def move(self, vec: FreeCAD.Vector, /):
         """
         move(vector) -> None
 
@@ -1499,7 +1431,7 @@ class Placement(FreeCAD.PyObjectBase):
             Vector by which to move the placement.
         """
 
-    def multVec(self, vector: FreeCAD.Vector, /) -> FreeCAD.Vector:
+    def multVec(self, vec: FreeCAD.Vector, /) -> FreeCAD.Vector:
         """
         multVec(vector) -> Base.Vector
 
@@ -1509,7 +1441,7 @@ class Placement(FreeCAD.PyObjectBase):
             Vector to be transformed.
         """
 
-    def multiply(self, placement: FreeCAD.Placement, /) -> FreeCAD.Placement:
+    def multiply(self, plm: FreeCAD.Placement, /) -> FreeCAD.Placement:
         """
         multiply(placement) -> Base.Placement
 
@@ -1535,7 +1467,7 @@ class Placement(FreeCAD.PyObjectBase):
         """
 
     @typing.overload
-    def rotate(self, center: tuple[float, float, float], axis: tuple[float, float, float], angle: float, comp: bool = None): ...
+    def rotate(self, center: tuple[float, float, float], axis: tuple[float, float, float], angle: float, comp: bool = False): ...
 
     @typing.overload
     def rotate(self):
@@ -1557,7 +1489,7 @@ class Placement(FreeCAD.PyObjectBase):
         behave like TopoShape.rotate() (i.e. the resulting placements are interchangeable).
         """
 
-    def sclerp(self, placement2: FreeCAD.Placement, t: float, shorten: bool = True, /) -> FreeCAD.Placement:
+    def sclerp(self, pyplm2: FreeCAD.Placement, t: float, shorten: bool = True, /) -> FreeCAD.Placement:
         """
         sclerp(placement2, t, shorten=True) -> Base.Placement
 
@@ -1576,7 +1508,7 @@ class Placement(FreeCAD.PyObjectBase):
             takes the shorter path.
         """
 
-    def slerp(self, placement2: FreeCAD.Placement, t: float, /) -> FreeCAD.Placement:
+    def slerp(self, pyplm2: FreeCAD.Placement, t: float, /) -> FreeCAD.Placement:
         """
         slerp(placement2, t) -> Base.Placement
 
@@ -1704,46 +1636,16 @@ class Unit(FreeCAD.PyObjectBase):
     """
 
     @typing.overload
-    def __init__(self, arg1: int = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, /): ...
+    def __init__(self, i1: int = 0, i2: int = 0, i3: int = 0, i4: int = 0, i5: int = 0, i6: int = 0, i7: int = 0, i8: int = 0, /): ...
 
     @typing.overload
-    def __init__(self, i1: int = None, i2: int = None, i3: int = None, i4: int = None, i5: int = None, i6: int = None, i7: int = None, i8: int = None, /): ...
+    def __init__(self, object: FreeCAD.Quantity, /): ...
 
     @typing.overload
-    def __init__(self, Quantity: FreeCAD.Quantity, /): ...
+    def __init__(self, object: FreeCAD.Unit, /): ...
 
     @typing.overload
-    def __init__(self, Quantity: FreeCAD.Unit, /): ...
-
-    @typing.overload
-    def __init__(self, Quantity: str, /): ...
-
-    @typing.overload
-    def __init__(self, Quantity: int = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, /): ...
-
-    @typing.overload
-    def __init__(self, Unit: FreeCAD.Quantity, /): ...
-
-    @typing.overload
-    def __init__(self, Unit: FreeCAD.Unit, /): ...
-
-    @typing.overload
-    def __init__(self, Unit: str, /): ...
-
-    @typing.overload
-    def __init__(self, Unit: int = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, /): ...
-
-    @typing.overload
-    def __init__(self, string: FreeCAD.Quantity, /): ...
-
-    @typing.overload
-    def __init__(self, string: FreeCAD.Unit, /): ...
-
-    @typing.overload
-    def __init__(self, string: str, /): ...
-
-    @typing.overload
-    def __init__(self, string: int = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, /):
+    def __init__(self, string: str, /):
         """
         Unit
          defines a unit type, calculate and compare.
@@ -1857,43 +1759,19 @@ class Quantity(FreeCAD.PyObjectBase):
     """
 
     @typing.overload
-    def __init__(self, arg1: float = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /): ...
+    def __init__(self, f: float = sys.float_info.max, object: FreeCAD.Unit = None, /): ...
 
     @typing.overload
-    def __init__(self, Value: FreeCAD.Quantity, /): ...
+    def __init__(self, f: float = sys.float_info.max, object: FreeCAD.Quantity = None, /): ...
 
     @typing.overload
-    def __init__(self, Value: float = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /): ...
+    def __init__(self, f: float = sys.float_info.max, i1: int = 0, i2: int = 0, i3: int = 0, i4: int = 0, i5: int = 0, i6: int = 0, i7: int = 0, i8: int = 0, /): ...
 
     @typing.overload
-    def __init__(self, Value: str, /): ...
+    def __init__(self, f: float = sys.float_info.max, string: str = None, /): ...
 
     @typing.overload
-    def __init__(self, Value: float, Unit: FreeCAD.Unit, /): ...
-
-    @typing.overload
-    def __init__(self, Value: float, Unit: FreeCAD.Quantity, /): ...
-
-    @typing.overload
-    def __init__(self, Value: float = None, Unit: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /): ...
-
-    @typing.overload
-    def __init__(self, Value: float, Unit: str, /): ...
-
-    @typing.overload
-    def __init__(self, Quantity: FreeCAD.Quantity, /): ...
-
-    @typing.overload
-    def __init__(self, Quantity: float = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /): ...
-
-    @typing.overload
-    def __init__(self, Quantity: str, /): ...
-
-    @typing.overload
-    def __init__(self, string: FreeCAD.Quantity, /): ...
-
-    @typing.overload
-    def __init__(self, string: float = None, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /): ...
+    def __init__(self, object: FreeCAD.Quantity, /): ...
 
     @typing.overload
     def __init__(self, string: str, /):
@@ -1946,55 +1824,19 @@ class Quantity(FreeCAD.PyObjectBase):
         """returns a quantity with the translation factor and a string with the prevered unit"""
 
     @typing.overload
-    def getValueAs(self, arg1: FreeCAD.Quantity, /) -> FreeCAD.Quantity: ...
+    def getValueAs(self, object: FreeCAD.Quantity, /) -> FreeCAD.Quantity: ...
 
     @typing.overload
-    def getValueAs(self, arg1: FreeCAD.Unit, /) -> FreeCAD.Quantity: ...
+    def getValueAs(self, object: FreeCAD.Unit, /) -> FreeCAD.Quantity: ...
 
     @typing.overload
-    def getValueAs(self, arg1: float, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /) -> FreeCAD.Quantity: ...
+    def getValueAs(self, f: float = sys.float_info.max, i1: int = 0, i2: int = 0, i3: int = 0, i4: int = 0, i5: int = 0, i6: int = 0, i7: int = 0, i8: int = 0, /) -> FreeCAD.Quantity: ...
 
     @typing.overload
-    def getValueAs(self, arg1: str, /) -> FreeCAD.Quantity: ...
+    def getValueAs(self, string: str, /) -> FreeCAD.Quantity: ...
 
     @typing.overload
-    def getValueAs(self, arg1: float, arg2: FreeCAD.Unit, /) -> FreeCAD.Quantity: ...
-
-    @typing.overload
-    def getValueAs(self, FreeCAD_Units_Pascal: FreeCAD.Quantity, /) -> FreeCAD.Quantity: ...
-
-    @typing.overload
-    def getValueAs(self, FreeCAD_Units_Pascal: FreeCAD.Unit, /) -> FreeCAD.Quantity: ...
-
-    @typing.overload
-    def getValueAs(self, FreeCAD_Units_Pascal: float, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /) -> FreeCAD.Quantity: ...
-
-    @typing.overload
-    def getValueAs(self, FreeCAD_Units_Pascal: str, /) -> FreeCAD.Quantity: ...
-
-    @typing.overload
-    def getValueAs(self, Qantity_N_m_2_: FreeCAD.Quantity, /) -> FreeCAD.Quantity: ...
-
-    @typing.overload
-    def getValueAs(self, Qantity_N_m_2_: FreeCAD.Unit, /) -> FreeCAD.Quantity: ...
-
-    @typing.overload
-    def getValueAs(self, Qantity_N_m_2_: float, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /) -> FreeCAD.Quantity: ...
-
-    @typing.overload
-    def getValueAs(self, Qantity_N_m_2_: str, /) -> FreeCAD.Quantity: ...
-
-    @typing.overload
-    def getValueAs(self, Unit_0_1_0_0_0_0_0_0_: FreeCAD.Quantity, /) -> FreeCAD.Quantity: ...
-
-    @typing.overload
-    def getValueAs(self, Unit_0_1_0_0_0_0_0_0_: FreeCAD.Unit, /) -> FreeCAD.Quantity: ...
-
-    @typing.overload
-    def getValueAs(self, Unit_0_1_0_0_0_0_0_0_: float, arg2: int = None, arg3: int = None, arg4: int = None, arg5: int = None, arg6: int = None, arg7: int = None, arg8: int = None, arg9: int = None, /) -> FreeCAD.Quantity: ...
-
-    @typing.overload
-    def getValueAs(self, Unit_0_1_0_0_0_0_0_0_: str, /) -> FreeCAD.Quantity:
+    def getValueAs(self, value: float, object: FreeCAD.Unit, /) -> FreeCAD.Quantity:
         """
         returns a floating point value as the provided unit
 
@@ -2008,7 +1850,7 @@ class Quantity(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError, ValueError).
         """
 
-    def toStr(self, decimals: int = None, /) -> str:
+    def toStr(self, prec: int = None, /) -> str:
         """
         toStr([decimals])
                   returns a string representation rounded to number of decimals. If no decimals are specified then
@@ -2105,7 +1947,7 @@ class BaseClass(FreeCAD.PyObjectBase):
     def getAllDerivedFrom(self) -> list[str]:
         """Returns all descendants"""
 
-    def isDerivedFrom(self, arg1: str, /) -> bool:
+    def isDerivedFrom(self, name: str, /) -> bool:
         """Returns true if given type is a father"""
 
 
@@ -2149,22 +1991,13 @@ class Matrix(FreeCAD.PyObjectBase):
     """
 
     @typing.overload
-    def __init__(self, arg1: float = None, arg2: float = None, arg3: float = None, arg4: float = None, arg5: float = None, arg6: float = None, arg7: float = None, arg8: float = None, arg9: float = None, arg10: float = None, arg11: float = None, arg12: float = None, arg13: float = None, arg14: float = None, arg15: float = None, arg16: float = None, /): ...
+    def __init__(self, a11: float = 1.0, a12: float = 0.0, a13: float = 0.0, a14: float = 0.0, a21: float = 0.0, a22: float = 1.0, a23: float = 0.0, a24: float = 0.0, a31: float = 0.0, a32: float = 0.0, a33: float = 1.0, a34: float = 0.0, a41: float = 0.0, a42: float = 0.0, a43: float = 0.0, a44: float = 1.0, /): ...
 
     @typing.overload
-    def __init__(self, matrix: float = None, arg2: float = None, arg3: float = None, arg4: float = None, arg5: float = None, arg6: float = None, arg7: float = None, arg8: float = None, arg9: float = None, arg10: float = None, arg11: float = None, arg12: float = None, arg13: float = None, arg14: float = None, arg15: float = None, arg16: float = None, /): ...
+    def __init__(self, o: FreeCAD.Matrix, /): ...
 
     @typing.overload
-    def __init__(self, matrix: FreeCAD.Matrix, /): ...
-
-    @typing.overload
-    def __init__(self, arg1: FreeCAD.Matrix, /): ...
-
-    @typing.overload
-    def __init__(self, vector1: float = None, vector2: float = None, vector3: float = None, vector4: float = None, arg5: float = None, arg6: float = None, arg7: float = None, arg8: float = None, arg9: float = None, arg10: float = None, arg11: float = None, arg12: float = None, arg13: float = None, arg14: float = None, arg15: float = None, arg16: float = None, /): ...
-
-    @typing.overload
-    def __init__(self, vector1: FreeCAD.Vector, vector2: FreeCAD.Vector, vector3: FreeCAD.Vector, vector4: FreeCAD.Vector = None, /):
+    def __init__(self, o1: FreeCAD.Vector, o2: FreeCAD.Vector, o3: FreeCAD.Vector, o4: FreeCAD.Vector = None, /):
         """
         Base.Matrix class.
 
@@ -2381,7 +2214,7 @@ class Matrix(FreeCAD.PyObjectBase):
         Check if this is the null matrix.
         """
 
-    def isOrthogonal(self, tol: float = 1e-6, /) -> float:
+    def isOrthogonal(self, eps: float = 1e-06, /) -> float:
         """
         isOrthogonal(tol=1e-6) -> float
 
@@ -2400,10 +2233,10 @@ class Matrix(FreeCAD.PyObjectBase):
         """
 
     @typing.overload
-    def move(self, vector: tuple, /): ...
+    def move(self, pcVecObj: tuple, /): ...
 
     @typing.overload
-    def move(self, vector: FreeCAD.Vector, /): ...
+    def move(self, pcVecObj: FreeCAD.Vector, /): ...
 
     @typing.overload
     def move(self, x: float, y: float, z: float, /):
@@ -2423,7 +2256,7 @@ class Matrix(FreeCAD.PyObjectBase):
             `z` translation.
         """
 
-    def multVec(self, vector: FreeCAD.Vector, /) -> FreeCAD.Vector:
+    def multVec(self, obj: FreeCAD.Vector, /) -> FreeCAD.Vector:
         """
         multVec(vector) -> Base.Vector
 
@@ -2433,16 +2266,10 @@ class Matrix(FreeCAD.PyObjectBase):
         """
 
     @typing.overload
-    def multiply(self, matrix: FreeCAD.Matrix, /) -> FreeCAD.Matrix | FreeCAD.Vector: ...
+    def multiply(self, o: FreeCAD.Matrix, /) -> FreeCAD.Matrix | FreeCAD.Vector: ...
 
     @typing.overload
-    def multiply(self, matrix: FreeCAD.Vector, /) -> FreeCAD.Matrix | FreeCAD.Vector: ...
-
-    @typing.overload
-    def multiply(self, vector: FreeCAD.Matrix, /) -> FreeCAD.Matrix | FreeCAD.Vector: ...
-
-    @typing.overload
-    def multiply(self, vector: FreeCAD.Vector, /) -> FreeCAD.Matrix | FreeCAD.Vector:
+    def multiply(self, o: FreeCAD.Vector, /) -> FreeCAD.Matrix | FreeCAD.Vector:
         """
         multiply(matrix) -> Base.Matrix
         multiply(vector) -> Base.Vector
@@ -2463,10 +2290,10 @@ class Matrix(FreeCAD.PyObjectBase):
         """
 
     @typing.overload
-    def rotateX(self, angle: FreeCAD.Quantity, /): ...
+    def rotateX(self, object: FreeCAD.Quantity, /): ...
 
     @typing.overload
-    def rotateX(self, angle: float, /):
+    def rotateX(self, angle: float = 0, /):
         """
         rotateX(angle) -> None
 
@@ -2478,10 +2305,10 @@ class Matrix(FreeCAD.PyObjectBase):
         """
 
     @typing.overload
-    def rotateY(self, angle: FreeCAD.Quantity, /): ...
+    def rotateY(self, object: FreeCAD.Quantity, /): ...
 
     @typing.overload
-    def rotateY(self, angle: float, /):
+    def rotateY(self, angle: float = 0, /):
         """
         rotateY(angle) -> None
 
@@ -2493,10 +2320,10 @@ class Matrix(FreeCAD.PyObjectBase):
         """
 
     @typing.overload
-    def rotateZ(self, angle: FreeCAD.Quantity, /): ...
+    def rotateZ(self, object: FreeCAD.Quantity, /): ...
 
     @typing.overload
-    def rotateZ(self, angle: float, /):
+    def rotateZ(self, angle: float = 0, /):
         """
         rotateZ(angle) -> None
 
@@ -2520,25 +2347,16 @@ class Matrix(FreeCAD.PyObjectBase):
         """
 
     @typing.overload
-    def scale(self, vector: float, /): ...
+    def scale(self, x: float, /): ...
 
     @typing.overload
-    def scale(self, vector: tuple, /): ...
+    def scale(self, pcVecObj: tuple, /): ...
 
     @typing.overload
-    def scale(self, vector: FreeCAD.Vector, /): ...
+    def scale(self, pcVecObj: FreeCAD.Vector, /): ...
 
     @typing.overload
-    def scale(self, x: float, y: float, z: float, /): ...
-
-    @typing.overload
-    def scale(self, factor: float, /): ...
-
-    @typing.overload
-    def scale(self, factor: tuple, /): ...
-
-    @typing.overload
-    def scale(self, factor: FreeCAD.Vector, /):
+    def scale(self, x: float, y: float, z: float, /):
         """
         scale(vector) -> None
         scale(x, y, z) -> None
@@ -2557,7 +2375,7 @@ class Matrix(FreeCAD.PyObjectBase):
             global factor scale.
         """
 
-    def setCol(self, index: int, vector: FreeCAD.Vector, /):
+    def setCol(self, index: int, o: FreeCAD.Vector, /):
         """
         setCol(index, vector) -> None
 
@@ -2570,7 +2388,7 @@ class Matrix(FreeCAD.PyObjectBase):
         Possible exceptions: (ValueError).
         """
 
-    def setRow(self, index: int, vector: FreeCAD.Vector, /):
+    def setRow(self, index: int, o: FreeCAD.Vector, /):
         """
         setRow(index, vector) -> None
 
@@ -2583,7 +2401,7 @@ class Matrix(FreeCAD.PyObjectBase):
         Possible exceptions: (ValueError).
         """
 
-    def setTrace(self, vector: FreeCAD.Vector, /):
+    def setTrace(self, o: FreeCAD.Vector, /):
         """
         setTrace(vector) -> None
 
@@ -2612,7 +2430,7 @@ class Matrix(FreeCAD.PyObjectBase):
         Return the diagonal of the 3x3 leading principal submatrix as vector.
         """
 
-    def transform(self, vector: FreeCAD.Vector, matrix2: FreeCAD.Matrix, /):
+    def transform(self, pcVecObj: FreeCAD.Vector, pcMatObj: FreeCAD.Matrix, /):
         """
         transform(vector, matrix2) -> None
 
@@ -2779,7 +2597,7 @@ class CoordinateSystem(FreeCAD.PyObjectBase):
     @ZDirection.setter
     def ZDirection(self, value: FreeCAD.Vector): ...
 
-    def displacement(self, coordSystem2: FreeCAD.CoordinateSystem, /) -> FreeCAD.Placement:
+    def displacement(self, cs: FreeCAD.CoordinateSystem, /) -> FreeCAD.Placement:
         """
         displacement(coordSystem2) -> Base.Placement
 
@@ -2789,10 +2607,10 @@ class CoordinateSystem(FreeCAD.PyObjectBase):
         """
 
     @typing.overload
-    def setAxes(self, axis: FreeCAD.Axis, xDir: FreeCAD.Vector, /): ...
+    def setAxes(self, axis: FreeCAD.Axis, xdir: FreeCAD.Vector, /): ...
 
     @typing.overload
-    def setAxes(self, axis: FreeCAD.Vector, xDir: FreeCAD.Vector, /):
+    def setAxes(self, axis: FreeCAD.Vector, xdir: FreeCAD.Vector, /):
         """
         setAxes(axis, xDir) -> None
 
@@ -2805,7 +2623,7 @@ class CoordinateSystem(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError).
         """
 
-    def setPlacement(self, arg1: FreeCAD.Placement, /):
+    def setPlacement(self, plm: FreeCAD.Placement, /):
         """
         setPlacment(placement) -> None
 
@@ -2815,10 +2633,10 @@ class CoordinateSystem(FreeCAD.PyObjectBase):
         """
 
     @typing.overload
-    def transform(self, trans: FreeCAD.Placement, /): ...
+    def transform(self, plm: FreeCAD.Placement, /): ...
 
     @typing.overload
-    def transform(self, trans: FreeCAD.Rotation, /):
+    def transform(self, plm: FreeCAD.Rotation, /):
         """
         transform(trans) -> None
 
@@ -2828,7 +2646,7 @@ class CoordinateSystem(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError).
         """
 
-    def transformTo(self, vector: FreeCAD.Vector, /) -> FreeCAD.Vector:
+    def transformTo(self, vec: FreeCAD.Vector, /) -> FreeCAD.Vector:
         """
         transformTo(vector) -> Base.Vector
 
@@ -2882,7 +2700,7 @@ class TypeId(FreeCAD.PyObjectBase):
         """
 
     @staticmethod
-    def fromKey(key: int, /) -> FreeCAD.TypeId:
+    def fromKey(index: int, /) -> FreeCAD.TypeId:
         """
         fromKey(key) -> Base.BaseType
 
@@ -2910,11 +2728,11 @@ class TypeId(FreeCAD.PyObjectBase):
 
     @staticmethod
     @typing.overload
-    def getAllDerivedFrom(type: str, /) -> list[FreeCAD.TypeId]: ...
+    def getAllDerivedFrom(name: str, /) -> list[FreeCAD.TypeId]: ...
 
     @staticmethod
     @typing.overload
-    def getAllDerivedFrom(type: FreeCAD.TypeId, /) -> list[FreeCAD.TypeId]:
+    def getAllDerivedFrom(t: FreeCAD.TypeId, /) -> list[FreeCAD.TypeId]:
         """
         getAllDerivedFrom(type) -> list
 
@@ -2955,10 +2773,10 @@ class TypeId(FreeCAD.PyObjectBase):
         """
 
     @typing.overload
-    def isDerivedFrom(self, type: str, /) -> bool: ...
+    def isDerivedFrom(self, name: str, /) -> bool: ...
 
     @typing.overload
-    def isDerivedFrom(self, type: FreeCAD.TypeId, /) -> bool:
+    def isDerivedFrom(self, t: FreeCAD.TypeId, /) -> bool:
         """
         isDerivedFrom(type) -> bool
 
@@ -2996,10 +2814,10 @@ class Axis(FreeCAD.PyObjectBase):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, axis: FreeCAD.Axis, /): ...
+    def __init__(self, o: FreeCAD.Axis, /): ...
 
     @typing.overload
-    def __init__(self, base: FreeCAD.Vector, direction: FreeCAD.Vector, /):
+    def __init__(self, o: FreeCAD.Vector, d: FreeCAD.Vector, /):
         """
         Base.Axis class.
 
@@ -3042,7 +2860,7 @@ class Axis(FreeCAD.PyObjectBase):
         Returns a copy of this Axis.
         """
 
-    def move(self, vector: FreeCAD.Vector, /):
+    def move(self, vec: FreeCAD.Vector, /):
         """
         move(vector) -> None
 
@@ -3052,7 +2870,7 @@ class Axis(FreeCAD.PyObjectBase):
             Vector by which to move the axis.
         """
 
-    def multiply(self, placement: FreeCAD.Placement, /) -> FreeCAD.Axis:
+    def multiply(self, plm: FreeCAD.Placement, /) -> FreeCAD.Axis:
         """
         multiply(placement) -> Base.Axis
 
@@ -3083,13 +2901,13 @@ class ProgressIndicator:
     Progress indicator
     """
 
-    def start(self, string: str, int: int, /) -> None:
+    def start(self, text: str, steps: int, /) -> None:
         """
         start(string,int)
         Possible exceptions: (Exception).
         """
 
-    def next(self, arg1: int = None, /) -> None:
+    def next(self, b: int = 0, /) -> None:
         """
         next()
         Possible exceptions: (Exception, RuntimeError).

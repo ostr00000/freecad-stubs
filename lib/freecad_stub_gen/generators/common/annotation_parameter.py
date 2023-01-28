@@ -45,6 +45,11 @@ class RawRepr:
             raise NotImplementedError
 
 
+class RawStringRepresentation(str):
+    def __repr__(self):
+        return str(self)
+
+
 class AnnotationParam(Parameter):
     """Add annotation in __str__ method."""
 

@@ -55,7 +55,7 @@ class Sheet(FreeCAD.DocumentObject):
         Row heights.
         """
 
-    def clear(self, arg1: str, arg2: bool = None, /):
+    def clear(self, strAddress: str, all: bool = 1, /):
         """
         Clear a cell
         Possible exceptions: (ValueError).
@@ -64,85 +64,85 @@ class Sheet(FreeCAD.DocumentObject):
     def clearAll(self):
         """Clear all cells in the spreadsheet"""
 
-    def exportFile(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, /) -> bool:
+    def exportFile(self, filename: str, delimiter: str = '\t', quoteChar: str = '"', escapeChar: str = '\\', /) -> bool:
         """Export file from spreadsheet"""
 
-    def get(self, arg1: str, arg2: str = None, /) -> tuple[FreeCAD.Property, ...] | FreeCAD.Property:
+    def get(self, address: str, address2: str = None, /) -> tuple[FreeCAD.Property, ...] | FreeCAD.Property:
         """Get evaluated cell contents"""
 
-    def getAlias(self, arg1: str, /) -> str | None:
+    def getAlias(self, strAddress: str, /) -> str | None:
         """
         Get alias for cell address
         Possible exceptions: (ValueError).
         """
 
-    def getAlignment(self, arg1: str, /) -> typing.Any | None:
+    def getAlignment(self, strAddress: str, /) -> typing.Any | None:
         """
         Get alignment of the cell
         Possible exceptions: (ValueError).
         """
 
-    def getBackground(self, arg1: str, /) -> tuple[float, float, float, float] | None:
+    def getBackground(self, strAddress: str, /) -> tuple[float, float, float, float] | None:
         """
         Get background color of the cell
         Possible exceptions: (ValueError).
         """
 
-    def getCellFromAlias(self, arg1: str, /) -> str | None:
+    def getCellFromAlias(self, alias: str, /) -> str | None:
         """
         Get cell address given an alias
         Possible exceptions: (ValueError).
         """
 
-    def getColumnWidth(self, arg1: str, /) -> int:
+    def getColumnWidth(self, columnStr: str, /) -> int:
         """
         Get given spreadsheet column width
         Possible exceptions: (ValueError).
         """
 
-    def getContents(self, arg1: str, /) -> str:
+    def getContents(self, strAddress: str, /) -> str:
         """
         Get cell contents
         Possible exceptions: (ValueError).
         """
 
-    def getDisplayUnit(self, arg1: str, /) -> str:
+    def getDisplayUnit(self, strAddress: str, /) -> str:
         """
         Get display unit for cell
         Possible exceptions: (ValueError).
         """
 
-    def getForeground(self, arg1: str, /) -> tuple[float, float, float, float] | None:
+    def getForeground(self, strAddress: str, /) -> tuple[float, float, float, float] | None:
         """
         Get foreground color of the cell
         Possible exceptions: (ValueError).
         """
 
-    def getRowHeight(self, arg1: str, /) -> int:
+    def getRowHeight(self, rowStr: str, /) -> int:
         """
         Get given spreadsheet row height
         Possible exceptions: (ValueError).
         """
 
-    def getStyle(self, arg1: str, /) -> typing.Any | None:
+    def getStyle(self, strAddress: str, /) -> typing.Any | None:
         """
         Get style of the cell
         Possible exceptions: (ValueError).
         """
 
-    def importFile(self, arg1: str, arg2: str = None, arg3: str = None, arg4: str = None, /) -> bool:
+    def importFile(self, filename: str, delimiter: str = '\t', quoteChar: str = '"', escapeChar: str = '\\', /) -> bool:
         """Import file into spreadsheet"""
 
-    def insertColumns(self, arg1: str, arg2: int, /):
+    def insertColumns(self, column: str, count: int, /):
         """Insert a given number of columns into the spreadsheet."""
 
-    def insertRows(self, arg1: str, arg2: int, /):
+    def insertRows(self, row: str, count: int, /):
         """Insert a given number of rows into the spreadsheet."""
 
-    def mergeCells(self, arg1: str, /):
+    def mergeCells(self, range: str, /):
         """Merge given cell area into one cell"""
 
-    def recomputeCells(self, from_: str, to: str = None, /):
+    def recomputeCells(self, address: str, address2: str = None, /):
         """
         recomputeCells(from, to=None)
 
@@ -150,73 +150,73 @@ class Sheet(FreeCAD.DocumentObject):
         following dependency order.
         """
 
-    def removeColumns(self, arg1: str, arg2: int, /):
+    def removeColumns(self, column: str, count: int, /):
         """Remove a given number of columns from the spreadsheet."""
 
-    def removeRows(self, arg1: str, arg2: int, /):
+    def removeRows(self, row: str, count: int, /):
         """Remove a given number of rows from the spreadsheet."""
 
-    def set(self, arg1: str, arg2: str, /):
+    def set(self, address: str, contents: str, /):
         """
         Set data into a cell
         Possible exceptions: (ValueError).
         """
 
-    def setAlias(self, arg1: str, arg2, /):
+    def setAlias(self, strAddress: str, value, /):
         """
         Set alias for cell address
         Possible exceptions: (ValueError).
         """
 
-    def setAlignment(self, arg1: str, arg2, arg3: str = None, /):
+    def setAlignment(self, cell: str, value, options: str = 'replace', /):
         """
         Set alignment of the cell
         Possible exceptions: (TypeError, ValueError).
         """
 
-    def setBackground(self, arg1: str, arg2, /):
+    def setBackground(self, strAddress: str, value, /):
         """
         Set background color of the cell
         Possible exceptions: (TypeError, ValueError).
         """
 
-    def setColumnWidth(self, arg1: str, arg2: int, /):
+    def setColumnWidth(self, columnStr: str, width: int, /):
         """
         Set given spreadsheet column to given width
         Possible exceptions: (ValueError).
         """
 
-    def setDisplayUnit(self, arg1: str, arg2: str, /):
+    def setDisplayUnit(self, cell: str, value: str, /):
         """
         Set display unit for cell
         Possible exceptions: (ValueError).
         """
 
-    def setForeground(self, arg1: str, arg2, /):
+    def setForeground(self, range: str, value, /):
         """
         Set foreground color of the cell
         Possible exceptions: (TypeError, ValueError).
         """
 
-    def setRowHeight(self, arg1: str, arg2: int, /):
+    def setRowHeight(self, rowStr: str, height: int, /):
         """
         Set given spreadsheet row to given height
         Possible exceptions: (ValueError).
         """
 
-    def setStyle(self, arg1: str, arg2, arg3: str = None, /):
+    def setStyle(self, cell: str, value, options: str = 'replace', /):
         """
         Set style of the cell
         Possible exceptions: (TypeError, ValueError).
         """
 
-    def splitCell(self, arg1: str, /):
+    def splitCell(self, strAddress: str, /):
         """
         Split a previously merged cell
         Possible exceptions: (ValueError).
         """
 
-    def touchCells(self, from_: str, to: str = None, /):
+    def touchCells(self, address: str, address2: str = None, /):
         """touchCells(from, to=None): touch cells in the given range"""
 
 
@@ -261,10 +261,10 @@ class SheetViewPy:
         """
 
     @typing.overload
-    def select(self, cell: str, flags: int, /) -> None: ...
+    def select(self, cell: str, flags: int = 0, /) -> None: ...
 
     @typing.overload
-    def select(self, topLeft: str, bottomRight: str, flags: int, /) -> None:
+    def select(self, topLeft: str, bottomRight: str, flags: int = 0, /) -> None:
         """
         select(cell,flags): Select (or deselect) the given cell, applying QItemSelectionModel.SelectionFlags
         select(topLeft,bottomRight,flags): Select (or deselect) the given range, applying QItemSelectionModel.SelectionFlags

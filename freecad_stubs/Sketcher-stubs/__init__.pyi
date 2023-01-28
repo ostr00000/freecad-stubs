@@ -1,4 +1,5 @@
 import io
+import math
 import typing
 
 import FreeCAD
@@ -24,7 +25,7 @@ class SketchGeometryExtension(PartModule.GeometryExtension):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, arg1: int, /):
+    def __init__(self, Id: int, /):
         """
         Describes a SketchGeometryExtension
         Possible exceptions: (TypeError).
@@ -65,13 +66,13 @@ class SketchGeometryExtension(PartModule.GeometryExtension):
     @InternalType.setter
     def InternalType(self, value: str): ...
 
-    def setGeometryMode(self, arg1: str, arg2: bool = None, /):
+    def setGeometryMode(self, flag: str, bflag: bool = True, /):
         """
         Sets the given bit to true/false.
         Possible exceptions: (TypeError).
         """
 
-    def testGeometryMode(self, arg1: str, /) -> bool:
+    def testGeometryMode(self, flag: str, /) -> bool:
         """
         Returns a boolean indicating whether the given bit is set.
         Possible exceptions: (TypeError).
@@ -89,22 +90,22 @@ class Constraint(FreeCAD.Persistence):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, arg1: str, arg2: int, /): ...
+    def __init__(self, ConstraintType: str, FirstIndex: int, /): ...
 
     @typing.overload
-    def __init__(self, arg1: str, arg2: int, arg3, /): ...
+    def __init__(self, ConstraintType: str, FirstIndex: int, arg3, /): ...
 
     @typing.overload
-    def __init__(self, arg1: str, arg2: int, arg3: int, arg4, /): ...
+    def __init__(self, ConstraintType: str, FirstIndex: int, arg3: int, arg4, /): ...
 
     @typing.overload
-    def __init__(self, arg1: str, arg2: int, arg3: int, arg4: int, arg5, /): ...
+    def __init__(self, ConstraintType: str, intArg1: int, intArg2: int, intArg3: int, oNumArg4, /): ...
 
     @typing.overload
-    def __init__(self, arg1: str, arg2: int, arg3: int, arg4: int, arg5: int, arg6, /): ...
+    def __init__(self, ConstraintType: str, intArg1: int, intArg2: int, intArg3: int, intArg4: int, oNumArg5, /): ...
 
     @typing.overload
-    def __init__(self, arg1: str, arg2: int, arg3: int, arg4: int, arg5: int, arg6: int, arg7, /):
+    def __init__(self, ConstraintType: str, FirstIndex: int, FirstPos: int, SecondIndex: int = -1, SecondPos: int = None, ThirdIndex: int = None, arg7=None, /):
         """
         With this object you can handle sketches
         Possible exceptions: (TypeError).
@@ -294,81 +295,81 @@ class SketchObject(PartModule.Part2DObject):
     @Geometry.setter
     def Geometry(self, value: typing.Iterable[PartModule.Geometry] | dict[int, PartModule.Geometry]): ...
 
-    def DeleteUnusedInternalGeometry(self, arg1: int, /):
+    def DeleteUnusedInternalGeometry(self, GeoId: int, /):
         """
         Deprecated -- use deleteUnusedInternalGeometry
         Possible exceptions: (ValueError).
         """
 
-    def ExposeInternalGeometry(self, arg1: int, /):
+    def ExposeInternalGeometry(self, GeoId: int, /):
         """
         Deprecated -- use exposeInternalGeometry
         Possible exceptions: (ValueError).
         """
 
-    def addConstraint(self, arg1, /) -> int | tuple[int, ...]:
+    def addConstraint(self, pcObj, /) -> int | tuple[int, ...]:
         """
         add a constraint to the sketch
         Possible exceptions: (TypeError, IndexError).
         """
 
-    def addCopy(self, arg1, arg2: FreeCAD.Vector, arg3: bool = None, /) -> tuple[int, ...]:
+    def addCopy(self, pcObj, pcVect: FreeCAD.Vector, clone: bool = False, /) -> tuple[int, ...]:
         """
         add a copy of geometric objects to the sketch displaced by a vector3d
         Possible exceptions: (TypeError, ValueError).
         """
 
-    def addExternal(self, arg1: str, arg2: str, /):
+    def addExternal(self, ObjectName: str, SubName: str, /):
         """
         add a link to an external geometry to use it in a constraint
         Possible exceptions: (ValueError).
         """
 
     @typing.overload
-    def addGeometry(self, arg1, arg2: bool, /) -> int | tuple[int, ...]: ...
+    def addGeometry(self, pcObj, construction: bool, /) -> int | tuple[int, ...]: ...
 
     @typing.overload
-    def addGeometry(self, arg1, /) -> int | tuple[int, ...]:
+    def addGeometry(self, pcObj, /) -> int | tuple[int, ...]:
         """
         add a geometric object to the sketch
         Possible exceptions: (TypeError).
         """
 
-    def addMove(self, arg1, arg2: FreeCAD.Vector, /):
+    def addMove(self, pcObj, pcVect: FreeCAD.Vector, /):
         """
         Moves the geometric objects in the sketch displaced by a vector3d
         Possible exceptions: (TypeError).
         """
 
-    def addRectangularArray(self, arg1, arg2: FreeCAD.Vector, arg3: bool, arg4: int, arg5: int, arg6: bool = None, arg7: float = None, /):
+    def addRectangularArray(self, pcObj, pcVect: FreeCAD.Vector, clone: bool = False, rows: int = None, cols: int = None, constraindisplacement: bool = False, perpscale: float = 1.0, /):
         """
         add an array of size cols by rows where each element is a copy of the selected geometric objects displaced by a vector3d in the cols direction and by a vector perpendicular to it in the rows direction
         Possible exceptions: (TypeError, ValueError).
         """
 
-    def addSymmetric(self, arg1, arg2: int, arg3: int = None, /) -> tuple[int, ...]:
+    def addSymmetric(self, pcObj, refGeoId: int, refPosId: int = None, /) -> tuple[int, ...]:
         """
         add a symmetric geometric objects to the sketch with respect to a reference point or line
         Possible exceptions: (TypeError).
         """
 
-    def analyseMissingPointOnPointCoincident(self, arg1: float = None, /):
+    def analyseMissingPointOnPointCoincident(self, angleprecision: float = math.pi / 8, /):
         """
         Analyses the already detected Missing Point On Point Constraints to detect endpoint tagency/perpendicular.
                         The result may be retrieved or applied using the corresponding Get / Make methods.
         """
 
-    def autoRemoveRedundants(self, arg1: bool = None, /):
+    def autoRemoveRedundants(self, updategeo: bool = True, /):
         """Removes constraints currently detected as redundant by the solver. If the argument is True, then the geometry is updated after solving."""
 
-    def autoconstraint(self, arg1: float = None, arg2: float = None, arg3: bool = None, /):
+    def autoconstraint(self, precision: float = None, angleprecision: float = math.pi / 8, includeconstruction: bool = True, /):
         """
         Automatic sketch constraining algorithm.
             
         Possible exceptions: (ValueError).
         """
 
-    def calculateAngleViaPoint(self, GeoId1: int, GeoId2: int, px: float, py: float, /) -> float:
+    def calculateAngleViaPoint(self, GeoId1: int = 0, GeoId2: int = 0, px: float = 0, py: float = 0, /) -> float:
         """
         calculateAngleViaPoint(GeoId1, GeoId2, px, py) - calculates angle between
                   curves identified by GeoId1 and GeoId2 at point (x,y). The point must be
@@ -378,7 +379,7 @@ class SketchObject(PartModule.Part2DObject):
         Possible exceptions: (ValueError).
         """
 
-    def calculateConstraintError(self, index: int, /) -> float:
+    def calculateConstraintError(self, ic: int = -1, /) -> float:
         """
         calculateConstraintError(index) - calculates the error function of the
                   constraint identified by its index and returns the signed error value.
@@ -389,13 +390,13 @@ class SketchObject(PartModule.Part2DObject):
         Possible exceptions: (ValueError).
         """
 
-    def carbonCopy(self, arg1: str, arg2: bool = None, /):
+    def carbonCopy(self, ObjectName: str, construction: bool = True, /):
         """
         copy another sketch's geometry and constraints
         Possible exceptions: (ValueError).
         """
 
-    def changeConstraintsLocking(self, bLock: int, /) -> int:
+    def changeConstraintsLocking(self, bLock: int = 0, /) -> int:
         """
         changeConstraintsLocking(bLock) - locks or unlocks all tangent and
                   perpendicular constraints. (Constraint locking prevents it from
@@ -409,40 +410,40 @@ class SketchObject(PartModule.Part2DObject):
                   constraints are unlocked.
         """
 
-    def convertToNURBS(self, arg1: int, /):
+    def convertToNURBS(self, GeoId: int, /):
         """
         Approximates the given geometry with a B-Spline
         Possible exceptions: (ValueError).
         """
 
-    def decreaseBSplineDegree(self, arg1: int, arg2: int = None, /) -> bool:
+    def decreaseBSplineDegree(self, GeoId: int, decr: int = 1, /) -> bool:
         """Decreases the given BSpline Degree by a number of degrees by approximating this curve"""
 
-    def delConstraint(self, arg1: int, /):
+    def delConstraint(self, Index: int, /):
         """
         delete a constraint from the sketch
         Possible exceptions: (ValueError).
         """
 
-    def delConstraintOnPoint(self, arg1: int, arg2: int = None, /):
+    def delConstraintOnPoint(self, Index: int, pos: int = -1, /):
         """
         delete coincident constraints associated with a sketch point
         Possible exceptions: (ValueError).
         """
 
-    def delExternal(self, arg1: int, /):
+    def delExternal(self, Index: int, /):
         """
         delete a external geometry link from the sketch
         Possible exceptions: (ValueError).
         """
 
-    def delGeometries(self, arg1, /):
+    def delGeometries(self, pcObj, /):
         """
         delete a list of geometric objects from the sketch, including any internal alignment geometry thereof
         Possible exceptions: (TypeError, ValueError).
         """
 
-    def delGeometry(self, arg1: int, /):
+    def delGeometry(self, Index: int, /):
         """
         delete a geometric object from the sketch
         Possible exceptions: (ValueError).
@@ -460,78 +461,78 @@ class SketchObject(PartModule.Part2DObject):
         Possible exceptions: (ValueError).
         """
 
-    def deleteUnusedInternalGeometry(self, arg1: int, /):
+    def deleteUnusedInternalGeometry(self, GeoId: int, /):
         """
         Deletes all unused (not further constrained) internal geometry
         Possible exceptions: (ValueError).
         """
 
-    def detectMissingEqualityConstraints(self, arg1: float = None, /) -> int:
+    def detectMissingEqualityConstraints(self, precision: float = None, /) -> int:
         """
         Detects Missing Equality Constraints. The Detect step just identifies possible missing constraints.
                         The result may be retrieved or applied using the corresponding Get / Make methods.
         """
 
-    def detectMissingPointOnPointConstraints(self, arg1: float = None, arg2: bool = None, /) -> int:
+    def detectMissingPointOnPointConstraints(self, precision: float = None, includeconstruction: bool = True, /) -> int:
         """
         Detects Missing Point On Point Constraints. The Detect step just identifies possible missing constraints.
                         The result may be retrieved or applied using the corresponding Get / Make methods.
         """
 
-    def detectMissingVerticalHorizontalConstraints(self, arg1: float = None, /) -> int:
+    def detectMissingVerticalHorizontalConstraints(self, angleprecision: float = math.pi / 8, /) -> int:
         """
         Detects Missing Horizontal/Vertical Constraints. The Detect step just identifies possible missing constraints.
                         The result may be retrieved or applied using the corresponding Get / Make methods.
         """
 
-    def exposeInternalGeometry(self, arg1: int, /):
+    def exposeInternalGeometry(self, GeoId: int, /):
         """
         Exposes all internal geometry of an object supporting internal geometry
         Possible exceptions: (ValueError).
         """
 
-    def extend(self, arg1: int, arg2: float, arg3: int, /):
+    def extend(self, GeoId: int, increment: float, endPoint: int, /):
         """
         extend a curve to new start and end positions
         Possible exceptions: (ValueError, TypeError).
         """
 
     @typing.overload
-    def fillet(self, arg1: int, arg2: int, arg3: FreeCAD.Vector, arg4: FreeCAD.Vector, arg5: float, arg6: int = None, arg7: bool = None, /): ...
+    def fillet(self, geoId1: int, geoId2: int, pcObj1: FreeCAD.Vector, pcObj2: FreeCAD.Vector, radius: float, trim: int = True, createCorner: bool = False, /): ...
 
     @typing.overload
-    def fillet(self, arg1: int, arg2: int, arg3: float, arg4: int = None, arg5: bool = None, /):
+    def fillet(self, geoId1: int, posId1: int, radius: float, trim: int = True, createCorner: bool = False, /):
         """
         create fillet between two edges or at a point
         Possible exceptions: (ValueError, TypeError).
         """
 
-    def getActive(self, arg1: int, /) -> bool:
+    def getActive(self, constrid: int, /) -> bool:
         """
         Get the constraint status (enforced or not)
         Possible exceptions: (ValueError).
         """
 
-    def getAxis(self, arg1: int, /) -> FreeCAD.Axis:
+    def getAxis(self, AxId: int, /) -> FreeCAD.Axis:
         """return an axis based on the corresponding construction line"""
 
-    def getConstruction(self, arg1: int, /) -> bool:
+    def getConstruction(self, Index: int, /) -> bool:
         """
         returns the construction mode of a geometry
         Possible exceptions: (ValueError).
         """
 
     @typing.overload
-    def getDatum(self, arg1: int, /) -> FreeCAD.Quantity: ...
+    def getDatum(self, index: int = 0, /) -> FreeCAD.Quantity: ...
 
     @typing.overload
-    def getDatum(self, arg1: str, /) -> FreeCAD.Quantity:
+    def getDatum(self, name: str, /) -> FreeCAD.Quantity:
         """
         Get the value of a datum constraint
         Possible exceptions: (IndexError, NameError, TypeError).
         """
 
-    def getDriving(self, arg1: int, /) -> bool:
+    def getDriving(self, constrid: int, /) -> bool:
         """
         Get the Driving status of a datum constraint
         Possible exceptions: (ValueError).
@@ -540,7 +541,7 @@ class SketchObject(PartModule.Part2DObject):
     def getGeoVertexIndex(self, index: int, /) -> tuple[int, int]:
         """(geoId, posId) = getGeoVertexIndex(index) - retrieve the GeoId and PosId of a point in the sketch"""
 
-    def getGeometryId(self, arg1: int, /) -> int:
+    def getGeometryId(self, Index: int, /) -> int:
         """
         gets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId
         Possible exceptions: (ValueError).
@@ -553,7 +554,7 @@ class SketchObject(PartModule.Part2DObject):
                         as being dependent on other parameters.
         """
 
-    def getIndexByName(self, arg1: str, /) -> int:
+    def getIndexByName(self, utf8Name: str, /) -> int:
         """
         Get the index of the constraint by name.
         If there is no such constraint an exception is raised.
@@ -561,32 +562,32 @@ class SketchObject(PartModule.Part2DObject):
         Possible exceptions: (ValueError, LookupError).
         """
 
-    def getPoint(self, GeoIndex: int, PointPos: int, /) -> FreeCAD.Vector:
+    def getPoint(self, GeoId: int, PointType: int, /) -> FreeCAD.Vector:
         """
         getPoint(GeoIndex,PointPos) - retrieve the vector of a point in the sketch
         
         Possible exceptions: (ValueError).
         """
 
-    def getVirtualSpace(self, arg1: int, /) -> bool:
+    def getVirtualSpace(self, constrid: int, /) -> bool:
         """
         Get the VirtualSpace status of a constraint
         Possible exceptions: (ValueError).
         """
 
-    def increaseBSplineDegree(self, arg1: int, arg2: int = None, /):
+    def increaseBSplineDegree(self, GeoId: int, incr: int = 1, /):
         """
         Increases the given BSpline Degree by a number of degrees
         Possible exceptions: (ValueError).
         """
 
-    def insertBSplineKnot(self, arg1: int, arg2: float, arg3: int = None, /):
+    def insertBSplineKnot(self, GeoId: int, knotParam: float, multiplicity: int = 1, /):
         """
         Inserts a knot into the BSpline at the given param with given multiplicity. If the knot already exists, this increases the knot multiplicity by the given multiplicity.
         Possible exceptions: (ValueError).
         """
 
-    def isPointOnCurve(self, arg1: int, arg2: float, arg3: float, /) -> bool:
+    def isPointOnCurve(self, GeoId: int, px: float = 0, py: float = 0, /) -> bool:
         """
         isPointOnObject(GeoIdCurve, float x, float y) - tests if the point (x,y)
                   geometrically lies on a curve (e.g. ellipse). It treats lines as infinite,
@@ -595,16 +596,16 @@ class SketchObject(PartModule.Part2DObject):
         Possible exceptions: (ValueError).
         """
 
-    def makeMissingEquality(self, arg1: bool = None, /):
+    def makeMissingEquality(self, onebyone: bool = True, /):
         """Applies the detected / set Equality constraints. If the argument is True, then solving and redundant removal is done after each individual addition."""
 
-    def makeMissingPointOnPointCoincident(self, arg1: bool = None, /):
+    def makeMissingPointOnPointCoincident(self, onebyone: bool = False, /):
         """Applies the detected / set Point On Point coincident constraints. If the argument is True, then solving and redundant removal is done after each individual addition."""
 
-    def makeMissingVerticalHorizontal(self, arg1: bool = None, /):
+    def makeMissingVerticalHorizontal(self, onebyone: bool = False, /):
         """Applies the detected / set Vertical/Horizontal constraints. If the argument is True, then solving and redundant removal is done after each individual addition."""
 
-    def modifyBSplineKnotMultiplicity(self, arg1: int, arg2: int, arg3: int = None, /):
+    def modifyBSplineKnotMultiplicity(self, GeoId: int, knotIndex: int, multiplicity: int = 1, /):
         """
         Increases or reduces the given BSpline knot multiplicity
         Possible exceptions: (ValueError).
@@ -616,7 +617,7 @@ class SketchObject(PartModule.Part2DObject):
         Possible exceptions: (ValueError).
         """
 
-    def movePoint(self, GeoIndex: int, PointPos: int, Vector: FreeCAD.Vector, relative: int = None, /):
+    def movePoint(self, GeoId: int, PointType: int, pcObj: FreeCAD.Vector, relative: int = 0, /):
         """
         movePoint(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
                   to another location.
@@ -631,65 +632,65 @@ class SketchObject(PartModule.Part2DObject):
         Possible exceptions: (ValueError).
         """
 
-    def removeAxesAlignment(self, arg1, /):
+    def removeAxesAlignment(self, pcObj, /):
         """
         modifies constraints so that the shape is not forced to be aligned with axes.
         Possible exceptions: (TypeError).
         """
 
-    def renameConstraint(self, arg1: int, arg2: str, /):
+    def renameConstraint(self, Index: int, utf8Name: str, /):
         """
         Rename a constraint of the sketch
         Possible exceptions: (IndexError, ValueError).
         """
 
-    def setActive(self, arg1: int, arg2: bool, /):
+    def setActive(self, constrid: int, isactive: bool, /):
         """
         sets the constraint on/off (enforced or not)
         Possible exceptions: (ValueError).
         """
 
-    def setConstruction(self, arg1: int, arg2: bool, /):
+    def setConstruction(self, Index: int, Mode: bool, /):
         """
         set construction mode of a geometry on or off
         Possible exceptions: (ValueError).
         """
 
     @typing.overload
-    def setDatum(self, arg1: int, arg2: FreeCAD.Quantity, /): ...
+    def setDatum(self, Index: int, object: FreeCAD.Quantity, /): ...
 
     @typing.overload
-    def setDatum(self, arg1: int, arg2: float, /): ...
+    def setDatum(self, Index: int, Datum: float, /): ...
 
     @typing.overload
-    def setDatum(self, arg1: str, arg2: FreeCAD.Quantity, /): ...
+    def setDatum(self, constrName: str, object: FreeCAD.Quantity, /): ...
 
     @typing.overload
-    def setDatum(self, arg1: str, arg2: float, /):
+    def setDatum(self, constrName: str, Datum: float, /):
         """
         set the Datum of a Distance or Angle constraint
         Possible exceptions: (ValueError, TypeError).
         """
 
-    def setDatumsDriving(self, arg1: bool, /):
+    def setDatumsDriving(self, driving: bool, /):
         """
         set the Driving status of datum constraints
         Possible exceptions: (ValueError).
         """
 
-    def setDriving(self, arg1: int, arg2: bool, /):
+    def setDriving(self, constrid: int, driving: bool, /):
         """
         set the Driving status of a datum constraint
         Possible exceptions: (ValueError).
         """
 
-    def setGeometryId(self, arg1: int, arg2: int, /):
+    def setGeometryId(self, Index: int, Id: int, /):
         """
         sets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId
         Possible exceptions: (ValueError).
         """
 
-    def setVirtualSpace(self, arg1, arg2: bool, /):
+    def setVirtualSpace(self, arg1, invirtualspace: bool, /):
         """
         set the VirtualSpace status of a constraint
         Possible exceptions: (TypeError, ValueError).
@@ -698,37 +699,37 @@ class SketchObject(PartModule.Part2DObject):
     def solve(self) -> int:
         """solve the actual set of geometry and constraints"""
 
-    def split(self, arg1: int, arg2: FreeCAD.Vector, /):
+    def split(self, GeoId: int, pcObj: FreeCAD.Vector, /):
         """
         split a curve with a given id at a given reference point
         Possible exceptions: (ValueError).
         """
 
-    def toggleActive(self, arg1: int, /):
+    def toggleActive(self, constrid: int, /):
         """
         toggle the active status of constraint (enforced or not)
         Possible exceptions: (ValueError).
         """
 
-    def toggleConstruction(self, arg1: int, /):
+    def toggleConstruction(self, Index: int, /):
         """
         switch a geometry to a construction line
         Possible exceptions: (ValueError).
         """
 
-    def toggleDriving(self, arg1: int, /):
+    def toggleDriving(self, constrid: int, /):
         """
         toggle the Driving status of a datum constraint
         Possible exceptions: (ValueError).
         """
 
-    def toggleVirtualSpace(self, arg1: int, /):
+    def toggleVirtualSpace(self, constrid: int, /):
         """
         toggle the VirtualSpace status of a constraint
         Possible exceptions: (ValueError).
         """
 
-    def trim(self, arg1: int, arg2: FreeCAD.Vector, /):
+    def trim(self, GeoId: int, pcObj: FreeCAD.Vector, /):
         """
         trim a curve with a given id at a given reference point
         Possible exceptions: (ValueError).
@@ -765,13 +766,13 @@ class Sketch(FreeCAD.Persistence):
     def Shape(self) -> PartModule.Shape:
         """Resulting shape from the sketch geometry"""
 
-    def addConstraint(self, arg1, /) -> tuple[int, ...] | int:
+    def addConstraint(self, pcObj, /) -> tuple[int, ...] | int:
         """
         add an constraint object to the sketch
         Possible exceptions: (TypeError).
         """
 
-    def addGeometry(self, arg1, /) -> int | tuple[int, ...]:
+    def addGeometry(self, pcObj, /) -> int | tuple[int, ...]:
         """
         add a geometric object to the sketch
         Possible exceptions: (TypeError).
@@ -780,7 +781,7 @@ class Sketch(FreeCAD.Persistence):
     def clear(self):
         """clear the sketch"""
 
-    def movePoint(self, GeoIndex: int, PointPos: int, Vector: FreeCAD.Vector, relative: int = None, /) -> int:
+    def movePoint(self, index1: int, index2: int, pcObj: FreeCAD.Vector, relative: int = 0, /) -> int:
         """
         movePoint(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
                   to another location.
@@ -804,7 +805,7 @@ class ExternalGeometryFacade(FreeCAD.BaseClass):
     Describes a GeometryFacade
     """
 
-    def __init__(self, arg1: PartModule.Geometry, /):
+    def __init__(self, object: PartModule.Geometry, /):
         """
         Describes a GeometryFacade
         Possible exceptions: (TypeError).
@@ -863,25 +864,25 @@ class ExternalGeometryFacade(FreeCAD.BaseClass):
     def Tag(self) -> str:
         """Gives the tag of the geometry as string."""
 
-    def deleteExtensionOfName(self, arg1: str, /):
+    def deleteExtensionOfName(self, o: str, /):
         """
         Deletes all extensions of the indicated name.
         Possible exceptions: (Part.OCCError).
         """
 
-    def deleteExtensionOfType(self, arg1: str, /):
+    def deleteExtensionOfType(self, o: str, /):
         """
         Deletes all extensions of the indicated type.
         Possible exceptions: (Part.OCCError).
         """
 
-    def getExtensionOfName(self, arg1: str, /):
+    def getExtensionOfName(self, o: str, /):
         """
         Gets the first geometry extension of the name indicated by the string.
         Possible exceptions: (Part.OCCError).
         """
 
-    def getExtensionOfType(self, arg1: str, /):
+    def getExtensionOfType(self, o: str, /):
         """
         Gets the first geometry extension of the type indicated by the string.
         Possible exceptions: (Part.OCCError).
@@ -893,67 +894,67 @@ class ExternalGeometryFacade(FreeCAD.BaseClass):
         Possible exceptions: (Part.OCCError).
         """
 
-    def hasExtensionOfName(self, arg1: str, /) -> bool:
+    def hasExtensionOfName(self, o: str, /) -> bool:
         """
         Returns a boolean indicating whether a geometry extension with the name indicated as a string exists.
         Possible exceptions: (Part.OCCError).
         """
 
-    def hasExtensionOfType(self, arg1: str, /) -> bool:
+    def hasExtensionOfType(self, o: str, /) -> bool:
         """
         Returns a boolean indicating whether a geometry extension of the type indicated as a string exists.
         Possible exceptions: (Part.OCCError).
         """
 
     @typing.overload
-    def mirror(self, arg1: FreeCAD.Vector, /): ...
+    def mirror(self, o: FreeCAD.Vector, /): ...
 
     @typing.overload
-    def mirror(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, /):
+    def mirror(self, o: FreeCAD.Vector, axis: FreeCAD.Vector, /):
         """
         Performs the symmetrical transformation of this geometric object
         Possible exceptions: (Part.OCCError).
         """
 
-    def rotate(self, arg1: FreeCAD.Placement, /):
+    def rotate(self, o: FreeCAD.Placement, /):
         """Rotates this geometric object at angle Ang (in radians) about axis"""
 
     @typing.overload
-    def scale(self, arg1: FreeCAD.Vector, arg2: float, /): ...
+    def scale(self, o: FreeCAD.Vector, scale: float, /): ...
 
     @typing.overload
-    def scale(self, arg1: tuple, arg2: float, /):
+    def scale(self, o: tuple, scale: float, /):
         """
         Applies a scaling transformation on this geometric object with a center and scaling factor
         Possible exceptions: (Part.OCCError).
         """
 
-    def setExtension(self, arg1: PartModule.GeometryExtension, /):
+    def setExtension(self, o: PartModule.GeometryExtension, /):
         """
         Sets a geometry extension of the indicated type.
         Possible exceptions: (Part.OCCError).
         """
 
-    def setFlag(self, arg1: str, arg2: bool = None, /) -> bool:
+    def setFlag(self, flag: str, bflag: bool = True, /) -> bool:
         """
         Sets the given bit to true/false.
         Possible exceptions: (TypeError).
         """
 
-    def testFlag(self, arg1: str, /) -> bool:
+    def testFlag(self, flag: str, /) -> bool:
         """
         Returns a boolean indicating whether the given bit is set.
         Possible exceptions: (TypeError).
         """
 
-    def transform(self, arg1: FreeCAD.Matrix, /):
+    def transform(self, o: FreeCAD.Matrix, /):
         """Applies a transformation to this geometric object"""
 
     @typing.overload
-    def translate(self, arg1: FreeCAD.Vector, /): ...
+    def translate(self, o: FreeCAD.Vector, /): ...
 
     @typing.overload
-    def translate(self, arg1: tuple, /):
+    def translate(self, o: tuple, /):
         """
         Translates this geometric object
         Possible exceptions: (Part.OCCError).
@@ -980,13 +981,13 @@ class ExternalGeometryExtension(PartModule.GeometryExtension):
     @Ref.setter
     def Ref(self, value: str): ...
 
-    def setFlag(self, arg1: str, arg2: bool = None, /):
+    def setFlag(self, flag: str, bflag: bool = True, /):
         """
         sets the given bit to true/false.
         Possible exceptions: (TypeError).
         """
 
-    def testFlag(self, arg1: str, /) -> bool:
+    def testFlag(self, flag: str, /) -> bool:
         """
         returns a boolean indicating whether the given bit is set.
         Possible exceptions: (TypeError).
@@ -1000,7 +1001,7 @@ class GeometryFacade(FreeCAD.BaseClass):
     Describes a GeometryFacade
     """
 
-    def __init__(self, arg1: PartModule.Geometry, /):
+    def __init__(self, object: PartModule.Geometry, /):
         """
         Describes a GeometryFacade
         Possible exceptions: (TypeError).
@@ -1052,25 +1053,25 @@ class GeometryFacade(FreeCAD.BaseClass):
     def Tag(self) -> str:
         """Gives the tag of the geometry as string."""
 
-    def deleteExtensionOfName(self, arg1: str, /):
+    def deleteExtensionOfName(self, o: str, /):
         """
         Deletes all extensions of the indicated name.
         Possible exceptions: (Part.OCCError).
         """
 
-    def deleteExtensionOfType(self, arg1: str, /):
+    def deleteExtensionOfType(self, o: str, /):
         """
         Deletes all extensions of the indicated type.
         Possible exceptions: (Part.OCCError).
         """
 
-    def getExtensionOfName(self, arg1: str, /):
+    def getExtensionOfName(self, o: str, /):
         """
         Gets the first geometry extension of the name indicated by the string.
         Possible exceptions: (Part.OCCError).
         """
 
-    def getExtensionOfType(self, arg1: str, /):
+    def getExtensionOfType(self, o: str, /):
         """
         Gets the first geometry extension of the type indicated by the string.
         Possible exceptions: (Part.OCCError).
@@ -1082,67 +1083,67 @@ class GeometryFacade(FreeCAD.BaseClass):
         Possible exceptions: (Part.OCCError).
         """
 
-    def hasExtensionOfName(self, arg1: str, /) -> bool:
+    def hasExtensionOfName(self, o: str, /) -> bool:
         """
         Returns a boolean indicating whether a geometry extension with the name indicated as a string exists.
         Possible exceptions: (Part.OCCError).
         """
 
-    def hasExtensionOfType(self, arg1: str, /) -> bool:
+    def hasExtensionOfType(self, o: str, /) -> bool:
         """
         Returns a boolean indicating whether a geometry extension of the type indicated as a string exists.
         Possible exceptions: (Part.OCCError).
         """
 
     @typing.overload
-    def mirror(self, arg1: FreeCAD.Vector, /): ...
+    def mirror(self, o: FreeCAD.Vector, /): ...
 
     @typing.overload
-    def mirror(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, /):
+    def mirror(self, o: FreeCAD.Vector, axis: FreeCAD.Vector, /):
         """
         Performs the symmetrical transformation of this geometric object
         Possible exceptions: (Part.OCCError).
         """
 
-    def rotate(self, arg1: FreeCAD.Placement, /):
+    def rotate(self, o: FreeCAD.Placement, /):
         """Rotates this geometric object at angle Ang (in radians) about axis"""
 
     @typing.overload
-    def scale(self, arg1: FreeCAD.Vector, arg2: float, /): ...
+    def scale(self, o: FreeCAD.Vector, scale: float, /): ...
 
     @typing.overload
-    def scale(self, arg1: tuple, arg2: float, /):
+    def scale(self, o: tuple, scale: float, /):
         """
         Applies a scaling transformation on this geometric object with a center and scaling factor
         Possible exceptions: (Part.OCCError).
         """
 
-    def setExtension(self, arg1: PartModule.GeometryExtension, /):
+    def setExtension(self, o: PartModule.GeometryExtension, /):
         """
         Sets a geometry extension of the indicated type.
         Possible exceptions: (Part.OCCError).
         """
 
-    def setGeometryMode(self, arg1: str, arg2: bool = None, /):
+    def setGeometryMode(self, flag: str, bflag: bool = True, /):
         """
         Sets the given bit to true/false.
         Possible exceptions: (TypeError).
         """
 
-    def testGeometryMode(self, arg1: str, /) -> bool:
+    def testGeometryMode(self, flag: str, /) -> bool:
         """
         Returns a boolean indicating whether the given bit is set.
         Possible exceptions: (TypeError).
         """
 
-    def transform(self, arg1: FreeCAD.Matrix, /):
+    def transform(self, o: FreeCAD.Matrix, /):
         """Applies a transformation to this geometric object"""
 
     @typing.overload
-    def translate(self, arg1: FreeCAD.Vector, /): ...
+    def translate(self, o: FreeCAD.Vector, /): ...
 
     @typing.overload
-    def translate(self, arg1: tuple, /):
+    def translate(self, o: tuple, /):
         """
         Translates this geometric object
         Possible exceptions: (Part.OCCError).
@@ -1150,9 +1151,9 @@ class GeometryFacade(FreeCAD.BaseClass):
 
 
 # AppSketcherPy.cpp
-def open(arg1: str, /):
+def open(Name: str, /):
     """Possible exceptions: (Exception, RuntimeError)."""
 
 
-def insert(arg1: str, arg2: str, /) -> None:
+def insert(Name: str, DocName: str, /) -> None:
     """Possible exceptions: (Exception, RuntimeError)."""

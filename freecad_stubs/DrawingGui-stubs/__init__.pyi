@@ -1,11 +1,11 @@
 # AppDrawingGuiPy.cpp
-def open(arg1: str, /) -> None:
+def open(Name: str, /) -> None:
     """Possible exceptions: (Exception, IOError)."""
 
 
-def insert(arg1: str, arg2: str = None, /) -> None:
+def insert(Name: str, dummy: str = None, /) -> None:
     """Possible exceptions: (Exception, IOError)."""
 
 
-def export(arg1, arg2: str, /) -> None:
+def export(object, Name: str, /) -> None:
     """Possible exceptions: (Exception, IOError, ValueError, TypeError)."""

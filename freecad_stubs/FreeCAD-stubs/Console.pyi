@@ -43,7 +43,7 @@ def PrintWarning(obj, /):
     """
 
 
-def SetStatus(observer: str, type: str, status: bool, /):
+def SetStatus(pstr1: str, pstr2: str, pyStatus: bool, /):
     """
     SetStatus(observer, type, status) -> None
 
@@ -57,7 +57,7 @@ def SetStatus(observer: str, type: str, status: bool, /):
     """
 
 
-def GetStatus(observer: str, type: str, /) -> bool:
+def GetStatus(pstr1: str, pstr2: str, /) -> bool:
     """
     GetStatus(observer, type) -> bool or None
 

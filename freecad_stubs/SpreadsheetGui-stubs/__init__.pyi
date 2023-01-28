@@ -10,5 +10,5 @@ class ViewProviderSpreadsheet(FreeCADGui.ViewProviderDocumentObject):
 
 
 # AppSpreadsheetGui.cpp
-def open(arg1: str, arg2: str = None, /) -> None:
+def open(Name: str, DocName: str = None, /) -> None:
     """Possible exceptions: (Exception, RuntimeError)."""

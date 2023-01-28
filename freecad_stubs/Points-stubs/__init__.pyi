@@ -12,7 +12,7 @@ class Points(FreeCAD.ComplexGeoData):
     transforming and much more.
     """
 
-    def __init__(self, arg1=None, /):
+    def __init__(self, pcObj=None, /):
         """
         Points() -- Create an empty points object.
 
@@ -37,7 +37,7 @@ class Points(FreeCAD.ComplexGeoData):
         	print p
         """
 
-    def addPoints(self, arg1, /):
+    def addPoints(self, obj, /):
         """
         add one or more (list of) points to the object
         Possible exceptions: (TypeError).
@@ -46,7 +46,7 @@ class Points(FreeCAD.ComplexGeoData):
     def copy(self) -> PointsModule.Points:
         """Create a copy of this points object"""
 
-    def fromSegment(self, arg1, /) -> PointsModule.Points:
+    def fromSegment(self, obj, /) -> PointsModule.Points:
         """
         Get a new point object from a given segment
         Possible exceptions: (TypeError).
@@ -58,10 +58,10 @@ class Points(FreeCAD.ComplexGeoData):
         Possible exceptions: (TypeError).
         """
 
-    def read(self, arg1: str, /):
+    def read(self, Name: str, /):
         """Read in a points object from file."""
 
-    def write(self, arg1: str, /):
+    def write(self, Name: str, /):
         """Write the points object into file."""
 
     def writeInventor(self) -> str:
@@ -69,19 +69,19 @@ class Points(FreeCAD.ComplexGeoData):
 
 
 # AppPointsPy.cpp
-def open(arg1: str, /) -> None:
+def open(Name: str, /) -> None:
     """Possible exceptions: (Exception, RuntimeError)."""
 
 
-def insert(arg1: str, arg2: str, /) -> None:
+def insert(Name: str, DocName: str, /) -> None:
     """Possible exceptions: (Exception, RuntimeError)."""
 
 
-def export(arg1, arg2: str, /) -> None:
+def export(object, Name: str, /) -> None:
     """Possible exceptions: (Exception, RuntimeError)."""
 
 
-def show(points: PointsModule.Points, string: str = None, /) -> None:
+def show(pcObj: PointsModule.Points, name: str = 'Points', /) -> None:
     """
     show(points,[string]) -- Add the points to the active document or create one if no document exists.
     Possible exceptions: (Exception, RuntimeError).

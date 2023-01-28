@@ -1,5 +1,5 @@
 # Translate.cpp
-def translate(context: str, sourcetext: str, disambiguation: str = None, n: int = -1, /) -> str:
+def translate(context: str, source: str, disambiguation: str = None, n: int = -1, /) -> str:
     """
     translate(context, sourcetext, disambiguation = None, n=-1)
     -- Returns the translation text for sourceText, by querying
@@ -54,7 +54,7 @@ def QT_TR_NOOP_UTF8(sourcetext, /):
     """
 
 
-def installTranslator(arg1: str, /) -> bool:
+def installTranslator(Name: str, /) -> bool:
     """
     Install a translator for testing purposes
     Possible exceptions: (Exception).

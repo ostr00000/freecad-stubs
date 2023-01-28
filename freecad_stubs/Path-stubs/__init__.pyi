@@ -25,13 +25,13 @@ class Tool(FreeCAD.Persistence):
     """
 
     @typing.overload
-    def __init__(self, arg1: dict, /): ...
+    def __init__(self, dict: dict = None, /): ...
 
     @typing.overload
-    def __init__(self, name: str = None, tooltype: str = None, material: str = None, diameter=None, lengthOffset=None, flatRadius=None, cornerRadius=None, cuttingEdgeAngle=None, cuttingEdgeHeight=None, version: int = None): ...
+    def __init__(self, name: str = 'Default tool', tooltype: str = 'Undefined', material: str = 'Undefined', diameter=None, lengthOffset=None, flatRadius=None, cornerRadius=None, cuttingEdgeAngle=None, cuttingEdgeHeight=None, version: int = 1): ...
 
     @typing.overload
-    def __init__(self, name: str = None, tooltype: str = None, material: str = None, diameter=None, lengthOffset=None, flatRadius=None, cornerRadius=None, cuttingEdgeAngle=None, cuttingEdgeHeight=None):
+    def __init__(self, name: str = 'Default tool', tooltype: str = 'Undefined', material: str = 'Undefined', diameter=None, lengthOffset=None, flatRadius=None, cornerRadius=None, cuttingEdgeAngle=None, cuttingEdgeHeight=None):
         """
         The Tool objects holds the properties of a CNC tool.
         optional attributes:
@@ -134,7 +134,7 @@ class Tool(FreeCAD.Persistence):
         Possible exceptions: (TypeError).
         """
 
-    def setFromTemplate(self, xmlString_dictionary: str, /):
+    def setFromTemplate(self, pstr: str = None, /):
         """
         setFromTemplate(xmlString|dictionary) ... fills receiver with values from the template string or dictionary
         Possible exceptions: (TypeError).
@@ -158,10 +158,10 @@ class Command(FreeCAD.Persistence):
     """
 
     @typing.overload
-    def __init__(self, name: str = None, parameters: dict = None): ...
+    def __init__(self, name: str = '', parameters: dict = None): ...
 
     @typing.overload
-    def __init__(self, name: str = None, parameters: FreeCAD.Placement = None):
+    def __init__(self, name: str = '', parameters: FreeCAD.Placement = None):
         """
         Command([name],[parameters]): Represents a basic Gcode command
         name (optional) is the name of the command, ex. G1
@@ -191,11 +191,7 @@ class Command(FreeCAD.Persistence):
     @Placement.setter
     def Placement(self, value: FreeCAD.Placement): ...
 
-    @typing.overload
-    def setFromGCode(self): ...
-
-    @typing.overload
-    def setFromGCode(self, arg1: str, /) -> None:
+    def setFromGCode(self, pstr: str = None, /) -> None:
         """
         setFromGCode(): sets the path from the contents of the given GCode string
         Possible exceptions: (TypeError, ValueError).
@@ -207,7 +203,7 @@ class Command(FreeCAD.Persistence):
         Possible exceptions: (TypeError).
         """
 
-    def transform(self, Placement: FreeCAD.Placement, /) -> PathModule.Command:
+    def transform(self, placement: FreeCAD.Placement, /) -> PathModule.Command:
         """
         transform(Placement): returns a copy of this command transformed by the given placement
         Possible exceptions: (TypeError).
@@ -274,9 +270,9 @@ class Area(FreeCAD.BaseClass):
         * rebuild: clean the internal cache and rebuild
         """
 
-    def makeOffset(self, index: int = None) -> PartModule.Shape: ...
+    def makeOffset(self, index: int = -1) -> PartModule.Shape: ...
 
-    def makePocket(self, index: int = None) -> PartModule.Shape: ...
+    def makePocket(self, index: int = -1) -> PartModule.Shape: ...
 
     def makeSections(self, heights=None, plane: PartModule.Shape = None) -> list[PathModule.Area]:
         """Possible exceptions: (TypeError)."""
@@ -285,7 +281,7 @@ class Area(FreeCAD.BaseClass):
 
     def setParams(self) -> PathModule.Area: ...
 
-    def setPlane(self, shape: PartModule.Shape, /) -> PathModule.Area:
+    def setPlane(self, pcObj: PartModule.Shape, /) -> PathModule.Area:
         """
         setPlane(shape): Set the working plane.
 
@@ -306,10 +302,10 @@ class Path(FreeCAD.Persistence):
     """
 
     @typing.overload
-    def __init__(self, commands: list = None, /): ...
+    def __init__(self, pcObj: list = None, /): ...
 
     @typing.overload
-    def __init__(self, commands: str = None, /):
+    def __init__(self, gcode: str = None, /):
         """
         Path([commands]): Represents a basic Gcode path
         commands (optional) is a list of Path commands
@@ -343,10 +339,10 @@ class Path(FreeCAD.Persistence):
         """the number of commands in this path"""
 
     @typing.overload
-    def addCommands(self, arg1: PathModule.Command, /) -> PathModule.Path: ...
+    def addCommands(self, o: PathModule.Command, /) -> PathModule.Path: ...
 
     @typing.overload
-    def addCommands(self, arg1: list, /) -> PathModule.Path:
+    def addCommands(self, o: list, /) -> PathModule.Path:
         """adds a command or a list of commands at the end of the path"""
 
     def copy(self) -> PathModule.Path:
@@ -355,22 +351,22 @@ class Path(FreeCAD.Persistence):
         Possible exceptions: (TypeError).
         """
 
-    def deleteCommand(self, int: int = None, /) -> PathModule.Path:
+    def deleteCommand(self, pos: int = -1, /) -> PathModule.Path:
         """
         deleteCommand([int]):
         deletes the command found at the given position or from the end of the path
         """
 
-    def getCycleTime(self, arg1: float, arg2: float, arg3: float, arg4: float, /) -> float:
+    def getCycleTime(self, hFeed: float, vFeed: float, hRapid: float, vRapid: float, /) -> float:
         """return the cycle time estimation for this path in s"""
 
-    def insertCommand(self, Command: PathModule.Command, int: int = None, /) -> PathModule.Path:
+    def insertCommand(self, o: PathModule.Command, pos: int = -1, /) -> PathModule.Path:
         """
         insertCommand(Command,[int]):
         adds a command at the given position or at the end of the path
         """
 
-    def setFromGCode(self, arg1: str, /) -> None:
+    def setFromGCode(self, pstr: str = None, /) -> None:
         """
         sets the contents of the path from a gcode string
         Possible exceptions: (TypeError).
@@ -394,10 +390,10 @@ class Tooltable(FreeCAD.Persistence):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, arg1: dict, /): ...
+    def __init__(self, pcObj: dict, /): ...
 
     @typing.overload
-    def __init__(self, arg1: list, /):
+    def __init__(self, pcObj: list, /):
         """
         The Tooltable object holds a table of CNC tools
         Possible exceptions: (TypeError).
@@ -425,10 +421,10 @@ class Tooltable(FreeCAD.Persistence):
     def Version(self, value: int): ...
 
     @typing.overload
-    def addTools(self, arg1: PathModule.Tool, /) -> None: ...
+    def addTools(self, o: PathModule.Tool, /) -> None: ...
 
     @typing.overload
-    def addTools(self, arg1: list, /) -> None:
+    def addTools(self, o: list, /) -> None:
         """adds a tool or a list of tools at the end of the table"""
 
     def copy(self) -> PathModule.Tooltable:
@@ -437,25 +433,25 @@ class Tooltable(FreeCAD.Persistence):
         Possible exceptions: (TypeError).
         """
 
-    def deleteTool(self, int: int = None, /) -> None:
+    def deleteTool(self, pos: int = -1, /) -> None:
         """
         deleteTool(int):
         deletes the tool found at the given position
         """
 
-    def getTool(self, int: int, /) -> PathModule.Tool | None:
+    def getTool(self, pos: int = -1, /) -> PathModule.Tool | None:
         """
         getTool(int):
         returns the tool found at the given position, or  None
         """
 
-    def setFromTemplate(self, dict: dict, /):
+    def setFromTemplate(self, dict: dict = None, /):
         """
         setFromTemplate(dict) ... restores receiver from given template attribute dictionary
         Possible exceptions: (TypeError).
         """
 
-    def setTool(self, int: int, tool: PathModule.Tool, /) -> None:
+    def setTool(self, pos: int = -1, o: PathModule.Tool = None, /) -> None:
         """
         setTool(int,tool):
         adds a tool at the given position
@@ -509,13 +505,13 @@ class FeatureArea(FreeCAD.DocumentObject):
 class FeaturePathCompound(FreeCAD.DocumentObject):
     """This class handles Path Compound features"""
 
-    def addObject(self, arg1: FreeCAD.DocumentObject, /):
+    def addObject(self, object: FreeCAD.DocumentObject, /):
         """
         Add an object to the group
         Possible exceptions: (FreeCAD.Base.FreeCADError).
         """
 
-    def removeObject(self, arg1: FreeCAD.DocumentObject, /):
+    def removeObject(self, object: FreeCAD.DocumentObject, /):
         """
         Remove an object from the group
         Possible exceptions: (FreeCAD.Base.FreeCADError).
@@ -523,35 +519,35 @@ class FeaturePathCompound(FreeCAD.DocumentObject):
 
 
 # AppPathPy.cpp
-def write(object, filename: str, /) -> None:
+def write(pObj, Name: str, /) -> None:
     """
     write(object,filename): Exports a given path object to a GCode file
     Possible exceptions: (Exception, RuntimeError).
     """
 
 
-def read(filename: str, document: str = None, /) -> None:
+def read(Name: str, DocName: str = None, /) -> None:
     """
     read(filename,[document]): Imports a GCode file into the given document
     Possible exceptions: (Exception, RuntimeError).
     """
 
 
-def show(path: PathModule.Path, string: str = None, /) -> None:
+def show(pcObj: PathModule.Path, name: str = 'Path', /) -> None:
     """
     show(path,[string]): Add the path to the active document or create one if no document exists
     Possible exceptions: (Exception, ReferenceError, RuntimeError).
     """
 
 
-def fromShape(Shape, /) -> PathModule.Path:
+def fromShape(pcObj, /) -> PathModule.Path:
     """
     fromShape(Shape): Returns a Path object from a Part Shape (deprecated - use fromShapes() instead)
     Possible exceptions: (Exception, TypeError, RuntimeError).
     """
 
 
-def fromShapes(shapes, start: FreeCAD.Vector = None, return_end: bool = None) -> PathModule.Path | tuple[PathModule.Path, FreeCAD.Vector]:
+def fromShapes(shapes=None, start: FreeCAD.Vector = None, return_end: bool = None) -> PathModule.Path | tuple[PathModule.Path, FreeCAD.Vector]:
     """
     fromShapes(shapes, start=Vector(), return_end=False" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_PATH) ")
 
@@ -573,7 +569,7 @@ def sortWires(shapes, /, start=None, arg2=None): ...
 
 
 @typing.overload
-def sortWires(shapes, start: FreeCAD.Vector = None) -> tuple[list[PartModule.Shape], FreeCAD.Vector, int]:
+def sortWires(shapes=None, start: FreeCAD.Vector = None) -> tuple[list[PartModule.Shape], FreeCAD.Vector, int]:
     """
     sortWires(shapes, start=Vector(), "
                   PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_ARC_PLANE)
@@ -613,7 +609,7 @@ def getDefaultParams() -> dict:
     """getDefaultParams(): Static method to return the current default parameters."""
 
 
-def abort(aborting: bool = None): ...
+def abort(aborting: bool = True): ...
 
 
 def getParamsDesc(as_string: bool = False) -> str | dict:

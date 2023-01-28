@@ -74,19 +74,19 @@ class Facet(FreeCAD.PyObjectBase):
     def Roundness(self) -> float:
         """The roundness of the facet"""
 
-    def getEdge(self, int: int, /) -> MeshModule.Edge:
+    def getEdge(self, index: int, /) -> MeshModule.Edge:
         """
         getEdge(int) -> Edge
         Returns the edge of the facet.
         """
 
-    def intersect(self, Facet: MeshModule.Facet, /) -> list[tuple[float, float, float]]:
+    def intersect(self, object: MeshModule.Facet, /) -> list[tuple[float, float, float]]:
         """
         intersect(Facet) -> list 
         Get a list of intersection points with another triangle.
         """
 
-    def isDeformed(self, arg1: float, arg2: float, /) -> bool:
+    def isDeformed(self, fMinAngle: float, fMaxAngle: float, /) -> bool:
         """
         isDegenerated(MinAngle, MaxAngle) -> boolean
         Returns true if the facet is deformed, otherwise false.
@@ -97,7 +97,7 @@ class Facet(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def isDegenerated(self, float: float = None, /) -> bool:
+    def isDegenerated(self, fEpsilon: float = None, /) -> bool:
         """
         isDegenerated([float]) -> boolean
         Returns true if the facet is degenerated, otherwise false.
@@ -127,7 +127,7 @@ class MeshPoint(FreeCAD.PyObjectBase):
     when you cut the bound to the mesh by calling unbound().
     """
 
-    def __init__(self, arg1: float = None, arg2: float = None, arg3: float = None, /):
+    def __init__(self, x: float = 0.0, y: float = 0.0, z: float = 0.0, /):
         """
         Point in mesh
         This is a point in a MeshObject. You can get it by e.g. iterating a
@@ -202,7 +202,7 @@ class Feature(FreeCAD.GeoFeature):
     def countPoints(self) -> int:
         """Return the number of vertices of the mesh object"""
 
-    def fixDegenerations(self, arg1: float = None, /):
+    def fixDegenerations(self, fEpsilon: float = None, /):
         """Remove degenerated facets"""
 
     def fixIndices(self):
@@ -232,7 +232,7 @@ class Feature(FreeCAD.GeoFeature):
     def removeNonManifolds(self):
         """Remove non-manifolds"""
 
-    def smooth(self, arg1: int = None, arg2: float = None, /):
+    def smooth(self, iter: int = 1, arg2: float = None, /):
         """Smooth the mesh data"""
 
 
@@ -256,7 +256,7 @@ class Mesh(FreeCAD.ComplexGeoData):
       d.recompute()
     """
 
-    def __init__(self, arg1=None, /):
+    def __init__(self, pcObj=None, /):
         """
         Mesh() -- Create an empty mesh object.
 
@@ -318,32 +318,32 @@ class Mesh(FreeCAD.ComplexGeoData):
         """Return the volume of the mesh object."""
 
     @typing.overload
-    def addFacet(self, arg1: float, arg2: float, arg3: float, arg4: float, arg5: float, arg6: float, arg7: float, arg8: float, arg9: float, /): ...
+    def addFacet(self, x1: float, y1: float, z1: float, x2: float, y2: float, z2: float, x3: float, y3: float, z3: float, /): ...
 
     @typing.overload
-    def addFacet(self, arg1: FreeCAD.Vector, arg2: FreeCAD.Vector, arg3: FreeCAD.Vector, /): ...
+    def addFacet(self, v1: FreeCAD.Vector, v2: FreeCAD.Vector, v3: FreeCAD.Vector, /): ...
 
     @typing.overload
-    def addFacet(self, arg1: MeshModule.Facet, /):
+    def addFacet(self, f: MeshModule.Facet, /):
         """
         Add a facet to the mesh
         Possible exceptions: (TypeError).
         """
 
     @typing.overload
-    def addFacets(self, arg1: list, /): ...
+    def addFacets(self, list: list, /): ...
 
     @typing.overload
-    def addFacets(self, arg1: tuple, arg2: bool = None, /):
+    def addFacets(self, list: tuple, check: bool = True, /):
         """
         Add a list of facets to the mesh
         Possible exceptions: (TypeError).
         """
 
-    def addMesh(self, arg1: MeshModule.Mesh, /):
+    def addMesh(self, mesh: MeshModule.Mesh, /):
         """Combine this mesh with another mesh."""
 
-    def addSegment(self, arg1, /):
+    def addSegment(self, pylist, /):
         """Add a list of facet indices that describes a segment to the mesh"""
 
     def clear(self):
@@ -355,19 +355,19 @@ class Mesh(FreeCAD.ComplexGeoData):
         Possible exceptions: (NotImplementedError).
         """
 
-    def collapseEdge(self, arg1: int, arg2: int, /):
+    def collapseEdge(self, facet: int, neighbour: int, /):
         """
         Remove an edge and both facets that share this edge
         Possible exceptions: (IndexError).
         """
 
-    def collapseFacet(self, arg1: int, /):
+    def collapseFacet(self, facet: int, /):
         """
         Remove a facet
         Possible exceptions: (IndexError).
         """
 
-    def collapseFacets(self, arg1, /):
+    def collapseFacets(self, pcObj=None, /):
         """Remove a list of facets"""
 
     def copy(self) -> MeshModule.Mesh:
@@ -382,10 +382,10 @@ class Mesh(FreeCAD.ComplexGeoData):
     def countSegments(self) -> int:
         """Get the number of segments which may also be 0"""
 
-    def crossSections(self, arg1, arg2: float = None, arg3: bool = None, /) -> list[list[list[FreeCAD.Vector]]]:
+    def crossSections(self, obj, arg2: float = None, poly: bool = False, /) -> list[list[list[FreeCAD.Vector]]]:
         """Get cross-sections of the mesh through several planes"""
 
-    def cut(self, list, int: int, /):
+    def cut(self, poly, mode: int, /):
         """
         Cuts the mesh with a given closed polygon
         cut(list, int) -> None
@@ -394,13 +394,10 @@ class Mesh(FreeCAD.ComplexGeoData):
         """
 
     @typing.overload
-    def decimate(self, tolerance_Float_: float, reduction_Float_: float, /): ...
+    def decimate(self, fTol: float, fRed: float, /): ...
 
     @typing.overload
-    def decimate(self, arg1: float, arg2: float, /): ...
-
-    @typing.overload
-    def decimate(self, arg1: int, /):
+    def decimate(self, targetSize: int, /):
         """
         Decimate the mesh
         					decimate(tolerance(Float), reduction(Float))
@@ -413,19 +410,19 @@ class Mesh(FreeCAD.ComplexGeoData):
         Possible exceptions: (ValueError).
         """
 
-    def difference(self, arg1: MeshModule.Mesh, /) -> MeshModule.Mesh:
+    def difference(self, pcObj: MeshModule.Mesh, /) -> MeshModule.Mesh:
         """Difference of this and the given mesh object."""
 
-    def fillupHoles(self, arg1: int, arg2: int = None, arg3: float = None, /):
+    def fillupHoles(self, len: int, level: int = 0, arg3: float = None, /):
         """Fillup holes"""
 
-    def fixCaps(self, arg1: float = None, arg2: float = None, /):
+    def fixCaps(self, fMaxAngle: float = None, fSplitFactor: float = 0.25, /):
         """Repair caps by swapping the edge"""
 
-    def fixDeformations(self, arg1: float, arg2: float = None, /):
+    def fixDeformations(self, fMaxAngle: float, fEpsilon: float = None, /):
         """Repair deformed facets"""
 
-    def fixDegenerations(self, arg1: float = None, /):
+    def fixDegenerations(self, fEpsilon: float = None, /):
         """Remove degenerated facets"""
 
     def fixIndices(self):
@@ -437,7 +434,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def flipNormals(self):
         """Flip the mesh normals"""
 
-    def foraminate(self, arg1, arg2, arg3: float = None, /) -> dict[int, tuple[float, float, float]]:
+    def foraminate(self, arg1, arg2, maxAngle: float = None, /) -> dict[int, tuple[float, float, float]]:
         """Get a list of facet indices and intersection points"""
 
     def getCurvaturePerVertex(self) -> list[tuple[float, float, FreeCAD.Vector, FreeCAD.Vector]]:
@@ -458,7 +455,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def getNonUniformOrientedFacets(self) -> tuple[int, ...]:
         """Get a tuple of wrong oriented facets"""
 
-    def getPlanarSegments(self, dev: float, min_faces: int = 0, /) -> list[list[int]]:
+    def getPlanarSegments(self, dev: float, minFacets: int = 0, /) -> list[list[int]]:
         """
         getPlanarSegments(dev,[min faces=0]) -> list
         Get all planes of the mesh as segment.
@@ -475,14 +472,14 @@ class Mesh(FreeCAD.ComplexGeoData):
     def getPointSelection(self) -> list[int]:
         """Get a list of the indices of selected points"""
 
-    def getSegment(self, arg1: int, /) -> list[int]:
+    def getSegment(self, index: int, /) -> list[int]:
         """
         Get a list of facet indices that describes a segment
         Possible exceptions: (IndexError).
         """
 
     @typing.overload
-    def getSegmentsByCurvature(self, list, /) -> list[list[int]]: ...
+    def getSegmentsByCurvature(self, l, /) -> list[list[int]]: ...
 
     @typing.overload
     def getSegmentsByCurvature(self, c, p, /):
@@ -496,7 +493,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         mesh.getSegmentsByCurvature([c,p])
         """
 
-    def getSegmentsOfType(self, type: str, dev: float, min_faces: int = 0, /) -> list[list[int]]:
+    def getSegmentsOfType(self, type: str, dev: float, minFacets: int = 0, /) -> list[list[int]]:
         """
         getSegmentsOfType(type, dev,[min faces=0]) -> list
         Get all segments of type.
@@ -547,16 +544,16 @@ class Mesh(FreeCAD.ComplexGeoData):
     def hasSelfIntersections(self) -> bool:
         """Check if the mesh intersects itself"""
 
-    def inner(self, arg1: MeshModule.Mesh, /) -> MeshModule.Mesh:
+    def inner(self, pcObj: MeshModule.Mesh, /) -> MeshModule.Mesh:
         """Get the part inside of the intersection"""
 
-    def insertVertex(self, arg1: int, arg2: FreeCAD.Vector, /):
+    def insertVertex(self, facet: int, vertex: FreeCAD.Vector, /):
         """
         Insert a vertex into a facet
         Possible exceptions: (IndexError).
         """
 
-    def intersect(self, arg1: MeshModule.Mesh, /) -> MeshModule.Mesh:
+    def intersect(self, pcObj: MeshModule.Mesh, /) -> MeshModule.Mesh:
         """Intersection of this and the given mesh object."""
 
     def isSolid(self) -> bool:
@@ -565,14 +562,14 @@ class Mesh(FreeCAD.ComplexGeoData):
     def mergeFacets(self):
         """Merge facets to optimize topology"""
 
-    def meshFromSegment(self, arg1, /) -> MeshModule.Mesh:
+    def meshFromSegment(self, list, /) -> MeshModule.Mesh:
         """Create a mesh from segment"""
 
     @typing.overload
-    def movePoint(self, int: int, Vector: FreeCAD.Vector, /): ...
+    def movePoint(self, index: int, x: float = 0.0, y: float = 0.0, z: float = 0.0, /): ...
 
     @typing.overload
-    def movePoint(self, arg1: int, arg2: float, arg3: float, arg4: float, /):
+    def movePoint(self, index: int, object: FreeCAD.Vector, /):
         """
         movePoint(int, Vector)
           This method moves the point in the mesh along the
@@ -583,7 +580,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         Possible exceptions: (TypeError).
         """
 
-    def nearestFacetOnRay(self, tuple, tuple2, arg3: float = None, /) -> dict[int, tuple[float, float, float]]:
+    def nearestFacetOnRay(self, tuple, tuple2, maxAngle: float = None, /) -> dict[int, tuple[float, float, float]]:
         """
         nearestFacetOnRay(tuple, tuple) -> dict
         Get the index and intersection point of the nearest facet to a ray.
@@ -593,19 +590,19 @@ class Mesh(FreeCAD.ComplexGeoData):
         an empty dictionary if there is no intersection.
         """
 
-    def offset(self, arg1: float, /):
+    def offset(self, Float: float, /):
         """Move the point along their normals"""
 
-    def offsetSpecial(self, arg1: float, arg2: float, arg3: float, /):
+    def offsetSpecial(self, Float: float, zmin: float, zmax: float, /):
         """Move the point along their normals"""
 
     def optimizeEdges(self):
         """Optimize the edges to get nicer facets"""
 
-    def optimizeTopology(self, arg1: float = None, /):
+    def optimizeTopology(self, fMaxAngle: float = -1.0, /):
         """Optimize the edges to get nicer facets"""
 
-    def outer(self, arg1: MeshModule.Mesh, /) -> MeshModule.Mesh:
+    def outer(self, pcObj: MeshModule.Mesh, /) -> MeshModule.Mesh:
         """Get the part outside the intersection"""
 
     def printInfo(self) -> str:
@@ -629,7 +626,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def refine(self):
         """Refine the mesh"""
 
-    def removeComponents(self, arg1: int, /):
+    def removeComponents(self, count: int, /):
         """Remove components with less or equal to number of given facets"""
 
     def removeDuplicatedFacets(self):
@@ -638,7 +635,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def removeDuplicatedPoints(self):
         """Remove duplicated points"""
 
-    def removeFacets(self, arg1, /):
+    def removeFacets(self, list, /):
         """Remove a list of facet indices from the mesh"""
 
     def removeFoldsOnSurface(self):
@@ -650,7 +647,7 @@ class Mesh(FreeCAD.ComplexGeoData):
     def removeInvalidPoints(self):
         """Remove points with invalid coordinates (NaN)"""
 
-    def removeNeedles(self, arg1: float, /):
+    def removeNeedles(self, length: float, /):
         """Remove all edges that are smaller than a given length"""
 
     def removeNonManifoldPoints(self):
@@ -667,7 +664,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         will be re-filled.
         """
 
-    def rotate(self, arg1: float, arg2: float, arg3: float, /):
+    def rotate(self, x: float, y: float, z: float, /):
         """Apply a rotation to the mesh"""
 
     def section(self, Mesh: MeshModule.Mesh, ConnectLines: bool = True, MinDist: float = 0.0001) -> list[list[FreeCAD.Vector]]:
@@ -676,26 +673,26 @@ class Mesh(FreeCAD.ComplexGeoData):
         lines = mesh.section(mesh2, [ConnectLines=True, MinDist=0.0001])
         """
 
-    def setPoint(self, int: int, Vector: FreeCAD.Vector, /):
+    def setPoint(self, index: int, pnt: FreeCAD.Vector, /):
         """
         setPoint(int, Vector)
         					Sets the point at index.
         """
 
-    def smooth(self, Method: str = 1, Iteration: int = None, Lambda: float = None, Micro: float = None, Maximum: float = None, Weight: int = None):
+    def smooth(self, Method: str = 'Laplace', Iteration: int = 1, Lambda: float = 0, Micro: float = 0, Maximum: float = 1000, Weight: int = 1):
         """
         Smooth the mesh
         smooth([iteration=1,maxError=FLT_MAX])
         Possible exceptions: (ValueError).
         """
 
-    def snapVertex(self, arg1: int, arg2: FreeCAD.Vector, /):
+    def snapVertex(self, facet: int, vertex: FreeCAD.Vector, /):
         """
         Insert a new facet at the border
         Possible exceptions: (IndexError).
         """
 
-    def splitEdge(self, arg1: int, arg2: int, arg3: FreeCAD.Vector, /):
+    def splitEdge(self, facet: int, neighbour: int, vertex: FreeCAD.Vector, /):
         """
         Split edge
         Possible exceptions: (IndexError).
@@ -704,28 +701,28 @@ class Mesh(FreeCAD.ComplexGeoData):
     def splitEdges(self):
         """Split all edges"""
 
-    def splitFacet(self, arg1: int, arg2: FreeCAD.Vector, arg3: FreeCAD.Vector, /):
+    def splitFacet(self, facet: int, vertex1: FreeCAD.Vector, vertex2: FreeCAD.Vector, /):
         """
         Split facet
         Possible exceptions: (IndexError).
         """
 
-    def swapEdge(self, arg1: int, arg2: int, /):
+    def swapEdge(self, facet: int, neighbour: int, /):
         """
         Swap the common edge with the neighbour
         Possible exceptions: (IndexError).
         """
 
-    def transform(self, arg1: FreeCAD.Matrix, /):
+    def transform(self, mat: FreeCAD.Matrix, /):
         """Apply a transformation to the mesh"""
 
     def transformToEigen(self):
         """Transform the mesh to its eigenbase"""
 
-    def translate(self, arg1: float, arg2: float, arg3: float, /):
+    def translate(self, x: float, y: float, z: float, /):
         """Apply a translation to the mesh"""
 
-    def trim(self, list, int: int, /):
+    def trim(self, poly, mode: int, /):
         """
         Trims the mesh with a given closed polygon
         trim(list, int) -> None
@@ -733,7 +730,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         The argument int is the mode: 0=inner, 1=outer
         """
 
-    def trimByPlane(self, Vector: FreeCAD.Vector, Vector2: FreeCAD.Vector, /):
+    def trimByPlane(self, base: FreeCAD.Vector, norm: FreeCAD.Vector, /):
         """
         Trims the mesh with a given plane
         trimByPlane(Vector, Vector) -> None
@@ -741,14 +738,14 @@ class Mesh(FreeCAD.ComplexGeoData):
         direction of the normal the part above or below will be kept.
         """
 
-    def unite(self, arg1: MeshModule.Mesh, /) -> MeshModule.Mesh:
+    def unite(self, pcObj: MeshModule.Mesh, /) -> MeshModule.Mesh:
         """Union of this and the given mesh object."""
 
     @typing.overload
     def write(self, Filename: str, Format: str = 'STL', Name: str = 'Object name', Material=None): ...
 
     @typing.overload
-    def write(self, Stream, Format: str, Name: str = 'Object name', Material=None):
+    def write(self, Stream, Format: str = 'STL', Name: str = 'Object name', Material=None):
         """
         Write the mesh object into file.
         mesh.write(Filename='mymesh.stl',[Format='STL',Name='Object name',Material=colors])
@@ -756,7 +753,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         Possible exceptions: (TypeError).
         """
 
-    def writeInventor(self, arg1: float = None, /) -> str:
+    def writeInventor(self, creaseangle: float = 0.0, /) -> str:
         """Write the mesh in OpenInventor format to a string."""
 
 
@@ -769,7 +766,7 @@ class Edge(FreeCAD.PyObjectBase):
     mesh and calling getEdge(index).
     """
 
-    def __init__(self, index: FreeCAD.Vector = None, arg2: FreeCAD.Vector = None, /):
+    def __init__(self, pt1: FreeCAD.Vector = None, pt2: FreeCAD.Vector = None, /):
         """
         Edge in mesh
         This is an edge of a facet in a MeshObject. You can get it by e.g. iterating over the facets of a
@@ -800,19 +797,19 @@ class Edge(FreeCAD.PyObjectBase):
     def Points(self) -> list[tuple[float, float, float]]:
         """A list of points of the edge"""
 
-    def intersectWithEdge(self, Edge: MeshModule.Edge, /) -> list[tuple[float, float, float]]:
+    def intersectWithEdge(self, object: MeshModule.Edge, /) -> list[tuple[float, float, float]]:
         """
         intersectWithEdge(Edge) -> list
         Get a list of intersection points with another edge.
         """
 
-    def isCollinear(self, Edge: MeshModule.Edge, /) -> bool:
+    def isCollinear(self, object: MeshModule.Edge, /) -> bool:
         """
         isCollinear(Edge) -> bool
         Checks if the two edges are collinear.
         """
 
-    def isParallel(self, Edge: MeshModule.Edge, /) -> bool:
+    def isParallel(self, object: MeshModule.Edge, /) -> bool:
         """
         isParallel(Edge) -> bool
         Checks if the two edges are parallel.
@@ -829,14 +826,14 @@ class Edge(FreeCAD.PyObjectBase):
 
 
 # AppMeshPy.cpp
-def read(arg1: str, /) -> MeshModule.Mesh:
+def read(Name: str, /) -> MeshModule.Mesh:
     """
     Read a mesh from a file and returns a Mesh object.
     Possible exceptions: (Exception).
     """
 
 
-def open(string: str, /) -> None:
+def open(Name: str, /) -> None:
     """
     open(string)
     Create a new document and a Mesh feature to load the file into
@@ -845,7 +842,7 @@ def open(string: str, /) -> None:
     """
 
 
-def insert(string_mesh: str, string: str = None, /) -> None:
+def insert(Name: str, DocName: str = None, /) -> None:
     """
     insert(string|mesh,[string])
     Load or insert a mesh into the given or active document.
@@ -853,7 +850,7 @@ def insert(string_mesh: str, string: str = None, /) -> None:
     """
 
 
-def show(shape: MeshModule.Mesh, string: str = None, /) -> None:
+def show(pcObj: MeshModule.Mesh, name: str = 'Mesh', /) -> None:
     """
     show(shape,[string]) -- Add the mesh to the active document or create one if no document exists.
     Possible exceptions: (Exception, ReferenceError).
@@ -861,60 +858,60 @@ def show(shape: MeshModule.Mesh, string: str = None, /) -> None:
 
 
 @typing.overload
-def createBox(arg1: float = None, arg2: float = None, arg3: float = None, arg4: float = None, /) -> MeshModule.Mesh: ...
+def createBox(length: float = 10.0, width: float = 10.0, height: float = 10.0, edgelen: float = -1.0, /) -> MeshModule.Mesh: ...
 
 
 @typing.overload
-def createBox(arg1: FreeCAD.BoundBox, /) -> MeshModule.Mesh:
+def createBox(box: FreeCAD.BoundBox, /) -> MeshModule.Mesh:
     """
     Create a solid mesh box
     Possible exceptions: (TypeError, RuntimeError).
     """
 
 
-def createPlane(arg1: float = None, arg2: float = None, arg3: float = None, /) -> MeshModule.Mesh:
+def createPlane(x: float = 1, y: float = 0, z: float = 0, /) -> MeshModule.Mesh:
     """
     Create a mesh XY plane normal +Z
     Possible exceptions: (Exception).
     """
 
 
-def createSphere(arg1: float = None, arg2: int = None, /) -> MeshModule.Mesh:
+def createSphere(radius: float = 5.0, sampling: int = 50, /) -> MeshModule.Mesh:
     """
     Create a tessellated sphere
     Possible exceptions: (Exception, RuntimeError).
     """
 
 
-def createEllipsoid(arg1: float = None, arg2: float = None, arg3: int = None, /) -> MeshModule.Mesh:
+def createEllipsoid(radius1: float = 2.0, radius2: float = 4.0, sampling: int = 50, /) -> MeshModule.Mesh:
     """
     Create a tessellated ellipsoid
     Possible exceptions: (Exception, RuntimeError).
     """
 
 
-def createCylinder(arg1: float = None, arg2: float = None, arg3: int = None, arg4: float = None, arg5: int = None, /) -> MeshModule.Mesh:
+def createCylinder(radius: float = 2.0, length: float = 10.0, closed: int = 1, edgelen: float = 1.0, sampling: int = 50, /) -> MeshModule.Mesh:
     """
     Create a tessellated cylinder
     Possible exceptions: (Exception, RuntimeError).
     """
 
 
-def createCone(arg1: float = None, arg2: float = None, arg3: float = None, arg4: int = None, arg5: float = None, arg6: int = None, /) -> MeshModule.Mesh:
+def createCone(radius1: float = 2.0, radius2: float = 4.0, len: float = 10.0, closed: int = 1, edgelen: float = 1.0, sampling: int = 50, /) -> MeshModule.Mesh:
     """
     Create a tessellated cone
     Possible exceptions: (Exception, RuntimeError).
     """
 
 
-def createTorus(arg1: float = None, arg2: float = None, arg3: int = None, /) -> MeshModule.Mesh:
+def createTorus(radius1: float = 10.0, radius2: float = 2.0, sampling: int = 50, /) -> MeshModule.Mesh:
     """
     Create a tessellated torus
     Possible exceptions: (Exception, RuntimeError).
     """
 
 
-def calculateEigenTransform(seq_Base_Vector_, /) -> FreeCAD.Placement:
+def calculateEigenTransform(input, /) -> FreeCAD.Placement:
     """
     calculateEigenTransform(seq(Base.Vector))
     Calculates the eigen Transformation from a list of points.
@@ -927,14 +924,14 @@ def calculateEigenTransform(seq_Base_Vector_, /) -> FreeCAD.Placement:
     """
 
 
-def polynomialFit(seq_Base_Vector_, /) -> dict[str, float | tuple[float, float, float, float, float, float] | tuple[float, ...]]:
+def polynomialFit(input, /) -> dict[str, float | tuple[float, float, float, float, float, float] | tuple[float, ...]]:
     """
     polynomialFit(seq(Base.Vector)) -- Calculates a polynomial fit.
     Possible exceptions: (Exception, TypeError).
     """
 
 
-def minimumVolumeOrientedBox(seq_Base_Vector_, /) -> tuple[FreeCAD.Vector, FreeCAD.Vector, FreeCAD.Vector, FreeCAD.Vector, float, float, float]:
+def minimumVolumeOrientedBox(input, /) -> tuple[FreeCAD.Vector, FreeCAD.Vector, FreeCAD.Vector, FreeCAD.Vector, float, float, float]:
     """
     minimumVolumeOrientedBox(seq(Base.Vector)) -- Calculates the minimum
     volume oriented box containing all points. The return value is a

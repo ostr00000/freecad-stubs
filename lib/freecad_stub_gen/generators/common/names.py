@@ -1,3 +1,5 @@
+import ast
+import builtins
 import logging
 import xml.etree.ElementTree as ET
 
@@ -109,15 +111,34 @@ def getClassWithModulesFromPointer(cTypePointer: str):
 
 
 def validatePythonValue(value: str) -> str | None:
+    if value in builtins.__dict__:
+        return value
+
+    if value in ('true', 'false'):
+        return value.title()
+
     try:
-        eval(value, {}, {})
-    except NameError:
-        if value in ('true', 'false'):
-            return value.title()
-        logger.debug(f'Invalid value for default argument {value=}')
-    except SyntaxError:
-        return None
+        ast.literal_eval(value)
+    except (SyntaxError, ValueError):
+        pass
     except Exception as exc:
-        logger.debug(f'Cannot evaluate value: {exc}')
+        logger.error(f'Cannot evaluate value: {exc}')
     else:
         return value
+
+    if value and value[-1].lower() in ('f', 'l'):
+        # maybe float literal (ex. 3.14f)
+        return validatePythonValue(value[:-1])
+
+    return None
+
+def convertToPythonValue(value: str):
+    if (safe := validatePythonValue(value)) is None:
+        return False, None
+
+    if value in builtins.__dict__:
+        conv = builtins.__dict__[value]
+    else:
+        conv = ast.literal_eval(safe)
+
+    return True, conv

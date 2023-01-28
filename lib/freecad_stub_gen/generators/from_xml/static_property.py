@@ -45,7 +45,7 @@ class XmlPropertyGenerator(XmlMethodGenerator, BaseXmlGenerator, BasePropertyGen
         assert funcBody is not None
 
         rt = ReturnTypeConverter(
-            self.requiredImports, funcBody,
+            funcBody, self.requiredImports,
             self.classNameWithModules, cFuncName)
         extendedType = rt.getStrReturnType()
 
