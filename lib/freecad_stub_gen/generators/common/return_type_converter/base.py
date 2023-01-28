@@ -55,6 +55,8 @@ class ReturnTypeConverterBase:
 
             case 'getDocumentObjectPtr()':
                 return 'FreeCAD.DocumentObject'
+            case StrWrapper('(GetApplication().openDocument('):
+                return 'FreeCAD.Document'
 
             case StrWrapper('Py::Boolean' | 'PyBool_From' | 'Py::True' | 'Py::False'):
                 return 'bool'
@@ -244,7 +246,11 @@ class ReturnTypeConverterBase:
             return self.classNameWithModule
 
         variableDecReg = re.compile(rf"""
-        (?P<type>[\w:]+(?<!:))          # word with ':', but cannot end with ':'
+        (?P<directive>\#)?              # we skip directive later in code 
+        \s*                             # (otherwise need to use variable lookbehind)
+        (?P<type>
+            [^\d\W][\w:]*               # word not starting with digits, may contain ':'
+            (?<!:))                     # but cannot end with ':'
         \s*\*?                          # may be a pointer
         (?:>::(?:const_)?iterator)?\s*  # may be iterator or const_iterator
         (?:\b\w+\s*,\s*)*               # there may be multiple declaration for one type
@@ -257,6 +263,9 @@ class ReturnTypeConverterBase:
         """, re.VERBOSE)
         matches = list(variableDecReg.finditer(self.functionBody, endpos=endPos))
         for declarationMatch in reversed(matches):
+            if declarationMatch.group('directive'):
+                continue
+
             varTypeDec = declarationMatch.group('type')
             if varTypeDec in ('return', 'else'):
                 continue

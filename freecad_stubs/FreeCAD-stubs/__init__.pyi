@@ -2536,14 +2536,14 @@ def loadFile(path: str, doc: str = '', mod: str = '', /):
     """
 
 
-def open(name: str, hidden: bool = False):
+def open(name: str, hidden: bool = False) -> FreeCAD.Document:
     """
     See openDocument(string)
     Possible exceptions: (IOError).
     """
 
 
-def openDocument(name: str, hidden: bool = False):
+def openDocument(name: str, hidden: bool = False) -> FreeCAD.Document:
     """
     openDocument(filepath,hidden=False) -> object
     Create a document and load the project file into the document.
