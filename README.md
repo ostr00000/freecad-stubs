@@ -71,7 +71,7 @@ Moreover, some of C function has errors - invalid types, missing arguments
     ```shell
     pytohn freecad-stubs/lib/freecad_stub_gen/__main__.py
     ```
-   Required python version: `>=3.10`.
+   Required python version: `>=3.11`.
 
 
 ### Adding stubs to python path
@@ -107,8 +107,9 @@ There are a lot of possible methods. This is only example:
 #### Stub quality
 - [x] found class/function/method name,
 - [x] copy docstring (+ generate property docstring),
-- [x] guess argument names from docstrings,
+- [x] guess argument names from C code or from docstrings,
 - [x] found function/method argument types based on [c-api](https://docs.python.org/3/c-api/arg.html),
+- [x] argument default values,
 - [x] function/method return type,
 - [x] raised exception in docstrings,
 - [x] property getter type,

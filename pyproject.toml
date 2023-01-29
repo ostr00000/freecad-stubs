@@ -1,0 +1,39 @@
+[build-system]
+requires = ['setuptools']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'freecad-stubs'
+version = '1.0.14'
+description = "Python stubs for FreeCAD"
+readme = 'README.md'
+requires-python = '>=3.6'
+license = { text = 'GPL-3.0' }
+authors = [{ name = 'ostr00000' }]
+keywords = ['FreeCAD', 'stubs']
+classifiers = [
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Typing :: Stubs Only',
+]
+urls = { repository = 'https://github.com/ostr00000/freecad-stubs' }
+dependencies = [
+    'qtpy',
+    # 'pivy', # cannot install it in a normal way, should be installed by FreeCAD anyway
+]
+
+[project.optional-dependencies]
+generate = ['more-itertools']
+
+[tool.setuptools]
+package-dir = { '' = 'freecad_stubs' }
+
+[tool.setuptools.package-data]
+'*' = ['**/*.pyi']

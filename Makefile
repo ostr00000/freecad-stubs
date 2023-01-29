@@ -2,7 +2,7 @@ PYTHON=python3.11
 ENV_NAME=freecad_env
 PYTHON_ENV=./$(ENV_NAME)/bin/python
 
-.PHONY: setup_system setup_env install_in_env clean_env
+.PHONY: setup_system setup_env install_in_env prepare_freecad clean_env prepare_build build_and_upload
 
 
 setup_system:
