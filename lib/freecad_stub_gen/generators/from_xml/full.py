@@ -1,8 +1,6 @@
 import inspect
-from pathlib import Path
 from xml.etree import ElementTree as ET
 
-from freecad_stub_gen.config import SOURCE_DIR
 from freecad_stub_gen.generators.common.doc_string import formatDocstring, getDocFromNode
 from freecad_stub_gen.generators.common.names import getModuleName, getClassWithModulesFromNode, \
     getClassName, getFatherClassWithModules
@@ -23,10 +21,6 @@ class FreecadStubGeneratorFromXML(
     Generate class defined in xml file.
     Argument types are extracted from code.
     """
-
-    def __init__(self, filePath: Path, sourceDir: Path = SOURCE_DIR):
-        super().__init__(filePath, sourceDir)
-        self.currentNode: ET.Element | None = None
 
     def getStub(self, mod: Module, moduleName, submodule=''):
         header = f'# {self.baseGenFilePath.name}\n'

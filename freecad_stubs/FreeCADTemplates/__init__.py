@@ -117,7 +117,7 @@ class ProxyPythonObj(_ProxyPythonGeneral):
     This is the same as ProxyPython, but has __object__ attribute.
     Methods defined in this class are called without object argument.
     """
-    __object__: FreeCAD.DocumentObject = None
+    __object__: FreeCAD.DocumentObject | None = None
 
     def execute(self):
         """FreeCAD call this function if present"""
@@ -347,15 +347,18 @@ class CommandPython:
         """FreeCAD call this function if present"""
 
 
-class CheckAbleDict(ResourceDict):
+class CheckableDict(ResourceDict):
     Checkable: bool
 
 
-class CheckAbleCommandPython(CommandPython):
-    def GetResources(self) -> CheckAbleDict:
+class CheckableCommandPython:
+    def GetResources(self) -> CheckableDict:
         """FreeCAD call this function if present"""
 
-    def Activated(self, checked: bool = None):
+    def IsActive(self) -> bool:
+        """FreeCAD call this function if present"""
+
+    def Activated(self, checked: bool):
         """FreeCAD call this function if present"""
 
 

@@ -16,6 +16,7 @@ setup_env:
 install_in_env:
 	$(PYTHON_ENV) -m pip install --upgrade pip
 	$(PYTHON_ENV) -m pip install PyQt5
+	$(PYTHON_ENV) -m pip install mypy
 	$(PYTHON_ENV) -m pip install -e .[generate]
 
 prepare_freecad:
@@ -34,3 +35,6 @@ build_and_upload:
 	rm -rf ./dist
 	$(PYTHON_ENV) -m build
 	$(PYTHON_ENV) -m twine upload dist/*
+
+check_by_mypy:
+	mypy

@@ -7,7 +7,7 @@ from pathlib import Path
 
 from freecad_stub_gen.config import TARGET_DIR
 from freecad_stub_gen.module_namespace import moduleNamespace
-from freecad_stub_gen.util import OrderedSet
+from freecad_stub_gen.util import OrderedStrSet
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +17,7 @@ class Module:
 
     def __init__(self, content='', imports: Iterable[str] = (), name: str = ''):
         self.name = name
-        self.imports = OrderedSet(imports)
+        self.imports = OrderedStrSet(imports)
         self.content = content
         self.subModules = SourcesDict()
 
@@ -84,7 +84,11 @@ class Module:
         return f'{self._genImports()}{self.content.rstrip()}\n'
 
     def _genImports(self):
-        sysImports, libImports, localImports, types = [], [], [], []
+        sysImports: list[str] = []
+        libImports: list[str] = []
+        localImports: list[str] = []
+        types: list[str] = []
+
         for imp in self.imports:
             if imp.startswith('from '):
                 sortModule = imp.removeprefix('from ').split(' ')[0]

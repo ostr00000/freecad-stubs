@@ -94,7 +94,14 @@ class\s+            # keyword `class`
             try:
                 return readContent(twinFile)
             except OSError:
-                pass
+                # rare case when twin file is with not standard name
+                twinFile = self.baseGenFilePath.with_stem(currentName).with_suffix('.h')
+                try:
+                    return readContent(twinFile)
+                except OSError as ose:
+                    logger.error(ose)
+
+        return None
 
     def _getPythonClass(self, baseClass: str) -> str | None:
         match StrWrapper(baseClass):
@@ -105,7 +112,7 @@ class\s+            # keyword `class`
             case StrWrapper(end='Py'):
                 classWithModule = getClassWithModulesFromPointer(baseClass)
             case _:
-                return  # Not a python class
+                return None # Not a python class, or it is a C template class
 
         if mod := getModuleName(classWithModule):
             self.requiredImports.add(mod)

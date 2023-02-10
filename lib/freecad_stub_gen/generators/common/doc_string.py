@@ -1,7 +1,7 @@
 import keyword
 import re
 from collections.abc import Iterator
-from inspect import Parameter
+from inspect import Parameter, _ParameterKind, _empty
 from itertools import count
 from typing import Generator
 from xml.etree import ElementTree as ET
@@ -37,11 +37,11 @@ def _signatureGen(funDocString: str, argNumStart: int) -> Iterator[Parameter]:
     except StopIteration:
         raise ValueError("Unique generator should never end")
 
-    paramType = Parameter.POSITIONAL_ONLY
+    paramType: _ParameterKind = Parameter.POSITIONAL_ONLY
 
     for argText in generateExpressionUntilChar(funDocString, 0, ','):
         argText = argText.strip()
-        annotation = Parameter.empty
+        annotation: type[_empty] | str = Parameter.empty
 
         if argText[-2:] == '[]':
             argText = argText[:-2] + 'None'
@@ -79,7 +79,7 @@ REG_START_WITH_LETTER = re.compile(r'[a-zA-Z].*')
 
 
 def _uniqueArgNameGen(argNumStart: int = 1) -> Generator[tuple[str, int], str, None]:
-    name: str = yield
+    name: str = yield '', 0
     seen = set()
 
     for argNum in count(argNumStart):
@@ -122,6 +122,6 @@ def formatDocstring(docs: str):
 
 
 def getDocFromNode(node: ET.Element) -> str:
-    if docs := node.find("./Documentation//UserDocu").text:
-        return docs
-    return ''
+    # https://youtrack.jetbrains.com/issue/PY-49523/default-argument-for-xml-Element.findtext-is-incorrectly-identified-as-the-wrong-type
+    # noinspection PyTypeChecker
+    return node.findtext('./Documentation//UserDocu', default='')

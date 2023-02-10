@@ -37,3 +37,36 @@ package-dir = { '' = 'freecad_stubs' }
 
 [tool.setuptools.package-data]
 '*' = ['**/*.pyi']
+
+[tool.mypy]
+files = './lib'
+warn_unused_configs = true
+check_untyped_defs = true
+warn_unused_ignores = true
+
+
+[[tool.mypy.overrides]]
+# This is stub directory, so we allow here an empty body
+module = 'freecad_stub_gen.additional.*'
+disable_error_code = ['empty-body']
+
+[[tool.mypy.overrides]]
+# mypy problem: https://github.com/python/mypy/issues/5382
+module = 'freecad_stub_gen.generators.common.signature_merger'
+disable_error_code = ['arg-type']
+
+[[tool.mypy.overrides]]
+# mypy problem: https://github.com/python/mypy/issues/12534
+module = 'freecad_stub_gen.module_namespace'
+disable_error_code = ['return-value', 'return']
+
+[[tool.mypy.overrides]]
+# mypy problem: https://github.com/python/mypy/issues/6799
+module = 'freecad_stub_gen.generators.common.gen_property.gen_dynamic'
+disable_error_code = ['misc']
+
+[[tool.mypy.overrides]]
+# Mypy do not allow variable annotation for `Enum`
+module = 'freecad_stub_gen.generators.common.gen_property.property_type'
+disable_error_code = ['misc']
+

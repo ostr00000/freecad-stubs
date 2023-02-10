@@ -15,7 +15,7 @@ from freecad_stub_gen.generators.common.return_type_converter.inner_type_list im
 from freecad_stub_gen.generators.common.return_type_converter.inner_type_tuple import \
     ReturnTypeInnerTuple
 from freecad_stub_gen.generators.exceptions.container import exceptionContainer
-from freecad_stub_gen.util import OrderedSet
+from freecad_stub_gen.util import OrderedStrSet
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +52,7 @@ class ReturnTypeConverter(
     EXCEPTION_PY_REG = re.compile(r'throw\s+Py::(?P<exc>\w+)\((?P<args>[^;]*)\);')
 
     def getExceptionsFromCode(self):
-        exceptions = OrderedSet()
+        exceptions = OrderedStrSet()
 
         for exceptionMatch in self.EXCEPTION_PY_REG.finditer(self.functionBody):
             exceptionName = exceptionMatch.group('exc')

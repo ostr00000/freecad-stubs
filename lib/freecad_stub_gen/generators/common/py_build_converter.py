@@ -9,12 +9,14 @@ def parsePyBuildValues(formatText: str) -> str:
     formatText = formatText.replace(' ', '')
     results = []
     while formatText:
+        singleResult: str
         if formatText[0] in '([{':
             singleResult, size = _parsePyBuildComplexValue(formatText)
         else:
             for formatSize in range(2, 0, -1):
                 singleFormat = formatText[:formatSize]
-                if singleResult := parseTypeMap.get(singleFormat):
+                if sr := parseTypeMap.get(singleFormat):
+                    singleResult = sr
                     size = formatSize
                     break
             else:
@@ -32,7 +34,7 @@ def parsePyBuildValues(formatText: str) -> str:
 
 
 @lru_cache
-def _parsePyBuildComplexValue(formatText: str) -> tuple[str | None, int]:
+def _parsePyBuildComplexValue(formatText: str) -> tuple[str, int]:
     firstChar = formatText[0]
     lastChar = {'(': ')', '[': ']', '{': '}'}[firstChar]
 
@@ -127,15 +129,31 @@ O& (object) [converter, anything]
 [items] (list) [matching-items]
 {items} (dict) [matching-items]
 """
-parseTypeMap = {
-    (keyAndValue := line.split(' ', maxsplit=1))[0]: keyAndValue[1]
-    for line in pyBuildValues.splitlines() if line}
-parseSizeMap = {k: len(v.split('[')[1].split(',')) for k, v in parseTypeMap.items()}
-parseTypeMap = {k: v.removeprefix('(').split(' ')[0].removesuffix(')').removesuffix(',')
-                for k, v in parseTypeMap.items()}
-_autoGenTypeToRealType = {'object': 'typing.Any'}
-parseTypeMap = {k: _autoGenTypeToRealType.get(v, v) for k, v in parseTypeMap.items()}
 
+
+def _initParseMaps():
+    autoGenTypeToRealType = {'object': 'typing.Any'}
+    locParseSizeMap = {}
+    locParseTypeMap = {}
+
+    for line in pyBuildValues.splitlines():
+        if not line:
+            continue
+
+        keyValue = line.split(' ', maxsplit=1)
+        key, value = keyValue[0], keyValue[1]
+
+        size = len(value.split('[')[1].split(','))
+        locParseSizeMap[key] = size
+
+        autoType = value.removeprefix('(').split(' ')[0].removesuffix(')').removesuffix(',')
+        realType = autoGenTypeToRealType.get(autoType, autoType)
+        locParseTypeMap[key] = realType
+
+    return locParseSizeMap, locParseTypeMap
+
+
+parseSizeMap, parseTypeMap = _initParseMaps()
 
 if __name__ == '__main__':
     def testParsing():

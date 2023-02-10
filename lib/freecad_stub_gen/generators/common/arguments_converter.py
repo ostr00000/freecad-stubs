@@ -13,6 +13,7 @@ from freecad_stub_gen.generators.common.cpp_function import generateExpressionUn
 from freecad_stub_gen.generators.common.names import getClassWithModulesFromPointer, getModuleName, \
     convertToPythonValue
 from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import StrWrapper
+from freecad_stub_gen.util import OrderedStrSet
 
 logger = logging.getLogger(__name__)
 DEFAULT_ARG_NAME = 'arg'
@@ -34,7 +35,7 @@ class StackVal:
 class TypesConverter:
     def __init__(self, functionBody: str,
                  funStart: int,
-                 requiredImports: set[str],
+                 requiredImports: OrderedStrSet,
                  onlyPositional: bool,
                  formatStrPosition: int,
                  argNumStart=1, *,
@@ -69,7 +70,7 @@ class TypesConverter:
 
     REG_REMOVE_WHITESPACES = re.compile(r'\s+')
 
-    def _getArgumentString(self):
+    def _getArgumentString(self) -> list[str]:
         sub = re.sub(self.REG_REMOVE_WHITESPACES, '', self._funCall)  # remove whitespace
         argStr = [c.removeprefix('&').strip()
                   for c in generateExpressionUntilChar(sub, sub.find('(') + 1, ',')]
@@ -102,7 +103,7 @@ class TypesConverter:
                 argS for argS in self.argumentStrings[varArg]
                 if all(fm not in argS for fm in self._FORBIDDEN_MACROS)]
 
-    def _getKwargList(self):
+    def _getKwargList(self) -> list[str]:
         if self.onlyPositional:
             return []
 
@@ -188,7 +189,7 @@ class TypesConverter:
                         self._isArgOptional = True
                         self._parameterKind = Parameter.KEYWORD_ONLY
                     elif curVal in ':;':
-                        formatStr = []
+                        formatStr = ''
                     else:
                         logger.error(f"Unknown format: {formatStr}")
                     formatStr = formatStr[1:]
@@ -232,6 +233,7 @@ class TypesConverter:
             return cTypeToPythonType[pointerArg]
         else:
             logger.error(f"Unknown pointer kind {pointerArg=}")
+            return None
 
     def _startSequenceParsing(self):
         self._sequenceStack.append([])
@@ -293,6 +295,7 @@ class TypesConverter:
         else:
             if cArgName.isalnum():
                 return cArgName
+        return None
 
     def _getDefaultValue(self, curFormat: str, cArgNum: int):
         retVal = UNKNOWN_DEFAULT_ARG if self._isArgOptional else Parameter.empty
@@ -419,17 +422,34 @@ p (bool) [int]
 ( (tuple) []
 ) (tuple) []
 """
-parseTypeMap: dict[str, str] = {
-    (keyAndValue := line.split(' ', maxsplit=1))[0]: keyAndValue[1].strip()
-    for line in parseTupleStr.splitlines() if line}
-parseSizeMap = {k: len(spVal) if (spVal := v.split('[')[1].split(']')[0].split(',')) != [''] else 0
-                for k, v in parseTypeMap.items()}
-parseTypeMap = {k: v.removeprefix('(').split(' ')[0].removesuffix(')').removesuffix(',')
-                for k, v in parseTypeMap.items()}
-_autoGenTypeToRealType = {
-    'read-only': 'bytes',
-    'read-write': 'bytes',
-    'bytes-like': 'bytes',
-    'object': 'typing.Any',
-}
-parseTypeMap = {k: _autoGenTypeToRealType.get(v, v) for k, v in parseTypeMap.items()}
+
+
+def _initParseMaps():
+    autoGenTypeToRealType = {
+        'read-only': 'bytes',
+        'read-write': 'bytes',
+        'bytes-like': 'bytes',
+        'object': 'typing.Any',
+    }
+    locParseSizeMap = {}
+    locParseTypeMap = {}
+
+    for line in parseTupleStr.splitlines():
+        if not line:
+            continue
+
+        keyValue = line.split(' ', maxsplit=1)
+        key, value = keyValue[0], keyValue[1].strip()
+
+        spVal = value.split('[')[1].split(']')[0].split(',')
+        size = len(spVal) if spVal != [''] else 0
+        locParseSizeMap[key] = size
+
+        autoType = value.removeprefix('(').split(' ')[0].removesuffix(')').removesuffix(',')
+        realType = autoGenTypeToRealType.get(autoType, autoType)
+        locParseTypeMap[key] = realType
+
+    return locParseSizeMap, locParseTypeMap
+
+
+parseSizeMap, parseTypeMap = _initParseMaps()

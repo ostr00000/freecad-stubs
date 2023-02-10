@@ -38,6 +38,7 @@ class DynamicPropertyGenerator(BasePropertyGenerator, ABC):
 
         # there may be few separated declarations (ex. DocumentObject)
         hIncludeContent = self.getHContent()
+        assert isinstance(hIncludeContent, str)
         reg = re.compile(self.REG_PATTERN_CLASS_DEC.format(cppClassName))
         classDeclarationBodies = [
             findFunctionCall(hIncludeContent, classMatch.start())

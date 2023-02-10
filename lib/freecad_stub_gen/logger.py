@@ -1,20 +1,17 @@
 import logging
 
 
-def logFilter(record: logging.LogRecord) -> bool:
-    key = (record.module, record.levelno, record.msg)
-    if key in logFilter.seen:
-        return False
-    logFilter.seen.add(key)
-    return True
+class RepeatedFilter(logging.Filter):
+    def __init__(self, name=''):
+        super().__init__(name)
+        self.seen = set()
 
-
-logFilter.seen = set()
-
-
-def configLogFilter(loggerName=None):
-    for h in logging.getLogger(loggerName).handlers:
-        h.addFilter(logFilter)
+    def filter(self, record: logging.LogRecord) -> bool:
+        key = (record.module, record.levelno, record.msg)
+        if key in self.seen:
+            return False
+        self.seen.add(key)
+        return True
 
 
 LEVEL_CODE = 5

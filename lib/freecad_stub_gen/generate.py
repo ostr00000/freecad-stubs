@@ -1,9 +1,11 @@
 import logging
 import shutil
+import typing
 from pathlib import Path
 
 from freecad_stub_gen.additional import additionalPath
 from freecad_stub_gen.config import SOURCE_DIR, TARGET_DIR
+from freecad_stub_gen.generators.common.gen_base import BaseGenerator
 from freecad_stub_gen.generators.exceptions.gen import ExceptionGenerator
 from freecad_stub_gen.generators.from_cpp.functions import FreecadStubGeneratorFromCppFunctions
 from freecad_stub_gen.generators.from_cpp.klass import FreecadStubGeneratorFromCppClass
@@ -14,6 +16,12 @@ from freecad_stub_gen.module_namespace import moduleNamespace
 from freecad_stub_gen.util import genCppFiles, genXmlFiles
 
 logger = logging.getLogger(__name__)
+generators: typing.Sequence[type[BaseGenerator]] = (
+    FreecadStubGeneratorFromCppFunctions,
+    FreecadStubGeneratorFromCppClass,
+    FreecadStubGeneratorFromCppModule,
+    ExceptionGenerator,
+)
 
 
 def _genModule(sourcesRoot: Module, modulePath: Path, sourcePath=SOURCE_DIR,
@@ -35,10 +43,7 @@ def _genModule(sourcesRoot: Module, modulePath: Path, sourcePath=SOURCE_DIR,
             case _:
                 curModuleName = moduleName
 
-        for cl in (FreecadStubGeneratorFromCppFunctions,
-                   FreecadStubGeneratorFromCppClass,
-                   FreecadStubGeneratorFromCppModule,
-                   ExceptionGenerator):
+        for cl in generators:
             if not (mg := cl.safeCreate(cppPath, sourcePath)):
                 continue
             mg.getStub(sourcesRoot, curModuleName)

@@ -13,7 +13,9 @@ class AffixCmp:
     text: str
     type: AffixType
 
-    def __eq__(self, other: str):
+    def __eq__(self, other):
+        if not isinstance(other, str):
+            return False
         match self.type:
             case self.AffixType.PREFIX:
                 return self.text.startswith(other)

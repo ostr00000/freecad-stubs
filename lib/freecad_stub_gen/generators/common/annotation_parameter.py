@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import logging
 from collections.abc import Mapping, Iterable, Sequence
-from inspect import Parameter, formatannotation, Signature, _void
+from inspect import Parameter, Signature, _void
+from typing import cast, TypeAlias
 
-from freecad_stub_gen.util import OrderedSet
+from freecad_stub_gen.util import OrderedStrSet
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +20,7 @@ class RawRepr:
         return super().__new__(cls)
 
     def __init__(self, *values):
-        self.values = OrderedSet(map(str, values))
+        self.values = OrderedStrSet(map(str, values))
 
     def __repr__(self):
         if 'None' in self.values:
@@ -60,38 +61,30 @@ class AnnotationParam(Parameter):
     @classmethod
     def getFirstParam(cls, isStaticMethod: bool, isClassMethod: bool) -> Parameter | None:
         if isStaticMethod:
-            return
+            return None
         elif isClassMethod:
             return cls.CLS_PARAM
         else:
             return cls.SELF_PARAM
 
 
+InitParameters_t: TypeAlias = Sequence[Parameter] | None
+ReplaceParameters_t: TypeAlias = Sequence[Parameter] | type[_void] | None
+
+
 class SelfSignature(Signature):
     """Skip separator if there is only self parameter"""
     __slots__ = ('exceptions', 'unknown_parameters')
 
-    def __init__(self, parameters: Sequence[Parameter] | None = None, *,
+    def __init__(self, parameters: InitParameters_t = None, *,
                  unknown_parameters=False,
                  return_annotation=Signature.empty,
-                 exceptions=(),
+                 exceptions: OrderedStrSet | None = None,
                  ):
-
-        match parameters:
-            case [Parameter(name='self', kind=Parameter.POSITIONAL_ONLY) as selfParam]:
-                pass
-            case [Parameter(name='self', kind=Parameter.POSITIONAL_ONLY) as selfParam,
-                  Parameter(kind=Parameter.POSITIONAL_OR_KEYWORD), *_]:
-                pass
-            case _:
-                selfParam = None
-        if selfParam is not None:
-            parameters = list(parameters)
-            parameters[0] = selfParam.replace(kind=Parameter.POSITIONAL_OR_KEYWORD)
-
+        parameters = self._convertFirstParam(parameters)
         try:
             super().__init__(parameters, return_annotation=return_annotation)
-            self.exceptions: OrderedSet[str] | tuple[()] = exceptions
+            self.exceptions = OrderedStrSet() if exceptions is None else exceptions
             self.unknown_parameters = unknown_parameters
         except ValueError as v:
             if parameters is not None:
@@ -100,9 +93,24 @@ class SelfSignature(Signature):
                     logger.error(f'{p} [{p.kind}]')
             raise
 
+    @staticmethod
+    def _convertFirstParam(parameters: InitParameters_t) -> InitParameters_t:
+        match parameters:
+            case [Parameter(name='self', kind=Parameter.POSITIONAL_ONLY) as selfParam]:
+                pass
+            case [Parameter(name='self', kind=Parameter.POSITIONAL_ONLY) as selfParam,
+                  Parameter(kind=Parameter.POSITIONAL_OR_KEYWORD), *_]:
+                pass
+            case _:
+                return parameters
+
+        parameters = list(parameters)
+        parameters[0] = selfParam.replace(kind=Parameter.POSITIONAL_OR_KEYWORD)
+        return parameters
+
     @classmethod
     def getExceptionsDocs(cls, signatures: Iterable[SelfSignature]) -> str:
-        uniqueExceptions = OrderedSet()
+        uniqueExceptions = OrderedStrSet()
         for sig in signatures:
             uniqueExceptions.update(sig.exceptions)
 
@@ -113,16 +121,19 @@ class SelfSignature(Signature):
 
     __void = _void  # only to access in pattern matching
 
-    def replace(self, *, parameters: Sequence[Parameter] | Mapping[str, Parameter] = _void,
+    def replace(self, *, parameters: ReplaceParameters_t | Mapping[str, Parameter] = _void,
                 return_annotation=_void,
                 exceptions=_void,
                 unknown_parameters=_void,
                 ) -> SelfSignature:
+        initParameters: InitParameters_t
         match parameters:
             case self.__void:
-                parameters = list(self.parameters.values())
+                initParameters = list(self.parameters.values())
             case Mapping():
-                parameters = list(parameters.values())
+                initParameters = list(parameters.values())
+            case _:
+                initParameters = cast(InitParameters_t, parameters)
 
         if return_annotation is _void:
             return_annotation = self.return_annotation
@@ -131,8 +142,9 @@ class SelfSignature(Signature):
         if unknown_parameters is _void:
             unknown_parameters = self.unknown_parameters
 
-        return type(self)(parameters,
-                          unknown_parameters=unknown_parameters,
-                          return_annotation=return_annotation,
-                          exceptions=exceptions,
-                          )
+        return type(self)(
+            initParameters,
+            unknown_parameters=unknown_parameters,
+            return_annotation=return_annotation,
+            exceptions=exceptions,
+        )

@@ -22,7 +22,7 @@ class XmlDynamicPropertyGenerator(BaseXmlGenerator, DynamicPropertyGenerator, AB
     def getHContent(self):
         return self._getIncludeContent('.h')
 
-    def _getIncludeContent(self, extension: Literal['.cpp', '.h']):
+    def _getIncludeContent(self, extension: Literal['.cpp', '.h']) -> str | None:
         inc = self.currentNode.get('Include')
         assert inc is not None, f"'Include' not found in {self.baseGenFilePath}"
 
@@ -39,6 +39,7 @@ class XmlDynamicPropertyGenerator(BaseXmlGenerator, DynamicPropertyGenerator, AB
                     pass
 
         if inc.endswith('.hxx'):
-            return  # probably these files are generated - just ignore them
+            return None  # probably these files are generated - just ignore them
 
         logger.warning(f"Could not find cpp file for {self.baseGenFilePath}")
+        return None

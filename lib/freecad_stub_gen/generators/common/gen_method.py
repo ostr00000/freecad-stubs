@@ -1,6 +1,6 @@
 import logging
 from abc import ABC
-from typing import Protocol
+from typing import Sequence, Protocol
 
 from freecad_stub_gen.generators.common.doc_string import formatDocstring
 from freecad_stub_gen.generators.common.gen_python_api import PythonApiGenerator
@@ -15,12 +15,16 @@ class StringType(Protocol):
 
 
 class MethodGenerator(PythonApiGenerator, ABC):
-    def convertMethodToStr(self, methodName: str, signatures: list[StringType], docs: str = '',
-                           isClassic=False, isStatic=False, functionSpacing=1) -> str:
+    def convertMethodToStr(self, methodName: str,
+                           strSignatures: Sequence[StringType | str],
+                           docs: str = '',
+                           isClassic=False,
+                           isStatic=False,
+                           functionSpacing=1) -> str:
         ret = ''
-        if not signatures:
+        if not strSignatures:
             return ret
-        signatures = list(map(str, signatures))
+        signatures = list(map(str, strSignatures))
 
         static = '@staticmethod\n' if isStatic else ''
         classic = '@classmethod\n' if isClassic else ''

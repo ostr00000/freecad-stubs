@@ -10,7 +10,7 @@ class SignatureMerger:
     def __init__(self,
                  codeSignatures: list[SelfSignature],
                  docSignatures: list[SelfSignature],
-                 firstParam: Parameter = None,
+                 firstParam: Parameter | None = None,
                  cFunName: str = '',
                  ):
         self.codeSignatures = codeSignatures
@@ -19,9 +19,9 @@ class SignatureMerger:
 
         self._retParam: list[Parameter] = []
         self._yielded = False
-        self._remainingSig = []
+        self._remainingSig: list[SelfSignature] = []
 
-        if firstParam:
+        if firstParam is not None:
             self._retParam.append(firstParam)
 
     def genMergedCodeAndDocSignatures(self):
@@ -42,13 +42,13 @@ class SignatureMerger:
         raise NotImplementedError
 
     def _mergeCodeWithUnknownParametersAndDocsSignatures(self):
+        codeS: SelfSignature
         match self.codeSignatures:
             case [SelfSignature(unknown_parameters=True) as codeS]:
                 pass
             case _:
                 return
 
-        codeS: SelfSignature  # Pycharm typing problem
         for docS in self.docSignatures:
             joinedParams = list(self._mergeParamNamesGen(
                 list(codeS.parameters.values()),
@@ -110,7 +110,7 @@ class SignatureMerger:
                     matchedParam.append(codeParam)
                     continue
                 else:
-                    return
+                    return None
 
             newArg = codeParam
             if codeParam.name.startswith(DEFAULT_ARG_NAME) \
@@ -128,7 +128,7 @@ class SignatureMerger:
             matchedParam.append(newArg)
 
         if list(docSignatureIt):
-            return  # there remain more arguments
+            return None # there remain more arguments
 
         return matchedParam
 

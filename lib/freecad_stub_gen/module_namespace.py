@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 class _ModuleNamespace:
     def __init__(self, sourcePath: Path = SOURCE_DIR):
         self.sourcePath = sourcePath
-        self.stemToPaths = defaultdict(list)
+        self.stemToPaths: defaultdict[str, list[Path]] = defaultdict(list)
         for file in genXmlFiles(sourcePath):
             self.stemToPaths[file.stem].append(file)
 
@@ -22,11 +22,14 @@ class _ModuleNamespace:
             case [onlyOnePath]:
                 return onlyOnePath
             case manyPaths if any(namespace in str(pathWithNamespace := p) for p in manyPaths):
+                # noinspection PyUnboundLocalVariable
                 return pathWithNamespace
             case [anyPath, *_] as possiblePaths:
                 paths = [p.relative_to(self.sourcePath) for p in possiblePaths]
                 logger.warning(f'There is more than one possible {paths=}')
                 return anyPath
+            case _:
+                raise NotImplementedError
 
     NAMESPACE_TO_MODULE = {
         'Base': 'FreeCAD',

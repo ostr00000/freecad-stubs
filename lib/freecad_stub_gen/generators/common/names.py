@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 
 from freecad_stub_gen.importable_map import importableMap
 from freecad_stub_gen.module_namespace import moduleNamespace
-from freecad_stub_gen.util import OrderedSet
+from freecad_stub_gen.util import OrderedStrSet
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +20,7 @@ def getFatherClassWithModules(currentNode: ET.Element) -> str:
     return getClassWithModulesFromStem(fatherName, fatherNamespace)
 
 
-def getClassWithModulesFromStem(stem: str, namespace: str):
+def getClassWithModulesFromStem(stem: str, namespace: str) -> str:
     try:
         file = moduleNamespace.getFileForStem(stem, namespace)
     except ValueError:
@@ -62,9 +62,9 @@ def getClassWithModulesFromNode(currentNode: ET.Element) -> str:
             name = getClassName(fullName)
 
     if not name:
-        name = currentNode.attrib.get('Name').removesuffix('Py')
+        name = currentNode.attrib['Name'].removesuffix('Py')
 
-    namespace = currentNode.attrib.get('Namespace')
+    namespace = currentNode.attrib['Namespace']
     namespace = moduleNamespace.convertNamespaceToModule(namespace)
     name = CLASS_TO_ALIAS.get(name, name)
     return f'{namespace}.{name}'
@@ -74,7 +74,7 @@ def getClassNameFromNode(currentNode: ET.Element) -> str:
     return getClassName(getClassWithModulesFromNode(currentNode))
 
 
-def getClassName(classWithModules: str):
+def getClassName(classWithModules: str) -> str:
     return classWithModules[classWithModules.rfind('.') + 1:]
 
 
@@ -83,7 +83,7 @@ def getModuleName(classWithModules: str):
         return classWithModules[:splitIndex]
 
 
-def useAliasedModule(classWithModules: str, requiredImports: OrderedSet = None) -> str:
+def useAliasedModule(classWithModules: str, requiredImports: OrderedStrSet | None = None) -> str:
     mod = getModuleName(classWithModules)
     if mod is None:
         return classWithModules
@@ -104,7 +104,7 @@ def getNamespaceWithClass(cTypeClass: str):
     return namespace, cType
 
 
-def getClassWithModulesFromPointer(cTypePointer: str):
+def getClassWithModulesFromPointer(cTypePointer: str) -> str:
     cType = cTypePointer.removesuffix('::Type')
     namespace, cType = getNamespaceWithClass(cType)
     return getClassWithModulesFromStem(cType, namespace or '')
@@ -131,6 +131,7 @@ def validatePythonValue(value: str) -> str | None:
         return validatePythonValue(value[:-1])
 
     return None
+
 
 def convertToPythonValue(value: str):
     if (safe := validatePythonValue(value)) is None:

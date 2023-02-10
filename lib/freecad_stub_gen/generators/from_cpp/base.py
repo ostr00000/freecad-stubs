@@ -24,8 +24,8 @@ class Method:
     args: list[str]
     pythonMethodName: str = ''
     cFunction: str = ''
-    doc: str = None
-    pythonSignature: SelfSignature = None
+    doc: str | None = None
+    pythonSignature: SelfSignature | None = None
 
     REG_WHITESPACE_WITH_APOSTROPHE = re.compile(r'"\s*"')
 
@@ -67,7 +67,7 @@ class Method:
 
 @dataclasses.dataclass(repr=False)
 class PyMethodDef(Method):
-    flags: str = None
+    flags: str | None = None
 
     def __post_init__(self):
         super().__post_init__()
@@ -104,8 +104,9 @@ class BaseGeneratorFromCpp(MethodGenerator, ABC):
                 for m in methods:
                     m.insertParam(firstParam)
 
-            docContent = next((met.doc for met in methods if met.doc is not None), '')
-            docContent += SelfSignature.getExceptionsDocs(m.pythonSignature for m in methods)
+            docContent = next((m.doc for m in methods if m.doc is not None), '')
+            docContent += SelfSignature.getExceptionsDocs(
+                m.pythonSignature for m in methods if m.pythonSignature is not None)
             uniqueMethods = list({str(m): m for m in methods}.values())
             yield self.convertMethodToStr(
                 methods[0].pythonMethodName, uniqueMethods,

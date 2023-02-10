@@ -7,18 +7,18 @@ from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
 from freecad_stub_gen.generators.common.names import getClassName, getClassWithModulesFromPointer, \
     getModuleName
 from freecad_stub_gen.generators.common.py_build_converter import parsePyBuildValues
-from freecad_stub_gen.generators.common.return_type_converter.arg_types import EmptyType, \
-    Empty, UnionArguments, RetType, InvalidReturnType
+from freecad_stub_gen.generators.common.return_type_converter.arg_types import Empty, \
+    UnionArguments, RetType, InvalidReturnType
 from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import StrWrapper
-from freecad_stub_gen.util import OrderedSet
+from freecad_stub_gen.util import OrderedStrSet
 
 logger = logging.getLogger(__name__)
 
 
 class ReturnTypeConverterBase:
-    def __init__(self, functionBody: str, requiredImports: OrderedSet = None,
+    def __init__(self, functionBody: str, requiredImports: OrderedStrSet | None = None,
                  classNameWithModule: str = '', functionName: str = ''):
-        self.requiredImports = OrderedSet() if requiredImports is None else requiredImports
+        self.requiredImports = OrderedStrSet() if requiredImports is None else requiredImports
         self.functionBody = functionBody
         self.classNameWithModule = classNameWithModule
         self.functionName = functionName
@@ -166,6 +166,8 @@ class ReturnTypeConverterBase:
                 funArgs = list(generateExpressionUntilChar(
                     fc, 0, ',', bracketL='(', bracketR=')'))
                 formatText = funArgs[0].removeprefix('"').removesuffix('"')
+
+                pythonType: RetType
                 if pythonType := parsePyBuildValues(formatText):
                     if pythonType == Empty:
                         objArg = funArgs[1].strip()
@@ -296,9 +298,10 @@ class ReturnTypeConverterBase:
                             varType = UnionArguments(('None', varType))
                         case Empty.value:
                             varType = 'None'
-
-            varType = self.getInnerType(varType, variableName, declarationMatch.start(),
-                                        declarationMatch.end(), endPos)
+            if isinstance(varType, str):
+                varType = self.getInnerType(
+                    varType, variableName, declarationMatch.start(),
+                    declarationMatch.end(), endPos)
 
             return varType
 
@@ -324,7 +327,7 @@ class ReturnTypeConverterBase:
                 case str():
                     yield varType
 
-    def getInnerType(self, varType: str | EmptyType, variableName: str,
-                     decStartPos: int, decEndPos: int, endPos: int) -> str:
+    def getInnerType(self, varType: str, variableName: str,
+                     decStartPos: int, decEndPos: int, endPos: int) -> RetType:
         """Additional search for generic types."""
         return varType

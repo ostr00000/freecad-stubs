@@ -1,8 +1,13 @@
+from __future__ import annotations
+
+import keyword
+from abc import ABC
+from collections.abc import Sized, Iterable
 from functools import cached_property
-from typing import TypeVar, Generator, Protocol
+from typing import TypeVar, Generator, Protocol, Iterator
 
 from freecad_stub_gen.generators.common.names import getModuleName, useAliasedModule
-from freecad_stub_gen.util import OrderedSet, indent
+from freecad_stub_gen.util import indent, OrderedStrSet, OrderedSet
 
 T = TypeVar('T')
 
@@ -25,25 +30,18 @@ class EmptyType:
 Empty = EmptyType()
 
 
-class SizedIterable(Protocol):
-    """
-    We cannot use `Collection` from collections.abc,
-    because mro first chose collections over list/dict.
-    """
-
-    def __iter__(self):
-        return super().__iter__()
-
-    def __len__(self):
-        return super().__len__()
+class SizedIterable(Sized, Iterable, Protocol):
+    pass
 
 
-class ArgumentsIter(SizedIterable):
+class WithImports:
     @cached_property
     def imports(self):
-        return OrderedSet()
+        return OrderedStrSet()
 
-    def __iter__(self):
+
+class ArgumentsIter(WithImports, SizedIterable, ABC):
+    def __iter__(self) -> Iterator[str]:
         """
         Cannot inherit this class from Iterable/Iterator
         because super() will not find correct class.
@@ -59,7 +57,7 @@ class ArgumentsIter(SizedIterable):
             yield str(argType)
 
 
-class UnionArguments(ArgumentsIter, OrderedSet[T]):
+class UnionArguments(ArgumentsIter, OrderedSet[str], SizedIterable):
     def __str__(self):
         values = list(self)
         if 'None' in values:
@@ -68,9 +66,18 @@ class UnionArguments(ArgumentsIter, OrderedSet[T]):
 
         return ' | '.join(values)
 
+    def add(self, item: RetType):
+        val = str(item)
+        super().add(val)
+        match item:
+            case UnionArguments():
+                self.imports.update(item.imports)
+            case EmptyType.value:
+                self.imports.add('typing')
 
-class TupleArgument(ArgumentsIter, list):
-    def __init__(self, gen: Generator[T, None, bool | None] = ()):
+
+class TupleArgument(ArgumentsIter, list, SizedIterable):
+    def __init__(self, gen: Generator[T, None, bool | None]):
         super().__init__()
         try:
             while True:
@@ -88,32 +95,28 @@ class TupleArgument(ArgumentsIter, list):
 
     def __eq__(self, other):
         return isinstance(other, type(self)) \
-               and self.repeated == other.repeated \
-               and super().__eq__(other)
+            and self.repeated == other.repeated \
+            and super().__eq__(other)
 
 
-RetType = UnionArguments[str] | EmptyType | str
+RetType = UnionArguments | EmptyType | str
 
 
 class InvalidReturnType(ValueError):
     pass
 
 
-class DictArgument(ArgumentsIter):
+class DictArgument(WithImports):
     def __init__(self):
         self.keys = UnionArguments()
         self.values = UnionArguments()
 
     def add(self, key: RetType, value: RetType):
-        if isinstance(key, UnionArguments):
-            keyStr = str(key)
-            self.imports.update(key.imports)
-            key = keyStr
         self.keys.add(key)
         self.values.add(value)
 
     def __bool__(self):
-        return bool(self.keys and self.values)
+        return bool(self.keys or self.values)
 
     def __str__(self):
         if not self:
@@ -125,31 +128,35 @@ class DictArgument(ArgumentsIter):
         return ret
 
 
-class ListIter(list, ArgumentsIter):
+class ListIter(ArgumentsIter, list, SizedIterable):
     pass
 
 
-class TypedDictGen(dict, ArgumentsIter):
+class TypedDictGen(WithImports):
     def __init__(self, funName: str):
         super().__init__()
         self.funName = funName
         self.alternativeSyntax = False
+        self._data: dict[str, RetType] = {}
 
     def add(self, key: str, value: RetType):
-        if not key.isidentifier():  # + keyword (not implemented)
+        if not key.isidentifier() or keyword.iskeyword(key):
             self.alternativeSyntax |= True
-        self[key] = value
+        self._data[key] = value
+
+    def __bool__(self):
+        return bool(self._data)
 
     def __str__(self):
         typedDictName = f'Return{self.funName[0].upper() + self.funName[1:]}Dict'
-        listIter = ListIter(self.values())
+        listIter = ListIter(self._data.values())
 
-        if self.alternativeSyntax:
-            content = ', '.join(f"'{k}': {v}" for k, v in zip(self.keys(), listIter))
+        if self.alternativeSyntax:  # TODO P4 better format
+            content = ', '.join(f"'{k}': {v}" for k, v in zip(self._data.keys(), listIter))
             fun = f"{typedDictName} = typing.TypedDict('{typedDictName}', {{{content}}})"
 
         else:
-            lines = [f'{k}: {v}' for k, v in zip(self.keys(), listIter)]
+            lines = [f'{k}: {v}' for k, v in zip(self._data.keys(), listIter)]
             content = indent('\n'.join(lines))
             fun = f"class {typedDictName}(typing.TypedDict):\n{content}"
 
@@ -160,6 +167,6 @@ class TypedDictGen(dict, ArgumentsIter):
 
     def __eq__(self, other):
         return isinstance(other, type(self)) \
-               and self.funName == other.funName \
-               and self.alternativeSyntax == other.alternativeSyntax \
-               and super().__eq__(other)
+            and self.funName == other.funName \
+            and self.alternativeSyntax == other.alternativeSyntax \
+            and super().__eq__(other)

@@ -4,7 +4,7 @@ from freecad_stub_gen.generators.common.cpp_function import generateExpressionUn
 from freecad_stub_gen.generators.common.names import getModuleName, getClassName, \
     getNamespaceWithClass
 from freecad_stub_gen.module_namespace import moduleNamespace
-from freecad_stub_gen.util import OrderedSet, indent, genCppFiles, readContent
+from freecad_stub_gen.util import indent, genCppFiles, readContent, OrderedStrSet
 
 
 class ExceptionData:
@@ -29,7 +29,7 @@ class ExceptionData:
             # no namespace means it is exception from current namespace
             self.cppNamespace = self.pyModuleRaw
 
-        self.requiredImports = OrderedSet()
+        self.requiredImports = OrderedStrSet()
 
     def __str__(self):
         if self.baseCppNamespace == '__python__':

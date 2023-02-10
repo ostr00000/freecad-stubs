@@ -5,7 +5,7 @@ from itertools import islice
 
 def _skipAdditionalDirectiveBlocks(it: Iterator[tuple[int, str]]):
     directiveStack = [True]
-    buffer = deque(maxlen=8)
+    buffer: deque[str] = deque(maxlen=8)
 
     for index, char in it:
         buffer.append(char)

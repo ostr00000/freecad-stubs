@@ -1,14 +1,14 @@
 import re
 
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import UnionArguments, \
-    Empty, EmptyType
+    Empty, RetType
 from freecad_stub_gen.generators.common.return_type_converter.base import ReturnTypeConverterBase
 
 
 class ReturnTypeInnerList(ReturnTypeConverterBase):
 
-    def getInnerType(self, varType: str | EmptyType, variableName: str, decStartPos: int,
-                     decEndPos: int, endPos: int) -> str:
+    def getInnerType(self, varType: str, variableName: str, decStartPos: int,
+                     decEndPos: int, endPos: int) -> RetType:
         if varType != 'list':
             return super().getInnerType(varType, variableName, decStartPos, decEndPos, endPos)
 

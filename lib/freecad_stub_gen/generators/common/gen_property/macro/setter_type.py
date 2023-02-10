@@ -9,7 +9,7 @@ from freecad_stub_gen.generators.common.names import useAliasedModule
 from freecad_stub_gen.module_namespace import moduleNamespace
 
 logger = logging.getLogger(__name__)
-seen = set()
+seen = set[str]()
 
 
 class PropertyMacroSetter(PropertyMacroBase):

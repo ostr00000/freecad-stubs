@@ -8,8 +8,7 @@ import more_itertools
 
 from freecad_stub_gen.generators.common.annotation_parameter import SelfSignature
 from freecad_stub_gen.generators.common.arguments_converter import TypesConverter
-from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
-    generateExpressionUntilChar
+from freecad_stub_gen.generators.common.cpp_function import findFunctionCall
 from freecad_stub_gen.generators.common.gen_base import BaseGenerator
 from freecad_stub_gen.generators.common.return_type_converter.full import ReturnTypeConverter
 
@@ -33,11 +32,12 @@ class PythonApiGenerator(BaseGenerator, ABC):
         Generate arguments for `cFunctionName` in `cClassName`.
         There may be more than one possible signature.
         """
-        self._functionBody = self.findFunctionBody(cFunctionName, cClassName)
-        if not self._functionBody:
+        fnBody = self.findFunctionBody(cFunctionName, cClassName)
+        if not isinstance(fnBody, str):
             return
 
         self._cFunctionName = cFunctionName
+        self._functionBody = fnBody
         self._argNumStart = argNumStart
 
         returnSig = self._getReturnSignature()
@@ -55,10 +55,6 @@ class PythonApiGenerator(BaseGenerator, ABC):
             yield returnSig
 
     def findFunctionBody(self, cFuncName: str, cClassName: str) -> str | None:
-        if res := self._findFunction(cFuncName, cClassName):
-            return res
-
-    def _findFunction(self, cFuncName: str, cClassName: str = '') -> str | None:
         if cFuncName == 'PyMake':
             regs = [re.compile(fr'{cFuncName}\s*\(\s*struct\s*_typeobject\s*\*')]
         else:
@@ -70,6 +66,8 @@ class PythonApiGenerator(BaseGenerator, ABC):
         for searchRegex in regs:
             if match := re.search(searchRegex, self.impContent):
                 return findFunctionCall(self.impContent, match.end())
+
+        return None
 
     def __findParseTuple(self):
         yield from self._baseParse(pattern=self.REG_TUP, formatStrPosition=1,

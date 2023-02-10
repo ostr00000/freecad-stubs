@@ -3,8 +3,8 @@ from functools import wraps
 from typing import ParamSpec, Callable, TypeVar
 
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
-from freecad_stub_gen.generators.common.return_type_converter.arg_types import EmptyType, \
-    DictArgument, TypedDictGen, ArgumentsIter
+from freecad_stub_gen.generators.common.return_type_converter.arg_types import DictArgument, \
+    TypedDictGen, ArgumentsIter, RetType
 from freecad_stub_gen.generators.common.return_type_converter.base import ReturnTypeConverterBase
 
 PAR = ParamSpec('PAR')
@@ -23,8 +23,8 @@ def lazyDec(fun: Callable[PAR, RET]) -> Callable[PAR, Callable[[], RET]]:
 
 
 class ReturnTypeInnerDict(ReturnTypeConverterBase):
-    def getInnerType(self, varType: str | EmptyType, variableName: str, decStartPos: int,
-                     decEndPos: int, endPos: int) -> str:
+    def getInnerType(self, varType: str, variableName: str, decStartPos: int,
+                     decEndPos: int, endPos: int) -> RetType:
         if varType != 'dict':
             return super().getInnerType(varType, variableName, decStartPos, decEndPos, endPos)
 
@@ -92,6 +92,7 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
                 da.add(key, value)
 
         if tdg:
+            assert not da, "Values in `TypedDict` are mixed with `dict`"
             return tdg
         return da
 

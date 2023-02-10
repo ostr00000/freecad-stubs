@@ -1,15 +1,15 @@
 import re
 
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
-from freecad_stub_gen.generators.common.return_type_converter.arg_types import EmptyType, \
-    TupleArgument
+from freecad_stub_gen.generators.common.return_type_converter.arg_types import TupleArgument, \
+    RetType
 from freecad_stub_gen.generators.common.return_type_converter.base import ReturnTypeConverterBase
 
 
 class ReturnTypeInnerTuple(ReturnTypeConverterBase):
 
-    def getInnerType(self, varType: str | EmptyType, variableName: str, decStartPos: int,
-                     decEndPos: int, endPos: int) -> str:
+    def getInnerType(self, varType: str, variableName: str, decStartPos: int,
+                     decEndPos: int, endPos: int) -> RetType:
         if varType != 'tuple':
             return super().getInnerType(varType, variableName, decStartPos, decEndPos, endPos)
 

@@ -1,8 +1,8 @@
 import re
 import textwrap
-from collections.abc import Iterable
+from collections.abc import Hashable
 from pathlib import Path
-from typing import TypeVar
+from typing import Generic, Iterable, TypeVar
 
 from freecad_stub_gen.config import SOURCE_DIR
 
@@ -46,25 +46,40 @@ def genXmlFiles(sourcePath: Path = SOURCE_DIR):
     yield from Path(sourcePath).glob('**/*.xml')
 
 
-T = TypeVar('T')
+T = TypeVar('T', bound=Hashable)
 
 
-class OrderedSet(dict[T, None]):
+class OrderedSet(Generic[T]):
     def __init__(self, it: Iterable[T] = ()):
-        super().__init__(dict.fromkeys(it))
+        self._data: dict[T, None] = dict.fromkeys(it)
 
-    def add(self, key: T):
-        self[key] = None
+    def add(self, item: T):
+        self._data[item] = None
 
-    def update(self, keys: Iterable[T], **kwargs):
-        for k in keys:
-            self.add(k)
+    def pop(self, item: T):
+        self._data.pop(item)
 
     def first(self):
-        return next(iter(self.keys()))
+        return next(iter(self))
+
+    def update(self, it: Iterable[T]):
+        self._data.update(dict.fromkeys(it))
+
+    def clear(self):
+        self._data.clear()
+
+    def __len__(self):
+        return len(self._data)
+
+    def __iter__(self):
+        return iter(self._data)
 
     def __repr__(self):
-        return '|'.join(self)
+        return '|'.join(map(str, self))
+
+
+class OrderedStrSet(OrderedSet[str]):
+    pass
 
 
 def toBool(text: str | bool | None) -> bool:
