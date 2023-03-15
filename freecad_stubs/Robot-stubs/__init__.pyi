@@ -199,64 +199,70 @@ class RobotObject(FreeCAD.DocumentObject):
     """Robot document object"""
 
     @property
-    def Axis1(self):
+    def Axis1(self) -> float:
         """
         Property group: Robot kinematic.
+        Property TypeId: App::PropertyFloat.
         Axis 1 angle of the robot in degre.
         """
 
     @Axis1.setter
-    def Axis1(self, value): ...
+    def Axis1(self, value: float): ...
 
     @property
-    def Axis2(self):
+    def Axis2(self) -> float:
         """
         Property group: Robot kinematic.
+        Property TypeId: App::PropertyFloat.
         Axis 2 angle of the robot in degre.
         """
 
     @Axis2.setter
-    def Axis2(self, value): ...
+    def Axis2(self, value: float): ...
 
     @property
-    def Axis3(self):
+    def Axis3(self) -> float:
         """
         Property group: Robot kinematic.
+        Property TypeId: App::PropertyFloat.
         Axis 3 angle of the robot in degre.
         """
 
     @Axis3.setter
-    def Axis3(self, value): ...
+    def Axis3(self, value: float): ...
 
     @property
-    def Axis4(self):
+    def Axis4(self) -> float:
         """
         Property group: Robot kinematic.
+        Property TypeId: App::PropertyFloat.
         Axis 4 angle of the robot in degre.
         """
 
     @Axis4.setter
-    def Axis4(self, value): ...
+    def Axis4(self, value: float): ...
 
     @property
-    def Axis5(self):
+    def Axis5(self) -> float:
         """
         Property group: Robot kinematic.
+        Property TypeId: App::PropertyFloat.
         Axis 5 angle of the robot in degre.
         """
 
     @Axis5.setter
-    def Axis5(self, value): ...
+    def Axis5(self, value: float): ...
 
     @property
-    def Axis6(self):
+    def Axis6(self) -> float:
         """
         Property group: Robot kinematic.
+        Property TypeId: App::PropertyFloat.
         Axis 6 angle of the robot in degre.
         """
 
     @Axis6.setter
-    def Axis6(self, value): ...
+    def Axis6(self, value: float): ...
 
     @property
     def Base(self) -> FreeCAD.Placement:

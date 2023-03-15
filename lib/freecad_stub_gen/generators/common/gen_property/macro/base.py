@@ -4,6 +4,9 @@ from functools import cached_property
 
 from freecad_stub_gen.generators.common.doc_string import prepareDocs
 from freecad_stub_gen.generators.common.gen_property.property_type import PropertyType
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -63,7 +66,14 @@ class PropertyMacroBase:
             if t:
                 self.type |= PropertyType[t]
 
-    REG_PATTERN_PROP_DECLARATION = r'([\w: \t]+)\b{}\b\s*;'
+    REG_PATTERN_PROP_DECLARATION = r'''(?x)
+(\w([\w \t]|::)*)   # namespace + type, ex. `App::PropertyLinkList`
+\s                  # whitespace
+[\w,\s]*            # there may be declared some other variables with same type
+\b{}\b              # the searched property name
+[\w,\s]*            # there may be declared some other variables with same type
+;                   # declaration must be ended with ;
+'''
 
     @cached_property
     def typeId(self) -> str | None:
@@ -76,6 +86,5 @@ class PropertyMacroBase:
 
                 return typeId
 
+        logger.error(f"Cannot find property type for {self.name=}")
         return None
-        # TODO P4 this may be improved, when multiple values are declared in one expression
-        #  App::PropertyFloat Axis1,Axis2,Axis3,Axis4,Axis5,Axis6;

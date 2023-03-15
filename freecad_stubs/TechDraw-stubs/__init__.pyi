@@ -1158,15 +1158,15 @@ class DrawViewPart(TechDraw.DrawView):
     def CoarseView(self, value: int | bool): ...
 
     @property
-    def Direction(self):
+    def Direction(self) -> FreeCAD.Vector:
         """
         Property group: Projection.
-        Property TypeId: TechDraw::.
+        Property TypeId: App::PropertyVector.
         Projection Plane normal. The direction you are looking from.
         """
 
     @Direction.setter
-    def Direction(self, value): ...
+    def Direction(self, value: FreeCAD.Vector | Triple_t[float]): ...
 
     @property
     def Focus(self) -> FreeCAD.Quantity:
