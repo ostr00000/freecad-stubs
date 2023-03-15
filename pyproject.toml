@@ -31,6 +31,7 @@ dependencies = [
 
 [project.optional-dependencies]
 generate = ['more-itertools']
+check = ['mypy', 'pylint']
 
 [tool.setuptools]
 package-dir = { '' = 'freecad_stubs' }
@@ -70,3 +71,54 @@ disable_error_code = ['misc']
 module = 'freecad_stub_gen.generators.common.gen_property.property_type'
 disable_error_code = ['misc']
 
+
+
+[tool.pylint.basic]
+include-naming-hint = true
+
+ignore-paths = ['.*/additional/']
+attr-naming-style = "camelCase"
+function-naming-style = "camelCase"
+method-naming-style = "camelCase"
+
+# short names should be used for shot-living variables
+# https://github.com/PyCQA/pylint/issues/2018
+#variable-naming-style = "camelCase"
+variable-rgx = '([^\W\dA-Z][^\W_]*|__[^\W\dA-Z_]\w+__)$'
+#argument-naming-style = "camelCase"
+argument-rgx = '([^\W\dA-Z][^\W_]*|__[^\W\dA-Z_]\w+__)$'
+typealias-rgx = '^_{0,2}(?!T[A-Z]|Type)[A-Z]+[a-z]+(?:[A-Z][a-z]+)*(?:_t|_T)?$'
+
+[tool.pylint."messages control"]
+disable = [
+    #### Convention
+    "missing-module-docstring",
+    "missing-class-docstring",
+    "missing-function-docstring", #[fix toml formatting]
+
+    #### Refactor
+    "too-few-public-methods",
+    # useless when there is inheritance https://github.com/PyCQA/pylint/issues/4352
+    'duplicate-code',
+    # pattern match for property setter and getter are same for some values
+
+    #### Warning
+    "logging-fstring-interpolation",
+    # we debug expression in f-strings (`=`)
+
+    # tmp disable - should be fixed later
+    'fixme',
+    'too-many-ancestors',
+    'too-many-branches',
+#    'too-many-locals',
+    'too-many-instance-attributes',
+    'too-many-arguments',
+    'too-many-nested-blocks',
+]
+
+[tool.pylint.imports]
+# all values from __main__ are allowed at any level
+allow-any-import-level = [
+    'freecad_stub_gen.generators.types_enum.generateTypes',
+    'freecad_stub_gen.generate.generateFreeCadStubs',
+]

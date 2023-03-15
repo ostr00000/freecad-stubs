@@ -1,6 +1,7 @@
 import ast
 import builtins
 import logging
+import typing
 import xml.etree.ElementTree as ET
 
 from freecad_stub_gen.importable_map import importableMap
@@ -54,8 +55,8 @@ def getClassWithModulesFromNode(currentNode: ET.Element) -> str:
             namespace, name = name.split('.', maxsplit=1)
             namespace = moduleNamespace.convertNamespaceToModule(namespace)
             return f'{namespace}.{name}'
-        else:
-            return name
+
+        return name
 
     if fullName := importableMap.get(currentNode.attrib['Name']):
         if '.' in fullName:
@@ -78,9 +79,22 @@ def getClassName(classWithModules: str) -> str:
     return classWithModules[classWithModules.rfind('.') + 1:]
 
 
-def getModuleName(classWithModules: str):
+@typing.overload
+def getModuleName(classWithModules: str, required: typing.Literal[True]) -> str: ...
+
+
+@typing.overload
+def getModuleName(classWithModules: str, required=False) -> str | None: ...
+
+
+def getModuleName(classWithModules: str, required=False) -> str | None:
     if (splitIndex := classWithModules.rfind('.')) != -1:
         return classWithModules[:splitIndex]
+
+    if not required:
+        return None
+
+    raise ValueError(f"Cannot find module for {classWithModules}")
 
 
 def useAliasedModule(classWithModules: str, requiredImports: OrderedStrSet | None = None) -> str:
@@ -117,6 +131,7 @@ def validatePythonValue(value: str) -> str | None:
     if value in ('true', 'false'):
         return value.title()
 
+    # pylint: disable=broad-exception-caught
     try:
         ast.literal_eval(value)
     except (SyntaxError, ValueError):

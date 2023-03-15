@@ -27,10 +27,11 @@ def parsePyBuildValues(formatText: str) -> str:
 
     if len(results) > 1:
         return f'tuple[{", ".join(results)}]'
-    elif results:
+
+    if results:
         return results[0]
-    else:
-        return 'None'
+
+    return 'None'
 
 
 @lru_cache
@@ -94,7 +95,7 @@ def _parsePyBuildTuple(complexFormats: list[str]):
 
 # https://docs.python.org/3/c-api/arg.html#c.Py_BuildValue
 # https://docs.python.org/3/extending/extending.html#building-arbitrary-values
-pyBuildValues = """
+PY_BUILD_VALUES = """
 s (str or None) [const char *]
 s# (str or None) [const char *, Py_ssize_t]
 y (bytes) [const char *]
@@ -136,7 +137,7 @@ def _initParseMaps():
     locParseSizeMap = {}
     locParseTypeMap = {}
 
-    for line in pyBuildValues.splitlines():
+    for line in PY_BUILD_VALUES.splitlines():
         if not line:
             continue
 
@@ -175,5 +176,6 @@ if __name__ == '__main__':
                 "((ii)(ii)) (ii)",
         ):
             print(parsePyBuildValues(i))
+
 
     testParsing()

@@ -14,9 +14,10 @@ seen = set[str]()
 
 class PropertyMacroSetter(PropertyMacroBase):
 
+    # pylint: disable=too-many-statements
     @property
     def pythonSetType(self) -> str:
-        if not (typeId := self.TypeId):
+        if not (typeId := self.typeId):
             return ''
 
         requiredTypes = []

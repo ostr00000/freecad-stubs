@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class RawRepr:
-    __slots__ = 'values'
+    __slots__ = ('values',)
 
     def __new__(cls, *values):
         match values:
@@ -38,12 +38,11 @@ class RawRepr:
             self.values.add(other)
             return self
 
-        elif isinstance(other, RawRepr):
+        if isinstance(other, RawRepr):
             self.values.update(other.values)
             return self
 
-        else:
-            raise NotImplementedError
+        raise NotImplementedError
 
 
 class RawStringRepresentation(str):
@@ -62,10 +61,11 @@ class AnnotationParam(Parameter):
     def getFirstParam(cls, isStaticMethod: bool, isClassMethod: bool) -> Parameter | None:
         if isStaticMethod:
             return None
-        elif isClassMethod:
+
+        if isClassMethod:
             return cls.CLS_PARAM
-        else:
-            return cls.SELF_PARAM
+
+        return cls.SELF_PARAM
 
 
 InitParameters_t: TypeAlias = Sequence[Parameter] | None

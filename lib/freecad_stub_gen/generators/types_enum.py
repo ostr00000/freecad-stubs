@@ -37,5 +37,5 @@ def generateTypes():
 
     typeText = typeText.rstrip() + '\n'
 
-    with open(additionalPath / 'FreeCADTypes.py', 'w') as outputFile:
+    with open(additionalPath / 'FreeCADTypes.py', 'w', encoding='utf-8') as outputFile:
         outputFile.write(typeText)

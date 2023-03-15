@@ -42,8 +42,8 @@ class PythonApiGenerator(BaseGenerator, ABC):
 
         returnSig = self._getReturnSignature()
         signatures = chain(
-            self.__findParseTuple(),
-            self.__findParseTupleAndKeywords(),
+            self._findParseTuple(),
+            self._findParseTupleAndKeywords(),
             # TODO P5 PyArg_UnpackTuple
             # https://docs.python.org/3/c-api/arg.html#c.PyArg_UnpackTuple
         )
@@ -69,11 +69,11 @@ class PythonApiGenerator(BaseGenerator, ABC):
 
         return None
 
-    def __findParseTuple(self):
+    def _findParseTuple(self):
         yield from self._baseParse(pattern=self.REG_TUP, formatStrPosition=1,
                                    minSize=2, onlyPositional=True)
 
-    def __findParseTupleAndKeywords(self):
+    def _findParseTupleAndKeywords(self):
         yield from self._baseParse(pattern=self.REG_TUP_KW, formatStrPosition=2,
                                    minSize=4, onlyPositional=False)
 

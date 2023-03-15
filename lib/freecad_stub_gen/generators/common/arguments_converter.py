@@ -10,8 +10,8 @@ from freecad_stub_gen.generators.common.annotation_parameter import AnnotationPa
     RawStringRepresentation
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar, \
     findFunctionCall
-from freecad_stub_gen.generators.common.names import getClassWithModulesFromPointer, getModuleName, \
-    convertToPythonValue
+from freecad_stub_gen.generators.common.names import getClassWithModulesFromPointer, \
+    getModuleName, convertToPythonValue
 from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import StrWrapper
 from freecad_stub_gen.util import OrderedStrSet
 
@@ -126,10 +126,8 @@ class TypesConverter:
         return self._functionBody[:self._funStart]
 
     def _getInitialParameterKind(self):
-        if self._kwargList:
-            return Parameter.POSITIONAL_OR_KEYWORD
-        else:
-            return Parameter.POSITIONAL_ONLY
+        return Parameter.POSITIONAL_OR_KEYWORD if self._kwargList \
+            else Parameter.POSITIONAL_ONLY
 
     def convertFormatToTypes(self) -> Iterator[Parameter]:
         formatStr = self.argumentStrings[self.formatStrPosition]
@@ -170,12 +168,9 @@ class TypesConverter:
                                 # (after _addElementToSequence will no longer be used)
                                 defaultValue = None
 
-                            try:
-                                yield AnnotationParam(
-                                    pythonArgName, self._parameterKind, default=defaultValue,
-                                    annotation=RawRepr(objType))
-                            except ValueError:
-                                raise
+                            yield AnnotationParam(
+                                pythonArgName, self._parameterKind, default=defaultValue,
+                                annotation=RawRepr(objType))
                             pythonArgNum += 1
 
                         cArgNum += parseSizeMap[curVal]
@@ -197,6 +192,7 @@ class TypesConverter:
             logger.error(f'{ex}, {formatStr=}, {self._funCall=}, {self.xmlPath=}')
 
     def _findPointerType(self, cArgNum: int) -> str | None:
+        # pylint: disable=raise-missing-from
         try:
             pointerArg = self.argumentStrings[cArgNum]
         except IndexError:  # some implementations are broken, example:
@@ -207,33 +203,34 @@ class TypesConverter:
 
         if (typ := self._convertPointerToType(pointerArg)) is not None:
             return typ
-        elif pointerArg.endswith('::type_object()'):
-            logger.debug(f"Cannot detect pointer {pointerArg=}")
-        else:
-            exc = InvalidPointerFormat(f"Unknown pointer format {pointerArg=}")
-            try:
-                if self._findPointerType(cArgNum + 1) is not None:
-                    exc = InvalidPointerFormat("Format has swapped type")
-            except Exception:
-                raise exc
-            else:
-                raise exc
 
-        self.requiredImports.add('typing')
-        return 'typing.Any'
+        if pointerArg.endswith('::type_object()'):
+            logger.debug(f"Cannot detect pointer {pointerArg=}")
+            self.requiredImports.add('typing')
+            return 'typing.Any'
+
+        exc = InvalidPointerFormat(f"Unknown pointer format {pointerArg=}")
+        try:
+            if self._findPointerType(cArgNum + 1) is not None:
+                exc = InvalidPointerFormat("Format has swapped type")
+        except Exception:
+            raise exc
+
+        raise exc
 
     def _convertPointerToType(self, pointerArg: str) -> str | None:
         pointerArg = pointerArg.removeprefix('&').removeprefix('(').removesuffix(')')
 
         if pointerArg.endswith('::Type'):
             classWithModules = getClassWithModulesFromPointer(pointerArg)
-            self.requiredImports.add(getModuleName(classWithModules))
+            self.requiredImports.add(getModuleName(classWithModules, required=True))
             return classWithModules
-        elif pointerArg.startswith('Py'):
-            return cTypeToPythonType[pointerArg]
-        else:
-            logger.error(f"Unknown pointer kind {pointerArg=}")
-            return None
+
+        if pointerArg.startswith('Py'):
+            return C_TYPE_TO_PYTHON_TYPE[pointerArg]
+
+        logger.error(f"Unknown pointer kind {pointerArg=}")
+        return None
 
     def _startSequenceParsing(self):
         self._sequenceStack.append([])
@@ -283,7 +280,7 @@ class TypesConverter:
 
         return f'{DEFAULT_ARG_NAME}{self.argNumStart + pythonArgNum}'
 
-    @lru_cache(maxsize=None)
+    @lru_cache()
     def _getCurArgName(self, curFormat: str, cArgNum: int) -> str | None:
         if curFormat in ('O!', 'O&') or curFormat.startswith('e'):
             # variable offset - skip type_object/converter/encoding
@@ -341,7 +338,7 @@ class TypesConverter:
 
 
 # based on https://pyo3.rs/v0.11.1/conversions.html
-typesTableStr = """
+TYPES_TABLE_STR = """
 Python;Rust;Rust (Python-native)
 object;-;&PyAny
 str;String, Cow<str>, &str;&PyUnicode
@@ -370,14 +367,14 @@ typing.Iterator[Any];-;&PyIterator
 typing.Type;-;PyClass;this is special case for python2
 """
 
-cTypeToPythonType: dict[str, str] = {
+C_TYPE_TO_PYTHON_TYPE: dict[str, str] = {
     (pyRustC := line.split(';'))[2]: pyRustC[0]
-    for line in typesTableStr.splitlines() if line}
-cTypeToPythonType = {
+    for line in TYPES_TABLE_STR.splitlines() if line}
+C_TYPE_TO_PYTHON_TYPE = {
     k.removeprefix('&') + '_Type': v.split('[')[0]
-    for k, v in cTypeToPythonType.items()}
+    for k, v in C_TYPE_TO_PYTHON_TYPE.items()}
 # based on https://docs.python.org/3/c-api/arg.html
-parseTupleStr = """
+PARSE_TUPLE_STR = """
 s (str) [const char *]
 s* (str or bytes-like object) [Py_buffer]
 s# (str, read-only bytes-like object) [const char *, int or Py_ssize_t]
@@ -434,7 +431,7 @@ def _initParseMaps():
     locParseSizeMap = {}
     locParseTypeMap = {}
 
-    for line in parseTupleStr.splitlines():
+    for line in PARSE_TUPLE_STR.splitlines():
         if not line:
             continue
 

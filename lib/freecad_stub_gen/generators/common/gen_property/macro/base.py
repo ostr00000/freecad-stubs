@@ -66,7 +66,7 @@ class PropertyMacroBase:
     REG_PATTERN_PROP_DECLARATION = r'([\w: \t]+)\b{}\b\s*;'
 
     @cached_property
-    def TypeId(self) -> str | None:
+    def typeId(self) -> str | None:
         reg = self.REG_PATTERN_PROP_DECLARATION.format(self.name)
         for classDecBody in self.classDeclarationBodies:
             if match := re.search(reg, classDecBody):
@@ -75,3 +75,7 @@ class PropertyMacroBase:
                     typeId = f'{self.namespace}::{typeId}'
 
                 return typeId
+
+        return None
+        # TODO P4 this may be improved, when multiple values are declared in one expression
+        #  App::PropertyFloat Axis1,Axis2,Axis3,Axis4,Axis5,Axis6;

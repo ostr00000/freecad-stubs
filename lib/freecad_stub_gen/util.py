@@ -20,8 +20,7 @@ def _replacer(match):
     s = match.group(0)
     if s.startswith('/'):
         return ' '  # note: a space and not an empty string
-    else:
-        return s
+    return s
 
 
 def removeComments(text):

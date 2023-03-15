@@ -16,8 +16,7 @@ setup_env:
 install_in_env:
 	$(PYTHON_ENV) -m pip install --upgrade pip
 	$(PYTHON_ENV) -m pip install PyQt5
-	$(PYTHON_ENV) -m pip install mypy
-	$(PYTHON_ENV) -m pip install -e .[generate]
+	$(PYTHON_ENV) -m pip install -e .[generate,check]
 
 prepare_freecad:
 	git -C FreeCAD pull || git clone https://github.com/FreeCAD/FreeCAD FreeCAD
@@ -37,4 +36,7 @@ build_and_upload:
 	$(PYTHON_ENV) -m twine upload dist/*
 
 check_by_mypy:
-	mypy
+	$(PYTHON_ENV) -m mypy
+
+check_by_pylint:
+	$(PYTHON_ENV) -m pylint ./lib/

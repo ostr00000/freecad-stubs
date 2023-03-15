@@ -14,8 +14,8 @@ class PropertyMacro(PropertyMacroGetter, PropertyMacroSetter):
         if self.group:
             result += f'Property group: {self.group}.\n'
 
-        if self.TypeId:
-            result += f'Property TypeId: {self.TypeId}.\n'
+        if self.typeId:
+            result += f'Property TypeId: {self.typeId}.\n'
 
         if self._docs:
             result += self._docs + '\n'
@@ -26,6 +26,6 @@ class PropertyMacro(PropertyMacroGetter, PropertyMacroSetter):
     def readOnly(self):
         res = bool(self.type & PropertyType.Prop_ReadOnly)
         if not res:
-            if self.TypeId == "App::PropertyExpressionEngine":
+            if self.typeId == "App::PropertyExpressionEngine":
                 res = True
         return res

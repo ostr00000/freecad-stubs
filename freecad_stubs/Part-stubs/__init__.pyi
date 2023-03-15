@@ -43,7 +43,10 @@ LinkSub_t: typing.TypeAlias = FreeCAD.DocumentObject | None | tuple[()] | DocAnd
 LinkList_t: typing.TypeAlias = None | FreeCAD.DocumentObject
 SequenceDoc_t: typing.TypeAlias = tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]
 LinkSubList_t: typing.TypeAlias = typing.Sequence[SequenceDoc_t | FreeCAD.DocumentObject]
-ReturnExportUnitsDict = typing.TypedDict('ReturnExportUnitsDict', {'write.iges.unit': str, 'write.step.unit': str})
+ReturnExportUnitsDict = typing.TypedDict('ReturnExportUnitsDict', {
+    'write.iges.unit': str,
+    'write.step.unit': str,
+})
 
 
 # TopoShapeVertexPy.xml

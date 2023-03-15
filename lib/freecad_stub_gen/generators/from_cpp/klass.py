@@ -83,8 +83,8 @@ class\s+            # keyword `class`
 
         if baseClasses:
             return f"({', '.join(baseClasses)})"
-        else:
-            return ''
+
+        return ''
 
     def _getTwinHeaderContent(self) -> str | None:
         currentName = self.baseGenFilePath.stem

@@ -51,6 +51,5 @@ class BasePropertyGenerator(BaseGenerator, ABC):
                 if '...' == subType:
                     continue
 
-                mod = getModuleName(subType)
-                assert mod is not None
+                mod = getModuleName(subType, required=True)
                 yield mod

@@ -43,8 +43,8 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
 
         if 'PARAM_PY_DICT' in self.functionBody:
             return varType
-        else:
-            raise ValueError("Cannot extract dict inner types.")
+
+        raise ValueError("Cannot extract dict inner types.")
 
     @lazyDec
     def _getInnerTypePyDictSetItemString(self, variableName: str, startPos: int, endPos: int):

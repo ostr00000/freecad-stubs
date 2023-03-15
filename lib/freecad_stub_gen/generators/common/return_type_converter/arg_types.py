@@ -89,8 +89,10 @@ class TupleArgument(ArgumentsIter, list, SizedIterable):
         if self.repeated:
             # use iter instead of index [0] to map module
             return f'tuple[{next(iter(self))}, ...]'
-        elif self:
+
+        if self:
             return f'tuple[{", ".join(self)}]'
+
         return 'tuple'
 
     def __eq__(self, other):
@@ -148,16 +150,21 @@ class TypedDictGen(WithImports):
         return bool(self._data)
 
     def __str__(self):
-        typedDictName = f'Return{self.funName[0].upper() + self.funName[1:]}Dict'
         listIter = ListIter(self._data.values())
 
-        if self.alternativeSyntax:  # TODO P4 better format
-            content = ', '.join(f"'{k}': {v}" for k, v in zip(self._data.keys(), listIter))
-            fun = f"{typedDictName} = typing.TypedDict('{typedDictName}', {{{content}}})"
-
+        if self.alternativeSyntax:
+            zipPattern = "'{k}': {v}"
+            joinPattern = ',\n'
         else:
-            lines = [f'{k}: {v}' for k, v in zip(self._data.keys(), listIter)]
-            content = indent('\n'.join(lines))
+            zipPattern = '{k}: {v}'
+            joinPattern = '\n'
+        lines = (zipPattern.format(k=k, v=v) for k, v in zip(self._data.keys(), listIter))
+        content = indent(joinPattern.join(lines))
+
+        typedDictName = f'Return{self.funName[0].upper() + self.funName[1:]}Dict'
+        if self.alternativeSyntax:
+            fun = f"{typedDictName} = typing.TypedDict('{typedDictName}', {{\n{content},\n}})"
+        else:
             fun = f"class {typedDictName}(typing.TypedDict):\n{content}"
 
         self.imports.add('typing')

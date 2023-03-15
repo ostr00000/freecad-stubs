@@ -31,7 +31,7 @@ class FreecadStubGeneratorFromXML(
                 self.currentNode = child
                 content, classNameWithModules = self._getClassContent()
 
-                modName = getModuleName(classNameWithModules)
+                modName = getModuleName(classNameWithModules, required=True)
                 if submodule:
                     modName = f'{modName}.{submodule}'
 
@@ -78,7 +78,7 @@ class FreecadStubGeneratorFromXML(
     def genBaseClasses(self):
         """Only one class is available in xml as a father."""
         fatherModuleAndClass = getFatherClassWithModules(self.currentNode)
-        self.requiredImports.add(getModuleName(fatherModuleAndClass))
+        self.requiredImports.add(getModuleName(fatherModuleAndClass, required=True))
         yield fatherModuleAndClass
 
         if self.classNameWithModules == 'FreeCAD.DocumentObjectGroup':

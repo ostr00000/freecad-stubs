@@ -22,7 +22,7 @@ class XmlPropertyGenerator(XmlMethodGenerator, BaseXmlGenerator, BasePropertyGen
         readOnly = toBool(node.attrib.get('ReadOnly', True))
 
         pythonType = self._findTypeBasedOnXmlDeclaration(node)
-        pythonGetType = pythonSetType = self.__getReturnTypeForSpecialCase(name, pythonType)
+        pythonGetType = pythonSetType = self._getReturnTypeForSpecialCase(name, pythonType)
 
         pythonGetType = self._getExtendedTypeFromCode(pythonGetType, f'get{name}')
         if not readOnly and pythonSetType == 'object':
@@ -62,9 +62,9 @@ class XmlPropertyGenerator(XmlMethodGenerator, BaseXmlGenerator, BasePropertyGen
             case ('dict' | 'list' | 'tuple' | 'typing.Sequence', _):
                 if extendedType.startswith(pythonType) or extendedType.endswith('Dict'):
                     return extendedType
-                else:
-                    logger.warning(f"Type from code does not match type from xml"
-                                   f" (cannot extend): {pythonType=}, {extendedType=}")
+
+                logger.warning(f"Type from code does not match type from xml"
+                               f" (cannot extend): {pythonType=}, {extendedType=}")
 
             case _:
                 logger.warning(f"Type from code does not match type from xml:"
@@ -72,7 +72,7 @@ class XmlPropertyGenerator(XmlMethodGenerator, BaseXmlGenerator, BasePropertyGen
 
         return pythonType
 
-    def __getReturnTypeForSpecialCase(self, propertyName: str, pythonType: str):
+    def _getReturnTypeForSpecialCase(self, propertyName: str, pythonType: str):
         className = getClassNameFromNode(self.currentNode)
 
         match className, propertyName:

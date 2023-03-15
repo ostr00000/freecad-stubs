@@ -12,7 +12,7 @@ class PropertyMacroGetter(PropertyMacroBase):
 
     @property
     def pythonGetType(self) -> str:
-        if not (typeId := self.TypeId):
+        if not (typeId := self.typeId):
             return ''
 
         if 'List' in typeId:

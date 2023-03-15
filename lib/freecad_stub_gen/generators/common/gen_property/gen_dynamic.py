@@ -75,12 +75,12 @@ class DynamicPropertyGenerator(BasePropertyGenerator, ABC):
         try:
             index = parts.index('Mod')
             namespace = parts[index + 1]
-        except ValueError:
+        except ValueError as exc:
             for k in ('App', 'Gui'):
                 if k in parts:
                     namespace = k
                     break
             else:
-                raise ValueError
+                raise ValueError from exc
 
         return namespace

@@ -27,6 +27,7 @@ class ReturnTypeConverterBase:
     def className(self):
         return getClassName(self.classNameWithModule)
 
+    # pylint: disable=too-many-return-statements
     def getExpressionType(self, varText: str, endPos: int, onlyLiteral=False) -> RetType:
         varText = varText.strip()
         if varText.endswith(')') \
@@ -50,8 +51,7 @@ class ReturnTypeConverterBase:
             case '0' | '-1' | 'NULL' | 'nullptr' | '0L':
                 if onlyLiteral:
                     return Empty
-                else:
-                    raise InvalidReturnType
+                raise InvalidReturnType
 
             case 'getDocumentObjectPtr()':
                 return 'FreeCAD.DocumentObject'
@@ -72,9 +72,8 @@ class ReturnTypeConverterBase:
             case StrWrapper('Py::TupleN'):
                 if onlyLiteral:
                     return 'tuple'
-                else:
-                    return self.getInnerType('tuple', variableName=varText, decStartPos=0,
-                                             decEndPos=endPos, endPos=endPos)
+                return self.getInnerType('tuple', variableName=varText, decStartPos=0,
+                                         decEndPos=endPos, endPos=endPos)
             case StrWrapper('Py::Tuple' | 'PyTuple_New'):
                 return 'tuple'
             case StrWrapper('Py::List' | 'PyList_New'):
@@ -209,6 +208,7 @@ class ReturnTypeConverterBase:
                 logger.warning(f"Unknown return variable: '{varText}'")
         return Empty
 
+    # pylint: disable=too-many-return-statements
     def _findClassWithModule(self, text: str, mustDiffer: str = '') -> RetType:
         cType = text.removeprefix('Py::asObject(new ').removeprefix('new ')
         cType = cType.split('(', maxsplit=1)[0]
@@ -272,7 +272,7 @@ class ReturnTypeConverterBase:
             if varTypeDec in ('return', 'else'):
                 continue
 
-            elif varTypeDec in ('auto', 'PyObject', 'Py::Object'):
+            if varTypeDec in ('auto', 'PyObject', 'Py::Object'):
                 if assignValue := declarationMatch.group('val'):
                     #  we can try resolve real type by checking right side
                     varType = self.getExpressionType(assignValue, endPos, onlyLiteral=True)
@@ -287,7 +287,7 @@ class ReturnTypeConverterBase:
             else:
                 varType = self.getExpressionType(varTypeDec, endPos, onlyLiteral=True)
 
-            if (isNone := (varType == 'None')) or varType == Empty:
+            if (isNone := varType == 'None') or varType == Empty:
                 varType = self._getRetTypeFromAssignment(
                     variableName, declarationMatch.end(), endPos)
                 if isNone:
@@ -329,5 +329,6 @@ class ReturnTypeConverterBase:
 
     def getInnerType(self, varType: str, variableName: str,
                      decStartPos: int, decEndPos: int, endPos: int) -> RetType:
+        # pylint: disable=unused-argument
         """Additional search for generic types."""
         return varType

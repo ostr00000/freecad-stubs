@@ -1,6 +1,6 @@
 import enum
 
-
+# pylint: disable=invalid-name
 class PropertyType(enum.IntFlag):
     description: str
 

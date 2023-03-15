@@ -19,10 +19,7 @@ class PropertyTypeAlias:
 
     @classmethod
     def join(cls, typeAliases: Iterable[PropertyTypeAlias]):
-        res = ''
-        for ta in typeAliases:
-            res += f'{ta}\n'
-        return res
+        return ''.join(f'{ta}\n' for ta in typeAliases)
 
 
 class PropertyTypeVar(PropertyTypeAlias):

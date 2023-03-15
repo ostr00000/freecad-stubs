@@ -53,7 +53,7 @@ class _ModuleNamespace:
                 return k
         return default
 
-    def convertNamespaceToModule(self, namespace: str):
+    def convertNamespaceToModule(self, namespace: str) -> str:
         mod = self.NAMESPACE_TO_MODULE.get(namespace, namespace)
         aliasedMod = self.MODULE_TO_ALIAS.get(mod, mod)
         return aliasedMod

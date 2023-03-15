@@ -34,8 +34,8 @@ def _signatureGen(funDocString: str, argNumStart: int) -> Iterator[Parameter]:
     uniqueNameGen = _uniqueArgNameGen(argNumStart)
     try:
         next(uniqueNameGen)
-    except StopIteration:
-        raise ValueError("Unique generator should never end")
+    except StopIteration as exc:
+        raise ValueError("Unique generator should never end") from exc
 
     paramType: _ParameterKind = Parameter.POSITIONAL_ONLY
 
@@ -69,7 +69,7 @@ def _signatureGen(funDocString: str, argNumStart: int) -> Iterator[Parameter]:
         if defValue is not Parameter.empty and paramType == Parameter.POSITIONAL_ONLY:
             paramType = Parameter.POSITIONAL_OR_KEYWORD
 
-        uniqueName, argNum = uniqueNameGen.send(argName)
+        uniqueName, _argNum = uniqueNameGen.send(argName)
         yield AnnotationParam(
             uniqueName, paramType, default=RawRepr(defValue), annotation=RawRepr(annotation))
 

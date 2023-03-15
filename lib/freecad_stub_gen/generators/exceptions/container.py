@@ -10,7 +10,7 @@ from freecad_stub_gen.util import indent, genCppFiles, readContent, OrderedStrSe
 class ExceptionData:
     def __init__(self, exceptionName: str, newExceptionArgs: list[str]):
         excModuleWithClass = newExceptionArgs[0].removeprefix('"').removesuffix('"')
-        self.pyModuleRaw = getModuleName(excModuleWithClass)
+        self.pyModuleRaw = getModuleName(excModuleWithClass, required=True)
         self.pyModule = moduleNamespace.convertNamespaceToModule(self.pyModuleRaw)
         self.pyClass = getClassName(excModuleWithClass)
 
@@ -95,7 +95,7 @@ class ExceptionContainer:
         raise ValueError(f"Cannot find exception: {cppClass=} {cppNamespace=}")
 
     def getExceptionText(self, cTypeExceptionText: str) -> str:
-        cppNamespace, cppClass = getNamespaceWithClass(cTypeExceptionText)
+        _cppNamespace, cppClass = getNamespaceWithClass(cTypeExceptionText)
         for e in self.exceptions:
             if e.cppClass == cppClass:
                 pyModule = e.pyModuleRaw if e.pyModuleRaw != 'Base' else 'FreeCAD.Base'

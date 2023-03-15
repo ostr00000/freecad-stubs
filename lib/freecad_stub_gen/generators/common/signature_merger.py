@@ -67,7 +67,7 @@ class SignatureMerger:
                 yield cp
                 break
 
-            toReplace = dict(name=dp.name)
+            toReplace = {'name': dp.name}
             if dp.default not in (Parameter.empty, None):
                 toReplace['default'] = dp.default
             yield cp.replace(**toReplace)
@@ -109,8 +109,8 @@ class SignatureMerger:
                     # maybe docs have only required params
                     matchedParam.append(codeParam)
                     continue
-                else:
-                    return None
+
+                return None
 
             newArg = codeParam
             if codeParam.name.startswith(DEFAULT_ARG_NAME) \
@@ -128,7 +128,7 @@ class SignatureMerger:
             matchedParam.append(newArg)
 
         if list(docSignatureIt):
-            return None # there remain more arguments
+            return None  # there remain more arguments
 
         return matchedParam
 
