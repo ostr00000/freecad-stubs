@@ -2470,7 +2470,7 @@ def changeImportModule(key: str, oldMod: str, newMod: str, /):
     """Change the import module name of a registered filetype"""
 
 
-def getImportType(psKey: str = None, /) -> list[str] | dict[typing.Any, str | list[str] | None]:
+def getImportType(psKey: str = None, /) -> list[str] | dict[str, str | list[str] | None]:
     """Get the name of the module that can import the filetype"""
 
 
@@ -2482,7 +2482,7 @@ def changeExportModule(key: str, oldMod: str, newMod: str, /):
     """Change the export module name of a registered filetype"""
 
 
-def getExportType(psKey: str = None, /) -> list[str] | dict[typing.Any, str | list[str] | None]:
+def getExportType(psKey: str = None, /) -> list[str] | dict[str, str | list[str] | None]:
     """Get the name of the module that can export the filetype"""
 
 

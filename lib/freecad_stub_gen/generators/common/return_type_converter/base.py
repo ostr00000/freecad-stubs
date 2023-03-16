@@ -53,6 +53,15 @@ class ReturnTypeConverterBase:
                     return Empty
                 raise InvalidReturnType
 
+            case 'type->tp_new(type, this, nullptr)':
+                return self.getExpressionType('type', endPos)
+            case 'this->GetType()' | 'IncRef()':
+                return self.classNameWithModule
+
+            case StrWrapper(end='->copyPyObject()'):
+                varText = varText.removesuffix('->copyPyObject()')
+                return self.getExpressionType(varText, endPos)
+
             case 'getDocumentObjectPtr()':
                 return 'FreeCAD.DocumentObject'
             case StrWrapper('(GetApplication().openDocument('):
@@ -69,11 +78,25 @@ class ReturnTypeConverterBase:
                             | 'PyUnicode_From' | 'Py::Char'
                             | 'PyUnicode_DecodeUTF8' | 'PYSTRING_FROMSTRING'):
                 return 'str'
+            case StrWrapper(end='->c_str()'):
+                return 'str'
+
             case StrWrapper('Py::TupleN'):
                 if onlyLiteral:
                     return 'tuple'
-                return self.getInnerType('tuple', variableName=varText, decStartPos=0,
-                                         decEndPos=endPos, endPos=endPos)
+                return self.getInnerType(
+                    'tuple', variableName=varText,
+                    decStartPos=0, decEndPos=endPos, endPos=endPos)
+
+            case StrWrapper('PyTuple_Pack'):
+                fc = findFunctionCall(
+                    varText, bodyStart=varText.find('('),
+                    bracketL='(', bracketR=')').removeprefix('(').removesuffix(')')
+                funArgs = list(generateExpressionUntilChar(
+                    fc, 0, ',', bracketL='(', bracketR=')'))
+                subTypes = [self.getExpressionType(v, endPos) for v in funArgs[1:]]
+                return f'tuple[{", ".join(subTypes)}]'
+
             case StrWrapper('Py::Tuple' | 'PyTuple_New'):
                 return 'tuple'
             case StrWrapper('Py::List' | 'PyList_New'):
@@ -198,8 +221,8 @@ class ReturnTypeConverterBase:
                 return self._findVariableType(varText, endPos)
 
             case StrWrapper('(', end=')'):
-                return self.getExpressionType(varText.removeprefix('(').removesuffix(')'), endPos,
-                                              onlyLiteral)
+                return self.getExpressionType(
+                    varText.removeprefix('(').removesuffix(')'), endPos, onlyLiteral)
 
             case StrWrapper(contain='=='):
                 return 'bool'
@@ -272,7 +295,7 @@ class ReturnTypeConverterBase:
             if varTypeDec in ('return', 'else'):
                 continue
 
-            if varTypeDec in ('auto', 'PyObject', 'Py::Object'):
+            if varTypeDec in ('auto', 'PyObject', 'Py::Object', 'PyTypeObject'):
                 if assignValue := declarationMatch.group('val'):
                     #  we can try resolve real type by checking right side
                     varType = self.getExpressionType(assignValue, endPos, onlyLiteral=True)

@@ -1550,7 +1550,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (ValueError, Part.OCCError).
         """
 
-    def cleaned(self):
+    def cleaned(self) -> PartModule.Shape:
         """
         This creates a cleaned copy of the shape with the triangulation removed.
         clean()
@@ -1592,7 +1592,7 @@ class Shape(FreeCAD.ComplexGeoData):
         complement()
         """
 
-    def copy(self, copyGeom: bool = True, copyMesh: bool = False, /):
+    def copy(self, copyGeom: bool = True, copyMesh: bool = False, /) -> PartModule.Shape:
         """
         Create a copy of this shape
         copy(copyGeom=True, copyMesh=False) -> Shape
@@ -1634,7 +1634,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (Part.OCCError, TypeError).
         """
 
-    def defeaturing(self, l, /):
+    def defeaturing(self, l, /) -> PartModule.Shape:
         """
         Remove a feature defined by supplied faces and return a new shape.
         defeaturing(shapeList) -> Shape
@@ -2250,7 +2250,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (Part.OCCError).
         """
 
-    def removeShape(self, l, /):
+    def removeShape(self, l, /) -> PartModule.Shape:
         """
         Remove a sub-shape and return a new shape.
         removeShape(shapeList) -> Shape
@@ -2267,7 +2267,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (Part.OCCError).
         """
 
-    def replaceShape(self, l, /):
+    def replaceShape(self, l, /) -> PartModule.Shape:
         """
         Replace a sub-shape with a new shape and return a new shape.
         replaceShape(tupleList) -> Shape
@@ -2282,7 +2282,7 @@ class Shape(FreeCAD.ComplexGeoData):
         reverse()
         """
 
-    def reversed(self):
+    def reversed(self) -> PartModule.Shape:
         """
         Reverses the orientation of a copy of this shape.
         reversed() -> Shape
@@ -2332,7 +2332,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (Part.OCCError).
         """
 
-    def rotate(self, obj1, obj2, angle: float, /):
+    def rotate(self, obj1, obj2, angle: float, /) -> PartModule.Shape:
         """
         Apply the rotation (base,dir,degree) to the current location of this shape
         rotate(base,dir,degree)
@@ -2346,7 +2346,7 @@ class Shape(FreeCAD.ComplexGeoData):
         rotated(base,dir,degree) -> shape
         """
 
-    def scale(self, factor: float, p: FreeCAD.Vector = None, /):
+    def scale(self, factor: float, p: FreeCAD.Vector = None, /) -> PartModule.Shape:
         """
         Apply scaling with point and factor to this shape.
         scale(factor,[base=Vector(0,0,0)])
@@ -2456,7 +2456,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (Part.OCCError).
         """
 
-    def transformShape(self, obj: FreeCAD.Matrix, copy: bool = False, checkScale: bool = False, /):
+    def transformShape(self, obj: FreeCAD.Matrix, copy: bool = False, checkScale: bool = False, /) -> PartModule.Shape:
         """
         Apply transformation on a shape without changing the underlying geometry.
         transformShape(Matrix,[boolean copy=False, checkScale=False]) -> None
@@ -2471,7 +2471,7 @@ class Shape(FreeCAD.ComplexGeoData):
         transformed(Matrix,copy=False,checkScale=False,op=None) -> shape
         """
 
-    def translate(self, obj, /):
+    def translate(self, obj, /) -> PartModule.Shape:
         """
         Apply the translation to the current location of this shape.
         translate(vector)
@@ -5578,13 +5578,13 @@ class Geometry(FreeCAD.Persistence):
     def Tag(self) -> str:
         """Gives the tag of the geometry as string."""
 
-    def clone(self):
+    def clone(self) -> PartModule.Geometry:
         """
         Create a clone of this geometry with the same Tag
         Possible exceptions: (TypeError).
         """
 
-    def copy(self):
+    def copy(self) -> PartModule.Geometry:
         """
         Create a copy of this geometry
         Possible exceptions: (TypeError).
@@ -6296,7 +6296,7 @@ class GeometryExtension(FreeCAD.PyObjectBase):
     @Name.setter
     def Name(self, value: str): ...
 
-    def copy(self):
+    def copy(self) -> PartModule.GeometryExtension:
         """
         Create a copy of this geometry extension.
         Possible exceptions: (TypeError).
@@ -6972,7 +6972,7 @@ def show(pcObj: PartModule.Shape = None, name: str = 'Shape', /) -> PartDesign.F
     """
 
 
-def getFacets(shape, /) -> list:
+def getFacets(shape, /) -> list[tuple[tuple[float, float, float], tuple[float, float, float], tuple[float, float, float]]]:
     """
     getFacets(shape): simplified mesh generation
     Possible exceptions: (Exception).

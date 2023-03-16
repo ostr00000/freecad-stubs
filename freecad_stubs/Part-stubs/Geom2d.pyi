@@ -313,7 +313,7 @@ class Geometry2d(FreeCAD.PyObjectBase):
     - constructing objects by geometric transformation (including copying).
     """
 
-    def copy(self):
+    def copy(self) -> Part.Geom2d.Geometry2d:
         """
         Create a copy of this geometry
         Possible exceptions: (TypeError).
