@@ -4,6 +4,7 @@ from collections.abc import Iterator
 from dataclasses import dataclass
 from functools import lru_cache
 from inspect import Parameter
+from pathlib import Path
 from typing import Any
 
 from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam, RawRepr, \
@@ -40,8 +41,8 @@ class TypesConverter:
                  formatStrPosition: int,
                  argNumStart=1, *,
                  realStartArgNum: int = 2,
-                 xmlPath=None,
-                 functionName='',
+                 xmlPath: Path,
+                 functionName: str,
                  ):
         self._functionBody = functionBody
         self._funStart = funStart
@@ -221,16 +222,18 @@ class TypesConverter:
     def _convertPointerToType(self, pointerArg: str) -> str | None:
         pointerArg = pointerArg.removeprefix('&').removeprefix('(').removesuffix(')')
 
-        if pointerArg.endswith('::Type'):
-            classWithModules = getClassWithModulesFromPointer(pointerArg)
-            self.requiredImports.add(getModuleName(classWithModules, required=True))
-            return classWithModules
+        match StrWrapper(pointerArg):
+            case StrWrapper(end='::Type' | '::type_object('):
+                classWithModules = getClassWithModulesFromPointer(pointerArg)
+                self.requiredImports.add(getModuleName(classWithModules, required=True))
+                return classWithModules
 
-        if pointerArg.startswith('Py'):
-            return C_TYPE_TO_PYTHON_TYPE[pointerArg]
+            case StrWrapper(start='Py'):
+                return C_TYPE_TO_PYTHON_TYPE[pointerArg]
 
-        logger.error(f"Unknown pointer kind {pointerArg=}")
-        return None
+            case _:
+                logger.error(f"Unknown pointer kind {pointerArg=}")
+                return None
 
     def _startSequenceParsing(self):
         self._sequenceStack.append([])

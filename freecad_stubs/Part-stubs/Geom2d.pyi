@@ -140,7 +140,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def parameter(self, p, /) -> float:
+    def parameter(self, p: FreeCAD.Vector2d, /) -> float:
         """
         Returns the parameter on the curve
         of the nearest orthogonal projection of the point.
@@ -320,22 +320,22 @@ class Geometry2d(FreeCAD.PyObjectBase):
         """
 
     @typing.overload
-    def mirror(self, o, /): ...
+    def mirror(self, o: FreeCAD.Vector2d, /): ...
 
     @typing.overload
-    def mirror(self, o, axis, /):
+    def mirror(self, o: FreeCAD.Vector2d, axis: FreeCAD.Vector2d, /):
         """
         Performs the symmetrical transformation of this geometric object
         Possible exceptions: (Part.OCCError).
         """
 
-    def rotate(self, o, angle: float, /):
+    def rotate(self, o: FreeCAD.Vector2d, angle: float, /):
         """
         Rotates this geometric object at angle Ang (in radians) around a point
         Possible exceptions: (Part.OCCError).
         """
 
-    def scale(self, o, scale: float, /):
+    def scale(self, o: FreeCAD.Vector2d, scale: float, /):
         """
         Applies a scaling transformation on this geometric object with a center and scaling factor
         Possible exceptions: (Part.OCCError).
@@ -344,7 +344,7 @@ class Geometry2d(FreeCAD.PyObjectBase):
     def transform(self, o, /):
         """Applies a transformation to this geometric object"""
 
-    def translate(self, o, /):
+    def translate(self, o: FreeCAD.Vector2d, /):
         """
         Translates this geometric object
         Possible exceptions: (Part.OCCError).
@@ -382,10 +382,10 @@ class Circle2d(Part.Geom2d.Conic2d):
     def __init__(self, Circle: Part.Geom2d.Circle2d, Distance: float): ...
 
     @typing.overload
-    def __init__(self, Center, Radius: float): ...
+    def __init__(self, Center: FreeCAD.Vector2d, Radius: float): ...
 
     @typing.overload
-    def __init__(self, Point1, Point2, Point3):
+    def __init__(self, Point1: FreeCAD.Vector2d, Point2: FreeCAD.Vector2d, Point3: FreeCAD.Vector2d):
         """
         Describes a circle in 3D space
         To create a circle there are several ways:
@@ -415,7 +415,7 @@ class Circle2d(Part.Geom2d.Conic2d):
     def Radius(self, value: float): ...
 
     @staticmethod
-    def getCircleCenter(p1, p2, p3, /) -> FreeCAD.Vector2d:
+    def getCircleCenter(p1: FreeCAD.Vector2d, p2: FreeCAD.Vector2d, p3: FreeCAD.Vector2d, /) -> FreeCAD.Vector2d:
         """Get the circle center defined by three points"""
 
 
@@ -463,7 +463,7 @@ class Line2dSegment(Part.Geom2d.Curve2d):
     def __init__(self, pLine: Part.Geom2d.Line2dSegment, /): ...
 
     @typing.overload
-    def __init__(self, pV1, pV2, /): ...
+    def __init__(self, pV1: FreeCAD.Vector2d, pV2: FreeCAD.Vector2d, /): ...
 
     @typing.overload
     def __init__(self, pLine: Part.Geom2d.Line2dSegment, first: float, last: float, /): ...
@@ -535,10 +535,10 @@ class Ellipse2d(Part.Geom2d.Conic2d):
     def __init__(self, Ellipse: Part.Geom2d.Ellipse2d): ...
 
     @typing.overload
-    def __init__(self, S1, S2, Center): ...
+    def __init__(self, S1: FreeCAD.Vector2d, S2: FreeCAD.Vector2d, Center: FreeCAD.Vector2d): ...
 
     @typing.overload
-    def __init__(self, Center, MajorRadius: float, MinorRadius: float):
+    def __init__(self, Center: FreeCAD.Vector2d, MajorRadius: float, MinorRadius: float):
         """
         Describes an ellipse in 2D space
         				To create an ellipse there are several ways:
@@ -603,7 +603,7 @@ class ArcOfCircle2d(Part.Geom2d.ArcOfConic2d):
     def __init__(self, o: Part.Geom2d.Circle2d, u1: float, u2: float, sense: bool = True, /): ...
 
     @typing.overload
-    def __init__(self, pV1, pV2, pV3, /):
+    def __init__(self, pV1: FreeCAD.Vector2d, pV2: FreeCAD.Vector2d, pV3: FreeCAD.Vector2d, /):
         """
         Describes a portion of a circle
         Possible exceptions: (Part.OCCError, TypeError).
@@ -680,10 +680,10 @@ class Hyperbola2d(Part.Geom2d.Conic2d):
     def __init__(self, Hyperbola: Part.Geom2d.Hyperbola2d): ...
 
     @typing.overload
-    def __init__(self, S1, S2, Center): ...
+    def __init__(self, S1: FreeCAD.Vector2d, S2: FreeCAD.Vector2d, Center: FreeCAD.Vector2d): ...
 
     @typing.overload
-    def __init__(self, Center, MajorRadius: float, MinorRadius: float):
+    def __init__(self, Center: FreeCAD.Vector2d, MajorRadius: float, MinorRadius: float):
         """
         Describes a hyperbola in 2D space
                         To create a hyperbola there are several ways:
@@ -998,7 +998,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def interpolate(self, Points, PeriodicFlag: bool = False, Tolerance: float = None, InitialTangent=None, FinalTangent=None, Tangents=None, TangentFlags=None, Parameters=None):
+    def interpolate(self, Points, PeriodicFlag: bool = False, Tolerance: float = None, InitialTangent: FreeCAD.Vector2d = None, FinalTangent: FreeCAD.Vector2d = None, Tangents=None, TangentFlags=None, Parameters=None):
         """
         Replaces this B-Spline curve by interpolating a set of points.
         					The function accepts keywords as arguments.
@@ -1070,7 +1070,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def movePoint(self, U: float, pnt, index1: int, index2: int, /) -> tuple[int, int]:
+    def movePoint(self, U: float, pnt: FreeCAD.Vector2d, index1: int, index2: int, /) -> tuple[int, int]:
         """
         movePoint(U, P, Index1, Index2)
         				Moves the point of parameter U of this B-Spline curve to P.
@@ -1139,7 +1139,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def setPole(self, index: int, p, weight: float = -1.0, /):
+    def setPole(self, index: int, p: FreeCAD.Vector2d, weight: float = -1.0, /):
         """
         Modifies this B-Spline curve by assigning P
         to the pole of index Index in the poles table.
@@ -1246,13 +1246,13 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
         As a result, the poles and weights tables are modified.
         """
 
-    def insertPoleAfter(self, index: int, p, weight: float = 1.0, /):
+    def insertPoleAfter(self, index: int, p: FreeCAD.Vector2d, weight: float = 1.0, /):
         """
         Inserts after the pole of index.
         Possible exceptions: (Part.OCCError).
         """
 
-    def insertPoleBefore(self, index: int, p, weight: float = 1.0, /):
+    def insertPoleBefore(self, index: int, p: FreeCAD.Vector2d, weight: float = 1.0, /):
         """
         Inserts before the pole of index.
         Possible exceptions: (Part.OCCError).
@@ -1283,7 +1283,7 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def setPole(self, index: int, p, weight: float = -1.0, /):
+    def setPole(self, index: int, p: FreeCAD.Vector2d, weight: float = -1.0, /):
         """
         Set a pole of the Bezier curve.
         Possible exceptions: (Part.OCCError).
@@ -1371,7 +1371,7 @@ class Line2d(Part.Geom2d.Curve2d):
     def __init__(self, pLine: Part.Geom2d.Line2d, /): ...
 
     @typing.overload
-    def __init__(self, pV1, pV2, /):
+    def __init__(self, pV1: FreeCAD.Vector2d, pV2: FreeCAD.Vector2d, /):
         """
         Describes an infinite line in 2D space
         To create a line there are several ways:

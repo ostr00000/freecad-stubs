@@ -406,7 +406,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         Possible exceptions: (TypeError).
         """
 
-    def getBoundingBox(self, subname: str = None, transform: bool = True, pyView=None, /) -> FreeCAD.BoundBox:
+    def getBoundingBox(self, subname: str = None, transform: bool = True, pyView: FreeCADGui.View3DInventorPy = None, /) -> FreeCAD.BoundBox:
         """
         getBoundingBox(subName, transform=True, view) -> Base.BoundBox
 
@@ -2117,7 +2117,7 @@ class MainWindowPy(qtpy.QtWidgets.QMainWindow):
     def setActiveWindow(self, MDIView, /) -> None:
         """setActiveWindow(MDIView)"""
 
-    def getActiveWindow(self) -> MDIViewPy | None:
+    def getActiveWindow(self) -> FreeCADGui.MDIViewPy | None:
         """
         getActiveWindow()
         Possible exceptions: (Exception).
@@ -2129,7 +2129,7 @@ class MainWindowPy(qtpy.QtWidgets.QMainWindow):
         Possible exceptions: (Exception).
         """
 
-    def removeWindow(self, obj, /) -> None:
+    def removeWindow(self, obj: FreeCADGui.MDIViewPy, /) -> None:
         """
         removeWindow(MDIView)
         Possible exceptions: (Exception).

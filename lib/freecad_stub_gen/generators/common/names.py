@@ -25,12 +25,22 @@ def getClassWithModulesFromStem(stem: str, namespace: str) -> str:
     try:
         file = moduleNamespace.getFileForStem(stem, namespace)
     except ValueError:
-        name = stem.removesuffix('Py')
-        if not namespace:
-            return name
+        match namespace, stem:
+            case '', 'View3DInventorPy' | 'MDIViewPy':
+                namespace = 'Gui'
 
-        namespace = moduleNamespace.convertNamespaceToModule(namespace)
-        return f'{namespace}.{name}'
+            case '', 'SelectionFilterPy':
+                stem = stem.removesuffix('Py')
+                namespace = 'Gui'
+
+            case '', _:
+                return stem.removesuffix('Py')
+
+            case _, _:
+                stem = stem.removesuffix('Py')
+
+        mod = moduleNamespace.convertNamespaceToModule(namespace)
+        return f'{mod}.{stem}'
 
     root = ET.parse(file).getroot()
     assert (exportElement := root.find('PythonExport'))
@@ -119,7 +129,7 @@ def getNamespaceWithClass(cTypeClass: str):
 
 
 def getClassWithModulesFromPointer(cTypePointer: str) -> str:
-    cType = cTypePointer.removesuffix('::Type')
+    cType = cTypePointer.removesuffix('::Type').removesuffix('::type_object(')
     namespace, cType = getNamespaceWithClass(cType)
     return getClassWithModulesFromStem(cType, namespace or '')
 
