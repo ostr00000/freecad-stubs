@@ -81,6 +81,9 @@ class ReturnTypeConverterBase:
             case StrWrapper(end='->c_str()'):
                 return 'str'
 
+            case StrWrapper('PyByteArray_From'):
+                return 'bytes'
+
             case StrWrapper('Py::TupleN'):
                 if onlyLiteral:
                     return 'tuple'
@@ -242,16 +245,6 @@ class ReturnTypeConverterBase:
             case self.className:
                 return self.classNameWithModule
 
-            # yet another exception from rules
-            case 'MDIView' | 'View3DInventorViewerPy' | 'View3DInventorPy' | 'AbstractSplitViewPy':
-                return classWithModule + 'Py'
-
-            case 'SplitView3DInventor':
-                # we must use take base class
-                return 'FreeCADGui.AbstractSplitViewPy'
-            case 'View3DInventorViewer':
-                return 'FreeCADGui.View3DInventorViewerPy'
-
             case 'PropertyComplexGeoData':
                 # it may be any of following
                 # access via: `getPropertyOfGeometry` function,
@@ -271,38 +264,41 @@ class ReturnTypeConverterBase:
             return self.classNameWithModule
 
         variableDecReg = re.compile(rf"""
-        (?P<directive>\#)?              # we skip directive later in code 
-        \s*                             # (otherwise need to use variable lookbehind)
+        (?P<directive>\#)?      # we skip directive later in code 
+                                # (otherwise need to use variable lookbehind)
+        (?>\s*)                 # skip whiespace, do not backtrack from there
         (?P<type>
-            [^\d\W][\w:]*               # word not starting with digits, may contain ':'
-            (?<!:))                     # but cannot end with ':'
-        \s*\*?                          # may be a pointer
-        (?:>::(?:const_)?iterator)?\s*  # may be iterator or const_iterator
-        (?:\b\w+\s*,\s*)*               # there may be multiple declaration for one type
-        \b{variableName}\b              # variable name must be separate word
-        (?:\s*
-            =\s*(?P<val>.*);            # there may be optional assignment expression
+            [^\d\W][\w:<>*\s]*  # word not starting with digits, may contain ':'
+            (?<![:\s]))         # but cannot end with ':' or \s
+        \s*
+        (?:\b\w+\s*,\s*)*       # there may be multiple declaration for one type
+        \b{variableName}\b      # variable name must be separate word
+        \s*
+        (?:
+            (?:,\s*\w+\s*)*     # there may be multiple declaration for one type
             |
-            \((?P<args>[^;]+)\);        # there may be arguments to constructor
+            =\s*(?P<val>[^;]*)  # there may be optional assignment expression
+            |
+            \((?P<args>[^;]+)\) # there may be arguments to constructor
         )?
+        [;:]                    # end of statement or this is for loop                           
         """, re.VERBOSE)
         matches = list(variableDecReg.finditer(self.functionBody, endpos=endPos))
         for declarationMatch in reversed(matches):
             if declarationMatch.group('directive'):
                 continue
 
-            varTypeDec = declarationMatch.group('type')
-            if varTypeDec in ('return', 'else'):
+            if not (varTypeDec := self._extractTypeFromMatch(declarationMatch)):
                 continue
 
-            if varTypeDec in ('auto', 'PyObject', 'Py::Object', 'PyTypeObject'):
+            if varTypeDec in ('auto', 'PyObject', 'Py::Object', 'PyTypeObject', 'PyObjectBase'):
                 if assignValue := declarationMatch.group('val'):
                     #  we can try resolve real type by checking right side
                     varType = self.getExpressionType(assignValue, endPos, onlyLiteral=True)
                 elif varTypeDec != 'auto' and (argsValue := declarationMatch.group('args')):
+                    #  we can try resolve real type from constructor argument
                     funArgs = list(generateExpressionUntilChar(
                         argsValue, 0, ',', bracketL='(', bracketR=')'))
-                    #  we can try resolve real type from constructor argument
                     varType = self.getExpressionType(funArgs[0], endPos, onlyLiteral=False)
                 else:
                     varType = Empty
@@ -329,6 +325,18 @@ class ReturnTypeConverterBase:
             return varType
 
         return self.getExpressionType(variableName, endPos, onlyLiteral=True)
+
+    @staticmethod
+    def _extractTypeFromMatch(match):
+        if not (v := match.group('type')):
+            return None
+        if v in ('return', 'else'):
+            return None
+
+        if '<' in v and '>' in v:
+            v = v.split('<', maxsplit=1)[1].split('>', maxsplit=1)[0]
+        v = v.removeprefix('const').strip().removesuffix('*').strip()
+        return v
 
     def _getRetTypeFromAssignment(self, variableName: str, startPos: int, endPos: int) -> RetType:
         """Example: `myVar = Py::Float(7.0)`."""

@@ -25,13 +25,22 @@ def getClassWithModulesFromStem(stem: str, namespace: str) -> str:
     try:
         file = moduleNamespace.getFileForStem(stem, namespace)
     except ValueError:
+        # if there is no xml, use this `match`
         match namespace, stem:
-            case '', 'View3DInventorPy' | 'MDIViewPy':
-                namespace = 'Gui'
 
+            # Gui + without Py
             case '', 'SelectionFilterPy':
                 stem = stem.removesuffix('Py')
                 namespace = 'Gui'
+
+            # Gui + with Py
+            case _, ('MDIViewPy' | 'View3DInventorPy'
+                     | 'View3DInventorViewerPy' | 'AbstractSplitViewPy'):
+                namespace = 'Gui'
+
+            # we must use a base class
+            case _, 'SplitView3DInventor' | 'View3DInventor':
+                return 'FreeCADGui.AbstractSplitViewPy'
 
             case '', _:
                 return stem.removesuffix('Py')

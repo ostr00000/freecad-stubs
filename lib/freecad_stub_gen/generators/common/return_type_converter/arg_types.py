@@ -77,6 +77,8 @@ class UnionArguments(ArgumentsIter, OrderedSet[str], SizedIterable):
 
 
 class TupleArgument(ArgumentsIter, list, SizedIterable):
+    repeated: bool
+
     def __init__(self, gen: Generator[T, None, bool | None]):
         super().__init__()
         try:

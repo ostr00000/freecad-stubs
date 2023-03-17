@@ -2117,7 +2117,7 @@ class PropertyContainer(FreeCAD.Persistence):
     def PropertiesList(self) -> list[str]:
         """A list of all property names."""
 
-    def dumpPropertyContent(self, Property: str, Compression: int = 3):
+    def dumpPropertyContent(self, Property: str, Compression: int = 3) -> bytes:
         """
         dumpPropertyContent(Property, Compression=3) -> bytearray
 

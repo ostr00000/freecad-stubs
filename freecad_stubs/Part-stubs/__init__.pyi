@@ -3,6 +3,7 @@ import typing
 
 import FreeCAD
 import Part as PartModule
+import Part.Geom2d
 import PartDesign
 
 
@@ -1004,7 +1005,7 @@ class Face(PartModule.Shape):
         """
 
     @property
-    def Surface(self) -> typing.Any | None:
+    def Surface(self) -> FreeCAD.PyObjectBase | None:
         """Returns the geometric surface of the face"""
 
     @property
@@ -1032,7 +1033,7 @@ class Face(PartModule.Shape):
         Possible exceptions: (Part.OCCError).
         """
 
-    def curveOnSurface(self, e: PartModule.Edge, /) -> tuple[typing.Any, float, float]:
+    def curveOnSurface(self, e: PartModule.Edge, /) -> tuple[Part.Geom2d.Curve2d, float, float]:
         """
         Returns the curve associated to the edge in the parametric space of the face.
         curveOnSurface(Edge) -> (curve, min, max) or None
@@ -4689,7 +4690,7 @@ class Edge(PartModule.Shape):
         """Returns the continuity"""
 
     @property
-    def Curve(self) -> object:
+    def Curve(self) -> FreeCAD.PyObjectBase:
         """Returns the 3D curve of the edge"""
 
     @property
@@ -4821,7 +4822,7 @@ class Edge(PartModule.Shape):
         Possible exceptions: (Part.OCCError).
         """
 
-    def curveOnSurface(self, idx: int, /) -> tuple[typing.Any, typing.Any, FreeCAD.Placement, float, float]:
+    def curveOnSurface(self, idx: int, /) -> tuple[Part.Geom2d.Curve2d, PartModule.GeomSurface, FreeCAD.Placement, float, float]:
         """
         Returns the 2D curve, the surface, the placement and the parameter range of index idx.
         curveOnSurface(idx) -> None or tuple
@@ -5602,19 +5603,19 @@ class Geometry(FreeCAD.Persistence):
         Possible exceptions: (Part.OCCError).
         """
 
-    def getExtensionOfName(self, o: str, /):
+    def getExtensionOfName(self, o: str, /) -> PartModule.GeometryExtension:
         """
         Gets the first geometry extension of the name indicated by the string.
         Possible exceptions: (Part.OCCError).
         """
 
-    def getExtensionOfType(self, o: str, /):
+    def getExtensionOfType(self, o: str, /) -> PartModule.GeometryExtension:
         """
         Gets the first geometry extension of the type indicated by the string.
         Possible exceptions: (Part.OCCError).
         """
 
-    def getExtensions(self) -> list:
+    def getExtensions(self) -> list[PartModule.GeometryExtension]:
         """
         Returns a list with information about the geometry extensions.
         Possible exceptions: (Part.OCCError).

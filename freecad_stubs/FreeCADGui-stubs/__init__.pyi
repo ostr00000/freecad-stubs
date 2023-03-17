@@ -2946,7 +2946,7 @@ def showPreferences(pstr: str = None, idx: int = 0, /):
     """
 
 
-def createViewer(views: int = 1, title: str = None, /) -> typing.Any | FreeCADGui.AbstractSplitViewPy:
+def createViewer(views: int = 1, title: str = None, /) -> FreeCADGui.AbstractSplitViewPy:
     """
     createViewer(views=1, name) -> View3DInventorPy or AbstractSplitViewPy
 

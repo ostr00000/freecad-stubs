@@ -832,11 +832,11 @@ class ExternalGeometryFacade(FreeCAD.BaseClass):
     def Construction(self, value: bool): ...
 
     @property
-    def Geometry(self) -> object:
+    def Geometry(self) -> PartModule.Geometry:
         """Returns the underlying geometry object."""
 
     @Geometry.setter
-    def Geometry(self, value: object): ...
+    def Geometry(self, value: PartModule.Geometry): ...
 
     @property
     def GeometryLayerId(self) -> int:
@@ -882,19 +882,19 @@ class ExternalGeometryFacade(FreeCAD.BaseClass):
         Possible exceptions: (Part.OCCError).
         """
 
-    def getExtensionOfName(self, o: str, /):
+    def getExtensionOfName(self, o: str, /) -> PartModule.GeometryExtension:
         """
         Gets the first geometry extension of the name indicated by the string.
         Possible exceptions: (Part.OCCError).
         """
 
-    def getExtensionOfType(self, o: str, /):
+    def getExtensionOfType(self, o: str, /) -> PartModule.GeometryExtension:
         """
         Gets the first geometry extension of the type indicated by the string.
         Possible exceptions: (Part.OCCError).
         """
 
-    def getExtensions(self) -> list:
+    def getExtensions(self) -> list[PartModule.GeometryExtension]:
         """
         Returns a list with information about the geometry extensions.
         Possible exceptions: (Part.OCCError).
@@ -1028,11 +1028,11 @@ class GeometryFacade(FreeCAD.BaseClass):
     def Construction(self, value: bool): ...
 
     @property
-    def Geometry(self) -> object:
+    def Geometry(self) -> PartModule.Geometry:
         """Returns the underlying geometry object."""
 
     @Geometry.setter
-    def Geometry(self, value: object): ...
+    def Geometry(self, value: PartModule.Geometry): ...
 
     @property
     def GeometryLayerId(self) -> int:
@@ -1071,19 +1071,19 @@ class GeometryFacade(FreeCAD.BaseClass):
         Possible exceptions: (Part.OCCError).
         """
 
-    def getExtensionOfName(self, o: str, /):
+    def getExtensionOfName(self, o: str, /) -> PartModule.GeometryExtension:
         """
         Gets the first geometry extension of the name indicated by the string.
         Possible exceptions: (Part.OCCError).
         """
 
-    def getExtensionOfType(self, o: str, /):
+    def getExtensionOfType(self, o: str, /) -> PartModule.GeometryExtension:
         """
         Gets the first geometry extension of the type indicated by the string.
         Possible exceptions: (Part.OCCError).
         """
 
-    def getExtensions(self) -> list:
+    def getExtensions(self) -> list[PartModule.GeometryExtension]:
         """
         Returns a list with information about the geometry extensions.
         Possible exceptions: (Part.OCCError).
