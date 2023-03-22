@@ -15,6 +15,8 @@ class StringType(Protocol):
 
 
 class MethodGenerator(PythonApiGenerator, ABC):
+    _NEW_LINE = '\n'  # future change (3.12) PEP 701 - inline
+
     def convertMethodToStr(self, methodName: str,
                            strSignatures: Sequence[StringType | str],
                            docs: str = '',
@@ -26,9 +28,6 @@ class MethodGenerator(PythonApiGenerator, ABC):
             return ret
         signatures = list(map(str, strSignatures))
 
-        static = '@staticmethod\n' if isStatic else ''
-        classic = '@classmethod\n' if isClassic else ''
-
         # only single signature should not have overload
         if len(signatures) > 1:
             self.requiredImports.add('typing')
@@ -37,14 +36,13 @@ class MethodGenerator(PythonApiGenerator, ABC):
             overload = ''
 
         forcedType = self._getForcedReturnType(methodName)
-        spacing = '\n' * functionSpacing
         pattern = (
-            f'{static}'
-            f'{classic}'
+            f'{"@staticmethod" + self._NEW_LINE if isStatic else ""}'
+            f'{"@classmethod" + self._NEW_LINE if isClassic else ""}'
             f'{overload}'
             f'def {methodName}{{signature}}:'
             f'{{docs}}'
-            f'{spacing}'
+            f'{self._NEW_LINE * functionSpacing}'
         )
 
         for sig in signatures[:-1]:

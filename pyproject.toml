@@ -109,8 +109,6 @@ disable = [
     # tmp disable - should be fixed later
     'fixme',
     'too-many-ancestors',
-    'too-many-branches',
-#    'too-many-locals',
     'too-many-instance-attributes',
     'too-many-arguments',
     'too-many-nested-blocks',

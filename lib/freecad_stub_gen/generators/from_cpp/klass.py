@@ -112,7 +112,7 @@ class\s+            # keyword `class`
             case StrWrapper(end='Py'):
                 classWithModule = getClassWithModulesFromPointer(baseClass)
             case _:
-                return None # Not a python class, or it is a C template class
+                return None  # Not a python class, or it is a C template class
 
         if mod := getModuleName(classWithModule):
             self.requiredImports.add(mod)

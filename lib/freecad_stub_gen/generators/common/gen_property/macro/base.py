@@ -1,10 +1,10 @@
+import logging
 import re
 from dataclasses import dataclass, field
 from functools import cached_property
 
 from freecad_stub_gen.generators.common.doc_string import prepareDocs
 from freecad_stub_gen.generators.common.gen_property.property_type import PropertyType
-import logging
 
 logger = logging.getLogger(__name__)
 

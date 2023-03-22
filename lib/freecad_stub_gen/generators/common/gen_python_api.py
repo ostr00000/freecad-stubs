@@ -7,7 +7,7 @@ from pathlib import Path
 import more_itertools
 
 from freecad_stub_gen.generators.common.annotation_parameter import SelfSignature
-from freecad_stub_gen.generators.common.arguments_converter import TypesConverter
+from freecad_stub_gen.generators.common.arguments_converter import TypesConverter, FunctionConv
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall
 from freecad_stub_gen.generators.common.gen_base import BaseGenerator
 from freecad_stub_gen.generators.common.return_type_converter.full import ReturnTypeConverter
@@ -71,11 +71,11 @@ class PythonApiGenerator(BaseGenerator, ABC):
 
     def _findParseTuple(self):
         yield from self._baseParse(pattern=self.REG_TUP, formatStrPosition=1,
-                                   minSize=2, onlyPositional=True)
+                                   cArgNum=2, onlyPositional=True)
 
     def _findParseTupleAndKeywords(self):
         yield from self._baseParse(pattern=self.REG_TUP_KW, formatStrPosition=2,
-                                   minSize=4, onlyPositional=False)
+                                   cArgNum=4, onlyPositional=False)
 
     def _getReturnSignature(self):
         rtc = ReturnTypeConverter(
@@ -86,16 +86,14 @@ class PythonApiGenerator(BaseGenerator, ABC):
         return SelfSignature(unknown_parameters=True, return_annotation=rt, exceptions=ex)
 
     def _baseParse(self, pattern: re.Pattern, formatStrPosition: int,
-                   minSize: int, onlyPositional: bool):
+                   cArgNum: int, onlyPositional: bool):
         for match in re.finditer(pattern, self._functionBody):
             funStart = match.start()
-            tc = TypesConverter(
-                self._functionBody, funStart, self.requiredImports,
-                onlyPositional, formatStrPosition, self._argNumStart,
-                realStartArgNum=minSize, xmlPath=self.baseGenFilePath,
-                functionName=self._cFunctionName)
+            fc = FunctionConv(
+                self.baseGenFilePath, self._cFunctionName, self._functionBody,
+                funStart, formatStrPosition, onlyPositional, self._argNumStart)
+            tc = TypesConverter(fc, self.requiredImports, cArgNum=cArgNum)
+            assert cArgNum <= len(tc.fun.argumentStrings), "Invalid format - expected bigger size"
 
-            assert minSize <= len(tc.argumentStrings), "Invalid format - expected bigger size"
-
-            params = list(tc.convertFormatToTypes())
+            params = list(tc.safeConvertFormatToTypes())
             yield SelfSignature(params)

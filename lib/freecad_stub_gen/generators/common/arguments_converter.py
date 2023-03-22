@@ -2,7 +2,6 @@ import logging
 import re
 from collections.abc import Iterator
 from dataclasses import dataclass
-from functools import lru_cache
 from inspect import Parameter
 from pathlib import Path
 from typing import Any
@@ -33,62 +32,45 @@ class StackVal:
     default: Any
 
 
-class TypesConverter:
-    def __init__(self, functionBody: str,
-                 funStart: int,
-                 requiredImports: OrderedStrSet,
-                 onlyPositional: bool,
-                 formatStrPosition: int,
-                 argNumStart=1, *,
-                 realStartArgNum: int = 2,
-                 xmlPath: Path,
-                 functionName: str,
-                 ):
-        self._functionBody = functionBody
-        self._funStart = funStart
-        self._funCall = self._getFunCall()
-
-        self.requiredImports = requiredImports
-        self.onlyPositional = onlyPositional
-        self.formatStrPosition = formatStrPosition
-        self.argNumStart = argNumStart
-        self.realStartArgNum = realStartArgNum
-
+class FunctionConv:
+    def __init__(self, xmlPath: Path, functionName: str, body: str,
+                 funStart: int, formatStrPosition: int, onlyPositional: bool, argNumStart: int):
         self.xmlPath = xmlPath
         self.functionName = functionName
-        self._sequenceStack: list[list[StackVal]] = []
-        self._isArgOptional = False
 
+        self._body = body
+        self._funStart = funStart
+
+        self.formatStrPosition = formatStrPosition
+        self.onlyPositional = onlyPositional
+        self.argNumStart = argNumStart
+
+        self.funCall = findFunctionCall(self._body, self._funStart, bracketL='(', bracketR=')')
         self.argumentStrings = self._getArgumentString()
         self._removeMacros()
-
-        self._kwargList = self._getKwargList()
-        self._parameterKind = self._getInitialParameterKind()
-
-    def _getFunCall(self):
-        return findFunctionCall(
-            self._functionBody, self._funStart, bracketL='(', bracketR=')')
+        self.kwargList = self._getKwargList()
 
     REG_REMOVE_WHITESPACES = re.compile(r'\s+')
 
     def _getArgumentString(self) -> list[str]:
-        sub = re.sub(self.REG_REMOVE_WHITESPACES, '', self._funCall)  # remove whitespace
+        sub = re.sub(self.REG_REMOVE_WHITESPACES, '', self.funCall)  # remove whitespace
         argStr = [c.removeprefix('&').strip()
                   for c in generateExpressionUntilChar(sub, sub.find('(') + 1, ',')]
         argStr = [a[1:-1] if a.startswith('(') and a.endswith(')') else a for a in argStr]
         return argStr
 
+    # noinspection RegExpSuspiciousBackref
     REG_STRING = re.compile(r"""
-(["'])          # start with quotation mark as group 1,
-(?=             # do not consume matched characters - we match it after we are sure about it,
-  (?P<text>     # save matched chars as `text`,
-    .*?         # all chars but lazy,
-    (?!\\\1)    # skip escaped char from group 1,
-    \1          # matched text must ends with same char as group 1,
-  )
-)
-(?P=text)       # then find again a content of group named 'text'
-    """, re.VERBOSE)
+    (["'])          # start with quotation mark as group 1,
+    (?=             # do not consume matched characters - we match it after we are sure about it,
+      (?P<text>     # save matched chars as `text`,
+        .*?         # all chars but lazy,
+        (?!\\\1)    # skip escaped char from group 1,
+        \1          # matched text must ends with same char as group 1,
+      )
+    )
+    (?P=text)       # then find again a content of group named 'text'
+        """, re.VERBOSE)
     _FORBIDDEN_MACROS = ['PARAM_REF', 'PARAM_FARG', 'AREA_PARAMS_OPCODE']
 
     def _removeMacros(self):
@@ -98,7 +80,7 @@ class TypesConverter:
             clearFormat += strVal.group().removesuffix('"').removeprefix('"')
         self.argumentStrings[self.formatStrPosition] = clearFormat
 
-        if 'PARAM_REF(' in self._funCall:
+        if 'PARAM_REF(' in self.funCall:
             varArg = slice(self.formatStrPosition + 1, None)
             self.argumentStrings[varArg] = [
                 argS for argS in self.argumentStrings[varArg]
@@ -111,7 +93,7 @@ class TypesConverter:
         kwargsArgumentName = self.argumentStrings[self.formatStrPosition + 1]
         matches: list[str] = re.findall(
             rf'{kwargsArgumentName}\s*\[\s*]\s*=\s*{{((?:.|\s)*?)}}',
-            self._varDeclarationCode)
+            self.varDeclarationCode)
         if not matches:
             return []
 
@@ -123,84 +105,153 @@ class TypesConverter:
             if kw.startswith('"') and kw.endswith('"')]
 
     @property
-    def _varDeclarationCode(self):
-        return self._functionBody[:self._funStart]
+    def varDeclarationCode(self):
+        return self._body[:self._funStart]
 
-    def _getInitialParameterKind(self):
-        return Parameter.POSITIONAL_OR_KEYWORD if self._kwargList \
-            else Parameter.POSITIONAL_ONLY
+    @property
+    def formatStr(self):
+        return self.argumentStrings[self.formatStrPosition]
 
-    def convertFormatToTypes(self) -> Iterator[Parameter]:
-        formatStr = self.argumentStrings[self.formatStrPosition]
-        cArgNum = self.realStartArgNum
-        pythonArgNum = 0
+    def getPythonArgName(self, curFormat: str, cArgNum: int, pythonArgNum: int) -> str:
+        if not self.onlyPositional:
+            try:
+                return self.kwargList[pythonArgNum]
+            except IndexError:
+                logger.error(f"Too few kw arguments for {curFormat=}, {self}")
 
+        if cArgName := self.getCurArgName(curFormat, cArgNum):
+            # Is this always a unique name?
+            return cArgName
+
+        return f'{DEFAULT_ARG_NAME}{self.argNumStart + pythonArgNum}'
+
+    def getCurArgName(self, curFormat: str, cArgNum: int) -> str | None:
+        if curFormat in ('O!', 'O&') or curFormat.startswith('e'):
+            # variable offset - skip type_object/converter/encoding
+            cArgNum += 1
         try:
-            while formatStr:
-                for formatSize in range(min(3, len(formatStr)), 0, -1):
-                    pythonArgName = None
-                    defaultValue = MISSING_DEFAULT_ARG
-                    curVal = formatStr[:formatSize]
-                    if curVal == 'O!':
-                        parseTypeMap['O!'] = self._findPointerType(cArgNum)
+            cArgName = self.argumentStrings[cArgNum]
+        except IndexError:
+            logger.error(f"Too few arguments for {self}")
+        else:
+            if cArgName.isalnum():
+                return cArgName
+        return None
 
-                    elif curVal == '(':
-                        self._startSequenceParsing()
-                        formatStr = formatStr[formatSize:]
-                        break
+    def __str__(self):
+        return f'funCall={self.funCall}, xml={self.xmlPath}'
 
-                    elif curVal == ')':
-                        parseTypeMap[')'], pythonArgName, defaultValue = self._endSequenceParsing()
 
-                    if objType := parseTypeMap.get(curVal):
-                        if pythonArgName is None:
-                            pythonArgName = self._getPythonArgName(curVal, cArgNum, pythonArgNum)
-                        assert isinstance(pythonArgName, str)
+class SequenceStack:
+    def __init__(self):
+        self._values: list[list[StackVal]] = []
 
-                        if defaultValue is MISSING_DEFAULT_ARG:
-                            defaultValue = self._getDefaultValue(curVal, cArgNum)
+    def __bool__(self):
+        return bool(self._values)
 
-                        if self._sequenceStack:
-                            self._addElementToSequence(objType, pythonArgName, defaultValue)
-                        else:
+    def startSequenceParsing(self):
+        self._values.append([])
 
-                            if defaultValue is UNKNOWN_DEFAULT_ARG:
-                                # replace when we are ready
-                                # (after _addElementToSequence will no longer be used)
-                                defaultValue = None
+    def addElementToSequence(self, objType: str, pythonArgName: str, default):
+        self._values[-1].append(StackVal(objType, pythonArgName, default))
 
-                            yield AnnotationParam(
-                                pythonArgName, self._parameterKind, default=defaultValue,
-                                annotation=RawRepr(objType))
-                            pythonArgNum += 1
+    def endSequenceParsing(self):
+        stackVals = self._values.pop()
+        # Probably in C this may be a `typing.Sequence`,
+        # but at this moment in `typing` only a tuple support variable length.
+        objType = f'tuple[{", ".join(s.objType for s in stackVals)}]'
 
-                        cArgNum += parseSizeMap[curVal]
-                        formatStr = formatStr[formatSize:]
-                        break
-                else:
-                    curVal = formatStr[0]
-                    if curVal == '|':
-                        self._isArgOptional = True
-                    elif curVal == '$':
-                        self._isArgOptional = True
-                        self._parameterKind = Parameter.KEYWORD_ONLY
-                    elif curVal in ':;':
-                        formatStr = ''
-                    else:
-                        logger.error(f"Unknown format: {formatStr}")
-                    formatStr = formatStr[1:]
+        firstObjName = stackVals[0].pythonArgName
+        if all(s.pythonArgName == firstObjName for s in stackVals):
+            # if all sub arguments have the same name -> we use it (probably from kwargList)
+            objName = firstObjName
+        else:
+            objName = '_'.join(s.pythonArgName for s in stackVals)
+
+        if all(s.default is UNKNOWN_DEFAULT_ARG for s in stackVals):
+            # we cannot decode it
+            objDefault = UNKNOWN_DEFAULT_ARG
+        elif all(s.default is Parameter.empty for s in stackVals):
+            # there is no argument
+            objDefault = Parameter.empty
+        else:
+            content = ['None' if s.default is UNKNOWN_DEFAULT_ARG else repr(s.default)
+                       for s in stackVals]
+            if len(content) == 1:
+                content[0] = f'{content[0]},'
+            objDefault = RawStringRepresentation(f'({", ".join(content)})')
+
+        return objType, objName, objDefault
+
+
+class TypesConverter:
+    def __init__(self, functionConv: FunctionConv,
+                 requiredImports: OrderedStrSet,
+                 cArgNum: int = 2):
+        self.fun = functionConv
+        self.requiredImports = requiredImports
+        self._sequenceStack = SequenceStack()
+        self._isArgOptional = False
+
+        if self.fun.kwargList:
+            self._parameterKind = Parameter.POSITIONAL_OR_KEYWORD
+        else:
+            self._parameterKind = Parameter.POSITIONAL_ONLY
+
+        self._pythonArgNum = 0
+        self._cArgNum = cArgNum
+        self._remainingFormat = self.fun.formatStr
+
+    def safeConvertFormatToTypes(self) -> Iterator[Parameter]:
+        try:
+            yield from self._convertFormatToTypes()
         except InvalidPointerFormat as ex:
-            logger.error(f'{ex}, {formatStr=}, {self._funCall=}, {self.xmlPath=}')
+            logger.error(f'{ex}, {self._remainingFormat=}, {self.fun}')
 
-    def _findPointerType(self, cArgNum: int) -> str | None:
+    def _convertFormatToTypes(self) -> Iterator[Parameter]:
+        while self._remainingFormat:
+            for formatSize in range(min(3, len(self._remainingFormat)), 0, -1):
+
+                pythonArgName = None
+                defaultValue = MISSING_DEFAULT_ARG
+                curFormat: str = self._remainingFormat[:formatSize]
+
+                match curFormat:
+                    case '(':
+                        self._sequenceStack.startSequenceParsing()
+                        self._nextFormat(formatSize)
+                        break
+
+                    case ')':
+                        curType, pythonArgName, defaultValue = \
+                            self._sequenceStack.endSequenceParsing()
+
+                    case 'O!':
+                        curType = self._findPointerType(self._cArgNum)
+
+                    case _:
+                        if (curType := parseTypeMap.get(curFormat)) is None:
+                            continue
+
+                yield from self._processParam(curFormat, curType, pythonArgName, defaultValue)
+                self._cArgNum += parseSizeMap[curFormat]
+                self._nextFormat(formatSize)
+                break
+            else:
+                self._remainingFormat = self._processSpecialFormat()
+
+    def _nextFormat(self, formatSize: int):
+        self._remainingFormat = self._remainingFormat[formatSize:]
+
+    def _findPointerType(self, cArgNum: int) -> str:
         # pylint: disable=raise-missing-from
         try:
-            pointerArg = self.argumentStrings[cArgNum]
+            pointerArg = self.fun.argumentStrings[cArgNum]
         except IndexError:  # some implementations are broken, example:
             # PyObject* BSplineCurve2dPy::insertKnot(PyObject * args)
             # with expectedArg=7, but providedArg=5, code:
             # if (!PyArg_ParseTuple(args, "d|idO!", &U, &M, &tol))
-            raise InvalidPointerFormat(f"Function has not enough arguments {self._funCall}")
+            raise InvalidPointerFormat(f"Function has not enough arguments {self.fun}")
 
         if (typ := self._convertPointerToType(pointerArg)) is not None:
             return typ
@@ -235,76 +286,36 @@ class TypesConverter:
                 logger.error(f"Unknown pointer kind {pointerArg=}")
                 return None
 
-    def _startSequenceParsing(self):
-        self._sequenceStack.append([])
+    def _processParam(self, curFormat: str, curType: str, pythonArgName: str | None, defaultValue):
+        if pythonArgName is None:
+            pythonArgName = self.fun.getPythonArgName(curFormat, self._cArgNum, self._pythonArgNum)
+        assert isinstance(pythonArgName, str)
 
-    def _addElementToSequence(self, objType: str, pythonArgName: str, default):
-        self._sequenceStack[-1].append(StackVal(objType, pythonArgName, default))
+        if defaultValue is MISSING_DEFAULT_ARG:
+            defaultValue = self._getDefaultValue(curFormat, self._cArgNum)
 
-    def _endSequenceParsing(self):
-        stackVals = self._sequenceStack.pop()
-        # Probably in C this may be a `typing.Sequence`,
-        # but at this moment in `typing` only a tuple support variable length.
-        objType = f'tuple[{", ".join(s.objType for s in stackVals)}]'
+        if self._sequenceStack:
+            self._sequenceStack.addElementToSequence(curType, pythonArgName, defaultValue)
+            return
 
-        firstObjName = stackVals[0].pythonArgName
-        if all(s.pythonArgName == firstObjName for s in stackVals):
-            # if all sub arguments have the same name -> we use it (probably from kwargList)
-            objName = firstObjName
-        else:
-            objName = '_'.join(s.pythonArgName for s in stackVals)
+        if defaultValue is UNKNOWN_DEFAULT_ARG:
+            # replace when we are ready
+            # (after addElementToSequence will no longer be used)
+            defaultValue = None
 
-        if all(s.default is UNKNOWN_DEFAULT_ARG for s in stackVals):
-            # we cannot decode it
-            objDefault = UNKNOWN_DEFAULT_ARG
-        elif all(s.default is Parameter.empty for s in stackVals):
-            # there is no argument
-            objDefault = Parameter.empty
-        else:
-            content = ['None' if s.default is UNKNOWN_DEFAULT_ARG else repr(s.default)
-                       for s in stackVals]
-            if len(content) == 1:
-                content[0] = f'{content[0]},'
-            objDefault = RawStringRepresentation(f'({", ".join(content)})')
-
-        return objType, objName, objDefault
-
-    def _getPythonArgName(self, curFormat: str, cArgNum: int, pythonArgNum: int) -> str:
-        if not self.onlyPositional:
-            try:
-                return self._kwargList[pythonArgNum]
-            except IndexError:
-                logger.error(f"Too few kw arguments for {curFormat=}, "
-                             f"{self._funCall=}, {self.xmlPath=}")
-
-        if cArgName := self._getCurArgName(curFormat, cArgNum):
-            # Is this always a unique name?
-            return cArgName
-
-        return f'{DEFAULT_ARG_NAME}{self.argNumStart + pythonArgNum}'
-
-    @lru_cache()
-    def _getCurArgName(self, curFormat: str, cArgNum: int) -> str | None:
-        if curFormat in ('O!', 'O&') or curFormat.startswith('e'):
-            # variable offset - skip type_object/converter/encoding
-            cArgNum += 1
-        try:
-            cArgName = self.argumentStrings[cArgNum]
-        except IndexError:
-            logger.error(f"Too few arguments for {self._funCall=}, {self.xmlPath=}")
-        else:
-            if cArgName.isalnum():
-                return cArgName
-        return None
+        yield AnnotationParam(
+            pythonArgName, self._parameterKind, default=defaultValue,
+            annotation=RawRepr(curType))
+        self._pythonArgNum += 1
 
     def _getDefaultValue(self, curFormat: str, cArgNum: int):
         retVal = UNKNOWN_DEFAULT_ARG if self._isArgOptional else Parameter.empty
-        if not (cArgName := self._getCurArgName(curFormat, cArgNum)):
+        if not (cArgName := self.fun.getCurArgName(curFormat, cArgNum)):
             return retVal
 
         fa = list(re.finditer(
             rf'\b{cArgName}\b\s*=\s*(?P<value>[^;,]*)',
-            self._varDeclarationCode))
+            self.fun.varDeclarationCode))
         for m in fa:
             val = m.group('value')
             if val.startswith('Py_'):
@@ -338,6 +349,19 @@ class TypesConverter:
             self._isArgOptional = True
 
         return retVal
+
+    def _processSpecialFormat(self):
+        curVal = self._remainingFormat[0]
+        if curVal == '|':
+            self._isArgOptional = True
+        elif curVal == '$':
+            self._isArgOptional = True
+            self._parameterKind = Parameter.KEYWORD_ONLY
+        elif curVal in ':;':
+            self._remainingFormat = ''
+        else:
+            logger.error(f"Unknown format: {self._remainingFormat}")
+        return self._remainingFormat[1:]
 
 
 # based on https://pyo3.rs/v0.11.1/conversions.html

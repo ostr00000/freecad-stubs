@@ -12,13 +12,13 @@ from freecad_stub_gen.util import indent, OrderedStrSet, OrderedSet
 T = TypeVar('T')
 
 
-class EmptyType:
+class AnyValueType:
     @property
     def value(self):
         return self
 
     def __eq__(self, other):
-        return other is Empty or other == 'typing.Any'
+        return other is AnyValue or other == 'typing.Any'
 
     def __hash__(self):
         return 1
@@ -27,7 +27,7 @@ class EmptyType:
         return 'typing.Any'
 
 
-Empty = EmptyType()
+AnyValue = AnyValueType()
 
 
 class SizedIterable(Sized, Iterable, Protocol):
@@ -50,7 +50,7 @@ class ArgumentsIter(WithImports, SizedIterable, ABC):
             match argType:
                 case str() if '[' not in argType and getModuleName(argType):
                     argType = useAliasedModule(argType, self.imports)
-                case EmptyType() if len(self) > 1:
+                case AnyValueType() if len(self) > 1:
                     self.imports.add('typing')
                 case UnionArguments() as ua:
                     self.imports.update(ua.imports)
@@ -72,7 +72,7 @@ class UnionArguments(ArgumentsIter, OrderedSet[str], SizedIterable):
         match item:
             case UnionArguments():
                 self.imports.update(item.imports)
-            case EmptyType.value:
+            case AnyValueType.value:
                 self.imports.add('typing')
 
 
@@ -103,7 +103,7 @@ class TupleArgument(ArgumentsIter, list, SizedIterable):
             and super().__eq__(other)
 
 
-RetType = UnionArguments | EmptyType | str
+RetType = UnionArguments | AnyValueType | str
 
 
 class InvalidReturnType(ValueError):

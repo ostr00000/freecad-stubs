@@ -1,7 +1,7 @@
 import re
 
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import UnionArguments, \
-    Empty, RetType
+    AnyValue, RetType
 from freecad_stub_gen.generators.common.return_type_converter.base import ReturnTypeConverterBase
 
 
@@ -33,6 +33,6 @@ class ReturnTypeInnerList(ReturnTypeConverterBase):
         regex = re.compile(rf'PyList_SetItem\s*\(\s*{variableName}\s*,\s*[\w+]+\s*,([^;]+)\);')
         for variableMatch in regex.finditer(self.functionBody, startPos, endpos=endPos):
             varType = self.getExpressionType(variableMatch.group(1), endPos)
-            assert varType != Empty
+            assert varType != AnyValue
             arg.add(varType)
         return arg
