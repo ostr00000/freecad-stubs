@@ -7,7 +7,8 @@ from pathlib import Path
 import more_itertools
 
 from freecad_stub_gen.generators.common.annotation_parameter import SelfSignature
-from freecad_stub_gen.generators.common.arguments_converter import TypesConverter, FunctionConv
+from freecad_stub_gen.generators.common.arguments_converter.function_conv import FunctionConv
+from freecad_stub_gen.generators.common.arguments_converter.types_converter import TypesConverter
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall
 from freecad_stub_gen.generators.common.gen_base import BaseGenerator
 from freecad_stub_gen.generators.common.return_type_converter.full import ReturnTypeConverter

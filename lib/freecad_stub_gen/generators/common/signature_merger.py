@@ -1,7 +1,7 @@
 from inspect import Parameter
 
 from freecad_stub_gen.generators.common.annotation_parameter import SelfSignature
-from freecad_stub_gen.generators.common.arguments_converter import DEFAULT_ARG_NAME
+from freecad_stub_gen.generators.common.arguments_converter.definitions import DEFAULT_ARG_NAME
 
 
 class SignatureMerger:
