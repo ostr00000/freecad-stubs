@@ -3,7 +3,7 @@ This module has templates for some python object used in FreeCAD.
 Do not import these classes rather copy required methods.
 
 The ideal solution would use optional protocol,
-but at the moment there is such feature in Python
+but at the moment there is no such feature in Python:
 https://www.python.org/dev/peps/pep-0544/#support-optional-protocol-members
 
 Find regex:
