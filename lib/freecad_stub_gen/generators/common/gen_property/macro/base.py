@@ -22,11 +22,13 @@ class PropertyMacroBase:
     namespace: str = ''
     cppContent: str = field(default='', repr=False)
     classDeclarationBodies: list[str] = field(default_factory=list, repr=False)
+    macroCallStartPos: int = -1
 
     def __post_init__(self):
         self._docs = self._convertRawText(self._docs, isSentence=True)
         self.group = self._convertRawText(self.group)
-        self._convertPropertyTypes()
+        if self._rawType:
+            self.type = self._convertPropertyTypes(self._rawType)
 
     REG_PATTERN_GROUP_CHAR = r'char\s*\*\s*{}\s*=\s*\"([^"]+)"'
 
@@ -52,19 +54,38 @@ class PropertyMacroBase:
                 raise ValueError(unexpectedVal)
         return newVal
 
-    def _convertPropertyTypes(self):
-        newTypes = self._rawType \
-            .replace('\n', '') \
-            .replace(' ', '') \
-            .replace('App::', '') \
-            .replace('(', '') \
-            .replace(')', '') \
-            .removeprefix('PropertyType') \
+    def _convertPropertyTypes(self, rawType: str):
+        newTypes = (
+            rawType.replace('\n', '')
+            .replace(' ', '')
+            .replace('App::', '')
+            .replace('(', '')
+            .replace(')', '')
+            .removeprefix('static_cast<PropertyType>')
+            .removeprefix('PropertyType')
             .removeprefix('::')
+        )
 
+        allProperties = PropertyType.Prop_None
         for t in newTypes.split('|'):
-            if t:
-                self.type |= PropertyType[t]
+            try:
+                pt = PropertyType[t]
+            except KeyError:
+                pt = self._extractAssignment(t)
+
+            allProperties |= pt
+
+        return allProperties
+
+    def _extractAssignment(self, varName: str):
+        reg = re.compile(rf'{varName}\s*=(?P<assignVal>[^;]*);')
+        assignments = list(reg.finditer(self.constructorBody, endpos=self.macroCallStartPos))
+        match assignments:
+            case [*_prev, m]:
+                assignVal = m.group('assignVal')
+                return self._convertPropertyTypes(assignVal)
+            case _:
+                raise ValueError
 
     REG_PATTERN_PROP_DECLARATION = r'''(?x)
 (\w([\w \t]|::)*)   # namespace + type, ex. `App::PropertyLinkList`
@@ -86,5 +107,6 @@ class PropertyMacroBase:
 
                 return typeId
 
+        # NOTE [P2] extract variable form parent class
         logger.error(f"Cannot find property type for {self.name=}")
         return None

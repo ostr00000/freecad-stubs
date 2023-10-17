@@ -59,8 +59,13 @@ class DynamicPropertyGenerator(BasePropertyGenerator, ABC):
                     macroBody, expStart=macroCallStartPos, splitChar=',')]
 
                 pm = PropertyMacro(
-                    *macroArgs, constructorBody=constructorBody, namespace=self._curNamespace,
-                    cppContent=cppIncludeContent, classDeclarationBodies=classDeclarationBodies)
+                    *macroArgs,
+                    constructorBody=constructorBody,
+                    namespace=self._curNamespace,
+                    cppContent=cppIncludeContent,
+                    classDeclarationBodies=classDeclarationBodies,
+                    macroCallStartPos=propMatch.start(),
+                )
                 yield self.getProperty(
                     pm.name, pm.pythonGetType, pm.pythonSetType,
                     docs=pm.docs, readOnly=pm.readOnly)
