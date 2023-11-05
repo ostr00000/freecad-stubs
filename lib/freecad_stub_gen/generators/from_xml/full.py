@@ -101,20 +101,20 @@ class FreecadStubGeneratorFromXML(
         if className == 'DocumentObject':
             ret += self.getProperty(
                 'Proxy',
-                'FreeCADTemplates.ProxyPython',
-                'FreeCADTemplates.ProxyPython',
+                'FreeCADTemplates.templates.ProxyPython',
+                'FreeCADTemplates.templates.ProxyPython',
                 readOnly=False,
             )
-            self.requiredImports.add('FreeCADTemplates')
+            self.requiredImports.add('FreeCADTemplates.templates')
 
         elif className == 'ViewProviderDocumentObject':
             ret += self.getProperty(
                 'Proxy',
-                'FreeCADTemplates.ViewProviderPython',
-                'FreeCADTemplates.ViewProviderPython',
+                'FreeCADTemplates.templates.ViewProviderPython',
+                'FreeCADTemplates.templates.ViewProviderPython',
                 readOnly=False,
             )
-            self.requiredImports.add('FreeCADTemplates')
+            self.requiredImports.add('FreeCADTemplates.templates')
 
         elif className == 'GroupExtension':
             ret += self.getProperty(

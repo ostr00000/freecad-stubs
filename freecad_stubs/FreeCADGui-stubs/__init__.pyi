@@ -4,8 +4,8 @@ from FreeCADGui.TaskDialogPython import Control as ControlClass
 import FreeCAD
 import FreeCADGui
 import FreeCADGui.Selection
-import FreeCADTemplates
 import FreeCADTemplates.qt_types as qt
+import FreeCADTemplates.templates
 import pivy.coin
 import qtpy.QtCore
 import qtpy.QtGui
@@ -1037,10 +1037,10 @@ class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
     """This is the ViewProvider base class"""
 
     @property
-    def Proxy(self) -> FreeCADTemplates.ViewProviderPython: ...
+    def Proxy(self) -> FreeCADTemplates.templates.ViewProviderPython: ...
 
     @Proxy.setter
-    def Proxy(self, value: FreeCADTemplates.ViewProviderPython): ...
+    def Proxy(self, value: FreeCADTemplates.templates.ViewProviderPython): ...
 
     @property
     def Document(self) -> FreeCADGui.Document:

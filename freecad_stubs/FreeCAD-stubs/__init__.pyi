@@ -7,7 +7,7 @@ import FreeCAD.Console
 import FreeCAD.Qt as Qt
 import FreeCAD.Units as Units
 import FreeCADGui
-import FreeCADTemplates
+import FreeCADTemplates.templates
 import Mesh as MeshModule
 import Part as PartModule
 import Points as PointsModule
@@ -552,10 +552,10 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     """
 
     @property
-    def Proxy(self) -> FreeCADTemplates.ProxyPython: ...
+    def Proxy(self) -> FreeCADTemplates.templates.ProxyPython: ...
 
     @Proxy.setter
-    def Proxy(self, value: FreeCADTemplates.ProxyPython): ...
+    def Proxy(self, value: FreeCADTemplates.templates.ProxyPython): ...
 
     @property
     def Document(self) -> FreeCAD.Document:
