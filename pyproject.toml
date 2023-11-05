@@ -108,6 +108,9 @@ disable = [
     'too-many-arguments',
 ]
 
+[tool.ruff]
+ignore-init-module-imports = true
+
 [tool.setuptools]
 package-dir = {'' = 'freecad_stubs'}
 
