@@ -50,6 +50,15 @@ repos:
       - id: codespell
         additional_dependencies: [ tomli ]
 
+  - repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.17
+    hooks:
+      - id: mdformat
+        additional_dependencies:
+          - mdformat-gfm
+          - mdformat-black
+        args: [ --number ]
+
   - repo: https://github.com/psf/black
     rev: 23.10.1
     hooks:
@@ -64,7 +73,7 @@ repos:
 
       - id: ruff
         name: ruff-auto-fix
-        args: [ --fix, --exit-non-zero-on-fix, --show-fixes]
+        args: [ --fix, --exit-non-zero-on-fix, --show-fixes ]
 
 #  - repo: https://github.com/pre-commit/mirrors-mypy
 #    rev: v1.6.1

@@ -47,10 +47,12 @@ build_and_upload:
 .PHONY: run_pre_commit check_by_mypy check_by_pylint
 
 run_pre_commit:
-	$(PYTHON_ENV) -m pre_commit run --all-files
+	export TERM=ansi; $(PYTHON_ENV) -m pre_commit run --all-files
+	@#$(PYTHON_ENV) -m pre_commit run --all-files
 
 check_by_mypy:
-	$(PYTHON_ENV) -m mypy
+	export TERM=ansi; $(PYTHON_ENV) -m mypy
+	@#$(PYTHON_ENV) -m mypy
 
 check_by_pylint:
 	$(PYTHON_ENV) -m pylint ./lib/

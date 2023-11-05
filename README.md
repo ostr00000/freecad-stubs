@@ -53,33 +53,41 @@ file `freecad-stubs/lib/freecad_stub_gen/config.py`)
 ### Stub Generation
 
 1. Clone [freecad repository](https://github.com/FreeCAD/FreeCAD).
-    ```shell
-    git clone https://github.com/FreeCAD/FreeCAD.git
-    ```
+
+   ```shell
+   git clone https://github.com/FreeCAD/FreeCAD.git
+   ```
+
    #### Warning: FreeCAD repository has over `1.29 GB`
+
    You may download only these required folders:
-    - /src/App
-    - /src/Base
-    - /src/Gui
-    - /src/Main
-    - /src/Mod
+
+   - /src/App
+   - /src/Base
+   - /src/Gui
+   - /src/Main
+   - /src/Mod
 
 2. Clone this repository
-    ```shell
-    git clone https://github.com/ostr00000/freecad-stubs
-    ```
+
+   ```shell
+   git clone https://github.com/ostr00000/freecad-stubs
+   ```
 
 3. Configure paths
    In the file `freecad-stubs/lib/freecad_stub_gen/config.py`
    set desired configuration:
-    - `SOURCE_DIR` - `src` folder from FreeCAD repository,
-    - `TARGET_DIR` - target folder where stubs should be generated.
-      #### Warning: `TARGET_DIR` folder and its content may be removed when generating stubs.
+
+   - `SOURCE_DIR` - `src` folder from FreeCAD repository,
+   - `TARGET_DIR` - target folder where stubs should be generated.
+     #### Warning: `TARGET_DIR` folder and its content may be removed when generating stubs.
 
 4. Run the main file from this project in Python
-    ```shell
-    python freecad-stubs/lib/freecad_stub_gen/__main__.py
-    ```
+
+   ```shell
+   python freecad-stubs/lib/freecad_stub_gen/__main__.py
+   ```
+
    Required python version: `>=3.11`.
 
 ### Adding stubs to python path
@@ -88,12 +96,14 @@ At this point stubs must be already generated.
 There are a lot of possible methods. This is only example:
 
 1. Copy stubs from `TARGET_DIR` to location of your choice. For example:.
+
    ```shell
    cp -r ./freecad_stubs "$HOME/.local/lib/python3.9/freecad_stubs"
    ```
 
 2. Add location with stubs to python search path.
    For example:
+
    ```shell
    echo "$HOME/.local/lib/python3.9/freecad_stubs" > "$HOME/.local/lib/python3.9/site-packages/freecad_stubs.pth"
    ```
@@ -103,18 +113,18 @@ There are a lot of possible methods. This is only example:
 #### Stub source
 
 - [x] generate class stub (xml files):
-    - [x] property in xml,
-    - [x] dynamic property added in cpp,
-    - [x] method (+ static/class method),
-    - [x] rich comparison (ex. `__eq__` method),
-    - [x] number protocol (ex. `__add__` method),
+  - [x] property in xml,
+  - [x] dynamic property added in cpp,
+  - [x] method (+ static/class method),
+  - [x] rich comparison (ex. `__eq__` method),
+  - [x] number protocol (ex. `__add__` method),
 - [x] generate class stub (cpp files):
-    - [x] dynamically added in `init_type()`,
-    - [ ] qt slots,
-    - [x] qt signals,
+  - [x] dynamically added in `init_type()`,
+  - [ ] qt slots,
+  - [x] qt signals,
 - [x] generate functions stub (cpp files):
-    - [x] declared in `PyMethodDef` array,
-    - [x] dynamically added in module constructor (subclass `Py::ExtensionModule`),
+  - [x] declared in `PyMethodDef` array,
+  - [x] dynamically added in module constructor (subclass `Py::ExtensionModule`),
 
 #### Stub quality
 
