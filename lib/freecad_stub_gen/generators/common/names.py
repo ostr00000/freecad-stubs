@@ -2,9 +2,10 @@ import logging
 import typing
 import xml.etree.ElementTree as ET
 
+from ordered_set import OrderedSet
+
 from freecad_stub_gen.importable_map import importableMap
 from freecad_stub_gen.module_namespace import moduleNamespace
-from freecad_stub_gen.ordered_set import OrderedStrSet
 
 logger = logging.getLogger(__name__)
 
@@ -114,7 +115,7 @@ def getModuleName(classWithModules: str, required=False) -> str | None:
     raise ValueError(f"Cannot find module for {classWithModules}")
 
 
-def useAliasedModule(classWithModules: str, requiredImports: OrderedStrSet | None = None) -> str:
+def useAliasedModule(classWithModules: str, requiredImports: OrderedSet[str] | None = None) -> str:
     mod = getModuleName(classWithModules)
     if mod is None:
         return classWithModules

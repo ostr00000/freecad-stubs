@@ -3,18 +3,18 @@ import re
 from inspect import Parameter
 from typing import Iterator
 
+from ordered_set import OrderedSet
+
+from freecad_stub_gen.cpp_code.converters import convertToPythonValue
 from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam, RawRepr, \
     RawStringRepresentation
 from freecad_stub_gen.generators.common.arguments_converter.definitions import \
-    MISSING_DEFAULT_ARG, parseTypeMap, parseSizeMap, C_TYPE_TO_PYTHON_TYPE, UNKNOWN_DEFAULT_ARG
+    C_TYPE_TO_PYTHON_TYPE, MISSING_DEFAULT_ARG, UNKNOWN_DEFAULT_ARG, parseSizeMap, parseTypeMap
 from freecad_stub_gen.generators.common.arguments_converter.function_conv import FunctionConv
 from freecad_stub_gen.generators.common.arguments_converter.sequence_stack import SequenceStack
-
 from freecad_stub_gen.generators.common.names import getClassWithModulesFromPointer, \
     getModuleName
-from freecad_stub_gen.cpp_code.converters import convertToPythonValue
 from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import StrWrapper
-from freecad_stub_gen.ordered_set import OrderedStrSet
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +26,7 @@ class InvalidPointerFormat(ValueError):
 class TypesConverter:
 
     def __init__(self, functionConv: FunctionConv,
-                 requiredImports: OrderedStrSet,
+                 requiredImports: OrderedSet[str],
                  cArgNum: int = 2):
         self.fun = functionConv
         self.requiredImports = requiredImports

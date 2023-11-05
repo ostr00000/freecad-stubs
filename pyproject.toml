@@ -30,7 +30,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-generate = ['more-itertools']
+generate = ['more-itertools', 'ordered-set']
 check = ['mypy', 'pylint']
 
 [tool.setuptools]

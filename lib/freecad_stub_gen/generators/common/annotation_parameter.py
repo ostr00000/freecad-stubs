@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 import logging
-from collections.abc import Mapping, Iterable, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from inspect import Parameter, Signature, _void
-from typing import cast, TypeAlias
+from typing import TypeAlias, cast
 
-from freecad_stub_gen.ordered_set import OrderedStrSet
+from ordered_set import OrderedSet
 
 logger = logging.getLogger(__name__)
 
@@ -20,17 +20,17 @@ class RawRepr:
         return super().__new__(cls)
 
     def __init__(self, *values):
-        self.values = OrderedStrSet(map(str, values))
+        self.values = OrderedSet[str](map(str, values))
 
     def __repr__(self):
         if 'None' in self.values:
-            self.values.pop('None')
+            self.values.discard('None')
             self.values.add('None')
         return ' | '.join(self.values)
 
     def __eq__(self, other):
         if isinstance(other, str) and len(self.values) == 1:
-            return other == self.values.first()
+            return other == self.values[0]
         return super().__eq__(other)
 
     def __add__(self, other):
@@ -79,12 +79,12 @@ class SelfSignature(Signature):
     def __init__(self, parameters: InitParameters_t = None, *,
                  unknown_parameters=False,
                  return_annotation=Signature.empty,
-                 exceptions: OrderedStrSet | None = None,
+                 exceptions: OrderedSet[str] | None = None,
                  ):
         parameters = self._convertFirstParam(parameters)
         try:
             super().__init__(parameters, return_annotation=return_annotation)
-            self.exceptions = OrderedStrSet() if exceptions is None else exceptions
+            self.exceptions = OrderedSet[str]() if exceptions is None else exceptions
             self.unknown_parameters = unknown_parameters
         except ValueError as v:
             if parameters is not None:
@@ -110,7 +110,7 @@ class SelfSignature(Signature):
 
     @classmethod
     def getExceptionsDocs(cls, signatures: Iterable[SelfSignature]) -> str:
-        uniqueExceptions = OrderedStrSet()
+        uniqueExceptions = OrderedSet[str]()
         for sig in signatures:
             uniqueExceptions.update(sig.exceptions)
 

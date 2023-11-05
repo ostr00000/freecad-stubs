@@ -3,24 +3,24 @@ import re
 from functools import cached_property
 from itertools import islice
 
+from ordered_set import OrderedSet
+
 from freecad_stub_gen.cpp_code.converters import removeQuote
-from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
-    genFuncArgs, generateExpressionUntilChar
+from freecad_stub_gen.generators.common.cpp_function import genFuncArgs, generateExpressionUntilChar
 from freecad_stub_gen.generators.common.names import getClassName, getClassWithModulesFromPointer, \
     getModuleName
 from freecad_stub_gen.generators.common.py_build_converter import parsePyBuildValues
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import AnyValue, \
-    UnionArguments, RetType, InvalidReturnType
+    InvalidReturnType, RetType, UnionArguments
 from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import StrWrapper
-from freecad_stub_gen.ordered_set import OrderedStrSet
 
 logger = logging.getLogger(__name__)
 
 
 class ReturnTypeConverterBase:
-    def __init__(self, functionBody: str = '', requiredImports: OrderedStrSet | None = None,
+    def __init__(self, functionBody: str = '', requiredImports: OrderedSet[str] | None = None,
                  classNameWithModule: str = '', functionName: str = ''):
-        self.requiredImports = OrderedStrSet() if requiredImports is None else requiredImports
+        self.requiredImports = OrderedSet[str]() if requiredImports is None else requiredImports
         self.functionBody = functionBody
         self.classNameWithModule = classNameWithModule
         self.functionName = functionName

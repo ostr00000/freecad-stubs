@@ -1,12 +1,13 @@
 import re
 
+from ordered_set import OrderedSet
+
 from freecad_stub_gen.cpp_code.converters import removeQuote
+from freecad_stub_gen.file_functions import genCppFiles, readContent
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
-from freecad_stub_gen.generators.common.names import getModuleName, getClassName, \
+from freecad_stub_gen.generators.common.names import getClassName, getModuleName, \
     getNamespaceWithClass
 from freecad_stub_gen.module_namespace import moduleNamespace
-from freecad_stub_gen.file_functions import genCppFiles, readContent
-from freecad_stub_gen.ordered_set import OrderedStrSet
 from freecad_stub_gen.python_code import indent
 
 
@@ -32,7 +33,7 @@ class ExceptionData:
             # no namespace means it is exception from current namespace
             self.cppNamespace = self.pyModuleRaw
 
-        self.requiredImports = OrderedStrSet()
+        self.requiredImports = OrderedSet[str]()
 
     def __str__(self):
         if self.baseCppNamespace == '__python__':

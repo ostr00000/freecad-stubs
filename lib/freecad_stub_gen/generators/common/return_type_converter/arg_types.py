@@ -2,12 +2,13 @@ from __future__ import annotations
 
 import keyword
 from abc import ABC
-from collections.abc import Sized, Iterable
+from collections.abc import Iterable, Sized
 from functools import cached_property
-from typing import TypeVar, Generator, Protocol, Iterator
+from typing import Generator, Iterator, Protocol, TypeVar
+
+from ordered_set import OrderedSet
 
 from freecad_stub_gen.generators.common.names import getModuleName, useAliasedModule
-from freecad_stub_gen.ordered_set import OrderedSet, OrderedStrSet
 from freecad_stub_gen.python_code import indent
 
 T = TypeVar('T')
@@ -38,7 +39,7 @@ class SizedIterable(Sized, Iterable, Protocol):
 class WithImports:
     @cached_property
     def imports(self):
-        return OrderedStrSet()
+        return OrderedSet[str]()
 
 
 class ArgumentsIter(WithImports, SizedIterable, ABC):
