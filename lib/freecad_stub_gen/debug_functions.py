@@ -9,6 +9,7 @@ printAllValues = defaultdict[str, OrderedSet](OrderedSet)
 
 def addPrintAllValue(topic: str, value: Hashable):
     if topic not in printAllValues:
+
         @atexit.register
         def printValues():
             print(f"Values for {topic}:")

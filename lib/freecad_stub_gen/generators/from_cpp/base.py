@@ -10,7 +10,9 @@ from itertools import chain
 from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.generators.common.annotation_parameter import SelfSignature
 from freecad_stub_gen.generators.common.cpp_function import genFuncArgs
-from freecad_stub_gen.generators.common.doc_string import generateSignaturesFromDocstring
+from freecad_stub_gen.generators.common.doc_string import (
+    generateSignaturesFromDocstring,
+)
 from freecad_stub_gen.generators.common.gen_method import MethodGenerator
 from freecad_stub_gen.generators.common.signature_merger import SignatureMerger
 from freecad_stub_gen.logger import LEVEL_CODE
@@ -91,8 +93,9 @@ class BaseGeneratorFromCpp(MethodGenerator, ABC):
     def _genStub(self, moduleName: str) -> Iterable[str]:
         raise NotImplementedError
 
-    def _genAllMethods(self, it: Iterable[Method], firstParam=None,
-                       functionSpacing: int = 1) -> Iterable[str]:
+    def _genAllMethods(
+        self, it: Iterable[Method], firstParam=None, functionSpacing: int = 1
+    ) -> Iterable[str]:
         methodNameToMethod: defaultdict[str, list[Method]] = defaultdict(list)
         for method in it:
             methodNameToMethod[method.pythonMethodName].append(method)
@@ -104,11 +107,15 @@ class BaseGeneratorFromCpp(MethodGenerator, ABC):
 
             docContent = next((m.doc for m in methods if m.doc is not None), '')
             docContent += SelfSignature.getExceptionsDocs(
-                m.pythonSignature for m in methods if m.pythonSignature is not None)
+                m.pythonSignature for m in methods if m.pythonSignature is not None
+            )
             uniqueMethods = list({str(m): m for m in methods}.values())
             yield self.convertMethodToStr(
-                methods[0].pythonMethodName, uniqueMethods,
-                docContent, functionSpacing=functionSpacing)
+                methods[0].pythonMethodName,
+                uniqueMethods,
+                docContent,
+                functionSpacing=functionSpacing,
+            )
 
     REG_NOARGS_METHOD = re.compile('add_noargs_method')
     REG_VARGS_METHOD = re.compile('add_varargs_method')
@@ -116,9 +123,9 @@ class BaseGeneratorFromCpp(MethodGenerator, ABC):
 
     def _findFunctionCallsGen(self, content: str) -> Iterable[Method]:
         for match in chain(
-                self.REG_NOARGS_METHOD.finditer(content),
-                self.REG_VARGS_METHOD.finditer(content),
-                self.REG_KEYWORD_METHOD.finditer(content),
+            self.REG_NOARGS_METHOD.finditer(content),
+            self.REG_VARGS_METHOD.finditer(content),
+            self.REG_KEYWORD_METHOD.finditer(content),
         ):
             method = Method(list(genFuncArgs(content, match.start())))
             yield from self._genMethodWithArgs(method)
@@ -127,13 +134,19 @@ class BaseGeneratorFromCpp(MethodGenerator, ABC):
         if method.doc is None:
             docSignatures = []
         else:
-            docSignatures = list(generateSignaturesFromDocstring(
-                method.pythonMethodName, method.doc))
-        codeSignatures = list(self.generateSignaturesFromCode(
-            method.cFunction, method.cClass, argNumStart=argNumStart))
+            docSignatures = list(
+                generateSignaturesFromDocstring(method.pythonMethodName, method.doc)
+            )
+        codeSignatures = list(
+            self.generateSignaturesFromCode(
+                method.cFunction, method.cClass, argNumStart=argNumStart
+            )
+        )
 
         yielded = False
-        sigMerger = SignatureMerger(codeSignatures, docSignatures, cFunName=method.cFunction)
+        sigMerger = SignatureMerger(
+            codeSignatures, docSignatures, cFunName=method.cFunction
+        )
         for sig in sigMerger.genMergedCodeAndDocSignatures():
             yielded = True
             yield dataclasses.replace(method, pythonSignature=sig)
@@ -141,5 +154,6 @@ class BaseGeneratorFromCpp(MethodGenerator, ABC):
         if not yielded:
             logger.debug(f"Not found args for {method=!r} {self.baseGenFilePath=}")
             if logger.isEnabledFor(LEVEL_CODE):
-                logger.log(LEVEL_CODE, self.findFunctionBody(
-                    method.cFunction, method.cClass))
+                logger.log(
+                    LEVEL_CODE, self.findFunctionBody(method.cFunction, method.cClass)
+                )

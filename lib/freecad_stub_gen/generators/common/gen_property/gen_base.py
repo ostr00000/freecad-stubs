@@ -8,9 +8,14 @@ from freecad_stub_gen.python_code import indent
 
 
 class BasePropertyGenerator(BaseGenerator, ABC):
-
-    def getProperty(self, name: str, pythonGetType: str = '', pythonSetType: str = '',
-                    docs: str = '', readOnly=True):
+    def getProperty(
+        self,
+        name: str,
+        pythonGetType: str = '',
+        pythonSetType: str = '',
+        docs: str = '',
+        readOnly=True,
+    ):
         """This method return string with generated property for specified arguments."""
         pythonGetType = self._extractTypeAlias(pythonGetType)
         self.requiredImports.update(self._genImportsFromType(pythonGetType))

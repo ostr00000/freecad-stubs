@@ -6,21 +6,40 @@ from itertools import islice
 from ordered_set import OrderedSet
 
 from freecad_stub_gen.cpp_code.converters import removeQuote
-from freecad_stub_gen.generators.common.cpp_function import genFuncArgs, generateExpressionUntilChar
-from freecad_stub_gen.generators.common.names import getClassName, getClassWithModulesFromPointer, \
-    getModuleName
+from freecad_stub_gen.generators.common.cpp_function import (
+    genFuncArgs,
+    generateExpressionUntilChar,
+)
+from freecad_stub_gen.generators.common.names import (
+    getClassName,
+    getClassWithModulesFromPointer,
+    getModuleName,
+)
 from freecad_stub_gen.generators.common.py_build_converter import parsePyBuildValues
-from freecad_stub_gen.generators.common.return_type_converter.arg_types import AnyValue, \
-    InvalidReturnType, RetType, UnionArguments
-from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import StrWrapper
+from freecad_stub_gen.generators.common.return_type_converter.arg_types import (
+    AnyValue,
+    InvalidReturnType,
+    RetType,
+    UnionArguments,
+)
+from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import (
+    StrWrapper,
+)
 
 logger = logging.getLogger(__name__)
 
 
 class ReturnTypeConverterBase:
-    def __init__(self, functionBody: str = '', requiredImports: OrderedSet[str] | None = None,
-                 classNameWithModule: str = '', functionName: str = ''):
-        self.requiredImports = OrderedSet[str]() if requiredImports is None else requiredImports
+    def __init__(
+        self,
+        functionBody: str = '',
+        requiredImports: OrderedSet[str] | None = None,
+        classNameWithModule: str = '',
+        functionName: str = '',
+    ):
+        self.requiredImports = (
+            OrderedSet[str]() if requiredImports is None else requiredImports
+        )
         self.functionBody = functionBody
         self.classNameWithModule = classNameWithModule
         self.functionName = functionName
@@ -30,7 +49,9 @@ class ReturnTypeConverterBase:
         return getClassName(self.classNameWithModule)
 
     # pylint: disable=too-many-return-statements
-    def getExpressionType(self, varText: str, endPos: int = 0, *, onlyLiteral=False) -> RetType:
+    def getExpressionType(
+        self, varText: str, endPos: int = 0, *, onlyLiteral=False
+    ) -> RetType:
         varText = self._removePrefixes(varText)
         varText = self._removeSuffix(varText)
         match StrWrapper(varText):
@@ -51,7 +72,9 @@ class ReturnTypeConverterBase:
                 return self.classNameWithModule
 
             case StrWrapper(end='->copyPyObject()'):
-                return self.getExpressionType(varText.removesuffix('->copyPyObject()'), endPos)
+                return self.getExpressionType(
+                    varText.removesuffix('->copyPyObject()'), endPos
+                )
 
             case 'getDocumentObjectPtr()':
                 return 'FreeCAD.DocumentObject'
@@ -60,15 +83,26 @@ class ReturnTypeConverterBase:
 
             case StrWrapper('Py::Boolean' | 'PyBool_From' | 'Py::True' | 'Py::False'):
                 return 'bool'
-            case StrWrapper('Py::Long' | 'PyLong_From' | 'Py::Int'
-                            | 'PyInt_From' | 'PYINT_FROMLONG' | 'int'):
+            case StrWrapper(
+                'Py::Long'
+                | 'PyLong_From'
+                | 'Py::Int'
+                | 'PyInt_From'
+                | 'PYINT_FROMLONG'
+                | 'int'
+            ):
                 return 'int'
             case StrWrapper('Py::Float' | 'PyFloat_From'):
                 return 'float'
-            case StrWrapper('Py::String' | 'PyString_From'
-                            | 'PyUnicode_From' | 'Py::Char'
-                            | 'PyUnicode_DecodeUTF8' | 'PYSTRING_FROMSTRING'
-                            | 'QString'):
+            case StrWrapper(
+                'Py::String'
+                | 'PyString_From'
+                | 'PyUnicode_From'
+                | 'Py::Char'
+                | 'PyUnicode_DecodeUTF8'
+                | 'PYSTRING_FROMSTRING'
+                | 'QString'
+            ):
                 return 'str'
             case StrWrapper(end='->c_str()'):
                 return 'str'
@@ -80,12 +114,18 @@ class ReturnTypeConverterBase:
                 if onlyLiteral:
                     return 'tuple'
                 return self.getInnerType(
-                    'tuple', variableName=varText,
-                    decStartPos=0, decEndPos=endPos, endPos=endPos)
+                    'tuple',
+                    variableName=varText,
+                    decStartPos=0,
+                    decEndPos=endPos,
+                    endPos=endPos,
+                )
 
             case StrWrapper('PyTuple_Pack'):
-                subTypes = [self.getExpressionType(v, endPos)
-                            for v in islice(genFuncArgs(varText), 1, None)]
+                subTypes = [
+                    self.getExpressionType(v, endPos)
+                    for v in islice(genFuncArgs(varText), 1, None)
+                ]
                 return f'tuple[{", ".join(subTypes)}]'
 
             case StrWrapper('Py::Tuple' | 'PyTuple_New'):
@@ -141,12 +181,13 @@ class ReturnTypeConverterBase:
                 return self._findClassWithModule(varText)
 
             case StrWrapper(end='->getPyObject()' | '.getPyObject()'):
-                varText = varText \
-                    .removesuffix('getPyObject()') \
-                    .removesuffix('.') \
-                    .removesuffix('->') \
+                varText = (
+                    varText.removesuffix('getPyObject()')
+                    .removesuffix('.')
+                    .removesuffix('->')
                     .removesuffix(')')
-                varText = varText[varText.rfind('(') + 1:]
+                )
+                varText = varText[varText.rfind('(') + 1 :]
                 return self.getExpressionType(varText, endPos=endPos)
 
             case StrWrapper('Py_BuildValue("'):
@@ -173,7 +214,10 @@ class ReturnTypeConverterBase:
 
             case StrWrapper('(', end=')'):
                 return self.getExpressionType(
-                    varText.removeprefix('(').removesuffix(')'), endPos, onlyLiteral=onlyLiteral)
+                    varText.removeprefix('(').removesuffix(')'),
+                    endPos,
+                    onlyLiteral=onlyLiteral,
+                )
 
             case StrWrapper(contain='=='):
                 return 'bool'
@@ -186,11 +230,15 @@ class ReturnTypeConverterBase:
     def _removePrefixes(varText: str) -> str:
         varText = varText.strip()
         match StrWrapper(varText):
-            case StrWrapper(start='new_reference_to(' | 'Py::new_reference_to(', end=')'):
-                varText = varText \
-                    .removeprefix('Py::') \
-                    .removeprefix('new_reference_to(') \
-                    .removesuffix(')').strip()
+            case StrWrapper(
+                start='new_reference_to(' | 'Py::new_reference_to(', end=')'
+            ):
+                varText = (
+                    varText.removeprefix('Py::')
+                    .removeprefix('new_reference_to(')
+                    .removesuffix(')')
+                    .strip()
+                )
 
         varText = varText.removeprefix('const').strip().removeprefix('*').strip()
         return varText
@@ -248,9 +296,13 @@ class ReturnTypeConverterBase:
                 # it may be any of following
                 # access via: `getPropertyOfGeometry` function,
                 # search: `App::PropertyComplexGeoData)`,
-                return UnionArguments(['Mesh.MeshObject', 'Part.Shape', 'Points.PointKernel'])
+                return UnionArguments(
+                    ['Mesh.MeshObject', 'Part.Shape', 'Points.PointKernel']
+                )
 
-            case _ if classWithModule != mustDiffer and (mod := getModuleName(classWithModule)):
+            case _ if classWithModule != mustDiffer and (
+                mod := getModuleName(classWithModule)
+            ):
                 self.requiredImports.add(mod)
                 return classWithModule
 
@@ -262,8 +314,9 @@ class ReturnTypeConverterBase:
             assert self.classNameWithModule is not None
             return self.classNameWithModule
 
-        variableDecReg = re.compile(rf"""
-        (?P<directive>\#)?      # we skip directive later in code 
+        variableDecReg = re.compile(
+            rf"""
+        (?P<directive>\#)?      # we skip directive later in code
                                 # (otherwise need to use variable lookbehind)
         (?>\s*)                 # skip whiespace, do not backtrack from there
         (?P<type>
@@ -280,8 +333,10 @@ class ReturnTypeConverterBase:
             |
             \((?P<args>[^;]+)\) # there may be arguments to constructor
         )?
-        [;:]                    # end of statement or this is for loop                           
-        """, re.VERBOSE)
+        [;:]                    # end of statement or this is for loop
+        """,
+            re.VERBOSE,
+        )
         matches = list(variableDecReg.finditer(self.functionBody, endpos=endPos))
         for declarationMatch in reversed(matches):
             if declarationMatch.group('directive'):
@@ -290,15 +345,30 @@ class ReturnTypeConverterBase:
             if not (varTypeDec := self._extractTypeFromMatch(declarationMatch)):
                 continue
 
-            if varTypeDec in ('auto', 'PyObject', 'Py::Object', 'PyTypeObject', 'PyObjectBase'):
+            if varTypeDec in (
+                'auto',
+                'PyObject',
+                'Py::Object',
+                'PyTypeObject',
+                'PyObjectBase',
+            ):
                 if assignValue := declarationMatch.group('val'):
                     #  we can try resolve real type by checking right side
-                    varType = self.getExpressionType(assignValue, endPos, onlyLiteral=True)
-                elif varTypeDec != 'auto' and (argsValue := declarationMatch.group('args')):
+                    varType = self.getExpressionType(
+                        assignValue, endPos, onlyLiteral=True
+                    )
+                elif varTypeDec != 'auto' and (
+                    argsValue := declarationMatch.group('args')
+                ):
                     #  we can try resolve real type from constructor argument
-                    funArgs = list(generateExpressionUntilChar(
-                        argsValue, 0, ',', bracketL='(', bracketR=')'))
-                    varType = self.getExpressionType(funArgs[0], endPos, onlyLiteral=False)
+                    funArgs = list(
+                        generateExpressionUntilChar(
+                            argsValue, 0, ',', bracketL='(', bracketR=')'
+                        )
+                    )
+                    varType = self.getExpressionType(
+                        funArgs[0], endPos, onlyLiteral=False
+                    )
                 else:
                     varType = AnyValue
 
@@ -307,7 +377,8 @@ class ReturnTypeConverterBase:
 
             if (isNone := varType == 'None') or varType == AnyValue:
                 varType = self._getRetTypeFromAssignment(
-                    variableName, declarationMatch.end(), endPos)
+                    variableName, declarationMatch.end(), endPos
+                )
                 if isNone:
                     match varType:
                         case UnionArguments():
@@ -318,8 +389,12 @@ class ReturnTypeConverterBase:
                             varType = 'None'
             if isinstance(varType, str):
                 varType = self.getInnerType(
-                    varType, variableName, declarationMatch.start(),
-                    declarationMatch.end(), endPos)
+                    varType,
+                    variableName,
+                    declarationMatch.start(),
+                    declarationMatch.end(),
+                    endPos,
+                )
 
             return varType
 
@@ -337,7 +412,9 @@ class ReturnTypeConverterBase:
         v = v.removeprefix('const').strip().removesuffix('*').strip()
         return v
 
-    def _getRetTypeFromAssignment(self, variableName: str, startPos: int, endPos: int) -> RetType:
+    def _getRetTypeFromAssignment(
+        self, variableName: str, startPos: int, endPos: int
+    ) -> RetType:
         """Example: `myVar = Py::Float(7.0)`."""
         regex = re.compile(rf'{variableName}\b\s*=\s*([^;]*);')
         gen = self._genVariableTypeFromRegex(regex, startPos, endPos, onlyLiteral=False)
@@ -345,20 +422,29 @@ class ReturnTypeConverterBase:
             return union
         return AnyValue
 
-    def _genVariableTypeFromRegex(self, regex: re.Pattern, startPos: int, endPos: int,
-                                  onlyLiteral=True):
+    def _genVariableTypeFromRegex(
+        self, regex: re.Pattern, startPos: int, endPos: int, onlyLiteral=True
+    ):
         """General match function by regex between declaration and `return` keyword."""
         for variableMatch in regex.finditer(self.functionBody, startPos, endpos=endPos):
             variableTypeText = variableMatch.group(1)
-            varType = self.getExpressionType(variableTypeText, endPos, onlyLiteral=onlyLiteral)
+            varType = self.getExpressionType(
+                variableTypeText, endPos, onlyLiteral=onlyLiteral
+            )
             match varType:
                 case UnionArguments():
                     yield from varType
                 case str():
                     yield varType
 
-    def getInnerType(self, varType: str, variableName: str,
-                     decStartPos: int, decEndPos: int, endPos: int) -> RetType:
+    def getInnerType(
+        self,
+        varType: str,
+        variableName: str,
+        decStartPos: int,
+        decEndPos: int,
+        endPos: int,
+    ) -> RetType:
         # pylint: disable=unused-argument
         """Additional search for generic types."""
         return varType

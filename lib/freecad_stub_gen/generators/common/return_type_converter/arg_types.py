@@ -100,9 +100,11 @@ class TupleArgument(ArgumentsIter, list, SizedIterable):
         return 'tuple'
 
     def __eq__(self, other):
-        return isinstance(other, type(self)) \
-            and self.repeated == other.repeated \
+        return (
+            isinstance(other, type(self))
+            and self.repeated == other.repeated
             and super().__eq__(other)
+        )
 
 
 RetType = UnionArguments | AnyValueType | str
@@ -162,7 +164,9 @@ class TypedDictGen(WithImports):
         else:
             zipPattern = '{k}: {v}'
             joinPattern = '\n'
-        lines = (zipPattern.format(k=k, v=v) for k, v in zip(self._data.keys(), listIter))
+        lines = (
+            zipPattern.format(k=k, v=v) for k, v in zip(self._data.keys(), listIter)
+        )
         content = indent(joinPattern.join(lines))
 
         typedDictName = f'Return{self.funName[0].upper() + self.funName[1:]}Dict'
@@ -177,7 +181,9 @@ class TypedDictGen(WithImports):
         return typedDictName
 
     def __eq__(self, other):
-        return isinstance(other, type(self)) \
-            and self.funName == other.funName \
-            and self.alternativeSyntax == other.alternativeSyntax \
+        return (
+            isinstance(other, type(self))
+            and self.funName == other.funName
+            and self.alternativeSyntax == other.alternativeSyntax
             and super().__eq__(other)
+        )

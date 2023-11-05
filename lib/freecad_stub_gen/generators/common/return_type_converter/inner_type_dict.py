@@ -4,9 +4,15 @@ from typing import ParamSpec, Callable, TypeVar
 
 from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
-from freecad_stub_gen.generators.common.return_type_converter.arg_types import DictArgument, \
-    TypedDictGen, ArgumentsIter, RetType
-from freecad_stub_gen.generators.common.return_type_converter.base import ReturnTypeConverterBase
+from freecad_stub_gen.generators.common.return_type_converter.arg_types import (
+    DictArgument,
+    TypedDictGen,
+    ArgumentsIter,
+    RetType,
+)
+from freecad_stub_gen.generators.common.return_type_converter.base import (
+    ReturnTypeConverterBase,
+)
 
 PAR = ParamSpec('PAR')
 RET = TypeVar('RET')
@@ -24,17 +30,25 @@ def lazyDec(fun: Callable[PAR, RET]) -> Callable[PAR, Callable[[], RET]]:
 
 
 class ReturnTypeInnerDict(ReturnTypeConverterBase):
-    def getInnerType(self, varType: str, variableName: str, decStartPos: int,
-                     decEndPos: int, endPos: int) -> RetType:
+    def getInnerType(
+        self,
+        varType: str,
+        variableName: str,
+        decStartPos: int,
+        decEndPos: int,
+        endPos: int,
+    ) -> RetType:
         if varType != 'dict':
-            return super().getInnerType(varType, variableName, decStartPos, decEndPos, endPos)
+            return super().getInnerType(
+                varType, variableName, decStartPos, decEndPos, endPos
+            )
 
         for wrapper in (
-                self._getInnerTypePyDictSetItemString(variableName, decEndPos, endPos),
-                self._getInnerTypePyDictSetItem(variableName, decEndPos, endPos),
-                self._getInnerTypeDictSetItem(variableName, decEndPos, endPos),
-                self._getInnerTypeDictAssignLiterals(variableName, decEndPos, endPos),
-                self._getInnerTypeDictAssign(variableName, decEndPos, endPos),
+            self._getInnerTypePyDictSetItemString(variableName, decEndPos, endPos),
+            self._getInnerTypePyDictSetItem(variableName, decEndPos, endPos),
+            self._getInnerTypeDictSetItem(variableName, decEndPos, endPos),
+            self._getInnerTypeDictAssignLiterals(variableName, decEndPos, endPos),
+            self._getInnerTypeDictAssign(variableName, decEndPos, endPos),
         ):
             da: ArgumentsIter = wrapper()
             if da:
@@ -48,13 +62,18 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
         raise ValueError("Cannot extract dict inner types.")
 
     @lazyDec
-    def _getInnerTypePyDictSetItemString(self, variableName: str, startPos: int, endPos: int):
+    def _getInnerTypePyDictSetItemString(
+        self, variableName: str, startPos: int, endPos: int
+    ):
         """Example: `PyDict_SetItemString(dict,It->first.c_str(), PyUnicode_FromString(It`"""
         da = DictArgument()
         regex = re.compile(rf'PyDict_SetItemString\s*\(\s*({variableName}\s*,[^;]*)\);')
         for match in regex.finditer(self.functionBody, startPos, endPos):
-            funArgs = list(generateExpressionUntilChar(
-                match.group(1), 0, ',', bracketL='(', bracketR=')'))
+            funArgs = list(
+                generateExpressionUntilChar(
+                    match.group(1), 0, ',', bracketL='(', bracketR=')'
+                )
+            )
             value = self.getExpressionType(funArgs[2], endPos)
             da.add('str', value)
         return da
@@ -65,8 +84,11 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
         da = DictArgument()
         regex = re.compile(rf'PyDict_SetItem\s*\(\s*({variableName}\s*,[^;]*)\);')
         for match in regex.finditer(self.functionBody, startPos, endPos):
-            funArgs = list(generateExpressionUntilChar(
-                match.group(1), 0, ',', bracketL='(', bracketR=')'))
+            funArgs = list(
+                generateExpressionUntilChar(
+                    match.group(1), 0, ',', bracketL='(', bracketR=')'
+                )
+            )
             key = self.getExpressionType(funArgs[1], endPos)
             value = self.getExpressionType(funArgs[2], endPos)
             da.add(key, value)
@@ -80,8 +102,11 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
         regex = re.compile(rf'{variableName}\b\.setItem\(([^;]*)\);')
 
         for match in regex.finditer(self.functionBody, startPos, endPos):
-            funArgs = list(generateExpressionUntilChar(
-                match.group(1), 0, ',', bracketL='(', bracketR=')'))
+            funArgs = list(
+                generateExpressionUntilChar(
+                    match.group(1), 0, ',', bracketL='(', bracketR=')'
+                )
+            )
 
             value = self.getExpressionType(funArgs[1], endPos)
             key = funArgs[0]
@@ -98,7 +123,9 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
         return da
 
     @lazyDec
-    def _getInnerTypeDictAssignLiterals(self, variableName: str, startPos: int, endPos: int):
+    def _getInnerTypeDictAssignLiterals(
+        self, variableName: str, startPos: int, endPos: int
+    ):
         """Example: `ret["UserFriendlyName"] = strs[0];`"""
         tdg = TypedDictGen(self.functionName)
         regex = re.compile(rf'{variableName}\b\[\"(\w+)\"]\s*=\s*([^;]*);')

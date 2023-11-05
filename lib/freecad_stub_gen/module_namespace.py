@@ -16,7 +16,7 @@ class _ModuleNamespace:
             self.stemToPaths[file.stem].append(file)
 
     def getFileForStem(self, stem: str, namespace: str = '') -> Path:
-        match stem: # if there is xml file, use this `match`
+        match stem:  # if there is xml file, use this `match`
             case 'Geom2dCurvePy':
                 stem = 'Curve2dPy'
             case 'GeomSurface':
@@ -27,7 +27,9 @@ class _ModuleNamespace:
                 raise ValueError(f"There is no path for {stem=}")
             case [onlyOnePath]:
                 return onlyOnePath
-            case manyPaths if any(namespace in str(pathWithNamespace := p) for p in manyPaths):
+            case manyPaths if any(
+                namespace in str(pathWithNamespace := p) for p in manyPaths
+            ):
                 # noinspection PyUnboundLocalVariable
                 return pathWithNamespace
             case [anyPath, *_] as possiblePaths:

@@ -1,18 +1,21 @@
 from inspect import Parameter
 
 from freecad_stub_gen.generators.common.annotation_parameter import SelfSignature
-from freecad_stub_gen.generators.common.arguments_converter.definitions import DEFAULT_ARG_NAME
+from freecad_stub_gen.generators.common.arguments_converter.definitions import (
+    DEFAULT_ARG_NAME,
+)
 
 
 class SignatureMerger:
     NO_ANNOTATIONS = (None, 'object', Parameter.empty)
 
-    def __init__(self,
-                 codeSignatures: list[SelfSignature],
-                 docSignatures: list[SelfSignature],
-                 firstParam: Parameter | None = None,
-                 cFunName: str = '',
-                 ):
+    def __init__(
+        self,
+        codeSignatures: list[SelfSignature],
+        docSignatures: list[SelfSignature],
+        firstParam: Parameter | None = None,
+        cFunName: str = '',
+    ):
         self.codeSignatures = codeSignatures
         self.docSignatures = docSignatures
         self.cFunName = cFunName
@@ -50,14 +53,18 @@ class SignatureMerger:
                 return
 
         for docS in self.docSignatures:
-            joinedParams = list(self._mergeParamNamesGen(
-                list(codeS.parameters.values()),
-                list(docS.parameters.values())))
+            joinedParams = list(
+                self._mergeParamNamesGen(
+                    list(codeS.parameters.values()), list(docS.parameters.values())
+                )
+            )
             yield codeS.replace(parameters=self._retParam + joinedParams)
             self._yielded = True
 
     @classmethod
-    def _mergeParamNamesGen(cls, codeParams: list[Parameter], docsParams: list[Parameter]):
+    def _mergeParamNamesGen(
+        cls, codeParams: list[Parameter], docsParams: list[Parameter]
+    ):
         cParamIt = iter(codeParams)
         pos = 0
         # we iterate over `docsParams` first to not exhaust `cParamIt` iterator
@@ -91,11 +98,14 @@ class SignatureMerger:
                     docYielded = True
 
             if not docYielded:
-                yield docS.replace(parameters=self._retParam + list(docS.parameters.values()))
+                yield docS.replace(
+                    parameters=self._retParam + list(docS.parameters.values())
+                )
                 self._yielded = True
 
-        self._remainingSig = [codeS for codeS in self.codeSignatures
-                              if codeS not in usedCodeSignatures]
+        self._remainingSig = [
+            codeS for codeS in self.codeSignatures if codeS not in usedCodeSignatures
+        ]
 
     def _matchParameters(self, codeParams, docParams) -> list[Parameter] | None:
         matchedParam = list(self._retParam)
@@ -113,16 +123,21 @@ class SignatureMerger:
                 return None
 
             newArg = codeParam
-            if codeParam.name.startswith(DEFAULT_ARG_NAME) \
-                    and not docParam.name.startswith(DEFAULT_ARG_NAME):
+            if codeParam.name.startswith(
+                DEFAULT_ARG_NAME
+            ) and not docParam.name.startswith(DEFAULT_ARG_NAME):
                 newArg = newArg.replace(name=docParam.name)
 
-            if codeParam.default is None \
-                    and docParam.default not in (None, Parameter.empty):
+            if codeParam.default is None and docParam.default not in (
+                None,
+                Parameter.empty,
+            ):
                 newArg = newArg.replace(default=docParam.default)
 
-            if codeParam.annotation in self.NO_ANNOTATIONS \
-                    and docParam.annotation not in self.NO_ANNOTATIONS:
+            if (
+                codeParam.annotation in self.NO_ANNOTATIONS
+                and docParam.annotation not in self.NO_ANNOTATIONS
+            ):
                 newArg = newArg.replace(annotation=docParam.annotation)
 
             matchedParam.append(newArg)
@@ -135,5 +150,7 @@ class SignatureMerger:
     def _genRemainingCodeSignatures(self):
         """Maybe `docSignatures` is empty, in that case try gen `codeSignatures`."""
         for codeS in self._remainingSig:
-            yield codeS.replace(parameters=self._retParam + list(codeS.parameters.values()))
+            yield codeS.replace(
+                parameters=self._retParam + list(codeS.parameters.values())
+            )
             self._yielded = True

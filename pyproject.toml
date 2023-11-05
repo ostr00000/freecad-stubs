@@ -39,6 +39,10 @@ package-dir = { '' = 'freecad_stubs' }
 [tool.setuptools.package-data]
 '*' = ['**/*.pyi']
 
+
+[tool.black]
+skip-string-normalization = true
+
 [tool.mypy]
 files = './lib'
 warn_unused_configs = true

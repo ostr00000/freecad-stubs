@@ -36,10 +36,11 @@ class AddTypeArguments:
         return self.pythonName
 
     def __post_init__(self):
-        self.cFullType = self.cFullType \
-            .removeprefix('&') \
-            .removesuffix('::type_object()') \
+        self.cFullType = (
+            self.cFullType.removeprefix('&')
+            .removesuffix('::type_object()')
             .removesuffix('::Type')
+        )
 
         self.pythonName = removeQuote(self.pythonName)
 
@@ -60,8 +61,9 @@ class ImportableClassMap(dict[str, str]):
             del self[duplicatedKey]
 
     def isImportable(self, className: str):
-        return (className in self.values()
-                or any(className in duplicatedSet for duplicatedSet in self.dup.values()))
+        return className in self.values() or any(
+            className in duplicatedSet for duplicatedSet in self.dup.values()
+        )
 
     def _filterDuplicatedKeys(self, it: Iterable[tuple[str, str]]):
         seen: dict[str, str] = {}
@@ -74,7 +76,9 @@ class ImportableClassMap(dict[str, str]):
 
             yield key, val
 
-    REG_ADD_TYPE = re.compile(r'Base\s*:\s*:\s*Interpreter\s*\(\s*\)\s*\.\s*addType\s*\(')
+    REG_ADD_TYPE = re.compile(
+        r'Base\s*:\s*:\s*Interpreter\s*\(\s*\)\s*\.\s*addType\s*\('
+    )
 
     def _genTypes(self):
         for cppFile in genCppFiles():
@@ -83,11 +87,12 @@ class ImportableClassMap(dict[str, str]):
                 addTypeList = [
                     c.replace(' ', '').replace('\n', '')
                     for c in generateExpressionUntilChar(
-                        cppContent, match.end(), ',', bracketL='(', bracketR=')')]
+                        cppContent, match.end(), ',', bracketL='(', bracketR=')'
+                    )
+                ]
 
                 addTypeArgs = AddTypeArguments(*addTypeList)
-                yield (addTypeArgs.cTypeWithoutNamespace,
-                       addTypeArgs.fullPythonName)
+                yield (addTypeArgs.cTypeWithoutNamespace, addTypeArgs.fullPythonName)
 
 
 __all__ = ['importableMap']

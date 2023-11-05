@@ -8,11 +8,13 @@ logger = logging.getLogger(__name__)
 
 
 @overload
-def removeQuote(v: str) -> str: ...
+def removeQuote(v: str) -> str:
+    ...
 
 
 @overload
-def removeQuote(*val: str) -> list[str]: ...
+def removeQuote(*val: str) -> list[str]:
+    ...
 
 
 def removeQuote(*val: str):
@@ -23,8 +25,8 @@ def removeQuote(*val: str):
 
 
 _REG_COMMENT_REM = re.compile(
-    r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"',
-    re.DOTALL | re.MULTILINE)
+    r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"', re.DOTALL | re.MULTILINE
+)
 
 
 def _replacer(match):

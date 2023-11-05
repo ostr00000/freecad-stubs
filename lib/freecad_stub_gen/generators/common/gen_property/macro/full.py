@@ -1,5 +1,9 @@
-from freecad_stub_gen.generators.common.gen_property.macro.getter_type import PropertyMacroGetter
-from freecad_stub_gen.generators.common.gen_property.macro.setter_type import PropertyMacroSetter
+from freecad_stub_gen.generators.common.gen_property.macro.getter_type import (
+    PropertyMacroGetter,
+)
+from freecad_stub_gen.generators.common.gen_property.macro.setter_type import (
+    PropertyMacroSetter,
+)
 from freecad_stub_gen.generators.common.gen_property.property_type import PropertyType
 
 

@@ -1,10 +1,19 @@
 import inspect
 from xml.etree import ElementTree as ET
 
-from freecad_stub_gen.generators.common.doc_string import formatDocstring, getDocFromNode
-from freecad_stub_gen.generators.common.names import getModuleName, getClassWithModulesFromNode, \
-    getClassName, getFatherClassWithModules
-from freecad_stub_gen.generators.from_xml.dynamic_property import XmlDynamicPropertyGenerator
+from freecad_stub_gen.generators.common.doc_string import (
+    formatDocstring,
+    getDocFromNode,
+)
+from freecad_stub_gen.generators.common.names import (
+    getModuleName,
+    getClassWithModulesFromNode,
+    getClassName,
+    getFatherClassWithModules,
+)
+from freecad_stub_gen.generators.from_xml.dynamic_property import (
+    XmlDynamicPropertyGenerator,
+)
 from freecad_stub_gen.generators.from_xml.method import XmlMethodGenerator
 from freecad_stub_gen.generators.from_xml.static_property import XmlPropertyGenerator
 from freecad_stub_gen.importable_map import importableMap
@@ -14,9 +23,7 @@ from freecad_stub_gen.cpp_code.converters import toBool
 
 
 class FreecadStubGeneratorFromXML(
-    XmlPropertyGenerator,
-    XmlDynamicPropertyGenerator,
-    XmlMethodGenerator
+    XmlPropertyGenerator, XmlDynamicPropertyGenerator, XmlMethodGenerator
 ):
     """
     Generate class defined in xml file.
@@ -57,12 +64,16 @@ class FreecadStubGeneratorFromXML(
         if specialCaseCode := self.getCodeForSpecialCase(className):
             classStr += indent(specialCaseCode)
 
-        for attributeNode in sorted(self.currentNode.findall('Attribute'), key=self._nodeSort):
+        for attributeNode in sorted(
+            self.currentNode.findall('Attribute'), key=self._nodeSort
+        ):
             classStr += indent(self.getAttributes(attributeNode))
         for dynamicProperty in sorted(self.genDynamicProperties()):
             classStr += indent(dynamicProperty)
 
-        for methodNode in sorted(self.currentNode.findall('Methode'), key=self._nodeSort):
+        for methodNode in sorted(
+            self.currentNode.findall('Methode'), key=self._nodeSort
+        ):
             classStr += indent(self.genMethod(methodNode))
 
         if toBool(self.currentNode.attrib.get('RichCompare', False)):
@@ -88,18 +99,27 @@ class FreecadStubGeneratorFromXML(
     def getCodeForSpecialCase(self, className: str) -> str:
         ret = ''
         if className == 'DocumentObject':
-            ret += self.getProperty('Proxy', 'FreeCADTemplates.ProxyPython',
-                                    'FreeCADTemplates.ProxyPython', readOnly=False)
+            ret += self.getProperty(
+                'Proxy',
+                'FreeCADTemplates.ProxyPython',
+                'FreeCADTemplates.ProxyPython',
+                readOnly=False,
+            )
             self.requiredImports.add('FreeCADTemplates')
 
         elif className == 'ViewProviderDocumentObject':
-            ret += self.getProperty('Proxy', 'FreeCADTemplates.ViewProviderPython',
-                                    'FreeCADTemplates.ViewProviderPython', readOnly=False)
+            ret += self.getProperty(
+                'Proxy',
+                'FreeCADTemplates.ViewProviderPython',
+                'FreeCADTemplates.ViewProviderPython',
+                readOnly=False,
+            )
             self.requiredImports.add('FreeCADTemplates')
 
         elif className == 'GroupExtension':
-            ret += self.getProperty('Group', 'list[DocumentObject]',
-                                    'list[DocumentObject]', readOnly=False)
+            ret += self.getProperty(
+                'Group', 'list[DocumentObject]', 'list[DocumentObject]', readOnly=False
+            )
 
         elif className == 'WorkbenchC':
             ret += workbenchBody + '\n\n'
@@ -107,7 +127,8 @@ class FreecadStubGeneratorFromXML(
         return ret
 
 
-workbenchBody = inspect.cleandoc("""
+workbenchBody = inspect.cleandoc(
+    """
     MenuText: str = ''
     ToolTip: str = ''
     Icon: str = None  # path to the icon
@@ -116,13 +137,14 @@ workbenchBody = inspect.cleandoc("""
         raise NotImplementedError
 
     def Activated(self): ...
-    
+
     def Deactivated(self): ...
 
     def ContextMenu(self, recipient): ...
-    
+
     def reloadActive(self): ...
 
     def GetClassName(self):
         return 'Gui::PythonWorkbench'
-""")
+"""
+)

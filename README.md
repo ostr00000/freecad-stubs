@@ -1,47 +1,57 @@
 # freecad-stubs
+
 [![PyPI version](https://img.shields.io/pypi/v/freecad-stubs)](https://pypi.org/project/freecad-stubs/)
 [![GitHub license](https://img.shields.io/github/license/ostr00000/freecad-stubs)](https://github.com/ostr00000/freecad-stubs/blob/main/LICENSE)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/freecad-stubs)](https://pypi.python.org/pypi/freecad-stubs/)
-
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 Python stubs generated from FreeCAD source code.
 
 ## Install stubs
+
 You can install all stubs for freeCAD packages by running:
+
 ```bash
 python -m pip install freecad-stubs 
 ```
-If you installed this package, 
+
+If you installed this package,
 then you probably develop some FreeCAD components/scripts.
 You should remember to set up your IDE by adding path to the real FreeCAD libraries,
-especially for modules written mainly in python (ex. `Draft`), 
-because this package does not provide stubs for that module :confused: 
+especially for modules written mainly in python (ex. `Draft`),
+because this package does not provide stubs for that module :confused:
 (yet - you may contribute).
 
-Also note that `App` or `Gui` are only aliases available in FreeCAD. 
-To fully use advantage of stubs 
-you should always import a module you are referencing 
+Also note that `App` or `Gui` are only aliases available in FreeCAD.
+To fully use advantage of stubs
+you should always import a module you are referencing
 (ex. `import FreeCADGui as Gui`).
 
 ## Generating stubs manually
+
 Package on pypi always has stubs generated for the newest freecad (master branch).
-If you need older version you may try to install specific version from pypi 
-or manually run a tool from this repository to generate stubs. 
+If you need older version you may try to install specific version from pypi
+or manually run a tool from this repository to generate stubs.
 
 ### Stub source
+
 Stubs are generated based on several available info:
+
 - `*Py.xml` files - mainly docstrings, argument names, properties.
 - corresponding `*PyImp.cpp` file - argument types are extracted from C code.
 - other `*.cpp` files - functions or modules.
 
-Unfortunately not all typing information may be generated. 
-For example some objects are added dynamically. 
-There are also many special cases 
+Unfortunately not all typing information may be generated.
+For example some objects are added dynamically.
+There are also many special cases
 therefore not all object are correctly mapped.
-Moreover, some of C function has errors - invalid types, missing arguments 
-(you can see more these errors if you change logger flag in configuration file `freecad-stubs/lib/freecad_stub_gen/config.py`) 
+Moreover, some of C function has errors - invalid types, missing arguments
+(you can see more these errors if you change logger flag in configuration
+file `freecad-stubs/lib/freecad_stub_gen/config.py`)
 
 ### Stub Generation
+
 1. Clone [freecad repository](https://github.com/FreeCAD/FreeCAD).
     ```shell
     git clone https://github.com/FreeCAD/FreeCAD.git
@@ -53,7 +63,6 @@ Moreover, some of C function has errors - invalid types, missing arguments
     - /src/Gui
     - /src/Main
     - /src/Mod
-
 
 2. Clone this repository
     ```shell
@@ -73,12 +82,12 @@ Moreover, some of C function has errors - invalid types, missing arguments
     ```
    Required python version: `>=3.11`.
 
-
 ### Adding stubs to python path
-At this point stubs must be already generated.
-There are a lot of possible methods. This is only example: 
 
-1. Copy stubs from `TARGET_DIR` to location of your choice. For example:.  
+At this point stubs must be already generated.
+There are a lot of possible methods. This is only example:
+
+1. Copy stubs from `TARGET_DIR` to location of your choice. For example:.
    ```shell
    cp -r ./freecad_stubs "$HOME/.local/lib/python3.9/freecad_stubs" 
    ```
@@ -92,25 +101,28 @@ There are a lot of possible methods. This is only example:
 ### Implementation progress
 
 #### Stub source
+
 - [x] generate class stub (xml files):
-  - [x] property in xml,
-  - [x] dynamic property added in cpp,
-  - [x] method (+ static/class method),
-  - [x] rich comparison (ex. `__eq__` method),
-  - [x] number protocol (ex. `__add__` method),
+    - [x] property in xml,
+    - [x] dynamic property added in cpp,
+    - [x] method (+ static/class method),
+    - [x] rich comparison (ex. `__eq__` method),
+    - [x] number protocol (ex. `__add__` method),
 - [x] generate class stub (cpp files):
-  - [x] dynamically added in `init_type()`,
-  - [ ] qt slots,
-  - [x] qt signals,
+    - [x] dynamically added in `init_type()`,
+    - [ ] qt slots,
+    - [x] qt signals,
 - [x] generate functions stub (cpp files):
-  - [x] declared in `PyMethodDef` array,
-  - [x] dynamically added in module constructor (subclass `Py::ExtensionModule`),
+    - [x] declared in `PyMethodDef` array,
+    - [x] dynamically added in module constructor (subclass `Py::ExtensionModule`),
 
 #### Stub quality
+
 - [x] found class/function/method name,
 - [x] copy docstring (+ generate property docstring),
 - [x] guess argument names from C code or from docstrings,
-- [x] found function/method argument types based on [c-api](https://docs.python.org/3/c-api/arg.html),
+- [x] found function/method argument types based
+  on [c-api](https://docs.python.org/3/c-api/arg.html),
 - [x] argument default values,
 - [x] function/method return type,
 - [x] raised exception in docstrings,

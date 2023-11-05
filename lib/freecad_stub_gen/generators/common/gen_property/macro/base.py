@@ -80,7 +80,9 @@ class PropertyMacroBase:
 
     def _extractAssignment(self, varName: str):
         reg = re.compile(rf'{varName}\s*=(?P<assignVal>[^;]*);')
-        assignments = list(reg.finditer(self.constructorBody, endpos=self.macroCallStartPos))
+        assignments = list(
+            reg.finditer(self.constructorBody, endpos=self.macroCallStartPos)
+        )
         match assignments:
             case [*_prev, m]:
                 assignVal = m.group('assignVal')

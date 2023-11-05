@@ -9,10 +9,13 @@ from typing import Iterable, Iterator, Self, overload
 
 from ordered_set import OrderedSet
 
-from freecad_stub_gen.generators.common.cpp_function import genFuncArgs, \
-    generateExpressionUntilChar
-from freecad_stub_gen.generators.common.return_type_converter.full import \
-    ReturnTypeConverter
+from freecad_stub_gen.generators.common.cpp_function import (
+    genFuncArgs,
+    generateExpressionUntilChar,
+)
+from freecad_stub_gen.generators.common.return_type_converter.full import (
+    ReturnTypeConverter,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -35,7 +38,7 @@ class QtSignal(BlockItem):
             rtc.getExpressionType(c, onlyLiteral=True) for c in self.sigArgCppTypes
         ]
 
-        returnTypeAndName = self.raw[:self.raw.find('(')]
+        returnTypeAndName = self.raw[: self.raw.find('(')]
         self.name = returnTypeAndName.rsplit(' ', maxsplit=1)[-1]
 
     def getStrRepr(self, requiredImports: OrderedSet[str]):
@@ -47,12 +50,13 @@ class QtSignal(BlockItem):
         protocolNames = []
         for argNum in range(len(self.sigArgPythonTypes) + 1):
             protArgs = ['self']
-            protArgs += [f'a{i}: {t}' for i, t in enumerate(self.sigArgPythonTypes[:argNum])]
+            protArgs += [
+                f'a{i}: {t}' for i, t in enumerate(self.sigArgPythonTypes[:argNum])
+            ]
             if len(protArgs) > 1:
                 protArgs.append('/')
 
-            pn = (f'__{self.cppBlock.cppClass.name}_'
-                  f'{self.name}_{argNum}')
+            pn = f'__{self.cppBlock.cppClass.name}_' f'{self.name}_{argNum}'
             protocolNames.append(pn)
 
             requiredImports.add(
@@ -60,7 +64,8 @@ class QtSignal(BlockItem):
                 f'    def __call__({", ".join(protArgs)}): ...'
             )
 
-        return f'{self.name}: typing.ClassVar[qt.pyqtSignal[{" | ".join(protocolNames)}]]'
+        slots = " | ".join(protocolNames)
+        return f'{self.name}: typing.ClassVar[qt.pyqtSignal[{slots}]]'
 
 
 class ClassVarContainer[T]:
@@ -112,8 +117,12 @@ class CppBlock[BI]:
 
     cppClass = LateInit['CppClass']()
 
-    def __init__(self, firstMatch: re.Match[str], secondMatch: re.Match[str] | None,
-                 classBody: str):
+    def __init__(
+        self,
+        firstMatch: re.Match[str],
+        secondMatch: re.Match[str] | None,
+        classBody: str,
+    ):
         self._firstMatch = firstMatch
         self._secondMatch = secondMatch
         self._classBody = classBody
@@ -129,8 +138,8 @@ class CppBlock[BI]:
 
     def __iter__(self) -> Iterator[BI]:
         for e in generateExpressionUntilChar(
-                self.body, 0,
-                splitChar=';', bracketL='{', bracketR='}'):
+            self.body, 0, splitChar=';', bracketL='{', bracketR='}'
+        ):
             if exp := e.strip():
                 yield self.ITEM_TYPE(exp, self)
 
@@ -157,7 +166,8 @@ class CppClass:
         block.cppClass = self
 
 
-REG_BLOCK = re.compile(r"""    
+REG_BLOCK = re.compile(
+    r"""
 (
     ((public|protected|private)\s+)?    # optional QT access modifier
     (?P<qt_mod>Q_SLOTS|Q_SIGNALS)       # QT macro
@@ -165,7 +175,9 @@ REG_BLOCK = re.compile(r"""
 )|(
     (public|protected|private)          # c++ modifier
     \s*:                                # must ends on `:`
-)""", re.VERBOSE)
+)""",
+    re.VERBOSE,
+)
 
 
 def pairwiseLongest[T, R](it: Iterable[T], fill: R = None) -> Iterator[tuple[T, T | R]]:
@@ -173,18 +185,24 @@ def pairwiseLongest[T, R](it: Iterable[T], fill: R = None) -> Iterator[tuple[T, 
 
 
 def parseClass(className: str, fileContent: str) -> CppClass:
-    classBodyReg = re.compile(rf"""
+    classBodyReg = re.compile(
+        rf"""
 class\s+            # keyword `class`
 (?:\w+\s+)?         # there may be optional macro: GuiExport|AppExport
 {className}\s*      # original class name
 [^{{]*              # optional inheritance
 {{                  # class body block
-    """, re.VERBOSE)
+    """,
+        re.VERBOSE,
+    )
     if not (match := re.search(classBodyReg, fileContent)):
         raise ValueError(f"Cannot find class {className}")
 
-    classBody = next(generateExpressionUntilChar(
-        fileContent, match.end(), splitChar='NONE', bracketL='{', bracketR='}'))
+    classBody = next(
+        generateExpressionUntilChar(
+            fileContent, match.end(), splitChar='NONE', bracketL='{', bracketR='}'
+        )
+    )
 
     cppClass = CppClass(className)
 

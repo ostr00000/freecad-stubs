@@ -17,12 +17,15 @@ class StringType(Protocol):
 class MethodGenerator(PythonApiGenerator, ABC):
     _NEW_LINE = '\n'  # future change (3.12) PEP 701 - inline
 
-    def convertMethodToStr(self, methodName: str,
-                           strSignatures: Sequence[StringType | str],
-                           docs: str = '',
-                           isClassic=False,
-                           isStatic=False,
-                           functionSpacing=1) -> str:
+    def convertMethodToStr(
+        self,
+        methodName: str,
+        strSignatures: Sequence[StringType | str],
+        docs: str = '',
+        isClassic=False,
+        isStatic=False,
+        functionSpacing=1,
+    ) -> str:
         ret = ''
         if not strSignatures:
             return ret
@@ -63,7 +66,8 @@ class MethodGenerator(PythonApiGenerator, ABC):
             elif 'Gui' in self.baseGenFilePath.parts:
                 ret = 'FreeCADGui.Document'
             else:
-                logger.warning(f'Unexpected function type in file {self.baseGenFilePath}')
+                msg = f'Unexpected function type in file {self.baseGenFilePath}'
+                logger.warning(msg)
         elif methodName == 'getParentGroup':
             ret = 'FreeCAD.DocumentObjectGroup | None'
         return ret

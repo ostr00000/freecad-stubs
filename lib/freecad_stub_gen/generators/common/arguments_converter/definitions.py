@@ -34,10 +34,13 @@ typing.Type;-;PyClass;this is special case for python2
 
 C_TYPE_TO_PYTHON_TYPE: dict[str, str] = {
     (pyRustC := line.split(';'))[2]: pyRustC[0]
-    for line in _TYPES_TABLE_STR.splitlines() if line}
+    for line in _TYPES_TABLE_STR.splitlines()
+    if line
+}
 C_TYPE_TO_PYTHON_TYPE = {
     k.removeprefix('&') + '_Type': v.split('[')[0]
-    for k, v in C_TYPE_TO_PYTHON_TYPE.items()}
+    for k, v in C_TYPE_TO_PYTHON_TYPE.items()
+}
 # based on https://docs.python.org/3/c-api/arg.html
 PARSE_TUPLE_STR = """
 s (str) [const char *]
@@ -107,7 +110,9 @@ def _initParseMaps():
         size = len(spVal) if spVal != [''] else 0
         locParseSizeMap[key] = size
 
-        autoType = value.removeprefix('(').split(' ')[0].removesuffix(')').removesuffix(',')
+        autoType = (
+            value.removeprefix('(').split(' ')[0].removesuffix(')').removesuffix(',')
+        )
         realType = autoGenTypeToRealType.get(autoType, autoType)
         locParseTypeMap[key] = realType
 

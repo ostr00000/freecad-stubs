@@ -7,11 +7,17 @@ from pathlib import Path
 import more_itertools
 
 from freecad_stub_gen.generators.common.annotation_parameter import SelfSignature
-from freecad_stub_gen.generators.common.arguments_converter.function_conv import FunctionConv
-from freecad_stub_gen.generators.common.arguments_converter.types_converter import TypesConverter
+from freecad_stub_gen.generators.common.arguments_converter.function_conv import (
+    FunctionConv,
+)
+from freecad_stub_gen.generators.common.arguments_converter.types_converter import (
+    TypesConverter,
+)
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall
 from freecad_stub_gen.generators.common.gen_base import BaseGenerator
-from freecad_stub_gen.generators.common.return_type_converter.full import ReturnTypeConverter
+from freecad_stub_gen.generators.common.return_type_converter.full import (
+    ReturnTypeConverter,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +34,9 @@ class PythonApiGenerator(BaseGenerator, ABC):
         self._functionBody = ''
         self._argNumStart = -1
 
-    def generateSignaturesFromCode(self, cFunctionName: str, cClassName: str, *, argNumStart=1):
+    def generateSignaturesFromCode(
+        self, cFunctionName: str, cClassName: str, *, argNumStart=1
+    ):
         """
         Generate arguments for `cFunctionName` in `cClassName`.
         There may be more than one possible signature.
@@ -71,30 +79,53 @@ class PythonApiGenerator(BaseGenerator, ABC):
         return None
 
     def _findParseTuple(self):
-        yield from self._baseParse(pattern=self.REG_TUP, formatStrPosition=1,
-                                   cArgNum=2, onlyPositional=True)
+        yield from self._baseParse(
+            pattern=self.REG_TUP, formatStrPosition=1, cArgNum=2, onlyPositional=True
+        )
 
     def _findParseTupleAndKeywords(self):
-        yield from self._baseParse(pattern=self.REG_TUP_KW, formatStrPosition=2,
-                                   cArgNum=4, onlyPositional=False)
+        yield from self._baseParse(
+            pattern=self.REG_TUP_KW,
+            formatStrPosition=2,
+            cArgNum=4,
+            onlyPositional=False,
+        )
 
     def _getReturnSignature(self):
         rtc = ReturnTypeConverter(
-            self._functionBody, self.requiredImports,
-            self.classNameWithModules, self._cFunctionName)
+            self._functionBody,
+            self.requiredImports,
+            self.classNameWithModules,
+            self._cFunctionName,
+        )
         rt = rtc.getReturnType()
         ex = rtc.getExceptionsFromCode()
-        return SelfSignature(unknown_parameters=True, return_annotation=rt, exceptions=ex)
+        return SelfSignature(
+            unknown_parameters=True, return_annotation=rt, exceptions=ex
+        )
 
-    def _baseParse(self, pattern: re.Pattern, formatStrPosition: int,
-                   cArgNum: int, onlyPositional: bool):
+    def _baseParse(
+        self,
+        pattern: re.Pattern,
+        formatStrPosition: int,
+        cArgNum: int,
+        onlyPositional: bool,
+    ):
         for match in re.finditer(pattern, self._functionBody):
             funStart = match.start()
             fc = FunctionConv(
-                self.baseGenFilePath, self._cFunctionName, self._functionBody,
-                funStart, formatStrPosition, onlyPositional, self._argNumStart)
+                self.baseGenFilePath,
+                self._cFunctionName,
+                self._functionBody,
+                funStart,
+                formatStrPosition,
+                onlyPositional,
+                self._argNumStart,
+            )
             tc = TypesConverter(fc, self.requiredImports, cArgNum=cArgNum)
-            assert cArgNum <= len(tc.fun.argumentStrings), "Invalid format - expected bigger size"
+            assert cArgNum <= len(
+                tc.fun.argumentStrings
+            ), "Invalid format - expected bigger size"
 
             params = list(tc.safeConvertFormatToTypes())
             yield SelfSignature(params)

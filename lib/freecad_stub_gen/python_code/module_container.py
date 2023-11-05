@@ -119,7 +119,9 @@ class Module:
         locImportText = '\n'.join(sorted(localImports))
         typesText = '\n'.join(types)
 
-        res = '\n\n'.join(filter(None, (sysImportText, libImportText, locImportText, typesText)))
+        res = '\n\n'.join(
+            filter(None, (sysImportText, libImportText, locImportText, typesText))
+        )
         if res:
             res += '\n\n\n'
         return res

@@ -12,7 +12,7 @@ class BaseGenerator:
     def safeCreate(cls, *args, **kwargs):
         try:
             return cls(*args, **kwargs)
-        except(FileNotFoundError, ParseError):
+        except (FileNotFoundError, ParseError):
             return None
 
     def __init__(self, filePath: Path, sourceDir: Path):

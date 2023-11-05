@@ -5,8 +5,11 @@ from ordered_set import OrderedSet
 from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.file_functions import genCppFiles, readContent
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
-from freecad_stub_gen.generators.common.names import getClassName, getModuleName, \
-    getNamespaceWithClass
+from freecad_stub_gen.generators.common.names import (
+    getClassName,
+    getModuleName,
+    getNamespaceWithClass,
+)
 from freecad_stub_gen.module_namespace import moduleNamespace
 from freecad_stub_gen.python_code import indent
 
@@ -18,7 +21,9 @@ class ExceptionData:
         self.pyModule = moduleNamespace.convertNamespaceToModule(self.pyModuleRaw)
         self.pyClass = getClassName(excModuleWithClass)
 
-        self.baseCppNamespace, self.baseCppClass = getNamespaceWithClass(newExceptionArgs[1])
+        self.baseCppNamespace, self.baseCppClass = getNamespaceWithClass(
+            newExceptionArgs[1]
+        )
         if self.baseCppNamespace is None:
             if self.baseCppClass.startswith('PyExc'):
                 self.baseCppNamespace = '__python__'
@@ -39,18 +44,23 @@ class ExceptionData:
         if self.baseCppNamespace == '__python__':
             baseClass = self.baseCppClass.removeprefix('PyExc_')
         else:
-            ed = exceptionContainer.getExceptionData(self.baseCppClass, self.baseCppNamespace)
+            ed = exceptionContainer.getExceptionData(
+                self.baseCppClass, self.baseCppNamespace
+            )
             self.requiredImports.add(ed.pyModule)
             baseClass = f'{ed.pyModule}.{ed.pyClass}'
 
         return f'class {self.pyClass}({baseClass}):\n{indent("pass")}\n'
 
     def __repr__(self):
-        return f'{self.pyModuleRaw}.{self.pyClass} [{self.cppNamespace}.{self.cppClass}]'
+        return (
+            f'{self.pyModuleRaw}.{self.pyClass} [{self.cppNamespace}.{self.cppClass}]'
+        )
 
 
 class ExceptionContainer:
-    REG_NEW_EXCEPTION = re.compile(r"""
+    REG_NEW_EXCEPTION = re.compile(
+        r"""
     (?P<name>
         (\w+)                   # variable name
         (\s*::\s*\w+)?          # may be with namespace
@@ -59,7 +69,9 @@ class ExceptionContainer:
     PyErr_NewException\(
     (?P<funArg>[^)]*)       # function arguments
     \);
-    """, re.VERBOSE)
+    """,
+        re.VERBOSE,
+    )
 
     # OCCError = PyErr_NewException("Part.OCCError", Base::PyExc_FC_GeneralError, nullptr);
 
@@ -85,8 +97,12 @@ class ExceptionContainer:
             seen.add(name)
 
             fc = match.group('funArg')
-            funArgs = [e.strip() for e in generateExpressionUntilChar(
-                fc, 0, ',', bracketL='(', bracketR=')')]
+            funArgs = [
+                e.strip()
+                for e in generateExpressionUntilChar(
+                    fc, 0, ',', bracketL='(', bracketR=')'
+                )
+            ]
 
             ed = ExceptionData(name, funArgs)
             yield ed

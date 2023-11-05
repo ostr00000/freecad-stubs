@@ -8,7 +8,8 @@ from freecad_stub_gen.python_code.module_container import Module
 class ExceptionGenerator(PythonApiGenerator):
     def getStub(self, mod: Module, moduleName: str):
         hasException, it = more_itertools.spy(
-            exceptionContainer.findExceptions(self.impContent))
+            exceptionContainer.findExceptions(self.impContent)
+        )
         if not hasException:
             return
 

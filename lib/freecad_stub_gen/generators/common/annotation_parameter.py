@@ -15,7 +15,7 @@ class RawRepr:
 
     def __new__(cls, *values):
         match values:
-            case () | (Parameter.empty | 'typing.Any', ):
+            case () | (Parameter.empty | 'typing.Any',):
                 return Parameter.empty
         return super().__new__(cls)
 
@@ -58,7 +58,9 @@ class AnnotationParam(Parameter):
     ARGS_PARAM = Parameter('args', Parameter.VAR_POSITIONAL)
 
     @classmethod
-    def getFirstParam(cls, isStaticMethod: bool, isClassMethod: bool) -> Parameter | None:
+    def getFirstParam(
+        cls, isStaticMethod: bool, isClassMethod: bool
+    ) -> Parameter | None:
         if isStaticMethod:
             return None
 
@@ -74,13 +76,17 @@ ReplaceParameters_t: TypeAlias = Sequence[Parameter] | type[_void] | None
 
 class SelfSignature(Signature):
     """Skip separator if there is only self parameter"""
+
     __slots__ = ('exceptions', 'unknown_parameters')
 
-    def __init__(self, parameters: InitParameters_t = None, *,
-                 unknown_parameters=False,
-                 return_annotation=Signature.empty,
-                 exceptions: OrderedSet[str] | None = None,
-                 ):
+    def __init__(
+        self,
+        parameters: InitParameters_t = None,
+        *,
+        unknown_parameters=False,
+        return_annotation=Signature.empty,
+        exceptions: OrderedSet[str] | None = None,
+    ):
         parameters = self._convertFirstParam(parameters)
         try:
             super().__init__(parameters, return_annotation=return_annotation)
@@ -98,8 +104,11 @@ class SelfSignature(Signature):
         match parameters:
             case [Parameter(name='self', kind=Parameter.POSITIONAL_ONLY) as selfParam]:
                 pass
-            case [Parameter(name='self', kind=Parameter.POSITIONAL_ONLY) as selfParam,
-                  Parameter(kind=Parameter.POSITIONAL_OR_KEYWORD), *_]:
+            case [
+                Parameter(name='self', kind=Parameter.POSITIONAL_ONLY) as selfParam,
+                Parameter(kind=Parameter.POSITIONAL_OR_KEYWORD),
+                *_,
+            ]:
                 pass
             case _:
                 return parameters
@@ -121,11 +130,14 @@ class SelfSignature(Signature):
 
     __void = _void  # only to access in pattern matching
 
-    def replace(self, *, parameters: ReplaceParameters_t | Mapping[str, Parameter] = _void,
-                return_annotation=_void,
-                exceptions=_void,
-                unknown_parameters=_void,
-                ) -> SelfSignature:
+    def replace(
+        self,
+        *,
+        parameters: ReplaceParameters_t | Mapping[str, Parameter] = _void,
+        return_annotation=_void,
+        exceptions=_void,
+        unknown_parameters=_void,
+    ) -> SelfSignature:
         initParameters: InitParameters_t
         match parameters:
             case self.__void:

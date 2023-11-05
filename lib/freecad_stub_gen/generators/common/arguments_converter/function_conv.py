@@ -3,16 +3,28 @@ import re
 from pathlib import Path
 
 from freecad_stub_gen.cpp_code.converters import removeQuote
-from freecad_stub_gen.generators.common.arguments_converter.definitions import DEFAULT_ARG_NAME
-from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
-    generateExpressionUntilChar
+from freecad_stub_gen.generators.common.arguments_converter.definitions import (
+    DEFAULT_ARG_NAME,
+)
+from freecad_stub_gen.generators.common.cpp_function import (
+    findFunctionCall,
+    generateExpressionUntilChar,
+)
 
 logger = logging.getLogger(__name__)
 
 
 class FunctionConv:
-    def __init__(self, xmlPath: Path, functionName: str, body: str,
-                 funStart: int, formatStrPosition: int, onlyPositional: bool, argNumStart: int):
+    def __init__(
+        self,
+        xmlPath: Path,
+        functionName: str,
+        body: str,
+        funStart: int,
+        formatStrPosition: int,
+        onlyPositional: bool,
+        argNumStart: int,
+    ):
         self.xmlPath = xmlPath
         self.functionName = functionName
 
@@ -23,7 +35,9 @@ class FunctionConv:
         self.onlyPositional = onlyPositional
         self.argNumStart = argNumStart
 
-        self.funCall = findFunctionCall(self._body, self._funStart, bracketL='(', bracketR=')')
+        self.funCall = findFunctionCall(
+            self._body, self._funStart, bracketL='(', bracketR=')'
+        )
         self.argumentStrings = self._getArgumentString()
         self._removeMacros()
         self.kwargList = self._getKwargList()
@@ -32,13 +46,18 @@ class FunctionConv:
 
     def _getArgumentString(self) -> list[str]:
         sub = re.sub(self.REG_REMOVE_WHITESPACES, '', self.funCall)  # remove whitespace
-        argStr = [c.removeprefix('&').strip()
-                  for c in generateExpressionUntilChar(sub, sub.find('(') + 1, ',')]
-        argStr = [a[1:-1] if a.startswith('(') and a.endswith(')') else a for a in argStr]
+        argStr = [
+            c.removeprefix('&').strip()
+            for c in generateExpressionUntilChar(sub, sub.find('(') + 1, ',')
+        ]
+        argStr = [
+            a[1:-1] if a.startswith('(') and a.endswith(')') else a for a in argStr
+        ]
         return argStr
 
     # noinspection RegExpSuspiciousBackref
-    REG_STRING = re.compile(r"""
+    REG_STRING = re.compile(
+        r"""
     (["'])          # start with quotation mark as group 1,
     (?=             # do not consume matched characters - we match it after we are sure about it,
       (?P<text>     # save matched chars as `text`,
@@ -48,7 +67,9 @@ class FunctionConv:
       )
     )
     (?P=text)       # then find again a content of group named 'text'
-        """, re.VERBOSE)
+        """,
+        re.VERBOSE,
+    )
     _FORBIDDEN_MACROS = ['PARAM_REF', 'PARAM_FARG', 'AREA_PARAMS_OPCODE']
 
     def _removeMacros(self):
@@ -61,8 +82,10 @@ class FunctionConv:
         if 'PARAM_REF(' in self.funCall:
             varArg = slice(self.formatStrPosition + 1, None)
             self.argumentStrings[varArg] = [
-                argS for argS in self.argumentStrings[varArg]
-                if all(fm not in argS for fm in self._FORBIDDEN_MACROS)]
+                argS
+                for argS in self.argumentStrings[varArg]
+                if all(fm not in argS for fm in self._FORBIDDEN_MACROS)
+            ]
 
     def _getKwargList(self) -> list[str]:
         if self.onlyPositional:
@@ -71,7 +94,8 @@ class FunctionConv:
         kwargsArgumentName = self.argumentStrings[self.formatStrPosition + 1]
         matches: list[str] = re.findall(
             rf'{kwargsArgumentName}\s*\[\s*]\s*=\s*{{((?:.|\s)*?)}}',
-            self.varDeclarationCode)
+            self.varDeclarationCode,
+        )
         if not matches:
             return []
 
@@ -80,11 +104,12 @@ class FunctionConv:
         return [
             kw[1:-1]
             for kw in generateExpressionUntilChar(kwargsStr, 0, ',')
-            if kw.startswith('"') and kw.endswith('"')]
+            if kw.startswith('"') and kw.endswith('"')
+        ]
 
     @property
     def varDeclarationCode(self):
-        return self._body[:self._funStart]
+        return self._body[: self._funStart]
 
     @property
     def formatStr(self):

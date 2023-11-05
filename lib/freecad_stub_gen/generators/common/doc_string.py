@@ -6,11 +6,18 @@ from itertools import count
 from typing import Generator
 from xml.etree import ElementTree as ET
 
-from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam, RawRepr, \
-    SelfSignature
-from freecad_stub_gen.generators.common.arguments_converter.definitions import DEFAULT_ARG_NAME
-from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
-    generateExpressionUntilChar
+from freecad_stub_gen.generators.common.annotation_parameter import (
+    AnnotationParam,
+    RawRepr,
+    SelfSignature,
+)
+from freecad_stub_gen.generators.common.arguments_converter.definitions import (
+    DEFAULT_ARG_NAME,
+)
+from freecad_stub_gen.generators.common.cpp_function import (
+    findFunctionCall,
+    generateExpressionUntilChar,
+)
 from freecad_stub_gen.cpp_code.converters import validatePythonValue
 
 
@@ -71,7 +78,11 @@ def _signatureGen(funDocString: str, argNumStart: int) -> Iterator[Parameter]:
 
         uniqueName, _argNum = uniqueNameGen.send(argName)
         yield AnnotationParam(
-            uniqueName, paramType, default=RawRepr(defValue), annotation=RawRepr(annotation))
+            uniqueName,
+            paramType,
+            default=RawRepr(defValue),
+            annotation=RawRepr(annotation),
+        )
 
 
 REG_ALL_EXCEPT_WORLD = re.compile(r'\W+')

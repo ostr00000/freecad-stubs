@@ -15,7 +15,8 @@ def getFatherClassWithModules(currentNode: ET.Element) -> str:
     fatherName: str = currentNode.attrib['Father']
 
     if fatherName == 'PyObjectBase':
-        return f'{moduleNamespace.convertNamespaceToModule(fatherNamespace)}.{fatherName}'
+        mod = moduleNamespace.convertNamespaceToModule(fatherNamespace)
+        return f'{mod}.{fatherName}'
 
     return getClassWithModulesFromStem(fatherName, fatherNamespace)
 
@@ -26,15 +27,18 @@ def getClassWithModulesFromStem(stem: str, namespace: str) -> str:
     except ValueError:
         # if there is no xml, use this `match`
         match namespace, stem:
-
             # Gui + without Py
             case '', 'SelectionFilterPy':
                 stem = stem.removesuffix('Py')
                 namespace = 'Gui'
 
             # Gui + with Py
-            case _, ('MDIViewPy' | 'View3DInventorPy'
-                     | 'View3DInventorViewerPy' | 'AbstractSplitViewPy'):
+            case _, (
+                'MDIViewPy'
+                | 'View3DInventorPy'
+                | 'View3DInventorViewerPy'
+                | 'AbstractSplitViewPy'
+            ):
                 namespace = 'Gui'
 
             # we must use a base class
@@ -94,15 +98,17 @@ def getClassNameFromNode(currentNode: ET.Element) -> str:
 
 
 def getClassName(classWithModules: str) -> str:
-    return classWithModules[classWithModules.rfind('.') + 1:]
+    return classWithModules[classWithModules.rfind('.') + 1 :]
 
 
 @typing.overload
-def getModuleName(classWithModules: str, required: typing.Literal[True]) -> str: ...
+def getModuleName(classWithModules: str, required: typing.Literal[True]) -> str:
+    ...
 
 
 @typing.overload
-def getModuleName(classWithModules: str, required=False) -> str | None: ...
+def getModuleName(classWithModules: str, required=False) -> str | None:
+    ...
 
 
 def getModuleName(classWithModules: str, required=False) -> str | None:
@@ -115,7 +121,9 @@ def getModuleName(classWithModules: str, required=False) -> str | None:
     raise ValueError(f"Cannot find module for {classWithModules}")
 
 
-def useAliasedModule(classWithModules: str, requiredImports: OrderedSet[str] | None = None) -> str:
+def useAliasedModule(
+    classWithModules: str, requiredImports: OrderedSet[str] | None = None
+) -> str:
     mod = getModuleName(classWithModules)
     if mod is None:
         return classWithModules

@@ -4,10 +4,15 @@ from collections.abc import Iterable
 
 from more_itertools import islice_extended
 
-from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
-    generateExpressionUntilChar
-from freecad_stub_gen.generators.from_cpp.base import Method, PyMethodDef, \
-    BaseGeneratorFromCpp
+from freecad_stub_gen.generators.common.cpp_function import (
+    findFunctionCall,
+    generateExpressionUntilChar,
+)
+from freecad_stub_gen.generators.from_cpp.base import (
+    Method,
+    PyMethodDef,
+    BaseGeneratorFromCpp,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -29,11 +34,22 @@ class FreecadStubGeneratorFromCppFunctions(BaseGeneratorFromCpp):
             arrayStrStartPos = arrayStr.find('{') + 1
 
             # skip the last one element - it is sentinel to skip processing
-            for arrayElemText in islice_extended(generateExpressionUntilChar(
-                    arrayStr, arrayStrStartPos, ',', bracketL='{', bracketR='}'), -1):
+            for arrayElemText in islice_extended(
+                generateExpressionUntilChar(
+                    arrayStr, arrayStrStartPos, ',', bracketL='{', bracketR='}'
+                ),
+                -1,
+            ):
                 arrayElemStartPos = arrayElemText.find('{') + 1
-                method = PyMethodDef(list(
-                    generateExpressionUntilChar(
-                        arrayElemText, arrayElemStartPos,
-                        splitChar=',', bracketL='{', bracketR='}')))
+                method = PyMethodDef(
+                    list(
+                        generateExpressionUntilChar(
+                            arrayElemText,
+                            arrayElemStartPos,
+                            splitChar=',',
+                            bracketL='{',
+                            bracketR='}',
+                        )
+                    )
+                )
                 yield from self._genMethodWithArgs(method, argNumStart=0)

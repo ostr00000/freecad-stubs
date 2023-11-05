@@ -28,8 +28,7 @@ class FreecadStubGeneratorFromCppModule(BaseGeneratorFromCpp):
                 curModName = moduleName if '.' in moduleName else self._modName
                 curModName = moduleNamespace.convertNamespaceToModule(curModName)
 
-                mod[curModName].update(Module(
-                    header + result, self.requiredImports))
+                mod[curModName].update(Module(header + result, self.requiredImports))
                 self.requiredImports = OrderedSet[str]()
 
     def _genStub(self, moduleName: str) -> Iterable[str]:

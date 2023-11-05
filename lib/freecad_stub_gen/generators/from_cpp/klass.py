@@ -7,8 +7,13 @@ from freecad_stub_gen.cpp_code.block import QtSignalBlock, parseClass
 from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall
 from freecad_stub_gen.generators.common.doc_string import formatDocstring
-from freecad_stub_gen.generators.common.names import getClassWithModulesFromPointer, getModuleName
-from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import StrWrapper
+from freecad_stub_gen.generators.common.names import (
+    getClassWithModulesFromPointer,
+    getModuleName,
+)
+from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import (
+    StrWrapper,
+)
 from freecad_stub_gen.generators.from_cpp.base import BaseGeneratorFromCpp
 from freecad_stub_gen.importable_map import importableMap
 from freecad_stub_gen.file_functions import readContent
@@ -19,6 +24,7 @@ logger = logging.getLogger(__name__)
 
 class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
     """Generate class from cpp code with methods."""
+
     REG_INIT_TYPE = re.compile(r'::init_type\([^{;]*{')
     REG_CLASS_NAME = re.compile(r'behaviors\(\)\.name\(\s*"([\w.]+)"\s*\);')
     REG_CLASS_DOC = re.compile(r'behaviors\(\).doc\("((?:[^"\\]|\\.|"\s*")+)"\);')
@@ -36,9 +42,11 @@ class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
                 continue  # it is a template
 
             gen = self._findFunctionCallsGen(funcCall)
-            result = ''.join(chain(
-                self._genQtSignalAndSlots(className),
-                self._genAllMethods(gen, firstParam=AnnotationParam.SELF_PARAM))
+            result = ''.join(
+                chain(
+                    self._genQtSignalAndSlots(className),
+                    self._genAllMethods(gen, firstParam=AnnotationParam.SELF_PARAM),
+                )
             )
             if not result:
                 result = 'pass'
@@ -77,12 +85,15 @@ class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
         if found:
             yield '\n'
 
-    REG_BASE_CLASS_INHERITANCE = re.compile(r"""
+    REG_BASE_CLASS_INHERITANCE = re.compile(
+        r"""
 (?:public|protected|private)\s+     # access modifier
 (?P<baseClass>.+?)\s*               # there may be template class with many parameters
 (?:{|                               # either end of expression
 ,\s*(?:public|protected|private)    # or more base classes
-)""", re.VERBOSE)
+)""",
+        re.VERBOSE,
+    )
 
     def _getBaseClasses(self, className: str) -> str:
         if not className.endswith('Py'):
@@ -92,18 +103,25 @@ class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
         if not (twinHeaderContent := self._getTwinHeaderContent()):
             return ''
 
-        if not (match := re.search(rf"""
+        if not (
+            match := re.search(
+                rf"""
 class\s+            # keyword `class`
 (?:\w+\s+)?         # there may be optional macro: GuiExport|AppExport
 {className}\s*:\s*  # original class name
 (?P<inh>[^{{]*      # all inherited classes until {{
 {{)                 # terminating char {{
-""", twinHeaderContent, re.VERBOSE)):
+""",
+                twinHeaderContent,
+                re.VERBOSE,
+            )
+        ):
             return ''  # there is no inheritance
 
         baseClasses = []
         for baseClassMatch in re.finditer(
-                self.REG_BASE_CLASS_INHERITANCE, match.group('inh')):
+            self.REG_BASE_CLASS_INHERITANCE, match.group('inh')
+        ):
             baseClass = baseClassMatch.group('baseClass').strip()
             if pythonClass := self._getPythonClass(baseClass):
                 baseClasses.append(pythonClass)

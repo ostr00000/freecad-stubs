@@ -7,9 +7,14 @@ from functools import cached_property, lru_cache
 from inspect import Parameter
 from pathlib import Path
 
-from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam, SelfSignature
-from freecad_stub_gen.generators.common.doc_string import generateSignaturesFromDocstring, \
-    getDocFromNode
+from freecad_stub_gen.generators.common.annotation_parameter import (
+    AnnotationParam,
+    SelfSignature,
+)
+from freecad_stub_gen.generators.common.doc_string import (
+    generateSignaturesFromDocstring,
+    getDocFromNode,
+)
 from freecad_stub_gen.generators.common.gen_method import MethodGenerator
 from freecad_stub_gen.generators.common.names import getClassNameFromNode
 from freecad_stub_gen.generators.common.signature_merger import SignatureMerger
@@ -37,7 +42,9 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         # Better check `PyMake` - it is possible to return something different from `nullptr`
 
         with self.newImportContext():
-            makeSignatures = list(self.generateSignaturesFromCode('PyMake', cClassName=className))
+            makeSignatures = list(
+                self.generateSignaturesFromCode('PyMake', cClassName=className)
+            )
 
         if not makeSignatures:
             # Cannot find `PyMake` signature, therefore we also do not find `PyInit`.
@@ -48,15 +55,22 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
             # otherwise it means that the developer do not want to call `__init__`.
             return ''
 
-        return self.genMethod(self.currentNode, cFunName='PyInit',
-                              cClassName=className, pythonFunName='__init__',
-                              docsFunName=className)
+        return self.genMethod(
+            self.currentNode,
+            cFunName='PyInit',
+            cClassName=className,
+            pythonFunName='__init__',
+            docsFunName=className,
+        )
 
-    def genMethod(self, node: ET.Element,
-                  cFunName: str | None = None,
-                  cClassName: str = '',
-                  pythonFunName: str | None = None,
-                  docsFunName: str | None = None) -> str:
+    def genMethod(
+        self,
+        node: ET.Element,
+        cFunName: str | None = None,
+        cClassName: str = '',
+        pythonFunName: str | None = None,
+        docsFunName: str | None = None,
+    ) -> str:
         """Generate stub for method specified in arguments."""
         cFunName = cFunName or node.attrib['Name']
         pythonFunName = pythonFunName or node.attrib['Name']
@@ -66,8 +80,9 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         isClassic = toBool(node.attrib.get('Class', False))
         firstParam = AnnotationParam.getFirstParam(isStatic, isClassic)
 
-        allSignatures = list(self._signatureArgGen(
-            cFunName, cClassName, docsFunName, node, firstParam))
+        allSignatures = list(
+            self._signatureArgGen(cFunName, cClassName, docsFunName, node, firstParam)
+        )
         uniqueSignatures = dict.fromkeys(map(str, allSignatures))
         signatures = list(uniqueSignatures.keys())
 
@@ -75,10 +90,17 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         docs += SelfSignature.getExceptionsDocs(allSignatures)
 
         return self.convertMethodToStr(
-            pythonFunName, signatures, docs, isClassic, isStatic)
+            pythonFunName, signatures, docs, isClassic, isStatic
+        )
 
-    def _signatureArgGen(self, cFunName: str, cClassName: str, docsFunName: str, node: ET.Element,
-                         firstParam: Parameter | None = None) -> Iterator[SelfSignature]:
+    def _signatureArgGen(
+        self,
+        cFunName: str,
+        cClassName: str,
+        docsFunName: str,
+        node: ET.Element,
+        firstParam: Parameter | None = None,
+    ) -> Iterator[SelfSignature]:
         parameters = []
         if firstParam:
             parameters.append(firstParam)
@@ -87,17 +109,26 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
             yield SelfSignature(parameters)
             return
 
-        codeSignatures = list(self.generateSignaturesFromCode(
-            cFunName, cClassName=cClassName, argNumStart=len(parameters)))
-        docSignatures = list(self._generateSignaturesFromDocString(
-            docsFunName, node, argNumStart=len(parameters)))
+        codeSignatures = list(
+            self.generateSignaturesFromCode(
+                cFunName, cClassName=cClassName, argNumStart=len(parameters)
+            )
+        )
+        docSignatures = list(
+            self._generateSignaturesFromDocString(
+                docsFunName, node, argNumStart=len(parameters)
+            )
+        )
 
-        sigMerger = SignatureMerger(codeSignatures, docSignatures, firstParam, cFunName=cFunName)
+        sigMerger = SignatureMerger(
+            codeSignatures, docSignatures, firstParam, cFunName=cFunName
+        )
         yield from sigMerger.genMergedCodeAndDocSignatures()
 
     @classmethod
     def _generateSignaturesFromDocString(
-            cls, name: str, node: ET.Element, argNumStart: int) -> Iterator[SelfSignature]:
+        cls, name: str, node: ET.Element, argNumStart: int
+    ) -> Iterator[SelfSignature]:
         if not (docString := node.findtext('./Documentation/UserDocu')):
             return
 
@@ -127,8 +158,12 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         # TODO P3 remove fake methods - methods that always raise exception when called
         # TODO P3 implement other Protocols - ex. PySequenceMethods
         ret = ''
-        ret += cls._genEmptyMethod('__add__', 'other', retType=className, reflected=True)
-        ret += cls._genEmptyMethod('__sub__', 'other', retType=className, reflected=True)
+        ret += cls._genEmptyMethod(
+            '__add__', 'other', retType=className, reflected=True
+        )
+        ret += cls._genEmptyMethod(
+            '__sub__', 'other', retType=className, reflected=True
+        )
         ret += cls._genEmptyMethod('__mul__', 'other', reflected=True)
         ret += cls._genEmptyMethod('__mod__', 'other', reflected=True)
         ret += cls._genEmptyMethod('__divmod__', 'other', reflected=True)
@@ -145,7 +180,9 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         ret += cls._genEmptyMethod('__or__', 'other', reflected=True)
         ret += cls._genEmptyMethod('__int__', retType='int')
         ret += cls._genEmptyMethod('__float__', retType='float')
-        ret += cls._genEmptyMethod('__truediv__', 'other', retType=className, reflected=True)
+        ret += cls._genEmptyMethod(
+            '__truediv__', 'other', retType=className, reflected=True
+        )
         return ret
 
     @classmethod

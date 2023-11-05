@@ -29,11 +29,11 @@ def generateTypes():
             prefixToTypes[prefix].add((name, originalType))
 
     typeText = ''
-    for prefix, typeNames in sorted(
-            prefixToTypes.items(), key=itemgetter(0)):
+    for prefix, typeNames in sorted(prefixToTypes.items(), key=itemgetter(0)):
         klassText = f'class {prefix}:\n'
-        body = '\n'.join(f"{name} = '{originalType}'"
-                         for name, originalType in sorted(typeNames))
+        body = '\n'.join(
+            f"{name} = '{originalType}'" for name, originalType in sorted(typeNames)
+        )
         typeText += klassText + indent(body) + '\n\n\n'
 
     typeText = typeText.rstrip() + '\n'

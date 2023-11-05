@@ -20,7 +20,11 @@ def _skipAdditionalDirectiveBlocks(it: Iterator[tuple[int, str]]):
             elif text.endswith('#elif') or text.endswith('#else'):
                 directiveStack[-1] = False
                 buffer.clear()
-            elif text.endswith('#if') or text.endswith('#ifdef') or text.endswith('#ifndef'):
+            elif (
+                text.endswith('#if')
+                or text.endswith('#ifdef')
+                or text.endswith('#ifndef')
+            ):
                 directiveStack.append(True)
                 buffer.clear()
 
@@ -28,7 +32,9 @@ def _skipAdditionalDirectiveBlocks(it: Iterator[tuple[int, str]]):
             yield index, char
 
 
-def findFunctionCall(text: str, bodyStart: int | None = None, bracketL='{', bracketR='}'):
+def findFunctionCall(
+    text: str, bodyStart: int | None = None, bracketL='{', bracketR='}'
+):
     if bodyStart is None:
         bodyStart = text.find('(')
     bracketDeep = 0
@@ -47,12 +53,13 @@ def findFunctionCall(text: str, bodyStart: int | None = None, bracketL='{', brac
             if not bracketDeep:
                 break
 
-    functionText = text[bodyStart:bodyEnd + 1]
+    functionText = text[bodyStart : bodyEnd + 1]
     return functionText
 
 
-def generateExpressionUntilChar(text: str, expStart: int = 0, splitChar: str = ',',
-                                bracketL='(', bracketR=')'):
+def generateExpressionUntilChar(
+    text: str, expStart: int = 0, splitChar: str = ',', bracketL='(', bracketR=')'
+):
     assert splitChar not in f'\\"{bracketL}{bracketR}'
 
     bracketDeep = 0
@@ -81,12 +88,12 @@ def generateExpressionUntilChar(text: str, expStart: int = 0, splitChar: str = '
             yield text[expStart:expEnd]
             expStart = expEnd + 1
 
-    yield text[expStart:expEnd + 1]
+    yield text[expStart : expEnd + 1]
 
 
 def genFuncArgs(text: str, textStart: int | None = None) -> Iterable[str]:
     funcCall = findFunctionCall(text, textStart, bracketL='(', bracketR=')')
-    content = funcCall[funcCall.find('(') + 1:funcCall.rfind(')')]
+    content = funcCall[funcCall.find('(') + 1 : funcCall.rfind(')')]
     for exp in generateExpressionUntilChar(content, splitChar=','):
         if e := exp.strip():
             yield e

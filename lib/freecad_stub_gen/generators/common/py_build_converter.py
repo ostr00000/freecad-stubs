@@ -1,7 +1,9 @@
 from functools import lru_cache
 
-from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
-    generateExpressionUntilChar
+from freecad_stub_gen.generators.common.cpp_function import (
+    findFunctionCall,
+    generateExpressionUntilChar,
+)
 
 
 @lru_cache
@@ -39,12 +41,20 @@ def _parsePyBuildComplexValue(formatText: str) -> tuple[str, int]:
     firstChar = formatText[0]
     lastChar = {'(': ')', '[': ']', '{': '}'}[firstChar]
 
-    subValueFormatText = findFunctionCall(
-        formatText, bodyStart=0, bracketL=firstChar, bracketR=lastChar
-    ).removeprefix(firstChar).removesuffix(lastChar)
-    complexFormats = list(generateExpressionUntilChar(
-        subValueFormatText, expStart=0, splitChar=',',
-        bracketL='([{', bracketR=')]}'))
+    subValueFormatText = (
+        findFunctionCall(formatText, bodyStart=0, bracketL=firstChar, bracketR=lastChar)
+        .removeprefix(firstChar)
+        .removesuffix(lastChar)
+    )
+    complexFormats = list(
+        generateExpressionUntilChar(
+            subValueFormatText,
+            expStart=0,
+            splitChar=',',
+            bracketL='([{',
+            bracketR=')]}',
+        )
+    )
 
     if firstChar == '{':
         result = _parsePyBuildDict(complexFormats)
@@ -147,7 +157,9 @@ def _initParseMaps():
         size = len(value.split('[')[1].split(','))
         locParseSizeMap[key] = size
 
-        autoType = value.removeprefix('(').split(' ')[0].removesuffix(')').removesuffix(',')
+        autoType = (
+            value.removeprefix('(').split(' ')[0].removesuffix(')').removesuffix(',')
+        )
         realType = autoGenTypeToRealType.get(autoType, autoType)
         locParseTypeMap[key] = realType
 
@@ -157,25 +169,25 @@ def _initParseMaps():
 parseSizeMap, parseTypeMap = _initParseMaps()
 
 if __name__ == '__main__':
+
     def testParsing():
         for i in (
-                "",
-                "i",
-                "iii",
-                "s",
-                "y",
-                "ss",
-                "s#",
-                "y#",
-                "()",
-                "(i)",
-                "(ii)",
-                "(i,i)",
-                "[i,i]",
-                "{s:i,s:i}",
-                "((ii)(ii)) (ii)",
+            "",
+            "i",
+            "iii",
+            "s",
+            "y",
+            "ss",
+            "s#",
+            "y#",
+            "()",
+            "(i)",
+            "(ii)",
+            "(i,i)",
+            "[i,i]",
+            "{s:i,s:i}",
+            "((ii)(ii)) (ii)",
         ):
             print(parsePyBuildValues(i))
-
 
     testParsing()
