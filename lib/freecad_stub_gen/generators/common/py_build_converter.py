@@ -22,7 +22,7 @@ def parsePyBuildValues(formatText: str) -> str:
                     size = formatSize
                     break
             else:
-                raise ValueError("Unknown format sting", formatText)
+                raise ValueError("Unknown format string", formatText)
 
         formatText = formatText[size:]
         results.append(singleResult)
