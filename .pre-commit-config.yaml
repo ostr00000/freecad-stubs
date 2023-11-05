@@ -1,9 +1,20 @@
-files:
-  # python regex
-  'lib/.*'
+default_language_version:
+  python: python3.12
+
+files: |  # python regex
+  (?x)      # verbose regex
+  ^(?:      # start of filename
+    lib/.*  # all working python
+    |
+    [^/]+   # top level files
+  )$        # end of filename
 
 
 repos:
+  - repo: meta
+    hooks:
+      - id: identity
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
@@ -11,6 +22,21 @@ repos:
       - id: check-toml
       - id: end-of-file-fixer
       - id: trailing-whitespace
+
+  - repo: https://github.com/abravalheri/validate-pyproject
+    rev: v0.15
+    hooks:
+      - id: validate-pyproject
+
+  - repo: https://github.com/pappasam/toml-sort
+    rev: v0.23.1
+    hooks:
+      - id: toml-sort-fix
+
+#  - repo: https://github.com/crate-ci/typos
+#    rev: v1.16.21
+#    hooks:
+#      - id: typos
 
   - repo: https://github.com/psf/black
     rev: 23.10.1
@@ -20,10 +46,13 @@ repos:
 #  - repo: https://github.com/astral-sh/ruff-pre-commit
 #    rev: v0.1.3
 #    hooks:
-#      - id: ruff_printer
+#      - id: ruff
+#        name: ruff-show-errors
 #        args: [ --diff, --exit-non-zero-on-fix ]
-#      - id: ruff_fixer
-#        args: [ --fix, --exit-non-zero-on-fix ]
+#
+#      - id: ruff
+#        name: ruff-auto-fix
+#        args: [ --fix, --exit-non-zero-on-fix, --show-fixes]
 #
 #  - repo: https://github.com/pre-commit/mirrors-mypy
 #    rev: v1.6.1

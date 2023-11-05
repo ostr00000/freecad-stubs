@@ -8,8 +8,8 @@ version = '1.0.14'
 description = "Python stubs for FreeCAD"
 readme = 'README.md'
 requires-python = '>=3.6'
-license = { text = 'GPL-3.0' }
-authors = [{ name = 'ostr00000' }]
+license = {text = 'GPL-3.0'}
+authors = [{name = 'ostr00000'}]
 keywords = ['FreeCAD', 'stubs']
 classifiers = [
     'Intended Audience :: Developers',
@@ -23,22 +23,15 @@ classifiers = [
     'Programming Language :: Python :: 3.11',
     'Typing :: Stubs Only',
 ]
-urls = { repository = 'https://github.com/ostr00000/freecad-stubs' }
+urls = {repository = 'https://github.com/ostr00000/freecad-stubs'}
 dependencies = [
-    'qtpy',
     # 'pivy', # cannot install it in a normal way, should be installed by FreeCAD anyway
+    'qtpy',
 ]
 
 [project.optional-dependencies]
 generate = ['more-itertools', 'ordered-set']
 check = ['mypy', 'pylint']
-
-[tool.setuptools]
-package-dir = { '' = 'freecad_stubs' }
-
-[tool.setuptools.package-data]
-'*' = ['**/*.pyi']
-
 
 [tool.black]
 skip-string-normalization = true
@@ -48,7 +41,6 @@ files = './lib'
 warn_unused_configs = true
 check_untyped_defs = true
 warn_unused_ignores = true
-
 
 [[tool.mypy.overrides]]
 # This is stub directory, so we allow here an empty body
@@ -75,47 +67,19 @@ disable_error_code = ['misc']
 module = 'freecad_stub_gen.generators.common.gen_property.property_type'
 disable_error_code = ['misc']
 
-
-
 [tool.pylint.basic]
 include-naming-hint = true
-
 ignore-paths = ['.*/additional/']
 attr-naming-style = "camelCase"
 function-naming-style = "camelCase"
 method-naming-style = "camelCase"
-
 # short names should be used for shot-living variables
 # https://github.com/PyCQA/pylint/issues/2018
-#variable-naming-style = "camelCase"
+# variable-naming-style = "camelCase"
 variable-rgx = '([^\W\dA-Z][^\W_]*|__[^\W\dA-Z_]\w+__)$'
-#argument-naming-style = "camelCase"
+# argument-naming-style = "camelCase"
 argument-rgx = '([^\W\dA-Z][^\W_]*|__[^\W\dA-Z_]\w+__)$'
 typealias-rgx = '^_{0,2}(?!T[A-Z]|Type)[A-Z]+[a-z]+(?:[A-Z][a-z]+)*(?:_t|_T)?$'
-
-[tool.pylint."messages control"]
-disable = [
-    #### Convention
-    "missing-module-docstring",
-    "missing-class-docstring",
-    "missing-function-docstring", #[fix toml formatting]
-
-    #### Refactor
-    "too-few-public-methods",
-    # useless when there is inheritance https://github.com/PyCQA/pylint/issues/4352
-    'duplicate-code',
-    # pattern match for property setter and getter are same for some values
-
-    #### Warning
-    "logging-fstring-interpolation",
-    # we debug expression in f-strings (`=`)
-
-    # tmp disable - should be fixed later
-    'fixme',
-    'too-many-ancestors',
-    'too-many-instance-attributes',
-    'too-many-arguments',
-]
 
 [tool.pylint.imports]
 # all values from __main__ are allowed at any level
@@ -123,3 +87,33 @@ allow-any-import-level = [
     'freecad_stub_gen.generators.types_enum.generateTypes',
     'freecad_stub_gen.generate.generateFreeCadStubs',
 ]
+
+[tool.pylint."messages control"]
+disable = [
+    # ### Convention
+    "missing-module-docstring",
+    "missing-class-docstring",
+    "missing-function-docstring", # [fix toml formatting]
+    # ### Refactor
+    "too-few-public-methods",
+    # useless when there is inheritance https://github.com/PyCQA/pylint/issues/4352
+    'duplicate-code',
+    # ### Warning
+    # we debug expression in f-strings (`=`)
+    "logging-fstring-interpolation",
+    # tmp disable - should be fixed later
+    'fixme',
+    'too-many-ancestors',
+    'too-many-instance-attributes',
+    'too-many-arguments',
+]
+
+[tool.setuptools]
+package-dir = {'' = 'freecad_stubs'}
+
+[tool.setuptools.package-data]
+'*' = ['**/*.pyi']
+
+[tool.tomlsort]
+spaces_indent_inline_array = 4
+trailing_comma_inline_array = true

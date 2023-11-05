@@ -13,7 +13,7 @@ Python stubs generated from FreeCAD source code.
 You can install all stubs for freeCAD packages by running:
 
 ```bash
-python -m pip install freecad-stubs 
+python -m pip install freecad-stubs
 ```
 
 If you installed this package,
@@ -69,7 +69,7 @@ file `freecad-stubs/lib/freecad_stub_gen/config.py`)
     git clone https://github.com/ostr00000/freecad-stubs
     ```
 
-3. Configure paths  
+3. Configure paths
    In the file `freecad-stubs/lib/freecad_stub_gen/config.py`
    set desired configuration:
     - `SOURCE_DIR` - `src` folder from FreeCAD repository,
@@ -89,13 +89,13 @@ There are a lot of possible methods. This is only example:
 
 1. Copy stubs from `TARGET_DIR` to location of your choice. For example:.
    ```shell
-   cp -r ./freecad_stubs "$HOME/.local/lib/python3.9/freecad_stubs" 
+   cp -r ./freecad_stubs "$HOME/.local/lib/python3.9/freecad_stubs"
    ```
 
 2. Add location with stubs to python search path.
    For example:
    ```shell
-   echo "$HOME/.local/lib/python3.9/freecad_stubs" > "$HOME/.local/lib/python3.9/site-packages/freecad_stubs.pth" 
+   echo "$HOME/.local/lib/python3.9/freecad_stubs" > "$HOME/.local/lib/python3.9/site-packages/freecad_stubs.pth"
    ```
 
 ### Implementation progress
