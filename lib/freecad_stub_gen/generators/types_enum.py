@@ -2,7 +2,7 @@ import re
 from collections import defaultdict
 from operator import itemgetter
 
-from freecad_stub_gen.additional import additionalPath
+from freecad_stub_gen.FreeCADTemplates import additionalPath
 from freecad_stub_gen.util import indent, readContent, genCppFiles
 
 initType = re.compile(r'(\w[\w: ]+?)\s*::init\(\)')
@@ -37,5 +37,6 @@ def generateTypes():
 
     typeText = typeText.rstrip() + '\n'
 
-    with open(additionalPath / 'FreeCADTypes.py', 'w', encoding='utf-8') as outputFile:
+    typesPath = additionalPath / 'type_consts.py'
+    with typesPath.open('w', encoding='utf-8') as outputFile:
         outputFile.write(typeText)

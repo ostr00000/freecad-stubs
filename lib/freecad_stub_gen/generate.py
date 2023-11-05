@@ -3,7 +3,7 @@ import shutil
 import typing
 from pathlib import Path
 
-from freecad_stub_gen.additional import additionalPath
+from freecad_stub_gen.FreeCADTemplates import additionalPath
 from freecad_stub_gen.config import SOURCE_DIR, TARGET_DIR
 from freecad_stub_gen.generators.common.gen_base import BaseGenerator
 from freecad_stub_gen.generators.exceptions.gen import ExceptionGenerator
@@ -122,10 +122,7 @@ Wrn = FreeCAD.Console.PrintWarning
 
             stubPackage.rename(stubPackage.with_name(f'{newName}-stubs'))
 
-    for additionalPackage in additionalPath.glob('[!_]*.py'):
-        targetAdditionalPackage = targetPath / additionalPackage.stem
-        targetAdditionalPackage.mkdir()
-        shutil.copy(additionalPackage, targetAdditionalPackage / '__init__.py')
+    shutil.copytree(additionalPath, targetPath / additionalPath.name)
 
 
 # TODO P4 preprocess and remove macros
