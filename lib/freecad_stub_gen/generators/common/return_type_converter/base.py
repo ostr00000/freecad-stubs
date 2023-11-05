@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 class ReturnTypeConverterBase:
-    def __init__(self, functionBody: str, requiredImports: OrderedStrSet | None = None,
+    def __init__(self, functionBody: str = '', requiredImports: OrderedStrSet | None = None,
                  classNameWithModule: str = '', functionName: str = ''):
         self.requiredImports = OrderedStrSet() if requiredImports is None else requiredImports
         self.functionBody = functionBody
@@ -28,8 +28,9 @@ class ReturnTypeConverterBase:
         return getClassName(self.classNameWithModule)
 
     # pylint: disable=too-many-return-statements
-    def getExpressionType(self, varText: str, endPos: int, onlyLiteral=False) -> RetType:
+    def getExpressionType(self, varText: str, endPos: int = 0, *, onlyLiteral=False) -> RetType:
         varText = self._removePrefixes(varText)
+        varText = self._removeSuffix(varText)
         match StrWrapper(varText):
             case '':
                 return AnyValue
@@ -58,13 +59,14 @@ class ReturnTypeConverterBase:
             case StrWrapper('Py::Boolean' | 'PyBool_From' | 'Py::True' | 'Py::False'):
                 return 'bool'
             case StrWrapper('Py::Long' | 'PyLong_From' | 'Py::Int'
-                            | 'PyInt_From' | 'PYINT_FROMLONG'):
+                            | 'PyInt_From' | 'PYINT_FROMLONG' | 'int'):
                 return 'int'
             case StrWrapper('Py::Float' | 'PyFloat_From'):
                 return 'float'
             case StrWrapper('Py::String' | 'PyString_From'
                             | 'PyUnicode_From' | 'Py::Char'
-                            | 'PyUnicode_DecodeUTF8' | 'PYSTRING_FROMSTRING'):
+                            | 'PyUnicode_DecodeUTF8' | 'PYSTRING_FROMSTRING'
+                            | 'QString'):
                 return 'str'
             case StrWrapper(end='->c_str()'):
                 return 'str'
@@ -169,7 +171,7 @@ class ReturnTypeConverterBase:
 
             case StrWrapper('(', end=')'):
                 return self.getExpressionType(
-                    varText.removeprefix('(').removesuffix(')'), endPos, onlyLiteral)
+                    varText.removeprefix('(').removesuffix(')'), endPos, onlyLiteral=onlyLiteral)
 
             case StrWrapper(contain='=='):
                 return 'bool'
@@ -188,8 +190,12 @@ class ReturnTypeConverterBase:
                     .removeprefix('new_reference_to(') \
                     .removesuffix(')').strip()
 
-        varText = varText.removeprefix('*').strip()
+        varText = varText.removeprefix('const').strip().removeprefix('*').strip()
         return varText
+
+    @staticmethod
+    def _removeSuffix(varText: str) -> str:
+        return varText.removesuffix('*').strip().removesuffix('&').strip()
 
     @classmethod
     def _getFuncArgs(cls, varText: str) -> list[str]:

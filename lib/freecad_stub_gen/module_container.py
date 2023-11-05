@@ -92,9 +92,10 @@ class Module:
         for imp in self.imports:
             if imp.startswith('from '):
                 sortModule = imp.removeprefix('from ').split(' ')[0]
+            elif '\n' in imp:
+                types.append(f'\n{imp}\n')
+                continue
             elif any(t in imp for t in ('TypeAlias', 'TypeVar', 'TypedDict')):
-                if 'TypedDict' in imp and 'class' in imp:
-                    imp = f'\n{imp}\n'
                 types.append(imp)
                 continue
             elif modName := moduleNamespace.getModFromAlias(imp):

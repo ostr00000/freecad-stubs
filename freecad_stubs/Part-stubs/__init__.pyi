@@ -44,10 +44,12 @@ LinkSub_t: typing.TypeAlias = FreeCAD.DocumentObject | None | tuple[()] | DocAnd
 LinkList_t: typing.TypeAlias = None | FreeCAD.DocumentObject
 SequenceDoc_t: typing.TypeAlias = tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]
 LinkSubList_t: typing.TypeAlias = typing.Sequence[SequenceDoc_t | FreeCAD.DocumentObject]
+
 ReturnExportUnitsDict = typing.TypedDict('ReturnExportUnitsDict', {
     'write.iges.unit': str,
     'write.step.unit': str,
 })
+
 
 
 # TopoShapeVertexPy.xml
@@ -4517,10 +4519,10 @@ class GeometrySurface(PartModule.Geometry):
         """
 
     @typing.overload
-    def intersect(self, p: PartModule.GeometrySurface, prec: float = None, /): ...
+    def intersect(self, p: PartModule.GeometrySurface, prec: float = None, /) -> int | typing.Any: ...
 
     @typing.overload
-    def intersect(self, p: PartModule.Curve, prec: float = None, /):
+    def intersect(self, p: PartModule.Curve, prec: float = None, /) -> int | typing.Any:
         """
         Returns all intersection points/curves between the surface and the curve/surface.
                 
@@ -5839,10 +5841,10 @@ class Curve(PartModule.Geometry):
         """
 
     @typing.overload
-    def intersect(self, p: PartModule.Curve, prec: float = None, /): ...
+    def intersect(self, p: PartModule.Curve, prec: float = None, /) -> int: ...
 
     @typing.overload
-    def intersect(self, p: PartModule.GeometrySurface, prec: float = None, /):
+    def intersect(self, p: PartModule.GeometrySurface, prec: float = None, /) -> int:
         """
         Returns all intersection points and curve segments between the curve and the curve/surface.
 

@@ -100,6 +100,8 @@ There are a lot of possible methods. This is only example:
   - [x] number protocol (ex. `__add__` method),
 - [x] generate class stub (cpp files):
   - [x] dynamically added in `init_type()`,
+  - [ ] qt slots,
+  - [x] qt signals,
 - [x] generate functions stub (cpp files):
   - [x] declared in `PyMethodDef` array,
   - [x] dynamically added in module constructor (subclass `Py::ExtensionModule`),

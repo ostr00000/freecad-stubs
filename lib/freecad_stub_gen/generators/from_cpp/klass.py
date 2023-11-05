@@ -1,7 +1,9 @@
 import logging
 import re
 from collections.abc import Iterable
+from itertools import chain
 
+from freecad_stub_gen.cpp_code.block import QtSignalBlock, parseClass
 from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall
 from freecad_stub_gen.generators.common.doc_string import formatDocstring
@@ -33,7 +35,10 @@ class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
                 continue  # it is a template
 
             gen = self._findFunctionCallsGen(funcCall)
-            result = ''.join(self._genAllMethods(gen, firstParam=AnnotationParam.SELF_PARAM))
+            result = ''.join(chain(
+                self._genQtSignalAndSlots(className),
+                self._genAllMethods(gen, firstParam=AnnotationParam.SELF_PARAM))
+            )
             if not result:
                 result = 'pass'
             content = indent(result)
@@ -49,6 +54,28 @@ class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
             baseClasses = self._getBaseClasses(className)
             yield f"class {className}{baseClasses}:\n{doc}\n{content}\n"
 
+    def _genQtSignalAndSlots(self, className: str) -> Iterable[str]:
+        if not className.endswith('Py'):
+            return
+
+        className = className.removesuffix('Py')
+        if not (twinHeaderContent := self._getTwinHeaderContent()):
+            return
+
+        found = False
+        classObj = parseClass(className, twinHeaderContent)
+        for block in classObj.blocks:
+            if isinstance(block, QtSignalBlock):
+                for item in block:
+                    # TODO [P4] create global context for imports?
+                    #  currently it is very annoying to continuously pass `requiredImports`
+                    #  maybe `from contextvars import ContextVar`?
+                    yield f'{item.getStrRepr(self.requiredImports)}\n'
+                    found = True
+
+        if found:
+            yield '\n'
+
     REG_BASE_CLASS_INHERITANCE = re.compile(r"""
 (?:public|protected|private)\s+     # access modifier
 (?P<baseClass>.+?)\s*               # there may be template class with many parameters
@@ -57,10 +84,9 @@ class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
 )""", re.VERBOSE)
 
     def _getBaseClasses(self, className: str) -> str:
-        if className.endswith('Py'):
-            className = className.removesuffix('Py')
-        else:
+        if not className.endswith('Py'):
             return ''
+        className = className.removesuffix('Py')
 
         if not (twinHeaderContent := self._getTwinHeaderContent()):
             return ''

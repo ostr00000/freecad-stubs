@@ -5,6 +5,7 @@ import FreeCAD
 import FreeCADGui
 import FreeCADGui.Selection
 import FreeCADTemplates
+import FreeCADTemplates.qt_types as qt
 import pivy.coin
 import qtpy.QtCore
 import qtpy.QtGui
@@ -13,6 +14,18 @@ import qtpy.QtWidgets
 _T = typing.TypeVar("_T")
 Triple_t: typing.TypeAlias = tuple[_T, _T, _T]
 Quadruple_t: typing.TypeAlias = tuple[_T, _T, _T, _T]
+
+class __MDIView_message_0(typing.Protocol):
+    def __call__(self): ...
+
+
+class __MDIView_message_1(typing.Protocol):
+    def __call__(self, a0: str, /): ...
+
+
+class __MDIView_message_2(typing.Protocol):
+    def __call__(self, a0: str, a1: int, /): ...
+
 
 class ReturnGetObjectInfoDict(typing.TypedDict):
     x: float
@@ -34,6 +47,30 @@ class ReturnGetObjectsInfoDict(typing.TypedDict):
     Document: str
     Object: str
     Component: str
+
+
+class __MainWindow_timeEvent_0(typing.Protocol):
+    def __call__(self): ...
+
+
+class __MainWindow_windowStateChanged_0(typing.Protocol):
+    def __call__(self): ...
+
+
+class __MainWindow_windowStateChanged_1(typing.Protocol):
+    def __call__(self, a0: FreeCADGui.MDIViewPy, /): ...
+
+
+class __MainWindow_workbenchActivated_0(typing.Protocol):
+    def __call__(self): ...
+
+
+class __MainWindow_workbenchActivated_1(typing.Protocol):
+    def __call__(self, a0: str, /): ...
+
+
+class __MainWindow_mainWindowClosed_0(typing.Protocol):
+    def __call__(self): ...
 
 
 
@@ -1375,6 +1412,8 @@ class Document(FreeCAD.Persistence):
 class MDIViewPy(qtpy.QtWidgets.QMainWindow):
     """Python binding class for the MDI view class"""
 
+    message: typing.ClassVar[qt.pyqtSignal[__MDIView_message_0 | __MDIView_message_1 | __MDIView_message_2]]
+
     def printView(self) -> None:
         """
         printView()
@@ -2101,6 +2140,11 @@ class PyResource:
 # MainWindowPy.cpp
 class MainWindowPy(qtpy.QtWidgets.QMainWindow):
     """Python binding class for the MainWindow class"""
+
+    timeEvent: typing.ClassVar[qt.pyqtSignal[__MainWindow_timeEvent_0]]
+    windowStateChanged: typing.ClassVar[qt.pyqtSignal[__MainWindow_windowStateChanged_0 | __MainWindow_windowStateChanged_1]]
+    workbenchActivated: typing.ClassVar[qt.pyqtSignal[__MainWindow_workbenchActivated_0 | __MainWindow_workbenchActivated_1]]
+    mainWindowClosed: typing.ClassVar[qt.pyqtSignal[__MainWindow_mainWindowClosed_0]]
 
     def getWindows(self) -> list:
         """
