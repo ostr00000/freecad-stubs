@@ -8,8 +8,9 @@ from freecad_stub_gen.generators.from_xml.dynamic_property import XmlDynamicProp
 from freecad_stub_gen.generators.from_xml.method import XmlMethodGenerator
 from freecad_stub_gen.generators.from_xml.static_property import XmlPropertyGenerator
 from freecad_stub_gen.importable_map import importableMap
-from freecad_stub_gen.module_container import Module
-from freecad_stub_gen.util import indent, toBool
+from freecad_stub_gen.python_code.module_container import Module
+from freecad_stub_gen.python_code import indent
+from freecad_stub_gen.cpp_code.converters import toBool
 
 
 class FreecadStubGeneratorFromXML(

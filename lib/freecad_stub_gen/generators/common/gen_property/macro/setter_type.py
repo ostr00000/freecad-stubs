@@ -1,6 +1,7 @@
 import logging
 import re
 
+from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.generators.common.gen_property.macro.alias import PropertyTypeAlias, \
     PropertyTypeVar
@@ -202,7 +203,7 @@ class PropertyMacroSetter(PropertyMacroBase):
 
             literalsStart = literalsRaw.find('{') + 1
             literalsArray = [
-                exp.strip().removeprefix('"').removesuffix('"')
+                removeQuote(exp)
                 for exp in generateExpressionUntilChar(
                     literalsRaw, literalsStart, ",", bracketL='{', bracketR='}')]
             literalsArray = literalsArray[:-1]  # remove NULL

@@ -3,6 +3,7 @@ import re
 from dataclasses import dataclass, field
 from functools import cached_property
 
+from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.generators.common.doc_string import prepareDocs
 from freecad_stub_gen.generators.common.gen_property.property_type import PropertyType
 
@@ -38,7 +39,7 @@ class PropertyMacroBase:
                 newVal = ''
 
             case str(val) if val.startswith('"') and val.endswith('"'):
-                newVal = val.removeprefix('"').removesuffix('"')
+                newVal = removeQuote(val)
                 if isSentence and newVal and not newVal.endswith('.'):
                     newVal = newVal + '.'
                 newVal = prepareDocs(newVal)

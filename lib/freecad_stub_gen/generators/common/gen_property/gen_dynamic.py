@@ -5,7 +5,7 @@ from functools import cached_property
 from itertools import chain
 
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
-    generateExpressionUntilChar
+    genFuncArgs
 from freecad_stub_gen.generators.common.gen_property.gen_base import \
     BasePropertyGenerator
 from freecad_stub_gen.generators.common.gen_property.macro.full import PropertyMacro
@@ -52,12 +52,7 @@ class DynamicPropertyGenerator(BasePropertyGenerator, ABC):
                     re.finditer(self.REG_DYNAMIC_PROPERTY_EXP, constructorBody),
                     re.finditer(self.REG_DYNAMIC_PROPERTY_EXP_TYPE, constructorBody)
             ):
-                macroBody = findFunctionCall(
-                    constructorBody, propMatch.start(), bracketL='(', bracketR=')')
-                macroCallStartPos = macroBody.find('(') + 1
-                macroArgs = [exp.strip() for exp in generateExpressionUntilChar(
-                    macroBody, expStart=macroCallStartPos, splitChar=',')]
-
+                macroArgs = list(genFuncArgs(constructorBody, propMatch.start()))
                 pm = PropertyMacro(
                     *macroArgs,
                     constructorBody=constructorBody,

@@ -33,5 +33,7 @@ class FreecadStubGeneratorFromCppFunctions(BaseGeneratorFromCpp):
                     arrayStr, arrayStrStartPos, ',', bracketL='{', bracketR='}'), -1):
                 arrayElemStartPos = arrayElemText.find('{') + 1
                 method = PyMethodDef(list(
-                    generateExpressionUntilChar(arrayElemText, arrayElemStartPos, ',')))
+                    generateExpressionUntilChar(
+                        arrayElemText, arrayElemStartPos,
+                        splitChar=',', bracketL='{', bracketR='}')))
                 yield from self._genMethodWithArgs(method, argNumStart=0)

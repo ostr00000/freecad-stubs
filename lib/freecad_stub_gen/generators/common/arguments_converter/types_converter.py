@@ -11,9 +11,10 @@ from freecad_stub_gen.generators.common.arguments_converter.function_conv import
 from freecad_stub_gen.generators.common.arguments_converter.sequence_stack import SequenceStack
 
 from freecad_stub_gen.generators.common.names import getClassWithModulesFromPointer, \
-    getModuleName, convertToPythonValue
+    getModuleName
+from freecad_stub_gen.cpp_code.converters import convertToPythonValue
 from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import StrWrapper
-from freecad_stub_gen.util import OrderedStrSet
+from freecad_stub_gen.ordered_set import OrderedStrSet
 
 logger = logging.getLogger(__name__)
 

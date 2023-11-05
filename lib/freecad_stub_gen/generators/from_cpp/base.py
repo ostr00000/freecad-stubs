@@ -7,14 +7,14 @@ from collections.abc import Iterable
 from inspect import Parameter
 from itertools import chain
 
+from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.generators.common.annotation_parameter import SelfSignature
-from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
-    generateExpressionUntilChar
+from freecad_stub_gen.generators.common.cpp_function import genFuncArgs
 from freecad_stub_gen.generators.common.doc_string import generateSignaturesFromDocstring
 from freecad_stub_gen.generators.common.gen_method import MethodGenerator
 from freecad_stub_gen.generators.common.signature_merger import SignatureMerger
 from freecad_stub_gen.logger import LEVEL_CODE
-from freecad_stub_gen.module_container import Module
+from freecad_stub_gen.python_code.module_container import Module
 
 logger = logging.getLogger(__name__)
 
@@ -30,9 +30,7 @@ class Method:
     REG_WHITESPACE_WITH_APOSTROPHE = re.compile(r'"\s*"')
 
     def __post_init__(self):
-        self.args = [
-            e.strip().removesuffix('}').removesuffix('"').removeprefix('"')
-            for e in self.args]
+        self.args = removeQuote(*self.args)
 
         self.pythonMethodName = self.args[0]
         self.cClass, self.cFunction = self._parsePointer(self.args[1])
@@ -122,11 +120,7 @@ class BaseGeneratorFromCpp(MethodGenerator, ABC):
                 self.REG_VARGS_METHOD.finditer(content),
                 self.REG_KEYWORD_METHOD.finditer(content),
         ):
-            funcCall = findFunctionCall(
-                content, match.start(), bracketL='(', bracketR=')')
-            funcCallStartPos = funcCall.find('(') + 1
-            method = Method(list(generateExpressionUntilChar(
-                funcCall, funcCallStartPos, splitChar=',')))
+            method = Method(list(genFuncArgs(content, match.start())))
             yield from self._genMethodWithArgs(method)
 
     def _genMethodWithArgs(self, method: Method, argNumStart=1) -> Iterable[Method]:

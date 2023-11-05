@@ -3,7 +3,8 @@ from collections import defaultdict
 from operator import itemgetter
 
 from freecad_stub_gen.FreeCADTemplates import additionalPath
-from freecad_stub_gen.util import indent, readContent, genCppFiles
+from freecad_stub_gen.file_functions import readContent, genCppFiles
+from freecad_stub_gen.python_code import indent
 
 initType = re.compile(r'(\w[\w: ]+?)\s*::init\(\)')
 

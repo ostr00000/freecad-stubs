@@ -1,8 +1,9 @@
 from pathlib import Path
 from xml.etree.ElementTree import ParseError
 
-from freecad_stub_gen.module_container import Module
-from freecad_stub_gen.util import readContent, OrderedStrSet
+from freecad_stub_gen.python_code.module_container import Module
+from freecad_stub_gen.file_functions import readContent
+from freecad_stub_gen.ordered_set import OrderedStrSet
 
 
 class BaseGenerator:

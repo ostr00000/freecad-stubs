@@ -3,7 +3,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from freecad_stub_gen.config import SOURCE_DIR
-from freecad_stub_gen.util import genXmlFiles
+from freecad_stub_gen.file_functions import genXmlFiles
 
 logger = logging.getLogger(__name__)
 

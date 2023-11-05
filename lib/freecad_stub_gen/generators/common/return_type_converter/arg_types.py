@@ -7,7 +7,8 @@ from functools import cached_property
 from typing import TypeVar, Generator, Protocol, Iterator
 
 from freecad_stub_gen.generators.common.names import getModuleName, useAliasedModule
-from freecad_stub_gen.util import indent, OrderedStrSet, OrderedSet
+from freecad_stub_gen.ordered_set import OrderedSet, OrderedStrSet
+from freecad_stub_gen.python_code import indent
 
 T = TypeVar('T')
 

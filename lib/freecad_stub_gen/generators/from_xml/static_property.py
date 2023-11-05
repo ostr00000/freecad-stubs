@@ -9,7 +9,7 @@ from freecad_stub_gen.generators.common.names import getClassNameFromNode, getMo
 from freecad_stub_gen.generators.common.return_type_converter.full import ReturnTypeConverter
 from freecad_stub_gen.generators.from_xml.base import BaseXmlGenerator
 from freecad_stub_gen.generators.from_xml.method import XmlMethodGenerator
-from freecad_stub_gen.util import toBool
+from freecad_stub_gen.cpp_code.converters import toBool
 
 logger = logging.getLogger(__name__)
 

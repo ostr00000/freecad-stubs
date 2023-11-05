@@ -1,16 +1,18 @@
 import logging
 import re
 from functools import cached_property
+from itertools import islice
 
+from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
-    generateExpressionUntilChar
+    genFuncArgs, generateExpressionUntilChar
 from freecad_stub_gen.generators.common.names import getClassName, getClassWithModulesFromPointer, \
     getModuleName
 from freecad_stub_gen.generators.common.py_build_converter import parsePyBuildValues
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import AnyValue, \
     UnionArguments, RetType, InvalidReturnType
 from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import StrWrapper
-from freecad_stub_gen.util import OrderedStrSet
+from freecad_stub_gen.ordered_set import OrderedStrSet
 
 logger = logging.getLogger(__name__)
 
@@ -83,7 +85,7 @@ class ReturnTypeConverterBase:
 
             case StrWrapper('PyTuple_Pack'):
                 subTypes = [self.getExpressionType(v, endPos)
-                            for v in self._getFuncArgs(varText)[1:]]
+                            for v in islice(genFuncArgs(varText), 1, None)]
                 return f'tuple[{", ".join(subTypes)}]'
 
             case StrWrapper('Py::Tuple' | 'PyTuple_New'):
@@ -155,7 +157,7 @@ class ReturnTypeConverterBase:
                 return 'bool'
 
             case StrWrapper('Py::asObject(' | 'Py::Object(' | 'createPyObject('):
-                rawReturnVarName = self._getFuncArgs(varText)[0]
+                rawReturnVarName = next(iter(genFuncArgs(varText)))
                 return self.getExpressionType(rawReturnVarName, endPos)
 
             case _ if onlyLiteral:
@@ -198,20 +200,11 @@ class ReturnTypeConverterBase:
         return varText.removesuffix('*').strip().removesuffix('&').strip()
 
     @classmethod
-    def _getFuncArgs(cls, varText: str) -> list[str]:
-        fc = findFunctionCall(
-            varText, bodyStart=varText.find('('),
-            bracketL='(', bracketR=')').removeprefix('(').removesuffix(')')
-        funArgs = [
-            exp.strip().removeprefix('"').removesuffix('"')
-            for exp in generateExpressionUntilChar(fc, 0, ',', bracketL='(', bracketR=')')]
-        return funArgs
-
-    @classmethod
     def _extractPivy(cls, varText: str):
-        funArgs = cls._getFuncArgs(varText.removeprefix('Base::Interpreter().createSWIGPointerObj'))
-        module: str = funArgs[0]
-        klass: str = funArgs[1]
+        withoutPrefix = varText.removeprefix('Base::Interpreter().createSWIGPointerObj')
+        funArgs = list(genFuncArgs(withoutPrefix))
+        module = removeQuote(funArgs[0])
+        klass = removeQuote(funArgs[1])
 
         if not module.startswith('pivy') or '(' in klass:
             return AnyValue
@@ -221,19 +214,19 @@ class ReturnTypeConverterBase:
 
     @classmethod
     def _extractWidget(cls, varText: str):
-        funArgs = cls._getFuncArgs(varText)
+        funArgs = list(genFuncArgs(varText))
         if len(funArgs) == 1:
             widgetType = 'QWidget'
         else:
             assert len(funArgs) == 2
-            widgetType = funArgs[1].strip().removeprefix('"').removesuffix('"')
+            widgetType = removeQuote(funArgs[1])
             if not widgetType.startswith('Q'):
                 widgetType = 'QWidget'
         return f'qtpy.QtWidgets.{widgetType}'
 
     def _extractBuildValue(self, varText: str, endPos: int) -> RetType:
-        funArgs = self._getFuncArgs(varText)
-        formatText = funArgs[0].removeprefix('"').removesuffix('"')
+        funArgs = list(genFuncArgs(varText))
+        formatText = removeQuote(funArgs[0])
         pythonType = parsePyBuildValues(formatText)
         if pythonType == AnyValue:
             objArg = funArgs[1].strip()

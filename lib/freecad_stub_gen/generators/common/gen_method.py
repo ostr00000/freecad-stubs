@@ -4,7 +4,7 @@ from typing import Sequence, Protocol
 
 from freecad_stub_gen.generators.common.doc_string import formatDocstring
 from freecad_stub_gen.generators.common.gen_python_api import PythonApiGenerator
-from freecad_stub_gen.util import indent
+from freecad_stub_gen.python_code import indent
 
 logger = logging.getLogger(__name__)
 

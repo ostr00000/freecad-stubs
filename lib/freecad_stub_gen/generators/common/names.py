@@ -1,12 +1,10 @@
-import ast
-import builtins
 import logging
 import typing
 import xml.etree.ElementTree as ET
 
 from freecad_stub_gen.importable_map import importableMap
 from freecad_stub_gen.module_namespace import moduleNamespace
-from freecad_stub_gen.util import OrderedStrSet
+from freecad_stub_gen.ordered_set import OrderedStrSet
 
 logger = logging.getLogger(__name__)
 
@@ -141,39 +139,3 @@ def getClassWithModulesFromPointer(cTypePointer: str) -> str:
     cType = cTypePointer.removesuffix('::Type').removesuffix('::type_object(')
     namespace, cType = getNamespaceWithClass(cType)
     return getClassWithModulesFromStem(cType, namespace or '')
-
-
-def validatePythonValue(value: str) -> str | None:
-    if value in builtins.__dict__:
-        return value
-
-    if value in ('true', 'false'):
-        return value.title()
-
-    # pylint: disable=broad-exception-caught
-    try:
-        ast.literal_eval(value)
-    except (SyntaxError, ValueError):
-        pass
-    except Exception as exc:
-        logger.error(f'Cannot evaluate value: {exc}')
-    else:
-        return value
-
-    if value and value[-1].lower() in ('f', 'l'):
-        # maybe float literal (ex. 3.14f)
-        return validatePythonValue(value[:-1])
-
-    return None
-
-
-def convertToPythonValue(value: str):
-    if (safe := validatePythonValue(value)) is None:
-        return False, None
-
-    if value in builtins.__dict__:
-        conv = builtins.__dict__[value]
-    else:
-        conv = ast.literal_eval(safe)
-
-    return True, conv

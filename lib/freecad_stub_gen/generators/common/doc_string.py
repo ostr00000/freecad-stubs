@@ -11,7 +11,7 @@ from freecad_stub_gen.generators.common.annotation_parameter import AnnotationPa
 from freecad_stub_gen.generators.common.arguments_converter.definitions import DEFAULT_ARG_NAME
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
     generateExpressionUntilChar
-from freecad_stub_gen.generators.common.names import validatePythonValue
+from freecad_stub_gen.cpp_code.converters import validatePythonValue
 
 
 def generateSignaturesFromDocstring(name: str, docString: str, argNumStart: int = 0):

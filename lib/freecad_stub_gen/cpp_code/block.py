@@ -11,7 +11,7 @@ from freecad_stub_gen.generators.common.cpp_function import genFuncArgs, \
     generateExpressionUntilChar
 from freecad_stub_gen.generators.common.return_type_converter.full import \
     ReturnTypeConverter
-from freecad_stub_gen.util import OrderedStrSet
+from freecad_stub_gen.ordered_set import OrderedStrSet
 
 logger = logging.getLogger(__name__)
 

@@ -2,6 +2,7 @@ import logging
 import re
 from pathlib import Path
 
+from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.generators.common.arguments_converter.definitions import DEFAULT_ARG_NAME
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
     generateExpressionUntilChar
@@ -54,7 +55,7 @@ class FunctionConv:
         clearFormat = ''
         formatStr = self.argumentStrings[self.formatStrPosition]
         for strVal in re.finditer(self.REG_STRING, formatStr):
-            clearFormat += strVal.group().removesuffix('"').removeprefix('"')
+            clearFormat += removeQuote(strVal.group())
         self.argumentStrings[self.formatStrPosition] = clearFormat
 
         if 'PARAM_REF(' in self.funCall:

@@ -1,15 +1,18 @@
 import re
 
+from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.generators.common.names import getModuleName, getClassName, \
     getNamespaceWithClass
 from freecad_stub_gen.module_namespace import moduleNamespace
-from freecad_stub_gen.util import indent, genCppFiles, readContent, OrderedStrSet
+from freecad_stub_gen.file_functions import genCppFiles, readContent
+from freecad_stub_gen.ordered_set import OrderedStrSet
+from freecad_stub_gen.python_code import indent
 
 
 class ExceptionData:
     def __init__(self, exceptionName: str, newExceptionArgs: list[str]):
-        excModuleWithClass = newExceptionArgs[0].removeprefix('"').removesuffix('"')
+        excModuleWithClass = removeQuote(newExceptionArgs[0])
         self.pyModuleRaw = getModuleName(excModuleWithClass, required=True)
         self.pyModule = moduleNamespace.convertNamespaceToModule(self.pyModuleRaw)
         self.pyClass = getClassName(excModuleWithClass)

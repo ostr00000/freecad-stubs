@@ -5,7 +5,7 @@ from collections.abc import Mapping, Iterable, Sequence
 from inspect import Parameter, Signature, _void
 from typing import cast, TypeAlias
 
-from freecad_stub_gen.util import OrderedStrSet
+from freecad_stub_gen.ordered_set import OrderedStrSet
 
 logger = logging.getLogger(__name__)
 

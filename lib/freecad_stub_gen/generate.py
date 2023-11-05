@@ -11,9 +11,9 @@ from freecad_stub_gen.generators.from_cpp.functions import FreecadStubGeneratorF
 from freecad_stub_gen.generators.from_cpp.klass import FreecadStubGeneratorFromCppClass
 from freecad_stub_gen.generators.from_cpp.module import FreecadStubGeneratorFromCppModule
 from freecad_stub_gen.generators.from_xml.full import FreecadStubGeneratorFromXML
-from freecad_stub_gen.module_container import Module
+from freecad_stub_gen.python_code.module_container import Module
 from freecad_stub_gen.module_namespace import moduleNamespace
-from freecad_stub_gen.util import genCppFiles, genXmlFiles
+from freecad_stub_gen.file_functions import genCppFiles, genXmlFiles
 
 logger = logging.getLogger(__name__)
 generators: typing.Sequence[type[BaseGenerator]] = (

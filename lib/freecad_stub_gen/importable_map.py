@@ -4,9 +4,10 @@ from dataclasses import dataclass
 from functools import cached_property
 from typing import Iterable
 
+from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.module_namespace import moduleNamespace
-from freecad_stub_gen.util import readContent, genCppFiles
+from freecad_stub_gen.file_functions import readContent, genCppFiles
 
 
 @dataclass
@@ -40,7 +41,7 @@ class AddTypeArguments:
             .removesuffix('::type_object()') \
             .removesuffix('::Type')
 
-        self.pythonName = self.pythonName.removeprefix('"').removesuffix('"')
+        self.pythonName = removeQuote(self.pythonName)
 
 
 class ImportableClassMap(dict[str, str]):

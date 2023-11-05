@@ -3,9 +3,9 @@ from collections.abc import Iterable
 
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall
 from freecad_stub_gen.generators.from_cpp.base import BaseGeneratorFromCpp
-from freecad_stub_gen.module_container import Module
+from freecad_stub_gen.python_code.module_container import Module
 from freecad_stub_gen.module_namespace import moduleNamespace
-from freecad_stub_gen.util import OrderedStrSet
+from freecad_stub_gen.ordered_set import OrderedStrSet
 
 
 class FreecadStubGeneratorFromCppModule(BaseGeneratorFromCpp):

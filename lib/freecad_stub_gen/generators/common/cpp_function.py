@@ -28,7 +28,9 @@ def _skipAdditionalDirectiveBlocks(it: Iterator[tuple[int, str]]):
             yield index, char
 
 
-def findFunctionCall(text: str, bodyStart: int, bracketL='{', bracketR='}'):
+def findFunctionCall(text: str, bodyStart: int | None = None, bracketL='{', bracketR='}'):
+    if bodyStart is None:
+        bodyStart = text.find('(')
     bracketDeep = 0
     bodyEnd = 0
 
@@ -82,10 +84,9 @@ def generateExpressionUntilChar(text: str, expStart: int = 0, splitChar: str = '
     yield text[expStart:expEnd + 1]
 
 
-def genFuncArgs(text: str, textStart: int = 0) -> Iterable[str]:
-    # TODO P4 replace to this function if possible
+def genFuncArgs(text: str, textStart: int | None = None) -> Iterable[str]:
     funcCall = findFunctionCall(text, textStart, bracketL='(', bracketR=')')
-    funStart = funcCall.find('(') + 1
-    for exp in generateExpressionUntilChar(funcCall, expStart=funStart, splitChar=','):
+    content = funcCall[funcCall.find('(') + 1:funcCall.rfind(')')]
+    for exp in generateExpressionUntilChar(content, splitChar=','):
         if e := exp.strip():
             yield e

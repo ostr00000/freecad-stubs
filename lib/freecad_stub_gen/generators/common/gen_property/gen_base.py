@@ -4,7 +4,7 @@ from abc import ABC
 from freecad_stub_gen.generators.common.doc_string import formatDocstring
 from freecad_stub_gen.generators.common.gen_base import BaseGenerator
 from freecad_stub_gen.generators.common.names import getModuleName
-from freecad_stub_gen.util import indent
+from freecad_stub_gen.python_code import indent
 
 
 class BasePropertyGenerator(BaseGenerator, ABC):

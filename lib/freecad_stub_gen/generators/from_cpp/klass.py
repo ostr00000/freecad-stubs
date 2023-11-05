@@ -11,7 +11,8 @@ from freecad_stub_gen.generators.common.names import getClassWithModulesFromPoin
 from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import StrWrapper
 from freecad_stub_gen.generators.from_cpp.base import BaseGeneratorFromCpp
 from freecad_stub_gen.importable_map import importableMap
-from freecad_stub_gen.util import indent, readContent
+from freecad_stub_gen.file_functions import readContent
+from freecad_stub_gen.python_code import indent
 
 logger = logging.getLogger(__name__)
 
