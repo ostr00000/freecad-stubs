@@ -117,3 +117,6 @@ package-dir = {'' = 'freecad_stubs'}
 [tool.tomlsort]
 spaces_indent_inline_array = 4
 trailing_comma_inline_array = true
+
+[tool.typos.default.extend-words]
+'Methode' = 'Methode' # used in FreeCAD XMLs

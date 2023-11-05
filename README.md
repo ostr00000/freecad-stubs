@@ -78,7 +78,7 @@ file `freecad-stubs/lib/freecad_stub_gen/config.py`)
 
 4. Run the main file from this project in Python
     ```shell
-    pytohn freecad-stubs/lib/freecad_stub_gen/__main__.py
+    python freecad-stubs/lib/freecad_stub_gen/__main__.py
     ```
    Required python version: `>=3.11`.
 

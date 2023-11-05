@@ -106,11 +106,11 @@ class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
         if not (
             match := re.search(
                 rf"""
-class\s+            # keyword `class`
-(?:\w+\s+)?         # there may be optional macro: GuiExport|AppExport
-{className}\s*:\s*  # original class name
-(?P<inh>[^{{]*      # all inherited classes until {{
-{{)                 # terminating char {{
+class\s+                # keyword `class`
+(?:\w+\s+)?             # there may be optional macro: GuiExport|AppExport
+{className}\s*:\s*      # original class name
+(?P<inherited>[^{{]*    # all inherited classes until {{
+{{)                     # terminating char {{
 """,
                 twinHeaderContent,
                 re.VERBOSE,
@@ -120,7 +120,7 @@ class\s+            # keyword `class`
 
         baseClasses = []
         for baseClassMatch in re.finditer(
-            self.REG_BASE_CLASS_INHERITANCE, match.group('inh')
+            self.REG_BASE_CLASS_INHERITANCE, match.group('inherited')
         ):
             baseClass = baseClassMatch.group('baseClass').strip()
             if pythonClass := self._getPythonClass(baseClass):
