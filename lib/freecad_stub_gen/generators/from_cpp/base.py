@@ -61,6 +61,9 @@ class Method:
         return f'{self.cClass}::{self.cFunction}'
 
     def __str__(self):
+        return self.getPythonSignature()
+
+    def getPythonSignature(self) -> str:
         assert self.pythonSignature is not None
         return str(self.pythonSignature)
 
@@ -109,7 +112,7 @@ class BaseGeneratorFromCpp(MethodGenerator, ABC):
             docContent += SelfSignature.getExceptionsDocs(
                 m.pythonSignature for m in methods if m.pythonSignature is not None
             )
-            uniqueMethods = list({str(m): m for m in methods}.values())
+            uniqueMethods = list({m.getPythonSignature(): m for m in methods}.values())
             yield self.convertMethodToStr(
                 methods[0].pythonMethodName,
                 uniqueMethods,

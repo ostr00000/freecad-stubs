@@ -74,10 +74,10 @@ class SignatureMerger:
                 yield cp
                 break
 
-            toReplace = {'name': dp.name}
+            default = cp.default
             if dp.default not in (Parameter.empty, None):
-                toReplace['default'] = dp.default
-            yield cp.replace(**toReplace)
+                default = dp.default
+            yield cp.replace(name=dp.name, default=default)
             pos += 1
 
         # use yield only from one

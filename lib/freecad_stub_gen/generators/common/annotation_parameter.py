@@ -11,6 +11,8 @@ logger = logging.getLogger(__name__)
 
 
 class RawRepr:
+    """By default inspect.Signature uses"""
+
     __slots__ = ('values',)
 
     def __new__(cls, *values):
@@ -33,16 +35,15 @@ class RawRepr:
             return other == self.values[0]
         return super().__eq__(other)
 
-    def __add__(self, other):
-        if isinstance(other, str):
-            self.values.add(other)
-            return self
-
-        if isinstance(other, RawRepr):
-            self.values.update(other.values)
-            return self
-
-        raise NotImplementedError
+    def __add__(self, other: str | RawRepr):
+        match other:
+            case str(s):
+                self.values.add(s)
+            case RawRepr(r):
+                self.values.update(r.values)
+            case _:
+                raise NotImplementedError
+        return self
 
 
 class RawStringRepresentation(str):
@@ -83,8 +84,8 @@ class SelfSignature(Signature):
         self,
         parameters: InitParameters_t = None,
         *,
-        unknown_parameters=False,
-        return_annotation=Signature.empty,
+        unknown_parameters: bool = False,
+        return_annotation: RawRepr | Signature.empty = Signature.empty,
         exceptions: OrderedSet[str] | None = None,
     ):
         parameters = self._convertFirstParam(parameters)

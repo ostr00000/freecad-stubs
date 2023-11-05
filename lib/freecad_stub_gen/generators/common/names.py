@@ -135,7 +135,7 @@ def useAliasedModule(
     return f'{mod}.{cls}'
 
 
-def getNamespaceWithClass(cTypeClass: str):
+def getNamespaceWithClass(cTypeClass: str) -> tuple[str | None, str]:
     cType = cTypeClass
     if '::' in cType:
         namespace, cType = cType.split('::')

@@ -9,9 +9,9 @@ from freecad_stub_gen.python_code import indent
 logger = logging.getLogger(__name__)
 
 
-class StringType(Protocol):
-    def __str__(self):
-        pass
+class PythonSignatureProtocol(Protocol):
+    def getPythonSignature(self) -> str:
+        ...
 
 
 class MethodGenerator(PythonApiGenerator, ABC):
@@ -20,7 +20,7 @@ class MethodGenerator(PythonApiGenerator, ABC):
     def convertMethodToStr(
         self,
         methodName: str,
-        strSignatures: Sequence[StringType | str],
+        strSignatures: Sequence[PythonSignatureProtocol | str],
         docs: str = '',
         isClassic=False,
         isStatic=False,
@@ -29,7 +29,10 @@ class MethodGenerator(PythonApiGenerator, ABC):
         ret = ''
         if not strSignatures:
             return ret
-        signatures = list(map(str, strSignatures))
+        signatures = [
+            ss if isinstance(ss, str) else ss.getPythonSignature()
+            for ss in strSignatures
+        ]
 
         # only single signature should not have overload
         if len(signatures) > 1:

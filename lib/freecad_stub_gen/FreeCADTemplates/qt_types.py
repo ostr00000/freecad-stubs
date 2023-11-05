@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import typing
 
-from PyQt5.QtCore import QMetaObject, QObject
+from qtpy.QtCore import QMetaObject, QObject
 
 Fun_t = typing.TypeVar('Fun_t', bound=typing.Callable)
 

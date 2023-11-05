@@ -3,9 +3,8 @@ from __future__ import annotations
 import itertools
 import logging
 import re
-import typing
 from functools import cached_property
-from typing import Iterable, Iterator, Self, overload
+from typing import Generic, Iterable, Iterator, Self, TypeVar, cast, overload
 
 from ordered_set import OrderedSet
 
@@ -17,7 +16,8 @@ from freecad_stub_gen.generators.common.return_type_converter.full import (
     ReturnTypeConverter,
 )
 
-
+R = TypeVar('R')
+T = TypeVar('T')
 logger = logging.getLogger(__name__)
 
 
@@ -68,7 +68,7 @@ class QtSignal(BlockItem):
         return f'{self.name}: typing.ClassVar[qt.pyqtSignal[{slots}]]'
 
 
-class ClassVarContainer[T]:
+class ClassVarContainer(Generic[T]):
     """Workaround for parametrized class variables.
 
     See more: https://github.com/python/mypy/issues/5144
@@ -81,7 +81,7 @@ class ClassVarContainer[T]:
         return self.val
 
 
-class LateInit[T]:
+class LateInit(Generic[T]):
     def __init__(self):
         self.name = ''
 
@@ -112,7 +112,10 @@ class LateInit[T]:
         instance.__dict__[self.name] = value
 
 
-class CppBlock[BI]:
+BI = TypeVar('BI', bound=BlockItem)
+
+
+class CppBlock(Generic[BI]):
     ITEM_TYPE = ClassVarContainer[type[BI]](BlockItem)
 
     cppClass = LateInit['CppClass']()
@@ -180,8 +183,10 @@ REG_BLOCK = re.compile(
 )
 
 
-def pairwiseLongest[T, R](it: Iterable[T], fill: R = None) -> Iterator[tuple[T, T | R]]:
-    return itertools.pairwise(itertools.chain(it, [typing.cast(T, fill)]))
+def pairwiseLongest(
+    it: Iterable[T], fill: R | None = None
+) -> Iterator[tuple[T, T | R]]:
+    return itertools.pairwise(itertools.chain(it, [cast(T, fill)]))
 
 
 def parseClass(className: str, fileContent: str) -> CppClass:
@@ -208,7 +213,7 @@ class\s+            # keyword `class`
 
     for first, sec in pairwiseLongest(REG_BLOCK.finditer(classBody)):
         if 'Q_SIGNALS' in first.group():
-            blockType = QtSignalBlock
+            blockType: type[CppBlock] = QtSignalBlock
         elif 'Q_SLOT' in first.group():
             blockType = QtSlotBlock
         else:

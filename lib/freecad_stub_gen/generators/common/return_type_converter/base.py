@@ -20,7 +20,7 @@ from freecad_stub_gen.generators.common.return_type_converter.arg_types import (
     AnyValue,
     InvalidReturnType,
     RetType,
-    UnionArguments,
+    UnionArgument,
 )
 from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import (
     StrWrapper,
@@ -123,7 +123,7 @@ class ReturnTypeConverterBase:
 
             case StrWrapper('PyTuple_Pack'):
                 subTypes = [
-                    self.getExpressionType(v, endPos)
+                    str(self.getExpressionType(v, endPos))
                     for v in islice(genFuncArgs(varText), 1, None)
                 ]
                 return f'tuple[{", ".join(subTypes)}]'
@@ -275,11 +275,11 @@ class ReturnTypeConverterBase:
     def _extractBuildValue(self, varText: str, endPos: int) -> RetType:
         funArgs = list(genFuncArgs(varText))
         formatText = removeQuote(funArgs[0])
-        pythonType = parsePyBuildValues(formatText)
-        if pythonType == AnyValue:
-            objArg = funArgs[1].strip()
-            pythonType = self.getExpressionType(objArg, endPos, onlyLiteral=True)
-        return pythonType
+        if (pythonType := parsePyBuildValues(formatText)) != AnyValue:
+            return pythonType
+
+        objArg = funArgs[1].strip()
+        return self.getExpressionType(objArg, endPos, onlyLiteral=True)
 
     # pylint: disable=too-many-return-statements
     def _findClassWithModule(self, text: str, mustDiffer: str = '') -> RetType:
@@ -296,7 +296,7 @@ class ReturnTypeConverterBase:
                 # it may be any of following
                 # access via: `getPropertyOfGeometry` function,
                 # search: `App::PropertyComplexGeoData)`,
-                return UnionArguments(
+                return UnionArgument(
                     ['Mesh.MeshObject', 'Part.Shape', 'Points.PointKernel']
                 )
 
@@ -381,10 +381,10 @@ class ReturnTypeConverterBase:
                 )
                 if isNone:
                     match varType:
-                        case UnionArguments():
+                        case UnionArgument():
                             varType.add('None')
                         case str():
-                            varType = UnionArguments(('None', varType))
+                            varType = UnionArgument(('None', varType))
                         case AnyValue.value:
                             varType = 'None'
             if isinstance(varType, str):
@@ -418,7 +418,7 @@ class ReturnTypeConverterBase:
         """Example: `myVar = Py::Float(7.0)`."""
         regex = re.compile(rf'{variableName}\b\s*=\s*([^;]*);')
         gen = self._genVariableTypeFromRegex(regex, startPos, endPos, onlyLiteral=False)
-        if union := UnionArguments(gen):
+        if union := UnionArgument(gen):
             return union
         return AnyValue
 
@@ -432,7 +432,7 @@ class ReturnTypeConverterBase:
                 variableTypeText, endPos, onlyLiteral=onlyLiteral
             )
             match varType:
-                case UnionArguments():
+                case UnionArgument():
                     yield from varType
                 case str():
                     yield varType

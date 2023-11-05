@@ -21,15 +21,14 @@ class ExceptionData:
         self.pyModule = moduleNamespace.convertNamespaceToModule(self.pyModuleRaw)
         self.pyClass = getClassName(excModuleWithClass)
 
-        self.baseCppNamespace, self.baseCppClass = getNamespaceWithClass(
-            newExceptionArgs[1]
-        )
-        if self.baseCppNamespace is None:
+        baseNamespace, self.baseCppClass = getNamespaceWithClass(newExceptionArgs[1])
+        if baseNamespace is None:
             if self.baseCppClass.startswith('PyExc'):
-                self.baseCppNamespace = '__python__'
+                baseNamespace = '__python__'
             else:
                 # no namespace means it is exception from current namespace
-                self.baseCppNamespace = self.pyModuleRaw
+                baseNamespace = self.pyModuleRaw
+        self.baseCppNamespace = baseNamespace
 
         self.cppNamespace, self.cppClass = getNamespaceWithClass(exceptionName)
         if self.cppClass == 'OCCError':  # there is additional assignment

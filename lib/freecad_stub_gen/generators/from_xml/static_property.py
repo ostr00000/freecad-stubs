@@ -38,13 +38,14 @@ class XmlPropertyGenerator(
 
         return self.getProperty(name, pythonGetType, pythonSetType, docs, readOnly)
 
-    def _findTypeBasedOnXmlDeclaration(self, node: ET.Element):
-        pythonType = None
-        if (param := node.find('Parameter')) is not None:
-            xmlType = param.attrib['Type']
-            pythonType = xmlTypeToPythonType[xmlType]
-            if mn := getModuleName(pythonType):
-                self.requiredImports.add(mn)
+    def _findTypeBasedOnXmlDeclaration(self, node: ET.Element) -> str:
+        if (param := node.find('Parameter')) is None:
+            raise ValueError
+
+        xmlType = param.attrib['Type']
+        pythonType = xmlTypeToPythonType[xmlType]
+        if mn := getModuleName(pythonType):
+            self.requiredImports.add(mn)
         return pythonType
 
     def _getExtendedTypeFromCode(self, pythonType: str, cFuncName: str) -> str:

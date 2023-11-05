@@ -6,8 +6,8 @@ from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import (
     DictArgument,
+    ComplexArgumentBase,
     TypedDictGen,
-    ArgumentsIter,
     RetType,
 )
 from freecad_stub_gen.generators.common.return_type_converter.base import (
@@ -50,11 +50,11 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
             self._getInnerTypeDictAssignLiterals(variableName, decEndPos, endPos),
             self._getInnerTypeDictAssign(variableName, decEndPos, endPos),
         ):
-            da: ArgumentsIter = wrapper()
+            da: ComplexArgumentBase = wrapper()
             if da:
-                varType = str(da)
+                signature = da.getPythonSignature()
                 self.requiredImports.update(da.imports)
-                return varType
+                return signature
 
         if 'PARAM_PY_DICT' in self.functionBody:
             return varType

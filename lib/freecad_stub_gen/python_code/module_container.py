@@ -32,9 +32,8 @@ class Module:
 
     def __getitem__(self, item: str):
         assert item
-        mainPart, *otherParts = item.split('.', maxsplit=1)
-
-        mainPart = moduleNamespace.getModFromAlias(mainPart, mainPart)
+        mainPartAlias, *otherParts = item.split('.', maxsplit=1)
+        mainPart = moduleNamespace.getModFromAlias(mainPartAlias, mainPartAlias)
         mod = self.subModules[mainPart]
         if mod.parent is None:
             mod.parent = self

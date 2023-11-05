@@ -54,5 +54,8 @@ check_by_mypy:
 	export TERM=ansi; $(PYTHON_ENV) -m mypy
 	@#$(PYTHON_ENV) -m mypy
 
+check_by_pyright:
+	$(PYTHON_ENV) -m pyright
+
 check_by_pylint:
 	$(PYTHON_ENV) -m pylint ./lib/

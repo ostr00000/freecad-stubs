@@ -1,7 +1,7 @@
 import re
 
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import (
-    UnionArguments,
+    UnionArgument,
     AnyValue,
     RetType,
 )
@@ -39,11 +39,11 @@ class ReturnTypeInnerList(ReturnTypeConverterBase):
     def _getInnerTypeList(self, variableName: str, startPos: int, endPos: int):
         regex = re.compile(rf'{variableName}\b.append\(([^;]*)\);')
         gen = self._genVariableTypeFromRegex(regex, startPos, endPos, onlyLiteral=False)
-        return UnionArguments(gen)
+        return UnionArgument(gen)
 
     def _getInnerTypePyListSetItem(self, variableName: str, startPos: int, endPos: int):
         """Example: `PyList_SetItem(pyList, i++, str);`."""
-        arg = UnionArguments()
+        arg = UnionArgument()
         regex = re.compile(
             rf'PyList_SetItem\s*\(\s*{variableName}\s*,\s*[\w+]+\s*,([^;]+)\);'
         )

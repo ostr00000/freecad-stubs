@@ -17,8 +17,8 @@ class PropertyMacroBase:
     group: str = ''
     _rawType: str = ''
     _docs: str = ''
-    type: PropertyType = PropertyType.Prop_None
 
+    type: PropertyType = PropertyType.Prop_None
     constructorBody: str = field(default='', repr=False)
     namespace: str = ''
     cppContent: str = field(default='', repr=False)

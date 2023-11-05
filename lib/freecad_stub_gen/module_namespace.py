@@ -55,7 +55,7 @@ class _ModuleNamespace:
         'Part': 'PartModule',
     }
 
-    def getModFromAlias(self, alias: str, default=None):
+    def getModFromAlias(self, alias: str, default: str = '') -> str:
         for k, v in self.MODULE_TO_ALIAS.items():
             if v == alias:
                 return k

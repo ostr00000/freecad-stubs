@@ -57,7 +57,7 @@ class DynamicPropertyGenerator(BasePropertyGenerator, ABC):
             ):
                 macroArgs = list(genFuncArgs(constructorBody, propMatch.start()))
                 pm = PropertyMacro(
-                    *macroArgs,
+                    *macroArgs,  # type: ignore
                     constructorBody=constructorBody,
                     namespace=self._curNamespace,
                     cppContent=cppIncludeContent,
