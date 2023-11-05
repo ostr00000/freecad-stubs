@@ -2,7 +2,7 @@ import atexit
 from collections import defaultdict
 from typing import Hashable
 
-from ordered_set import OrderedSet
+from freecad_stub_gen.ordered_set import OrderedSet
 
 printAllValues = defaultdict[str, OrderedSet](OrderedSet)
 

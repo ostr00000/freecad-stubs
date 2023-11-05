@@ -34,8 +34,6 @@ dependencies = [
 [project.optional-dependencies]
 generate = [
     'more-itertools',
-    # a fork of original package, better maintained
-    'ordered-set @ git+https://github.com/idanmiara/ordered-set.git',
 ]
 check = [
     'mypy',

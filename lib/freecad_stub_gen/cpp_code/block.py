@@ -6,7 +6,6 @@ import re
 from functools import cached_property
 from typing import Generic, Iterable, Iterator, Self, TypeVar, cast, overload
 
-from ordered_set import OrderedSet
 
 from freecad_stub_gen.generators.common.cpp_function import (
     genFuncArgs,
@@ -15,6 +14,7 @@ from freecad_stub_gen.generators.common.cpp_function import (
 from freecad_stub_gen.generators.common.return_type_converter.full import (
     ReturnTypeConverter,
 )
+from freecad_stub_gen.ordered_set import OrderedStrSet
 
 R = TypeVar('R')
 T = TypeVar('T')
@@ -32,7 +32,7 @@ class QtSignal(BlockItem):
         super().__init__(raw, cppBlock)
         self.sigArgCppTypes = list(genFuncArgs(self.raw))
 
-        self.requiredImports = OrderedSet[str]()
+        self.requiredImports = OrderedStrSet()
         rtc = ReturnTypeConverter(requiredImports=self.requiredImports)
         self.sigArgPythonTypes = [
             rtc.getExpressionType(c, onlyLiteral=True) for c in self.sigArgCppTypes
@@ -41,7 +41,7 @@ class QtSignal(BlockItem):
         returnTypeAndName = self.raw[: self.raw.find('(')]
         self.name = returnTypeAndName.rsplit(' ', maxsplit=1)[-1]
 
-    def getStrRepr(self, requiredImports: OrderedSet[str]):
+    def getStrRepr(self, requiredImports: OrderedStrSet):
         """triggered: typing.ClassVar[QtCore.pyqtSignal]"""
         requiredImports.update(self.requiredImports)
         requiredImports.add('typing')

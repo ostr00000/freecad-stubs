@@ -5,10 +5,9 @@ import sys
 from collections.abc import Iterable
 from pathlib import Path
 
-from ordered_set import OrderedSet
-
 from freecad_stub_gen.config import TARGET_DIR
 from freecad_stub_gen.module_namespace import moduleNamespace
+from freecad_stub_gen.ordered_set import OrderedStrSet
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +17,7 @@ class Module:
 
     def __init__(self, content='', imports: Iterable[str] = (), name: str = ''):
         self.name = name
-        self.imports = OrderedSet[str](imports)
+        self.imports = OrderedStrSet(imports)
         self.content = content
         self.subModules = SourcesDict()
 

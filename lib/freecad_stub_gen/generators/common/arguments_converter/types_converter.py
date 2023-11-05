@@ -3,7 +3,6 @@ import re
 from inspect import Parameter
 from typing import Iterator
 
-from ordered_set import OrderedSet
 
 from freecad_stub_gen.cpp_code.converters import convertToPythonValue
 from freecad_stub_gen.generators.common.annotation_parameter import (
@@ -31,6 +30,8 @@ from freecad_stub_gen.generators.common.names import (
 from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import (
     StrWrapper,
 )
+from freecad_stub_gen.ordered_set import OrderedStrSet
+
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +44,7 @@ class TypesConverter:
     def __init__(
         self,
         functionConv: FunctionConv,
-        requiredImports: OrderedSet[str],
+        requiredImports: OrderedStrSet,
         cArgNum: int = 2,
     ):
         self.fun = functionConv

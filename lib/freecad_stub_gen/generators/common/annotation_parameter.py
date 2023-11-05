@@ -5,7 +5,7 @@ from collections.abc import Iterable, Mapping, Sequence
 from inspect import Parameter, Signature, _void
 from typing import TypeAlias, cast
 
-from ordered_set import OrderedSet
+from freecad_stub_gen.ordered_set import OrderedStrSet
 
 logger = logging.getLogger(__name__)
 
@@ -22,17 +22,17 @@ class RawRepr:
         return super().__new__(cls)
 
     def __init__(self, *values):
-        self.values = OrderedSet[str](map(str, values))
+        self.values = OrderedStrSet(map(str, values))
 
     def __repr__(self):
         if 'None' in self.values:
-            self.values.discard('None')
+            self.values.pop('None')
             self.values.add('None')
         return ' | '.join(self.values)
 
     def __eq__(self, other):
         if isinstance(other, str) and len(self.values) == 1:
-            return other == self.values[0]
+            return other == self.values.first()
         return super().__eq__(other)
 
     def __add__(self, other: str | RawRepr):
@@ -86,12 +86,12 @@ class SelfSignature(Signature):
         *,
         unknown_parameters: bool = False,
         return_annotation: RawRepr | Signature.empty = Signature.empty,
-        exceptions: OrderedSet[str] | None = None,
+        exceptions: OrderedStrSet | None = None,
     ):
         parameters = self._convertFirstParam(parameters)
         try:
             super().__init__(parameters, return_annotation=return_annotation)
-            self.exceptions = OrderedSet[str]() if exceptions is None else exceptions
+            self.exceptions = OrderedStrSet() if exceptions is None else exceptions
             self.unknown_parameters = unknown_parameters
         except ValueError as v:
             if parameters is not None:
@@ -120,7 +120,7 @@ class SelfSignature(Signature):
 
     @classmethod
     def getExceptionsDocs(cls, signatures: Iterable[SelfSignature]) -> str:
-        uniqueExceptions = OrderedSet[str]()
+        uniqueExceptions = OrderedStrSet()
         for sig in signatures:
             uniqueExceptions.update(sig.exceptions)
 

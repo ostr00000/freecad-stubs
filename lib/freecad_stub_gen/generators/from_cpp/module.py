@@ -1,12 +1,11 @@
 import re
 from collections.abc import Iterable
 
-from ordered_set import OrderedSet
-
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall
 from freecad_stub_gen.generators.from_cpp.base import BaseGeneratorFromCpp
 from freecad_stub_gen.module_namespace import moduleNamespace
 from freecad_stub_gen.python_code.module_container import Module
+from freecad_stub_gen.ordered_set import OrderedStrSet
 
 
 class FreecadStubGeneratorFromCppModule(BaseGeneratorFromCpp):
@@ -29,7 +28,7 @@ class FreecadStubGeneratorFromCppModule(BaseGeneratorFromCpp):
                 curModName = moduleNamespace.convertNamespaceToModule(curModName)
 
                 mod[curModName].update(Module(header + result, self.requiredImports))
-                self.requiredImports = OrderedSet[str]()
+                self.requiredImports = OrderedStrSet()
 
     def _genStub(self, moduleName: str) -> Iterable[str]:
         for match in self.REG_MODULE_INIT.finditer(self.impContent):

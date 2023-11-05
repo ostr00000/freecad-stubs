@@ -3,7 +3,6 @@ import re
 from inspect import Parameter, Signature
 from typing import Iterable
 
-from ordered_set import OrderedSet
 
 from freecad_stub_gen.cpp_code.converters import validatePythonValue
 from freecad_stub_gen.generators.common.annotation_parameter import RawRepr
@@ -25,6 +24,7 @@ from freecad_stub_gen.generators.common.return_type_converter.inner_type_tuple i
     ReturnTypeInnerTuple,
 )
 from freecad_stub_gen.generators.exceptions.container import exceptionContainer
+from freecad_stub_gen.ordered_set import OrderedStrSet
 
 logger = logging.getLogger(__name__)
 
@@ -66,7 +66,7 @@ class ReturnTypeConverter(
     EXCEPTION_PY_REG = re.compile(r'throw\s+Py::(?P<exc>\w+)\((?P<args>[^;]*)\);')
 
     def getExceptionsFromCode(self):
-        exceptions = OrderedSet[str]()
+        exceptions = OrderedStrSet()
 
         for exceptionMatch in self.EXCEPTION_PY_REG.finditer(self.functionBody):
             exceptionName = exceptionMatch.group('exc')
