@@ -28,7 +28,7 @@ def generateTypes():
 
             prefixToTypes[prefix].add((name, originalType))
 
-    typeText = ''
+    typeText = '# fmt: off\n'  # disable `black` formatting for this file
     for prefix, typeNames in sorted(prefixToTypes.items(), key=itemgetter(0)):
         klassText = f'class {prefix}:\n'
         body = '\n'.join(

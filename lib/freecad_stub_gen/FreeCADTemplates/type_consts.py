@@ -1,3 +1,4 @@
+# fmt: off
 class App:
     Annotation = 'App::Annotation'
     AnnotationLabel = 'App::AnnotationLabel'
@@ -324,30 +325,20 @@ class FemGui:
     ViewProviderFemConstraint = 'FemGui::ViewProviderFemConstraint'
     ViewProviderFemConstraintBearing = 'FemGui::ViewProviderFemConstraintBearing'
     ViewProviderFemConstraintContact = 'FemGui::ViewProviderFemConstraintContact'
-    ViewProviderFemConstraintDisplacement = (
-        'FemGui::ViewProviderFemConstraintDisplacement'
-    )
+    ViewProviderFemConstraintDisplacement = 'FemGui::ViewProviderFemConstraintDisplacement'
     ViewProviderFemConstraintFixed = 'FemGui::ViewProviderFemConstraintFixed'
-    ViewProviderFemConstraintFluidBoundary = (
-        'FemGui::ViewProviderFemConstraintFluidBoundary'
-    )
+    ViewProviderFemConstraintFluidBoundary = 'FemGui::ViewProviderFemConstraintFluidBoundary'
     ViewProviderFemConstraintForce = 'FemGui::ViewProviderFemConstraintForce'
     ViewProviderFemConstraintGear = 'FemGui::ViewProviderFemConstraintGear'
     ViewProviderFemConstraintHeatflux = 'FemGui::ViewProviderFemConstraintHeatflux'
-    ViewProviderFemConstraintInitialTemperature = (
-        'FemGui::ViewProviderFemConstraintInitialTemperature'
-    )
+    ViewProviderFemConstraintInitialTemperature = 'FemGui::ViewProviderFemConstraintInitialTemperature'
     ViewProviderFemConstraintOnBoundary = 'FemGui::ViewProviderFemConstraintOnBoundary'
-    ViewProviderFemConstraintPlaneRotation = (
-        'FemGui::ViewProviderFemConstraintPlaneRotation'
-    )
+    ViewProviderFemConstraintPlaneRotation = 'FemGui::ViewProviderFemConstraintPlaneRotation'
     ViewProviderFemConstraintPressure = 'FemGui::ViewProviderFemConstraintPressure'
     ViewProviderFemConstraintPulley = 'FemGui::ViewProviderFemConstraintPulley'
     ViewProviderFemConstraintPython = 'FemGui::ViewProviderFemConstraintPython'
     ViewProviderFemConstraintSpring = 'FemGui::ViewProviderFemConstraintSpring'
-    ViewProviderFemConstraintTemperature = (
-        'FemGui::ViewProviderFemConstraintTemperature'
-    )
+    ViewProviderFemConstraintTemperature = 'FemGui::ViewProviderFemConstraintTemperature'
     ViewProviderFemConstraintTransform = 'FemGui::ViewProviderFemConstraintTransform'
     ViewProviderFemMesh = 'FemGui::ViewProviderFemMesh'
     ViewProviderFemMeshPython = 'FemGui::ViewProviderFemMeshPython'
@@ -408,9 +399,7 @@ class Gui:
     ViewProviderFeature = 'Gui::ViewProviderFeature'
     ViewProviderGeoFeatureGroup = 'Gui::ViewProviderGeoFeatureGroup'
     ViewProviderGeoFeatureGroupExtension = 'Gui::ViewProviderGeoFeatureGroupExtension'
-    ViewProviderGeoFeatureGroupExtensionPython = (
-        'Gui::ViewProviderGeoFeatureGroupExtensionPython'
-    )
+    ViewProviderGeoFeatureGroupExtensionPython = 'Gui::ViewProviderGeoFeatureGroupExtensionPython'
     ViewProviderGeoFeatureGroupPython = 'Gui::ViewProviderGeoFeatureGroupPython'
     ViewProviderGeometryObject = 'Gui::ViewProviderGeometryObject'
     ViewProviderGroupExtension = 'Gui::ViewProviderGroupExtension'
@@ -427,9 +416,7 @@ class Gui:
     ViewProviderOriginFeature = 'Gui::ViewProviderOriginFeature'
     ViewProviderOriginGroup = 'Gui::ViewProviderOriginGroup'
     ViewProviderOriginGroupExtension = 'Gui::ViewProviderOriginGroupExtension'
-    ViewProviderOriginGroupExtensionPython = (
-        'Gui::ViewProviderOriginGroupExtensionPython'
-    )
+    ViewProviderOriginGroupExtensionPython = 'Gui::ViewProviderOriginGroupExtensionPython'
     ViewProviderPart = 'Gui::ViewProviderPart'
     ViewProviderPlacement = 'Gui::ViewProviderPlacement'
     ViewProviderPlacementPython = 'Gui::ViewProviderPlacementPython'
@@ -750,9 +737,7 @@ class PartDesignGui:
     ViewProviderBoolean = 'PartDesignGui::ViewProviderBoolean'
     ViewProviderChamfer = 'PartDesignGui::ViewProviderChamfer'
     ViewProviderDatum = 'PartDesignGui::ViewProviderDatum'
-    ViewProviderDatumCoordinateSystem = (
-        'PartDesignGui::ViewProviderDatumCoordinateSystem'
-    )
+    ViewProviderDatumCoordinateSystem = 'PartDesignGui::ViewProviderDatumCoordinateSystem'
     ViewProviderDatumLine = 'PartDesignGui::ViewProviderDatumLine'
     ViewProviderDatumPlane = 'PartDesignGui::ViewProviderDatumPlane'
     ViewProviderDatumPoint = 'PartDesignGui::ViewProviderDatumPoint'
@@ -979,9 +964,7 @@ class SketcherGui:
     ViewProviderCustomPython = 'SketcherGui::ViewProviderCustomPython'
     ViewProviderPython = 'SketcherGui::ViewProviderPython'
     ViewProviderSketch = 'SketcherGui::ViewProviderSketch'
-    ViewProviderSketchGeometryExtension = (
-        'SketcherGui::ViewProviderSketchGeometryExtension'
-    )
+    ViewProviderSketchGeometryExtension = 'SketcherGui::ViewProviderSketchGeometryExtension'
     Workbench = 'SketcherGui::Workbench'
 
 
