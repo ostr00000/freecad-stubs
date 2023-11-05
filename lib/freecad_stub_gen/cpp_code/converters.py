@@ -2,26 +2,12 @@ import ast
 import builtins
 import logging
 import re
-from typing import overload
 
 logger = logging.getLogger(__name__)
 
 
-@overload
-def removeQuote(v: str) -> str:
-    ...
-
-
-@overload
-def removeQuote(*val: str) -> list[str]:
-    ...
-
-
-def removeQuote(*val: str):
-    withoutQuote = [v.strip().removeprefix('"').removesuffix('"') for v in val]
-    if len(withoutQuote) == 1:
-        return withoutQuote[0]
-    return withoutQuote
+def removeQuote(val: str) -> str:
+    return val.strip().removeprefix('"').removesuffix('"')
 
 
 _REG_COMMENT_REM = re.compile(

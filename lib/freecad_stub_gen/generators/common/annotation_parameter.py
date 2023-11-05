@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from collections.abc import Iterable, Mapping, Sequence
-from inspect import Parameter, Signature, _void
+from inspect import Parameter, Signature
 from typing import TypeAlias, cast
 
 from freecad_stub_gen.ordered_set import OrderedStrSet
@@ -39,7 +39,7 @@ class RawRepr:
         match other:
             case str(s):
                 self.values.add(s)
-            case RawRepr(r):
+            case RawRepr() as r:
                 self.values.update(r.values)
             case _:
                 raise NotImplementedError
@@ -72,7 +72,7 @@ class AnnotationParam(Parameter):
 
 
 InitParameters_t: TypeAlias = Sequence[Parameter] | None
-ReplaceParameters_t: TypeAlias = Sequence[Parameter] | type[_void] | None
+ReplaceParameters_t: TypeAlias = Sequence[Parameter] | type['SelfSignature.Void'] | None
 
 
 class SelfSignature(Signature):
@@ -85,7 +85,7 @@ class SelfSignature(Signature):
         parameters: InitParameters_t = None,
         *,
         unknown_parameters: bool = False,
-        return_annotation: RawRepr | Signature.empty = Signature.empty,
+        return_annotation: RawRepr | type[Signature.empty] = Signature.empty,
         exceptions: OrderedStrSet | None = None,
     ):
         parameters = self._convertFirstParam(parameters)
@@ -129,35 +129,46 @@ class SelfSignature(Signature):
 
         return f"\nPossible exceptions: ({', '.join(uniqueExceptions)})."
 
-    __void = _void  # only to access in pattern matching
+    class Void:
+        pass
+
+    _void = Void()  # only to access in pattern matching
 
     def replace(
         self,
         *,
-        parameters: ReplaceParameters_t | Mapping[str, Parameter] = _void,
-        return_annotation=_void,
-        exceptions=_void,
-        unknown_parameters=_void,
+        parameters: Sequence[Parameter] | Mapping[str, Parameter] | Void | None = _void,
+        return_annotation: RawRepr | Void = _void,
+        exceptions: OrderedStrSet | Void = _void,
+        unknown_parameters: bool | Void = _void,
     ) -> SelfSignature:
         initParameters: InitParameters_t
         match parameters:
-            case self.__void:
+            case self._void:
                 initParameters = list(self.parameters.values())
             case Mapping():
                 initParameters = list(parameters.values())
             case _:
                 initParameters = cast(InitParameters_t, parameters)
 
-        if return_annotation is _void:
-            return_annotation = self.return_annotation
-        if exceptions is _void:
-            exceptions = self.exceptions
-        if unknown_parameters is _void:
-            unknown_parameters = self.unknown_parameters
+        if isinstance(return_annotation, self.Void):
+            initRetAnn = self.return_annotation
+        else:
+            initRetAnn = return_annotation
+
+        if isinstance(exceptions, self.Void):
+            initExc = self.exceptions
+        else:
+            initExc = exceptions
+
+        if isinstance(unknown_parameters, self.Void):
+            unknownParams = self.unknown_parameters
+        else:
+            unknownParams = unknown_parameters
 
         return type(self)(
             initParameters,
-            unknown_parameters=unknown_parameters,
-            return_annotation=return_annotation,
-            exceptions=exceptions,
+            unknown_parameters=unknownParams,
+            return_annotation=initRetAnn,
+            exceptions=initExc,
         )

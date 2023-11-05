@@ -9,7 +9,9 @@ https://www.python.org/dev/peps/pep-0544/#support-optional-protocol-members
 Find regex:
 ^\s*FC_PY_ELEMENT\((\w+)\)[^\S\n]*\\?
 Replace:
-    def $1(self):\n        \"\"\"May be implemented in python\"\"\""""
+    def $1(self):\n        \"\"\"May be implemented in python\"\"\"
+"""
+# pyright: reportGeneralTypeIssues=false, reportMissingModuleSource=false
 import typing
 
 import FreeCADGui

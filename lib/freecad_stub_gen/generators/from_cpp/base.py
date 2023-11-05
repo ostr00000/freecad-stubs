@@ -32,7 +32,7 @@ class Method:
     REG_WHITESPACE_WITH_APOSTROPHE = re.compile(r'"\s*"')
 
     def __post_init__(self):
-        self.args = removeQuote(*self.args)
+        self.args = [removeQuote(a) for a in self.args]
 
         self.pythonMethodName = self.args[0]
         self.cClass, self.cFunction = self._parsePointer(self.args[1])

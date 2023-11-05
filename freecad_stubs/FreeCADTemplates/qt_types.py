@@ -18,7 +18,7 @@ class pyqtSignal(typing.Generic[Fun_t]):
         ...
 
     @typing.overload
-    def __get__(self, instance: None, owner: type[QObject]) -> pyqtSignal[Fun_t]:
+    def __get__(self, instance: None, owner: type[QObject]) -> pyqtSignal[Fun_t]:  # type: ignore
         ...
 
     @typing.overload
@@ -35,7 +35,7 @@ class pyqtBoundSignal(typing.Generic[Fun_t]):
         ...
 
     @typing.overload
-    def connect(self, slot: Fun_t) -> 'QMetaObject.Connection':
+    def connect(self, slot: Fun_t) -> 'QMetaObject.Connection':  # type: ignore
         ...
 
     @typing.overload
@@ -43,7 +43,7 @@ class pyqtBoundSignal(typing.Generic[Fun_t]):
         ...
 
     @typing.overload
-    def disconnect(self) -> None:
+    def disconnect(self) -> None:  # type: ignore
         ...
 
     @typing.overload
