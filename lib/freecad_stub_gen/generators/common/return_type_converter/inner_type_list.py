@@ -1,9 +1,9 @@
 import re
 
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import (
-    UnionArgument,
     AnyValue,
     RetType,
+    UnionArgument,
 )
 from freecad_stub_gen.generators.common.return_type_converter.base import (
     ReturnTypeConverterBase,

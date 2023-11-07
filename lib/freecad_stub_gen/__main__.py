@@ -10,8 +10,8 @@ def configLogger():
 
 
 def main():
-    from freecad_stub_gen.generators.types_enum import generateTypes
     from freecad_stub_gen.generate import generateFreeCadStubs
+    from freecad_stub_gen.generators.types_enum import generateTypes
 
     generateTypes()
     generateFreeCadStubs()

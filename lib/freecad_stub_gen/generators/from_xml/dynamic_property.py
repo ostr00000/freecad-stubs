@@ -3,11 +3,11 @@ from abc import ABC
 from pathlib import Path
 from typing import Literal
 
+from freecad_stub_gen.file_functions import readContent
 from freecad_stub_gen.generators.common.gen_property.gen_dynamic import (
     DynamicPropertyGenerator,
 )
 from freecad_stub_gen.generators.from_xml.base import BaseXmlGenerator
-from freecad_stub_gen.file_functions import readContent
 
 logger = logging.getLogger(__name__)
 

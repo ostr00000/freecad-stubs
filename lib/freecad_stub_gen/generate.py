@@ -3,8 +3,9 @@ import shutil
 import typing
 from pathlib import Path
 
-from freecad_stub_gen.FreeCADTemplates import additionalPath
 from freecad_stub_gen.config import SOURCE_DIR, TARGET_DIR
+from freecad_stub_gen.file_functions import genCppFiles, genXmlFiles
+from freecad_stub_gen.FreeCADTemplates import additionalPath
 from freecad_stub_gen.generators.common.gen_base import BaseGenerator
 from freecad_stub_gen.generators.exceptions.gen import ExceptionGenerator
 from freecad_stub_gen.generators.from_cpp.functions import (
@@ -15,9 +16,8 @@ from freecad_stub_gen.generators.from_cpp.module import (
     FreecadStubGeneratorFromCppModule,
 )
 from freecad_stub_gen.generators.from_xml.full import FreecadStubGeneratorFromXML
-from freecad_stub_gen.python_code.module_container import Module
 from freecad_stub_gen.module_namespace import moduleNamespace
-from freecad_stub_gen.file_functions import genCppFiles, genXmlFiles
+from freecad_stub_gen.python_code.module_container import Module
 
 logger = logging.getLogger(__name__)
 generators: typing.Sequence[type[BaseGenerator]] = (

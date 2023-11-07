@@ -2,8 +2,8 @@ import re
 
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import (
-    TupleArgument,
     RetType,
+    TupleArgument,
 )
 from freecad_stub_gen.generators.common.return_type_converter.base import (
     ReturnTypeConverterBase,

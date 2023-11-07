@@ -7,6 +7,7 @@ from functools import cached_property, lru_cache
 from inspect import Parameter
 from pathlib import Path
 
+from freecad_stub_gen.cpp_code.converters import toBool
 from freecad_stub_gen.generators.common.annotation_parameter import (
     AnnotationParam,
     SelfSignature,
@@ -19,7 +20,6 @@ from freecad_stub_gen.generators.common.gen_method import MethodGenerator
 from freecad_stub_gen.generators.common.names import getClassNameFromNode
 from freecad_stub_gen.generators.common.signature_merger import SignatureMerger
 from freecad_stub_gen.generators.from_xml.base import BaseXmlGenerator
-from freecad_stub_gen.cpp_code.converters import toBool
 
 logger = logging.getLogger(__name__)
 

@@ -6,10 +6,9 @@ import re
 from functools import cached_property
 from typing import Generic, Iterable, Iterator, Self, TypeVar, cast, overload
 
-
 from freecad_stub_gen.generators.common.cpp_function import (
-    genFuncArgs,
     generateExpressionUntilChar,
+    genFuncArgs,
 )
 from freecad_stub_gen.generators.common.return_type_converter.full import (
     ReturnTypeConverter,
@@ -56,7 +55,7 @@ class QtSignal(BlockItem):
             if len(protArgs) > 1:
                 protArgs.append('/')
 
-            pn = f'__{self.cppBlock.cppClass.name}_' f'{self.name}_{argNum}'
+            pn = f'__{self.cppBlock.cppClass.name}_{self.name}_{argNum}'
             protocolNames.append(pn)
 
             requiredImports.add(

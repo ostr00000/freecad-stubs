@@ -1,15 +1,16 @@
 import inspect
 from xml.etree import ElementTree as ET
 
+from freecad_stub_gen.cpp_code.converters import toBool
 from freecad_stub_gen.generators.common.doc_string import (
     formatDocstring,
     getDocFromNode,
 )
 from freecad_stub_gen.generators.common.names import (
-    getModuleName,
-    getClassWithModulesFromNode,
     getClassName,
+    getClassWithModulesFromNode,
     getFatherClassWithModules,
+    getModuleName,
 )
 from freecad_stub_gen.generators.from_xml.dynamic_property import (
     XmlDynamicPropertyGenerator,
@@ -17,9 +18,8 @@ from freecad_stub_gen.generators.from_xml.dynamic_property import (
 from freecad_stub_gen.generators.from_xml.method import XmlMethodGenerator
 from freecad_stub_gen.generators.from_xml.static_property import XmlPropertyGenerator
 from freecad_stub_gen.importable_map import importableMap
-from freecad_stub_gen.python_code.module_container import Module
 from freecad_stub_gen.python_code import indent
-from freecad_stub_gen.cpp_code.converters import toBool
+from freecad_stub_gen.python_code.module_container import Module
 
 
 class FreecadStubGeneratorFromXML(

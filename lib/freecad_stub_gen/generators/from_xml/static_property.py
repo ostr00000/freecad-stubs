@@ -3,6 +3,7 @@ from abc import ABC
 from functools import cached_property
 from xml.etree import ElementTree as ET
 
+from freecad_stub_gen.cpp_code.converters import toBool
 from freecad_stub_gen.generators.common.doc_string import getDocFromNode
 from freecad_stub_gen.generators.common.gen_property.gen_base import (
     BasePropertyGenerator,
@@ -13,7 +14,6 @@ from freecad_stub_gen.generators.common.return_type_converter.full import (
 )
 from freecad_stub_gen.generators.from_xml.base import BaseXmlGenerator
 from freecad_stub_gen.generators.from_xml.method import XmlMethodGenerator
-from freecad_stub_gen.cpp_code.converters import toBool
 
 logger = logging.getLogger(__name__)
 

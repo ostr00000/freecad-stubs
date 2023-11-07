@@ -3,11 +3,10 @@ import re
 from functools import cached_property
 from itertools import islice
 
-
 from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.generators.common.cpp_function import (
-    genFuncArgs,
     generateExpressionUntilChar,
+    genFuncArgs,
 )
 from freecad_stub_gen.generators.common.names import (
     getClassName,

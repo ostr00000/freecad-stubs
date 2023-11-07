@@ -3,7 +3,6 @@ import re
 from inspect import Parameter, Signature
 from typing import Iterable
 
-
 from freecad_stub_gen.cpp_code.converters import validatePythonValue
 from freecad_stub_gen.generators.common.annotation_parameter import RawRepr
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar

@@ -1,6 +1,6 @@
 import logging
 from abc import ABC
-from typing import Sequence, Protocol
+from typing import Protocol, Sequence
 
 from freecad_stub_gen.generators.common.doc_string import formatDocstring
 from freecad_stub_gen.generators.common.gen_python_api import PythonApiGenerator

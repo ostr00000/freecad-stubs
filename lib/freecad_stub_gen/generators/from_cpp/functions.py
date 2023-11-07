@@ -9,9 +9,9 @@ from freecad_stub_gen.generators.common.cpp_function import (
     generateExpressionUntilChar,
 )
 from freecad_stub_gen.generators.from_cpp.base import (
+    BaseGeneratorFromCpp,
     Method,
     PyMethodDef,
-    BaseGeneratorFromCpp,
 )
 
 logger = logging.getLogger(__name__)

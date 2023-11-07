@@ -1,11 +1,12 @@
 import keyword
 import re
 from collections.abc import Iterator
-from inspect import Parameter, _ParameterKind, _empty
+from inspect import Parameter, _empty, _ParameterKind
 from itertools import count
 from typing import Generator
 from xml.etree import ElementTree as ET
 
+from freecad_stub_gen.cpp_code.converters import validatePythonValue
 from freecad_stub_gen.generators.common.annotation_parameter import (
     AnnotationParam,
     RawRepr,
@@ -18,7 +19,6 @@ from freecad_stub_gen.generators.common.cpp_function import (
     findFunctionCall,
     generateExpressionUntilChar,
 )
-from freecad_stub_gen.cpp_code.converters import validatePythonValue
 
 
 def generateSignaturesFromDocstring(name: str, docString: str, argNumStart: int = 0):

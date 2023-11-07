@@ -4,6 +4,7 @@ from collections.abc import Iterable
 from itertools import chain
 
 from freecad_stub_gen.cpp_code.block import QtSignalBlock, parseClass
+from freecad_stub_gen.file_functions import readContent
 from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall
 from freecad_stub_gen.generators.common.doc_string import formatDocstring
@@ -16,7 +17,6 @@ from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import
 )
 from freecad_stub_gen.generators.from_cpp.base import BaseGeneratorFromCpp
 from freecad_stub_gen.importable_map import importableMap
-from freecad_stub_gen.file_functions import readContent
 from freecad_stub_gen.python_code import indent
 
 logger = logging.getLogger(__name__)
