@@ -49,7 +49,8 @@ class PropertyMacroBase:
                 if match := re.search(reg, self.constructorBody):
                     newVal = match.group(1)
                 else:
-                    raise ValueError(f"Cannot find value for variable: {val}")
+                    msg = f'Cannot find value for variable: {val}'
+                    raise ValueError(msg)
 
             case unexpectedVal:
                 raise ValueError(unexpectedVal)

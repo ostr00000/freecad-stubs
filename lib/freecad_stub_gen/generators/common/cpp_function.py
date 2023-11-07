@@ -17,14 +17,10 @@ def _skipAdditionalDirectiveBlocks(it: Iterator[tuple[int, str]]):
                     # maybe we started in the middle of directive
                     directiveStack.pop()
                 buffer.clear()
-            elif text.endswith('#elif') or text.endswith('#else'):
+            elif text.endswith(('#elif', '#else')):
                 directiveStack[-1] = False
                 buffer.clear()
-            elif (
-                text.endswith('#if')
-                or text.endswith('#ifdef')
-                or text.endswith('#ifndef')
-            ):
+            elif text.endswith(('#if', '#ifdef', '#ifndef')):
                 directiveStack.append(True)
                 buffer.clear()
 
@@ -53,8 +49,7 @@ def findFunctionCall(
             if not bracketDeep:
                 break
 
-    functionText = text[bodyStart : bodyEnd + 1]
-    return functionText
+    return text[bodyStart : bodyEnd + 1]
 
 
 def generateExpressionUntilChar(

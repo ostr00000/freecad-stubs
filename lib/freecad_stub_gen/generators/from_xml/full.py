@@ -25,8 +25,8 @@ from freecad_stub_gen.python_code.module_container import Module
 class FreecadStubGeneratorFromXML(
     XmlPropertyGenerator, XmlDynamicPropertyGenerator, XmlMethodGenerator
 ):
-    """
-    Generate class defined in xml file.
+    """Generate class defined in xml file.
+
     Argument types are extracted from code.
     """
 

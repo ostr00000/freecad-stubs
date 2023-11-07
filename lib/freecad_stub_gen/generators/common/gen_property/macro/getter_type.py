@@ -14,10 +14,7 @@ class PropertyMacroGetter(PropertyMacroBase):
         if not (typeId := self.typeId):
             return ''
 
-        if 'List' in typeId:
-            container = 'list[{t}]'
-        else:
-            container = '{t}'
+        container = 'list[{t}]' if 'List' in typeId else '{t}'
 
         match typeId:
             case (

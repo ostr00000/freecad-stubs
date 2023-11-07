@@ -41,7 +41,7 @@ class QtSignal(BlockItem):
         self.name = returnTypeAndName.rsplit(' ', maxsplit=1)[-1]
 
     def getStrRepr(self, requiredImports: OrderedStrSet):
-        """triggered: typing.ClassVar[QtCore.pyqtSignal]"""
+        """triggered: typing.ClassVar[QtCore.pyqtSignal]."""
         requiredImports.update(self.requiredImports)
         requiredImports.add('typing')
         requiredImports.add('FreeCADTemplates.qt_types as qt')
@@ -200,7 +200,8 @@ class\s+            # keyword `class`
         re.VERBOSE,
     )
     if not (match := re.search(classBodyReg, fileContent)):
-        raise ValueError(f"Cannot find class {className}")
+        msg = f'Cannot find class {className}'
+        raise ValueError(msg)
 
     classBody = next(
         generateExpressionUntilChar(

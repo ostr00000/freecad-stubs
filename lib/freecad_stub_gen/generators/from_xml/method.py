@@ -147,8 +147,8 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
 
     @classmethod
     def genNumberProtocol(cls, className: str) -> str:
-        """
-        Source: find `PyNumberMethods` in `src/Tools/generateTemplates/templateClassPyExport.py`
+        """Source: find `PyNumberMethods` in `src/Tools/generateTemplates/templateClassPyExport.py`.
+
         https://github.com/FreeCAD/FreeCAD/blob/master/src/Tools/generateTemplates/templateClassPyExport.py
         https://docs.python.org/3/c-api/typeobj.html#c.PyNumberMethods
         https://docs.python.org/3/c-api/typeobj.html#sub-slots
@@ -194,7 +194,7 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
             return ret
 
         retType = f' -> {retType}' if retType else ''
-        return f'def {name}({", ".join(("self",) + args)}){retType}: ...\n\n'
+        return f'def {name}({", ".join(("self", *args))}){retType}: ...\n\n'
 
     @lru_cache
     def findFunctionBody(self, cFuncName: str, cClassName: str) -> str | None:
@@ -220,5 +220,4 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
     @cached_property
     def parentXmlPath(self) -> Path:
         fatherInclude = self.currentNode.attrib['FatherInclude']
-        parentFile = (self.sourceDir / fatherInclude).with_suffix('.xml')
-        return parentFile
+        return (self.sourceDir / fatherInclude).with_suffix('.xml')

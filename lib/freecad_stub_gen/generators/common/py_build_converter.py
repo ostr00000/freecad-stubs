@@ -22,7 +22,8 @@ def parsePyBuildValues(formatText: str) -> str:
                     size = formatSize
                     break
             else:
-                raise ValueError("Unknown format string", formatText)
+                msg = 'Unknown format string'
+                raise ValueError(msg, formatText)
 
         formatText = formatText[size:]
         results.append(singleResult)
@@ -75,16 +76,14 @@ def _parsePyBuildDict(complexFormats: list[str]):
         key, val = cf.split(':', maxsplit=1)
         keys.add(parsePyBuildValues(key))
         values.add(parsePyBuildValues(val))
-    result = f'dict[{" | ".join(keys)}, {" | ".join(values)}]'
-    return result
+    return f'dict[{" | ".join(keys)}, {" | ".join(values)}]'
 
 
 def _parsePyBuildList(complexFormats: list[str]):
     values = set()
     for cf in complexFormats:
         values.add(parsePyBuildValues(cf))
-    result = f'list[{" | ".join(values)}]'
-    return result
+    return f'list[{" | ".join(values)}]'
 
 
 def _parsePyBuildTuple(complexFormats: list[str]):

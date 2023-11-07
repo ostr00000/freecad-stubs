@@ -1,3 +1,4 @@
+import contextlib
 import dataclasses
 import logging
 import re
@@ -37,12 +38,10 @@ class Method:
         self.pythonMethodName = self.args[0]
         self.cClass, self.cFunction = self._parsePointer(self.args[1])
         if len(self.args) > 2:
-            try:
+            with contextlib.suppress(IndexError):
                 self.doc = re.sub(
                     self.REG_WHITESPACE_WITH_APOSTROPHE, '', self.args[-1]
                 ).replace('\\n', '\n')
-            except IndexError:
-                pass
 
     REG_POINTER = re.compile(r'(?:\w+::)*?(?:(?P<class>\w+)::)?\b(?P<func>\w+)\b\W*$')
 
@@ -54,7 +53,7 @@ class Method:
 
     def insertParam(self, param: Parameter):
         assert self.pythonSignature is not None
-        newParameters = [param] + list(self.pythonSignature.parameters.values())
+        newParameters = [param, *self.pythonSignature.parameters.values()]
         self.pythonSignature = self.pythonSignature.replace(parameters=newParameters)
 
     def __repr__(self):

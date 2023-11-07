@@ -28,7 +28,7 @@ class FreecadStubGeneratorFromCppFunctions(BaseGeneratorFromCpp):
     REG_METHOD_DEF = re.compile(r'PyMethodDef(?!\s*\*)')
 
     def _findArrayGen(self) -> Iterable[Method]:
-        """Based on https://docs.python.org/3/c-api/structures.html#c.PyMethodDef"""
+        """Based on https://docs.python.org/3/c-api/structures.html#c.PyMethodDef."""
         for match in self.REG_METHOD_DEF.finditer(self.impContent):
             arrayStr = findFunctionCall(self.impContent, match.start())
             arrayStrStartPos = arrayStr.find('{') + 1

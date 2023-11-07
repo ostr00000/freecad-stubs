@@ -50,10 +50,7 @@ class FunctionConv:
             c.removeprefix('&').strip()
             for c in generateExpressionUntilChar(sub, sub.find('(') + 1, ',')
         ]
-        argStr = [
-            a[1:-1] if a.startswith('(') and a.endswith(')') else a for a in argStr
-        ]
-        return argStr
+        return [a[1:-1] if a.startswith('(') and a.endswith(')') else a for a in argStr]
 
     # noinspection RegExpSuspiciousBackref
     REG_STRING = re.compile(

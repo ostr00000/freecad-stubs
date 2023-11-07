@@ -64,8 +64,8 @@ CLASS_TO_ALIAS = {
 
 
 def getClassWithModulesFromNode(currentNode: ET.Element) -> str:
-    """
-    Return class name preceded by all modules, ex. `FreeCAD.Vector`.
+    """Return class name preceded by all modules, ex. `FreeCAD.Vector`.
+
     Some classes are renamed in c++ code - try them first, then extract based on
     https://github.com/FreeCAD/FreeCAD/blob/8ac722c1e89ef530564293efd30987db09017e12/src/Tools/generateTemplates/templateClassPyExport.py#L279
     """
@@ -117,7 +117,8 @@ def getModuleName(classWithModules: str, required=False) -> str | None:
     if not required:
         return None
 
-    raise ValueError(f"Cannot find module for {classWithModules}")
+    msg = f'Cannot find module for {classWithModules}'
+    raise ValueError(msg)
 
 
 def useAliasedModule(

@@ -23,7 +23,7 @@ def _replacer(match):
 
 
 def removeComments(text):
-    """Based on https://stackoverflow.com/a/241506"""
+    """Based on https://stackoverflow.com/a/241506."""
     return re.sub(_REG_COMMENT_REM, _replacer, text)
 
 
@@ -34,7 +34,8 @@ def toBool(text: str | bool | None) -> bool:
         case 'n' | 'no' | 'f' | 'false' | 'off' | '0' | 'none':
             return False
         case _:
-            raise ValueError(f"Unknown bool value: {text}")
+            msg = f'Unknown bool value: {text}'
+            raise ValueError(msg)
 
 
 def validatePythonValue(value: str) -> str | None:

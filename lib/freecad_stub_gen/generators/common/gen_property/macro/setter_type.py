@@ -267,7 +267,8 @@ class PropertyMacroSetter(PropertyMacroBase):
             elif match := re.search(reg, self.cppContent):
                 literalsRaw = match.group(1)
             else:
-                raise ValueError("Cannot find enum variable")
+                msg = 'Cannot find enum variable'
+                raise ValueError(msg)
 
             literalsStart = literalsRaw.find('{') + 1
             literalsArray = [

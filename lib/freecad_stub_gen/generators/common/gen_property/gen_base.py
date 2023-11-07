@@ -53,7 +53,7 @@ class BasePropertyGenerator(BaseGenerator, ABC):
         for subType in cls.REG_TYPE_SPLIT_CHARS.split(pythonType):
             if '.' in subType:
                 subType = subType.replace(' ', '')
-                if '...' == subType:
+                if subType == '...':
                     continue
 
                 mod = getModuleName(subType, required=True)

@@ -37,8 +37,8 @@ class PythonApiGenerator(BaseGenerator, ABC):
     def generateSignaturesFromCode(
         self, cFunctionName: str, cClassName: str, *, argNumStart=1
     ):
-        """
-        Generate arguments for `cFunctionName` in `cClassName`.
+        """Generate arguments for `cFunctionName` in `cClassName`.
+
         There may be more than one possible signature.
         """
         fnBody = self.findFunctionBody(cFunctionName, cClassName)

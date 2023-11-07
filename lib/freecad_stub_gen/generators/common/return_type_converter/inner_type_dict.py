@@ -59,13 +59,14 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
         if 'PARAM_PY_DICT' in self.functionBody:
             return varType
 
-        raise ValueError("Cannot extract dict inner types.")
+        msg = 'Cannot extract dict inner types.'
+        raise ValueError(msg)
 
     @lazyDec
     def _getInnerTypePyDictSetItemString(
         self, variableName: str, startPos: int, endPos: int
     ):
-        """Example: `PyDict_SetItemString(dict,It->first.c_str(), PyUnicode_FromString(It`"""
+        """Example: `PyDict_SetItemString(dict,It->first.c_str(), PyUnicode_FromString(It`."""
         da = DictArgument()
         regex = re.compile(rf'PyDict_SetItemString\s*\(\s*({variableName}\s*,[^;]*)\);')
         for match in regex.finditer(self.functionBody, startPos, endPos):
@@ -80,7 +81,7 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
 
     @lazyDec
     def _getInnerTypePyDictSetItem(self, variableName: str, startPos: int, endPos: int):
-        """Example: `PyDict_SetItem(pDict, pKey, pValue);`"""
+        """Example: `PyDict_SetItem(pDict, pKey, pValue);`."""
         da = DictArgument()
         regex = re.compile(rf'PyDict_SetItem\s*\(\s*({variableName}\s*,[^;]*)\);')
         for match in regex.finditer(self.functionBody, startPos, endPos):
@@ -96,7 +97,7 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
 
     @lazyDec
     def _getInnerTypeDictSetItem(self, variableName: str, startPos: int, endPos: int):
-        """Example: `dict.setItem(it->c_str(), list);`"""
+        """Example: `dict.setItem(it->c_str(), list);`."""
         da = DictArgument()
         tdg = TypedDictGen(self.functionName)
         regex = re.compile(rf'{variableName}\b\.setItem\(([^;]*)\);')
@@ -126,7 +127,7 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
     def _getInnerTypeDictAssignLiterals(
         self, variableName: str, startPos: int, endPos: int
     ):
-        """Example: `ret["UserFriendlyName"] = strs[0];`"""
+        """Example: `ret["UserFriendlyName"] = strs[0];`."""
         tdg = TypedDictGen(self.functionName)
         regex = re.compile(rf'{variableName}\b\[\"(\w+)\"]\s*=\s*([^;]*);')
         for match in regex.finditer(self.functionBody, startPos, endPos):
@@ -138,7 +139,7 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
 
     @lazyDec
     def _getInnerTypeDictAssign(self, variableName: str, startPos: int, endPos: int):
-        """Example: `pyRM[AttachEngine::getModeName(rm.first)] = pyListOfCombinations;`"""
+        """Example: `pyRM[AttachEngine::getModeName(rm.first)] = pyListOfCombinations;`."""
         da = DictArgument()
         regex = re.compile(rf'{variableName}\b\[(.*)]\s*=\s*([^;]*);')
         for match in regex.finditer(self.functionBody, startPos, endPos):

@@ -153,7 +153,8 @@ class\s+                # keyword `class`
             case 'QMainWindow':
                 classWithModule = 'qtpy.QtWidgets.QMainWindow'
             case StrWrapper('Q'):
-                raise ValueError("Unknown qt class")
+                msg = 'Unknown qt class'
+                raise ValueError(msg)
             case StrWrapper(end='Py'):
                 classWithModule = getClassWithModulesFromPointer(baseClass)
             case _:

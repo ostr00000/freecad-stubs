@@ -239,8 +239,7 @@ class ReturnTypeConverterBase:
                     .strip()
                 )
 
-        varText = varText.removeprefix('const').strip().removeprefix('*').strip()
-        return varText
+        return varText.removeprefix('const').strip().removeprefix('*').strip()
 
     @staticmethod
     def _removeSuffix(varText: str) -> str:
@@ -408,8 +407,7 @@ class ReturnTypeConverterBase:
 
         if '<' in v and '>' in v:
             v = v.split('<', maxsplit=1)[1].split('>', maxsplit=1)[0]
-        v = v.removeprefix('const').strip().removesuffix('*').strip()
-        return v
+        return v.removeprefix('const').strip().removesuffix('*').strip()
 
     def _getRetTypeFromAssignment(
         self, variableName: str, startPos: int, endPos: int

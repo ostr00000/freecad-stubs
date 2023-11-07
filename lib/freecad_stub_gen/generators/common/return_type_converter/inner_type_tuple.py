@@ -36,12 +36,13 @@ class ReturnTypeInnerTuple(ReturnTypeConverterBase):
                 self.requiredImports.update(tupleArg.imports)
                 return varType
 
-        raise ValueError("Cannot find inner type for tuple")
+        msg = 'Cannot find inner type for tuple'
+        raise ValueError(msg)
 
     def _genInnerTypeTupleConstructorWithoutAssignment(
         self, startPos: int, endPos: int
     ):
-        """Py::TupleN(Py::Object(v.first->getPyObject(),true),Py::String(v.second))"""
+        """Py::TupleN(Py::Object(v.first->getPyObject(),true),Py::String(v.second))."""
         regex = re.compile(r'TupleN\s*\(([^;]+)\)')
         if match := regex.search(self.functionBody, startPos, endPos):
             funArgs = list(
@@ -53,7 +54,7 @@ class ReturnTypeInnerTuple(ReturnTypeConverterBase):
                 yield self.getExpressionType(arg, endPos=endPos)
 
     def _genInnerTypeTupleSetItem(self, variableName: str, startPos: int, endPos: int):
-        """Example: `list.setItem(0, Py::Float(7.0));`"""
+        """Example: `list.setItem(0, Py::Float(7.0));`."""
         variableLengthTuple = True
         regex = re.compile(rf'{variableName}\.setItem\(([^;]+)\);')
         for variableMatch in regex.finditer(self.functionBody, startPos, endpos=endPos):
@@ -69,7 +70,7 @@ class ReturnTypeInnerTuple(ReturnTypeConverterBase):
     def _genInnerTypePyTupleSetItem(
         self, variableName: str, startPos: int, endPos: int
     ):
-        """Example: `PyTuple_SetItem(t, 1, Py::new_reference_to( Py::Float(c.g) ));`"""
+        """Example: `PyTuple_SetItem(t, 1, Py::new_reference_to( Py::Float(c.g) ));`."""
         regex = re.compile(
             rf"""
         PyTuple_(?:SetItem|SET_ITEM)
@@ -92,7 +93,7 @@ class ReturnTypeInnerTuple(ReturnTypeConverterBase):
     def _genInnerTypeTupleAssignItem(
         self, variableName: str, startPos: int, endPos: int
     ):
-        """Example: `list[0] = Py::Float(7.0)`"""
+        """Example: `list[0] = Py::Float(7.0)`."""
         regex = re.compile(
             rf"""
         {variableName}      # tuple variable name
@@ -115,7 +116,7 @@ class ReturnTypeInnerTuple(ReturnTypeConverterBase):
     def _genInnerTypeTupleConstructor(
         self, variableName: str, startPos: int, endPos: int
     ):
-        """Example: `Py::TupleN list(Py::Float(7.0), Py::Float(7.0));`"""
+        """Example: `Py::TupleN list(Py::Float(7.0), Py::Float(7.0));`."""
         regex = re.compile(rf'TupleN\s+{variableName}\s*\(([^;]+)\);')
         if match := regex.search(self.functionBody, startPos, endpos=endPos):
             funArgs = list(

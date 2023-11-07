@@ -2,12 +2,15 @@ from __future__ import annotations
 
 import logging
 import sys
-from collections.abc import Iterable
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 from freecad_stub_gen.config import TARGET_DIR
 from freecad_stub_gen.module_namespace import moduleNamespace
 from freecad_stub_gen.ordered_set import OrderedStrSet
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+    from pathlib import Path
 
 logger = logging.getLogger(__name__)
 

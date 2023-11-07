@@ -42,7 +42,8 @@ def _signatureGen(funDocString: str, argNumStart: int) -> Iterator[Parameter]:
     try:
         next(uniqueNameGen)
     except StopIteration as exc:
-        raise ValueError("Unique generator should never end") from exc
+        msg = 'Unique generator should never end'
+        raise ValueError(msg) from exc
 
     paramType: _ParameterKind = Parameter.POSITIONAL_ONLY
 

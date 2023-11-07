@@ -112,7 +112,8 @@ class TypesConverter:
             # PyObject* BSplineCurve2dPy::insertKnot(PyObject * args)
             # with expectedArg=7, but providedArg=5, code:
             # if (!PyArg_ParseTuple(args, "d|idO!", &U, &M, &tol))
-            raise InvalidPointerFormat(f"Function has not enough arguments {self.fun}")
+            msg = f'Function has not enough arguments {self.fun}'
+            raise InvalidPointerFormat(msg)
 
         if (typ := self._convertPointerToType(pointerArg)) is not None:
             return typ

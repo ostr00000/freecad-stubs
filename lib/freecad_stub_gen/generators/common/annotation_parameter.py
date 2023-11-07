@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class RawRepr:
-    """By default inspect.Signature uses"""
+    """By default inspect.Signature uses."""
 
     __slots__ = ('values',)
 
@@ -78,7 +78,7 @@ ReplaceParameters_t: TypeAlias = (
 
 
 class SelfSignature(Signature):
-    """Skip separator if there is only self parameter"""
+    """Skip separator if there is only self parameter."""
 
     __slots__ = ('exceptions', 'unknown_parameters')
 

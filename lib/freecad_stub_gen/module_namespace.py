@@ -24,7 +24,8 @@ class _ModuleNamespace:
 
         match self.stemToPaths[stem]:
             case []:
-                raise ValueError(f"There is no path for {stem=}")
+                msg = f'There is no path for {stem=}'
+                raise ValueError(msg)
             case [onlyOnePath]:
                 return onlyOnePath
             case manyPaths if any(
@@ -63,8 +64,7 @@ class _ModuleNamespace:
 
     def convertNamespaceToModule(self, namespace: str) -> str:
         mod = self.NAMESPACE_TO_MODULE.get(namespace, namespace)
-        aliasedMod = self.MODULE_TO_ALIAS.get(mod, mod)
-        return aliasedMod
+        return self.MODULE_TO_ALIAS.get(mod, mod)
 
 
 __all__ = ['moduleNamespace']

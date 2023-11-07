@@ -110,7 +110,8 @@ class ExceptionContainer:
             if e.cppClass == cppClass and e.cppNamespace == cppNamespace:
                 return e
 
-        raise ValueError(f"Cannot find exception: {cppClass=} {cppNamespace=}")
+        msg = f'Cannot find exception: {cppClass=} {cppNamespace=}'
+        raise ValueError(msg)
 
     def getExceptionText(self, cTypeExceptionText: str) -> str:
         _cppNamespace, cppClass = getNamespaceWithClass(cTypeExceptionText)
@@ -128,7 +129,8 @@ class ExceptionContainer:
             # but we are unable to determine which one is used.
             return 'Exception'
 
-        raise ValueError(f"Unknown exception {cTypeExceptionText=}")
+        msg = f'Unknown exception {cTypeExceptionText=}'
+        raise ValueError(msg)
 
 
 exceptionContainer = ExceptionContainer()
