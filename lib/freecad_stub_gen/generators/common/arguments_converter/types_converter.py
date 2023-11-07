@@ -1,8 +1,7 @@
 import logging
 import re
-from inspect import Parameter
+from inspect import Parameter, _ParameterKind
 from typing import Iterator
-
 
 from freecad_stub_gen.cpp_code.converters import convertToPythonValue
 from freecad_stub_gen.generators.common.annotation_parameter import (
@@ -32,7 +31,6 @@ from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import
 )
 from freecad_stub_gen.ordered_set import OrderedStrSet
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -53,7 +51,7 @@ class TypesConverter:
         self._isArgOptional = False
 
         if self.fun.kwargList:
-            self._parameterKind = Parameter.POSITIONAL_OR_KEYWORD
+            self._parameterKind: _ParameterKind = Parameter.POSITIONAL_OR_KEYWORD
         else:
             self._parameterKind = Parameter.POSITIONAL_ONLY
 

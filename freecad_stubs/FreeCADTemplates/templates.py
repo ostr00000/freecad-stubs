@@ -14,12 +14,11 @@ Replace:
 # pyright: reportGeneralTypeIssues=false, reportMissingModuleSource=false
 import typing
 
+import FreeCAD
 import FreeCADGui
 from qtpy.QtCore import QObject
 from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import QDialogButtonBox, QMenu
-
-import FreeCAD
 
 
 # FeaturePython.cpp

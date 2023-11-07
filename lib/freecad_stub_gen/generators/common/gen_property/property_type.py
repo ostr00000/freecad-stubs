@@ -3,7 +3,7 @@ import enum
 
 # pylint: disable=invalid-name
 class PropertyType(enum.IntFlag):
-    description: str
+    description: str  # type: ignore[misc]
 
     def __new__(cls, value, description=None):
         member = int.__new__(cls, value)
@@ -11,7 +11,7 @@ class PropertyType(enum.IntFlag):
 
         if description is None:
             description = '\n'.join(flag.description for flag in member)
-        member.description = description
+        member.description = description  # type: ignore[misc]
 
         return member
 

@@ -1,14 +1,14 @@
 import re
 from functools import wraps
-from typing import ParamSpec, Callable, TypeVar
+from typing import Callable, ParamSpec, TypeVar
 
 from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import (
-    DictArgument,
     ComplexArgumentBase,
-    TypedDictGen,
+    DictArgument,
     RetType,
+    TypedDictGen,
 )
 from freecad_stub_gen.generators.common.return_type_converter.base import (
     ReturnTypeConverterBase,
@@ -111,11 +111,11 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
             value = self.getExpressionType(funArgs[1], endPos)
             key = funArgs[0]
             if key.startswith('"') and key.endswith('"'):
-                tKey = removeQuote(key)
-                tdg.add(tKey, value)
+                keyLiteral = removeQuote(key)
+                tdg.add(keyLiteral, value)
             else:
-                tKey = self.getExpressionType(key, endPos)
-                da.add(tKey, value)
+                keyVariable = self.getExpressionType(key, endPos)
+                da.add(keyVariable, value)
 
         if tdg:
             assert not da, "Values in `TypedDict` are mixed with `dict`"
