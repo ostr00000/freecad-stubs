@@ -17,7 +17,7 @@ install_in_env:
 	$(PYTHON_ENV) -m pip install --upgrade pip
 	$(PYTHON_ENV) -m pip install PyQt5
 	$(PYTHON_ENV) -m pip install pre-commit
-	$(PYTHON_ENV) -m pip install -e .[generate,check]
+	$(PYTHON_ENV) -m pip install --editable .[generate,check]
 
 install_pre_commit:
 	$(PYTHON_ENV) -m pre_commit install
