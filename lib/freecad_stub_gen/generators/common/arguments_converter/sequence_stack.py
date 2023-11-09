@@ -38,7 +38,8 @@ class SequenceStack:
 
         firstObjName = stackVals[0].pythonArgName
         if all(s.pythonArgName == firstObjName for s in stackVals):
-            # if all sub arguments have the same name -> we use it (probably from kwargList)
+            # if all sub arguments have the same name, then we use it
+            # (probably from kwargList)
             objName = firstObjName
         else:
             objName = '_'.join(s.pythonArgName for s in stackVals)

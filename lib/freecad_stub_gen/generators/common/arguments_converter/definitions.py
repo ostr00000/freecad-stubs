@@ -1,3 +1,5 @@
+import re
+
 DEFAULT_ARG_NAME = 'arg'
 MISSING_DEFAULT_ARG = object()
 UNKNOWN_DEFAULT_ARG = object()
@@ -42,7 +44,7 @@ C_TYPE_TO_PYTHON_TYPE = {
     for k, v in C_TYPE_TO_PYTHON_TYPE.items()
 }
 # based on https://docs.python.org/3/c-api/arg.html
-PARSE_TUPLE_STR = """
+C_API_TYPES_STR = """
 s (str) [const char *]
 s* (str or bytes-like object) [Py_buffer]
 s# (str, read-only bytes-like object) [const char *, int or Py_ssize_t]
@@ -63,7 +65,7 @@ w* (read-write bytes-like object) [Py_buffer]
 es (str) [const char *encoding, char **buffer]
 et (str, bytes or bytearray) [const char *encoding, char **buffer]
 es# (str) [const char *encoding, char **buffer, int or Py_ssize_t *buffer_length]
-et# (str, bytes or bytearray) [const char *encoding, char **buffer, int or Py_ssize_t *buffer_length]
+et# (str, bytes or bytearray) [const char *encoding, char **buffer, int *buffer_length]
 b (int) [unsigned char]
 B (int) [unsigned char]
 h (int) [short int]
@@ -90,7 +92,20 @@ p (bool) [int]
 
 
 def _initParseMaps():
-    autoGenTypeToRealType = {
+    cApiLineReg = re.compile(
+        r"""
+        (?P<key>\S+)        # API symbol
+        \s+\(
+        (?P<rawPythonType>\w+) # we take only first type
+        [^)]*               # remaining types
+        \)\s+\[
+        (?P<cppTypes>[^]]*) # all between []
+        ].*                 # ignore rest of the line
+        """,
+        re.VERBOSE,
+    )
+    rawPythonTypeToPythonType = {
+        'read': 'bytes',
         'read-only': 'bytes',
         'read-write': 'bytes',
         'bytes-like': 'bytes',
@@ -99,22 +114,21 @@ def _initParseMaps():
     locParseSizeMap = {}
     locParseTypeMap = {}
 
-    for line in PARSE_TUPLE_STR.splitlines():
+    for line in C_API_TYPES_STR.splitlines():
         if not line:
             continue
+        if not (m := cApiLineReg.match(line)):
+            raise ValueError
 
-        keyValue = line.split(' ', maxsplit=1)
-        key, value = keyValue[0], keyValue[1].strip()
+        key = m.group('key')
+        rawPythonType = m.group('rawPythonType')
+        cppTypes = m.group('cppTypes')
 
-        spVal = value.split('[')[1].split(']')[0].split(',')
-        size = len(spVal) if spVal != [''] else 0
-        locParseSizeMap[key] = size
+        cppSize = len(cppTypes.split(',')) if cppTypes else 0
+        fixedPythonType = rawPythonTypeToPythonType.get(rawPythonType, rawPythonType)
 
-        autoType = (
-            value.removeprefix('(').split(' ')[0].removesuffix(')').removesuffix(',')
-        )
-        realType = autoGenTypeToRealType.get(autoType, autoType)
-        locParseTypeMap[key] = realType
+        locParseSizeMap[key] = cppSize
+        locParseTypeMap[key] = fixedPythonType
 
     return locParseSizeMap, locParseTypeMap
 

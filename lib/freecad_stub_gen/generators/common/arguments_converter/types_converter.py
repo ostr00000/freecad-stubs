@@ -1,7 +1,7 @@
 import logging
 import re
+from collections.abc import Iterator
 from inspect import Parameter, _ParameterKind
-from typing import Iterator
 
 from freecad_stub_gen.cpp_code.converters import convertToPythonValue
 from freecad_stub_gen.generators.common.annotation_parameter import (
@@ -62,8 +62,8 @@ class TypesConverter:
     def safeConvertFormatToTypes(self) -> Iterator[Parameter]:
         try:
             yield from self._convertFormatToTypes()
-        except InvalidPointerFormat as ex:
-            logger.error(f'{ex}, {self._remainingFormat=}, {self.fun}')
+        except InvalidPointerFormat:
+            logger.exception(f'{self._remainingFormat=}, {self.fun}')
 
     def _convertFormatToTypes(self) -> Iterator[Parameter]:
         while self._remainingFormat:
@@ -108,12 +108,12 @@ class TypesConverter:
         # pylint: disable=raise-missing-from
         try:
             pointerArg = self.fun.argumentStrings[cArgNum]
-        except IndexError:  # some implementations are broken, example:
+        except IndexError as ie:  # some implementations are broken, example:
             # PyObject* BSplineCurve2dPy::insertKnot(PyObject * args)
             # with expectedArg=7, but providedArg=5, code:
             # if (!PyArg_ParseTuple(args, "d|idO!", &U, &M, &tol))
             msg = f'Function has not enough arguments {self.fun}'
-            raise InvalidPointerFormat(msg)
+            raise InvalidPointerFormat(msg) from ie
 
         if (typ := self._convertPointerToType(pointerArg)) is not None:
             return typ
@@ -127,8 +127,8 @@ class TypesConverter:
         try:
             if self._findPointerType(cArgNum + 1) is not None:
                 exc = InvalidPointerFormat("Format has swapped type")
-        except Exception:
-            raise exc
+        except InvalidPointerFormat:
+            raise exc from None
 
         raise exc
 
@@ -155,7 +155,8 @@ class TypesConverter:
             pythonArgName = self.fun.getPythonArgName(
                 curFormat, self._cArgNum, self._pythonArgNum
             )
-        assert isinstance(pythonArgName, str)
+        if not isinstance(pythonArgName, str):
+            raise TypeError
 
         if defaultValue is MISSING_DEFAULT_ARG:
             defaultValue = self._getDefaultValue(curFormat, self._cArgNum)

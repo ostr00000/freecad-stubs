@@ -1,9 +1,8 @@
 import keyword
 import re
-from collections.abc import Iterator
+from collections.abc import Generator, Iterator
 from inspect import Parameter, _empty, _ParameterKind
 from itertools import count
-from typing import Generator
 from xml.etree import ElementTree as ET
 
 from freecad_stub_gen.cpp_code.converters import validatePythonValue
@@ -47,8 +46,8 @@ def _signatureGen(funDocString: str, argNumStart: int) -> Iterator[Parameter]:
 
     paramType: _ParameterKind = Parameter.POSITIONAL_ONLY
 
-    for argText in generateExpressionUntilChar(funDocString, 0, ','):
-        argText = argText.strip()
+    for rawArgText in generateExpressionUntilChar(funDocString, 0, ','):
+        argText = rawArgText.strip()
         annotation: type[_empty] | str = Parameter.empty
 
         if argText[-2:] == '[]':

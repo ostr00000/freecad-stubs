@@ -261,13 +261,15 @@ class ReturnTypeConverterBase:
     @classmethod
     def _extractWidget(cls, varText: str):
         funArgs = list(genFuncArgs(varText))
-        if len(funArgs) == 1:
-            widgetType = 'QWidget'
-        else:
-            assert len(funArgs) == 2
-            widgetType = removeQuote(funArgs[1])
-            if not widgetType.startswith('Q'):
+        match funArgs:
+            case [_castArg]:
                 widgetType = 'QWidget'
+            case [_castArg, castType]:
+                widgetType = removeQuote(castType)
+                if not widgetType.startswith('Q'):
+                    widgetType = 'QWidget'
+            case _:
+                raise NotImplementedError
         return f'qtpy.QtWidgets.{widgetType}'
 
     def _extractBuildValue(self, varText: str, endPos: int) -> RetType:
@@ -309,7 +311,8 @@ class ReturnTypeConverterBase:
     def _findVariableType(self, variableName: str, endPos: int) -> RetType:
         """Search variable type based on its name - declaration/assignment."""
         if variableName == 'this':
-            assert self.classNameWithModule is not None
+            if self.classNameWithModule is None:
+                raise TypeError
             return self.classNameWithModule
 
         variableDecReg = re.compile(
@@ -412,7 +415,10 @@ class ReturnTypeConverterBase:
     def _getRetTypeFromAssignment(
         self, variableName: str, startPos: int, endPos: int
     ) -> RetType:
-        """Example: `myVar = Py::Float(7.0)`."""
+        """Extract parametrized type from `x = ...`.
+
+        Example: `myVar = Py::Float(7.0)`.
+        """
         regex = re.compile(rf'{variableName}\b\s*=\s*([^;]*);')
         gen = self._genVariableTypeFromRegex(regex, startPos, endPos, onlyLiteral=False)
         if union := UnionArgument(gen):
@@ -420,7 +426,7 @@ class ReturnTypeConverterBase:
         return AnyValue
 
     def _genVariableTypeFromRegex(
-        self, regex: re.Pattern, startPos: int, endPos: int, onlyLiteral=True
+        self, regex: re.Pattern, startPos: int, endPos: int, *, onlyLiteral=True
     ):
         """General match function by regex between declaration and `return` keyword."""
         for variableMatch in regex.finditer(self.functionBody, startPos, endpos=endPos):

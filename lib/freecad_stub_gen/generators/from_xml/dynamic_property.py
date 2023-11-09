@@ -15,7 +15,9 @@ logger = logging.getLogger(__name__)
 class XmlDynamicPropertyGenerator(BaseXmlGenerator, DynamicPropertyGenerator, ABC):
     def getCppClassName(self):
         twinName = self.currentNode.attrib.get('Twin')
-        assert twinName is not None, f"'Twin' not found in {self.baseGenFilePath}"
+        if twinName is None:
+            msg = f"'Twin' not found in {self.baseGenFilePath}"
+            raise TypeError(msg)
         return twinName
 
     def getCppContent(self):
@@ -26,7 +28,9 @@ class XmlDynamicPropertyGenerator(BaseXmlGenerator, DynamicPropertyGenerator, AB
 
     def _getIncludeContent(self, extension: Literal['.cpp', '.h']) -> str | None:
         inc = self.currentNode.get('Include')
-        assert inc is not None, f"'Include' not found in {self.baseGenFilePath}"
+        if inc is None:
+            msg = f"`Include` not found in {self.baseGenFilePath}"
+            raise TypeError(msg)
 
         parts = self.baseGenFilePath.parts
         baseParts = parts[: parts.index('src') + 1] + (inc,)

@@ -86,19 +86,20 @@ def _parsePyBuildList(complexFormats: list[str]):
     return f'list[{" | ".join(values)}]'
 
 
-def _parsePyBuildTuple(complexFormats: list[str]):
-    if len(complexFormats) == 1:
-        if complexFormats[0]:
-            result = parsePyBuildValues(complexFormats[0])
+def _parsePyBuildTuple(complexFormats: list[str]) -> str:
+    match complexFormats:
+        case [value] if value:
+            result = parsePyBuildValues(value)
             if not result.startswith('tuple['):
                 result = f'tuple[{result}]'
-        else:
+
+        case [_value]:
             result = 'tuple[()]'
-    else:
-        values = []
-        for cf in complexFormats:
-            values.append(parsePyBuildValues(cf))
-        result = f'tuple[{", ".join(values)}]'
+
+        case _:
+            values = [parsePyBuildValues(cf) for cf in complexFormats]
+            result = f'tuple[{", ".join(values)}]'
+
     return result
 
 
@@ -166,27 +167,3 @@ def _initParseMaps():
 
 
 parseSizeMap, parseTypeMap = _initParseMaps()
-
-if __name__ == '__main__':
-
-    def testParsing():
-        for i in (
-            "",
-            "i",
-            "iii",
-            "s",
-            "y",
-            "ss",
-            "s#",
-            "y#",
-            "()",
-            "(i)",
-            "(ii)",
-            "(i,i)",
-            "[i,i]",
-            "{s:i,s:i}",
-            "((ii)(ii)) (ii)",
-        ):
-            print(parsePyBuildValues(i))
-
-    testParsing()

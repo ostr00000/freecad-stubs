@@ -46,23 +46,16 @@ class _ProxyPythonGeneral:
         matrix: FreeCAD.Matrix,
         transform: bool,
         depth: int,
-    ) -> typing.Union[
-        None,
-        tuple[
-            typing.Optional[FreeCAD.DocumentObject],
-            FreeCAD.Matrix,
-        ],
-        tuple[
-            typing.Optional[FreeCAD.DocumentObject],
-            FreeCAD.Matrix,
-            typing.Any,
-        ],
-    ]:
+    ) -> (
+        tuple[FreeCAD.DocumentObject | None, FreeCAD.Matrix, typing.Any]
+        | tuple[FreeCAD.DocumentObject | None, FreeCAD.Matrix]
+        | None
+    ):
         """FreeCAD call this function if present"""
 
     def getSubObjects(
         self, obj: FreeCAD.DocumentObject, reason: int
-    ) -> typing.Optional[typing.Sequence[str]]:
+    ) -> typing.Sequence[str] | None:
         """FreeCAD call this function if present"""
 
     def getLinkedObject(
@@ -72,13 +65,7 @@ class _ProxyPythonGeneral:
         matrix: FreeCAD.Matrix,
         transform: bool,
         depth: int,
-    ) -> typing.Union[
-        None,
-        tuple[
-            typing.Optional[FreeCAD.DocumentObject],
-            FreeCAD.Matrix,
-        ],
-    ]:
+    ) -> tuple[FreeCAD.DocumentObject | None, FreeCAD.Matrix] | None:
         """FreeCAD call this function if present"""
 
     def canLinkProperties(self, obj: FreeCAD.DocumentObject) -> bool:
@@ -91,9 +78,9 @@ class _ProxyPythonGeneral:
         self,
         obj: FreeCAD.DocumentObject,
         ss: str,
-        topParent: typing.Union[FreeCAD.DocumentObject, object],
-        child: typing.Union[FreeCAD.DocumentObject, object],
-    ) -> typing.Optional[str]:
+        topParent: FreeCAD.DocumentObject | object,
+        child: FreeCAD.DocumentObject | object,
+    ) -> str | None:
         """FreeCAD call this function if present"""
 
     def canLoadPartial(self, obj: FreeCAD.DocumentObject) -> int:
@@ -158,7 +145,7 @@ SoFullPath = typing.Annotated[typing.Any, 'pivy.coin.SoFullPath']
 
 
 class _ViewProviderPythonGeneral:
-    def getIcon(self) -> typing.Union[None, str, QIcon]:
+    def getIcon(self) -> QIcon | str | None:
         """May be implemented in python"""
 
     def claimChildren(self) -> typing.Sequence[FreeCAD.DocumentObject]:
@@ -167,7 +154,7 @@ class _ViewProviderPythonGeneral:
     def useNewSelectionModel(self) -> bool:
         """May be implemented in python"""
 
-    def getElementPicked(self, pivyObj: SoPickedPoint) -> typing.Optional[str]:
+    def getElementPicked(self, pivyObj: SoPickedPoint) -> str | None:
         """May be implemented in python"""
 
     def getElement(self, pivyObj: SoDetail) -> str:
@@ -178,7 +165,7 @@ class _ViewProviderPythonGeneral:
 
     def getDetailPath(
         self, name: str, pivyObj: SoFullPath, append: bool
-    ) -> typing.Union[bool, SoDetail]:
+    ) -> bool | SoDetail:
         """May be implemented in python"""
 
     def getSelectionShape(self):  # not redirected
@@ -238,7 +225,7 @@ class _ViewProviderPythonGeneral:
     def canDropObjectEx(
         self,
         obj: FreeCAD.DocumentObject,
-        owner: typing.Optional[FreeCAD.DocumentObject],
+        owner: FreeCAD.DocumentObject | None,
         subName: str,
         elements: tuple[str],
     ) -> bool:
@@ -248,16 +235,16 @@ class _ViewProviderPythonGeneral:
         self,
         viewObj: FreeCADGui.ViewProviderDocumentObject,
         obj: FreeCAD.DocumentObject,
-        owner: typing.Union[FreeCAD.DocumentObject, object],
+        owner: FreeCAD.DocumentObject | object,
         subName: str,
         elements: tuple[str],
-    ) -> typing.Optional[str]:
+    ) -> str | None:
         """May be implemented in python"""
 
     def canAddToSceneGraph(self) -> bool:
         """May be implemented in python"""
 
-    def getDropPrefix(self) -> typing.Optional[str]:
+    def getDropPrefix(self) -> str | None:
         """May be implemented in python"""
 
     def replaceObject(
@@ -267,23 +254,23 @@ class _ViewProviderPythonGeneral:
 
     def getLinkedViewProvider(
         self, recursive: bool
-    ) -> typing.Union[
-        None,
-        FreeCADGui.ViewProviderDocumentObject,
-        tuple[FreeCADGui.ViewProviderDocumentObject, str],
-    ]:
+    ) -> (
+        tuple[FreeCADGui.ViewProviderDocumentObject, str]
+        | FreeCADGui.ViewProviderDocumentObject
+        | None
+    ):
         """May be implemented in python"""
 
 
 class ViewProviderPython(_ViewProviderPythonGeneral):
     def setEdit(
         self, viewObj: FreeCADGui.ViewProviderDocumentObject, modNum: int
-    ) -> typing.Optional[bool]:
+    ) -> bool | None:
         """May be implemented in python"""
 
     def unsetEdit(
         self, viewObj: FreeCADGui.ViewProviderDocumentObject, modNum: int
-    ) -> typing.Optional[bool]:
+    ) -> bool | None:
         """May be implemented in python"""
 
     def doubleClicked(self, viewObj: FreeCADGui.ViewProviderDocumentObject) -> bool:
@@ -340,10 +327,10 @@ class ViewProviderPythonObj(_ViewProviderPythonGeneral):
 
     __vobject__: FreeCADGui.ViewProviderDocumentObject
 
-    def setEdit(self, modNum: int) -> typing.Optional[bool]:
+    def setEdit(self, modNum: int) -> bool | None:
         """May be implemented in python"""
 
-    def unsetEdit(self, modNum: int) -> typing.Optional[bool]:
+    def unsetEdit(self, modNum: int) -> bool | None:
         """May be implemented in python"""
 
     def doubleClicked(self) -> bool:
@@ -628,4 +615,4 @@ class TaskDialogPythonUi(TaskDialog):
 
 
 class TaskDialogPythonForm(TaskDialog):
-    form: typing.Union[list[QObject], QObject]
+    form: list[QObject] | QObject

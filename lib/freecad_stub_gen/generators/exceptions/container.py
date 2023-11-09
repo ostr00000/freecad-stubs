@@ -71,8 +71,6 @@ class ExceptionContainer:
         re.VERBOSE,
     )
 
-    # OCCError = PyErr_NewException("Part.OCCError", Base::PyExc_FC_GeneralError, nullptr);
-
     def __init__(self):
         self.exceptions = list(self._genExceptions())
 

@@ -54,7 +54,10 @@ class ReturnTypeInnerTuple(ReturnTypeConverterBase):
                 yield self.getExpressionType(arg, endPos=endPos)
 
     def _genInnerTypeTupleSetItem(self, variableName: str, startPos: int, endPos: int):
-        """Example: `list.setItem(0, Py::Float(7.0));`."""
+        """Extract parametrized type from `var.setItem(...)`.
+
+        Example: `list.setItem(0, Py::Float(7.0));`.
+        """
         variableLengthTuple = True
         regex = re.compile(rf'{variableName}\.setItem\(([^;]+)\);')
         for variableMatch in regex.finditer(self.functionBody, startPos, endpos=endPos):
@@ -70,7 +73,10 @@ class ReturnTypeInnerTuple(ReturnTypeConverterBase):
     def _genInnerTypePyTupleSetItem(
         self, variableName: str, startPos: int, endPos: int
     ):
-        """Example: `PyTuple_SetItem(t, 1, Py::new_reference_to( Py::Float(c.g) ));`."""
+        """Extract parametrized type from `PyTuple_SetItem`.
+
+        Example: `PyTuple_SetItem(t, 1, Py::new_reference_to( Py::Float(c.g) ));`.
+        """
         regex = re.compile(
             rf"""
         PyTuple_(?:SetItem|SET_ITEM)
@@ -93,7 +99,10 @@ class ReturnTypeInnerTuple(ReturnTypeConverterBase):
     def _genInnerTypeTupleAssignItem(
         self, variableName: str, startPos: int, endPos: int
     ):
-        """Example: `list[0] = Py::Float(7.0)`."""
+        """Extract parametrized type from `list[0] = ...`.
+
+        Example: `list[0] = Py::Float(7.0)`.
+        """
         regex = re.compile(
             rf"""
         {variableName}      # tuple variable name
@@ -116,7 +125,10 @@ class ReturnTypeInnerTuple(ReturnTypeConverterBase):
     def _genInnerTypeTupleConstructor(
         self, variableName: str, startPos: int, endPos: int
     ):
-        """Example: `Py::TupleN list(Py::Float(7.0), Py::Float(7.0));`."""
+        """Extract parametrized type from `Py::TupleN`.
+
+        Example: `Py::TupleN list(Py::Float(7.0), Py::Float(7.0));`.
+        """
         regex = re.compile(rf'TupleN\s+{variableName}\s*\(([^;]+)\);')
         if match := regex.search(self.functionBody, startPos, endpos=endPos):
             funArgs = list(

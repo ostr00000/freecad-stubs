@@ -18,7 +18,7 @@ class PropertyMacroBase:
     _rawType: str = ''
     _docs: str = ''
 
-    type: PropertyType = PropertyType.Prop_None
+    propertyType: PropertyType = PropertyType.Prop_None
     constructorBody: str = field(default='', repr=False)
     namespace: str = ''
     cppContent: str = field(default='', repr=False)
@@ -29,11 +29,11 @@ class PropertyMacroBase:
         self._docs = self._convertRawText(self._docs, isSentence=True)
         self.group = self._convertRawText(self.group)
         if self._rawType:
-            self.type = self._convertPropertyTypes(self._rawType)
+            self.propertyType = self._convertPropertyTypes(self._rawType)
 
     REG_PATTERN_GROUP_CHAR = r'char\s*\*\s*{}\s*=\s*\"([^"]+)"'
 
-    def _convertRawText(self, rawText: str, isSentence=False):
+    def _convertRawText(self, rawText: str, *, isSentence=False):
         match rawText:
             case 'nullptr' | '0' | '':
                 newVal = ''

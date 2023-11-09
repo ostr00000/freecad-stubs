@@ -22,7 +22,7 @@ class XmlPropertyGenerator(
     XmlMethodGenerator, BaseXmlGenerator, BasePropertyGenerator, ABC
 ):
     def getAttributes(self, node: ET.Element):
-        """This function generate property based on xml file."""
+        """Generate property based on xml file."""
         name = node.attrib['Name']
         docs = getDocFromNode(node)
         readOnly = toBool(node.attrib.get('ReadOnly', True))
@@ -36,7 +36,9 @@ class XmlPropertyGenerator(
         if not readOnly and pythonSetType == 'object':
             pythonSetType = pythonGetType
 
-        return self.getProperty(name, pythonGetType, pythonSetType, docs, readOnly)
+        return self.getProperty(
+            name, pythonGetType, pythonSetType, docs, readOnly=readOnly
+        )
 
     def _findTypeBasedOnXmlDeclaration(self, node: ET.Element) -> str:
         if (param := node.find('Parameter')) is None:
@@ -51,7 +53,8 @@ class XmlPropertyGenerator(
     def _getExtendedTypeFromCode(self, pythonType: str, cFuncName: str) -> str:
         cClassName = self.currentNode.attrib['Name']
         funcBody = self.findFunctionBody(cFuncName, cClassName)
-        assert funcBody is not None
+        if funcBody is None:
+            raise TypeError
 
         rt = ReturnTypeConverter(
             funcBody, self.requiredImports, self.classNameWithModules, cFuncName

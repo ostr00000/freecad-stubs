@@ -216,7 +216,17 @@ Length        = Unit(1)
 Area          = Unit(2)
 Volume        = Unit(3)
 Mass          = Unit(0,1)
-# (length, weight, time, current, temperature, amount of substance, luminous intensity, angle)
+
+# https://wiki.freecad.org/Quantity#Internal_representation
+# Unit: dimension index - dimension name
+# 0 - length
+# 1 - weight
+# 2 - time
+# 3 - current
+# 4 - temperature
+# 5 - amount of substance
+# 6 - luminous intensity
+# 7 - angle
 
 # Angle
 Angle            = Unit(0,0,0,0,0,0,0,1)

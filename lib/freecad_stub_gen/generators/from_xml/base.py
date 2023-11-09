@@ -13,7 +13,8 @@ class BaseXmlGenerator(BaseGenerator, ABC):
 
     @property
     def currentNode(self) -> Element:
-        assert isinstance(self._currentNode, Element)
+        if not isinstance(self._currentNode, Element):
+            raise TypeError
         return self._currentNode
 
     @currentNode.setter

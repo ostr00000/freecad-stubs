@@ -1,6 +1,7 @@
 import re
+from collections.abc import Callable
 from functools import wraps
-from typing import Callable, ParamSpec, TypeVar
+from typing import ParamSpec, TypeVar
 
 from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
@@ -52,7 +53,7 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
         ):
             da: ComplexArgumentBase = wrapper()
             if da:
-                signature = da.getPythonSignature()
+                signature = da.formatPythonSignature()
                 self.requiredImports.update(da.imports)
                 return signature
 
@@ -66,7 +67,10 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
     def _getInnerTypePyDictSetItemString(
         self, variableName: str, startPos: int, endPos: int
     ):
-        """Example: `PyDict_SetItemString(dict,It->first.c_str(), PyUnicode_FromString(It`."""
+        """Extract parametrized type from `PyDict_SetItemString`.
+
+        Example: `PyDict_SetItemString(pyDict, "name", strCmdName)`.
+        """
         da = DictArgument()
         regex = re.compile(rf'PyDict_SetItemString\s*\(\s*({variableName}\s*,[^;]*)\);')
         for match in regex.finditer(self.functionBody, startPos, endPos):
@@ -81,7 +85,10 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
 
     @lazyDec
     def _getInnerTypePyDictSetItem(self, variableName: str, startPos: int, endPos: int):
-        """Example: `PyDict_SetItem(pDict, pKey, pValue);`."""
+        """Extract parametrized type from `PyDict_SetItem`.
+
+        Example: `PyDict_SetItem(pDict, pKey, pValue);`.
+        """
         da = DictArgument()
         regex = re.compile(rf'PyDict_SetItem\s*\(\s*({variableName}\s*,[^;]*)\);')
         for match in regex.finditer(self.functionBody, startPos, endPos):
@@ -97,7 +104,10 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
 
     @lazyDec
     def _getInnerTypeDictSetItem(self, variableName: str, startPos: int, endPos: int):
-        """Example: `dict.setItem(it->c_str(), list);`."""
+        """Extract parametrized type from `var.setItem(...)`.
+
+        Example: `dict.setItem(it->c_str(), list);`.
+        """
         da = DictArgument()
         tdg = TypedDictGen(self.functionName)
         regex = re.compile(rf'{variableName}\b\.setItem\(([^;]*)\);')
@@ -118,8 +128,10 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
                 keyVariable = self.getExpressionType(key, endPos)
                 da.add(keyVariable, value)
 
+        if tdg and da:
+            msg = "Values in `TypedDict` are mixed with `dict`"
+            raise ValueError(msg)
         if tdg:
-            assert not da, "Values in `TypedDict` are mixed with `dict`"
             return tdg
         return da
 
@@ -127,7 +139,10 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
     def _getInnerTypeDictAssignLiterals(
         self, variableName: str, startPos: int, endPos: int
     ):
-        """Example: `ret["UserFriendlyName"] = strs[0];`."""
+        """Extract parametrized type from `var["a"] = y`.
+
+        Example: `ret["UserFriendlyName"] = strs[0];`.
+        """
         tdg = TypedDictGen(self.functionName)
         regex = re.compile(rf'{variableName}\b\[\"(\w+)\"]\s*=\s*([^;]*);')
         for match in regex.finditer(self.functionBody, startPos, endPos):
@@ -139,7 +154,10 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
 
     @lazyDec
     def _getInnerTypeDictAssign(self, variableName: str, startPos: int, endPos: int):
-        """Example: `pyRM[AttachEngine::getModeName(rm.first)] = pyListOfCombinations;`."""
+        """Extract parametrized type from `var[x] = y`.
+
+        Example: `pyRM[AttachEngine::getModeName(rm.first)] = pyListOfCombinations;`.
+        """
         da = DictArgument()
         regex = re.compile(rf'{variableName}\b\[(.*)]\s*=\s*([^;]*);')
         for match in regex.finditer(self.functionBody, startPos, endPos):

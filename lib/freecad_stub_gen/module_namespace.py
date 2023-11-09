@@ -1,6 +1,7 @@
 import logging
 from collections import defaultdict
 from pathlib import Path
+from typing import ClassVar
 
 from freecad_stub_gen.config import SOURCE_DIR
 from freecad_stub_gen.file_functions import genXmlFiles
@@ -40,7 +41,7 @@ class _ModuleNamespace:
             case _:
                 raise NotImplementedError
 
-    NAMESPACE_TO_MODULE = {
+    NAMESPACE_TO_MODULE: ClassVar = {
         'Base': 'FreeCAD',
         'App': 'FreeCAD',
         'Gui': 'FreeCADGui',
@@ -49,7 +50,7 @@ class _ModuleNamespace:
     }
 
     # Some modules have class with the same name therefore we must use alias.
-    MODULE_TO_ALIAS = {
+    MODULE_TO_ALIAS: ClassVar = {
         'Mesh': 'MeshModule',
         'Path': 'PathModule',
         'Points': 'PointsModule',

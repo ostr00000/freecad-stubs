@@ -42,13 +42,17 @@ class ReturnTypeInnerList(ReturnTypeConverterBase):
         return UnionArgument(gen)
 
     def _getInnerTypePyListSetItem(self, variableName: str, startPos: int, endPos: int):
-        """Example: `PyList_SetItem(pyList, i++, str);`."""
+        """Extract parametrized type from `PyList_SetItem`.
+
+        Example: `PyList_SetItem(pyList, i++, str);`.
+        """
         arg = UnionArgument()
         regex = re.compile(
             rf'PyList_SetItem\s*\(\s*{variableName}\s*,\s*[\w+]+\s*,([^;]+)\);'
         )
         for variableMatch in regex.finditer(self.functionBody, startPos, endpos=endPos):
             varType = self.getExpressionType(variableMatch.group(1), endPos)
-            assert varType != AnyValue
+            if varType == AnyValue:
+                raise ValueError
             arg.add(varType)
         return arg

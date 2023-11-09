@@ -7,6 +7,7 @@ from collections import defaultdict
 from collections.abc import Iterable
 from inspect import Parameter
 from itertools import chain
+from typing import ClassVar
 
 from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.generators.common.annotation_parameter import SelfSignature
@@ -28,16 +29,17 @@ class Method:
     pythonMethodName: str = ''
     cFunction: str = ''
     doc: str | None = None
-    pythonSignature: SelfSignature | None = None
+    _pythonSignature: SelfSignature | None = None
 
-    REG_WHITESPACE_WITH_APOSTROPHE = re.compile(r'"\s*"')
+    REG_WHITESPACE_WITH_APOSTROPHE: ClassVar = re.compile(r'"\s*"')
+    REQUIRED_ARGUMENT_NUM: ClassVar = 2
 
     def __post_init__(self):
         self.args = [removeQuote(a) for a in self.args]
 
         self.pythonMethodName = self.args[0]
         self.cClass, self.cFunction = self._parsePointer(self.args[1])
-        if len(self.args) > 2:
+        if len(self.args) > self.REQUIRED_ARGUMENT_NUM:
             with contextlib.suppress(IndexError):
                 self.doc = re.sub(
                     self.REG_WHITESPACE_WITH_APOSTROPHE, '', self.args[-1]
@@ -48,22 +50,28 @@ class Method:
     @classmethod
     def _parsePointer(cls, pointer: str) -> tuple[str, str]:
         match = cls.REG_POINTER.search(pointer)
-        assert match
+        if match is None:
+            raise TypeError
         return match.group('class') or '', match.group('func')
 
     def insertParam(self, param: Parameter):
-        assert self.pythonSignature is not None
         newParameters = [param, *self.pythonSignature.parameters.values()]
-        self.pythonSignature = self.pythonSignature.replace(parameters=newParameters)
+        self._pythonSignature = self.pythonSignature.replace(parameters=newParameters)
+
+    @property
+    def pythonSignature(self) -> SelfSignature:
+        if self._pythonSignature is None:
+            msg = 'Python signature not initialized'
+            raise TypeError(msg)
+        return self._pythonSignature
 
     def __repr__(self):
         return f'{self.cClass}::{self.cFunction}'
 
     def __str__(self):
-        return self.getPythonSignature()
+        return self.formatPythonSignature()
 
-    def getPythonSignature(self) -> str:
-        assert self.pythonSignature is not None
+    def formatPythonSignature(self) -> str:
         return str(self.pythonSignature)
 
 
@@ -111,7 +119,9 @@ class BaseGeneratorFromCpp(MethodGenerator, ABC):
             docContent += SelfSignature.getExceptionsDocs(
                 m.pythonSignature for m in methods if m.pythonSignature is not None
             )
-            uniqueMethods = list({m.getPythonSignature(): m for m in methods}.values())
+            uniqueMethods = list(
+                {m.formatPythonSignature(): m for m in methods}.values()
+            )
             yield self.convertMethodToStr(
                 methods[0].pythonMethodName,
                 uniqueMethods,
@@ -151,7 +161,7 @@ class BaseGeneratorFromCpp(MethodGenerator, ABC):
         )
         for sig in sigMerger.genMergedCodeAndDocSignatures():
             yielded = True
-            yield dataclasses.replace(method, pythonSignature=sig)
+            yield dataclasses.replace(method, _pythonSignature=sig)
 
         if not yielded:
             logger.debug(f"Not found args for {method=!r} {self.baseGenFilePath=}")

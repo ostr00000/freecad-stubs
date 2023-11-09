@@ -1,9 +1,11 @@
 import atexit
+import logging
 from collections import defaultdict
-from typing import Hashable
+from collections.abc import Hashable
 
 from freecad_stub_gen.ordered_set import OrderedSet
 
+logger = logging.getLogger(__name__)
 printAllValues = defaultdict[str, OrderedSet](OrderedSet)
 
 
@@ -12,8 +14,8 @@ def addPrintAllValue(topic: str, value: Hashable):
 
         @atexit.register
         def printValues():
-            print(f"Values for {topic}:")
+            logger.debug(f"Values for {topic}:")
             for k in printAllValues[topic]:
-                print(f" - `{k}`")
+                logger.debug(f" - `{k}`")
 
     printAllValues[topic].add(value)

@@ -74,34 +74,38 @@ repos:
     rev: v0.1.3
     hooks:
       - id: ruff
-        name: ruff-show-errors
-        args: [ --diff, --exit-non-zero-on-fix ]
+        name: ruff-diff
+        args: [ --exit-non-zero-on-fix, --diff ]
+
+      - id: ruff
+        name: ruff-show-fixes
+        args: [ --exit-non-zero-on-fix, --show-fixes ]
 
       - id: ruff
         name: ruff-auto-fix
-        args: [ --fix, --exit-non-zero-on-fix, --show-fixes ]
+        args: [ --exit-non-zero-on-fix, --fix ]
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.333
+    rev: v1.1.335
     hooks:
-    - id: pyright
+      - id: pyright
 
-  - repo: local
-    hooks:
-      - id: mypy-local
-        name: Mypy local
-        description:
-          Install current package in editable mode and then run mypy.
-          The install is required, because mypy is unable to use stub only
-          packages pointed by `mypy_path`.
-        entry: bash -c 'pip install --editable . >/dev/null && mypy'
-        language: python
-        types: [ python ]
-        pass_filenames: false
-        additional_dependencies:
-          - mypy==1.6.1
-          - PyQt5
-          - more-itertools
-          - qtpy
-        args:
-          - --strict
+#  - repo: local
+#    hooks:
+#      - id: mypy-local
+#        name: Mypy local
+#        description:
+#          Install current package in editable mode and then run mypy.
+#          The installation is required, because mypy is unable to use stub only
+#          packages pointed by `mypy_path`.
+#        entry: bash -c 'pip install --editable . >/dev/null && mypy'
+#        language: python
+#        types: [ python ]
+#        pass_filenames: false
+#        additional_dependencies:
+#          - mypy==1.6.1
+#          - PyQt5
+#          - more-itertools
+#          - qtpy
+#        args:
+#          - --strict

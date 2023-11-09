@@ -39,7 +39,8 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         className = getClassNameFromNode(self.currentNode)
 
         # Maybe we should check `self.currentNode.attrib['Constructor']`?
-        # Better check `PyMake` - it is possible to return something different from `nullptr`
+        # Better check `PyMake` - it is possible to return
+        # something different from `nullptr`
 
         with self.newImportContext():
             makeSignatures = list(
@@ -78,7 +79,9 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
 
         isStatic = toBool(node.attrib.get('Static', False))
         isClassic = toBool(node.attrib.get('Class', False))
-        firstParam = AnnotationParam.getFirstParam(isStatic, isClassic)
+        firstParam = AnnotationParam.getFirstParam(
+            isStaticMethod=isStatic, isClassMethod=isClassic
+        )
 
         allSignatures = list(
             self._signatureArgGen(cFunName, cClassName, docsFunName, node, firstParam)
@@ -90,7 +93,7 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         docs += SelfSignature.getExceptionsDocs(allSignatures)
 
         return self.convertMethodToStr(
-            pythonFunName, signatures, docs, isClassic, isStatic
+            pythonFunName, signatures, docs, isClassic=isClassic, isStatic=isStatic
         )
 
     def _signatureArgGen(
@@ -147,16 +150,19 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
 
     @classmethod
     def genNumberProtocol(cls, className: str) -> str:
-        """Source: find `PyNumberMethods` in `src/Tools/generateTemplates/templateClassPyExport.py`.
+        """Generate number protocol.
 
+        Source: find `PyNumberMethods` in
+        `src/Tools/generateTemplates/templateClassPyExport.py`.
         https://github.com/FreeCAD/FreeCAD/blob/master/src/Tools/generateTemplates/templateClassPyExport.py
         https://docs.python.org/3/c-api/typeobj.html#c.PyNumberMethods
         https://docs.python.org/3/c-api/typeobj.html#sub-slots
         """
-        # TODO P3 find real IN and OUT types - ex.:
-        #  assert isinstance(FreeCAD.Vector(1, 2, 3) * FreeCAD.Vector(1, 2, 3), int)
-        # TODO P3 remove fake methods - methods that always raise exception when called
-        # TODO P3 implement other Protocols - ex. PySequenceMethods
+        # TODO @PO: [P3] find real IN and OUT types - ex.:
+        #  `assert isinstance(FreeCAD.Vector(1, 2, 3) * FreeCAD.Vector(1, 2, 3), int)`
+        # TODO @PO: [P3] remove fake methods
+        #  - methods that always raise exception when called
+        # TODO @PO: [P3] implement other Protocols - ex. PySequenceMethods
         ret = ''
         ret += cls._genEmptyMethod(
             '__add__', 'other', retType=className, reflected=True

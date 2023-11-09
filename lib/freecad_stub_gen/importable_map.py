@@ -1,8 +1,8 @@
 import re
 from collections import defaultdict
+from collections.abc import Iterable
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Iterable
 
 from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.file_functions import genCppFiles, readContent

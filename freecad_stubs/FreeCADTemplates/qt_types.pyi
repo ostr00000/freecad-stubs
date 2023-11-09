@@ -2,8 +2,6 @@
 Based on stubs in:
 https://github.com/python-qt-tools/PyQt5-stubs/blob/master/PyQt5-stubs/QtCore.pyi
 """
-from __future__ import annotations
-
 import typing
 
 from qtpy.QtCore import QMetaObject, QObject

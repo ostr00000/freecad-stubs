@@ -34,14 +34,15 @@ def findFunctionCall(
     if bodyStart is None:
         bodyStart = text.find('(')
     bracketDeep = 0
-    bodyEnd = 0
 
     sliceIt: Iterable[str] = islice(text, bodyStart, len(text))
     it = enumerate(sliceIt, bodyStart)
     if '#if' in text:
         it = _skipAdditionalDirectiveBlocks(it)
 
-    for bodyEnd, char in it:
+    bodyEnd = 0
+    for i, char in it:
+        bodyEnd = i
         if char == bracketL:
             bracketDeep += 1
         elif char == bracketR:
@@ -55,7 +56,9 @@ def findFunctionCall(
 def generateExpressionUntilChar(
     text: str, expStart: int = 0, splitChar: str = ',', bracketL='(', bracketR=')'
 ):
-    assert splitChar not in f'\\"{bracketL}{bracketR}'
+    if splitChar in f'\\"{bracketL}{bracketR}':
+        msg = f"Cannot use {splitChar=} when generating expression"
+        raise ValueError(msg)
 
     bracketDeep = 0
     expEnd = 0

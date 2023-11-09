@@ -33,7 +33,9 @@ class Module:
         return self.name
 
     def __getitem__(self, item: str):
-        assert item
+        if not item:
+            raise ValueError
+
         mainPartAlias, *otherParts = item.split('.', maxsplit=1)
         mainPart = moduleNamespace.getModFromAlias(mainPartAlias, mainPartAlias)
         mod = self.subModules[mainPart]
@@ -92,6 +94,7 @@ class Module:
         types: list[str] = []
 
         for imp in self.imports:
+            impText = imp
             if imp.startswith('from '):
                 sortModule = imp.removeprefix('from ').split(' ')[0]
             elif '\n' in imp:
@@ -102,18 +105,18 @@ class Module:
                 continue
             elif modName := moduleNamespace.getModFromAlias(imp):
                 sortModule = modName
-                imp = f'import {modName} as {imp}'
+                impText = f'import {modName} as {imp}'
             else:
                 sortModule = imp
                 if 'import' not in imp:
-                    imp = f'import {imp}'
+                    impText = f'import {imp}'
 
             if sortModule in sys.stdlib_module_names:
                 importList = sysImports
             else:
                 importList = libImports
 
-            importList.append(imp)
+            importList.append(impText)
 
         sysImportText = '\n'.join(sorted(sysImports))
         libImportText = '\n'.join(sorted(libImports))

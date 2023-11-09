@@ -3,9 +3,10 @@ from __future__ import annotations
 import logging
 from collections.abc import Iterable, Mapping, Sequence
 from inspect import Parameter, Signature, _empty, _void
-from typing import TypeAlias, cast
+from typing import cast
 
 from freecad_stub_gen.ordered_set import OrderedStrSet
+from freecad_stub_gen.python_code import indent
 
 logger = logging.getLogger(__name__)
 
@@ -47,6 +48,8 @@ class RawRepr:
 
 
 class RawStringRepresentation(str):
+    __slots__ = ()
+
     def __repr__(self):
         return str(self)
 
@@ -60,7 +63,7 @@ class AnnotationParam(Parameter):
 
     @classmethod
     def getFirstParam(
-        cls, isStaticMethod: bool, isClassMethod: bool
+        cls, *, isStaticMethod: bool, isClassMethod: bool
     ) -> Parameter | None:
         if isStaticMethod:
             return None
@@ -71,10 +74,8 @@ class AnnotationParam(Parameter):
         return cls.SELF_PARAM
 
 
-InitParameters_t: TypeAlias = Sequence[Parameter] | None
-ReplaceParameters_t: TypeAlias = (
-    InitParameters_t | Mapping[str, Parameter] | type[_void]
-)
+type InitParameters_t = Sequence[Parameter] | None
+type ReplaceParameters_t = InitParameters_t | Mapping[str, Parameter] | type[_void]
 
 
 class SelfSignature(Signature):
@@ -95,11 +96,12 @@ class SelfSignature(Signature):
             super().__init__(parameters, return_annotation=return_annotation)
             self.exceptions = OrderedStrSet() if exceptions is None else exceptions
             self.unknown_parameters = unknown_parameters
-        except ValueError as v:
+        except ValueError:
             if parameters is not None:
-                logger.error(v)
-                for p in parameters:
-                    logger.error(f'{p} [{p.kind}]')
+                paramsStr = '\n'.join(indent(f'{p} [{p.kind}]') for p in parameters)
+                msg = f"Cannot create signature with provided parameters:\n{paramsStr}"
+                logger.exception(msg)
+
             raise
 
     @classmethod

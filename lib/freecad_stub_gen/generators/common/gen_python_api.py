@@ -53,7 +53,7 @@ class PythonApiGenerator(BaseGenerator, ABC):
         signatures = chain(
             self._findParseTuple(),
             self._findParseTupleAndKeywords(),
-            # TODO P5 PyArg_UnpackTuple
+            # TODO @PO: [P5] PyArg_UnpackTuple
             # https://docs.python.org/3/c-api/arg.html#c.PyArg_UnpackTuple
         )
         hasAnySig, sigIter = more_itertools.spy(signatures)
@@ -109,6 +109,7 @@ class PythonApiGenerator(BaseGenerator, ABC):
         pattern: re.Pattern,
         formatStrPosition: int,
         cArgNum: int,
+        *,
         onlyPositional: bool,
     ):
         for match in re.finditer(pattern, self._functionBody):
@@ -117,15 +118,15 @@ class PythonApiGenerator(BaseGenerator, ABC):
                 self.baseGenFilePath,
                 self._cFunctionName,
                 self._functionBody,
-                funStart,
-                formatStrPosition,
-                onlyPositional,
-                self._argNumStart,
+                funStart=funStart,
+                formatStrPosition=formatStrPosition,
+                onlyPositional=onlyPositional,
+                argNumStart=self._argNumStart,
             )
             tc = TypesConverter(fc, self.requiredImports, cArgNum=cArgNum)
-            assert cArgNum <= len(
-                tc.fun.argumentStrings
-            ), "Invalid format - expected bigger size"
+            if cArgNum > len(tc.fun.argumentStrings):
+                msg = "Invalid format - expected bigger size"
+                raise ValueError(msg)
 
             params = list(tc.safeConvertFormatToTypes())
             yield SelfSignature(params)

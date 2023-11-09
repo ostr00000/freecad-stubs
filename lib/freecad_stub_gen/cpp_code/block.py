@@ -4,7 +4,7 @@ import itertools
 import logging
 import re
 from functools import cached_property
-from typing import Generic, Iterable, Iterator, Self, TypeVar, cast, overload
+from typing import TYPE_CHECKING, Generic, Self, TypeVar, cast, overload
 
 from freecad_stub_gen.generators.common.cpp_function import (
     generateExpressionUntilChar,
@@ -14,6 +14,9 @@ from freecad_stub_gen.generators.common.return_type_converter.full import (
     ReturnTypeConverter,
 )
 from freecad_stub_gen.ordered_set import OrderedStrSet
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable, Iterator
 
 R = TypeVar('R')
 T = TypeVar('T')

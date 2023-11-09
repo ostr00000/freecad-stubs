@@ -20,6 +20,7 @@ class FunctionConv:
         xmlPath: Path,
         functionName: str,
         body: str,
+        *,
         funStart: int,
         formatStrPosition: int,
         onlyPositional: bool,
@@ -56,7 +57,8 @@ class FunctionConv:
     REG_STRING = re.compile(
         r"""
     (["'])          # start with quotation mark as group 1,
-    (?=             # do not consume matched characters - we match it after we are sure about it,
+    (?=             # do not consume matched characters
+                    # - we match it after we are sure about it,
       (?P<text>     # save matched chars as `text`,
         .*?         # all chars but lazy,
         (?!\\\1)    # skip escaped char from group 1,
@@ -67,7 +69,7 @@ class FunctionConv:
         """,
         re.VERBOSE,
     )
-    _FORBIDDEN_MACROS = ['PARAM_REF', 'PARAM_FARG', 'AREA_PARAMS_OPCODE']
+    _FORBIDDEN_MACROS = ('PARAM_REF', 'PARAM_FARG', 'AREA_PARAMS_OPCODE')
 
     def _removeMacros(self):
         clearFormat = ''
@@ -117,7 +119,7 @@ class FunctionConv:
             try:
                 return self.kwargList[pythonArgNum]
             except IndexError:
-                logger.error(f"Too few kw arguments for {curFormat=}, {self}")
+                logger.exception(f"Too few kw arguments for {curFormat=}, {self}")
 
         if cArgName := self.getCurArgName(curFormat, cArgNum):
             # Is this always a unique name?
@@ -132,7 +134,7 @@ class FunctionConv:
         try:
             cArgName = self.argumentStrings[cArgNum]
         except IndexError:
-            logger.error(f"Too few arguments for {self}")
+            logger.exception(f"Too few arguments for {self}")
         else:
             if cArgName.isalnum():
                 return cArgName

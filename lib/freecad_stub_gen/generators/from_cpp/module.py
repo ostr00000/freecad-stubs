@@ -23,7 +23,8 @@ class FreecadStubGeneratorFromCppModule(BaseGeneratorFromCpp):
         for result in self._genStub(moduleName):
             if result.rstrip():
                 # we prefer name with more details
-                assert self._modName
+                if self._modName is None:
+                    raise TypeError
                 curModName = moduleName if '.' in moduleName else self._modName
                 curModName = moduleNamespace.convertNamespaceToModule(curModName)
 

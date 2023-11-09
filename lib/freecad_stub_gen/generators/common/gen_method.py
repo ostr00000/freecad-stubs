@@ -1,6 +1,7 @@
 import logging
 from abc import ABC
-from typing import Protocol, Sequence
+from collections.abc import Sequence
+from typing import Protocol
 
 from freecad_stub_gen.generators.common.doc_string import formatDocstring
 from freecad_stub_gen.generators.common.gen_python_api import PythonApiGenerator
@@ -10,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class PythonSignatureProtocol(Protocol):
-    def getPythonSignature(self) -> str:
+    def formatPythonSignature(self) -> str:
         ...
 
 
@@ -22,6 +23,7 @@ class MethodGenerator(PythonApiGenerator, ABC):
         methodName: str,
         strSignatures: Sequence[PythonSignatureProtocol | str],
         docs: str = '',
+        *,
         isClassic=False,
         isStatic=False,
         functionSpacing=1,
@@ -30,7 +32,7 @@ class MethodGenerator(PythonApiGenerator, ABC):
         if not strSignatures:
             return ret
         signatures = [
-            ss if isinstance(ss, str) else ss.getPythonSignature()
+            ss if isinstance(ss, str) else ss.formatPythonSignature()
             for ss in strSignatures
         ]
 
@@ -52,8 +54,8 @@ class MethodGenerator(PythonApiGenerator, ABC):
         )
 
         for sig in signatures[:-1]:
-            sig = self._formatSignatureWithReturnType(sig, forcedType)
-            ret += pattern.format(signature=sig, docs=' ...\n')
+            retSig = self._formatSignatureWithReturnType(sig, forcedType)
+            ret += pattern.format(signature=retSig, docs=' ...\n')
 
         # last signature should have docstring
         docs = f'\n{indent(doc)}' if (doc := formatDocstring(docs)) else ' ...\n'

@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from enum import Enum, auto
-from functools import cached_property
 
 
 @dataclass
@@ -11,12 +10,12 @@ class AffixCmp:
         SUFFIX = auto()
 
     text: str
-    type: AffixType
+    affixType: AffixType
 
     def __eq__(self, other):
         if not isinstance(other, str):
             return False
-        match self.type:
+        match self.affixType:
             case self.AffixType.PREFIX:
                 return self.text.startswith(other)
             case self.AffixType.SUFFIX:
@@ -28,16 +27,17 @@ class AffixCmp:
 
 
 class StrWrapper(str):
+    __slots__ = ()
     __match_args__ = ('start', 'contain', 'end')
 
-    @cached_property
+    @property
     def start(self):
         return AffixCmp(self, AffixCmp.AffixType.PREFIX)
 
-    @cached_property
+    @property
     def contain(self):
         return AffixCmp(self, AffixCmp.AffixType.INFIX)
 
-    @cached_property
+    @property
     def end(self):
         return AffixCmp(self, AffixCmp.AffixType.SUFFIX)

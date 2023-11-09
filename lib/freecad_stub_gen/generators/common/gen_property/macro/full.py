@@ -12,7 +12,7 @@ class PropertyMacro(PropertyMacroGetter, PropertyMacroSetter):
     def docs(self):
         result = '\n'
 
-        for p in self.type:
+        for p in self.propertyType:
             result += f'[{p.name}] {p.description}.\n'
 
         if self.group:
@@ -28,7 +28,7 @@ class PropertyMacro(PropertyMacroGetter, PropertyMacroSetter):
 
     @property
     def readOnly(self):
-        res = bool(self.type & PropertyType.Prop_ReadOnly)
+        res = bool(self.propertyType & PropertyType.Prop_ReadOnly)
         if not res and self.typeId == "App::PropertyExpressionEngine":
             res = True
         return res

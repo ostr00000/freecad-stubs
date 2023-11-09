@@ -32,7 +32,7 @@ class DynamicPropertyGenerator(BasePropertyGenerator, ABC):
     REG_PATTERN_CLASS_DEC = r'class .*\b{}[^{{]*'
 
     def genDynamicProperties(self) -> Iterable[str]:
-        """This function search for dynamic properties added in cpp code."""
+        """Generate dynamic properties added in cpp code."""
         if not (cppIncludeContent := self.getCppContent()):
             return
 
@@ -40,7 +40,9 @@ class DynamicPropertyGenerator(BasePropertyGenerator, ABC):
 
         # there may be few separated declarations (ex. DocumentObject)
         hIncludeContent = self.getHContent()
-        assert isinstance(hIncludeContent, str)
+        if not isinstance(hIncludeContent, str):
+            raise TypeError
+
         reg = re.compile(self.REG_PATTERN_CLASS_DEC.format(cppClassName))
         classDeclarationBodies = [
             findFunctionCall(hIncludeContent, classMatch.start())
@@ -57,7 +59,7 @@ class DynamicPropertyGenerator(BasePropertyGenerator, ABC):
             ):
                 macroArgs = list(genFuncArgs(constructorBody, propMatch.start()))
                 pm = PropertyMacro(
-                    *macroArgs,  # type: ignore
+                    *macroArgs,  # type: ignore[misc,arg-type]
                     constructorBody=constructorBody,
                     namespace=self._curNamespace,
                     cppContent=cppIncludeContent,

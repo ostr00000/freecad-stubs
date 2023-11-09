@@ -54,7 +54,8 @@ def getClassWithModulesFromStem(stem: str, namespace: str) -> str:
         return f'{mod}.{stem}'
 
     root = ET.parse(file).getroot()
-    assert (exportElement := root.find('PythonExport'))
+    if not (exportElement := root.find('PythonExport')):
+        raise ValueError
     return getClassWithModulesFromNode(exportElement)
 
 
@@ -70,7 +71,9 @@ def getClassWithModulesFromNode(currentNode: ET.Element) -> str:
     https://github.com/FreeCAD/FreeCAD/blob/8ac722c1e89ef530564293efd30987db09017e12/src/Tools/generateTemplates/templateClassPyExport.py#L279
     """
     if name := currentNode.attrib.get('PythonName'):
-        assert '.' in name
+        if '.' not in name:
+            raise ValueError
+
         if name.count('.') == 1:
             # we want to map only main module without submodules
             namespace, name = name.split('.', maxsplit=1)
@@ -79,9 +82,9 @@ def getClassWithModulesFromNode(currentNode: ET.Element) -> str:
 
         return name
 
-    if fullName := importableMap.get(currentNode.attrib['Name']):
-        if '.' in fullName:
-            name = getClassName(fullName)
+    fullName = importableMap.get(currentNode.attrib['Name'])
+    if fullName and '.' in fullName:
+        name = getClassName(fullName)
 
     if not name:
         name = currentNode.attrib['Name'].removesuffix('Py')
@@ -101,16 +104,18 @@ def getClassName(classWithModules: str) -> str:
 
 
 @typing.overload
-def getModuleName(classWithModules: str, required: typing.Literal[True]) -> str:
+def getModuleName(classWithModules: str, *, required: typing.Literal[True]) -> str:
     ...
 
 
 @typing.overload
-def getModuleName(classWithModules: str, required=False) -> str | None:
+def getModuleName(
+    classWithModules: str, *, required: typing.Literal[False] = False
+) -> str | None:
     ...
 
 
-def getModuleName(classWithModules: str, required=False) -> str | None:
+def getModuleName(classWithModules: str, *, required=False) -> str | None:
     if (splitIndex := classWithModules.rfind('.')) != -1:
         return classWithModules[:splitIndex]
 

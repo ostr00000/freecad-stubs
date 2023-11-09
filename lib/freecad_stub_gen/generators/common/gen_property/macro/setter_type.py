@@ -184,7 +184,9 @@ class PropertyMacroSetter(PropertyMacroBase):
 
             case "Spreadsheet::PropertySheet":
                 innerType = 'Spreadsheet.Sheet'
-            case "Spreadsheet::PropertyColumnWidths" | "Spreadsheet::PropertyRowHeights":
+            case (
+                "Spreadsheet::PropertyColumnWidths" | "Spreadsheet::PropertyRowHeights"
+            ):
                 innerType = ''  # read only
 
             case "TechDraw::PropertyCosmeticVertexList":
@@ -262,9 +264,9 @@ class PropertyMacroSetter(PropertyMacroBase):
         if varNameMatch := re.search(reg, self.constructorBody):
             reg = self.REG_PATTERN_ENUM_ARRAY.format(varNameMatch.group(1))
 
-            if match := re.search(reg, self.constructorBody):
-                literalsRaw = match.group(1)
-            elif match := re.search(reg, self.cppContent):
+            if (match := re.search(reg, self.constructorBody)) or (
+                match := re.search(reg, self.cppContent)
+            ):
                 literalsRaw = match.group(1)
             else:
                 msg = 'Cannot find enum variable'

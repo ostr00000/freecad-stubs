@@ -14,9 +14,10 @@ class BasePropertyGenerator(BaseGenerator, ABC):
         pythonGetType: str = '',
         pythonSetType: str = '',
         docs: str = '',
+        *,
         readOnly=True,
     ):
-        """This method return string with generated property for specified arguments."""
+        """Generate property for specified arguments."""
         pythonGetType = self._extractTypeAlias(pythonGetType)
         self.requiredImports.update(self._genImportsFromType(pythonGetType))
         retType = f' -> {pythonGetType}' if pythonGetType else ''
@@ -51,10 +52,11 @@ class BasePropertyGenerator(BaseGenerator, ABC):
         if '.' not in pythonType:
             return
         for subType in cls.REG_TYPE_SPLIT_CHARS.split(pythonType):
-            if '.' in subType:
-                subType = subType.replace(' ', '')
-                if subType == '...':
-                    continue
+            if '.' not in subType:
+                continue
 
-                mod = getModuleName(subType, required=True)
-                yield mod
+            strippedSubType = subType.strip()
+            if strippedSubType == '...':
+                continue
+
+            yield getModuleName(strippedSubType, required=True)

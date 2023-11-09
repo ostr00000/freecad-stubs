@@ -68,9 +68,10 @@ class SignatureMerger:
         cParamIt = iter(codeParams)
         pos = 0
         # we iterate over `docsParams` first to not exhaust `cParamIt` iterator
-        for dp, cp in zip(docsParams, cParamIt):
+        for dp, cp in zip(docsParams, cParamIt, strict=False):
             if dp.kind == Parameter.VAR_POSITIONAL:
-                # docs are vague about params from this position, so we prefer code params
+                # docs are vague about params from this position,
+                # so we prefer code params
                 yield cp
                 break
 

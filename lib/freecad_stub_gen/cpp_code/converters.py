@@ -50,8 +50,8 @@ def validatePythonValue(value: str) -> str | None:
         ast.literal_eval(value)
     except (SyntaxError, ValueError):
         pass
-    except Exception as exc:
-        logger.error(f'Cannot evaluate value: {exc}')
+    except Exception:
+        logger.exception(f"Cannot evaluate {value=}")
     else:
         return value
 

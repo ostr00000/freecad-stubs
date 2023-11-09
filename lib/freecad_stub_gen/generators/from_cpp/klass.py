@@ -76,9 +76,9 @@ class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
         for block in classObj.blocks:
             if isinstance(block, QtSignalBlock):
                 for item in block:
-                    # TODO [P4] create global context for imports?
-                    #  currently it is very annoying to continuously pass `requiredImports`
-                    #  maybe `from contextvars import ContextVar`?
+                    # TODO @PO: [P4] create global context for imports?
+                    #  currently it is very annoying to continuously pass
+                    #  `requiredImports` - maybe `from contextvars import ContextVar`?
                     yield f'{item.getStrRepr(self.requiredImports)}\n'
                     found = True
 
@@ -143,8 +143,8 @@ class\s+                # keyword `class`
                 twinFile = self.baseGenFilePath.with_stem(currentName).with_suffix('.h')
                 try:
                     return readContent(twinFile)
-                except OSError as ose:
-                    logger.error(ose)
+                except OSError:
+                    logger.exception(f"Cannot read {twinFile}")
 
         return None
 
