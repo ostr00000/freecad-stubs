@@ -2,12 +2,15 @@ from __future__ import annotations
 
 import logging
 import sys
-from collections.abc import Iterable
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 from freecad_stub_gen.config import TARGET_DIR
 from freecad_stub_gen.module_namespace import moduleNamespace
-from freecad_stub_gen.util import OrderedSet
+from freecad_stub_gen.ordered_set import OrderedStrSet
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+    from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +20,7 @@ class Module:
 
     def __init__(self, content='', imports: Iterable[str] = (), name: str = ''):
         self.name = name
-        self.imports = OrderedSet(imports)
+        self.imports = OrderedStrSet(imports)
         self.content = content
         self.subModules = SourcesDict()
 
@@ -30,10 +33,11 @@ class Module:
         return self.name
 
     def __getitem__(self, item: str):
-        assert item
-        mainPart, *otherParts = item.split('.', maxsplit=1)
+        if not item:
+            raise ValueError
 
-        mainPart = moduleNamespace.getModFromAlias(mainPart, mainPart)
+        mainPartAlias, *otherParts = item.split('.', maxsplit=1)
+        mainPart = moduleNamespace.getModFromAlias(mainPartAlias, mainPartAlias)
         mod = self.subModules[mainPart]
         if mod.parent is None:
             mod.parent = self
@@ -84,36 +88,44 @@ class Module:
         return f'{self._genImports()}{self.content.rstrip()}\n'
 
     def _genImports(self):
-        sysImports, libImports, localImports, types = [], [], [], []
+        sysImports: list[str] = []
+        libImports: list[str] = []
+        localImports: list[str] = []
+        types: list[str] = []
+
         for imp in self.imports:
+            impText = imp
             if imp.startswith('from '):
                 sortModule = imp.removeprefix('from ').split(' ')[0]
+            elif '\n' in imp:
+                types.append(f'\n{imp}\n')
+                continue
             elif any(t in imp for t in ('TypeAlias', 'TypeVar', 'TypedDict')):
-                if 'TypedDict' in imp and 'class' in imp:
-                    imp = f'\n{imp}\n'
                 types.append(imp)
                 continue
             elif modName := moduleNamespace.getModFromAlias(imp):
                 sortModule = modName
-                imp = f'import {modName} as {imp}'
+                impText = f'import {modName} as {imp}'
             else:
                 sortModule = imp
                 if 'import' not in imp:
-                    imp = f'import {imp}'
+                    impText = f'import {imp}'
 
             if sortModule in sys.stdlib_module_names:
                 importList = sysImports
             else:
                 importList = libImports
 
-            importList.append(imp)
+            importList.append(impText)
 
         sysImportText = '\n'.join(sorted(sysImports))
         libImportText = '\n'.join(sorted(libImports))
         locImportText = '\n'.join(sorted(localImports))
         typesText = '\n'.join(types)
 
-        res = '\n\n'.join(filter(None, (sysImportText, libImportText, locImportText, typesText)))
+        res = '\n\n'.join(
+            filter(None, (sysImportText, libImportText, locImportText, typesText))
+        )
         if res:
             res += '\n\n\n'
         return res

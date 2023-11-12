@@ -1,19 +1,24 @@
+from __future__ import annotations
+
+import keyword
+from collections.abc import Generator, Iterable, Iterator, Sized
 from functools import cached_property
-from typing import TypeVar, Generator, Protocol
+from typing import Protocol, TypeVar
 
 from freecad_stub_gen.generators.common.names import getModuleName, useAliasedModule
-from freecad_stub_gen.util import OrderedSet, indent
+from freecad_stub_gen.ordered_set import OrderedSet, OrderedStrSet
+from freecad_stub_gen.python_code import indent
 
 T = TypeVar('T')
 
 
-class EmptyType:
+class AnyValueType:
     @property
     def value(self):
         return self
 
     def __eq__(self, other):
-        return other is Empty or other == 'typing.Any'
+        return other is AnyValue or other == 'typing.Any'
 
     def __hash__(self):
         return 1
@@ -22,55 +27,84 @@ class EmptyType:
         return 'typing.Any'
 
 
-Empty = EmptyType()
+AnyValue = AnyValueType()
 
 
-class SizedIterable(Protocol):
+class ComplexArgumentBase:
+    """Base class for generating complex arguments."""
+
+    @cached_property
+    def imports(self):
+        return OrderedStrSet()
+
+    def formatPythonSignature(self) -> str:
+        raise NotImplementedError
+
+    def __str__(self):
+        return self.formatPythonSignature()
+
+
+class SizedIterable(Sized, Iterable['RetType'], Protocol):
+    """Protocol class for `SignatureWithImports`.
+
+    When adding `SignatureWithImports` to base classes,
+    this class must also be added to properly resolve MRO.
+    Correct order:
+        - SignatureWithImports,
+        - class implementing this protocol (__len__ + __iter__),
+        - SizedIterable.
     """
-    We cannot use `Collection` from collections.abc,
-    because mro first chose collections over list/dict.
-    """
 
-    def __iter__(self):
-        return super().__iter__()
+
+class CollectImportsArgument(ComplexArgumentBase, SizedIterable):
+    """Mixin class for arguments that additionally collect imports."""
+
+    def __iter__(self) -> Iterator[str]:
+        for argType in super().__iter__():
+            argTypeVar = argType
+            match argType:
+                case str() if '[' not in argType and getModuleName(argType):
+                    argTypeVar = useAliasedModule(argType, self.imports)
+                case AnyValueType() if len(self) > 1:
+                    self.imports.add('typing')
+                case UnionArgument() as ua:
+                    self.imports.update(ua.imports)
+            yield str(argTypeVar)
 
     def __len__(self):
         return super().__len__()
 
 
-class ArgumentsIter(SizedIterable):
-    @cached_property
-    def imports(self):
-        return OrderedSet()
+class UnionArgument(CollectImportsArgument, OrderedSet['RetType'], SizedIterable):
+    """Represents `typing.Union` argument."""
 
-    def __iter__(self):
-        """
-        Cannot inherit this class from Iterable/Iterator
-        because super() will not find correct class.
-        """
-        for argType in super().__iter__():
-            match argType:
-                case str() if '[' not in argType and getModuleName(argType):
-                    argType = useAliasedModule(argType, self.imports)
-                case EmptyType() if len(self) > 1:
-                    self.imports.add('typing')
-                case UnionArguments() as ua:
-                    self.imports.update(ua.imports)
-            yield str(argType)
-
-
-class UnionArguments(ArgumentsIter, OrderedSet[T]):
-    def __str__(self):
-        values = list(self)
+    def formatPythonSignature(self) -> str:
+        values = list(iter(self))
         if 'None' in values:
             values.remove('None')
             values.append('None')
 
         return ' | '.join(values)
 
+    def add(self, item: RetType):
+        val = str(item)
+        super().add(val)
+        match item:
+            case UnionArgument():
+                self.imports.update(item.imports)
+            case AnyValueType.value:
+                self.imports.add('typing')
 
-class TupleArgument(ArgumentsIter, list):
-    def __init__(self, gen: Generator[T, None, bool | None] = ()):
+
+type RetType = UnionArgument | AnyValueType | str
+
+
+class TupleArgument(CollectImportsArgument, list[RetType], SizedIterable):
+    """Represents `tuple` argument."""
+
+    repeated: bool
+
+    def __init__(self, gen: Generator[RetType, None, bool | None]):
         super().__init__()
         try:
             while True:
@@ -78,44 +112,43 @@ class TupleArgument(ArgumentsIter, list):
         except StopIteration as st:
             self.repeated = st.value is True and len(set(self)) == 1
 
-    def __str__(self):
+    def formatPythonSignature(self) -> str:
         if self.repeated:
             # use iter instead of index [0] to map module
             return f'tuple[{next(iter(self))}, ...]'
-        elif self:
-            return f'tuple[{", ".join(self)}]'
+
+        if self:
+            return f'tuple[{", ".join(iter(self))}]'
+
         return 'tuple'
 
     def __eq__(self, other):
-        return isinstance(other, type(self)) \
-               and self.repeated == other.repeated \
-               and super().__eq__(other)
-
-
-RetType = UnionArguments[str] | EmptyType | str
+        return (
+            isinstance(other, type(self))
+            and self.repeated == other.repeated
+            and super().__eq__(other)
+        )
 
 
 class InvalidReturnType(ValueError):
     pass
 
 
-class DictArgument(ArgumentsIter):
+class DictArgument(ComplexArgumentBase):
+    """Represents `dict` argument."""
+
     def __init__(self):
-        self.keys = UnionArguments()
-        self.values = UnionArguments()
+        self.keys = UnionArgument()
+        self.values = UnionArgument()
 
     def add(self, key: RetType, value: RetType):
-        if isinstance(key, UnionArguments):
-            keyStr = str(key)
-            self.imports.update(key.imports)
-            key = keyStr
         self.keys.add(key)
         self.values.add(value)
 
     def __bool__(self):
-        return bool(self.keys and self.values)
+        return bool(self.keys or self.values)
 
-    def __str__(self):
+    def formatPythonSignature(self) -> str:
         if not self:
             return 'dict'
 
@@ -125,32 +158,53 @@ class DictArgument(ArgumentsIter):
         return ret
 
 
-class ListIter(list, ArgumentsIter):
-    pass
+class _ListIter(CollectImportsArgument, list[RetType], SizedIterable):
+    """Stores arguments sequentially.
+
+    Note that argument for `list` is `UnionArgument`,
+    because we want to skip duplicated elements.
+    """
 
 
-class TypedDictGen(dict, ArgumentsIter):
+class TypedDictGen(ComplexArgumentBase):
+    """Generates `TypedDict` for provided types."""
+
     def __init__(self, funName: str):
         super().__init__()
         self.funName = funName
         self.alternativeSyntax = False
+        self._data: dict[str, RetType] = {}
 
     def add(self, key: str, value: RetType):
-        if not key.isidentifier():  # + keyword (not implemented)
+        if not key.isidentifier() or keyword.iskeyword(key):
             self.alternativeSyntax |= True
-        self[key] = value
+        self._data[key] = value
 
-    def __str__(self):
-        typedDictName = f'Return{self.funName[0].upper() + self.funName[1:]}Dict'
-        listIter = ListIter(self.values())
+    def __bool__(self):
+        return bool(self._data)
+
+    def formatPythonSignature(self) -> str:
+        listIter = _ListIter(self._data.values())
 
         if self.alternativeSyntax:
-            content = ', '.join(f"'{k}': {v}" for k, v in zip(self.keys(), listIter))
-            fun = f"{typedDictName} = typing.TypedDict('{typedDictName}', {{{content}}})"
-
+            zipPattern = "'{k}': {v}"
+            joinPattern = ',\n'
         else:
-            lines = [f'{k}: {v}' for k, v in zip(self.keys(), listIter)]
-            content = indent('\n'.join(lines))
+            zipPattern = '{k}: {v}'
+            joinPattern = '\n'
+        lines = (
+            zipPattern.format(k=k, v=v)
+            for k, v in zip(self._data.keys(), listIter, strict=True)
+        )
+        content = indent(joinPattern.join(lines))
+
+        typedDictName = f'Return{self.funName[0].upper() + self.funName[1:]}Dict'
+        if self.alternativeSyntax:
+            fun = (
+                f"{typedDictName} = typing.TypedDict('{typedDictName}', "
+                f"{{\n{content},\n}})"
+            )
+        else:
             fun = f"class {typedDictName}(typing.TypedDict):\n{content}"
 
         self.imports.add('typing')
@@ -159,7 +213,9 @@ class TypedDictGen(dict, ArgumentsIter):
         return typedDictName
 
     def __eq__(self, other):
-        return isinstance(other, type(self)) \
-               and self.funName == other.funName \
-               and self.alternativeSyntax == other.alternativeSyntax \
-               and super().__eq__(other)
+        return (
+            isinstance(other, type(self))
+            and self.funName == other.funName
+            and self.alternativeSyntax == other.alternativeSyntax
+            and super().__eq__(other)
+        )

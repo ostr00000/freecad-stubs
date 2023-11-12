@@ -1,17 +1,23 @@
 import keyword
 import re
-from collections.abc import Iterator
-from inspect import Parameter
+from collections.abc import Generator, Iterator
+from inspect import Parameter, _empty, _ParameterKind
 from itertools import count
-from typing import Generator
 from xml.etree import ElementTree as ET
 
-from freecad_stub_gen.generators.common.annotation_parameter import AnnotationParam, RawRepr, \
-    SelfSignature
-from freecad_stub_gen.generators.common.arguments_converter import DEFAULT_ARG_NAME
-from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
-    generateExpressionUntilChar
-from freecad_stub_gen.generators.common.names import validatePythonValue
+from freecad_stub_gen.cpp_code.converters import validatePythonValue
+from freecad_stub_gen.generators.common.annotation_parameter import (
+    AnnotationParam,
+    RawRepr,
+    SelfSignature,
+)
+from freecad_stub_gen.generators.common.arguments_converter.definitions import (
+    DEFAULT_ARG_NAME,
+)
+from freecad_stub_gen.generators.common.cpp_function import (
+    findFunctionCall,
+    generateExpressionUntilChar,
+)
 
 
 def generateSignaturesFromDocstring(name: str, docString: str, argNumStart: int = 0):
@@ -34,14 +40,15 @@ def _signatureGen(funDocString: str, argNumStart: int) -> Iterator[Parameter]:
     uniqueNameGen = _uniqueArgNameGen(argNumStart)
     try:
         next(uniqueNameGen)
-    except StopIteration:
-        raise ValueError("Unique generator should never end")
+    except StopIteration as exc:
+        msg = 'Unique generator should never end'
+        raise ValueError(msg) from exc
 
-    paramType = Parameter.POSITIONAL_ONLY
+    paramType: _ParameterKind = Parameter.POSITIONAL_ONLY
 
-    for argText in generateExpressionUntilChar(funDocString, 0, ','):
-        argText = argText.strip()
-        annotation = Parameter.empty
+    for rawArgText in generateExpressionUntilChar(funDocString, 0, ','):
+        argText = rawArgText.strip()
+        annotation: type[_empty] | str = Parameter.empty
 
         if argText[-2:] == '[]':
             argText = argText[:-2] + 'None'
@@ -69,9 +76,13 @@ def _signatureGen(funDocString: str, argNumStart: int) -> Iterator[Parameter]:
         if defValue is not Parameter.empty and paramType == Parameter.POSITIONAL_ONLY:
             paramType = Parameter.POSITIONAL_OR_KEYWORD
 
-        uniqueName, argNum = uniqueNameGen.send(argName)
+        uniqueName, _argNum = uniqueNameGen.send(argName)
         yield AnnotationParam(
-            uniqueName, paramType, default=RawRepr(defValue), annotation=RawRepr(annotation))
+            uniqueName,
+            paramType,
+            default=RawRepr(defValue),
+            annotation=RawRepr(annotation),
+        )
 
 
 REG_ALL_EXCEPT_WORLD = re.compile(r'\W+')
@@ -79,7 +90,7 @@ REG_START_WITH_LETTER = re.compile(r'[a-zA-Z].*')
 
 
 def _uniqueArgNameGen(argNumStart: int = 1) -> Generator[tuple[str, int], str, None]:
-    name: str = yield
+    name: str = yield '', 0
     seen = set()
 
     for argNum in count(argNumStart):
@@ -122,6 +133,6 @@ def formatDocstring(docs: str):
 
 
 def getDocFromNode(node: ET.Element) -> str:
-    if docs := node.find("./Documentation//UserDocu").text:
-        return docs
-    return ''
+    # https://youtrack.jetbrains.com/issue/PY-49523/default-argument-for-xml-Element.findtext-is-incorrectly-identified-as-the-wrong-type
+    # noinspection PyTypeChecker
+    return node.findtext('./Documentation//UserDocu', default='')

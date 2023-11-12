@@ -4,7 +4,8 @@ from FreeCADGui.TaskDialogPython import Control as ControlClass
 import FreeCAD
 import FreeCADGui
 import FreeCADGui.Selection
-import FreeCADTemplates
+import FreeCADTemplates.qt_types as qt
+import FreeCADTemplates.templates
 import pivy.coin
 import qtpy.QtCore
 import qtpy.QtGui
@@ -13,6 +14,18 @@ import qtpy.QtWidgets
 _T = typing.TypeVar("_T")
 Triple_t: typing.TypeAlias = tuple[_T, _T, _T]
 Quadruple_t: typing.TypeAlias = tuple[_T, _T, _T, _T]
+
+class __MDIView_message_0(typing.Protocol):
+    def __call__(self): ...
+
+
+class __MDIView_message_1(typing.Protocol):
+    def __call__(self, a0: str, /): ...
+
+
+class __MDIView_message_2(typing.Protocol):
+    def __call__(self, a0: str, a1: int, /): ...
+
 
 class ReturnGetObjectInfoDict(typing.TypedDict):
     x: float
@@ -34,6 +47,30 @@ class ReturnGetObjectsInfoDict(typing.TypedDict):
     Document: str
     Object: str
     Component: str
+
+
+class __MainWindow_timeEvent_0(typing.Protocol):
+    def __call__(self): ...
+
+
+class __MainWindow_windowStateChanged_0(typing.Protocol):
+    def __call__(self): ...
+
+
+class __MainWindow_windowStateChanged_1(typing.Protocol):
+    def __call__(self, a0: FreeCADGui.MDIViewPy, /): ...
+
+
+class __MainWindow_workbenchActivated_0(typing.Protocol):
+    def __call__(self): ...
+
+
+class __MainWindow_workbenchActivated_1(typing.Protocol):
+    def __call__(self, a0: str, /): ...
+
+
+class __MainWindow_mainWindowClosed_0(typing.Protocol):
+    def __call__(self): ...
 
 
 
@@ -406,7 +443,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         Possible exceptions: (TypeError).
         """
 
-    def getBoundingBox(self, subname: str = None, transform: bool = True, pyView=None, /) -> FreeCAD.BoundBox:
+    def getBoundingBox(self, subname: str = None, transform: bool = True, pyView: FreeCADGui.View3DInventorPy = None, /) -> FreeCAD.BoundBox:
         """
         getBoundingBox(subName, transform=True, view) -> Base.BoundBox
 
@@ -1000,10 +1037,10 @@ class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
     """This is the ViewProvider base class"""
 
     @property
-    def Proxy(self) -> FreeCADTemplates.ViewProviderPython: ...
+    def Proxy(self) -> FreeCADTemplates.templates.ViewProviderPython: ...
 
     @Proxy.setter
-    def Proxy(self, value: FreeCADTemplates.ViewProviderPython): ...
+    def Proxy(self, value: FreeCADTemplates.templates.ViewProviderPython): ...
 
     @property
     def Document(self) -> FreeCADGui.Document:
@@ -1374,6 +1411,8 @@ class Document(FreeCAD.Persistence):
 # MDIViewPy.cpp
 class MDIViewPy(qtpy.QtWidgets.QMainWindow):
     """Python binding class for the MDI view class"""
+
+    message: typing.ClassVar[qt.pyqtSignal[__MDIView_message_0 | __MDIView_message_1 | __MDIView_message_2]]
 
     def printView(self) -> None:
         """
@@ -2102,6 +2141,11 @@ class PyResource:
 class MainWindowPy(qtpy.QtWidgets.QMainWindow):
     """Python binding class for the MainWindow class"""
 
+    timeEvent: typing.ClassVar[qt.pyqtSignal[__MainWindow_timeEvent_0]]
+    windowStateChanged: typing.ClassVar[qt.pyqtSignal[__MainWindow_windowStateChanged_0 | __MainWindow_windowStateChanged_1]]
+    workbenchActivated: typing.ClassVar[qt.pyqtSignal[__MainWindow_workbenchActivated_0 | __MainWindow_workbenchActivated_1]]
+    mainWindowClosed: typing.ClassVar[qt.pyqtSignal[__MainWindow_mainWindowClosed_0]]
+
     def getWindows(self) -> list:
         """
         getWindows()
@@ -2117,7 +2161,7 @@ class MainWindowPy(qtpy.QtWidgets.QMainWindow):
     def setActiveWindow(self, MDIView, /) -> None:
         """setActiveWindow(MDIView)"""
 
-    def getActiveWindow(self) -> MDIViewPy | None:
+    def getActiveWindow(self) -> FreeCADGui.MDIViewPy | None:
         """
         getActiveWindow()
         Possible exceptions: (Exception).
@@ -2129,7 +2173,7 @@ class MainWindowPy(qtpy.QtWidgets.QMainWindow):
         Possible exceptions: (Exception).
         """
 
-    def removeWindow(self, obj, /) -> None:
+    def removeWindow(self, obj: FreeCADGui.MDIViewPy, /) -> None:
         """
         removeWindow(MDIView)
         Possible exceptions: (Exception).
@@ -2946,7 +2990,7 @@ def showPreferences(pstr: str = None, idx: int = 0, /):
     """
 
 
-def createViewer(views: int = 1, title: str = None, /) -> typing.Any | FreeCADGui.AbstractSplitViewPy:
+def createViewer(views: int = 1, title: str = None, /) -> FreeCADGui.AbstractSplitViewPy:
     """
     createViewer(views=1, name) -> View3DInventorPy or AbstractSplitViewPy
 

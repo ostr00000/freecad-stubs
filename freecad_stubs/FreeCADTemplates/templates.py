@@ -3,21 +3,22 @@ This module has templates for some python object used in FreeCAD.
 Do not import these classes rather copy required methods.
 
 The ideal solution would use optional protocol,
-but at the moment there is such feature in Python
+but at the moment there is no such feature in Python:
 https://www.python.org/dev/peps/pep-0544/#support-optional-protocol-members
 
 Find regex:
 ^\s*FC_PY_ELEMENT\((\w+)\)[^\S\n]*\\?
 Replace:
-    def $1(self):\n        \"\"\"May be implemented in python\"\"\""""
+    def $1(self):\n        \"\"\"May be implemented in python\"\"\"
+"""
+# pyright: reportGeneralTypeIssues=false, reportMissingModuleSource=false
 import typing
 
+import FreeCAD
 import FreeCADGui
 from qtpy.QtCore import QObject
 from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import QDialogButtonBox, QMenu
-
-import FreeCAD
 
 
 # FeaturePython.cpp
@@ -37,36 +38,34 @@ class _ProxyPythonGeneral:
     def getViewProviderName(self, obj: FreeCAD.DocumentObject) -> str:
         """FreeCAD call this function if present"""
 
-    def getSubObject(self, obj: FreeCAD.DocumentObject, subName: str,
-                     num: typing.Literal[1, 2], matrix: FreeCAD.Matrix,
-                     transform: bool, depth: int
-                     ) -> typing.Union[
-        None,
-        tuple[
-            typing.Optional[FreeCAD.DocumentObject],
-            FreeCAD.Matrix,
-        ],
-        tuple[
-            typing.Optional[FreeCAD.DocumentObject],
-            FreeCAD.Matrix,
-            typing.Any,
-        ],
-    ]:
+    def getSubObject(
+        self,
+        obj: FreeCAD.DocumentObject,
+        subName: str,
+        num: typing.Literal[1, 2],
+        matrix: FreeCAD.Matrix,
+        transform: bool,
+        depth: int,
+    ) -> (
+        tuple[FreeCAD.DocumentObject | None, FreeCAD.Matrix, typing.Any]
+        | tuple[FreeCAD.DocumentObject | None, FreeCAD.Matrix]
+        | None
+    ):
         """FreeCAD call this function if present"""
 
-    def getSubObjects(self, obj: FreeCAD.DocumentObject, reason: int
-                      ) -> typing.Optional[typing.Sequence[str]]:
+    def getSubObjects(
+        self, obj: FreeCAD.DocumentObject, reason: int
+    ) -> typing.Sequence[str] | None:
         """FreeCAD call this function if present"""
 
-    def getLinkedObject(self, obj: FreeCAD.DocumentObject, recurse: bool,
-                        matrix: FreeCAD.Matrix, transform: bool, depth: int
-                        ) -> typing.Union[
-        None,
-        tuple[
-            typing.Optional[FreeCAD.DocumentObject],
-            FreeCAD.Matrix,
-        ],
-    ]:
+    def getLinkedObject(
+        self,
+        obj: FreeCAD.DocumentObject,
+        recurse: bool,
+        matrix: FreeCAD.Matrix,
+        transform: bool,
+        depth: int,
+    ) -> tuple[FreeCAD.DocumentObject | None, FreeCAD.Matrix] | None:
         """FreeCAD call this function if present"""
 
     def canLinkProperties(self, obj: FreeCAD.DocumentObject) -> bool:
@@ -75,10 +74,13 @@ class _ProxyPythonGeneral:
     def allowDuplicateLabel(self, obj: FreeCAD.DocumentObject) -> bool:
         """FreeCAD call this function if present"""
 
-    def redirectSubName(self, obj: FreeCAD.DocumentObject, ss: str,
-                        topParent: typing.Union[FreeCAD.DocumentObject, object],
-                        child: typing.Union[FreeCAD.DocumentObject, object]
-                        ) -> typing.Optional[str]:
+    def redirectSubName(
+        self,
+        obj: FreeCAD.DocumentObject,
+        ss: str,
+        topParent: FreeCAD.DocumentObject | object,
+        child: FreeCAD.DocumentObject | object,
+    ) -> str | None:
         """FreeCAD call this function if present"""
 
     def canLoadPartial(self, obj: FreeCAD.DocumentObject) -> int:
@@ -90,8 +92,9 @@ class _ProxyPythonGeneral:
     def isElementVisible(self, obj: FreeCAD.DocumentObject, element: str) -> int:
         """FreeCAD call this function if present"""
 
-    def setElementVisible(self, obj: FreeCAD.DocumentObject, element: str,
-                          visible: bool) -> int:
+    def setElementVisible(
+        self, obj: FreeCAD.DocumentObject, element: str, visible: bool
+    ) -> int:
         """FreeCAD call this function if present"""
 
 
@@ -117,7 +120,8 @@ class ProxyPythonObj(_ProxyPythonGeneral):
     This is the same as ProxyPython, but has __object__ attribute.
     Methods defined in this class are called without object argument.
     """
-    __object__: FreeCAD.DocumentObject = None
+
+    __object__: FreeCAD.DocumentObject | None = None
 
     def execute(self):
         """FreeCAD call this function if present"""
@@ -141,8 +145,7 @@ SoFullPath = typing.Annotated[typing.Any, 'pivy.coin.SoFullPath']
 
 
 class _ViewProviderPythonGeneral:
-
-    def getIcon(self) -> typing.Union[None, str, QIcon]:
+    def getIcon(self) -> QIcon | str | None:
         """May be implemented in python"""
 
     def claimChildren(self) -> typing.Sequence[FreeCAD.DocumentObject]:
@@ -151,7 +154,7 @@ class _ViewProviderPythonGeneral:
     def useNewSelectionModel(self) -> bool:
         """May be implemented in python"""
 
-    def getElementPicked(self, pivyObj: SoPickedPoint) -> typing.Optional[str]:
+    def getElementPicked(self, pivyObj: SoPickedPoint) -> str | None:
         """May be implemented in python"""
 
     def getElement(self, pivyObj: SoDetail) -> str:
@@ -160,19 +163,27 @@ class _ViewProviderPythonGeneral:
     def getDetail(self, name: str) -> SoDetail:
         """May be implemented in python"""
 
-    def getDetailPath(self, name: str, pivyObj: SoFullPath, append: bool
-                      ) -> typing.Union[bool, SoDetail]:
+    def getDetailPath(
+        self, name: str, pivyObj: SoFullPath, append: bool
+    ) -> bool | SoDetail:
         """May be implemented in python"""
 
     def getSelectionShape(self):  # not redirected
         """May be implemented in python"""
 
-    def setEditViewer(self, viewObj: FreeCADGui.ViewProviderDocumentObject,
-                      viewer: FreeCADGui.View3DInventorViewerPy, modNum: int) -> bool:
+    def setEditViewer(
+        self,
+        viewObj: FreeCADGui.ViewProviderDocumentObject,
+        viewer: FreeCADGui.View3DInventorViewerPy,
+        modNum: int,
+    ) -> bool:
         """May be implemented in python"""
 
-    def unsetEditViewer(self, viewObj: FreeCADGui.ViewProviderDocumentObject,
-                        viewer: FreeCADGui.View3DInventorViewerPy) -> bool:
+    def unsetEditViewer(
+        self,
+        viewObj: FreeCADGui.ViewProviderDocumentObject,
+        viewer: FreeCADGui.View3DInventorViewerPy,
+    ) -> bool:
         """May be implemented in python"""
 
     def startRestoring(self):  # not redirected
@@ -211,76 +222,100 @@ class _ViewProviderPythonGeneral:
     def canDragAndDropObject(self, obj: FreeCAD.DocumentObject) -> bool:
         """May be implemented in python"""
 
-    def canDropObjectEx(self, obj: FreeCAD.DocumentObject,
-                        owner: typing.Optional[FreeCAD.DocumentObject],
-                        subName: str,
-                        elements: tuple[str],
-                        ) -> bool:
+    def canDropObjectEx(
+        self,
+        obj: FreeCAD.DocumentObject,
+        owner: FreeCAD.DocumentObject | None,
+        subName: str,
+        elements: tuple[str],
+    ) -> bool:
         """May be implemented in python"""
 
-    def dropObjectEx(self, viewObj: FreeCADGui.ViewProviderDocumentObject,
-                     obj: FreeCAD.DocumentObject,
-                     owner: typing.Union[FreeCAD.DocumentObject, object],
-                     subName: str,
-                     elements: tuple[str],
-                     ) -> typing.Optional[str]:
+    def dropObjectEx(
+        self,
+        viewObj: FreeCADGui.ViewProviderDocumentObject,
+        obj: FreeCAD.DocumentObject,
+        owner: FreeCAD.DocumentObject | object,
+        subName: str,
+        elements: tuple[str],
+    ) -> str | None:
         """May be implemented in python"""
 
     def canAddToSceneGraph(self) -> bool:
         """May be implemented in python"""
 
-    def getDropPrefix(self) -> typing.Optional[str]:
+    def getDropPrefix(self) -> str | None:
         """May be implemented in python"""
 
-    def replaceObject(self, oldObj: FreeCAD.DocumentObject, newObj: FreeCAD.DocumentObject) -> bool:
+    def replaceObject(
+        self, oldObj: FreeCAD.DocumentObject, newObj: FreeCAD.DocumentObject
+    ) -> bool:
         """May be implemented in python"""
 
-    def getLinkedViewProvider(self, recursive: bool) -> typing.Union[
-        None,
-        FreeCADGui.ViewProviderDocumentObject,
+    def getLinkedViewProvider(
+        self, recursive: bool
+    ) -> (
         tuple[FreeCADGui.ViewProviderDocumentObject, str]
-    ]:
+        | FreeCADGui.ViewProviderDocumentObject
+        | None
+    ):
         """May be implemented in python"""
 
 
 class ViewProviderPython(_ViewProviderPythonGeneral):
-    def setEdit(self, viewObj: FreeCADGui.ViewProviderDocumentObject,
-                modNum: int) -> typing.Optional[bool]:
+    def setEdit(
+        self, viewObj: FreeCADGui.ViewProviderDocumentObject, modNum: int
+    ) -> bool | None:
         """May be implemented in python"""
 
-    def unsetEdit(self, viewObj: FreeCADGui.ViewProviderDocumentObject,
-                  modNum: int) -> typing.Optional[bool]:
+    def unsetEdit(
+        self, viewObj: FreeCADGui.ViewProviderDocumentObject, modNum: int
+    ) -> bool | None:
         """May be implemented in python"""
 
     def doubleClicked(self, viewObj: FreeCADGui.ViewProviderDocumentObject) -> bool:
         """May be implemented in python"""
 
-    def setupContextMenu(self, viewObj: FreeCADGui.ViewProviderDocumentObject, menu: QMenu) -> bool:
+    def setupContextMenu(
+        self, viewObj: FreeCADGui.ViewProviderDocumentObject, menu: QMenu
+    ) -> bool:
         """May be implemented in python"""
 
     def attach(self, viewObj: FreeCADGui.ViewProviderDocumentObject):
         """May be implemented in python"""
 
-    def updateData(self, viewObj: FreeCADGui.ViewProviderDocumentObject, propertyName: str):
+    def updateData(
+        self, viewObj: FreeCADGui.ViewProviderDocumentObject, propertyName: str
+    ):
         """May be implemented in python"""
 
-    def onChanged(self, viewObj: FreeCADGui.ViewProviderDocumentObject, propertyName: str):
+    def onChanged(
+        self, viewObj: FreeCADGui.ViewProviderDocumentObject, propertyName: str
+    ):
         """May be implemented in python"""
 
-    def onDelete(self, viewObj: FreeCADGui.ViewProviderDocumentObject,
-                 sub: tuple[str, ...]) -> bool:
+    def onDelete(
+        self, viewObj: FreeCADGui.ViewProviderDocumentObject, sub: tuple[str, ...]
+    ) -> bool:
         """May be implemented in python"""
 
-    def getDisplayModes(self, viewObj: FreeCADGui.ViewProviderDocumentObject
-                        ) -> typing.Sequence[str]:
+    def getDisplayModes(
+        self, viewObj: FreeCADGui.ViewProviderDocumentObject
+    ) -> typing.Sequence[str]:
         """May be implemented in python"""
 
-    def dragObject(self, viewObj: FreeCADGui.ViewProviderDocumentObject,
-                   obj: FreeCAD.DocumentObject):
+    def dragObject(
+        self,
+        viewObj: FreeCADGui.ViewProviderDocumentObject,
+        obj: FreeCAD.DocumentObject,
+    ):
         """May be implemented in python"""
 
-    def dropObject(self, viewObj: FreeCADGui.ViewProviderDocumentObject,
-                   obj: FreeCAD.DocumentObject):
+    def dropObject(
+        self,
+        viewObj: FreeCADGui.ViewProviderDocumentObject,
+        obj: FreeCAD.DocumentObject,
+    ):
         """May be implemented in python"""
 
 
@@ -289,12 +324,13 @@ class ViewProviderPythonObj(_ViewProviderPythonGeneral):
     This is the same as ViewProviderPython, but object must have  __object__ attribute.
     Methods defined in this class are called without view object argument.
     """
+
     __vobject__: FreeCADGui.ViewProviderDocumentObject
 
-    def setEdit(self, modNum: int) -> typing.Optional[bool]:
+    def setEdit(self, modNum: int) -> bool | None:
         """May be implemented in python"""
 
-    def unsetEdit(self, modNum: int) -> typing.Optional[bool]:
+    def unsetEdit(self, modNum: int) -> bool | None:
         """May be implemented in python"""
 
     def doubleClicked(self) -> bool:
@@ -347,15 +383,18 @@ class CommandPython:
         """FreeCAD call this function if present"""
 
 
-class CheckAbleDict(ResourceDict):
+class CheckableDict(ResourceDict):
     Checkable: bool
 
 
-class CheckAbleCommandPython(CommandPython):
-    def GetResources(self) -> CheckAbleDict:
+class CheckableCommandPython:
+    def GetResources(self) -> CheckableDict:
         """FreeCAD call this function if present"""
 
-    def Activated(self, checked: bool = None):
+    def IsActive(self) -> bool:
+        """FreeCAD call this function if present"""
+
+    def Activated(self, checked: bool):
         """FreeCAD call this function if present"""
 
 
@@ -384,12 +423,18 @@ class DocumentObserverGui:
     def slotDeletedObject(self, viewProvider: FreeCADGui.ViewProviderDocumentObject):
         """FreeCAD call this function if present"""
 
-    def slotBeforeChangeObject(self, viewProvider: FreeCADGui.ViewProviderDocumentObject,
-                               propContainerName: str):
+    def slotBeforeChangeObject(
+        self,
+        viewProvider: FreeCADGui.ViewProviderDocumentObject,
+        propContainerName: str,
+    ):
         """FreeCAD call this function if present"""
 
-    def slotChangedObject(self, viewProvider: FreeCADGui.ViewProviderDocumentObject,
-                          propContainerName: str):
+    def slotChangedObject(
+        self,
+        viewProvider: FreeCADGui.ViewProviderDocumentObject,
+        propContainerName: str,
+    ):
         """FreeCAD call this function if present"""
 
     def slotInEdit(self, viewProvider: FreeCADGui.ViewProviderDocumentObject):
@@ -433,7 +478,9 @@ class DocumentObserverApp:
     def slotDeletedObject(self, obj: FreeCAD.DocumentObject):
         """FreeCAD call this function if present"""
 
-    def slotBeforeChangeObject(self, obj: FreeCAD.DocumentObject, propContainerName: str):
+    def slotBeforeChangeObject(
+        self, obj: FreeCAD.DocumentObject, propContainerName: str
+    ):
         """FreeCAD call this function if present"""
 
     def slotChangedObject(self, obj: FreeCAD.DocumentObject, propContainerName: str):
@@ -475,24 +522,29 @@ class DocumentObserverApp:
     def slotFinishSaveDocument(self, doc: FreeCAD.Document, fileName: str):
         """FreeCAD call this function if present"""
 
-    def slotAppendDynamicProperty(self, propContainer: FreeCAD.PropertyContainer,
-                                  propContainerName: str):
+    def slotAppendDynamicProperty(
+        self, propContainer: FreeCAD.PropertyContainer, propContainerName: str
+    ):
         """FreeCAD call this function if present"""
 
-    def slotRemoveDynamicProperty(self, propContainer: FreeCAD.PropertyContainer,
-                                  propContainerName: str):
+    def slotRemoveDynamicProperty(
+        self, propContainer: FreeCAD.PropertyContainer, propContainerName: str
+    ):
         """FreeCAD call this function if present"""
 
-    def slotChangePropertyEditor(self, propContainer: FreeCAD.PropertyContainer,
-                                 propContainerName: str):
+    def slotChangePropertyEditor(
+        self, propContainer: FreeCAD.PropertyContainer, propContainerName: str
+    ):
         """FreeCAD call this function if present"""
 
-    def slotBeforeAddingDynamicExtension(self, extension: FreeCAD.ExtensionContainer,
-                                         extensionName: str):
+    def slotBeforeAddingDynamicExtension(
+        self, extension: FreeCAD.ExtensionContainer, extensionName: str
+    ):
         """FreeCAD call this function if present"""
 
-    def slotAddedDynamicExtension(self, extension: FreeCAD.ExtensionContainer,
-                                  extensionName: str):
+    def slotAddedDynamicExtension(
+        self, extension: FreeCAD.ExtensionContainer, extensionName: str
+    ):
         """FreeCAD call this function if present"""
 
 
@@ -563,4 +615,4 @@ class TaskDialogPythonUi(TaskDialog):
 
 
 class TaskDialogPythonForm(TaskDialog):
-    form: typing.Union[list[QObject], QObject]
+    form: list[QObject] | QObject

@@ -1,22 +1,25 @@
 import logging
 import re
 
+from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
-from freecad_stub_gen.generators.common.gen_property.macro.alias import PropertyTypeAlias, \
-    PropertyTypeVar
+from freecad_stub_gen.generators.common.gen_property.macro.alias import (
+    PropertyTypeAlias,
+    PropertyTypeVar,
+)
 from freecad_stub_gen.generators.common.gen_property.macro.base import PropertyMacroBase
 from freecad_stub_gen.generators.common.names import useAliasedModule
 from freecad_stub_gen.module_namespace import moduleNamespace
 
 logger = logging.getLogger(__name__)
-seen = set()
+seen = set[str]()
 
 
 class PropertyMacroSetter(PropertyMacroBase):
-
+    # pylint: disable=too-many-statements
     @property
     def pythonSetType(self) -> str:
-        if not (typeId := self.TypeId):
+        if not (typeId := self.typeId):
             return ''
 
         requiredTypes = []
@@ -27,25 +30,43 @@ class PropertyMacroSetter(PropertyMacroBase):
             case 'App::PropertyEnumeration':
                 return self._getEnumType()
 
-            case ("App::PropertyPercent" | "App::PropertyInteger"
-                  | "App::PropertyIntegerConstraint"):
+            case (
+                "App::PropertyPercent"
+                | "App::PropertyInteger"
+                | "App::PropertyIntegerConstraint"
+            ):
                 innerType = 'int'
 
             case "App::PropertyBool" | "App::PropertyBoolList":
                 innerType = 'int | bool'
 
-            case ("App::PropertyFloat" | "App::PropertyFloatList"
-                  | "App::PropertyFloatConstraint" | "App::PropertyPrecision"):
+            case (
+                "App::PropertyFloat"
+                | "App::PropertyFloatList"
+                | "App::PropertyFloatConstraint"
+                | "App::PropertyPrecision"
+            ):
                 innerType = 'float'
 
-            case ("App::PropertyQuantity" | "App::PropertyDistance" | "App::PropertyFrequency"
-                  | "App::PropertySpeed" | "App::PropertyAcceleration" | "App::PropertyPressure"
-                  | "App::PropertyForce"
-                  | "App::PropertyVacuumPermittivity"):
+            case (
+                "App::PropertyQuantity"
+                | "App::PropertyDistance"
+                | "App::PropertyFrequency"
+                | "App::PropertySpeed"
+                | "App::PropertyAcceleration"
+                | "App::PropertyPressure"
+                | "App::PropertyForce"
+                | "App::PropertyVacuumPermittivity"
+            ):
                 innerType = 'str | float | FreeCAD.Quantity | FreeCAD.Unit'
 
-            case ("App::PropertyQuantityConstraint" | "App::PropertyLength"
-                  | "App::PropertyArea" | "App::PropertyVolume" | "App::PropertyAngle"):
+            case (
+                "App::PropertyQuantityConstraint"
+                | "App::PropertyLength"
+                | "App::PropertyArea"
+                | "App::PropertyVolume"
+                | "App::PropertyAngle"
+            ):
                 container = withoutContainer
                 innerType = 'str | float | FreeCAD.Quantity'
 
@@ -56,35 +77,65 @@ class PropertyMacroSetter(PropertyMacroBase):
                 container = withoutContainer
                 innerType = 'dict[str, str]'
 
-            case ("App::PropertyPersistentObject" | "App::PropertyUUID" | "App::PropertyFont"
-                  | "App::PropertyFile" | "App::PropertyString" | "App::PropertyStringList"
-                  | "App::PropertyPath"):
+            case (
+                "App::PropertyPersistentObject"
+                | "App::PropertyUUID"
+                | "App::PropertyFont"
+                | "App::PropertyFile"
+                | "App::PropertyString"
+                | "App::PropertyStringList"
+                | "App::PropertyPath"
+            ):
                 innerType = 'str'
 
-            case ("App::PropertyLink" | "App::PropertyLinkChild"
-                  | "App::PropertyLinkGlobal" | "App::PropertyLinkHidden"
-                  | "App::PropertyPlacementLink"):
+            case (
+                "App::PropertyLink"
+                | "App::PropertyLinkChild"
+                | "App::PropertyLinkGlobal"
+                | "App::PropertyLinkHidden"
+                | "App::PropertyPlacementLink"
+            ):
                 innerType = 'FreeCAD.DocumentObject | None'
 
-            case ("App::PropertyLinkSub" | "App::PropertyLinkSubChild"
-                  | "App::PropertyLinkSubGlobal" | "App::PropertyLinkSubHidden"):
+            case (
+                "App::PropertyLinkSub"
+                | "App::PropertyLinkSubChild"
+                | "App::PropertyLinkSubGlobal"
+                | "App::PropertyLinkSubHidden"
+            ):
                 requiredTypes = [self.TYPE_LINK_SUB]
                 innerType = 'LinkSub_t'
 
-            case ("App::PropertyLinkList" | "App::PropertyLinkListChild"
-                  | "App::PropertyLinkListGlobal" | "App::PropertyLinkListHidden"):
+            case (
+                "App::PropertyLinkList"
+                | "App::PropertyLinkListChild"
+                | "App::PropertyLinkListGlobal"
+                | "App::PropertyLinkListHidden"
+            ):
                 requiredTypes = [self.TYPE_LINK_LIST]
                 innerType = 'LinkList_t'
                 container = withoutContainer
 
-            case ("App::PropertyLinkSubList" | "App::PropertyLinkSubListChild"
-                  | "App::PropertyLinkSubListGlobal" | "App::PropertyLinkSubListHidden"):
-                requiredTypes = [self.TYPE_LINK_SUB, self.TYPE_LINK_LIST, self.TYPE_LINK_SUB_LIST]
+            case (
+                "App::PropertyLinkSubList"
+                | "App::PropertyLinkSubListChild"
+                | "App::PropertyLinkSubListGlobal"
+                | "App::PropertyLinkSubListHidden"
+            ):
+                requiredTypes = [
+                    self.TYPE_LINK_SUB,
+                    self.TYPE_LINK_LIST,
+                    self.TYPE_LINK_SUB_LIST,
+                ]
                 innerType = 'LinkSub_t | LinkList_t | LinkSubList_t'
                 container = withoutContainer
 
-            case ("App::PropertyXLink" | "App::PropertyXLinkSub"
-                  | "App::PropertyXLinkSubList" | "App::PropertyXLinkList"):
+            case (
+                "App::PropertyXLink"
+                | "App::PropertyXLinkSub"
+                | "App::PropertyXLinkSubList"
+                | "App::PropertyXLinkList"
+            ):
                 requiredTypes = [self.TYPE_PROPERTY_X]
                 innerType = self.TYPE_PROPERTY_X.name
 
@@ -92,8 +143,13 @@ class PropertyMacroSetter(PropertyMacroBase):
                 requiredTypes = [self.TYPE_SEXDECUPLE]
                 innerType = f'FreeCAD.Matrix | {self.TYPE_SEXDECUPLE.name}[float]'
 
-            case ("App::PropertyVector" | "App::PropertyVectorDistance" | "App::PropertyPosition"
-                  | "App::PropertyDirection" | "App::PropertyVectorList"):
+            case (
+                "App::PropertyVector"
+                | "App::PropertyVectorDistance"
+                | "App::PropertyPosition"
+                | "App::PropertyDirection"
+                | "App::PropertyVectorList"
+            ):
                 requiredTypes = [self.TYPE_TRIPLE]
                 innerType = f'FreeCAD.Vector | {self.TYPE_TRIPLE.name}[float]'
 
@@ -102,8 +158,10 @@ class PropertyMacroSetter(PropertyMacroBase):
 
             case "App::PropertyColor" | "App::PropertyColorList":
                 requiredTypes = [self.TYPE_TRIPLE, self.TYPE_QUADRUPLE]
-                innerType = f'{self.TYPE_TRIPLE.name}[float] ' \
-                            f'| {self.TYPE_QUADRUPLE.name}[float] | int'
+                innerType = (
+                    f'{self.TYPE_TRIPLE.name}[float] '
+                    f'| {self.TYPE_QUADRUPLE.name}[float] | int'
+                )
 
             case "App::PropertyMaterial" | "App::PropertyMaterialList":
                 innerType = 'FreeCAD.Material'
@@ -126,7 +184,9 @@ class PropertyMacroSetter(PropertyMacroBase):
 
             case "Spreadsheet::PropertySheet":
                 innerType = 'Spreadsheet.Sheet'
-            case "Spreadsheet::PropertyColumnWidths" | "Spreadsheet::PropertyRowHeights":
+            case (
+                "Spreadsheet::PropertyColumnWidths" | "Spreadsheet::PropertyRowHeights"
+            ):
                 innerType = ''  # read only
 
             case "TechDraw::PropertyCosmeticVertexList":
@@ -161,28 +221,40 @@ class PropertyMacroSetter(PropertyMacroBase):
         return result
 
     TYPE_DOC_AND_STR = PropertyTypeAlias(
-        'DocAndStr_t', 'tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]')
+        'DocAndStr_t', 'tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]'
+    )
     TYPE_LINK_SUB = PropertyTypeAlias(
-        'LinkSub_t', "FreeCAD.DocumentObject | None | tuple[()] | DocAndStr_t", TYPE_DOC_AND_STR)
-    TYPE_LINK_LIST = PropertyTypeAlias(
-        'LinkList_t', 'None | FreeCAD.DocumentObject')
+        'LinkSub_t',
+        "FreeCAD.DocumentObject | None | tuple[()] | DocAndStr_t",
+        TYPE_DOC_AND_STR,
+    )
+    TYPE_LINK_LIST = PropertyTypeAlias('LinkList_t', 'None | FreeCAD.DocumentObject')
     TYPE_SEQ_DOC = PropertyTypeAlias(
-        'SequenceDoc_t', 'tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]')
-    TYPE_SEQ_NONE = PropertyTypeAlias(
-        'SequenceNone_t', 'tuple[None, typing.Any]')
+        'SequenceDoc_t', 'tuple[FreeCAD.DocumentObject, str | typing.Sequence[str]]'
+    )
+    TYPE_SEQ_NONE = PropertyTypeAlias('SequenceNone_t', 'tuple[None, typing.Any]')
     TYPE_PROPERTY_X = PropertyTypeAlias(
-        'PropX_t', 'None | FreeCAD.DocumentObject | SequenceNone_t | SequenceDoc_t',
-        TYPE_SEQ_NONE, TYPE_SEQ_DOC)
+        'PropX_t',
+        'None | FreeCAD.DocumentObject | SequenceNone_t | SequenceDoc_t',
+        TYPE_SEQ_NONE,
+        TYPE_SEQ_DOC,
+    )
     TYPE_LINK_SUB_LIST = PropertyTypeAlias(
-        'LinkSubList_t', 'typing.Sequence[SequenceDoc_t | FreeCAD.DocumentObject]', TYPE_SEQ_DOC)
+        'LinkSubList_t',
+        'typing.Sequence[SequenceDoc_t | FreeCAD.DocumentObject]',
+        TYPE_SEQ_DOC,
+    )
     TYPE_STR_IO = PropertyTypeAlias('StrIO_t', 'str | bytes | io.IOBase')
 
     TYPE_PARAM_T = PropertyTypeVar('_T')
     TYPE_TRIPLE = PropertyTypeAlias('Triple_t', 'tuple[_T, _T, _T]', TYPE_PARAM_T)
-    TYPE_QUADRUPLE = PropertyTypeAlias('Quadruple_t', 'tuple[_T, _T, _T, _T]', TYPE_PARAM_T)
+    TYPE_QUADRUPLE = PropertyTypeAlias(
+        'Quadruple_t', 'tuple[_T, _T, _T, _T]', TYPE_PARAM_T
+    )
     # https://en.wikipedia.org/wiki/Tuple#Names_for_tuples_of_specific_lengths
     TYPE_SEXDECUPLE = PropertyTypeAlias(
-        'Sexdecuple_t', f'tuple[{", ".join("_T" for _ in range(16))}]', TYPE_PARAM_T)
+        'Sexdecuple_t', f'tuple[{", ".join("_T" for _ in range(16))}]', TYPE_PARAM_T
+    )
 
     REG_PATTERN_ENUM_VAR_NAME = r'{}\.setEnums\(\s*(\w+)\s*\)'
     REG_PATTERN_ENUM_ARRAY = r'{}\s*\[\s*]\s*=\s*([^;]+)'
@@ -192,21 +264,26 @@ class PropertyMacroSetter(PropertyMacroBase):
         if varNameMatch := re.search(reg, self.constructorBody):
             reg = self.REG_PATTERN_ENUM_ARRAY.format(varNameMatch.group(1))
 
-            if match := re.search(reg, self.constructorBody):
-                literalsRaw = match.group(1)
-            elif match := re.search(reg, self.cppContent):
+            if (match := re.search(reg, self.constructorBody)) or (
+                match := re.search(reg, self.cppContent)
+            ):
                 literalsRaw = match.group(1)
             else:
-                raise ValueError("Cannot find enum variable")
+                msg = 'Cannot find enum variable'
+                raise ValueError(msg)
 
             literalsStart = literalsRaw.find('{') + 1
             literalsArray = [
-                exp.strip().removeprefix('"').removesuffix('"')
+                removeQuote(exp)
                 for exp in generateExpressionUntilChar(
-                    literalsRaw, literalsStart, ",", bracketL='{', bracketR='}')]
+                    literalsRaw, literalsStart, ",", bracketL='{', bracketR='}'
+                )
+            ]
             literalsArray = literalsArray[:-1]  # remove NULL
 
             return f'typing.Literal{literalsArray}'
 
-        logger.error(f"Unknown enum values for {self.namespace=} {self.group=} {self.name=}")
+        logger.error(
+            f"Unknown enum values for {self.namespace=} {self.group=} {self.name=}"
+        )
         return ''

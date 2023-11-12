@@ -1,11 +1,13 @@
 import re
 from collections import defaultdict
+from collections.abc import Iterable
 from dataclasses import dataclass
 from functools import cached_property
 
+from freecad_stub_gen.cpp_code.converters import removeQuote
+from freecad_stub_gen.file_functions import genCppFiles, readContent
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.module_namespace import moduleNamespace
-from freecad_stub_gen.util import readContent, genCppFiles
 
 
 @dataclass
@@ -18,6 +20,7 @@ class AddTypeArguments:
     def namespace(self) -> str | None:
         if '::' in self.cFullType:
             return self.cFullType.split('::', maxsplit=1)[0]
+        return None
 
     @cached_property
     def cTypeWithoutNamespace(self) -> str:
@@ -33,12 +36,13 @@ class AddTypeArguments:
         return self.pythonName
 
     def __post_init__(self):
-        self.cFullType = self.cFullType \
-            .removeprefix('&') \
-            .removesuffix('::type_object()') \
+        self.cFullType = (
+            self.cFullType.removeprefix('&')
+            .removesuffix('::type_object()')
             .removesuffix('::Type')
+        )
 
-        self.pythonName = self.pythonName.removeprefix('"').removesuffix('"')
+        self.pythonName = removeQuote(self.pythonName)
 
 
 class ImportableClassMap(dict[str, str]):
@@ -50,18 +54,19 @@ class ImportableClassMap(dict[str, str]):
     # Base::Interpreter\(\).addType\(\&\w+::(\w+)Py\s*::Type,\s*\w+,"(?!\1")
 
     def __init__(self):
-        self.dup = defaultdict(set)
+        self.dup: defaultdict[str, set[str]] = defaultdict(set[str])
         # remove duplicated keys - not all classes have namespace
         super().__init__(self._filterDuplicatedKeys(self._genTypes()))
         for duplicatedKey in self.dup:
             del self[duplicatedKey]
 
     def isImportable(self, className: str):
-        return (className in self.values()
-                or any(className in duplicatedSet for duplicatedSet in self.dup.values()))
+        return className in self.values() or any(
+            className in duplicatedSet for duplicatedSet in self.dup.values()
+        )
 
-    def _filterDuplicatedKeys(self, it):
-        seen = {}
+    def _filterDuplicatedKeys(self, it: Iterable[tuple[str, str]]):
+        seen: dict[str, str] = {}
         for key, val in it:
             if key in seen:
                 self.dup[key].add(seen[key])
@@ -71,7 +76,9 @@ class ImportableClassMap(dict[str, str]):
 
             yield key, val
 
-    REG_ADD_TYPE = re.compile(r'Base\s*:\s*:\s*Interpreter\s*\(\s*\)\s*\.\s*addType\s*\(')
+    REG_ADD_TYPE = re.compile(
+        r'Base\s*:\s*:\s*Interpreter\s*\(\s*\)\s*\.\s*addType\s*\('
+    )
 
     def _genTypes(self):
         for cppFile in genCppFiles():
@@ -80,11 +87,12 @@ class ImportableClassMap(dict[str, str]):
                 addTypeList = [
                     c.replace(' ', '').replace('\n', '')
                     for c in generateExpressionUntilChar(
-                        cppContent, match.end(), ',', bracketL='(', bracketR=')')]
+                        cppContent, match.end(), ',', bracketL='(', bracketR=')'
+                    )
+                ]
 
                 addTypeArgs = AddTypeArguments(*addTypeList)
-                yield (addTypeArgs.cTypeWithoutNamespace,
-                       addTypeArgs.fullPythonName)
+                yield (addTypeArgs.cTypeWithoutNamespace, addTypeArgs.fullPythonName)
 
 
 __all__ = ['importableMap']

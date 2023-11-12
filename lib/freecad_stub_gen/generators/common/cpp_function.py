@@ -5,7 +5,7 @@ from itertools import islice
 
 def _skipAdditionalDirectiveBlocks(it: Iterator[tuple[int, str]]):
     directiveStack = [True]
-    buffer = deque(maxlen=8)
+    buffer: deque[str] = deque(maxlen=8)
 
     for index, char in it:
         buffer.append(char)
@@ -17,10 +17,10 @@ def _skipAdditionalDirectiveBlocks(it: Iterator[tuple[int, str]]):
                     # maybe we started in the middle of directive
                     directiveStack.pop()
                 buffer.clear()
-            elif text.endswith('#elif') or text.endswith('#else'):
+            elif text.endswith(('#elif', '#else')):
                 directiveStack[-1] = False
                 buffer.clear()
-            elif text.endswith('#if') or text.endswith('#ifdef') or text.endswith('#ifndef'):
+            elif text.endswith(('#if', '#ifdef', '#ifndef')):
                 directiveStack.append(True)
                 buffer.clear()
 
@@ -28,16 +28,21 @@ def _skipAdditionalDirectiveBlocks(it: Iterator[tuple[int, str]]):
             yield index, char
 
 
-def findFunctionCall(text: str, bodyStart: int, bracketL='{', bracketR='}'):
+def findFunctionCall(
+    text: str, bodyStart: int | None = None, bracketL='{', bracketR='}'
+):
+    if bodyStart is None:
+        bodyStart = text.find('(')
     bracketDeep = 0
-    bodyEnd = 0
 
     sliceIt: Iterable[str] = islice(text, bodyStart, len(text))
     it = enumerate(sliceIt, bodyStart)
     if '#if' in text:
         it = _skipAdditionalDirectiveBlocks(it)
 
-    for bodyEnd, char in it:
+    bodyEnd = 0
+    for i, char in it:
+        bodyEnd = i
         if char == bracketL:
             bracketDeep += 1
         elif char == bracketR:
@@ -45,13 +50,15 @@ def findFunctionCall(text: str, bodyStart: int, bracketL='{', bracketR='}'):
             if not bracketDeep:
                 break
 
-    functionText = text[bodyStart:bodyEnd + 1]
-    return functionText
+    return text[bodyStart : bodyEnd + 1]
 
 
-def generateExpressionUntilChar(text: str, expStart: int, splitChar: str,
-                                bracketL='(', bracketR=')'):
-    assert splitChar not in f'\\"{bracketL}{bracketR}'
+def generateExpressionUntilChar(
+    text: str, expStart: int = 0, splitChar: str = ',', bracketL='(', bracketR=')'
+):
+    if splitChar in f'\\"{bracketL}{bracketR}':
+        msg = f"Cannot use {splitChar=} when generating expression"
+        raise ValueError(msg)
 
     bracketDeep = 0
     expEnd = 0
@@ -79,4 +86,12 @@ def generateExpressionUntilChar(text: str, expStart: int, splitChar: str,
             yield text[expStart:expEnd]
             expStart = expEnd + 1
 
-    yield text[expStart:expEnd + 1]
+    yield text[expStart : expEnd + 1]
+
+
+def genFuncArgs(text: str, textStart: int | None = None) -> Iterable[str]:
+    funcCall = findFunctionCall(text, textStart, bracketL='(', bracketR=')')
+    content = funcCall[funcCall.find('(') + 1 : funcCall.rfind(')')]
+    for exp in generateExpressionUntilChar(content, splitChar=','):
+        if e := exp.strip():
+            yield e

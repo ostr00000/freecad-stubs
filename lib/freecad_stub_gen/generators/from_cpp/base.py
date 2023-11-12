@@ -1,3 +1,4 @@
+import contextlib
 import dataclasses
 import logging
 import re
@@ -6,15 +7,18 @@ from collections import defaultdict
 from collections.abc import Iterable
 from inspect import Parameter
 from itertools import chain
+from typing import ClassVar
 
+from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.generators.common.annotation_parameter import SelfSignature
-from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
-    generateExpressionUntilChar
-from freecad_stub_gen.generators.common.doc_string import generateSignaturesFromDocstring
+from freecad_stub_gen.generators.common.cpp_function import genFuncArgs
+from freecad_stub_gen.generators.common.doc_string import (
+    generateSignaturesFromDocstring,
+)
 from freecad_stub_gen.generators.common.gen_method import MethodGenerator
 from freecad_stub_gen.generators.common.signature_merger import SignatureMerger
 from freecad_stub_gen.logger import LEVEL_CODE
-from freecad_stub_gen.module_container import Module
+from freecad_stub_gen.python_code.module_container import Module
 
 logger = logging.getLogger(__name__)
 
@@ -24,50 +28,56 @@ class Method:
     args: list[str]
     pythonMethodName: str = ''
     cFunction: str = ''
-    doc: str = None
-    pythonSignature: SelfSignature = None
+    doc: str | None = None
+    _pythonSignature: SelfSignature | None = None
 
-    REG_WHITESPACE_WITH_APOSTROPHE = re.compile(r'"\s*"')
+    REG_WHITESPACE_WITH_APOSTROPHE: ClassVar = re.compile(r'"\s*"')
+    REQUIRED_ARGUMENT_NUM: ClassVar = 2
 
     def __post_init__(self):
-        self.args = [
-            e.strip().removesuffix('}').removesuffix('"').removeprefix('"')
-            for e in self.args]
+        self.args = [removeQuote(a) for a in self.args]
 
         self.pythonMethodName = self.args[0]
         self.cClass, self.cFunction = self._parsePointer(self.args[1])
-        if len(self.args) > 2:
-            try:
+        if len(self.args) > self.REQUIRED_ARGUMENT_NUM:
+            with contextlib.suppress(IndexError):
                 self.doc = re.sub(
                     self.REG_WHITESPACE_WITH_APOSTROPHE, '', self.args[-1]
                 ).replace('\\n', '\n')
-            except IndexError:
-                pass
 
     REG_POINTER = re.compile(r'(?:\w+::)*?(?:(?P<class>\w+)::)?\b(?P<func>\w+)\b\W*$')
 
     @classmethod
     def _parsePointer(cls, pointer: str) -> tuple[str, str]:
         match = cls.REG_POINTER.search(pointer)
-        assert match
+        if match is None:
+            raise TypeError
         return match.group('class') or '', match.group('func')
 
     def insertParam(self, param: Parameter):
-        assert self.pythonSignature is not None
-        newParameters = [param] + list(self.pythonSignature.parameters.values())
-        self.pythonSignature = self.pythonSignature.replace(parameters=newParameters)
+        newParameters = [param, *self.pythonSignature.parameters.values()]
+        self._pythonSignature = self.pythonSignature.replace(parameters=newParameters)
+
+    @property
+    def pythonSignature(self) -> SelfSignature:
+        if self._pythonSignature is None:
+            msg = 'Python signature not initialized'
+            raise TypeError(msg)
+        return self._pythonSignature
 
     def __repr__(self):
         return f'{self.cClass}::{self.cFunction}'
 
     def __str__(self):
-        assert self.pythonSignature is not None
+        return self.formatPythonSignature()
+
+    def formatPythonSignature(self) -> str:
         return str(self.pythonSignature)
 
 
 @dataclasses.dataclass(repr=False)
 class PyMethodDef(Method):
-    flags: str = None
+    flags: str | None = None
 
     def __post_init__(self):
         super().__post_init__()
@@ -93,8 +103,9 @@ class BaseGeneratorFromCpp(MethodGenerator, ABC):
     def _genStub(self, moduleName: str) -> Iterable[str]:
         raise NotImplementedError
 
-    def _genAllMethods(self, it: Iterable[Method], firstParam=None,
-                       functionSpacing: int = 1) -> Iterable[str]:
+    def _genAllMethods(
+        self, it: Iterable[Method], firstParam=None, functionSpacing: int = 1
+    ) -> Iterable[str]:
         methodNameToMethod: defaultdict[str, list[Method]] = defaultdict(list)
         for method in it:
             methodNameToMethod[method.pythonMethodName].append(method)
@@ -104,12 +115,19 @@ class BaseGeneratorFromCpp(MethodGenerator, ABC):
                 for m in methods:
                     m.insertParam(firstParam)
 
-            docContent = next((met.doc for met in methods if met.doc is not None), '')
-            docContent += SelfSignature.getExceptionsDocs(m.pythonSignature for m in methods)
-            uniqueMethods = list({str(m): m for m in methods}.values())
+            docContent = next((m.doc for m in methods if m.doc is not None), '')
+            docContent += SelfSignature.getExceptionsDocs(
+                m.pythonSignature for m in methods if m.pythonSignature is not None
+            )
+            uniqueMethods = list(
+                {m.formatPythonSignature(): m for m in methods}.values()
+            )
             yield self.convertMethodToStr(
-                methods[0].pythonMethodName, uniqueMethods,
-                docContent, functionSpacing=functionSpacing)
+                methods[0].pythonMethodName,
+                uniqueMethods,
+                docContent,
+                functionSpacing=functionSpacing,
+            )
 
     REG_NOARGS_METHOD = re.compile('add_noargs_method')
     REG_VARGS_METHOD = re.compile('add_varargs_method')
@@ -117,34 +135,37 @@ class BaseGeneratorFromCpp(MethodGenerator, ABC):
 
     def _findFunctionCallsGen(self, content: str) -> Iterable[Method]:
         for match in chain(
-                self.REG_NOARGS_METHOD.finditer(content),
-                self.REG_VARGS_METHOD.finditer(content),
-                self.REG_KEYWORD_METHOD.finditer(content),
+            self.REG_NOARGS_METHOD.finditer(content),
+            self.REG_VARGS_METHOD.finditer(content),
+            self.REG_KEYWORD_METHOD.finditer(content),
         ):
-            funcCall = findFunctionCall(
-                content, match.start(), bracketL='(', bracketR=')')
-            funcCallStartPos = funcCall.find('(') + 1
-            method = Method(list(generateExpressionUntilChar(
-                funcCall, funcCallStartPos, splitChar=',')))
+            method = Method(list(genFuncArgs(content, match.start())))
             yield from self._genMethodWithArgs(method)
 
     def _genMethodWithArgs(self, method: Method, argNumStart=1) -> Iterable[Method]:
         if method.doc is None:
             docSignatures = []
         else:
-            docSignatures = list(generateSignaturesFromDocstring(
-                method.pythonMethodName, method.doc))
-        codeSignatures = list(self.generateSignaturesFromCode(
-            method.cFunction, method.cClass, argNumStart=argNumStart))
+            docSignatures = list(
+                generateSignaturesFromDocstring(method.pythonMethodName, method.doc)
+            )
+        codeSignatures = list(
+            self.generateSignaturesFromCode(
+                method.cFunction, method.cClass, argNumStart=argNumStart
+            )
+        )
 
         yielded = False
-        sigMerger = SignatureMerger(codeSignatures, docSignatures, cFunName=method.cFunction)
+        sigMerger = SignatureMerger(
+            codeSignatures, docSignatures, cFunName=method.cFunction
+        )
         for sig in sigMerger.genMergedCodeAndDocSignatures():
             yielded = True
-            yield dataclasses.replace(method, pythonSignature=sig)
+            yield dataclasses.replace(method, _pythonSignature=sig)
 
         if not yielded:
             logger.debug(f"Not found args for {method=!r} {self.baseGenFilePath=}")
             if logger.isEnabledFor(LEVEL_CODE):
-                logger.log(LEVEL_CODE, self.findFunctionBody(
-                    method.cFunction, method.cClass))
+                logger.log(
+                    LEVEL_CODE, self.findFunctionBody(method.cFunction, method.cClass)
+                )

@@ -2,8 +2,9 @@ import re
 from collections import defaultdict
 from operator import itemgetter
 
-from freecad_stub_gen.additional import additionalPath
-from freecad_stub_gen.util import indent, readContent, genCppFiles
+from freecad_stub_gen.file_functions import genCppFiles, readContent
+from freecad_stub_gen.FreeCADTemplates import additionalPath
+from freecad_stub_gen.python_code import indent
 
 initType = re.compile(r'(\w[\w: ]+?)\s*::init\(\)')
 
@@ -27,15 +28,16 @@ def generateTypes():
 
             prefixToTypes[prefix].add((name, originalType))
 
-    typeText = ''
-    for prefix, typeNames in sorted(
-            prefixToTypes.items(), key=itemgetter(0)):
+    typeText = '# fmt: off\n'  # disable `black` formatting for this file
+    for prefix, typeNames in sorted(prefixToTypes.items(), key=itemgetter(0)):
         klassText = f'class {prefix}:\n'
-        body = '\n'.join(f"{name} = '{originalType}'"
-                         for name, originalType in sorted(typeNames))
+        body = '\n'.join(
+            f"{name} = '{originalType}'" for name, originalType in sorted(typeNames)
+        )
         typeText += klassText + indent(body) + '\n\n\n'
 
     typeText = typeText.rstrip() + '\n'
 
-    with open(additionalPath / 'FreeCADTypes.py', 'w') as outputFile:
+    typesPath = additionalPath / 'type_consts.py'
+    with typesPath.open('w', encoding='utf-8') as outputFile:
         outputFile.write(typeText)

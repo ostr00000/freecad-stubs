@@ -3,8 +3,9 @@ from collections.abc import Iterable
 
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall
 from freecad_stub_gen.generators.from_cpp.base import BaseGeneratorFromCpp
-from freecad_stub_gen.module_container import Module
 from freecad_stub_gen.module_namespace import moduleNamespace
+from freecad_stub_gen.ordered_set import OrderedStrSet
+from freecad_stub_gen.python_code.module_container import Module
 
 
 class FreecadStubGeneratorFromCppModule(BaseGeneratorFromCpp):
@@ -22,13 +23,13 @@ class FreecadStubGeneratorFromCppModule(BaseGeneratorFromCpp):
         for result in self._genStub(moduleName):
             if result.rstrip():
                 # we prefer name with more details
-                assert self._modName
+                if self._modName is None:
+                    raise TypeError
                 curModName = moduleName if '.' in moduleName else self._modName
                 curModName = moduleNamespace.convertNamespaceToModule(curModName)
 
-                mod[curModName].update(Module(
-                    header + result, self.requiredImports))
-                self.requiredImports = set()
+                mod[curModName].update(Module(header + result, self.requiredImports))
+                self.requiredImports = OrderedStrSet()
 
     def _genStub(self, moduleName: str) -> Iterable[str]:
         for match in self.REG_MODULE_INIT.finditer(self.impContent):

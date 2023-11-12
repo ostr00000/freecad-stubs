@@ -774,7 +774,7 @@ class Persistence(FreeCAD.BaseClass):
     def MemSize(self) -> int:
         """Memory size of the object in bytes."""
 
-    def dumpContent(self, Compression: int = 3):
+    def dumpContent(self, Compression: int = 3) -> bytes:
         """
         dumpContent(Compression=3) -> bytearray
 

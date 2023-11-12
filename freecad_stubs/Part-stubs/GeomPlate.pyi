@@ -44,7 +44,7 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def curves2d(self) -> list:
+    def curves2d(self) -> list[Part.Geom2d.Curve2d]:
         """
         Extracts the array of curves on the plate surface which
                 correspond to the curve constraints set in add()
@@ -173,7 +173,7 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def curve2dOnSurf(self):
+    def curve2dOnSurf(self) -> Part.Geom2d.Curve2d:
         """Possible exceptions: (RuntimeError)."""
 
     def curve3d(self):

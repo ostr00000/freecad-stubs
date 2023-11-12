@@ -3,9 +3,11 @@ from abc import ABC
 from pathlib import Path
 from typing import Literal
 
-from freecad_stub_gen.generators.common.gen_property.gen_dynamic import DynamicPropertyGenerator
+from freecad_stub_gen.file_functions import readContent
+from freecad_stub_gen.generators.common.gen_property.gen_dynamic import (
+    DynamicPropertyGenerator,
+)
 from freecad_stub_gen.generators.from_xml.base import BaseXmlGenerator
-from freecad_stub_gen.util import readContent
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +15,9 @@ logger = logging.getLogger(__name__)
 class XmlDynamicPropertyGenerator(BaseXmlGenerator, DynamicPropertyGenerator, ABC):
     def getCppClassName(self):
         twinName = self.currentNode.attrib.get('Twin')
-        assert twinName is not None, f"'Twin' not found in {self.baseGenFilePath}"
+        if twinName is None:
+            msg = f"'Twin' not found in {self.baseGenFilePath}"
+            raise TypeError(msg)
         return twinName
 
     def getCppContent(self):
@@ -22,12 +26,14 @@ class XmlDynamicPropertyGenerator(BaseXmlGenerator, DynamicPropertyGenerator, AB
     def getHContent(self):
         return self._getIncludeContent('.h')
 
-    def _getIncludeContent(self, extension: Literal['.cpp', '.h']):
+    def _getIncludeContent(self, extension: Literal['.cpp', '.h']) -> str | None:
         inc = self.currentNode.get('Include')
-        assert inc is not None, f"'Include' not found in {self.baseGenFilePath}"
+        if inc is None:
+            msg = f"`Include` not found in {self.baseGenFilePath}"
+            raise TypeError(msg)
 
         parts = self.baseGenFilePath.parts
-        baseParts = parts[:parts.index('src') + 1] + (inc,)
+        baseParts = parts[: parts.index('src') + 1] + (inc,)
         pathFromSrc = Path(*baseParts)
         pathFromLocal = self.baseGenFilePath.parent / inc
 
@@ -39,6 +45,7 @@ class XmlDynamicPropertyGenerator(BaseXmlGenerator, DynamicPropertyGenerator, AB
                     pass
 
         if inc.endswith('.hxx'):
-            return  # probably these files are generated - just ignore them
+            return None  # probably these files are generated - just ignore them
 
         logger.warning(f"Could not find cpp file for {self.baseGenFilePath}")
+        return None

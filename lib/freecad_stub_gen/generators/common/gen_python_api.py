@@ -7,11 +7,17 @@ from pathlib import Path
 import more_itertools
 
 from freecad_stub_gen.generators.common.annotation_parameter import SelfSignature
-from freecad_stub_gen.generators.common.arguments_converter import TypesConverter
-from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
-    generateExpressionUntilChar
+from freecad_stub_gen.generators.common.arguments_converter.function_conv import (
+    FunctionConv,
+)
+from freecad_stub_gen.generators.common.arguments_converter.types_converter import (
+    TypesConverter,
+)
+from freecad_stub_gen.generators.common.cpp_function import findFunctionCall
 from freecad_stub_gen.generators.common.gen_base import BaseGenerator
-from freecad_stub_gen.generators.common.return_type_converter.full import ReturnTypeConverter
+from freecad_stub_gen.generators.common.return_type_converter.full import (
+    ReturnTypeConverter,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -28,23 +34,26 @@ class PythonApiGenerator(BaseGenerator, ABC):
         self._functionBody = ''
         self._argNumStart = -1
 
-    def generateSignaturesFromCode(self, cFunctionName: str, cClassName: str, *, argNumStart=1):
-        """
-        Generate arguments for `cFunctionName` in `cClassName`.
+    def generateSignaturesFromCode(
+        self, cFunctionName: str, cClassName: str, *, argNumStart=1
+    ):
+        """Generate arguments for `cFunctionName` in `cClassName`.
+
         There may be more than one possible signature.
         """
-        self._functionBody = self.findFunctionBody(cFunctionName, cClassName)
-        if not self._functionBody:
+        fnBody = self.findFunctionBody(cFunctionName, cClassName)
+        if not isinstance(fnBody, str):
             return
 
         self._cFunctionName = cFunctionName
+        self._functionBody = fnBody
         self._argNumStart = argNumStart
 
         returnSig = self._getReturnSignature()
         signatures = chain(
-            self.__findParseTuple(),
-            self.__findParseTupleAndKeywords(),
-            # TODO P5 PyArg_UnpackTuple
+            self._findParseTuple(),
+            self._findParseTupleAndKeywords(),
+            # TODO @PO: [P5] PyArg_UnpackTuple
             # https://docs.python.org/3/c-api/arg.html#c.PyArg_UnpackTuple
         )
         hasAnySig, sigIter = more_itertools.spy(signatures)
@@ -55,10 +64,6 @@ class PythonApiGenerator(BaseGenerator, ABC):
             yield returnSig
 
     def findFunctionBody(self, cFuncName: str, cClassName: str) -> str | None:
-        if res := self._findFunction(cFuncName, cClassName):
-            return res
-
-    def _findFunction(self, cFuncName: str, cClassName: str = '') -> str | None:
         if cFuncName == 'PyMake':
             regs = [re.compile(fr'{cFuncName}\s*\(\s*struct\s*_typeobject\s*\*')]
         else:
@@ -71,33 +76,57 @@ class PythonApiGenerator(BaseGenerator, ABC):
             if match := re.search(searchRegex, self.impContent):
                 return findFunctionCall(self.impContent, match.end())
 
-    def __findParseTuple(self):
-        yield from self._baseParse(pattern=self.REG_TUP, formatStrPosition=1,
-                                   minSize=2, onlyPositional=True)
+        return None
 
-    def __findParseTupleAndKeywords(self):
-        yield from self._baseParse(pattern=self.REG_TUP_KW, formatStrPosition=2,
-                                   minSize=4, onlyPositional=False)
+    def _findParseTuple(self):
+        yield from self._baseParse(
+            pattern=self.REG_TUP, formatStrPosition=1, cArgNum=2, onlyPositional=True
+        )
+
+    def _findParseTupleAndKeywords(self):
+        yield from self._baseParse(
+            pattern=self.REG_TUP_KW,
+            formatStrPosition=2,
+            cArgNum=4,
+            onlyPositional=False,
+        )
 
     def _getReturnSignature(self):
         rtc = ReturnTypeConverter(
-            self._functionBody, self.requiredImports,
-            self.classNameWithModules, self._cFunctionName)
+            self._functionBody,
+            self.requiredImports,
+            self.classNameWithModules,
+            self._cFunctionName,
+        )
         rt = rtc.getReturnType()
         ex = rtc.getExceptionsFromCode()
-        return SelfSignature(unknown_parameters=True, return_annotation=rt, exceptions=ex)
+        return SelfSignature(
+            unknown_parameters=True, return_annotation=rt, exceptions=ex
+        )
 
-    def _baseParse(self, pattern: re.Pattern, formatStrPosition: int,
-                   minSize: int, onlyPositional: bool):
+    def _baseParse(
+        self,
+        pattern: re.Pattern,
+        formatStrPosition: int,
+        cArgNum: int,
+        *,
+        onlyPositional: bool,
+    ):
         for match in re.finditer(pattern, self._functionBody):
             funStart = match.start()
-            tc = TypesConverter(
-                self._functionBody, funStart, self.requiredImports,
-                onlyPositional, formatStrPosition, self._argNumStart,
-                realStartArgNum=minSize, xmlPath=self.baseGenFilePath,
-                functionName=self._cFunctionName)
+            fc = FunctionConv(
+                self.baseGenFilePath,
+                self._cFunctionName,
+                self._functionBody,
+                funStart=funStart,
+                formatStrPosition=formatStrPosition,
+                onlyPositional=onlyPositional,
+                argNumStart=self._argNumStart,
+            )
+            tc = TypesConverter(fc, self.requiredImports, cArgNum=cArgNum)
+            if cArgNum > len(tc.fun.argumentStrings):
+                msg = "Invalid format - expected bigger size"
+                raise ValueError(msg)
 
-            assert minSize <= len(tc.argumentStrings), "Invalid format - expected bigger size"
-
-            params = list(tc.convertFormatToTypes())
+            params = list(tc.safeConvertFormatToTypes())
             yield SelfSignature(params)

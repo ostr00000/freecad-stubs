@@ -4,14 +4,15 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = 'freecad-stubs'
-version = '1.0.14'
+version = '1.0.15'
 description = "Python stubs for FreeCAD"
 readme = 'README.md'
 requires-python = '>=3.6'
-license = { text = 'GPL-3.0' }
-authors = [{ name = 'ostr00000' }]
+license = {text = 'GPL-3.0'}
+authors = [{name = 'ostr00000'}]
 keywords = ['FreeCAD', 'stubs']
 classifiers = [
+    'Development Status :: 5 - Production/Stable',
     'Intended Audience :: Developers',
     'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
     'Operating System :: OS Independent',
@@ -21,19 +22,206 @@ classifiers = [
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
     'Typing :: Stubs Only',
 ]
-urls = { repository = 'https://github.com/ostr00000/freecad-stubs' }
+urls = {repository = 'https://github.com/ostr00000/freecad-stubs'}
 dependencies = [
-    'qtpy',
     # 'pivy', # cannot install it in a normal way, should be installed by FreeCAD anyway
+    'qtpy',
 ]
 
 [project.optional-dependencies]
-generate = ['more-itertools']
+generate = [
+    'more-itertools',
+]
+check = [
+    'mypy',
+    'pyright',
+    'pylint',
+    'PyQt5',
+    'qtpy',
+]
+all = ['freecad-stubs[generate,check]']
+
+[tool.black]
+skip-string-normalization = true
+
+[tool.mypy]
+files = './lib'
+warn_unused_configs = true
+check_untyped_defs = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+# This is stub directory, so we allow here an empty body
+module = 'freecad_stub_gen.FreeCADTemplates.templates'
+disable_error_code = ['empty-body']
+
+[tool.pylint.basic]
+include-naming-hint = true
+ignore-paths = ['.*/additional/']
+attr-naming-style = "camelCase"
+function-naming-style = "camelCase"
+method-naming-style = "camelCase"
+# short names should be used for shot-living variables
+# https://github.com/PyCQA/pylint/issues/2018
+# variable-naming-style = "camelCase"
+variable-rgx = '([^\W\dA-Z][^\W_]*|__[^\W\dA-Z_]\w+__)$'
+# argument-naming-style = "camelCase"
+argument-rgx = '([^\W\dA-Z][^\W_]*|__[^\W\dA-Z_]\w+__)$'
+typealias-rgx = '^_{0,2}(?!T[A-Z]|Type)[A-Z]+[a-z]+(?:[A-Z][a-z]+)*(?:_t|_T)?$'
+
+[tool.pylint.imports]
+# all values from __main__ are allowed at any level
+allow-any-import-level = [
+    'freecad_stub_gen.generators.types_enum.generateTypes',
+    'freecad_stub_gen.generate.generateFreeCadStubs',
+]
+
+[tool.pylint."messages control"]
+disable = [
+    # ### Convention
+    "missing-module-docstring",
+    "missing-class-docstring",
+    "missing-function-docstring", # [fix toml formatting]
+    # ### Refactor
+    "too-few-public-methods",
+    # useless when there is inheritance https://github.com/PyCQA/pylint/issues/4352
+    'duplicate-code',
+    # ### Warning
+    # we debug expression in f-strings (`=`)
+    "logging-fstring-interpolation",
+    # tmp disable - should be fixed later
+    'fixme',
+    'too-many-ancestors',
+    'too-many-instance-attributes',
+    'too-many-arguments',
+]
+
+[tool.pyright]
+venvPath = "."
+venv = "freecad_env"
+
+[tool.pyright.defineConstant]
+# to correctly detect QT in `qtpy`
+PYQT5 = true
+PYQT6 = false
+PYSIDE2 = false
+PYSIDE6 = false
+
+[tool.ruff]
+# https://docs.astral.sh/ruff/configuration/
+target-version = "py312"
+ignore-init-module-imports = true
+select = [
+    'F', # Pyflakes
+    'E', # pycodestyle: Error
+    'W', # pycodestyle: Warning
+    'C90', # mccabe
+    'I', # isort
+    # 'N', # pep8-naming # SKIP: we use camelCase style
+    'D', # pydocstyle # SKIP: we use another docstring format
+    'UP', # pyupgrade
+    'YTT', # flake8-2020
+    # 'ANN', # flake8-annotations # SKIP: annotations are optional
+    'ASYNC', # flake8-async
+    'S', # flake8-bandit
+    'BLE', # flake8-blind-except
+    'FBT', # flake8-boolean-trap
+    'B', # flake8-bugbear
+    'A', # flake8-builtins
+    # 'COM', # flake8-commas # SKIP: deprecated, black can add if needed
+    # 'CPY', # flake8-copyright # SKIP: copyright should be added once, in file
+    'C4', # flake8-comprehensions
+    'DTZ', # flake8-datetimez
+    'T10', # flake8-debugger
+    'DJ', # flake8-django
+    'EM', # flake8-errmsg
+    'EXE', # flake8-executable
+    'FA', # flake8-future-annotations
+    'ISC', # flake8-implicit-str-concat
+    'ICN', # flake8-import-conventions
+    # 'G', # flake8-logging-format
+    'INP', # flake8-no-pep420
+    'PIE', # flake8-pie # NOTE: not sure if this work?
+    'T20', # flake8-print
+    'PYI', # flake8-pyi
+    'PT', # flake8-pytest-style
+    # 'Q', # flake8-quotes # SKIP: we have rule: single for programmer, double for user
+    'RSE', # flake8-raise
+    'RET', # flake8-return
+    'SLF', # flake8-self
+    'SLOT', # flake8-slots
+    'SIM', # flake8-simplify
+    'TID', # flake8-tidy-imports # NOTE: in some dynamic packages, we want to ignore TID252
+    'TCH', # flake8-type-checking
+    'INT', # flake8-gettext # NOTE: not working for QT tr
+    # 'ARG', # flake8-unused-arguments # SKIP: this may be part of API, overridden in subclass
+    'PTH', # flake8-use-pathlib
+    'TD', # flake8-todos
+    'FIX', # flake8-fix me
+    'ERA', # eradicate
+    'PD', # pandas-vet
+    'PGH', # pygrep-hooks
+    'PL', # Pylint
+    'TRY', # tryceratops
+    'FLY', # flynt
+    'NPY', # NumPy-specific rules
+    'AIR', # Airflow
+    'PERF', # Perflint
+    'RUF', # Ruff-specific rules
+]
+unfixable = [
+    'B', # flake8-bugbear
+    'F841', # remove unused variable
+    'ERA001', # commented-out-code
+    'SIM118', # in-dict-keys # SKIP: not all `keys()` method is on the `dict`
+    'RUF100', # unused-noqa # SKIP: better check manually why the `noqa` marker was placed
+]
+ignore = [
+    'D1', # Missing docstring # SKIP: this is not API library (at least yet)
+    'FIX002', # Line contains TO-DO, consider resolving the issue
+    'TD003', # Missing issue link on the line following this TO-DO
+    'S314', # Parse untrusted XML # SKIP: we trust these XMLs
+    # disable temporary (deep refactor required):
+    'B019',
+    'C901',
+    'PLR0911',
+    'PLR0912',
+    'PLR0913',
+    'PLR0915',
+]
+
+[tool.ruff.lint.isort]
+known-third-party = ["FreeCAD"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+[tool.ruff.per-file-ignores] # glob **
+'**/__init__.py' = [
+    'E402', # Module level import not at top of file # SKIP: imports in __init__ must follow strict order
+    'F401', # imported but unused # SKIP: sometimes we need an additional initialization
+]
+'**/FreeCADTemplates/*.py*' = [
+    # SKIP these are generated files
+    'D', # pydocstyle
+    'E501', # Line too long
+    'A003', # Class attribute `Exception` is shadowing a Python builtin
+    'FBT001', # Boolean-typed positional argument in function definition
+    'PYI021', # Docstrings should not be included in stubs # SKIP: no harm to also include docs
+]
 
 [tool.setuptools]
-package-dir = { '' = 'freecad_stubs' }
+package-dir = {'' = 'freecad_stubs'}
 
 [tool.setuptools.package-data]
 '*' = ['**/*.pyi']
+
+[tool.tomlsort]
+spaces_indent_inline_array = 4
+trailing_comma_inline_array = true
+
+[tool.typos.default.extend-words]
+'Methode' = 'Methode' # used in FreeCAD XMLs

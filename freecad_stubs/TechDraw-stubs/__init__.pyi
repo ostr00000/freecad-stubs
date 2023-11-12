@@ -812,13 +812,13 @@ class CosmeticVertex(FreeCAD.PyObjectBase):
     def Tag(self) -> str:
         """Gives the tag of the CosmeticVertex as string."""
 
-    def clone(self):
+    def clone(self) -> TechDraw.CosmeticVertex:
         """
         Create a clone of this CosmeticVertex
         Possible exceptions: (TypeError).
         """
 
-    def copy(self):
+    def copy(self) -> TechDraw.CosmeticVertex:
         """
         Create a copy of this CosmeticVertex
         Possible exceptions: (TypeError).
@@ -1158,15 +1158,15 @@ class DrawViewPart(TechDraw.DrawView):
     def CoarseView(self, value: int | bool): ...
 
     @property
-    def Direction(self):
+    def Direction(self) -> FreeCAD.Vector:
         """
         Property group: Projection.
-        Property TypeId: TechDraw::.
+        Property TypeId: App::PropertyVector.
         Projection Plane normal. The direction you are looking from.
         """
 
     @Direction.setter
-    def Direction(self, value): ...
+    def Direction(self, value: FreeCAD.Vector | Triple_t[float]): ...
 
     @property
     def Focus(self) -> FreeCAD.Quantity:
@@ -1537,13 +1537,13 @@ class CenterLine(FreeCAD.PyObjectBase):
     def VertShift(self) -> float:
         """The up/down offset for this CenterLine."""
 
-    def clone(self):
+    def clone(self) -> TechDraw.CenterLine:
         """
         Create a clone of this centerline
         Possible exceptions: (RuntimeError).
         """
 
-    def copy(self):
+    def copy(self) -> TechDraw.CenterLine:
         """
         Create a copy of this centerline
         Possible exceptions: (RuntimeError).
@@ -1794,13 +1794,13 @@ class CosmeticEdge(FreeCAD.PyObjectBase):
     def Tag(self) -> str:
         """Gives the tag of the CosmeticEdge as string."""
 
-    def clone(self):
+    def clone(self) -> TechDraw.CosmeticEdge:
         """
         Create a clone of this CosmeticEdge
         Possible exceptions: (RuntimeError).
         """
 
-    def copy(self):
+    def copy(self) -> TechDraw.CosmeticEdge:
         """
         Create a copy of this CosmeticEdge
         Possible exceptions: (RuntimeError).
@@ -1815,13 +1815,13 @@ class GeomFormat(FreeCAD.PyObjectBase):
     def Tag(self) -> str:
         """Gives the tag of the GeomFormat as string."""
 
-    def clone(self):
+    def clone(self) -> TechDraw.GeomFormat:
         """
         Create a clone of this geomformat
         Possible exceptions: (RuntimeError).
         """
 
-    def copy(self):
+    def copy(self) -> TechDraw.GeomFormat:
         """
         Create a copy of this geomformat
         Possible exceptions: (RuntimeError).

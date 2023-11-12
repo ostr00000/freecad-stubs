@@ -1,7 +1,9 @@
 from functools import lru_cache
 
-from freecad_stub_gen.generators.common.cpp_function import findFunctionCall, \
-    generateExpressionUntilChar
+from freecad_stub_gen.generators.common.cpp_function import (
+    findFunctionCall,
+    generateExpressionUntilChar,
+)
 
 
 @lru_cache
@@ -9,39 +11,51 @@ def parsePyBuildValues(formatText: str) -> str:
     formatText = formatText.replace(' ', '')
     results = []
     while formatText:
+        singleResult: str
         if formatText[0] in '([{':
             singleResult, size = _parsePyBuildComplexValue(formatText)
         else:
             for formatSize in range(2, 0, -1):
                 singleFormat = formatText[:formatSize]
-                if singleResult := parseTypeMap.get(singleFormat):
+                if sr := parseTypeMap.get(singleFormat):
+                    singleResult = sr
                     size = formatSize
                     break
             else:
-                raise ValueError("Unknown format sting", formatText)
+                msg = 'Unknown format string'
+                raise ValueError(msg, formatText)
 
         formatText = formatText[size:]
         results.append(singleResult)
 
     if len(results) > 1:
         return f'tuple[{", ".join(results)}]'
-    elif results:
+
+    if results:
         return results[0]
-    else:
-        return 'None'
+
+    return 'None'
 
 
 @lru_cache
-def _parsePyBuildComplexValue(formatText: str) -> tuple[str | None, int]:
+def _parsePyBuildComplexValue(formatText: str) -> tuple[str, int]:
     firstChar = formatText[0]
     lastChar = {'(': ')', '[': ']', '{': '}'}[firstChar]
 
-    subValueFormatText = findFunctionCall(
-        formatText, bodyStart=0, bracketL=firstChar, bracketR=lastChar
-    ).removeprefix(firstChar).removesuffix(lastChar)
-    complexFormats = list(generateExpressionUntilChar(
-        subValueFormatText, expStart=0, splitChar=',',
-        bracketL='([{', bracketR=')]}'))
+    subValueFormatText = (
+        findFunctionCall(formatText, bodyStart=0, bracketL=firstChar, bracketR=lastChar)
+        .removeprefix(firstChar)
+        .removesuffix(lastChar)
+    )
+    complexFormats = list(
+        generateExpressionUntilChar(
+            subValueFormatText,
+            expStart=0,
+            splitChar=',',
+            bracketL='([{',
+            bracketR=')]}',
+        )
+    )
 
     if firstChar == '{':
         result = _parsePyBuildDict(complexFormats)
@@ -62,37 +76,36 @@ def _parsePyBuildDict(complexFormats: list[str]):
         key, val = cf.split(':', maxsplit=1)
         keys.add(parsePyBuildValues(key))
         values.add(parsePyBuildValues(val))
-    result = f'dict[{" | ".join(keys)}, {" | ".join(values)}]'
-    return result
+    return f'dict[{" | ".join(keys)}, {" | ".join(values)}]'
 
 
 def _parsePyBuildList(complexFormats: list[str]):
     values = set()
     for cf in complexFormats:
         values.add(parsePyBuildValues(cf))
-    result = f'list[{" | ".join(values)}]'
-    return result
+    return f'list[{" | ".join(values)}]'
 
 
-def _parsePyBuildTuple(complexFormats: list[str]):
-    if len(complexFormats) == 1:
-        if complexFormats[0]:
-            result = parsePyBuildValues(complexFormats[0])
+def _parsePyBuildTuple(complexFormats: list[str]) -> str:
+    match complexFormats:
+        case [value] if value:
+            result = parsePyBuildValues(value)
             if not result.startswith('tuple['):
                 result = f'tuple[{result}]'
-        else:
+
+        case [_value]:
             result = 'tuple[()]'
-    else:
-        values = []
-        for cf in complexFormats:
-            values.append(parsePyBuildValues(cf))
-        result = f'tuple[{", ".join(values)}]'
+
+        case _:
+            values = [parsePyBuildValues(cf) for cf in complexFormats]
+            result = f'tuple[{", ".join(values)}]'
+
     return result
 
 
 # https://docs.python.org/3/c-api/arg.html#c.Py_BuildValue
 # https://docs.python.org/3/extending/extending.html#building-arbitrary-values
-pyBuildValues = """
+PY_BUILD_VALUES = """
 s (str or None) [const char *]
 s# (str or None) [const char *, Py_ssize_t]
 y (bytes) [const char *]
@@ -127,35 +140,30 @@ O& (object) [converter, anything]
 [items] (list) [matching-items]
 {items} (dict) [matching-items]
 """
-parseTypeMap = {
-    (keyAndValue := line.split(' ', maxsplit=1))[0]: keyAndValue[1]
-    for line in pyBuildValues.splitlines() if line}
-parseSizeMap = {k: len(v.split('[')[1].split(',')) for k, v in parseTypeMap.items()}
-parseTypeMap = {k: v.removeprefix('(').split(' ')[0].removesuffix(')').removesuffix(',')
-                for k, v in parseTypeMap.items()}
-_autoGenTypeToRealType = {'object': 'typing.Any'}
-parseTypeMap = {k: _autoGenTypeToRealType.get(v, v) for k, v in parseTypeMap.items()}
 
 
-if __name__ == '__main__':
-    def testParsing():
-        for i in (
-                "",
-                "i",
-                "iii",
-                "s",
-                "y",
-                "ss",
-                "s#",
-                "y#",
-                "()",
-                "(i)",
-                "(ii)",
-                "(i,i)",
-                "[i,i]",
-                "{s:i,s:i}",
-                "((ii)(ii)) (ii)",
-        ):
-            print(parsePyBuildValues(i))
+def _initParseMaps():
+    autoGenTypeToRealType = {'object': 'typing.Any'}
+    locParseSizeMap = {}
+    locParseTypeMap = {}
 
-    testParsing()
+    for line in PY_BUILD_VALUES.splitlines():
+        if not line:
+            continue
+
+        keyValue = line.split(' ', maxsplit=1)
+        key, value = keyValue[0], keyValue[1]
+
+        size = len(value.split('[')[1].split(','))
+        locParseSizeMap[key] = size
+
+        autoType = (
+            value.removeprefix('(').split(' ')[0].removesuffix(')').removesuffix(',')
+        )
+        realType = autoGenTypeToRealType.get(autoType, autoType)
+        locParseTypeMap[key] = realType
+
+    return locParseSizeMap, locParseTypeMap
+
+
+parseSizeMap, parseTypeMap = _initParseMaps()

@@ -1,11 +1,10 @@
-import ast
-import builtins
 import logging
+import typing
 import xml.etree.ElementTree as ET
 
 from freecad_stub_gen.importable_map import importableMap
 from freecad_stub_gen.module_namespace import moduleNamespace
-from freecad_stub_gen.util import OrderedSet
+from freecad_stub_gen.ordered_set import OrderedStrSet
 
 logger = logging.getLogger(__name__)
 
@@ -15,24 +14,48 @@ def getFatherClassWithModules(currentNode: ET.Element) -> str:
     fatherName: str = currentNode.attrib['Father']
 
     if fatherName == 'PyObjectBase':
-        return f'{moduleNamespace.convertNamespaceToModule(fatherNamespace)}.{fatherName}'
+        mod = moduleNamespace.convertNamespaceToModule(fatherNamespace)
+        return f'{mod}.{fatherName}'
 
     return getClassWithModulesFromStem(fatherName, fatherNamespace)
 
 
-def getClassWithModulesFromStem(stem: str, namespace: str):
+def getClassWithModulesFromStem(stem: str, namespace: str) -> str:
     try:
         file = moduleNamespace.getFileForStem(stem, namespace)
     except ValueError:
-        name = stem.removesuffix('Py')
-        if not namespace:
-            return name
+        # if there is no xml, use this `match`
+        match namespace, stem:
+            # Gui + without Py
+            case '', 'SelectionFilterPy':
+                stem = stem.removesuffix('Py')
+                namespace = 'Gui'
 
-        namespace = moduleNamespace.convertNamespaceToModule(namespace)
-        return f'{namespace}.{name}'
+            # Gui + with Py
+            case _, (
+                'MDIViewPy'
+                | 'View3DInventorPy'
+                | 'View3DInventorViewerPy'
+                | 'AbstractSplitViewPy'
+            ):
+                namespace = 'Gui'
+
+            # we must use a base class
+            case _, 'SplitView3DInventor' | 'View3DInventor':
+                return 'FreeCADGui.AbstractSplitViewPy'
+
+            case '', _:
+                return stem.removesuffix('Py')
+
+            case _, _:
+                stem = stem.removesuffix('Py')
+
+        mod = moduleNamespace.convertNamespaceToModule(namespace)
+        return f'{mod}.{stem}'
 
     root = ET.parse(file).getroot()
-    assert (exportElement := root.find('PythonExport'))
+    if not (exportElement := root.find('PythonExport')):
+        raise ValueError
     return getClassWithModulesFromNode(exportElement)
 
 
@@ -42,29 +65,31 @@ CLASS_TO_ALIAS = {
 
 
 def getClassWithModulesFromNode(currentNode: ET.Element) -> str:
-    """
-    Return class name preceded by all modules, ex. `FreeCAD.Vector`.
+    """Return class name preceded by all modules, ex. `FreeCAD.Vector`.
+
     Some classes are renamed in c++ code - try them first, then extract based on
     https://github.com/FreeCAD/FreeCAD/blob/8ac722c1e89ef530564293efd30987db09017e12/src/Tools/generateTemplates/templateClassPyExport.py#L279
     """
     if name := currentNode.attrib.get('PythonName'):
-        assert '.' in name
+        if '.' not in name:
+            raise ValueError
+
         if name.count('.') == 1:
             # we want to map only main module without submodules
             namespace, name = name.split('.', maxsplit=1)
             namespace = moduleNamespace.convertNamespaceToModule(namespace)
             return f'{namespace}.{name}'
-        else:
-            return name
 
-    if fullName := importableMap.get(currentNode.attrib['Name']):
-        if '.' in fullName:
-            name = getClassName(fullName)
+        return name
+
+    fullName = importableMap.get(currentNode.attrib['Name'])
+    if fullName and '.' in fullName:
+        name = getClassName(fullName)
 
     if not name:
-        name = currentNode.attrib.get('Name').removesuffix('Py')
+        name = currentNode.attrib['Name'].removesuffix('Py')
 
-    namespace = currentNode.attrib.get('Namespace')
+    namespace = currentNode.attrib['Namespace']
     namespace = moduleNamespace.convertNamespaceToModule(namespace)
     name = CLASS_TO_ALIAS.get(name, name)
     return f'{namespace}.{name}'
@@ -74,16 +99,36 @@ def getClassNameFromNode(currentNode: ET.Element) -> str:
     return getClassName(getClassWithModulesFromNode(currentNode))
 
 
-def getClassName(classWithModules: str):
-    return classWithModules[classWithModules.rfind('.') + 1:]
+def getClassName(classWithModules: str) -> str:
+    return classWithModules[classWithModules.rfind('.') + 1 :]
 
 
-def getModuleName(classWithModules: str):
+@typing.overload
+def getModuleName(classWithModules: str, *, required: typing.Literal[True]) -> str:
+    ...
+
+
+@typing.overload
+def getModuleName(
+    classWithModules: str, *, required: typing.Literal[False] = False
+) -> str | None:
+    ...
+
+
+def getModuleName(classWithModules: str, *, required=False) -> str | None:
     if (splitIndex := classWithModules.rfind('.')) != -1:
         return classWithModules[:splitIndex]
 
+    if not required:
+        return None
 
-def useAliasedModule(classWithModules: str, requiredImports: OrderedSet = None) -> str:
+    msg = f'Cannot find module for {classWithModules}'
+    raise ValueError(msg)
+
+
+def useAliasedModule(
+    classWithModules: str, requiredImports: OrderedStrSet | None = None
+) -> str:
     mod = getModuleName(classWithModules)
     if mod is None:
         return classWithModules
@@ -95,7 +140,7 @@ def useAliasedModule(classWithModules: str, requiredImports: OrderedSet = None) 
     return f'{mod}.{cls}'
 
 
-def getNamespaceWithClass(cTypeClass: str):
+def getNamespaceWithClass(cTypeClass: str) -> tuple[str | None, str]:
     cType = cTypeClass
     if '::' in cType:
         namespace, cType = cType.split('::')
@@ -104,41 +149,7 @@ def getNamespaceWithClass(cTypeClass: str):
     return namespace, cType
 
 
-def getClassWithModulesFromPointer(cTypePointer: str):
-    cType = cTypePointer.removesuffix('::Type')
+def getClassWithModulesFromPointer(cTypePointer: str) -> str:
+    cType = cTypePointer.removesuffix('::Type').removesuffix('::type_object(')
     namespace, cType = getNamespaceWithClass(cType)
     return getClassWithModulesFromStem(cType, namespace or '')
-
-
-def validatePythonValue(value: str) -> str | None:
-    if value in builtins.__dict__:
-        return value
-
-    if value in ('true', 'false'):
-        return value.title()
-
-    try:
-        ast.literal_eval(value)
-    except (SyntaxError, ValueError):
-        pass
-    except Exception as exc:
-        logger.error(f'Cannot evaluate value: {exc}')
-    else:
-        return value
-
-    if value and value[-1].lower() in ('f', 'l'):
-        # maybe float literal (ex. 3.14f)
-        return validatePythonValue(value[:-1])
-
-    return None
-
-def convertToPythonValue(value: str):
-    if (safe := validatePythonValue(value)) is None:
-        return False, None
-
-    if value in builtins.__dict__:
-        conv = builtins.__dict__[value]
-    else:
-        conv = ast.literal_eval(safe)
-
-    return True, conv

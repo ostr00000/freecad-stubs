@@ -4,14 +4,20 @@ from abc import ABC
 from freecad_stub_gen.generators.common.doc_string import formatDocstring
 from freecad_stub_gen.generators.common.gen_base import BaseGenerator
 from freecad_stub_gen.generators.common.names import getModuleName
-from freecad_stub_gen.util import indent
+from freecad_stub_gen.python_code import indent
 
 
 class BasePropertyGenerator(BaseGenerator, ABC):
-
-    def getProperty(self, name: str, pythonGetType: str = '', pythonSetType: str = '',
-                    docs: str = '', readOnly=True):
-        """This method return string with generated property for specified arguments."""
+    def getProperty(
+        self,
+        name: str,
+        pythonGetType: str = '',
+        pythonSetType: str = '',
+        docs: str = '',
+        *,
+        readOnly=True,
+    ):
+        """Generate property for specified arguments."""
         pythonGetType = self._extractTypeAlias(pythonGetType)
         self.requiredImports.update(self._genImportsFromType(pythonGetType))
         retType = f' -> {pythonGetType}' if pythonGetType else ''
@@ -46,11 +52,11 @@ class BasePropertyGenerator(BaseGenerator, ABC):
         if '.' not in pythonType:
             return
         for subType in cls.REG_TYPE_SPLIT_CHARS.split(pythonType):
-            if '.' in subType:
-                subType = subType.replace(' ', '')
-                if '...' == subType:
-                    continue
+            if '.' not in subType:
+                continue
 
-                mod = getModuleName(subType)
-                assert mod is not None
-                yield mod
+            strippedSubType = subType.strip()
+            if strippedSubType == '...':
+                continue
+
+            yield getModuleName(strippedSubType, required=True)

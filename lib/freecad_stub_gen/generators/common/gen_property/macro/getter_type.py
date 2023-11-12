@@ -9,20 +9,20 @@ seen = set()
 
 
 class PropertyMacroGetter(PropertyMacroBase):
-
     @property
     def pythonGetType(self) -> str:
-        if not (typeId := self.TypeId):
+        if not (typeId := self.typeId):
             return ''
 
-        if 'List' in typeId:
-            container = 'list[{t}]'
-        else:
-            container = '{t}'
+        container = 'list[{t}]' if 'List' in typeId else '{t}'
 
         match typeId:
-            case ("App::PropertyInteger" | "App::PropertyIntegerConstraint"
-                  | "App::PropertyEnumeration" | "App::PropertyPercent"):
+            case (
+                "App::PropertyInteger"
+                | "App::PropertyIntegerConstraint"
+                | "App::PropertyEnumeration"
+                | "App::PropertyPercent"
+            ):
                 innerType = 'int'
 
             case "App::PropertyBool" | "App::PropertyBoolList":
@@ -30,16 +30,30 @@ class PropertyMacroGetter(PropertyMacroBase):
                 if typeId == "App::PropertyBoolList":
                     container = 'tuple[{t}, ...]'
 
-            case ("App::PropertyFloat" | "App::PropertyFloatConstraint"
-                  | "App::PropertyPrecision" | "App::PropertyFloatList"):
+            case (
+                "App::PropertyFloat"
+                | "App::PropertyFloatConstraint"
+                | "App::PropertyPrecision"
+                | "App::PropertyFloatList"
+            ):
                 innerType = 'float'
 
-            case ("App::PropertyQuantity" | "App::PropertyDistance" | "App::PropertyFrequency"
-                  | "App::PropertySpeed" | "App::PropertyAcceleration" | "App::PropertyPressure"
-                  | "App::PropertyStiffness" | "App::PropertyForce"
-                  | "App::PropertyVacuumPermittivity"
-                  | "App::PropertyQuantityConstraint" | "App::PropertyLength"
-                  | "App::PropertyArea" | "App::PropertyVolume" | "App::PropertyAngle"):
+            case (
+                "App::PropertyQuantity"
+                | "App::PropertyDistance"
+                | "App::PropertyFrequency"
+                | "App::PropertySpeed"
+                | "App::PropertyAcceleration"
+                | "App::PropertyPressure"
+                | "App::PropertyStiffness"
+                | "App::PropertyForce"
+                | "App::PropertyVacuumPermittivity"
+                | "App::PropertyQuantityConstraint"
+                | "App::PropertyLength"
+                | "App::PropertyArea"
+                | "App::PropertyVolume"
+                | "App::PropertyAngle"
+            ):
                 innerType = 'FreeCAD.Quantity'
 
             case "App::PropertyPersistentObject" | "App::PropertyPythonObject":
@@ -48,32 +62,55 @@ class PropertyMacroGetter(PropertyMacroBase):
             case "App::PropertyMap":
                 innerType = 'dict[str, str]'
 
-            case ("App::PropertyString" | "App::PropertyUUID"
-                  | "App::PropertyFont" | "App::PropertyFile"
-                  | "App::PropertyPath" | "App::PropertyFileIncluded"
-                  | "App::PropertyStringList"):
+            case (
+                "App::PropertyString"
+                | "App::PropertyUUID"
+                | "App::PropertyFont"
+                | "App::PropertyFile"
+                | "App::PropertyPath"
+                | "App::PropertyFileIncluded"
+                | "App::PropertyStringList"
+            ):
                 innerType = 'str'
 
-            case ("App::PropertyLink" | "App::PropertyLinkChild"
-                  | "App::PropertyLinkGlobal" | "App::PropertyLinkHidden"
-                  | "App::PropertyPlacementLink"):
+            case (
+                "App::PropertyLink"
+                | "App::PropertyLinkChild"
+                | "App::PropertyLinkGlobal"
+                | "App::PropertyLinkHidden"
+                | "App::PropertyPlacementLink"
+            ):
                 innerType = 'FreeCAD.DocumentObject | None'
 
-            case ("App::PropertyLinkSub" | "App::PropertyLinkSubChild"
-                  | "App::PropertyLinkSubGlobal" | "App::PropertyLinkSubHidden"):
+            case (
+                "App::PropertyLinkSub"
+                | "App::PropertyLinkSubChild"
+                | "App::PropertyLinkSubGlobal"
+                | "App::PropertyLinkSubHidden"
+            ):
                 innerType = 'tuple[FreeCAD.DocumentObject, list[str]] | None'
 
-            case ("App::PropertyLinkList" | "App::PropertyLinkListChild"
-                  | "App::PropertyLinkListGlobal" | "App::PropertyLinkListHidden"):
+            case (
+                "App::PropertyLinkList"
+                | "App::PropertyLinkListChild"
+                | "App::PropertyLinkListGlobal"
+                | "App::PropertyLinkListHidden"
+            ):
                 innerType = 'FreeCAD.DocumentObject | None'
 
-            case ("App::PropertyLinkSubList" | "App::PropertyLinkSubListChild"
-                  | "App::PropertyLinkSubListGlobal" | "App::PropertyLinkSubListHidden"):
+            case (
+                "App::PropertyLinkSubList"
+                | "App::PropertyLinkSubListChild"
+                | "App::PropertyLinkSubListGlobal"
+                | "App::PropertyLinkSubListHidden"
+            ):
                 innerType = 'tuple[FreeCAD.DocumentObject, list[str]]'
 
             case "App::PropertyXLink":
-                innerType = 'None | FreeCAD.DocumentObject ' \
-                            '| tuple[FreeCAD.DocumentObject, str | list[str]]'
+                innerType = (
+                    'None | FreeCAD.DocumentObject '
+                    '| tuple[FreeCAD.DocumentObject, str | list[str]]'
+                )
             case "App::PropertyXLinkSub":
                 innerType = 'None | tuple[FreeCAD.DocumentObject | list[str]]'
             case "App::PropertyXLinkSubList":
@@ -92,8 +129,13 @@ class PropertyMacroGetter(PropertyMacroBase):
             case "App::PropertyMaterial":
                 innerType = 'FreeCAD.Material'
 
-            case ("App::PropertyVector" | "App::PropertyVectorDistance" | "App::PropertyPosition"
-                  | "App::PropertyDirection" | "App::PropertyVectorList"):
+            case (
+                "App::PropertyVector"
+                | "App::PropertyVectorDistance"
+                | "App::PropertyPosition"
+                | "App::PropertyDirection"
+                | "App::PropertyVectorList"
+            ):
                 innerType = 'FreeCAD.Vector'
 
             case "App::PropertyPlacement":

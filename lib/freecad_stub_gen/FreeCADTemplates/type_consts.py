@@ -1,3 +1,4 @@
+# fmt: off
 class App:
     Annotation = 'App::Annotation'
     AnnotationLabel = 'App::AnnotationLabel'

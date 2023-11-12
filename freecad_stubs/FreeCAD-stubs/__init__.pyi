@@ -7,7 +7,7 @@ import FreeCAD.Console
 import FreeCAD.Qt as Qt
 import FreeCAD.Units as Units
 import FreeCADGui
-import FreeCADTemplates
+import FreeCADTemplates.templates
 import Mesh as MeshModule
 import Part as PartModule
 import Points as PointsModule
@@ -552,10 +552,10 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     """
 
     @property
-    def Proxy(self) -> FreeCADTemplates.ProxyPython: ...
+    def Proxy(self) -> FreeCADTemplates.templates.ProxyPython: ...
 
     @Proxy.setter
-    def Proxy(self, value: FreeCADTemplates.ProxyPython): ...
+    def Proxy(self, value: FreeCADTemplates.templates.ProxyPython): ...
 
     @property
     def Document(self) -> FreeCAD.Document:
@@ -2117,7 +2117,7 @@ class PropertyContainer(FreeCAD.Persistence):
     def PropertiesList(self) -> list[str]:
         """A list of all property names."""
 
-    def dumpPropertyContent(self, Property: str, Compression: int = 3):
+    def dumpPropertyContent(self, Property: str, Compression: int = 3) -> bytes:
         """
         dumpPropertyContent(Property, Compression=3) -> bytearray
 
@@ -2470,7 +2470,7 @@ def changeImportModule(key: str, oldMod: str, newMod: str, /):
     """Change the import module name of a registered filetype"""
 
 
-def getImportType(psKey: str = None, /) -> list[str] | dict[typing.Any, str | list[str] | None]:
+def getImportType(psKey: str = None, /) -> list[str] | dict[str, str | list[str] | None]:
     """Get the name of the module that can import the filetype"""
 
 
@@ -2482,7 +2482,7 @@ def changeExportModule(key: str, oldMod: str, newMod: str, /):
     """Change the export module name of a registered filetype"""
 
 
-def getExportType(psKey: str = None, /) -> list[str] | dict[typing.Any, str | list[str] | None]:
+def getExportType(psKey: str = None, /) -> list[str] | dict[str, str | list[str] | None]:
     """Get the name of the module that can export the filetype"""
 
 

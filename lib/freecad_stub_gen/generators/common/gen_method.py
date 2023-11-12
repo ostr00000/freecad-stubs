@@ -1,29 +1,40 @@
 import logging
 from abc import ABC
+from collections.abc import Sequence
 from typing import Protocol
 
 from freecad_stub_gen.generators.common.doc_string import formatDocstring
 from freecad_stub_gen.generators.common.gen_python_api import PythonApiGenerator
-from freecad_stub_gen.util import indent
+from freecad_stub_gen.python_code import indent
 
 logger = logging.getLogger(__name__)
 
 
-class StringType(Protocol):
-    def __str__(self):
-        pass
+class PythonSignatureProtocol(Protocol):
+    def formatPythonSignature(self) -> str:
+        ...
 
 
 class MethodGenerator(PythonApiGenerator, ABC):
-    def convertMethodToStr(self, methodName: str, signatures: list[StringType], docs: str = '',
-                           isClassic=False, isStatic=False, functionSpacing=1) -> str:
-        ret = ''
-        if not signatures:
-            return ret
-        signatures = list(map(str, signatures))
+    _NEW_LINE = '\n'  # future change (3.12) PEP 701 - inline
 
-        static = '@staticmethod\n' if isStatic else ''
-        classic = '@classmethod\n' if isClassic else ''
+    def convertMethodToStr(
+        self,
+        methodName: str,
+        strSignatures: Sequence[PythonSignatureProtocol | str],
+        docs: str = '',
+        *,
+        isClassic=False,
+        isStatic=False,
+        functionSpacing=1,
+    ) -> str:
+        ret = ''
+        if not strSignatures:
+            return ret
+        signatures = [
+            ss if isinstance(ss, str) else ss.formatPythonSignature()
+            for ss in strSignatures
+        ]
 
         # only single signature should not have overload
         if len(signatures) > 1:
@@ -33,19 +44,18 @@ class MethodGenerator(PythonApiGenerator, ABC):
             overload = ''
 
         forcedType = self._getForcedReturnType(methodName)
-        spacing = '\n' * functionSpacing
         pattern = (
-            f'{static}'
-            f'{classic}'
+            f'{"@staticmethod" + self._NEW_LINE if isStatic else ""}'
+            f'{"@classmethod" + self._NEW_LINE if isClassic else ""}'
             f'{overload}'
             f'def {methodName}{{signature}}:'
             f'{{docs}}'
-            f'{spacing}'
+            f'{self._NEW_LINE * functionSpacing}'
         )
 
         for sig in signatures[:-1]:
-            sig = self._formatSignatureWithReturnType(sig, forcedType)
-            ret += pattern.format(signature=sig, docs=' ...\n')
+            retSig = self._formatSignatureWithReturnType(sig, forcedType)
+            ret += pattern.format(signature=retSig, docs=' ...\n')
 
         # last signature should have docstring
         docs = f'\n{indent(doc)}' if (doc := formatDocstring(docs)) else ' ...\n'
@@ -61,7 +71,8 @@ class MethodGenerator(PythonApiGenerator, ABC):
             elif 'Gui' in self.baseGenFilePath.parts:
                 ret = 'FreeCADGui.Document'
             else:
-                logger.warning(f'Unexpected function type in file {self.baseGenFilePath}')
+                msg = f'Unexpected function type in file {self.baseGenFilePath}'
+                logger.warning(msg)
         elif methodName == 'getParentGroup':
             ret = 'FreeCAD.DocumentObjectGroup | None'
         return ret

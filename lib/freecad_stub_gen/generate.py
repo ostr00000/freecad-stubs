@@ -1,23 +1,40 @@
 import logging
 import shutil
+import typing
 from pathlib import Path
 
-from freecad_stub_gen.additional import additionalPath
 from freecad_stub_gen.config import SOURCE_DIR, TARGET_DIR
+from freecad_stub_gen.file_functions import genCppFiles, genXmlFiles
+from freecad_stub_gen.FreeCADTemplates import additionalPath
+from freecad_stub_gen.generators.common.gen_base import BaseGenerator
 from freecad_stub_gen.generators.exceptions.gen import ExceptionGenerator
-from freecad_stub_gen.generators.from_cpp.functions import FreecadStubGeneratorFromCppFunctions
+from freecad_stub_gen.generators.from_cpp.functions import (
+    FreecadStubGeneratorFromCppFunctions,
+)
 from freecad_stub_gen.generators.from_cpp.klass import FreecadStubGeneratorFromCppClass
-from freecad_stub_gen.generators.from_cpp.module import FreecadStubGeneratorFromCppModule
+from freecad_stub_gen.generators.from_cpp.module import (
+    FreecadStubGeneratorFromCppModule,
+)
 from freecad_stub_gen.generators.from_xml.full import FreecadStubGeneratorFromXML
-from freecad_stub_gen.module_container import Module
 from freecad_stub_gen.module_namespace import moduleNamespace
-from freecad_stub_gen.util import genCppFiles, genXmlFiles
+from freecad_stub_gen.python_code.module_container import Module
 
 logger = logging.getLogger(__name__)
+generators: typing.Sequence[type[BaseGenerator]] = (
+    FreecadStubGeneratorFromCppFunctions,
+    FreecadStubGeneratorFromCppClass,
+    FreecadStubGeneratorFromCppModule,
+    ExceptionGenerator,
+)
 
 
-def _genModule(sourcesRoot: Module, modulePath: Path, sourcePath=SOURCE_DIR,
-               moduleName='', subModuleName=''):
+def _genModule(
+    sourcesRoot: Module,
+    modulePath: Path,
+    sourcePath=SOURCE_DIR,
+    moduleName='',
+    subModuleName='',
+):
     for xmlPath in genXmlFiles(modulePath):
         if not (tg := FreecadStubGeneratorFromXML.safeCreate(xmlPath, sourcePath)):
             continue
@@ -35,10 +52,7 @@ def _genModule(sourcesRoot: Module, modulePath: Path, sourcePath=SOURCE_DIR,
             case _:
                 curModuleName = moduleName
 
-        for cl in (FreecadStubGeneratorFromCppFunctions,
-                   FreecadStubGeneratorFromCppClass,
-                   FreecadStubGeneratorFromCppModule,
-                   ExceptionGenerator):
+        for cl in generators:
             if not (mg := cl.safeCreate(cppPath, sourcePath)):
                 continue
             mg.getStub(sourcesRoot, curModuleName)
@@ -50,10 +64,14 @@ def generateFreeCadStubs(sourcePath=SOURCE_DIR, targetPath=TARGET_DIR):
     freeCad = sourcesRoot['FreeCAD']
     freeCad += 'class PyObjectBase(object): ...\n\n\n'
 
-    _genModule(sourcesRoot, sourcePath / 'Base', sourcePath,
-               moduleName='FreeCAD', subModuleName='Base')
-    _genModule(sourcesRoot, sourcePath / 'App', sourcePath,
-               moduleName='FreeCAD')
+    _genModule(
+        sourcesRoot,
+        sourcePath / 'Base',
+        sourcePath,
+        moduleName='FreeCAD',
+        subModuleName='Base',
+    )
+    _genModule(sourcesRoot, sourcePath / 'App', sourcePath, moduleName='FreeCAD')
 
     freeCad += """
 App = FreeCAD
@@ -69,22 +87,30 @@ Wrn = FreeCAD.Console.PrintWarning
     freeCad += 'Gui = FreeCADGui'
     freeCad.imports.add('FreeCADGui')
     freeCad += 'ActiveDocument: FreeCAD.Document | None'
-    freeCad.imports.update((
-        'FreeCAD.Console',
-        'FreeCAD.Qt as Qt',
-        'FreeCAD.Units as Units',
-        'FreeCAD.Base',
-        'from FreeCAD.Base import *'))
+    freeCad.imports.update(
+        (
+            'FreeCAD.Console',
+            'FreeCAD.Qt as Qt',
+            'FreeCAD.Units as Units',
+            'FreeCAD.Base',
+            'from FreeCAD.Base import *',
+        )
+    )
 
     _genModule(sourcesRoot, sourcePath / 'Gui', sourcePath, moduleName='FreeCADGui')
     _genModule(sourcesRoot, sourcePath / 'Main', sourcePath, moduleName='FreeCADGui')
     freeCadGui = sourcesRoot['FreeCADGui']
     freeCadGui += 'Workbench = FreeCADGui.PythonWorkbench  # noqa'
     freeCadGui += 'ActiveDocument: FreeCADGui.Document | None'
-    freeCadGui += 'Control = ControlClass()  # hack to show this module in current module hints'
-    freeCadGui.imports.update((
-        'FreeCADGui.Selection',
-        'from FreeCADGui.TaskDialogPython import Control as ControlClass'))
+    freeCadGui += (
+        'Control = ControlClass()  # hack to show this module in current module hints'
+    )
+    freeCadGui.imports.update(
+        (
+            'FreeCADGui.Selection',
+            'from FreeCADGui.TaskDialogPython import Control as ControlClass',
+        )
+    )
 
     for mod in (sourcePath / 'Mod').iterdir():
         moduleName = mod.name
@@ -117,13 +143,10 @@ Wrn = FreeCAD.Console.PrintWarning
 
             stubPackage.rename(stubPackage.with_name(f'{newName}-stubs'))
 
-    for additionalPackage in additionalPath.glob('[!_]*.py'):
-        targetAdditionalPackage = targetPath / additionalPackage.stem
-        targetAdditionalPackage.mkdir()
-        shutil.copy(additionalPackage, targetAdditionalPackage / '__init__.py')
+    shutil.copytree(additionalPath, targetPath / additionalPath.name)
 
 
-# TODO P4 preprocess and remove macros
+# TODO @PO: [P4] preprocess and remove macros
 # https://www.tutorialspoint.com/cplusplus/cpp_preprocessor.htm
 
 UNITS = """
@@ -267,7 +290,17 @@ Length        = Unit(1)
 Area          = Unit(2)
 Volume        = Unit(3)
 Mass          = Unit(0,1)
-# (length, weight, time, current, temperature, amount of substance, luminous intensity, angle)
+
+# https://wiki.freecad.org/Quantity#Internal_representation
+# Unit: dimension index - dimension name
+# 0 - length
+# 1 - weight
+# 2 - time
+# 3 - current
+# 4 - temperature
+# 5 - amount of substance
+# 6 - luminous intensity
+# 7 - angle
 
 # Angle
 Angle            = Unit(0,0,0,0,0,0,0,1)
