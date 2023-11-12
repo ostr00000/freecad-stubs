@@ -89,6 +89,9 @@ repos:
     rev: v1.1.335
     hooks:
       - id: pyright
+        args:
+          - --verbose
+        verbose: true
 
 #  - repo: local
 #    hooks:
