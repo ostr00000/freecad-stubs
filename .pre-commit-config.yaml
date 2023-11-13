@@ -89,6 +89,8 @@ repos:
     rev: v1.1.335
     hooks:
       - id: pyright
+        additional_dependencies:
+          - nodejs-bin[cmd]
         args:
           - --verbose
         verbose: true
