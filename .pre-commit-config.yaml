@@ -98,14 +98,21 @@ repos:
 #          Install current package in editable mode and then run mypy.
 #          The installation is required, because mypy is unable to use stub only
 #          packages pointed by `mypy_path`.
-#        entry: bash -c 'pip install --editable . >/dev/null && mypy'
+#        entry: bash -x -c 'pip install --editable .[all]  && mypy'
 #        language: python
 #        types: [ python ]
 #        pass_filenames: false
+#        verbose: true
 #        additional_dependencies:
 #          - mypy==1.6.1
-#          - PyQt5
-#          - more-itertools
-#          - qtpy
 #        args:
 #          - --strict
+#          - --always-true=PYQT5
+#          - --always-false=PYSIDE2
+#          - --always-false=PYQT6
+#          - --always-false=PYSIDE6
+
+ci:
+  autoupdate_schedule: monthly
+  skip:
+    - pyright # https://github.com/RobertCraigie/pyright-python/issues/164
