@@ -40,6 +40,7 @@ check = [
     'pyright',
     'pylint',
     'PyQt5',
+    'PyQt5-stubs',
     'qtpy',
 ]
 all = ['freecad-stubs[generate,check]']
