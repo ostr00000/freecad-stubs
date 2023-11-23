@@ -479,6 +479,41 @@ class DocumentObjectGroup(FreeCAD.DocumentObject, FreeCAD.GroupExtension):
     """
 
 
+# StringIDPy.xml
+class StringID(FreeCAD.BaseClass):
+    """This is the StringID class"""
+
+    @property
+    def Data(self) -> str:
+        """Return the data associated with this ID"""
+
+    @property
+    def Index(self) -> int:
+        """Geometry index. Only meaningful for geometry element name"""
+
+    @Index.setter
+    def Index(self, value: int): ...
+
+    @property
+    def IsBinary(self) -> bool:
+        """Check if the data is binary,"""
+
+    @property
+    def IsHashed(self) -> bool:
+        """Check if the data is hash, if so 'Data' returns a base64 encoded string of the raw hash"""
+
+    @property
+    def Related(self) -> list[int]:
+        """Return the related string IDs"""
+
+    @property
+    def Value(self) -> int:
+        """Return the integer value of this ID"""
+
+    def isSame(self, other: FreeCAD.StringID = None, /) -> bool:
+        """Check if two StringIDs are the same"""
+
+
 # GeoFeaturePy.xml
 class GeoFeature(FreeCAD.DocumentObject):
     """
@@ -694,6 +729,16 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         containing the accumulated transformation matrix
 
         * depth: current recursive depth
+        """
+
+    def getParent(self) -> typing.Any | None:
+        """
+        Returns the group the object is in or None if it is not part of a group.
+                                  Note that an object can only be in a single group, hence only a single return
+                                  value.
+                                  The parent can be a simple group as with getParentGroup() or a
+                                  GeoFeature group as with getParentGeoFeatureGroup().
+        Possible exceptions: (RuntimeError).
         """
 
     def getParentGeoFeatureGroup(self) -> typing.Any | None:
@@ -1172,10 +1217,18 @@ class Metadata(FreeCAD.PyObjectBase):
     Reads the XML file and provides access to the metadata it specifies.
     file : str
         XML file name.
+
+    Metadata(bytes)
+    Treats the bytes as UTF-8-encoded XML data and provides access to the metadata it specifies.
+    bytes : bytes
+        Python bytes-like object.
     """
 
     @typing.overload
     def __init__(self): ...
+
+    @typing.overload
+    def __init__(self, dataBuffer: bytes, /): ...
 
     @typing.overload
     def __init__(self, filename: str, /): ...
@@ -1201,6 +1254,11 @@ class Metadata(FreeCAD.PyObjectBase):
         Reads the XML file and provides access to the metadata it specifies.
         file : str
             XML file name.
+
+        Metadata(bytes)
+        Treats the bytes as UTF-8-encoded XML data and provides access to the metadata it specifies.
+        bytes : bytes
+            Python bytes-like object.
         Possible exceptions: (FreeCAD.Base.XMLBaseException, FreeCAD.Base.FreeCADError).
         """
 
@@ -1575,6 +1633,56 @@ class Metadata(FreeCAD.PyObjectBase):
         """
 
 
+# StringHasherPy.xml
+class StringHasher(FreeCAD.BaseClass):
+    """This is the StringHasher class"""
+
+    def __init__(self):
+        """This is the StringHasher class"""
+
+    @property
+    def Count(self) -> int:
+        """Return count of used hashes"""
+
+    @property
+    def SaveAll(self) -> bool:
+        """Whether to save all string hashes regardless of its use count"""
+
+    @property
+    def Size(self) -> int:
+        """Return the size of the hashes"""
+
+    @property
+    def Table(self) -> dict[int, str]:
+        """Return the entire string table as Int->String dictionary"""
+
+    @property
+    def Threshold(self) -> int:
+        """Data length exceed this threshold will be hashed before storing"""
+
+    @typing.overload
+    def getID(self, id: int = -1, index: int = 0, /): ...
+
+    @typing.overload
+    def getID(self, value=0, base64=False, /):
+        """
+        getID(txt|id, base64=False) -> StringID
+
+        If the input is text, return a StringID object that is unique within this hasher. This
+        StringID object is reference counted. The hasher may only save hash ID's that are used.
+
+        If the input is an integer, then the hasher will try to find the StringID object stored
+        with the same integer value. 
+
+        base64: indicate if the input 'txt' is base64 encoded binary data
+                
+        Possible exceptions: (TypeError).
+        """
+
+    def isSame(self, other: FreeCAD.StringHasher, /) -> bool:
+        """Check if two hasher are the same"""
+
+
 # GeoFeatureGroupExtensionPy.xml
 class GeoFeatureGroupExtension(FreeCAD.GroupExtension):
     """
@@ -1806,26 +1914,6 @@ class Document(FreeCAD.PropertyContainer):
     def License(self, value: str): ...
 
     @property
-    def License(self) -> str:
-        """
-        Property TypeId: App::PropertyString.
-        License string of the Item.
-        """
-
-    @License.setter
-    def License(self, value: str): ...
-
-    @property
-    def LicenseURL(self) -> str:
-        """
-        Property TypeId: App::PropertyString.
-        URL to the license text/contract.
-        """
-
-    @LicenseURL.setter
-    def LicenseURL(self, value: str): ...
-
-    @property
     def LicenseURL(self) -> str:
         """
         Property TypeId: App::PropertyString.
@@ -1922,6 +2010,13 @@ class Document(FreeCAD.PropertyContainer):
         Possible exceptions: (TypeError).
         """
 
+    def addProperty(self, sType: str, sName: str = None, sGroup: str = None, sDoc: str = None, attr: int = 0, ro: bool = False, hd: bool = False, /) -> FreeCAD.Document:
+        """
+        addProperty(string, string) -- Add a generic property.
+                        The first argument specifies the type, the second the
+                        name of the property.
+        """
+
     def clearDocument(self):
         """Clear the whole document"""
 
@@ -1934,7 +2029,7 @@ class Document(FreeCAD.PropertyContainer):
     def copyObject(self, obj, rec: bool = False, retAll: bool = False, /) -> typing.Any | tuple[typing.Any, ...]:
         """
         copyObject(object, with_dependencies=False, return_all=False)
-        Copy an object or objects from another document to this document. 
+        Copy an object or objects from another document to this document.
 
         object: can either a single object or sequence of objects
         with_dependencies: if True, all internal dependent objects are copied too.
@@ -2040,7 +2135,7 @@ class Document(FreeCAD.PropertyContainer):
         """
         moveObject(object, bool with_dependencies = False)
         Transfers an object from another document to this document.
-              
+
         object: can either a single object or sequence of objects
         with_dependencies: if True, all internal dependent objects are copied too.
         
@@ -2079,6 +2174,12 @@ class Document(FreeCAD.PropertyContainer):
         """
         Remove an object from the document
         Possible exceptions: (ValueError).
+        """
+
+    def removeProperty(self, sName: str, /) -> bool:
+        """
+        removeProperty(string) -- Remove a generic property.
+                        Note, you can only remove user-defined properties but not built-in ones.
         """
 
     def restore(self):

@@ -1,4 +1,5 @@
 import FreeCAD
+import PartDesign
 import Points as PointsModule
 
 
@@ -81,7 +82,7 @@ def export(object, Name: str, /) -> None:
     """Possible exceptions: (Exception, RuntimeError)."""
 
 
-def show(pcObj: PointsModule.Points, name: str = 'Points', /) -> None:
+def show(pcObj: PointsModule.Points, name: str = 'Points', /) -> PartDesign.Feature | None:
     """
     show(points,[string]) -- Add the points to the active document or create one if no document exists.
     Possible exceptions: (Exception, RuntimeError).

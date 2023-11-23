@@ -32,11 +32,110 @@ def PrintError(obj, /):
     """
 
 
+def PrintDeveloperError(obj, /):
+    """
+    PrintDeveloperError(obj) -> None
+
+    Print an error message intended only for Developers to the output.
+
+    obj : object
+        The string representation is printed.
+    """
+
+
+def PrintUserError(obj, /):
+    """
+    PrintUserError(obj) -> None
+
+    Print an error message intended only for the User to the output.
+
+    obj : object
+        The string representation is printed.
+    """
+
+
+def PrintTranslatedUserError(obj, /):
+    """
+    PrintTranslatedUserError(obj) -> None
+
+    Print an already translated error message intended only for the User to the output.
+
+    obj : object
+        The string representation is printed.
+    """
+
+
 def PrintWarning(obj, /):
     """
     PrintWarning(obj) -> None
 
     Print a warning message to the output.
+
+    obj : object
+        The string representation is printed.
+    """
+
+
+def PrintDeveloperWarning(obj, /):
+    """
+    PrintDeveloperWarning(obj) -> None
+
+    Print an warning message intended only for Developers to the output.
+
+    obj : object
+        The string representation is printed.
+    """
+
+
+def PrintUserWarning(obj, /):
+    """
+    PrintUserWarning(obj) -> None
+
+    Print a warning message intended only for the User to the output.
+
+    obj : object
+        The string representation is printed.
+    """
+
+
+def PrintTranslatedUserWarning(obj, /):
+    """
+    PrintTranslatedUserWarning(obj) -> None
+
+    Print an already translated warning message intended only for the User to the output.
+
+    obj : object
+        The string representation is printed.
+    """
+
+
+def PrintCritical(obj, /):
+    """
+    PrintCritical(obj) -> None
+
+    Print a critical message to the output.
+
+    obj : object
+        The string representation is printed.
+    """
+
+
+def PrintNotification(obj, /):
+    """
+    PrintNotification(obj) -> None
+
+    Print a user notification to the output.
+
+    obj : object
+        The string representation is printed.
+    """
+
+
+def PrintTranslatedNotification(obj, /):
+    """
+    PrintTranslatedNotification(obj) -> None
+
+    Print an already translated notification to the output.
 
     obj : object
         The string representation is printed.

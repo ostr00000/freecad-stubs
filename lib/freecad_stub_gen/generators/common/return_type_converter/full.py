@@ -5,7 +5,10 @@ from inspect import Parameter
 
 from freecad_stub_gen.cpp_code.converters import validatePythonValue
 from freecad_stub_gen.generators.common.annotation_parameter import RawRepr
-from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
+from freecad_stub_gen.generators.common.cpp_function import (
+    genFuncArgs,
+    generateExpressionUntilChar,
+)
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import (
     InvalidReturnType,
     UnionArgument,
@@ -90,11 +93,7 @@ class ReturnTypeConverter(
                 exceptions.add(exceptionName)
 
         for exceptionMatch in self.EXCEPTION_SET_STRING_REG.finditer(self.functionBody):
-            funArgs = list(
-                generateExpressionUntilChar(
-                    exceptionMatch.group(1), 0, ',', bracketL='(', bracketR=')'
-                )
-            )
+            funArgs = list(genFuncArgs(exceptionMatch.group()))
             exceptions.add(exceptionContainer.getExceptionText(funArgs[0]))
 
         return exceptions

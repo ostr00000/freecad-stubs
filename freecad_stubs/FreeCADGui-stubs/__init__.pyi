@@ -298,7 +298,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
 
     @property
     def DropPrefix(self) -> str:
-        """Subname referecing the sub-object for holding dropped object."""
+        """Subname referencing the sub-object for holding dropped object."""
 
     @property
     def IV(self) -> str:
@@ -1875,7 +1875,17 @@ class View3DInventorPy:
     @typing.overload
     def getPointOnScreen(self, vx: float, vy: float, vz: float, /) -> tuple[int, int]:
         """
-        getPointOnScreen(3D vector) -> pixel coords (as integer)
+        Same as getPointOnViewport
+        Possible exceptions: (TypeError, RuntimeError).
+        """
+
+    @typing.overload
+    def getPointOnViewport(self, v: FreeCAD.Vector, /) -> tuple[int, int]: ...
+
+    @typing.overload
+    def getPointOnViewport(self, vx: float, vy: float, vz: float, /) -> tuple[int, int]:
+        """
+        getPointOnViewport(3D vector) -> pixel coords (as integer)
 
         Return the projected 3D point (in pixel coordinates).
 
@@ -2269,6 +2279,33 @@ class UiLoader:
     def createWidget(self):
         """createWidget()"""
 
+    def availableWidgets(self) -> list[str]:
+        """availableWidgets()"""
+
+    def clearPluginPaths(self) -> None:
+        """clearPluginPaths()"""
+
+    def pluginPaths(self) -> list[str]:
+        """pluginPaths()"""
+
+    def addPluginPath(self) -> None:
+        """addPluginPath()"""
+
+    def errorString(self) -> str:
+        """errorString()"""
+
+    def isLanguageChangeEnabled(self) -> bool:
+        """isLanguageChangeEnabled()"""
+
+    def setLanguageChangeEnabled(self) -> None:
+        """setLanguageChangeEnabled()"""
+
+    def setWorkingDirectory(self) -> None:
+        """setWorkingDirectory()"""
+
+    def workingDirectory(self) -> str:
+        """workingDirectory()"""
+
 
 # PythonConsolePy.cpp
 class PythonStdout:
@@ -2432,6 +2469,11 @@ class AbstractSplitViewPy:
         """cast_to_base() cast to MDIView class"""
 
 
+# CommandActionPy.cpp
+class Gui_CommandAction:
+    """Descriptor to access the action of the commands"""
+
+    pass
 # SelectionFilter.cpp
 class SelectionFilter:
     """
@@ -3241,9 +3283,21 @@ class View3DInventorViewerPy:
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def setBackgroundColor(self, r: float, g: float, b: float = 0.0, /) -> None:
+    def setBackgroundColor(self, red: float, green: float, blue: float = 0.0, /) -> None:
         """
         setBackgroundColor(r,g,b): sets the background color of the current viewer.
+        Possible exceptions: (Exception, RuntimeError).
+        """
+
+    def setGradientBackground(self, background: str, /) -> None:
+        """
+        setGradientBackground(str): sets the background gradient of the current viewer.
+        Possible exceptions: (Exception, RuntimeError).
+        """
+
+    def setGradientBackgroundColor(self, col1: tuple, col2: tuple, col3: tuple = None, /) -> typing.Any | None:
+        """
+        setGradientBackgroundColor(tuple,tuple,[tuple]): sets the gradient colors of the current viewer.
         Possible exceptions: (Exception, RuntimeError).
         """
 

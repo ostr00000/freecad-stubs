@@ -528,7 +528,7 @@ class Rotation(FreeCAD.PyObjectBase):
         Define from 16 or 9 elements which represent the rotation in the 4D matrix
         representation or in the 3D matrix representation, respectively.
         coef : sequence of float
-        Possible exceptions: (FreeCAD.Base.FreeCADError, TypeError).
+        Possible exceptions: (Exception, FreeCAD.Base.FreeCADError, TypeError).
         """
 
     @property
@@ -1370,7 +1370,7 @@ class Placement(FreeCAD.PyObjectBase):
         base : Base.Vector
         axis : Base.Vector
         angle : float
-        Possible exceptions: (TypeError).
+        Possible exceptions: (Exception, TypeError).
         """
 
     @property

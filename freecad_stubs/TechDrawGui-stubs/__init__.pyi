@@ -1,4 +1,5 @@
 import TechDraw
+import qtpy.QtCore
 
 
 # AppTechDrawGuiPy.cpp
@@ -33,5 +34,26 @@ def addQGIToView(viewPy: TechDraw.DrawView = None, qgiPy=None, /) -> None:
 def addQGObjToView(viewPy: TechDraw.DrawView = None, qgiPy=None, /) -> None:
     """
     addQGObjToView(View, QGraphicsObject) -- insert graphics object into view's graphic. Use for QGraphicsItems that have QGraphicsObject as base class.
+    Possible exceptions: (TypeError, RuntimeError, Exception).
+    """
+
+
+def addQGIToScene(pagePy: TechDraw.DrawPage = None, qgiPy=None, /) -> None:
+    """
+    addQGIToScene(Page, QGraphicsItem) -- insert graphics item into Page's scene.
+    Possible exceptions: (TypeError, RuntimeError, Exception).
+    """
+
+
+def addQGObjToScene(pagePy: TechDraw.DrawPage = None, qgiPy=None, /) -> None:
+    """
+    addQGObjToScene(Page, QGraphicsObject) -- insert graphics object into Page's scene. Use for QGraphicsItems that have QGraphicsObject as base class.
+    Possible exceptions: (TypeError, RuntimeError, Exception).
+    """
+
+
+def getSceneForPage(pagePy: TechDraw.DrawPage = None, /) -> qtpy.QtCore.QObject | None:
+    """
+    QGSPage = getSceneForPage(page) -- get the scene for a DrawPage.
     Possible exceptions: (TypeError, RuntimeError, Exception).
     """

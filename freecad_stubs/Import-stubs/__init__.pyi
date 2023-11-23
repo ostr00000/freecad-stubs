@@ -15,7 +15,7 @@ class StepShape(FreeCAD.PyObjectBase):
     def __init__(self, fileName: str, /):
         """
         StepShape in Import
-        This class gives a interface to retrieve TopoShapes out of an loaded STEP file of any kind. 
+        This class gives a interface to retrieve TopoShapes out of an loaded STEP file of any kind.
 		
         Possible exceptions: (TypeError).
         """
@@ -32,7 +32,7 @@ class StepShape(FreeCAD.PyObjectBase):
 # AppImportPy.cpp
 def readDXF(Name: str, DocName: str = None, IgnoreErrors: int = True, optionSource: str = None, /) -> None:
     """
-    readDXF(filename,[document,ignore_errors]): Imports a DXF file into the given document. ignore_errors is True by default.
+    readDXF(filename,[document,ignore_errors,option_source]): Imports a DXF file into the given document. ignore_errors is True by default.
     Possible exceptions: (Exception, RuntimeError).
     """
 
@@ -78,5 +78,5 @@ def insert(name: str, docName: str = None, importHidden: bool = None, merge: boo
 def export(obj, name: str, exportHidden: bool = None, legacy: bool = None, keepPlacement: bool = None) -> None:
     """
     export(list,string) -- Export a list of objects into a single file.
-    Possible exceptions: (Exception, FreeCAD.Base.FreeCADError).
+    Possible exceptions: (Exception, RuntimeError, FreeCAD.Base.FreeCADError).
     """

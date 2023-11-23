@@ -1,5 +1,4 @@
 import io
-import math
 import typing
 
 import FreeCAD
@@ -205,8 +204,16 @@ class SketchObject(PartModule.Part2DObject):
         """Return the number of construction lines in the sketch which can be used as axes"""
 
     @property
+    def ConflictingConstraints(self) -> list[int]:
+        """Return a list of integers indicating the constraints detected as conflicting"""
+
+    @property
     def ConstraintCount(self) -> int:
         """Number of Constraints in this sketch"""
+
+    @property
+    def DoF(self) -> int:
+        """Return the DoFs of the current solved sketch"""
 
     @property
     def GeometryCount(self) -> int:
@@ -218,6 +225,10 @@ class SketchObject(PartModule.Part2DObject):
 
     @GeometryFacadeList.setter
     def GeometryFacadeList(self, value: list): ...
+
+    @property
+    def MalformedConstraints(self) -> list[int]:
+        """Return a list of integers indicating the constraints detected as malformed"""
 
     @property
     def MissingLineEqualityConstraints(self) -> list[tuple[int, int, int, int]]:
@@ -250,6 +261,14 @@ class SketchObject(PartModule.Part2DObject):
     @property
     def OpenVertices(self) -> list[tuple[float, float, float]]:
         """returns a list of vertices positions."""
+
+    @property
+    def PartiallyRedundantConstraints(self) -> list[int]:
+        """Return a list of integers indicating the constraints detected as partially redundant"""
+
+    @property
+    def RedundantConstraints(self) -> list[int]:
+        """Return a list of integers indicating the constraints detected as redundant"""
 
     @property
     def Constraints(self) -> list[Sketcher.Constraint]:
@@ -353,7 +372,7 @@ class SketchObject(PartModule.Part2DObject):
         Possible exceptions: (TypeError).
         """
 
-    def analyseMissingPointOnPointCoincident(self, angleprecision: float = math.pi / 8, /):
+    def analyseMissingPointOnPointCoincident(self, angleprecision: float = None, /):
         """
         Analyses the already detected Missing Point On Point Constraints to detect endpoint tagency/perpendicular.
                         The result may be retrieved or applied using the corresponding Get / Make methods.
@@ -362,7 +381,7 @@ class SketchObject(PartModule.Part2DObject):
     def autoRemoveRedundants(self, updategeo: bool = True, /):
         """Removes constraints currently detected as redundant by the solver. If the argument is True, then the geometry is updated after solving."""
 
-    def autoconstraint(self, precision: float = None, angleprecision: float = math.pi / 8, includeconstruction: bool = True, /):
+    def autoconstraint(self, precision: float = None, angleprecision: float = None, includeconstruction: bool = True, /):
         """
         Automatic sketch constraining algorithm.
             
@@ -479,7 +498,7 @@ class SketchObject(PartModule.Part2DObject):
                         The result may be retrieved or applied using the corresponding Get / Make methods.
         """
 
-    def detectMissingVerticalHorizontalConstraints(self, angleprecision: float = math.pi / 8, /) -> int:
+    def detectMissingVerticalHorizontalConstraints(self, angleprecision: float = None, /) -> int:
         """
         Detects Missing Horizontal/Vertical Constraints. The Detect step just identifies possible missing constraints.
                         The result may be retrieved or applied using the corresponding Get / Make methods.
@@ -710,6 +729,9 @@ class SketchObject(PartModule.Part2DObject):
         split a curve with a given id at a given reference point
         Possible exceptions: (ValueError).
         """
+
+    def toPythonCommands(self) -> tuple[str, ...]:
+        """Prints the commands that should be executed to recreate the Geometry and Constraints of the present sketch (excluding any External Geometry)."""
 
     def toggleActive(self, constrid: int, /):
         """

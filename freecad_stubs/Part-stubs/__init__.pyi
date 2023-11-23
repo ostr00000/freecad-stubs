@@ -1027,6 +1027,12 @@ class Face(PartModule.Shape):
         addWire(wire)
         """
 
+    def countNodes(self) -> int:
+        """Returns the number of nodes of the triangulation."""
+
+    def countTriangles(self) -> int:
+        """Returns the number of triangles of the triangulation."""
+
     def curvatureAt(self, u: float, v: float, /) -> tuple[float, float]:
         """
         Get the curvature at the given parameter [0|Length] if defined
@@ -1512,15 +1518,6 @@ class Shape(FreeCAD.ComplexGeoData):
     def Wires(self) -> list[PartModule.Wire]:
         """List of wires in this shape."""
 
-    def __getstate__(self):
-        """Serialize the content of this shape to a string in BREP format."""
-
-    def __setstate__(self):
-        """
-        Deserialize the content of this shape from a string in BREP format.
-        Possible exceptions: (FreeCAD.Base.FreeCADError).
-        """
-
     def ancestorsOfType(self, pcObj: PartModule.Shape, type: type, /) -> list[PartModule.Shape]:
         """
         For a sub-shape of this shape get its ancestors of a type.
@@ -1654,9 +1651,9 @@ class Shape(FreeCAD.ComplexGeoData):
         dist is the minimum distance, in mm (float value).
 
         vectors is a list of pairs of App.Vector. Each pair corresponds to solution.
-        Example: [(Vector (2.0, -1.0, 2.0), Vector (2.0, 0.0, 2.0)), (Vector (2.0,
-        -1.0, 2.0), Vector (2.0, -1.0, 3.0))] First vector is a point on self, second
-        vector is a point on s.
+        Example: [(App.Vector(2.0, -1.0, 2.0), App.Vector(2.0, 0.0, 2.0)),
+        (App.Vector(2.0, -1.0, 2.0), App.Vector(2.0, -1.0, 3.0))]
+        First vector is a point on self, second vector is a point on s.
 
         infos contains additional info on the solutions. It is a list of tuples:
         (topo1, index1, params1, topo2, index2, params2)
@@ -1678,6 +1675,9 @@ class Shape(FreeCAD.ComplexGeoData):
         dumpToString() -> string
         Possible exceptions: (Part.OCCError).
         """
+
+    def dumps(self):
+        """Serialize the content of this shape to a string in BREP format."""
 
     def exportBinary(self, input: str, /):
         """
@@ -1733,14 +1733,12 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (Part.OCCError).
         """
 
-    @typing.overload
-    def extrude(self, direction, length, /): ...
-
-    @typing.overload
     def extrude(self, pVec: FreeCAD.Vector, /) -> PartModule.Compound | PartModule.CompSolid | PartModule.Solid | PartModule.Shell | PartModule.Face | PartModule.Edge:
         """
-        Extrude the shape along a direction.
-        extrude(direction, length)
+        Extrude the shape along a vector.
+        extrude(vector) -> Shape
+        --
+        Shp2 = Shp1.extrude(App.Vector(0,0,10)) - extrude the shape 10 mm in the +Z direction.
         Possible exceptions: (Part.OCCError).
         """
 
@@ -2001,6 +1999,12 @@ class Shape(FreeCAD.ComplexGeoData):
         Returns True if at least one tolerance of the sub-shape has been modified
         
         Possible exceptions: (TypeError, Part.OCCError).
+        """
+
+    def loads(self):
+        """
+        Deserialize the content of this shape from a string in BREP format.
+        Possible exceptions: (FreeCAD.Base.FreeCADError).
         """
 
     @typing.overload
@@ -2298,7 +2302,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Revolve the shape around an Axis to a given degree.
         revolve(base, direction, angle)
         --
-        Part.revolve(Vector(0,0,0),Vector(0,0,1),360) - revolves the shape around the Z Axis 360 degree.
+        Part.revolve(App.Vector(0,0,0),App.Vector(0,0,1),360) - revolves the shape around the Z Axis 360 degree.
 
         Hints: Sometimes you want to create a rotation body out of a closed edge or wire.
         Example:
@@ -2340,7 +2344,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Apply the rotation (base,dir,degree) to the current location of this shape
         rotate(base,dir,degree)
         --
-        Shp.rotate(Vector(0,0,0),Vector(0,0,1),180) - rotate the shape around the Z Axis 180 degrees.
+        Shp.rotate(App.Vector(0,0,0),App.Vector(0,0,1),180) - rotate the shape around the Z Axis 180 degrees.
         """
 
     def rotated(self, base, dir, degree, /):
@@ -2352,7 +2356,7 @@ class Shape(FreeCAD.ComplexGeoData):
     def scale(self, factor: float, p: FreeCAD.Vector = None, /) -> PartModule.Shape:
         """
         Apply scaling with point and factor to this shape.
-        scale(factor,[base=Vector(0,0,0)])
+        scale(factor,[base=App.Vector(0,0,0)])
         
         Possible exceptions: (ValueError).
         """
@@ -2360,7 +2364,7 @@ class Shape(FreeCAD.ComplexGeoData):
     def scaled(self, factor, /, base=None):
         """
         Create a new shape with scale.
-        scaled(factor,[base=Vector(0,0,0)]) -> shape
+        scaled(factor,[base=App.Vector(0,0,0)]) -> shape
         """
 
     @typing.overload
@@ -4816,6 +4820,9 @@ class Edge(PartModule.Shape):
         Possible exceptions: (Part.OCCError).
         """
 
+    def countNodes(self) -> int:
+        """Returns the number of nodes of the 3D polygon of the edge."""
+
     def curvatureAt(self, u: float, /) -> float:
         """
         Get the curvature at the given parameter [First|Last] if defined
@@ -7199,15 +7206,10 @@ def makeSweepSurface(path: PartModule.Shape, profile: PartModule.Shape, toleranc
     """
 
 
-@typing.overload
-def makeLoft(pcObj, psolid: bool = False, pruled: bool = False, pclosed: bool = False, degMax: int = 5, /) -> PartModule.BSplineSurface | PartModule.Shape: ...
-
-
-@typing.overload
-def makeLoft(pcObj, /) -> PartModule.BSplineSurface | PartModule.Shape:
+def makeLoft(pcObj, psolid: bool = False, pruled: bool = False, pclosed: bool = False, degMax: int = 5, /) -> PartModule.Shape:
     """
     makeLoft(list of wires,[solid=False,ruled=False,closed=False,maxDegree=5]) -- Create a loft shape.
-    Possible exceptions: (Exception, Part.OCCError).
+    Possible exceptions: (Exception).
     """
 
 

@@ -127,7 +127,7 @@ class ExceptionContainer:
             # but we are unable to determine which one is used.
             return 'Exception'
 
-        msg = f'Unknown exception {cTypeExceptionText=}'
+        msg = f'Unknown exception `{cTypeExceptionText=}`'
         raise ValueError(msg)
 
 

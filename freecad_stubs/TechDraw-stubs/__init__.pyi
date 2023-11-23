@@ -189,25 +189,27 @@ class DrawViewAnnotation(TechDraw.DrawView):
     def LineSpace(self) -> int:
         """
         Property group: Annotation.
-        Property TypeId: App::PropertyPercent.
-        Line spacing in %. 100 means the height of a line.
+        Property TypeId: App::PropertyInteger.
+
+        Line spacing in %. 100 means single spaced,
+         200 would be double spaced.
         """
 
     @LineSpace.setter
     def LineSpace(self, value: int): ...
 
     @property
-    def MaxWidth(self) -> FreeCAD.Quantity:
+    def MaxWidth(self) -> float:
         """
         Property group: Annotation.
-        Property TypeId: App::PropertyLength.
+        Property TypeId: App::PropertyFloat.
 
-        Maximum width of the annotation block.
+        Maximum width of the annotation block (in mm).
          -1 means no maximum width.
         """
 
     @MaxWidth.setter
-    def MaxWidth(self, value: str | float | FreeCAD.Quantity): ...
+    def MaxWidth(self, value: float): ...
 
     @property
     def Text(self) -> list[str]:
@@ -725,6 +727,17 @@ class DrawViewDimension(TechDraw.DrawView):
     def References3D(self, value: LinkSub_t | LinkList_t | LinkSubList_t): ...
 
     @property
+    def SavedGeometry(self):
+        """
+        Property group: References.
+        Property TypeId: Part::PropertyTopoShapeList.
+        Reference Geometry.
+        """
+
+    @SavedGeometry.setter
+    def SavedGeometry(self, value): ...
+
+    @property
     def TheoreticalExact(self) -> bool:
         """
         [Prop_Output] Modified property doesn't touch its parent container.
@@ -1233,6 +1246,17 @@ class DrawViewPart(TechDraw.DrawView):
 
     @Perspective.setter
     def Perspective(self, value: int | bool): ...
+
+    @property
+    def ScrubCount(self) -> int:
+        """
+        Property group: HLR Parameters.
+        Property TypeId: App::PropertyInteger.
+        The number of times FreeCAD should try to clean the HLR result.
+        """
+
+    @ScrubCount.setter
+    def ScrubCount(self, value: int): ...
 
     @property
     def SeamHidden(self) -> bool:
@@ -1760,7 +1784,7 @@ class DrawProjGroupItem(TechDraw.DrawViewPart):
         """Property TypeId: App::PropertyEnumeration."""
 
     @Type.setter
-    def Type(self, value: typing.Literal['Front', 'Left', 'Right', 'Rear', 'Top', 'Bottom', 'FrontTopLeft', 'FrontTopRight', 'FrontBottomLeft', 'FrontBottomRight']): ...
+    def Type(self, value: typing.Literal['QT_TRANSLATE_NOOP("DrawProjGroupItem', 'Front")', 'QT_TRANSLATE_NOOP("DrawProjGroupItem', 'Left")', 'QT_TRANSLATE_NOOP("DrawProjGroupItem', 'Right")', 'QT_TRANSLATE_NOOP("DrawProjGroupItem', 'Rear")', 'QT_TRANSLATE_NOOP("DrawProjGroupItem', 'Top")', 'QT_TRANSLATE_NOOP("DrawProjGroupItem', 'Bottom")', 'QT_TRANSLATE_NOOP("DrawProjGroupItem', 'FrontTopLeft")', 'QT_TRANSLATE_NOOP("DrawProjGroupItem', 'FrontTopRight")', 'QT_TRANSLATE_NOOP("DrawProjGroupItem', 'FrontBottomLeft")', 'QT_TRANSLATE_NOOP("DrawProjGroupItem', 'FrontBottomRight")']): ...
 
     def autoPosition(self):
         """autoPosition() - Move to AutoDistribute/Unlocked position on Page. Returns none."""
