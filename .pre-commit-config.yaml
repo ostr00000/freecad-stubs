@@ -71,7 +71,7 @@ repos:
       - id: black
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.5
+    rev: v0.1.6
     hooks:
       - id: ruff
         name: ruff-diff
@@ -86,7 +86,7 @@ repos:
         args: [ --exit-non-zero-on-fix, --fix ]
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.335
+    rev: v1.1.338
     hooks:
       - id: pyright
 
