@@ -6,8 +6,8 @@ from inspect import Parameter
 from freecad_stub_gen.cpp_code.converters import validatePythonValue
 from freecad_stub_gen.generators.common.annotation_parameter import RawRepr
 from freecad_stub_gen.generators.common.cpp_function import (
-    genFuncArgs,
     generateExpressionUntilChar,
+    genFuncArgs,
 )
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import (
     InvalidReturnType,
