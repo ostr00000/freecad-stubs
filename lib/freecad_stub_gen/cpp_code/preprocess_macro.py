@@ -27,7 +27,7 @@ def cleanPreprocessFiles(path: Path = SOURCE_DIR):
         file.unlink(missing_ok=True)
 
 
-def processAll():
+def preprocessAllCppFiles():
     file: Path
     for file in logProgress(preprocessFiles(), sum(1 for _ in preprocessFiles())):
         content = file.read_text(encoding)
@@ -45,4 +45,4 @@ def processAll():
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     cleanPreprocessFiles()
-    processAll()
+    preprocessAllCppFiles()
