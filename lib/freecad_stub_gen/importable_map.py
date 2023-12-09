@@ -54,7 +54,7 @@ class ImportableClassMap(dict[str, str]):
     # Base::Interpreter\(\).addType\(\&\w+::(\w+)Py\s*::Type,\s*\w+,"(?!\1")
 
     def __init__(self):
-        self.dup: defaultdict[str, set[str]] = defaultdict(set[str])
+        self.dup = defaultdict[str, set[str]](set)
         # remove duplicated keys - not all classes have namespace
         super().__init__(self._filterDuplicatedKeys(self._genTypes()))
         for duplicatedKey in self.dup:
@@ -92,7 +92,7 @@ class ImportableClassMap(dict[str, str]):
                 ]
 
                 addTypeArgs = AddTypeArguments(*addTypeList)
-                yield (addTypeArgs.cTypeWithoutNamespace, addTypeArgs.fullPythonName)
+                yield addTypeArgs.cTypeWithoutNamespace, addTypeArgs.fullPythonName
 
 
 __all__ = ['importableMap']

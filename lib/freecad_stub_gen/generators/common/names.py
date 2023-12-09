@@ -54,7 +54,7 @@ def getClassWithModulesFromStem(stem: str, namespace: str) -> str:
         return f'{mod}.{stem}'
 
     root = ET.parse(file).getroot()
-    if not (exportElement := root.find('PythonExport')):
+    if (exportElement := root.find('PythonExport')) is None:
         raise ValueError
     return getClassWithModulesFromNode(exportElement)
 
