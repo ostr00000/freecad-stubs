@@ -106,6 +106,14 @@ class DrawGeomHatch(FreeCAD.DocumentObject):
     @Source.setter
     def Source(self, value: LinkSub_t): ...
 
+    def translateLabel(self, pyContext, pyBaseName, pyUniqueName, /):
+        """
+        translateLabel(translationContext, objectBaseName, objectUniqueName).
+                 No return value.  Replace the current label with a translated version where possible.
+        
+        Possible exceptions: (TypeError).
+        """
+
 
 # DrawLeaderLinePy.xml
 class DrawLeaderLine(TechDraw.DrawView):
@@ -379,7 +387,7 @@ class CosmeticExtension(FreeCAD.DocumentObjectExtension):
         [Prop_Output] Modified property doesn't touch its parent container.
         Property group: Cosmetics.
         Property TypeId: TechDraw::PropertyCenterLineList.
-        Geometry format Save/Restore.
+        CenterLine Save/Restore.
         """
 
     @CenterLines.setter
@@ -923,6 +931,14 @@ class DrawView(FreeCAD.DocumentObject):
     @Y.setter
     def Y(self, value: str | float | FreeCAD.Quantity | FreeCAD.Unit): ...
 
+    def translateLabel(self, pyContext, pyBaseName, pyUniqueName, /):
+        """
+        translateLabel(translationContext, objectBaseName, objectUniqueName).
+                 No return value.  Replace the current label with a translated version where possible.
+        
+        Possible exceptions: (TypeError).
+        """
+
 
 # DrawSVGTemplatePy.xml
 class DrawSVGTemplate(TechDraw.DrawTemplate):
@@ -956,6 +972,14 @@ class DrawSVGTemplate(TechDraw.DrawTemplate):
 
     def setEditFieldContent(self, fieldName: str, newContent: str, /):
         """setEditFieldContent(EditFieldName, NewContent) - sets a specific Editable Text Field to a new value"""
+
+    def translateLabel(self, pyContext, pyBaseName, pyUniqueName, /):
+        """
+        translateLabel(translationContext, objectBaseName, objectUniqueName).
+                 No return value.  Replace the current label with a translated version where possible.
+        
+        Possible exceptions: (TypeError).
+        """
 
 
 # DrawWeldSymbolPy.xml
@@ -1410,9 +1434,21 @@ class DrawViewPart(TechDraw.DrawView):
         Possible exceptions: (RuntimeError).
         """
 
+    def makeCosmeticCircle3d(self, pPnt1: FreeCAD.Vector = None, radius: float = 5.0, style: int = None, weight: float = None, pColor: tuple = None, /) -> str:
+        """
+        tag = makeCosmeticCircle3d(center, radius) - add a CosmeticEdge at center (3d point) with radius. Returns tag of new CosmeticEdge.
+        Possible exceptions: (RuntimeError).
+        """
+
     def makeCosmeticCircleArc(self, pPnt1: FreeCAD.Vector = None, radius: float = 5.0, angle1: float = 0.0, angle2: float = 360.0, style: int = None, weight: float = None, pColor: tuple = None, /) -> str:
         """
         tag = makeCosmeticCircleArc(center, radius, start, end) - add a CosmeticEdge at center with radius radius(View coordinates) from start angle to end angle. Returns tag of new CosmeticEdge.
+        Possible exceptions: (RuntimeError).
+        """
+
+    def makeCosmeticCircleArc3d(self, pPnt1: FreeCAD.Vector = None, radius: float = 5.0, angle1: float = 0.0, angle2: float = 360.0, style: int = None, weight: float = None, pColor: tuple = None, /) -> str:
+        """
+        tag = makeCosmeticCircleArc3d(center, radius, start, end) - add a CosmeticEdge at center (3d point) with radius from start angle to end angle. Returns tag of new CosmeticEdge.
         Possible exceptions: (RuntimeError).
         """
 
@@ -1725,6 +1761,14 @@ class DrawPage(FreeCAD.DocumentObject):
     def requestPaint(self):
         """Ask the Gui to redraw this page"""
 
+    def translateLabel(self, pyContext, pyBaseName, pyUniqueName, /):
+        """
+        translateLabel(translationContext, objectBaseName, objectUniqueName).
+                 No return value.  Replace the current label with a translated version where possible.
+        
+        Possible exceptions: (TypeError).
+        """
+
 
 # DrawHatchPy.xml
 class DrawHatch(FreeCAD.DocumentObject):
@@ -1762,6 +1806,14 @@ class DrawHatch(FreeCAD.DocumentObject):
 
     @SvgIncluded.setter
     def SvgIncluded(self, value: StrIO_t | tuple[StrIO_t, StrIO_t]): ...
+
+    def translateLabel(self, pyContext, pyBaseName, pyUniqueName, /):
+        """
+        translateLabel(translationContext, objectBaseName, objectUniqueName).
+                 No return value.  Replace the current label with a translated version where possible.
+        
+        Possible exceptions: (TypeError).
+        """
 
 
 # DrawProjGroupItemPy.xml
@@ -1975,6 +2027,22 @@ def removeSvgTags(svgcode: str, /) -> str:
     """
     string = removeSvgTags(string) -- Removes the opening and closing svg tags
     and other metatags from a svg code, making it embeddable
+    Possible exceptions: (Exception).
+    """
+
+
+def exportSVGEdges(pcObjShape: PartModule.Shape, /) -> str:
+    """
+    string = exportSVGEdges(TopoShape) -- export an SVG string of the shape
+
+    Possible exceptions: (Exception).
+    """
+
+
+def build3dCurves(pcObjShape: PartModule.Shape, /) -> PartModule.Shape:
+    """
+    TopoShape = build3dCurves(TopoShape) -- convert the edges to a 3D curve
+    which is useful for shapes obtained Part.HLRBRep.Algo
     Possible exceptions: (Exception).
     """
 

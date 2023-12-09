@@ -58,7 +58,14 @@ class MakePrism(FreeCAD.PyObjectBase):
 
     @typing.overload
     def perform(self, Length: float):
-        """Possible exceptions: (RuntimeError, TypeError)."""
+        """
+        Assigns one of the following semantics.
+                        1. to a height Length
+                        2. to a face Until
+                        3. from a face From to a height Until. Reconstructs the feature topologically according to the semantic option chosen.
+            
+        Possible exceptions: (RuntimeError, TypeError).
+        """
 
     def performFromEnd(self, Until: PartModule.Shape, /):
         """

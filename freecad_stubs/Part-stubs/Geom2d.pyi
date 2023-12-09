@@ -32,8 +32,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
     def approximateBSpline(self, tolerance: float, maxSegment: int, maxDegree: int, order: str = 'C2', /) -> Part.Geom2d.BSplineCurve2d:
         """
         Approximates a curve of any type to a B-Spline curve
-        					approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -> B-Spline curve
-				
+                            approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -> B-Spline curve
         Possible exceptions: (RuntimeError, Part.OCCError).
         """
 
@@ -116,14 +115,12 @@ class Curve2d(Part.Geom2d.Geometry2d):
         p=c.discretize(Angular=0.09,Curvature=0.01,Last=3.14,Minimum=100)
         s=Part.Compound([Part.Vertex(i) for i in p])
         Part.show(s)
-
         Possible exceptions: (Part.OCCError).
         """
 
     def intersectCC(self, p: Part.Geom2d.Curve2d, prec: float = None, /) -> list | list[FreeCAD.Vector2d]:
         """
         Returns all intersection points between this curve and the given curve.
-                
         Possible exceptions: (RuntimeError, TypeError).
         """
 
@@ -169,8 +166,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
     def toBSpline(self, u: float = None, v: float = None, /) -> Part.Geom2d.BSplineCurve2d:
         """
         Converts a curve of any type (only part from First to Last)
-        					toBSpline([Float=First, Float=Last]) -> B-Spline curve
-				
+                            toBSpline([Float=First, Float=Last]) -> B-Spline curve
         Possible exceptions: (Part.OCCError).
         """
 
@@ -373,19 +369,19 @@ class Circle2d(Part.Geom2d.Conic2d):
     """
 
     @typing.overload
-    def __init__(self): ...
-
-    @typing.overload
-    def __init__(self, Circle: Part.Geom2d.Circle2d): ...
-
-    @typing.overload
     def __init__(self, Circle: Part.Geom2d.Circle2d, Distance: float): ...
 
     @typing.overload
     def __init__(self, Center: FreeCAD.Vector2d, Radius: float): ...
 
     @typing.overload
-    def __init__(self, Point1: FreeCAD.Vector2d, Point2: FreeCAD.Vector2d, Point3: FreeCAD.Vector2d):
+    def __init__(self, Circle: Part.Geom2d.Circle2d): ...
+
+    @typing.overload
+    def __init__(self, Point1: FreeCAD.Vector2d, Point2: FreeCAD.Vector2d, Point3: FreeCAD.Vector2d): ...
+
+    @typing.overload
+    def __init__(self):
         """
         Describes a circle in 3D space
         To create a circle there are several ways:
@@ -463,13 +459,13 @@ class Line2dSegment(Part.Geom2d.Curve2d):
     def __init__(self, pLine: Part.Geom2d.Line2dSegment, /): ...
 
     @typing.overload
-    def __init__(self, pV1: FreeCAD.Vector2d, pV2: FreeCAD.Vector2d, /): ...
-
-    @typing.overload
     def __init__(self, pLine: Part.Geom2d.Line2dSegment, first: float, last: float, /): ...
 
     @typing.overload
-    def __init__(self, pLine: Part.Geom2d.Line2d, first: float, last: float, /):
+    def __init__(self, pLine: Part.Geom2d.Line2d, first: float, last: float, /): ...
+
+    @typing.overload
+    def __init__(self, pV1: FreeCAD.Vector2d, pV2: FreeCAD.Vector2d, /):
         """
         Describes a line segment in 2D space
         To create a line there are several ways:
@@ -509,22 +505,22 @@ class Line2dSegment(Part.Geom2d.Curve2d):
 class Ellipse2d(Part.Geom2d.Conic2d):
     """
     Describes an ellipse in 2D space
-    				To create an ellipse there are several ways:
+                    To create an ellipse there are several ways:
                     Part.Geom2d.Ellipse2d()
-    					Creates an ellipse with major radius 2 and minor radius 1 with the
+                        Creates an ellipse with major radius 2 and minor radius 1 with the
                         center in (0,0)
 
                     Part.Geom2d.Ellipse2d(Ellipse)
-    					Create a copy of the given ellipse
+                        Create a copy of the given ellipse
 
                     Part.Geom2d.Ellipse2d(S1,S2,Center)
                         Creates an ellipse centered on the point Center,
-    					its major axis is defined by Center and S1,
-    					its major radius is the distance between Center and S1, and
-    					its minor radius is the distance between S2 and the major axis.
+                        its major axis is defined by Center and S1,
+                        its major radius is the distance between Center and S1, and
+                        its minor radius is the distance between S2 and the major axis.
 
                     Part.Geom2d.Ellipse2d(Center,MajorRadius,MinorRadius)
-    					Creates an ellipse with major and minor radii MajorRadius and
+                        Creates an ellipse with major and minor radii MajorRadius and
                         MinorRadius
     """
 
@@ -541,24 +537,23 @@ class Ellipse2d(Part.Geom2d.Conic2d):
     def __init__(self, Center: FreeCAD.Vector2d, MajorRadius: float, MinorRadius: float):
         """
         Describes an ellipse in 2D space
-        				To create an ellipse there are several ways:
+                        To create an ellipse there are several ways:
                         Part.Geom2d.Ellipse2d()
-        					Creates an ellipse with major radius 2 and minor radius 1 with the
+                            Creates an ellipse with major radius 2 and minor radius 1 with the
                             center in (0,0)
 
                         Part.Geom2d.Ellipse2d(Ellipse)
-        					Create a copy of the given ellipse
+                            Create a copy of the given ellipse
 
                         Part.Geom2d.Ellipse2d(S1,S2,Center)
                             Creates an ellipse centered on the point Center,
-        					its major axis is defined by Center and S1,
-        					its major radius is the distance between Center and S1, and
-        					its minor radius is the distance between S2 and the major axis.
+                            its major axis is defined by Center and S1,
+                            its major radius is the distance between Center and S1, and
+                            its minor radius is the distance between S2 and the major axis.
 
                         Part.Geom2d.Ellipse2d(Center,MajorRadius,MinorRadius)
-        					Creates an ellipse with major and minor radii MajorRadius and
+                            Creates an ellipse with major and minor radii MajorRadius and
                             MinorRadius
-			
         Possible exceptions: (Part.OCCError, TypeError).
         """
 
@@ -660,13 +655,13 @@ class Hyperbola2d(Part.Geom2d.Conic2d):
                         center in (0,0)
 
                     Part.Geom2d.Hyperbola2d(Hyperbola)
-    					Create a copy of the given hyperbola
+                        Create a copy of the given hyperbola
 
                     Part.Geom2d.Hyperbola2d(S1,S2,Center)
                         Creates a hyperbola centered on the point Center, S1 and S2,
-    					its major axis is defined by Center and S1,
-    					its major radius is the distance between Center and S1, and
-    					its minor radius is the distance between S2 and the major axis.
+                        its major axis is defined by Center and S1,
+                        its major radius is the distance between Center and S1, and
+                        its minor radius is the distance between S2 and the major axis.
 
                     Part.Geom2d.Hyperbola2d(Center,MajorRadius,MinorRadius)
                         Creates a hyperbola with major and minor radii MajorRadius and
@@ -677,7 +672,7 @@ class Hyperbola2d(Part.Geom2d.Conic2d):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, Hyperbola: Part.Geom2d.Hyperbola2d): ...
+    def __init__(self, pHypr: Part.Geom2d.Hyperbola2d, /): ...
 
     @typing.overload
     def __init__(self, S1: FreeCAD.Vector2d, S2: FreeCAD.Vector2d, Center: FreeCAD.Vector2d): ...
@@ -692,18 +687,17 @@ class Hyperbola2d(Part.Geom2d.Conic2d):
                             center in (0,0)
 
                         Part.Geom2d.Hyperbola2d(Hyperbola)
-        					Create a copy of the given hyperbola
+                            Create a copy of the given hyperbola
 
                         Part.Geom2d.Hyperbola2d(S1,S2,Center)
                             Creates a hyperbola centered on the point Center, S1 and S2,
-        					its major axis is defined by Center and S1,
-        					its major radius is the distance between Center and S1, and
-        					its minor radius is the distance between S2 and the major axis.
+                            its major axis is defined by Center and S1,
+                            its major radius is the distance between Center and S1, and
+                            its minor radius is the distance between S2 and the major axis.
 
                         Part.Geom2d.Hyperbola2d(Center,MajorRadius,MinorRadius)
                             Creates a hyperbola with major and minor radii MajorRadius and
                             MinorRadius and located at Center
-			
         Possible exceptions: (Part.OCCError, TypeError).
         """
 
@@ -800,70 +794,67 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def approximate(self, Points, DegMax: int = 8, Continuity: str = 'C2', Tolerance: float = 0.001, DegMin: int = 3, ParamType: str = 'ChordLength', Parameters=None, LengthWeight: float = 0, CurvatureWeight: float = 0, TorsionWeight: float = 0):
         """
         Replaces this B-Spline curve by approximating a set of points.
-        					The function accepts keywords as arguments.
+                            The function accepts keywords as arguments.
 
-        					approximate2(Points = list_of_points)
+                            approximate2(Points = list_of_points)
 
-        					Optional arguments :
+                            Optional arguments :
 
-        					DegMin = integer (3) : Minimum degree of the curve.
-        					DegMax = integer (8) : Maximum degree of the curve.
-        					Tolerance = float (1e-3) : approximating tolerance.
-        					Continuity = string ('C2') : Desired continuity of the curve.
-        					Possible values : 'C0','G1','C1','G2','C2','C3','CN'
+                            DegMin = integer (3) : Minimum degree of the curve.
+                            DegMax = integer (8) : Maximum degree of the curve.
+                            Tolerance = float (1e-3) : approximating tolerance.
+                            Continuity = string ('C2') : Desired continuity of the curve.
+                            Possible values : 'C0','G1','C1','G2','C2','C3','CN'
 
-        					LengthWeight = float, CurvatureWeight = float, TorsionWeight = float
-        					If one of these arguments is not null, the functions approximates the
-        					points using variational smoothing algorithm, which tries to minimize
-        					additional criterium:
-        					LengthWeight*CurveLength + CurvatureWeight*Curvature + TorsionWeight*Torsion
-        					Continuity must be C0, C1 or C2, else defaults to C2.
+                            LengthWeight = float, CurvatureWeight = float, TorsionWeight = float
+                            If one of these arguments is not null, the functions approximates the
+                            points using variational smoothing algorithm, which tries to minimize
+                            additional criterium:
+                            LengthWeight*CurveLength + CurvatureWeight*Curvature + TorsionWeight*Torsion
+                            Continuity must be C0, C1 or C2, else defaults to C2.
 
-        					Parameters = list of floats : knot sequence of the approximated points.
-        					This argument is only used if the weights above are all null.
+                            Parameters = list of floats : knot sequence of the approximated points.
+                            This argument is only used if the weights above are all null.
 
-        					ParamType = string ('Uniform','Centripetal' or 'ChordLength')
-        					Parameterization type. Only used if weights and Parameters above aren't specified.
+                            ParamType = string ('Uniform','Centripetal' or 'ChordLength')
+                            Parameterization type. Only used if weights and Parameters above aren't specified.
 
-        					Note : Continuity of the spline defaults to C2. However, it may not be applied if
-        					it conflicts with other parameters ( especially DegMax ).
-				
+                            Note : Continuity of the spline defaults to C2. However, it may not be applied if
+                            it conflicts with other parameters ( especially DegMax ).
         Possible exceptions: (Part.OCCError).
         """
 
     def buildFromPoles(self, obj, periodic: bool = False, degree: int = 3, interpolate: bool = False, /):
         """
         Builds a B-Spline by a list of poles.
-				
         Possible exceptions: (Part.OCCError).
         """
 
     def buildFromPolesMultsKnots(self, poles=None, mults=None, knots=None, periodic: bool = False, degree: int = 3, weights=None):
         """
         Builds a B-Spline by a lists of Poles, Mults, Knots.
-        				arguments: poles (sequence of Base.Vector), [mults , knots, periodic, degree, weights (sequence of float), CheckRational]
+                        arguments: poles (sequence of Base.Vector), [mults , knots, periodic, degree, weights (sequence of float), CheckRational]
 
-        				Examples:
-        				from FreeCAD import Base
-        				import Part
-        				V=Base.Vector
-        				poles=[V(-10,-10),V(10,-10),V(10,10),V(-10,10)]
+                        Examples:
+                        from FreeCAD import Base
+                        import Part
+                        V=Base.Vector
+                        poles=[V(-10,-10),V(10,-10),V(10,10),V(-10,10)]
 
-        				# non-periodic spline
-        				n=Part.BSplineCurve()
-        				n.buildFromPolesMultsKnots(poles,(3,1,3),(0,0.5,1),False,2)
-        				Part.show(n.toShape())
+                        # non-periodic spline
+                        n=Part.BSplineCurve()
+                        n.buildFromPolesMultsKnots(poles,(3,1,3),(0,0.5,1),False,2)
+                        Part.show(n.toShape())
 
-        				# periodic spline
-        				p=Part.BSplineCurve()
-        				p.buildFromPolesMultsKnots(poles,(1,1,1,1,1),(0,0.25,0.5,0.75,1),True,2)
-        				Part.show(p.toShape())
+                        # periodic spline
+                        p=Part.BSplineCurve()
+                        p.buildFromPolesMultsKnots(poles,(1,1,1,1,1),(0,0.25,0.5,0.75,1),True,2)
+                        Part.show(p.toShape())
 
-        				# periodic and rational spline
-        				r=Part.BSplineCurve()
-        				r.buildFromPolesMultsKnots(poles,(1,1,1,1,1),(0,0.25,0.5,0.75,1),True,2,(1,0.8,0.7,0.2))
-        				Part.show(r.toShape())
-			
+                        # periodic and rational spline
+                        r=Part.BSplineCurve()
+                        r.buildFromPolesMultsKnots(poles,(1,1,1,1,1),(0,0.25,0.5,0.75,1),True,2,(1,0.8,0.7,0.2))
+                        Part.show(r.toShape())
         Possible exceptions: (Part.OCCError).
         """
 
@@ -886,7 +877,6 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def getMultiplicities(self) -> list[int]:
         """
         Returns the multiplicities table M of the knots of this B-Spline curve.
-				
         Possible exceptions: (Part.OCCError).
         """
 
@@ -950,94 +940,90 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def increaseMultiplicity(self, start: int, end: int, mult: int = -1, /):
         """
         increaseMultiplicity(int index, int mult)
-        				increaseMultiplicity(int start, int end, int mult)
-        				Increases multiplicity of knots up to mult.
+                        increaseMultiplicity(int start, int end, int mult)
+                        Increases multiplicity of knots up to mult.
 
-        				index: the index of a knot to modify (1-based)
-        				start, end: index range of knots to modify.
-        				If mult is lower or equal to the current multiplicity nothing is done. If mult is higher than the degree the degree is used.
-				
+                        index: the index of a knot to modify (1-based)
+                        start, end: index range of knots to modify.
+                        If mult is lower or equal to the current multiplicity nothing is done. If mult is higher than the degree the degree is used.
         Possible exceptions: (Part.OCCError).
         """
 
     def incrementMultiplicity(self, start: int, end: int, mult: int, /):
         """
         incrementMultiplicity(int start, int end, int mult)
-        				Raises multiplicity of knots by mult.
+                        Raises multiplicity of knots by mult.
 
-        				start, end: index range of knots to modify.
-				
+                        start, end: index range of knots to modify.
         Possible exceptions: (Part.OCCError).
         """
 
     def insertKnot(self, U: float, M: int = 1, tol: float = 0.0, /):
         """
         insertKnot(u, mult = 1, tol = 0.0)
-        				Inserts a knot value in the sequence of knots. If u is an existing knot the
-        				multiplicity is increased by mult. 
+                        Inserts a knot value in the sequence of knots. If u is an existing knot the
+                        multiplicity is increased by mult.
         Possible exceptions: (Part.OCCError).
         """
 
     def insertKnots(self, obj1, obj2, tol: float = 0.0, add: bool = True, /):
         """
         insertKnots(list_of_floats, list_of_ints, tol = 0.0, bool_add = True)
-        				Inserts a set of knots values in the sequence of knots.
+                        Inserts a set of knots values in the sequence of knots.
 
-        				For each u = list_of_floats[i], mult = list_of_ints[i]
+                        For each u = list_of_floats[i], mult = list_of_ints[i]
 
-        				If u is an existing knot the multiplicity is increased by mult if bool_add is
-        				True, otherwise increased to mult.
+                        If u is an existing knot the multiplicity is increased by mult if bool_add is
+                        True, otherwise increased to mult.
 
-        				If u is not on the parameter range nothing is done.
+                        If u is not on the parameter range nothing is done.
 
-        				If the multiplicity is negative or null nothing is done. The new multiplicity
-        				is limited to the degree.
+                        If the multiplicity is negative or null nothing is done. The new multiplicity
+                        is limited to the degree.
 
-        				The tolerance criterion for knots equality is the max of Epsilon(U) and ParametricTolerance.
-				
+                        The tolerance criterion for knots equality is the max of Epsilon(U) and ParametricTolerance.
         Possible exceptions: (Part.OCCError).
         """
 
     def interpolate(self, Points, PeriodicFlag: bool = False, Tolerance: float = None, InitialTangent: FreeCAD.Vector2d = None, FinalTangent: FreeCAD.Vector2d = None, Tangents=None, TangentFlags=None, Parameters=None):
         """
         Replaces this B-Spline curve by interpolating a set of points.
-        					The function accepts keywords as arguments.
+                            The function accepts keywords as arguments.
 
-        					interpolate(Points = list_of_points)
+                            interpolate(Points = list_of_points)
 
-        					Optional arguments :
+                            Optional arguments :
 
-        					PeriodicFlag = bool (False) : Sets the curve closed or opened.
-        					Tolerance = float (1e-6) : interpolating tolerance
+                            PeriodicFlag = bool (False) : Sets the curve closed or opened.
+                            Tolerance = float (1e-6) : interpolating tolerance
 
-        					Parameters : knot sequence of the interpolated points.
-        					If not supplied, the function defaults to chord-length parameterization.
-        					If PeriodicFlag == True, one extra parameter must be appended.
+                            Parameters : knot sequence of the interpolated points.
+                            If not supplied, the function defaults to chord-length parameterization.
+                            If PeriodicFlag == True, one extra parameter must be appended.
 
-        					EndPoint Tangent constraints :
+                            EndPoint Tangent constraints :
 
-        					InitialTangent = vector, FinalTangent = vector
-        					specify tangent vectors for starting and ending points
-        					of the BSpline. Either none, or both must be specified.
+                            InitialTangent = vector, FinalTangent = vector
+                            specify tangent vectors for starting and ending points
+                            of the BSpline. Either none, or both must be specified.
 
-        					Full Tangent constraints :
+                            Full Tangent constraints :
 
-        					Tangents = list_of_vectors, TangentFlags = list_of_bools
-        					Both lists must have the same length as Points list.
-        					Tangents specifies the tangent vector of each point in Points list.
-        					TangentFlags (bool) activates or deactivates the corresponding tangent.
-        					These arguments will be ignored if EndPoint Tangents (above) are also defined.
+                            Tangents = list_of_vectors, TangentFlags = list_of_bools
+                            Both lists must have the same length as Points list.
+                            Tangents specifies the tangent vector of each point in Points list.
+                            TangentFlags (bool) activates or deactivates the corresponding tangent.
+                            These arguments will be ignored if EndPoint Tangents (above) are also defined.
 
-        					Note : Continuity of the spline defaults to C2. However, if periodic, or tangents
-        					are supplied, the continuity will drop to C1.
-				
+                            Note : Continuity of the spline defaults to C2. However, if periodic, or tangents
+                            are supplied, the continuity will drop to C1.
         Possible exceptions: (Part.OCCError).
         """
 
     def isClosed(self) -> bool:
         """
         Returns true if the distance between the start point and end point of
-        					this B-Spline curve is less than or equal to gp::Resolution().
+                            this B-Spline curve is less than or equal to gp::Resolution().
         """
 
     def isPeriodic(self) -> bool:
@@ -1046,8 +1032,8 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def isRational(self) -> bool:
         """
         Returns true if this B-Spline curve is rational.
-        					A B-Spline curve is rational if, at the time of construction,
-        					the weight table has been initialized.
+                            A B-Spline curve is rational if, at the time of construction,
+                            the weight table has been initialized.
         """
 
     def join(self, c: Part.Geom2d.BSplineCurve2d, /) -> bool:
@@ -1060,20 +1046,19 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def makeC1Continuous(self, tol: float = None, /):
         """
         makeC1Continuous(tol = 1e-6, ang_tol = 1e-7)
-        					Reduces as far as possible the multiplicities of the knots of this BSpline
-        					(keeping the geometry). It returns a new BSpline, which could still be C0.
-        					tol is a geometrical tolerance.
-        					The tol_ang is angular tolerance, in radians. It sets tolerable angle mismatch
-        					of the tangents on the left and on the right to decide if the curve is G1 or
-        					not at a given point.
-				
+                            Reduces as far as possible the multiplicities of the knots of this BSpline
+                            (keeping the geometry). It returns a new BSpline, which could still be C0.
+                            tol is a geometrical tolerance.
+                            The tol_ang is angular tolerance, in radians. It sets tolerable angle mismatch
+                            of the tangents on the left and on the right to decide if the curve is G1 or
+                            not at a given point.
         Possible exceptions: (Part.OCCError).
         """
 
     def movePoint(self, U: float, pnt: FreeCAD.Vector2d, index1: int, index2: int, /) -> tuple[int, int]:
         """
         movePoint(U, P, Index1, Index2)
-        				Moves the point of parameter U of this B-Spline curve to P.
+                        Moves the point of parameter U of this B-Spline curve to P.
         Index1 and Index2 are the indexes in the table of poles of this B-Spline curve
         of the first and last poles designated to be moved.
 
@@ -1086,26 +1071,25 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         """
         removeKnot(Index, M, tol)
 
-        					Reduces the multiplicity of the knot of index Index to M.
-        					If M is equal to 0, the knot is removed.
-        					With a modification of this type, the array of poles is also modified.
-        					Two different algorithms are systematically used to compute the new
-        					poles of the curve. If, for each pole, the distance between the pole
-        					calculated using the first algorithm and the same pole calculated using
-        					the second algorithm, is less than Tolerance, this ensures that the curve
-        					is not modified by more than Tolerance. Under these conditions, true is
-        					returned; otherwise, false is returned.
+                            Reduces the multiplicity of the knot of index Index to M.
+                            If M is equal to 0, the knot is removed.
+                            With a modification of this type, the array of poles is also modified.
+                            Two different algorithms are systematically used to compute the new
+                            poles of the curve. If, for each pole, the distance between the pole
+                            calculated using the first algorithm and the same pole calculated using
+                            the second algorithm, is less than Tolerance, this ensures that the curve
+                            is not modified by more than Tolerance. Under these conditions, true is
+                            returned; otherwise, false is returned.
 
-        					A low tolerance is used to prevent modification of the curve.
-        					A high tolerance is used to 'smooth' the curve.
-				
+                            A low tolerance is used to prevent modification of the curve.
+                            A high tolerance is used to 'smooth' the curve.
         Possible exceptions: (Part.OCCError).
         """
 
     def segment(self, u1: float, u2: float, /):
         """
         segment(u1,u2)
-        					Modifies this B-Spline curve by segmenting it.
+                            Modifies this B-Spline curve by segmenting it.
         Possible exceptions: (Part.OCCError).
         """
 
@@ -1155,11 +1139,10 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def toBezier(self) -> list[Part.Geom2d.BezierCurve2d]:
         """Build a list of Bezier splines."""
 
-    def toBiArcs(self, tolerance: float = 0.001, /) -> list[Part.Geom2d.Geometry2d]:
+    def toBiArcs(self, tolerance: float = 0.001, /) -> list:
         """
         Build a list of arcs and lines to approximate the B-spline.
-        					toBiArcs(tolerance) -> list.
-				
+                            toBiArcs(tolerance) -> list.
         Possible exceptions: (Part.OCCError).
         """
 
@@ -1168,15 +1151,15 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
 class BezierCurve2d(Part.Geom2d.Curve2d):
     """
     Describes a rational or non-rational Bezier curve in 2d space:
-    				-- a non-rational Bezier curve is defined by a table of poles (also called control points)
-    				-- a rational Bezier curve is defined by a table of poles with varying weights
+                    -- a non-rational Bezier curve is defined by a table of poles (also called control points)
+                    -- a rational Bezier curve is defined by a table of poles with varying weights
     """
 
     def __init__(self):
         """
         Describes a rational or non-rational Bezier curve in 2d space:
-        				-- a non-rational Bezier curve is defined by a table of poles (also called control points)
-        				-- a rational Bezier curve is defined by a table of poles with varying weights
+                        -- a non-rational Bezier curve is defined by a table of poles (also called control points)
+                        -- a rational Bezier curve is defined by a table of poles with varying weights
         """
 
     @property
@@ -1261,7 +1244,7 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
     def isClosed(self) -> bool:
         """
         Returns true if the distance between the start point and end point of
-        					this Bezier curve is less than or equal to gp::Resolution().
+                            this Bezier curve is less than or equal to gp::Resolution().
         """
 
     def isPeriodic(self) -> bool:

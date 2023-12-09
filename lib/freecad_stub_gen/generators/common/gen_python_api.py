@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 class PythonApiGenerator(BaseGenerator, ABC):
     REG_TUP = re.compile(r'PyArg_ParseTuple(?!\w)\s*\(')
-    REG_TUP_KW = re.compile(r'PyArg_ParseTupleAndKeywords\s*\(')
+    REG_TUP_KW = re.compile(r'(?:PyArg|Wrapped)_ParseTupleAndKeywords\s*\(')
 
     def __init__(self, filePath: Path, sourceDir: Path):
         super().__init__(filePath, sourceDir)

@@ -50,7 +50,7 @@ class PyObjectBase(object): ...
 class ParameterGrp:
     """Python interface class to set parameters"""
 
-    def GetGroup(self, pstr: str, /) -> FreeCAD.ParameterGrp:
+    def GetGroup(self, pstr: str = None, /) -> FreeCAD.ParameterGrp:
         """
         GetGroup(str)
         Possible exceptions: (Exception, RuntimeError).
@@ -68,13 +68,13 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
-    def RemGroup(self, pstr: str, /) -> None:
+    def RemGroup(self, pstr: str = None, /) -> None:
         """
         RemGroup(str)
         Possible exceptions: (Exception).
         """
 
-    def HasGroup(self, pstr: str, /) -> bool:
+    def HasGroup(self, pstr: str = None, /) -> bool:
         """
         HasGroup(str)
         Possible exceptions: (Exception).
@@ -104,17 +104,13 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
-    @typing.overload
-    def Attach(self): ...
-
-    @typing.overload
-    def Attach(self, obj, /) -> None:
+    def Attach(self, obj=None, /) -> None:
         """
         Attach()
         Possible exceptions: (Exception, TypeError, RuntimeError).
         """
 
-    def AttachManager(self, obj, /) -> None:
+    def AttachManager(self, obj=None, /) -> None:
         """
         AttachManager(observer) -- attach parameter manager for notification
 
@@ -140,21 +136,13 @@ class ParameterGrp:
         Possible exceptions: (Exception, RuntimeError, TypeError).
         """
 
-    @typing.overload
-    def Detach(self): ...
-
-    @typing.overload
-    def Detach(self, obj, /) -> None:
+    def Detach(self, obj=None, /) -> None:
         """
         Detach()
         Possible exceptions: (Exception, TypeError).
         """
 
-    @typing.overload
-    def Notify(self): ...
-
-    @typing.overload
-    def Notify(self, pstr: str, /) -> None:
+    def Notify(self, pstr: str = None, /) -> None:
         """
         Notify()
         Possible exceptions: (Exception).
@@ -166,21 +154,13 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
-    @typing.overload
-    def SetBool(self): ...
-
-    @typing.overload
-    def SetBool(self, pstr: str, Bool: int, /) -> None:
+    def SetBool(self, pstr: str = None, Bool: int = 0, /) -> None:
         """
         SetBool()
         Possible exceptions: (Exception).
         """
 
-    @typing.overload
-    def GetBool(self): ...
-
-    @typing.overload
-    def GetBool(self, pstr: str, Bool: int = 0, /) -> bool:
+    def GetBool(self, pstr: str = None, Bool: int = 0, /) -> bool:
         """
         GetBool()
         Possible exceptions: (Exception).
@@ -192,31 +172,19 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
-    @typing.overload
-    def RemBool(self): ...
-
-    @typing.overload
-    def RemBool(self, pstr: str, /) -> None:
+    def RemBool(self, pstr: str = None, /) -> None:
         """
         RemBool()
         Possible exceptions: (Exception).
         """
 
-    @typing.overload
-    def SetInt(self): ...
-
-    @typing.overload
-    def SetInt(self, pstr: str, Int: int, /) -> None:
+    def SetInt(self, pstr: str = None, Int: int = 0, /) -> None:
         """
         SetInt()
         Possible exceptions: (Exception).
         """
 
-    @typing.overload
-    def GetInt(self): ...
-
-    @typing.overload
-    def GetInt(self, pstr: str, Int: int = 0, /) -> int:
+    def GetInt(self, pstr: str = None, Int: int = 0, /) -> int:
         """
         GetInt()
         Possible exceptions: (Exception).
@@ -228,31 +196,19 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
-    @typing.overload
-    def RemInt(self): ...
-
-    @typing.overload
-    def RemInt(self, pstr: str, /) -> None:
+    def RemInt(self, pstr: str = None, /) -> None:
         """
         RemInt()
         Possible exceptions: (Exception).
         """
 
-    @typing.overload
-    def SetUnsigned(self): ...
-
-    @typing.overload
-    def SetUnsigned(self, pstr: str, UInt: int, /) -> None:
+    def SetUnsigned(self, pstr: str = None, UInt: int = 0, /) -> None:
         """
         SetUnsigned()
         Possible exceptions: (Exception).
         """
 
-    @typing.overload
-    def GetUnsigned(self): ...
-
-    @typing.overload
-    def GetUnsigned(self, pstr: str, UInt: int = 0, /) -> int:
+    def GetUnsigned(self, pstr: str = None, UInt: int = 0, /) -> int:
         """
         GetUnsigned()
         Possible exceptions: (Exception).
@@ -264,31 +220,19 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
-    @typing.overload
-    def RemUnsigned(self): ...
-
-    @typing.overload
-    def RemUnsigned(self, pstr: str, /) -> None:
+    def RemUnsigned(self, pstr: str = None, /) -> None:
         """
         RemUnsigned()
         Possible exceptions: (Exception).
         """
 
-    @typing.overload
-    def SetFloat(self): ...
-
-    @typing.overload
-    def SetFloat(self, pstr: str, Float: float, /) -> None:
+    def SetFloat(self, pstr: str = None, Float: float = None, /) -> None:
         """
         SetFloat()
         Possible exceptions: (Exception).
         """
 
-    @typing.overload
-    def GetFloat(self): ...
-
-    @typing.overload
-    def GetFloat(self, pstr: str, Float: float = 0.0, /) -> float:
+    def GetFloat(self, pstr: str = None, Float: float = 0.0, /) -> float:
         """
         GetFloat()
         Possible exceptions: (Exception).
@@ -300,31 +244,19 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
-    @typing.overload
-    def RemFloat(self): ...
-
-    @typing.overload
-    def RemFloat(self, pstr: str, /) -> None:
+    def RemFloat(self, pstr: str = None, /) -> None:
         """
         RemFloat()
         Possible exceptions: (Exception).
         """
 
-    @typing.overload
-    def SetString(self): ...
-
-    @typing.overload
-    def SetString(self, pstr: str, str: str, /) -> None:
+    def SetString(self, pstr: str = None, str: str = None, /) -> None:
         """
         SetString()
         Possible exceptions: (Exception).
         """
 
-    @typing.overload
-    def GetString(self): ...
-
-    @typing.overload
-    def GetString(self, pstr: str, str: str = '', /) -> str:
+    def GetString(self, pstr: str = None, str: str = '', /) -> str:
         """
         GetString()
         Possible exceptions: (Exception).
@@ -336,41 +268,25 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
-    @typing.overload
-    def RemString(self): ...
-
-    @typing.overload
-    def RemString(self, pstr: str, /) -> None:
+    def RemString(self, pstr: str = None, /) -> None:
         """
         RemString()
         Possible exceptions: (Exception).
         """
 
-    @typing.overload
-    def Import(self): ...
-
-    @typing.overload
-    def Import(self, pstr: str, /) -> None:
+    def Import(self, pstr: str = None, /) -> None:
         """
         Import()
         Possible exceptions: (Exception).
         """
 
-    @typing.overload
-    def Insert(self): ...
-
-    @typing.overload
-    def Insert(self, pstr: str, /) -> None:
+    def Insert(self, pstr: str = None, /) -> None:
         """
         Insert()
         Possible exceptions: (Exception).
         """
 
-    @typing.overload
-    def Export(self): ...
-
-    @typing.overload
-    def Export(self, pstr: str, /) -> None:
+    def Export(self, pstr: str = None, /) -> None:
         """
         Export()
         Possible exceptions: (Exception).
@@ -390,7 +306,7 @@ class ProgressIndicator:
     Progress indicator
     """
 
-    def start(self, text: str, steps: int, /) -> None:
+    def start(self, text: str = None, steps: int = 0, /) -> None:
         """
         start(string,int)
         Possible exceptions: (Exception).
@@ -481,7 +397,10 @@ class DocumentObjectGroup(FreeCAD.DocumentObject, FreeCAD.GroupExtension):
 
 # StringIDPy.xml
 class StringID(FreeCAD.BaseClass):
-    """This is the StringID class"""
+    """
+    This class can be imported.
+    This is the StringID class
+    """
 
     @property
     def Data(self) -> str:
@@ -695,12 +614,8 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     @Visibility.setter
     def Visibility(self, value: int | bool): ...
 
-    def addProperty(self, sType: str, sName: str = None, sGroup: str = None, sDoc: str = None, attr: int = 0, ro: bool = False, hd: bool = False, /) -> FreeCAD.DocumentObject:
-        """
-        addProperty(string, string) -- Add a generic property.
-                            The first argument specifies the type, the second the
-                            name of the property.
-        """
+    def addProperty(self, type: str, name: str = None, group: str = "", doc: str = "", attr: int = 0, read_only: bool = False, hidden: bool = False, enum_vals: list = None) -> FreeCAD.DocumentObject:
+        """addProperty(type: string, name: string, group=, doc=, attr=0, read_only=False, hidden=False, enum_vals=[]) -- Add a generic property."""
 
     def adjustRelativeLinks(self, pyobj: FreeCAD.DocumentObject, recursive=True, /) -> bool:
         """adjustRelativeLinks(parent,recursive=True) -- auto correct potential cyclic dependencies"""
@@ -1385,6 +1300,10 @@ class Metadata(FreeCAD.PyObjectBase):
         """List of strings."""
 
     @property
+    def Type(self) -> str:
+        """String representing the type of this item (text only, no markup allowed)."""
+
+    @property
     def Urls(self) -> list[ReturnGetUrlsDict]:
         """
         List of URLs as objects with 'location' and 'type' string attributes, where type
@@ -1635,7 +1554,10 @@ class Metadata(FreeCAD.PyObjectBase):
 
 # StringHasherPy.xml
 class StringHasher(FreeCAD.BaseClass):
-    """This is the StringHasher class"""
+    """
+    This class can be imported.
+    This is the StringHasher class
+    """
 
     def __init__(self):
         """This is the StringHasher class"""
@@ -1661,10 +1583,10 @@ class StringHasher(FreeCAD.BaseClass):
         """Data length exceed this threshold will be hashed before storing"""
 
     @typing.overload
-    def getID(self, id: int = -1, index: int = 0, /): ...
+    def getID(self, id: int, index: int = 0, /): ...
 
     @typing.overload
-    def getID(self, value=0, base64=False, /):
+    def getID(self, value: str = None, base64: bool = False, /):
         """
         getID(txt|id, base64=False) -> StringID
 
@@ -1676,7 +1598,7 @@ class StringHasher(FreeCAD.BaseClass):
 
         base64: indicate if the input 'txt' is base64 encoded binary data
                 
-        Possible exceptions: (TypeError).
+        Possible exceptions: (ValueError, TypeError).
         """
 
     def isSame(self, other: FreeCAD.StringHasher, /) -> bool:
@@ -1751,7 +1673,7 @@ class Document(FreeCAD.PropertyContainer):
         """The internal name of the document"""
 
     @property
-    def Objects(self) -> list[FreeCAD.DocumentObject]:
+    def Objects(self) -> list:
         """The list of object handled by this document"""
 
     @property
@@ -1787,7 +1709,7 @@ class Document(FreeCAD.PropertyContainer):
         """Indicate if the document is restoring"""
 
     @property
-    def RootObjects(self) -> list[FreeCAD.DocumentObject]:
+    def RootObjects(self) -> list:
         """The list of root object of this document"""
 
     @property
@@ -1795,7 +1717,7 @@ class Document(FreeCAD.PropertyContainer):
         """Check if this is a temporary document"""
 
     @property
-    def TopologicalSortedObjects(self) -> list[FreeCAD.DocumentObject]:
+    def TopologicalSortedObjects(self) -> list:
         """The list of object of this document in topological sorted order"""
 
     @property
@@ -2010,12 +1932,8 @@ class Document(FreeCAD.PropertyContainer):
         Possible exceptions: (TypeError).
         """
 
-    def addProperty(self, sType: str, sName: str = None, sGroup: str = None, sDoc: str = None, attr: int = 0, ro: bool = False, hd: bool = False, /) -> FreeCAD.Document:
-        """
-        addProperty(string, string) -- Add a generic property.
-                        The first argument specifies the type, the second the
-                        name of the property.
-        """
+    def addProperty(self, type: str, name: str = None, group: str = "", doc: str = "", attr: int = 0, read_only: bool = False, hidden: bool = False, enum_vals=None) -> FreeCAD.Document:
+        """addProperty(type: string, name: string, group=, doc=, attr=0, read_only=False, hidden=False) -- Add a generic property."""
 
     def clearDocument(self):
         """Clear the whole document"""
@@ -2083,7 +2001,7 @@ class Document(FreeCAD.PropertyContainer):
         Possible exceptions: (TypeError).
         """
 
-    def getObjectsByLabel(self, sName: str, /) -> list[FreeCAD.DocumentObject]:
+    def getObjectsByLabel(self, sName: str, /) -> list:
         """
         Return the objects with the given label name.
         NOTE: It's possible that several objects have the same label name.
@@ -2571,7 +2489,7 @@ def changeImportModule(key: str, oldMod: str, newMod: str, /):
     """Change the import module name of a registered filetype"""
 
 
-def getImportType(psKey: str = None, /) -> list[str] | dict[str, str | list[str] | None]:
+def getImportType(psKey: str = None, /) -> list[str] | dict[typing.Any, str | list[str] | None]:
     """Get the name of the module that can import the filetype"""
 
 
@@ -2583,7 +2501,7 @@ def changeExportModule(key: str, oldMod: str, newMod: str, /):
     """Change the export module name of a registered filetype"""
 
 
-def getExportType(psKey: str = None, /) -> list[str] | dict[str, str | list[str] | None]:
+def getExportType(psKey: str = None, /) -> list[str] | dict[typing.Any, str | list[str] | None]:
     """Get the name of the module that can export the filetype"""
 
 

@@ -742,10 +742,13 @@ class Mesh(FreeCAD.ComplexGeoData):
         """Union of this and the given mesh object."""
 
     @typing.overload
-    def write(self, Filename: str, Format: str = 'STL', Name: str = 'Object name', Material=None): ...
+    def write(self, Filename: str = 'mymesh.stl', Format: str = 'STL', Name: str = 'Object name', Material=None): ...
 
     @typing.overload
-    def write(self, Stream, Format: str = 'STL', Name: str = 'Object name', Material=None):
+    def write(self, Stream, Format: str = 'STL', Name: str = 'Object name', Material=None): ...
+
+    @typing.overload
+    def write(self, Filename: str = None, Format: str = 'STL', Name: str = 'Object name', Material=None):
         """
         Write the mesh object into file.
         mesh.write(Filename='mymesh.stl',[Format='STL',Name='Object name',Material=colors])

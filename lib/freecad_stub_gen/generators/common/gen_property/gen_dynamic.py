@@ -51,6 +51,15 @@ class DynamicPropertyGenerator(BasePropertyGenerator, ABC):
 
         for match in re.finditer(f'{cppClassName}::{cppClassName}', cppIncludeContent):
             constructorBody = findFunctionCall(cppIncludeContent, match.start())
+
+            # special case when initializer lists uses `{}` for initializing a value
+            initializerEnd = match.start() + len(constructorBody)
+            maxNextCode = 100  # arbitrary constant (for optimization)
+            nextCode = cppIncludeContent[initializerEnd : initializerEnd + maxNextCode]
+            nexCodeWithoutWhiteSpace = nextCode.replace('\n', '').replace(' ', '')
+            if nexCodeWithoutWhiteSpace and nexCodeWithoutWhiteSpace[0] == '{':
+                constructorBody = findFunctionCall(cppIncludeContent, initializerEnd)
+
             for propMatch in chain(
                 re.finditer(self.REG_DYNAMIC_PROPERTY, constructorBody),
                 re.finditer(self.REG_DYNAMIC_PROPERTY_TYPE, constructorBody),

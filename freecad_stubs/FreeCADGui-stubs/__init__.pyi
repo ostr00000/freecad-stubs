@@ -1518,75 +1518,210 @@ def getSoDBVersion() -> str:
 class View3DInventorPy:
     """Python binding class for the Inventor viewer class"""
 
-    def fitAll(self, factor: float = 1.0, /) -> None:
-        """
-        fitAll()
-        Possible exceptions: (Exception, RuntimeError).
-        """
-
     def viewBottom(self) -> None:
         """
         viewBottom()
-        Possible exceptions: (Exception, RuntimeError).
+        Possible exceptions: (RuntimeError).
         """
 
     def viewFront(self) -> None:
         """
         viewFront()
-        Possible exceptions: (Exception, RuntimeError).
+        Possible exceptions: (RuntimeError).
         """
 
     def viewLeft(self) -> None:
         """
         viewLeft()
-        Possible exceptions: (Exception, RuntimeError).
+        Possible exceptions: (RuntimeError).
         """
 
     def viewRear(self) -> None:
         """
         viewRear()
-        Possible exceptions: (Exception, RuntimeError).
+        Possible exceptions: (RuntimeError).
         """
 
     def viewRight(self) -> None:
         """
         viewRight()
-        Possible exceptions: (Exception, RuntimeError).
+        Possible exceptions: (RuntimeError).
         """
 
     def viewTop(self) -> None:
         """
         viewTop()
-        Possible exceptions: (Exception, RuntimeError).
+        Possible exceptions: (RuntimeError).
         """
 
     def viewAxometric(self) -> None:
         """
         viewAxonometric()
-        Possible exceptions: (Exception, RuntimeError).
+        Possible exceptions: (RuntimeError).
         """
 
     def viewAxonometric(self) -> None:
         """
         viewAxonometric()
-        Possible exceptions: (Exception, RuntimeError).
+        Possible exceptions: (RuntimeError).
         """
 
     def viewIsometric(self) -> None:
         """
         viewIsometric()
-        Possible exceptions: (Exception, RuntimeError).
+        Possible exceptions: (RuntimeError).
         """
 
     def viewDimetric(self) -> None:
         """
         viewDimetric()
-        Possible exceptions: (Exception, RuntimeError).
+        Possible exceptions: (RuntimeError).
         """
 
     def viewTrimetric(self) -> None:
         """
         viewTrimetric()
+        Possible exceptions: (RuntimeError).
+        """
+
+    def viewRotateLeft(self) -> None:
+        """
+        viewRotateLeft()
+        Possible exceptions: (RuntimeError).
+        """
+
+    def viewRotateRight(self) -> None:
+        """
+        viewRotateRight()
+        Possible exceptions: (RuntimeError).
+        """
+
+    def zoomIn(self) -> None:
+        """
+        zoomIn()
+        Possible exceptions: (RuntimeError).
+        """
+
+    def zoomOut(self) -> None:
+        """
+        zoomOut()
+        Possible exceptions: (RuntimeError).
+        """
+
+    def stopAnimating(self) -> None:
+        """stopAnimating()"""
+
+    def isAnimationEnabled(self) -> bool:
+        """isAnimationEnabled()"""
+
+    def isPopupMenuEnabled(self) -> bool:
+        """isPopupMenuEnabled()"""
+
+    def getStereoType(self) -> str:
+        """
+        getStereoType()
+        Possible exceptions: (ValueError, RuntimeError).
+        """
+
+    def listStereoTypes(self) -> list:
+        """
+        listStereoTypes()
+        Possible exceptions: (RuntimeError).
+        """
+
+    def getCamera(self) -> str:
+        """
+        getCamera()
+        Possible exceptions: (RuntimeError).
+        """
+
+    def getCameraNode(self):
+        """
+        getCameraNode()
+        Possible exceptions: (RuntimeError).
+        """
+
+    def getViewDirection(self) -> FreeCAD.Vector:
+        """
+        getViewDirection() --> tuple of floats
+        returns the direction vector the view is currently pointing at as tuple with xyz values
+
+        Possible exceptions: (RuntimeError).
+        """
+
+    def getUpDirection(self) -> FreeCAD.Vector:
+        """
+        getUpDirection() --> tuple of integers
+        Returns the up direction vector
+
+        Possible exceptions: (RuntimeError).
+        """
+
+    def getCameraOrientation(self) -> FreeCAD.Rotation:
+        """getCameraOrientation()"""
+
+    def getCameraType(self) -> str:
+        """
+        getCameraType()
+        Possible exceptions: (RuntimeError, TypeError).
+        """
+
+    def listCameraTypes(self) -> list:
+        """
+        listCameraTypes()
+        Possible exceptions: (RuntimeError).
+        """
+
+    def getCursorPos(self) -> tuple[int, int]:
+        """
+        getCursorPos() -> tuple of integers
+
+        Return the current cursor position relative to the coordinate system of the
+        viewport region.
+        """
+
+    def getSize(self) -> tuple[int, int]:
+        """getSize()"""
+
+    def getSceneGraph(self) -> pivy.coin.SoSeparator:
+        """
+        getSceneGraph()
+        Possible exceptions: (RuntimeError).
+        """
+
+    def getViewer(self) -> FreeCADGui.View3DInventorViewerPy:
+        """getViewer()"""
+
+    def listNavigationTypes(self) -> list[str]:
+        """listNavigationTypes()"""
+
+    def getNavigationType(self) -> str:
+        """getNavigationType()"""
+
+    def hasAxisCross(self) -> bool:
+        """check if the big axis-cross is on or off()"""
+
+    def redraw(self) -> None:
+        """redraw(): renders the scene on screen (useful for animations)"""
+
+    def hasClippingPlane(self) -> bool:
+        """hasClippingPlane(): check whether this clipping plane is active"""
+
+    def graphicsView(self) -> qtpy.QtWidgets.QGraphicsView:
+        """graphicsView(): Access this view as QGraphicsView"""
+
+    def isCornerCrossVisible(self) -> bool:
+        """isCornerCrossVisible(): Returns current corner axis cross visibility"""
+
+    def getCornerCrossSize(self) -> int:
+        """getCornerCrossSize(): Returns current corner axis cross size"""
+
+    def cast_to_base(self):
+        """cast_to_base() cast to MDIView class"""
+
+    def fitAll(self, factor: float = 1.0, /) -> None:
+        """
+        fitAll()
         Possible exceptions: (Exception, RuntimeError).
         """
 
@@ -1604,31 +1739,7 @@ class View3DInventorPy:
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def viewRotateLeft(self) -> None:
-        """
-        viewRotateLeft()
-        Possible exceptions: (Exception, RuntimeError).
-        """
-
-    def viewRotateRight(self) -> None:
-        """
-        viewRotateRight()
-        Possible exceptions: (Exception, RuntimeError).
-        """
-
-    def zoomIn(self) -> None:
-        """
-        zoomIn()
-        Possible exceptions: (Exception, RuntimeError).
-        """
-
-    def zoomOut(self) -> None:
-        """
-        zoomOut()
-        Possible exceptions: (Exception, RuntimeError).
-        """
-
-    def viewPosition(self, p: FreeCAD.Placement = None, steps: int = 20, ms: int = 30, /) -> FreeCAD.Placement | None:
+    def viewPosition(self, p: FreeCAD.Placement = None, steps: int = None, duration: int = -1, /) -> FreeCAD.Placement | None:
         """
         viewPosition()
         Possible exceptions: (Exception).
@@ -1644,12 +1755,6 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
-    def stopAnimating(self) -> None:
-        """
-        stopAnimating()
-        Possible exceptions: (Exception).
-        """
-
     @typing.overload
     def setAnimationEnabled(self): ...
 
@@ -1660,12 +1765,6 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
-    def isAnimationEnabled(self) -> bool:
-        """
-        isAnimationEnabled()
-        Possible exceptions: (Exception).
-        """
-
     @typing.overload
     def setPopupMenuEnabled(self): ...
 
@@ -1673,12 +1772,6 @@ class View3DInventorPy:
     def setPopupMenuEnabled(self, ok: int, /) -> None:
         """
         setPopupMenuEnabled()
-        Possible exceptions: (Exception).
-        """
-
-    def isPopupMenuEnabled(self) -> bool:
-        """
-        isPopupMenuEnabled()
         Possible exceptions: (Exception).
         """
 
@@ -1704,18 +1797,6 @@ class View3DInventorPy:
         Possible exceptions: (Exception, NameError, IndexError, RuntimeError).
         """
 
-    def getStereoType(self) -> str:
-        """
-        getStereoType()
-        Possible exceptions: (Exception, ValueError, RuntimeError).
-        """
-
-    def listStereoTypes(self) -> list:
-        """
-        listStereoTypes()
-        Possible exceptions: (Exception, RuntimeError).
-        """
-
     @typing.overload
     def saveImage(self): ...
 
@@ -1733,26 +1814,6 @@ class View3DInventorPy:
     def saveVectorGraphic(self, filename: str, ps: int = 4, name: str = 'white', /) -> None:
         """
         saveVectorGraphic()
-        Possible exceptions: (Exception, RuntimeError).
-        """
-
-    def getCamera(self) -> str:
-        """
-        getCamera()
-        Possible exceptions: (Exception, RuntimeError).
-        """
-
-    def getCameraNode(self):
-        """
-        getCameraNode()
-        Possible exceptions: (Exception, RuntimeError).
-        """
-
-    def getViewDirection(self) -> FreeCAD.Vector:
-        """
-        getViewDirection() --> tuple of floats
-        returns the direction vector the view is currently pointing at as tuple with xyz values
-
         Possible exceptions: (Exception, RuntimeError).
         """
 
@@ -1784,18 +1845,6 @@ class View3DInventorPy:
         Possible exceptions: (Exception, ValueError, RuntimeError).
         """
 
-    def getCameraOrientation(self) -> FreeCAD.Rotation:
-        """
-        getCameraOrientation()
-        Possible exceptions: (Exception).
-        """
-
-    def getCameraType(self) -> str:
-        """
-        getCameraType()
-        Possible exceptions: (Exception, RuntimeError, TypeError).
-        """
-
     @typing.overload
     def setCameraType(self, cameratype: int = -1, /) -> None: ...
 
@@ -1804,22 +1853,6 @@ class View3DInventorPy:
         """
         setCameraType()
         Possible exceptions: (Exception, NameError, IndexError).
-        """
-
-    def listCameraTypes(self) -> list:
-        """
-        listCameraTypes()
-        Possible exceptions: (Exception, RuntimeError).
-        """
-
-    def getCursorPos(self) -> tuple[int, int]:
-        """
-        getCursorPos() -> tuple of integers
-
-        Return the current cursor position relative to the coordinate system of the
-        viewport region.
-
-        Possible exceptions: (Exception).
         """
 
     def getObjectInfo(self, object, r: float = None, /) -> ReturnGetObjectInfoDict | None:
@@ -1840,12 +1873,6 @@ class View3DInventorPy:
 
         Does the same as getObjectInfo() but returns a list of dictionaries or None.
 
-        Possible exceptions: (Exception).
-        """
-
-    def getSize(self) -> tuple[int, int]:
-        """
-        getSize()
         Possible exceptions: (Exception).
         """
 
@@ -1944,18 +1971,6 @@ class View3DInventorPy:
         Possible exceptions: (Exception, KeyError).
         """
 
-    def getSceneGraph(self) -> pivy.coin.SoSeparator:
-        """
-        getSceneGraph()
-        Possible exceptions: (Exception, RuntimeError).
-        """
-
-    def getViewer(self) -> FreeCADGui.View3DInventorViewerPy:
-        """
-        getViewer()
-        Possible exceptions: (Exception).
-        """
-
     @typing.overload
     def addEventCallbackPivy(self): ...
 
@@ -1988,12 +2003,6 @@ class View3DInventorPy:
         Possible exceptions: (Exception, RuntimeError, TypeError).
         """
 
-    def listNavigationTypes(self) -> list[str]:
-        """listNavigationTypes()"""
-
-    def getNavigationType(self) -> str:
-        """getNavigationType()"""
-
     @typing.overload
     def setNavigationType(self): ...
 
@@ -2007,12 +2016,6 @@ class View3DInventorPy:
     def setAxisCross(self, ok: int, /) -> None:
         """
         switch the big axis-cross on and off
-        Possible exceptions: (Exception).
-        """
-
-    def hasAxisCross(self) -> bool:
-        """
-        check if the big axis-cross is on or off()
         Possible exceptions: (Exception).
         """
 
@@ -2036,30 +2039,10 @@ class View3DInventorPy:
         Possible exceptions: (Exception, TypeError).
         """
 
-    def setActiveObject(self, name: str, docObject=None, subname: str = None, /) -> None:
-        """
-        setActiveObject(name,object,subname=None)
-        add or set a new active object
-        Possible exceptions: (Exception).
-        """
-
-    def getActiveObject(self, name: str, resolve: bool = True, /) -> FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, FreeCAD.DocumentObject, str] | None:
-        """
-        getActiveObject(name,resolve=True)
-        returns the active object for the given type
-        Possible exceptions: (Exception).
-        """
-
     def getViewProvidersOfType(self, name: str, /) -> list:
         """
         getViewProvidersOfType(name)
         returns a list of view providers for the given type
-        Possible exceptions: (Exception).
-        """
-
-    def redraw(self) -> None:
-        """
-        redraw(): renders the scene on screen (useful for animations)
         Possible exceptions: (Exception).
         """
 
@@ -2070,27 +2053,9 @@ class View3DInventorPy:
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def hasClippingPlane(self) -> bool:
-        """
-        hasClippingPlane(): check whether this clipping plane is active
-        Possible exceptions: (Exception).
-        """
-
-    def graphicsView(self) -> qtpy.QtWidgets.QGraphicsView:
-        """
-        graphicsView(): Access this view as QGraphicsView
-        Possible exceptions: (Exception).
-        """
-
     def setCornerCrossVisible(self, ok: int, /) -> None:
         """
         setCornerCrossVisible(bool): Defines corner axis cross visibility
-        Possible exceptions: (Exception).
-        """
-
-    def isCornerCrossVisible(self) -> bool:
-        """
-        isCornerCrossVisible(): Returns current corner axis cross visibility
         Possible exceptions: (Exception).
         """
 
@@ -2099,15 +2064,6 @@ class View3DInventorPy:
         setCornerCrossSize(int): Defines corner axis cross size
         Possible exceptions: (Exception).
         """
-
-    def getCornerCrossSize(self) -> int:
-        """
-        getCornerCrossSize(): Returns current corner axis cross size
-        Possible exceptions: (Exception).
-        """
-
-    def cast_to_base(self):
-        """cast_to_base() cast to MDIView class"""
 
     @typing.overload
     def boxZoom(self): ...
@@ -2186,77 +2142,6 @@ class MainWindowPy(qtpy.QtWidgets.QMainWindow):
     def removeWindow(self, obj: FreeCADGui.MDIViewPy, /) -> None:
         """
         removeWindow(MDIView)
-        Possible exceptions: (Exception).
-        """
-
-
-# SoFCOffscreenRenderer.cpp
-class SoQtOffscreenRenderer:
-    """Python interface for SoQtOffscreenRenderer"""
-
-    def setViewportRegion(self, w: int, h: int, /) -> None:
-        """
-        setViewportRegion(int, int)
-        Possible exceptions: (Exception).
-        """
-
-    def getViewportRegion(self) -> tuple[int, int]:
-        """
-        getViewportRegion() -> tuple
-        Possible exceptions: (Exception).
-        """
-
-    def setBackgroundColor(self, r: float, g: float, b: float, a: float = 1.0, /) -> None:
-        """
-        setBackgroundColor(float, float, float, [float])
-        Possible exceptions: (Exception).
-        """
-
-    def getBackgroundColor(self) -> tuple[float, float, float, float]:
-        """
-        getBackgroundColor() -> tuple
-        Possible exceptions: (Exception).
-        """
-
-    def setNumPasses(self, num: int, /) -> None:
-        """
-        setNumPasses(int)
-        Possible exceptions: (Exception).
-        """
-
-    def getNumPasses(self) -> int:
-        """
-        getNumPasses() -> int
-        Possible exceptions: (Exception).
-        """
-
-    def setInternalTextureFormat(self, format: int, /) -> None:
-        """
-        setInternalTextureFormat(int)
-        Possible exceptions: (Exception).
-        """
-
-    def getInternalTextureFormat(self) -> int:
-        """
-        getInternalTextureFormat() -> int
-        Possible exceptions: (Exception).
-        """
-
-    def render(self, proxy, /) -> bool:
-        """
-        render(node)
-        Possible exceptions: (Exception).
-        """
-
-    def writeToImage(self, filename: str, /) -> None:
-        """
-        writeToImage(string)
-        Possible exceptions: (Exception).
-        """
-
-    def getWriteImageFiletypeInfo(self) -> tuple[str, ...]:
-        """
-        getWriteImageFiletypeInfo() -> tuple
         Possible exceptions: (Exception).
         """
 
@@ -2474,40 +2359,11 @@ class Gui_CommandAction:
     """Descriptor to access the action of the commands"""
 
     pass
-# SelectionFilter.cpp
-class SelectionFilter:
-    """
-    Filter for certain selection
-    Example strings are:
-    "SELECT Part::Feature SUBELEMENT Edge",
-    "SELECT Part::Feature", 
-    "SELECT Part::Feature COUNT 1..5"
-    """
+# SoQtOffscreenRendererPy.cpp
+class Gui_SoQtOffscreenRenderer:
+    """Python interface for SoQtOffscreenRenderer"""
 
-    def match(self) -> bool:
-        """
-        Check if the current selection matches the filter
-        Possible exceptions: (Exception).
-        """
-
-    def result(self) -> list[tuple[FreeCADGui.SelectionObject, ...]]:
-        """If match() returns True then with result() you get a list of the matching objects"""
-
-    def test(self, pcObj: FreeCAD.DocumentObject, text: str = '', /) -> bool:
-        """
-        test(Feature, SubName='')
-        Test if a given object is described in the filter.
-        If SubName is not empty the sub-element gets also tested.
-        Possible exceptions: (Exception).
-        """
-
-    def setFilter(self, text: str = None, /) -> None:
-        """
-        Set a new selection filter
-        Possible exceptions: (Exception, SyntaxError).
-        """
-
-
+    pass
 # PythonDebugger.cpp
 class PythonDebugStdout:
     """Redirection of stdout to FreeCAD's Python debugger window"""
@@ -2542,6 +2398,17 @@ class PythonDebugExcept:
         """
 
 
+# SelectionFilterPy.cpp
+class Gui_SelectionFilter:
+    """
+    Filter for certain selection
+    Example strings are:
+    "SELECT Part::Feature SUBELEMENT Edge",
+    "SELECT Part::Feature", 
+    "SELECT Part::Feature COUNT 1..5"
+    """
+
+    pass
 # ApplicationPy.cpp
 def activateWorkbench(psKey: str, /) -> bool:
     """
@@ -3078,6 +2945,26 @@ def removeDocumentObserver(o, /):
     """
 
 
+def addWorkbenchManipulator(o, /):
+    """
+    addWorkbenchManipulator(obj) -> None
+
+    Add a workbench manipulator to modify a workbench when it is activated.
+
+    obj : object
+    """
+
+
+def removeWorkbenchManipulator(o, /):
+    """
+    removeWorkbenchManipulator(obj) -> None
+
+    Remove an added workbench manipulator.
+
+    obj : object
+    """
+
+
 def listUserEditModes() -> list[str]:
     """
     listUserEditModes() -> list
@@ -3141,46 +3028,10 @@ def coinRemoveAllChildren(pynode, /):
 
 
 # ExpressionBindingPy.cpp
-class ExpressionBinding:
+class Gui_ExpressionBinding:
     """Python interface class for ExpressionBinding"""
 
-    def bind(self, py: FreeCAD.DocumentObject, str: str, /) -> None:
-        """
-        Bind with an expression
-        Possible exceptions: (Exception, RuntimeError).
-        """
-
-    def isBound(self) -> bool:
-        """
-        Check if already bound with an expression
-        Possible exceptions: (Exception).
-        """
-
-    def apply(self, str: str, /) -> bool:
-        """
-        apply
-        Possible exceptions: (Exception).
-        """
-
-    def hasExpression(self) -> bool:
-        """
-        hasExpression
-        Possible exceptions: (Exception).
-        """
-
-    def autoApply(self) -> bool:
-        """
-        autoApply
-        Possible exceptions: (Exception).
-        """
-
-    def setAutoApply(self, b: bool, /) -> None:
-        """
-        setAutoApply
-        Possible exceptions: (Exception).
-        """
-
-
+    pass
 # View3DViewerPy.cpp
 class View3DInventorViewerPy:
     """Python binding class for the 3D viewer class"""
@@ -3310,6 +3161,12 @@ class View3DInventorViewerPy:
     def isRedirectedToSceneGraph(self) -> bool:
         """
         isRedirectedToSceneGraph() -> bool: check whether event redirection is enabled.
+        Possible exceptions: (Exception).
+        """
+
+    def grabFramebuffer(self):
+        """
+        grabFramebuffer() -> QImage: renders and returns a 32-bit RGB image of the framebuffer.
         Possible exceptions: (Exception).
         """
 

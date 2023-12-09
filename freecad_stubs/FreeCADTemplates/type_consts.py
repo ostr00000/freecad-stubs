@@ -178,6 +178,8 @@ class App:
     PyObjectExpression = 'App::PyObjectExpression'
     RangeExpression = 'App::RangeExpression'
     StringExpression = 'App::StringExpression'
+    StringHasher = 'App::StringHasher'
+    StringID = 'App::StringID'
     TextDocument = 'App::TextDocument'
     TransactionalObject = 'App::TransactionalObject'
     UnitExpression = 'App::UnitExpression'
@@ -268,6 +270,8 @@ class Common:
     voidActionLabel = 'voidActionLabel'
     voidBaseClass = 'voidBaseClass'
     voidBelongToGeom = 'voidBelongToGeom'
+    voidCDxfWrite = 'voidCDxfWrite'
+    voidDlgSettingsUI = 'voidDlgSettingsUI'
     voidDocumentProtector = 'voidDocumentProtector'
     voidDownloadItem = 'voidDownloadItem'
     voidE57XmlParser = 'voidE57XmlParser'
@@ -499,6 +503,10 @@ class InspectionGui:
     Workbench = 'InspectionGui::Workbench'
 
 
+class MatGui:
+    Workbench = 'MatGui::Workbench'
+
+
 class Measure:
     Measurement = 'Measure::Measurement'
 
@@ -690,6 +698,7 @@ class Part:
     Reverse = 'Part::Reverse'
     Revolution = 'Part::Revolution'
     RuledSurface = 'Part::RuledSurface'
+    Scale = 'Part::Scale'
     Section = 'Part::Section'
     Sphere = 'Part::Sphere'
     Spiral = 'Part::Spiral'
@@ -858,6 +867,7 @@ class PartGui:
     ViewProviderReverse = 'PartGui::ViewProviderReverse'
     ViewProviderRevolution = 'PartGui::ViewProviderRevolution'
     ViewProviderRuledSurface = 'PartGui::ViewProviderRuledSurface'
+    ViewProviderScale = 'PartGui::ViewProviderScale'
     ViewProviderSphereParametric = 'PartGui::ViewProviderSphereParametric'
     ViewProviderSpiralParametric = 'PartGui::ViewProviderSpiralParametric'
     ViewProviderSpline = 'PartGui::ViewProviderSpline'

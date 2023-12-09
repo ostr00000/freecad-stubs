@@ -107,55 +107,54 @@ class Cylinder(PartModule.GeometrySurface):
     """
     This class can be imported.
     Describes a cylinder in 3D space
-    				To create a cylinder there are several ways:
-    				Part.Cylinder()
-    					Creates a default cylinder with center (0,0,0) and radius 1
+                    To create a cylinder there are several ways:
+                    Part.Cylinder()
+                        Creates a default cylinder with center (0,0,0) and radius 1
 
-    				Part.Cylinder(Cylinder)
-    					Creates a copy of the given cylinder
+                    Part.Cylinder(Cylinder)
+                        Creates a copy of the given cylinder
 
-    				Part.Cylinder(Cylinder, Distance)
-    					Creates a cylinder parallel to given cylinder at a certain distance
+                    Part.Cylinder(Cylinder, Distance)
+                        Creates a cylinder parallel to given cylinder at a certain distance
 
-    				Part.Cylinder(Point1,Point2,Point2)
-    					Creates a cylinder defined by three non-linear points
+                    Part.Cylinder(Point1,Point2,Point2)
+                        Creates a cylinder defined by three non-linear points
 
-    				Part.Cylinder(Circle)
-    					Creates a cylinder by a circular base
+                    Part.Cylinder(Circle)
+                        Creates a cylinder by a circular base
     """
-
-    @typing.overload
-    def __init__(self): ...
-
-    @typing.overload
-    def __init__(self, Cylinder: PartModule.Cylinder): ...
-
-    @typing.overload
-    def __init__(self, Circle: PartModule.Circle): ...
 
     @typing.overload
     def __init__(self, Cylinder: PartModule.Cylinder, Distance: float): ...
 
     @typing.overload
-    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Point3: FreeCAD.Vector):
+    def __init__(self, Cylinder: PartModule.Cylinder): ...
+
+    @typing.overload
+    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Point3: FreeCAD.Vector): ...
+
+    @typing.overload
+    def __init__(self, Circle: PartModule.Circle): ...
+
+    @typing.overload
+    def __init__(self):
         """
         Describes a cylinder in 3D space
-        				To create a cylinder there are several ways:
-        				Part.Cylinder()
-        					Creates a default cylinder with center (0,0,0) and radius 1
+                        To create a cylinder there are several ways:
+                        Part.Cylinder()
+                            Creates a default cylinder with center (0,0,0) and radius 1
 
-        				Part.Cylinder(Cylinder)
-        					Creates a copy of the given cylinder
+                        Part.Cylinder(Cylinder)
+                            Creates a copy of the given cylinder
 
-        				Part.Cylinder(Cylinder, Distance)
-        					Creates a cylinder parallel to given cylinder at a certain distance
+                        Part.Cylinder(Cylinder, Distance)
+                            Creates a cylinder parallel to given cylinder at a certain distance
 
-        				Part.Cylinder(Point1,Point2,Point2)
-        					Creates a cylinder defined by three non-linear points
+                        Part.Cylinder(Point1,Point2,Point2)
+                            Creates a cylinder defined by three non-linear points
 
-        				Part.Cylinder(Circle)
-        					Creates a cylinder by a circular base
-			
+                        Part.Cylinder(Circle)
+                            Creates a cylinder by a circular base
         Possible exceptions: (Part.OCCError, TypeError).
         """
 
@@ -371,25 +370,25 @@ class Ellipse(PartModule.Conic):
     """
     This class can be imported.
     Describes an ellipse in 3D space
-    				To create an ellipse there are several ways:
-    				Part.Ellipse()
-    					Creates an ellipse with major radius 2 and minor radius 1 with the
-    					center in (0,0,0)
+                    To create an ellipse there are several ways:
+                    Part.Ellipse()
+                        Creates an ellipse with major radius 2 and minor radius 1 with the
+                        center in (0,0,0)
 
-    				Part.Ellipse(Ellipse)
-    					Create a copy of the given ellipse
+                    Part.Ellipse(Ellipse)
+                        Create a copy of the given ellipse
 
-    				Part.Ellipse(S1,S2,Center)
-    					Creates an ellipse centered on the point Center, where
-    					the plane of the ellipse is defined by Center, S1 and S2,
-    					its major axis is defined by Center and S1,
-    					its major radius is the distance between Center and S1, and
-    					its minor radius is the distance between S2 and the major axis.
+                    Part.Ellipse(S1,S2,Center)
+                        Creates an ellipse centered on the point Center, where
+                        the plane of the ellipse is defined by Center, S1 and S2,
+                        its major axis is defined by Center and S1,
+                        its major radius is the distance between Center and S1, and
+                        its minor radius is the distance between S2 and the major axis.
 
-    				Part.Ellipse(Center,MajorRadius,MinorRadius)
-    					Creates an ellipse with major and minor radii MajorRadius and
-    					MinorRadius, and located in the plane defined by Center and
-    					the normal (0,0,1)
+                    Part.Ellipse(Center,MajorRadius,MinorRadius)
+                        Creates an ellipse with major and minor radii MajorRadius and
+                        MinorRadius, and located in the plane defined by Center and
+                        the normal (0,0,1)
     """
 
     @typing.overload
@@ -405,26 +404,25 @@ class Ellipse(PartModule.Conic):
     def __init__(self, Center: FreeCAD.Vector, MajorRadius: float, MinorRadius: float):
         """
         Describes an ellipse in 3D space
-        				To create an ellipse there are several ways:
-        				Part.Ellipse()
-        					Creates an ellipse with major radius 2 and minor radius 1 with the
-        					center in (0,0,0)
+                        To create an ellipse there are several ways:
+                        Part.Ellipse()
+                            Creates an ellipse with major radius 2 and minor radius 1 with the
+                            center in (0,0,0)
 
-        				Part.Ellipse(Ellipse)
-        					Create a copy of the given ellipse
+                        Part.Ellipse(Ellipse)
+                            Create a copy of the given ellipse
 
-        				Part.Ellipse(S1,S2,Center)
-        					Creates an ellipse centered on the point Center, where
-        					the plane of the ellipse is defined by Center, S1 and S2,
-        					its major axis is defined by Center and S1,
-        					its major radius is the distance between Center and S1, and
-        					its minor radius is the distance between S2 and the major axis.
+                        Part.Ellipse(S1,S2,Center)
+                            Creates an ellipse centered on the point Center, where
+                            the plane of the ellipse is defined by Center, S1 and S2,
+                            its major axis is defined by Center and S1,
+                            its major radius is the distance between Center and S1, and
+                            its minor radius is the distance between S2 and the major axis.
 
-        				Part.Ellipse(Center,MajorRadius,MinorRadius)
-        					Creates an ellipse with major and minor radii MajorRadius and
-        					MinorRadius, and located in the plane defined by Center and
-        					the normal (0,0,1)
-			
+                        Part.Ellipse(Center,MajorRadius,MinorRadius)
+                            Creates an ellipse with major and minor radii MajorRadius and
+                            MinorRadius, and located in the plane defined by Center and
+                            the normal (0,0,1)
         Possible exceptions: (Part.OCCError, TypeError).
         """
 
@@ -469,10 +467,10 @@ class Solid(PartModule.Shape):
     """
 
     @typing.overload
-    def __init__(self, obj: PartModule.Shape, /): ...
+    def __init__(self): ...
 
     @typing.overload
-    def __init__(self):
+    def __init__(self, obj: PartModule.Shape, /):
         """
         Part.Solid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created.
         Possible exceptions: (Part.OCCError).
@@ -595,25 +593,25 @@ class Hyperbola(PartModule.Conic):
     """
     This class can be imported.
     Describes an hyperbola in 3D space
-    				To create a hyperbola there are several ways:
-    				Part.Hyperbola()
-    					Creates an hyperbola with major radius 2 and minor radius 1 with the
-    					center in (0,0,0)
+                    To create a hyperbola there are several ways:
+                    Part.Hyperbola()
+                        Creates an hyperbola with major radius 2 and minor radius 1 with the
+                        center in (0,0,0)
 
-    				Part.Hyperbola(Hyperbola)
-    					Create a copy of the given hyperbola
+                    Part.Hyperbola(Hyperbola)
+                        Create a copy of the given hyperbola
 
-    				Part.Hyperbola(S1,S2,Center)
-    					Creates an hyperbola centered on the point Center, where
-    					the plane of the hyperbola is defined by Center, S1 and S2,
-    					its major axis is defined by Center and S1,
-    					its major radius is the distance between Center and S1, and
-    					its minor radius is the distance between S2 and the major axis.
+                    Part.Hyperbola(S1,S2,Center)
+                        Creates an hyperbola centered on the point Center, where
+                        the plane of the hyperbola is defined by Center, S1 and S2,
+                        its major axis is defined by Center and S1,
+                        its major radius is the distance between Center and S1, and
+                        its minor radius is the distance between S2 and the major axis.
 
-    				Part.Hyperbola(Center,MajorRadius,MinorRadius)
-    					Creates an hyperbola with major and minor radii MajorRadius and
-    					MinorRadius, and located in the plane defined by Center and
-    					the normal (0,0,1)
+                    Part.Hyperbola(Center,MajorRadius,MinorRadius)
+                        Creates an hyperbola with major and minor radii MajorRadius and
+                        MinorRadius, and located in the plane defined by Center and
+                        the normal (0,0,1)
     """
 
     @typing.overload
@@ -629,26 +627,25 @@ class Hyperbola(PartModule.Conic):
     def __init__(self, Center: FreeCAD.Vector, MajorRadius: float, MinorRadius: float):
         """
         Describes an hyperbola in 3D space
-        				To create a hyperbola there are several ways:
-        				Part.Hyperbola()
-        					Creates an hyperbola with major radius 2 and minor radius 1 with the
-        					center in (0,0,0)
+                        To create a hyperbola there are several ways:
+                        Part.Hyperbola()
+                            Creates an hyperbola with major radius 2 and minor radius 1 with the
+                            center in (0,0,0)
 
-        				Part.Hyperbola(Hyperbola)
-        					Create a copy of the given hyperbola
+                        Part.Hyperbola(Hyperbola)
+                            Create a copy of the given hyperbola
 
-        				Part.Hyperbola(S1,S2,Center)
-        					Creates an hyperbola centered on the point Center, where
-        					the plane of the hyperbola is defined by Center, S1 and S2,
-        					its major axis is defined by Center and S1,
-        					its major radius is the distance between Center and S1, and
-        					its minor radius is the distance between S2 and the major axis.
+                        Part.Hyperbola(S1,S2,Center)
+                            Creates an hyperbola centered on the point Center, where
+                            the plane of the hyperbola is defined by Center, S1 and S2,
+                            its major axis is defined by Center and S1,
+                            its major radius is the distance between Center and S1, and
+                            its minor radius is the distance between S2 and the major axis.
 
-        				Part.Hyperbola(Center,MajorRadius,MinorRadius)
-        					Creates an hyperbola with major and minor radii MajorRadius and
-        					MinorRadius, and located in the plane defined by Center and
-        					the normal (0,0,1)
-			
+                        Part.Hyperbola(Center,MajorRadius,MinorRadius)
+                            Creates an hyperbola with major and minor radii MajorRadius and
+                            MinorRadius, and located in the plane defined by Center and
+                            the normal (0,0,1)
         Possible exceptions: (Part.OCCError, TypeError).
         """
 
@@ -742,19 +739,19 @@ class Circle(PartModule.Conic):
     """
 
     @typing.overload
-    def __init__(self): ...
-
-    @typing.overload
-    def __init__(self, Circle: PartModule.Circle): ...
-
-    @typing.overload
     def __init__(self, Circle: PartModule.Circle, Distance: float): ...
 
     @typing.overload
     def __init__(self, Center: FreeCAD.Vector, Normal: FreeCAD.Vector, Radius: float): ...
 
     @typing.overload
-    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Point3: FreeCAD.Vector):
+    def __init__(self, Circle: PartModule.Circle): ...
+
+    @typing.overload
+    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Point3: FreeCAD.Vector): ...
+
+    @typing.overload
+    def __init__(self):
         """
         Describes a circle in 3D space
         To create a circle there are several ways:
@@ -854,22 +851,22 @@ class Plane(PartModule.GeometrySurface):
     """
 
     @typing.overload
-    def __init__(self): ...
-
-    @typing.overload
-    def __init__(self, Plane: PartModule.Plane): ...
-
-    @typing.overload
     def __init__(self, Plane: PartModule.Plane, Distance: float): ...
 
     @typing.overload
-    def __init__(self, Location: FreeCAD.Vector, Normal: FreeCAD.Vector): ...
+    def __init__(self, A: float, B: float, C: float, D: float): ...
 
     @typing.overload
     def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Point3: FreeCAD.Vector): ...
 
     @typing.overload
-    def __init__(self, A: float, B: float, C: float, D: float):
+    def __init__(self, Location: FreeCAD.Vector, Normal: FreeCAD.Vector): ...
+
+    @typing.overload
+    def __init__(self, Plane: PartModule.Plane): ...
+
+    @typing.overload
+    def __init__(self):
         """
         Describes an infinite plane
         To create a plane there are several ways:
@@ -1167,194 +1164,169 @@ class BRepOffsetAPI_MakePipeShell(FreeCAD.PyObjectBase):
     def add(self, Profile: PartModule.Shape, Location: PartModule.Vertex, WithContact: bool = False, WithCorrection: bool = False):
         """
         add(shape Profile, bool WithContact=False, bool WithCorrection=False)
-        					add(shape Profile, vertex Location, bool WithContact=False, bool WithCorrection=False)
-        					Adds the section Profile to this framework.
-        					First and last sections may be punctual, so the shape Profile may be both wire and vertex.
-        					If WithContact is true, the section is translated to be in contact with the spine.
-        					If WithCorrection is true, the section is rotated to be orthogonal to the spine tangent in the correspondent point.
-				
+                            add(shape Profile, vertex Location, bool WithContact=False, bool WithCorrection=False)
+                            Adds the section Profile to this framework.
+                            First and last sections may be punctual, so the shape Profile may be both wire and vertex.
+                            If WithContact is true, the section is translated to be in contact with the spine.
+                            If WithCorrection is true, the section is rotated to be orthogonal to the spine tangent in the correspondent point.
         Possible exceptions: (Part.OCCError, TypeError).
         """
 
     def build(self):
         """
         build()
-        					Builds the resulting shape.
-				
+                            Builds the resulting shape.
         Possible exceptions: (Part.OCCError).
         """
 
     def firstShape(self) -> PartModule.Shape:
         """
         firstShape()
-        					Returns the Shape of the bottom of the sweep.
-				
+                            Returns the Shape of the bottom of the sweep.
         Possible exceptions: (Part.OCCError).
         """
 
     def generated(self, shape: PartModule.Shape, /) -> list[PartModule.Shape]:
         """
         generated(shape S)
-        					Returns a list of new shapes generated from the shape S by the shell-generating algorithm.
-				
+                            Returns a list of new shapes generated from the shape S by the shell-generating algorithm.
         Possible exceptions: (Part.OCCError).
         """
 
     def getStatus(self) -> int:
         """
         getStatus()
-        					Get a status, when Simulate or Build failed.
-				
+                            Get a status, when Simulate or Build failed.
         Possible exceptions: (Part.OCCError).
         """
 
     def isReady(self) -> bool:
         """
         isReady()
-        					Returns true if this tool object is ready to build the shape.
-				
+                            Returns true if this tool object is ready to build the shape.
         Possible exceptions: (Part.OCCError).
         """
 
     def lastShape(self) -> PartModule.Shape:
         """
         lastShape()
-        					Returns the Shape of the top of the sweep.
-				
+                            Returns the Shape of the top of the sweep.
         Possible exceptions: (Part.OCCError).
         """
 
     def makeSolid(self) -> bool:
         """
         makeSolid()
-        					Transforms the sweeping Shell in Solid. If a propfile is not closed returns False.
-				
+                            Transforms the sweeping Shell in Solid. If a propfile is not closed returns False.
         Possible exceptions: (Part.OCCError).
         """
 
     def remove(self, prof: PartModule.Shape, /):
         """
         remove(shape Profile)
-        					Removes the section Profile from this framework.
-				
+                            Removes the section Profile from this framework.
         Possible exceptions: (Part.OCCError).
         """
 
     def setAuxiliarySpine(self, spine: PartModule.Shape, curv: bool, keep: int, /):
         """
         setAuxiliarySpine(wire, CurvilinearEquivalence, TypeOfContact)
-        					Sets an auxiliary spine to define the Normal.
+                            Sets an auxiliary spine to define the Normal.
 
-        					CurvilinearEquivalence = bool
-        					For each Point of the Spine P, an Point Q is evalued on AuxiliarySpine.
-        					If CurvilinearEquivalence=True Q split AuxiliarySpine with the same length ratio than P split Spine.
+                            CurvilinearEquivalence = bool
+                            For each Point of the Spine P, an Point Q is evalued on AuxiliarySpine.
+                            If CurvilinearEquivalence=True Q split AuxiliarySpine with the same length ratio than P split Spine.
 
-        					* OCC before 6.7
-        					TypeOfContact = bool
-        					True = keep Contact
-
-        					* OCC >= 6.7
-        					TypeOfContact = long
-        					0: No contact
-        					1: Contact
-        					2: Contact On Border (The auxiliary spine becomes a boundary of the swept surface)
-				
+                            * OCC >= 6.7
+                            TypeOfContact = long
+                            0: No contact
+                            1: Contact
+                            2: Contact On Border (The auxiliary spine becomes a boundary of the swept surface)
         Possible exceptions: (TypeError, Part.OCCError).
         """
 
     def setBiNormalMode(self, dir: FreeCAD.Vector, /):
         """
         setBiNormalMode(direction)
-        					Sets a fixed BiNormal direction to perform the sweeping.
-        					Angular relations between the section(s) and the BiNormal direction will be constant.
-				
+                            Sets a fixed BiNormal direction to perform the sweeping.
+                            Angular relations between the section(s) and the BiNormal direction will be constant.
         Possible exceptions: (Part.OCCError).
         """
 
     def setForceApproxC1(self, obj: bool, /):
         """
         setForceApproxC1(bool)
-        					Set the flag that indicates attempt to approximate a C1-continuous surface if a swept surface proved to be C0.
-				
+                            Set the flag that indicates attempt to approximate a C1-continuous surface if a swept surface proved to be C0.
         Possible exceptions: (Part.OCCError).
         """
 
     def setFrenetMode(self, obj: bool, /):
         """
         setFrenetMode(True|False)
-        					Sets a Frenet or a CorrectedFrenet trihedron to perform the sweeping.
-        					True  = Frenet
-        					False = CorrectedFrenet
-				
+                            Sets a Frenet or a CorrectedFrenet trihedron to perform the sweeping.
+                            True  = Frenet
+                            False = CorrectedFrenet
         Possible exceptions: (Part.OCCError).
         """
 
     def setMaxDegree(self, degree: int, /):
         """
         setMaxDegree(int degree)
-        					Define the maximum V degree of resulting surface.
-				
+                            Define the maximum V degree of resulting surface.
         Possible exceptions: (Part.OCCError).
         """
 
     def setMaxSegments(self, nbseg: int, /):
         """
         setMaxSegments(int num)
-        					Define the maximum number of spans in V-direction on resulting surface.
-				
+                            Define the maximum number of spans in V-direction on resulting surface.
         Possible exceptions: (Part.OCCError).
         """
 
     def setSpineSupport(self, shape: PartModule.Shape, /) -> bool:
         """
         setSpineSupport(shape)
-        					Sets support to the spine to define the BiNormal of the trihedron, like the normal to the surfaces.
-        					Warning: To be effective, Each edge of the spine must have an representation on one face of SpineSupport.
-				
+                            Sets support to the spine to define the BiNormal of the trihedron, like the normal to the surfaces.
+                            Warning: To be effective, Each edge of the spine must have an representation on one face of SpineSupport.
         Possible exceptions: (Part.OCCError).
         """
 
     def setTolerance(self, tol3d: float, boundTol: float, tolAngular: float, /):
         """
         setTolerance( tol3d, boundTol, tolAngular)
-        					Tol3d = 3D tolerance
-        					BoundTol = boundary tolerance
-        					TolAngular = angular tolerance
-				
+                            Tol3d = 3D tolerance
+                            BoundTol = boundary tolerance
+                            TolAngular = angular tolerance
         Possible exceptions: (Part.OCCError).
         """
 
     def setTransitionMode(self, mode: int, /):
         """
         0: BRepBuilderAPI_Transformed
-        					1: BRepBuilderAPI_RightCorner
-        					2: BRepBuilderAPI_RoundCorner
-				
+                            1: BRepBuilderAPI_RightCorner
+                            2: BRepBuilderAPI_RoundCorner
         Possible exceptions: (Part.OCCError).
         """
 
     def setTrihedronMode(self, pnt: FreeCAD.Vector, dir: FreeCAD.Vector, /):
         """
         setTrihedronMode(point,direction)
-        					Sets a fixed trihedron to perform the sweeping.
-        					All sections will be parallel.
-				
+                            Sets a fixed trihedron to perform the sweeping.
+                            All sections will be parallel.
         Possible exceptions: (Part.OCCError).
         """
 
     def shape(self) -> PartModule.Shape:
         """
         shape()
-        					Returns the resulting shape.
-				
+                            Returns the resulting shape.
         Possible exceptions: (Part.OCCError).
         """
 
     def simulate(self, nbsec: int, /) -> list[PartModule.Shape]:
         """
         simulate(int nbsec)
-        					Simulates the resulting shape by calculating the given number of cross-sections.
-				
+                            Simulates the resulting shape by calculating the given number of cross-sections.
         Possible exceptions: (Part.OCCError).
         """
 
@@ -1433,8 +1405,7 @@ class Parabola(PartModule.Conic):
     def compute(self, p1: FreeCAD.Vector, p2: FreeCAD.Vector, p3: FreeCAD.Vector, /):
         """
         compute(p1,p2,p3)
-        					The three points must lie on a plane parallel to xy plane and must not be collinear
-				
+                            The three points must lie on a plane parallel to xy plane and must not be collinear
         Possible exceptions: (Part.OCCError).
         """
 
@@ -2995,7 +2966,7 @@ class BSplineCurve(PartModule.BoundedCurve):
         Possible exceptions: (Part.OCCError).
         """
 
-    def toBiArcs(self, tolerance: float = 0.001, /) -> list[PartModule.Geometry]:
+    def toBiArcs(self, tolerance: float = 0.001, /) -> list:
         """
         Build a list of arcs and lines to approximate the B-spline.
                             toBiArcs(tolerance) -> list.
@@ -3051,7 +3022,6 @@ class TrimmedCurve(PartModule.BoundedCurve):
     def setParameterRange(self, u: float = None, v: float = None, /):
         """
         Re-trims this curve to the provided parameter range ([Float=First, Float=Last])
-                
         Possible exceptions: (Part.OCCError).
         """
 
@@ -3158,6 +3128,12 @@ class Compound(PartModule.Shape):
         If Shared is True  connection is performed only when adjacent edges share the same vertex.
         If Shared is False connection is performed only when ends of adjacent edges are at distance less than Tolerance.
         Possible exceptions: (Part.OCCError).
+        """
+
+    def setFaces(self, data: tuple, accuracy: float = 1e-06, /):
+        """
+        A shape is created from points and triangles and set to this object
+        Possible exceptions: (ValueError).
         """
 
 
@@ -4477,14 +4453,12 @@ class GeometrySurface(PartModule.Geometry):
     def UPeriod(self) -> float:
         """
         Returns the period of this patch in the u parametric direction.
-				
         Possible exceptions: (Part.OCCError).
         """
 
     def VPeriod(self) -> float:
         """
         Returns the period of this patch in the v parametric direction.
-				
         Possible exceptions: (Part.OCCError).
         """
 
@@ -4506,7 +4480,6 @@ class GeometrySurface(PartModule.Geometry):
         of parameter (u,v) on this geometry.
         The first vector corresponds to the maximum curvature,
         the second vector corresponds to the minimum curvature.
-
         Possible exceptions: (Part.OCCError).
         """
 
@@ -4529,7 +4502,6 @@ class GeometrySurface(PartModule.Geometry):
     def intersect(self, p: PartModule.Curve, prec: float = None, /) -> int | typing.Any:
         """
         Returns all intersection points/curves between the surface and the curve/surface.
-                
         Possible exceptions: (RuntimeError, TypeError).
         """
 
@@ -4539,7 +4511,6 @@ class GeometrySurface(PartModule.Geometry):
         The required arguments are:
         * Second surface
         * precision code (optional, default=0)
-                
         Possible exceptions: (RuntimeError, TypeError).
         """
 
@@ -4547,7 +4518,6 @@ class GeometrySurface(PartModule.Geometry):
         """
         isPlanar([float]) -> Bool
         Checks if the surface is planar within a certain tolerance.
-                
         Possible exceptions: (Part.OCCError).
         """
 
@@ -4596,7 +4566,6 @@ class GeometrySurface(PartModule.Geometry):
         projectPoint(Vector,"Distance") -> list of floats
         projectPoint(Vector,"Parameters") -> list of tuples of floats
         projectPoint(Vector,"Point") -> list of points
-
         Possible exceptions: (Part.OCCError).
         """
 
@@ -4610,16 +4579,15 @@ class GeometrySurface(PartModule.Geometry):
     def toBSpline(self, Tol3d: float = None, UContinuity: str = 'C1', VContinuity: str = 'C1', MaxDegreeU: int = None, MaxDegreeV: int = None, MaxSegments: int = 1000, PrecisCode: int = 0) -> PartModule.BSplineSurface:
         """
         Returns a B-Spline representation of this surface.
-        					The optional arguments are:
-        					* tolerance (default=1e-7)
-        					* continuity in u (as string e.g. C0, G0, G1, C1, G2, C3, CN) (default='C1')
-        					* continuity in v (as string e.g. C0, G0, G1, C1, G2, C3, CN) (default='C1')
-        					* maximum degree in u (default=25)
-        					* maximum degree in v (default=25)
-        					* maximum number of segments (default=1000)
-        					* precision code (default=0)
-        					Will raise an exception if surface is infinite in U or V (like planes, cones or cylinders)
-				
+                            The optional arguments are:
+                            * tolerance (default=1e-7)
+                            * continuity in u (as string e.g. C0, G0, G1, C1, G2, C3, CN) (default='C1')
+                            * continuity in v (as string e.g. C0, G0, G1, C1, G2, C3, CN) (default='C1')
+                            * maximum degree in u (default=25)
+                            * maximum degree in v (default=25)
+                            * maximum number of segments (default=1000)
+                            * precision code (default=0)
+                            Will raise an exception if surface is infinite in U or V (like planes, cones or cylinders)
         Possible exceptions: (Part.OCCError).
         """
 
@@ -5250,41 +5218,40 @@ class Edge(PartModule.Shape):
 class BezierCurve(PartModule.BoundedCurve):
     """
     This class can be imported.
+    Describes a rational or non-rational Bezier curve:
+                    -- a non-rational Bezier curve is defined by a table of poles (also called control points)
+                    -- a rational Bezier curve is defined by a table of poles with varying weights
 
-    				Describes a rational or non-rational Bezier curve:
-    				-- a non-rational Bezier curve is defined by a table of poles (also called control points)
-    				-- a rational Bezier curve is defined by a table of poles with varying weights
+                    Constructor takes no arguments.
 
-    				Constructor takes no arguments.
+                    Example usage:
+                        p1 = Base.Vector(-1, 0, 0)
+                        p2 = Base.Vector(0, 1, 0.2)
+                        p3 = Base.Vector(1, 0, 0.4)
+                        p4 = Base.Vector(0, -1, 1)
 
-    				Example usage:
-    					p1 = Base.Vector(-1, 0, 0)
-    					p2 = Base.Vector(0, 1, 0.2)
-    					p3 = Base.Vector(1, 0, 0.4)
-    					p4 = Base.Vector(0, -1, 1)
-
-    					bc = BezierCurve()
-    					bc.setPoles([p1, p2, p3, p4])
-    					curveShape = bc.toShape()
+                        bc = BezierCurve()
+                        bc.setPoles([p1, p2, p3, p4])
+                        curveShape = bc.toShape()
     """
 
     def __init__(self):
         """
         Describes a rational or non-rational Bezier curve:
-        				-- a non-rational Bezier curve is defined by a table of poles (also called control points)
-        				-- a rational Bezier curve is defined by a table of poles with varying weights
+                        -- a non-rational Bezier curve is defined by a table of poles (also called control points)
+                        -- a rational Bezier curve is defined by a table of poles with varying weights
 
-        				Constructor takes no arguments.
+                        Constructor takes no arguments.
 
-        				Example usage:
-        					p1 = Base.Vector(-1, 0, 0)
-        					p2 = Base.Vector(0, 1, 0.2)
-        					p3 = Base.Vector(1, 0, 0.4)
-        					p4 = Base.Vector(0, -1, 1)
+                        Example usage:
+                            p1 = Base.Vector(-1, 0, 0)
+                            p2 = Base.Vector(0, 1, 0.2)
+                            p3 = Base.Vector(1, 0, 0.4)
+                            p4 = Base.Vector(0, -1, 1)
 
-        					bc = BezierCurve()
-        					bc.setPoles([p1, p2, p3, p4])
-        					curveShape = bc.toShape()
+                            bc = BezierCurve()
+                            bc.setPoles([p1, p2, p3, p4])
+                            curveShape = bc.toShape()
         """
 
     @property
@@ -5373,18 +5340,18 @@ class BezierCurve(PartModule.BoundedCurve):
     def interpolate(self, obj, par=None, /):
         """
         Interpolates a list of constraints.
-        				Each constraint is a list of a point and some optional derivatives
-        				An optional list of parameters can be passed. It must be of same size as constraint list.
-        				Otherwise, a simple uniform parametrization is used.
-        				Example :
-        				bezier.interpolate([[pt1, deriv11, deriv12], [pt2,], [pt3, deriv31]], [0, 0.4, 1.0])
+                        Each constraint is a list of a point and some optional derivatives
+                        An optional list of parameters can be passed. It must be of same size as constraint list.
+                        Otherwise, a simple uniform parametrization is used.
+                        Example :
+                        bezier.interpolate([[pt1, deriv11, deriv12], [pt2,], [pt3, deriv31]], [0, 0.4, 1.0])
         Possible exceptions: (Part.OCCError).
         """
 
     def isClosed(self) -> bool:
         """
         Returns true if the distance between the start point and end point of
-        					this Bezier curve is less than or equal to gp::Resolution().
+                            this Bezier curve is less than or equal to gp::Resolution().
         """
 
     def isPeriodic(self) -> bool:
@@ -5416,14 +5383,13 @@ class BezierCurve(PartModule.BoundedCurve):
         """
         Set the poles of the Bezier curve.
 
-        				Takes a list of 3D Base.Vector objects.
+                        Takes a list of 3D Base.Vector objects.
         Possible exceptions: (Part.OCCError).
         """
 
     def setWeight(self, index: int, weight: float, /):
         """
         (id, weight) Set a weight of the Bezier curve.
-				
         Possible exceptions: (Part.OCCError).
         """
 
@@ -5533,13 +5499,13 @@ class LineSegment(PartModule.TrimmedCurve):
     def __init__(self, pLine: PartModule.LineSegment, /): ...
 
     @typing.overload
-    def __init__(self, pV1: FreeCAD.Vector, pV2: FreeCAD.Vector, /): ...
-
-    @typing.overload
     def __init__(self, pLine: PartModule.LineSegment, first: float, last: float, /): ...
 
     @typing.overload
-    def __init__(self, pLine: PartModule.Line, first: float, last: float, /):
+    def __init__(self, pLine: PartModule.Line, first: float, last: float, /): ...
+
+    @typing.overload
+    def __init__(self, pV1: FreeCAD.Vector, pV2: FreeCAD.Vector, /):
         """
         Describes a line segment
         To create a line segment there are several ways:
@@ -5708,8 +5674,7 @@ class Curve(PartModule.Geometry):
     def approximateBSpline(self, tolerance: float, maxSegment: int, maxDegree: int, order: str = 'C2', /) -> PartModule.BSplineCurve:
         """
         Approximates a curve of any type to a B-Spline curve
-        					approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -> B-Spline curve
-				
+                            approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -> B-Spline curve
         Possible exceptions: (RuntimeError, Part.OCCError).
         """
 
@@ -5813,7 +5778,6 @@ class Curve(PartModule.Geometry):
         p=c.discretize(Angular=0.09,Curvature=0.01,Last=3.14,Minimum=100)
         s=Part.Compound([Part.Vertex(i) for i in p])
         Part.show(s)
-
         Possible exceptions: (Part.OCCError, TypeError).
         """
 
@@ -5855,8 +5819,7 @@ class Curve(PartModule.Geometry):
         """
         Returns all intersection points and curve segments between the curve and the curve/surface.
 
-        				  arguments: curve/surface (for the intersection), precision (float)
-              
+                          arguments: curve/surface (for the intersection), precision (float)
         Possible exceptions: (RuntimeError, TypeError).
         """
 
@@ -5869,21 +5832,18 @@ class Curve(PartModule.Geometry):
     def intersectCC(self, p: PartModule.Curve, prec: float = None, /) -> list | list[PartModule.Point]:
         """
         Returns all intersection points between this curve and the given curve.
-              
         Possible exceptions: (RuntimeError).
         """
 
     def intersectCS(self, p: PartModule.GeometrySurface, prec: float = None, /) -> tuple[list[PartModule.Point], list]:
         """
         Returns all intersection points and curve segments between the curve and the surface.
-              
         Possible exceptions: (RuntimeError, TypeError).
         """
 
     def isClosed(self) -> bool:
         """
         Returns true if the curve is closed.
-            
         Possible exceptions: (RuntimeError).
         """
 
@@ -5944,7 +5904,6 @@ class Curve(PartModule.Geometry):
         projectPoint(Vector,"Distance") -> list of floats
         projectPoint(Vector,"Parameter") -> list of floats
         projectPoint(Vector,"Point") -> list of points
-
         Possible exceptions: (Part.OCCError).
         """
 
@@ -5970,8 +5929,7 @@ class Curve(PartModule.Geometry):
     def toBSpline(self, u: float = None, v: float = None, /) -> PartModule.BSplineCurve:
         """
         Converts a curve of any type (only part from First to Last)
-        					toBSpline([Float=First, Float=Last]) -> B-Spline curve
-				
+                            toBSpline([Float=First, Float=Last]) -> B-Spline curve
         Possible exceptions: (Part.OCCError).
         """
 
@@ -5979,7 +5937,6 @@ class Curve(PartModule.Geometry):
         """
         Converts a curve of any type (only part from First to Last)
                             toNurbs([Float=First, Float=Last]) -> NURBS curve
-                
         Possible exceptions: (Part.OCCError).
         """
 
@@ -5993,7 +5950,6 @@ class Curve(PartModule.Geometry):
         """
         Returns a trimmed curve defined in the given parameter range
                             trim([Float=First, Float=Last]) -> trimmed curve
-                
         Possible exceptions: (Part.OCCError).
         """
 
@@ -6009,75 +5965,71 @@ class Cone(PartModule.GeometrySurface):
     """
     This class can be imported.
     Describes a cone in 3D space
-    				To create a cone there are several ways:
-    				Part.Cone()
-    				    Creates a default cone with radius 1
+                    To create a cone there are several ways:
+                    Part.Cone()
+                        Creates a default cone with radius 1
 
-    				Part.Cone(Cone)
-    				    Creates a copy of the given cone
+                    Part.Cone(Cone)
+                        Creates a copy of the given cone
 
-    				Part.Cone(Cone, Distance)
-    				    Creates a cone parallel to given cone at a certain distance
+                    Part.Cone(Cone, Distance)
+                        Creates a cone parallel to given cone at a certain distance
 
-    				Part.Cone(Point1,Point2,Radius1,Radius2)
-    				    Creates a cone defined by two points and two radii
-    				    The axis of the cone is the line passing through
-    				    Point1 and Poin2.
-    				    Radius1 is the radius of the section passing through
-    				    Point1 and Radius2 the radius of the section passing
-    				    through Point2.
+                    Part.Cone(Point1,Point2,Radius1,Radius2)
+                        Creates a cone defined by two points and two radii
+                        The axis of the cone is the line passing through
+                        Point1 and Poin2.
+                        Radius1 is the radius of the section passing through
+                        Point1 and Radius2 the radius of the section passing
+                        through Point2.
 
-    				Part.Cone(Point1,Point2,Point3,Point4)
-    				    Creates a cone passing through three points Point1,
-    				    Point2 and Point3.
-    				    Its axis is defined by Point1 and Point2 and the radius of
-    				    its base is the distance between Point3 and its axis.
-    				    The distance between Point and the axis is the radius of
-    				    the section passing through Point4.
+                    Part.Cone(Point1,Point2,Point3,Point4)
+                        Creates a cone passing through three points Point1,
+                        Point2 and Point3.
+                        Its axis is defined by Point1 and Point2 and the radius of
+                        its base is the distance between Point3 and its axis.
+                        The distance between Point and the axis is the radius of
+                        the section passing through Point4.
     """
 
     @typing.overload
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, Cone, /): ...
-
-    @typing.overload
-    def __init__(self, Cone: PartModule.Cone, Distance: float): ...
-
-    @typing.overload
     def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Radius1: float, Radius2: float): ...
 
     @typing.overload
-    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Point3: FreeCAD.Vector, Point4: FreeCAD.Vector):
+    def __init__(self, Point1: FreeCAD.Vector, Point2: FreeCAD.Vector, Point3: FreeCAD.Vector, Point4: FreeCAD.Vector): ...
+
+    @typing.overload
+    def __init__(self, Cone: PartModule.Cone, arg2: float):
         """
         Describes a cone in 3D space
-        				To create a cone there are several ways:
-        				Part.Cone()
-        				    Creates a default cone with radius 1
+                        To create a cone there are several ways:
+                        Part.Cone()
+                            Creates a default cone with radius 1
 
-        				Part.Cone(Cone)
-        				    Creates a copy of the given cone
+                        Part.Cone(Cone)
+                            Creates a copy of the given cone
 
-        				Part.Cone(Cone, Distance)
-        				    Creates a cone parallel to given cone at a certain distance
+                        Part.Cone(Cone, Distance)
+                            Creates a cone parallel to given cone at a certain distance
 
-        				Part.Cone(Point1,Point2,Radius1,Radius2)
-        				    Creates a cone defined by two points and two radii
-        				    The axis of the cone is the line passing through
-        				    Point1 and Poin2.
-        				    Radius1 is the radius of the section passing through
-        				    Point1 and Radius2 the radius of the section passing
-        				    through Point2.
+                        Part.Cone(Point1,Point2,Radius1,Radius2)
+                            Creates a cone defined by two points and two radii
+                            The axis of the cone is the line passing through
+                            Point1 and Poin2.
+                            Radius1 is the radius of the section passing through
+                            Point1 and Radius2 the radius of the section passing
+                            through Point2.
 
-        				Part.Cone(Point1,Point2,Point3,Point4)
-        				    Creates a cone passing through three points Point1,
-        				    Point2 and Point3.
-        				    Its axis is defined by Point1 and Point2 and the radius of
-        				    its base is the distance between Point3 and its axis.
-        				    The distance between Point and the axis is the radius of
-        				    the section passing through Point4.
-			
+                        Part.Cone(Point1,Point2,Point3,Point4)
+                            Creates a cone passing through three points Point1,
+                            Point2 and Point3.
+                            Its axis is defined by Point1 and Point2 and the radius of
+                            its base is the distance between Point3 and its axis.
+                            The distance between Point and the axis is the radius of
+                            the section passing through Point4.
         Possible exceptions: (Part.OCCError, TypeError).
         """
 
@@ -6430,22 +6382,22 @@ class BezierSurface(PartModule.GeometrySurface):
     """
     This class can be imported.
     Describes a rational or non-rational Bezier surface
-    				-- A non-rational Bezier surface is defined by a table of poles (also known as control points).
-    				-- A rational Bezier surface is defined by a table of poles with varying associated weights.
+                    -- A non-rational Bezier surface is defined by a table of poles (also known as control points).
+                    -- A rational Bezier surface is defined by a table of poles with varying associated weights.
     """
 
     def __init__(self):
         """
         Describes a rational or non-rational Bezier surface
-        				-- A non-rational Bezier surface is defined by a table of poles (also known as control points).
-        				-- A rational Bezier surface is defined by a table of poles with varying associated weights.
+                        -- A non-rational Bezier surface is defined by a table of poles (also known as control points).
+                        -- A rational Bezier surface is defined by a table of poles with varying associated weights.
         """
 
     @property
     def MaxDegree(self) -> int:
         """
         Returns the value of the maximum polynomial degree of any
-        					Bezier surface. This value is 25.
+                            Bezier surface. This value is 25.
         """
 
     @property
@@ -6460,14 +6412,14 @@ class BezierSurface(PartModule.GeometrySurface):
     def UDegree(self) -> int:
         """
         Returns the polynomial degree in u direction of this Bezier surface,
-        					which is equal to the number of poles minus 1.
+                            which is equal to the number of poles minus 1.
         """
 
     @property
     def VDegree(self) -> int:
         """
         Returns the polynomial degree in v direction of this Bezier surface,
-        					which is equal to the number of poles minus 1.
+                            which is equal to the number of poles minus 1.
         """
 
     def bounds(self) -> tuple[float, float, float, float]:
@@ -6476,12 +6428,11 @@ class BezierSurface(PartModule.GeometrySurface):
     def exchangeUV(self):
         """
         Exchanges the u and v parametric directions on this Bezier surface.
-        					As a consequence:
-        					-- the poles and weights tables are transposed,
-        					-- degrees, rational characteristics and so on are exchanged between
-        					   the two parametric directions, and
-        					-- the orientation of the surface is reversed.
-				
+                            As a consequence:
+                            -- the poles and weights tables are transposed,
+                            -- degrees, rational characteristics and so on are exchanged between
+                               the two parametric directions, and
+                            -- the orientation of the surface is reversed.
         Possible exceptions: (Part.OCCError).
         """
 
@@ -6500,24 +6451,22 @@ class BezierSurface(PartModule.GeometrySurface):
     def getResolution(self, tol: float, /) -> tuple[float, float]:
         """
         Computes two tolerance values for this Bezier surface, based on the
-        					given tolerance in 3D space Tolerance3D. The tolerances computed are:
-        					-- UTolerance in the u parametric direction and
-        					-- VTolerance in the v parametric direction.
+                            given tolerance in 3D space Tolerance3D. The tolerances computed are:
+                            -- UTolerance in the u parametric direction and
+                            -- VTolerance in the v parametric direction.
 
-        					If f(u,v) is the equation of this Bezier surface, UTolerance and VTolerance
-        					guarantee that:
-        					|u1 - u0| < UTolerance
-        					|v1 - v0| < VTolerance
-        					====> ||f(u1, v1) - f(u2, v2)|| < Tolerance3D
-				
+                            If f(u,v) is the equation of this Bezier surface, UTolerance and VTolerance
+                            guarantee that:
+                            |u1 - u0| < UTolerance
+                            |v1 - v0| < VTolerance
+                            ====> ||f(u1, v1) - f(u2, v2)|| < Tolerance3D
         Possible exceptions: (Part.OCCError).
         """
 
     def getWeight(self, uindex: int, vindex: int, /) -> float:
         """
         Get a weight of the pole of index (UIndex,VIndex)
-        					of the Bezier surface.
-				
+                            of the Bezier surface.
         Possible exceptions: (Part.OCCError).
         """
 
@@ -6530,65 +6479,60 @@ class BezierSurface(PartModule.GeometrySurface):
     def increase(self, udegree: int, vdegree: int, /):
         """
         increase(Int=DegreeU,Int=DegreeV)
-        					Increases the degree of this Bezier surface in the two
-        					parametric directions.
-				
+                            Increases the degree of this Bezier surface in the two
+                            parametric directions.
         Possible exceptions: (Part.OCCError).
         """
 
     def insertPoleColAfter(self, vindex: int, obj, obj2=None, /):
         """
         Inserts into the table of poles of this surface, after the column
-        					of poles of index.
-        					If this Bezier surface is non-rational, it can become rational if
-        					the weights associated with the new poles are different from each
-        					other, or collectively different from the existing weights in the
-        					table.
-				
+                            of poles of index.
+                            If this Bezier surface is non-rational, it can become rational if
+                            the weights associated with the new poles are different from each
+                            other, or collectively different from the existing weights in the
+                            table.
         Possible exceptions: (Part.OCCError).
         """
 
     def insertPoleColBefore(self, vindex: int, obj, obj2=None, /):
         """
         Inserts into the table of poles of this surface, before the column
-        					of poles of index.
-        					If this Bezier surface is non-rational, it can become rational if
-        					the weights associated with the new poles are different from each
-        					other, or collectively different from the existing weights in the
-        					table.
-				
+                            of poles of index.
+                            If this Bezier surface is non-rational, it can become rational if
+                            the weights associated with the new poles are different from each
+                            other, or collectively different from the existing weights in the
+                            table.
         Possible exceptions: (Part.OCCError).
         """
 
     def insertPoleRowAfter(self, uindex: int, obj, obj2=None, /):
         """
         Inserts into the table of poles of this surface, after the row
-        					of poles of index.
-        					If this Bezier surface is non-rational, it can become rational if
-        					the weights associated with the new poles are different from each
-        					other, or collectively different from the existing weights in the
-        					table.
-				
+                            of poles of index.
+                            If this Bezier surface is non-rational, it can become rational if
+                            the weights associated with the new poles are different from each
+                            other, or collectively different from the existing weights in the
+                            table.
         Possible exceptions: (Part.OCCError).
         """
 
     def insertPoleRowBefore(self, uindex: int, obj, obj2=None, /):
         """
         Inserts into the table of poles of this surface, before the row
-        					of poles of index.
-        					If this Bezier surface is non-rational, it can become rational if
-        					the weights associated with the new poles are different from each
-        					other, or collectively different from the existing weights in the
-        					table.
-				
+                            of poles of index.
+                            If this Bezier surface is non-rational, it can become rational if
+                            the weights associated with the new poles are different from each
+                            other, or collectively different from the existing weights in the
+                            table.
         Possible exceptions: (Part.OCCError).
         """
 
     def isUClosed(self) -> bool:
         """
         Checks if this surface is closed in the u parametric direction.
-        					Returns true if, in the table of poles the first row and the last
-        					row are identical.
+                            Returns true if, in the table of poles the first row and the last
+                            row are identical.
         """
 
     def isUPeriodic(self) -> bool:
@@ -6597,16 +6541,16 @@ class BezierSurface(PartModule.GeometrySurface):
     def isURational(self) -> bool:
         """
         Returns false if the equation of this Bezier surface is polynomial
-        					(e.g. non-rational) in the u or v parametric direction.
-        					In other words, returns false if for each row of poles, the associated
-        					weights are identical
+                            (e.g. non-rational) in the u or v parametric direction.
+                            In other words, returns false if for each row of poles, the associated
+                            weights are identical
         """
 
     def isVClosed(self) -> bool:
         """
         Checks if this surface is closed in the v parametric direction.
-        					Returns true if, in the table of poles the first column and the
-        					last column are identical.
+                            Returns true if, in the table of poles the first column and the
+                            last column are identical.
         """
 
     def isVPeriodic(self) -> bool:
@@ -6615,53 +6559,50 @@ class BezierSurface(PartModule.GeometrySurface):
     def isVRational(self) -> bool:
         """
         Returns false if the equation of this Bezier surface is polynomial
-        					(e.g. non-rational) in the u or v parametric direction.
-        					In other words, returns false if for each column of poles, the associated
-        					weights are identical
+                            (e.g. non-rational) in the u or v parametric direction.
+                            In other words, returns false if for each column of poles, the associated
+                            weights are identical
         """
 
     def removePoleCol(self, vindex: int, /):
         """
         removePoleRow(int=VIndex)
-        					Removes the column of poles of index VIndex from the table of
-        					poles of this Bezier surface.
-        					If this Bezier curve is rational, it can become non-rational.
-				
+                            Removes the column of poles of index VIndex from the table of
+                            poles of this Bezier surface.
+                            If this Bezier curve is rational, it can become non-rational.
         Possible exceptions: (Part.OCCError).
         """
 
     def removePoleRow(self, uindex: int, /):
         """
         removePoleRow(int=UIndex)
-        					Removes the row of poles of index UIndex from the table of
-        					poles of this Bezier surface.
-        					If this Bezier curve is rational, it can become non-rational.
-				
+                            Removes the row of poles of index UIndex from the table of
+                            poles of this Bezier surface.
+                            If this Bezier curve is rational, it can become non-rational.
         Possible exceptions: (Part.OCCError).
         """
 
     def segment(self, u1: float, u2: float, v1: float, v2: float, /):
         """
         segment(double=U1,double=U2,double=V1,double=V2)
-        					Modifies this Bezier surface by segmenting it between U1 and U2
-        					in the u parametric direction, and between V1 and V2 in the v
-        					parametric direction.
-        					U1, U2, V1, and V2 can be outside the bounds of this surface.
+                            Modifies this Bezier surface by segmenting it between U1 and U2
+                            in the u parametric direction, and between V1 and V2 in the v
+                            parametric direction.
+                            U1, U2, V1, and V2 can be outside the bounds of this surface.
 
-        					-- U1 and U2 isoparametric Bezier curves, segmented between
-        					   V1 and V2, become the two bounds of the surface in the v
-        					   parametric direction (0. and 1. u isoparametric curves).
-        					-- V1 and V2 isoparametric Bezier curves, segmented between
-        					   U1 and U2, become the two bounds of the surface in the u
-        					   parametric direction (0. and 1. v isoparametric curves).
+                            -- U1 and U2 isoparametric Bezier curves, segmented between
+                               V1 and V2, become the two bounds of the surface in the v
+                               parametric direction (0. and 1. u isoparametric curves).
+                            -- V1 and V2 isoparametric Bezier curves, segmented between
+                               U1 and U2, become the two bounds of the surface in the u
+                               parametric direction (0. and 1. v isoparametric curves).
 
-        					The poles and weights tables are modified, but the degree of
-        					this surface in the u and v parametric directions does not
-        					change.U1 can be greater than U2, and V1 can be greater than V2.
-        					In these cases, the corresponding parametric direction is inverted.
-        					The orientation of the surface is inverted if one (and only one)
-        					parametric direction is inverted.
-				
+                            The poles and weights tables are modified, but the degree of
+                            this surface in the u and v parametric directions does not
+                            change.U1 can be greater than U2, and V1 can be greater than V2.
+                            In these cases, the corresponding parametric direction is inverted.
+                            The orientation of the surface is inverted if one (and only one)
+                            parametric direction is inverted.
         Possible exceptions: (Part.OCCError).
         """
 
@@ -6686,24 +6627,21 @@ class BezierSurface(PartModule.GeometrySurface):
     def setWeight(self, uindex: int, vindex: int, weight: float, /):
         """
         Set the weight of pole of the index (UIndex, VIndex)
-        					for the Bezier surface.
-				
+                            for the Bezier surface.
         Possible exceptions: (Part.OCCError).
         """
 
     def setWeightCol(self, vindex: int, obj, /):
         """
         Set the weights of the poles in the column of poles
-        					of index VIndex of the Bezier surface.
-				
+                            of index VIndex of the Bezier surface.
         Possible exceptions: (Part.OCCError).
         """
 
     def setWeightRow(self, uindex: int, obj, /):
         """
         Set the weights of the poles in the row of poles
-        					of index UIndex of the Bezier surface.
-				
+                            of index UIndex of the Bezier surface.
         Possible exceptions: (Part.OCCError).
         """
 
@@ -6782,80 +6720,442 @@ class ArcOfConic(PartModule.TrimmedCurve):
 
 # HLRBRep_AlgoPy.xml
 class HLRBRep_Algo(FreeCAD.PyObjectBase):
-    """Describes functions to use HLR algorithm."""
+    """
+    Algo() -> HLRBRep_Algo
+
+    A framework to compute a shape as seen in a projection
+    plane. This is done by calculating the visible and the hidden parts
+    of the shape. HLRBRep_Algo works with three types of entity:
+
+    - shapes to be visualized
+    - edges in these shapes (these edges are the basic entities which will be
+      visualized or hidden), and
+    - faces in these shapes which hide the edges.
+
+    HLRBRep_Algo is based on the principle of comparing each edge of the shape to
+    be visualized with each of its faces, and calculating the visible and the
+    hidden parts of each edge. For a given projection, HLRBRep_Algo calculates a
+    set of lines characteristic of the object being represented. It is also used in
+    conjunction with the HLRBRep_HLRToShape extraction utilities, which reconstruct
+    a new, simplified shape from a selection of calculation results. This new shape
+    is made up of edges, which represent the shape visualized in the
+    projection. HLRBRep_Algo takes the shape itself into account whereas
+    HLRBRep_PolyAlgo works with a polyhedral simplification of the shape. When you
+    use HLRBRep_Algo, you obtain an exact result, whereas, when you use
+    HLRBRep_PolyAlgo, you reduce computation time but obtain polygonal segments. In
+    the case of complicated shapes, HLRBRep_Algo may be time-consuming. An
+    HLRBRep_Algo object provides a framework for:
+
+    - defining the point of view
+    - identifying the shape or shapes to be visualized
+    - calculating the outlines
+    - calculating the visible and hidden lines of the shape. Warning
+    - Superimposed lines are not eliminated by this algorithm.
+    - There must be no unfinished objects inside the shape you wish to visualize.
+    - Points are not treated.
+    - Note that this is not the sort of algorithm used in generating shading, which
+      calculates the visible and hidden parts of each face in a shape to be
+      visualized by comparing each face in the shape with every other face in the
+      same shape.
+    """
 
     def __init__(self):
-        """Describes functions to use HLR algorithm."""
+        """
+        Algo() -> HLRBRep_Algo
 
-    def add(self, shape: PartModule.Shape, nbIso: int = 0, /): ...
+        A framework to compute a shape as seen in a projection
+        plane. This is done by calculating the visible and the hidden parts
+        of the shape. HLRBRep_Algo works with three types of entity:
 
-    def hide(self, i: int = -1, j: int = -1, /): ...
+        - shapes to be visualized
+        - edges in these shapes (these edges are the basic entities which will be
+          visualized or hidden), and
+        - faces in these shapes which hide the edges.
 
-    def hideAll(self, i: int = -1, /): ...
+        HLRBRep_Algo is based on the principle of comparing each edge of the shape to
+        be visualized with each of its faces, and calculating the visible and the
+        hidden parts of each edge. For a given projection, HLRBRep_Algo calculates a
+        set of lines characteristic of the object being represented. It is also used in
+        conjunction with the HLRBRep_HLRToShape extraction utilities, which reconstruct
+        a new, simplified shape from a selection of calculation results. This new shape
+        is made up of edges, which represent the shape visualized in the
+        projection. HLRBRep_Algo takes the shape itself into account whereas
+        HLRBRep_PolyAlgo works with a polyhedral simplification of the shape. When you
+        use HLRBRep_Algo, you obtain an exact result, whereas, when you use
+        HLRBRep_PolyAlgo, you reduce computation time but obtain polygonal segments. In
+        the case of complicated shapes, HLRBRep_Algo may be time-consuming. An
+        HLRBRep_Algo object provides a framework for:
 
-    def index(self, shape: PartModule.Shape, /) -> int: ...
+        - defining the point of view
+        - identifying the shape or shapes to be visualized
+        - calculating the outlines
+        - calculating the visible and hidden lines of the shape. Warning
+        - Superimposed lines are not eliminated by this algorithm.
+        - There must be no unfinished objects inside the shape you wish to visualize.
+        - Points are not treated.
+        - Note that this is not the sort of algorithm used in generating shading, which
+          calculates the visible and hidden parts of each face in a shape to be
+          visualized by comparing each face in the shape with every other face in the
+          same shape.
+        """
 
-    def initEdgeStatus(self): ...
+    def add(self, shape: PartModule.Shape, nbIso: int = 0, /):
+        """
+        add(S, nbIso=0)
 
-    def nbShapes(self) -> int: ...
+        Adds the shape S to this framework, and specifies the number of isoparameters
+        nbiso desired in visualizing S.  You may add as many shapes as you wish.  Use
+        the function add once for each shape.
+        """
 
-    def outLinedShapeNullify(self): ...
+    def hide(self, i: int = -1, j: int = -1, /):
+        """
+        hide(i=-1, j=-1)
 
-    def partialHide(self): ...
+        If i < 1, hide all of the datastructure.
+        Otherwise, if j < 1, hide the shape of index i.
+        Otherwise, hide the shape of index i by the shape of index j.
+        """
 
-    def remove(self, index: int, /): ...
+    def hideAll(self, i: int = -1, /):
+        """
+        hideAll(i=-1)
 
-    def select(self, i: int = -1, /): ...
+        If i < 1, hide all the edges.
+        Otherwise, hide all the edges of shape of index i.
+        """
 
-    def selectEdge(self, index: int, /): ...
+    def index(self, shape: PartModule.Shape, /) -> int:
+        """
+        index(S) ->  int
 
-    def selectFace(self, index: int, /): ...
+        Return the index of the Shape S and return 0 if the Shape S is not found.
+        """
 
-    def setProjector(self, Origin: FreeCAD.Vector = None, ZDir: FreeCAD.Vector = None, XDir: FreeCAD.Vector = None, focus: float = None): ...
+    def initEdgeStatus(self):
+        """
+        initEdgeStatus()
 
-    def showAll(self, i: int = -1, /): ...
+        Init the status of the selected edges depending of the back faces of a closed
+        shell.
+        """
 
-    def update(self): ...
+    def nbShapes(self) -> int:
+        """
+        nbShapes()
+
+        Returns the number of shapes in the collection.  It does not modify the
+        object's state and is used to retrieve the count of shapes.
+        """
+
+    def outLinedShapeNullify(self):
+        """
+        outlinedShapeNullify()
+
+        Nullify all the results of OutLiner from HLRTopoBRep.
+        """
+
+    def partialHide(self):
+        """
+        partialHide()
+
+        Own hiding of all the shapes of the DataStructure without hiding by each other.
+        """
+
+    def remove(self, index: int, /):
+        """
+        remove(i)
+
+        Remove the shape of index i from this framework.
+        """
+
+    def select(self, i: int = -1, /):
+        """
+        select(i=-1)
+
+        If i < 1, select all the DataStructure.
+        Otherwise, only select the shape of index i.
+        """
+
+    def selectEdge(self, index: int, /):
+        """
+        selectEdge(i)
+
+        Select only the edges of the shape of index i.
+        """
+
+    def selectFace(self, index: int, /):
+        """
+        selectFace(i)
+		
+        Select only the faces of the shape of index i.
+        """
+
+    def setProjector(self, Origin: FreeCAD.Vector = (0, 0, 0), ZDir: FreeCAD.Vector = (0,0,0), XDir: FreeCAD.Vector = (0,0,0), focus: float = None):
+        """
+        setProjector(Origin=(0, 0, 0), ZDir=(0,0,0), XDir=(0,0,0), focus=NaN)
+
+        Set the projector.  With focus left to NaN, an axonometric projector is
+        created.  Otherwise, a perspective projector is created with focus focus.
+        """
+
+    def showAll(self, i: int = -1, /):
+        """
+        showAll(i=-1)
+
+        If i < 1, then set all the edges to visible.
+        Otherwise, set to visible all the edges of the shape of index i.
+        """
+
+    def update(self):
+        """
+        update()
+		
+        Update the DataStructure.
+        """
 
 
 # HLRToShapePy.xml
 class HLRToShapePy(FreeCAD.PyObjectBase):
-    """Describes functions to use HLR algorithm."""
+    """
+    HLRToShape(algo: HLRBRep_Algo) -> HLRBRep_HLRToShape
+
+    A framework for filtering the computation results of an HLRBRep_Algo algorithm
+    by extraction. From the results calculated by the algorithm on a shape, a
+    filter returns the type of edge you want to identify. You can choose any of the
+    following types of output:
+    - visible sharp edges
+    - hidden sharp edges
+    - visible smooth edges
+    - hidden smooth edges
+    - visible sewn edges
+    - hidden sewn edges
+    - visible outline edges
+    - hidden outline edges
+    - visible isoparameters and
+    - hidden isoparameters.
+
+    Sharp edges present a C0 continuity (non G1). Smooth edges present a G1
+    continuity (non G2). Sewn edges present a C2 continuity. The result is composed
+    of 2D edges in the projection plane of the view which the algorithm has worked
+    with. These 2D edges are not included in the data structure of the visualized
+    shape. In order to obtain a complete image, you must combine the shapes given
+    by each of the chosen filters. The construction of the shape does not call a
+    new computation of the algorithm, but only reads its internal results. The
+    methods of this shape are almost identic to those of the HLRBrep_PolyHLRToShape
+    class.
+    """
 
     def __init__(self, algo: PartModule.HLRBRep_Algo, /):
-        """Describes functions to use HLR algorithm."""
+        """
+        HLRToShape(algo: HLRBRep_Algo) -> HLRBRep_HLRToShape
 
-    def Rg1LineHCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape: ...
+        A framework for filtering the computation results of an HLRBRep_Algo algorithm
+        by extraction. From the results calculated by the algorithm on a shape, a
+        filter returns the type of edge you want to identify. You can choose any of the
+        following types of output:
+        - visible sharp edges
+        - hidden sharp edges
+        - visible smooth edges
+        - hidden smooth edges
+        - visible sewn edges
+        - hidden sewn edges
+        - visible outline edges
+        - hidden outline edges
+        - visible isoparameters and
+        - hidden isoparameters.
 
-    def Rg1LineVCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape: ...
+        Sharp edges present a C0 continuity (non G1). Smooth edges present a G1
+        continuity (non G2). Sewn edges present a C2 continuity. The result is composed
+        of 2D edges in the projection plane of the view which the algorithm has worked
+        with. These 2D edges are not included in the data structure of the visualized
+        shape. In order to obtain a complete image, you must combine the shapes given
+        by each of the chosen filters. The construction of the shape does not call a
+        new computation of the algorithm, but only reads its internal results. The
+        methods of this shape are almost identic to those of the HLRBrep_PolyHLRToShape
+        class.
+        """
 
-    def RgNLineHCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape: ...
+    def Rg1LineHCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape:
+        """
+        Rg1LineHCompound(Shape=None) -> TopoShape
 
-    def RgNLineVCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape: ...
+        Sets the extraction filter for hidden smooth edges for either shape Shape or
+        for all added shapes (Shape=None).
+        """
 
-    def compoundOfEdges(self, Type: int, Visible: bool = None, In3D: bool = None, Shape: PartModule.Shape = None) -> PartModule.Shape: ...
+    def Rg1LineVCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape:
+        """
+        Rg1LineVCompound(Shape=None) -> TopoShape
 
-    def hCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape: ...
+        Sets the extraction filter for visible smooth edges for either shape Shape or
+        for all added shapes (Shape=None).
+        """
 
-    def isoLineHCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape: ...
+    def RgNLineHCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape:
+        """
+        RgNLineHCompound(Shape=None) -> TopoShape
 
-    def isoLineVCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape: ...
+        Sets the extraction filter for hidden sewn edges for either shape Shape or for
+        all added shapes (Shape=None).
+        """
 
-    def outLineHCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape: ...
+    def RgNLineVCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape:
+        """
+        RgNLineVCompound(Shape=None) -> TopoShape
 
-    def outLineVCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape: ...
+        Sets the extraction filter for visible sewn edges for either shape Shape or for
+        all added shapes (Shape=None).
+        """
 
-    def outLineVCompound3d(self) -> PartModule.Shape: ...
+    def compoundOfEdges(self, Type: int, Visible: bool = None, In3D: bool = None, Shape: PartModule.Shape = None) -> PartModule.Shape:
+        """
+        compoundOfEdges(Type: int, Visible: bool, In3D: bool, Shape=None) -> TopoShape
 
-    def vCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape: ...
+        Returns compound of resulting edges of required type and visibility, taking
+        into account the kind of space (2d or 3d).  If Shape=None, return it for all
+        added shapes, otherwise return it for shape Shape.
+        """
+
+    def hCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape:
+        """
+        hCompound(Shape=None) -> TopoShape
+
+        Sets the extraction filter for hidden sharp edges for either shape Shape or for
+        all added shapes (Shape=None).
+        """
+
+    def isoLineHCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape:
+        """
+        isoLineHCompound(Shape=None) -> TopoShape
+
+        Sets the extraction filter for hidden isoparameters for either shape Shape or
+        for all added shapes (Shape=None).
+        """
+
+    def isoLineVCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape:
+        """
+        isoLineVCompound(Shape=None) -> TopoShape
+
+        Sets the extraction filter for visible isoparameters for either shape Shape or
+        for all added shapes (Shape=None).
+        """
+
+    def outLineHCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape:
+        """
+        outLineHCompound(Shape=None) -> TopoShape
+
+        Sets the extraction filter for hidden outline edges for either shape Shape or
+        for all added shapes (Shape=None).
+        """
+
+    def outLineVCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape:
+        """
+        outLineVCompound(Shape=None) -> TopoShape
+
+        Sets the extraction filter for visible outline edges for either shape Shape or
+        for all added shapes (Shape=None).
+        """
+
+    def outLineVCompound3d(self) -> PartModule.Shape:
+        """
+        outLineVCompound(Shape=None) -> TopoShape
+
+        Sets the extraction filter for visible outline edges in 3D for either shape
+        Shape or for all added shapes (Shape=None).
+        """
+
+    def vCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape:
+        """
+        vCompound(Shape=None) -> TopoShape
+
+        Sets the extraction filter for visible sharp edges for either shape Shape or
+        for all added shapes (Shape=None).
+        """
 
 
 # HLRBRep_PolyAlgoPy.xml
 class HLRBRep_PolyAlgo(FreeCAD.PyObjectBase):
-    """Describes functions to use HLR algorithm."""
+    """
+    PolyAlgo() -> HLRBRep_PolyAlgo
+
+    A framework to compute the shape as seen in a projection
+    plane. This is done by calculating the visible and the hidden parts of the
+    shape. HLRBRep_PolyAlgo works with three types of entity:
+
+    - shapes to be visualized (these shapes must have already been triangulated.)
+    - edges in these shapes (these edges are defined as polygonal lines on the
+      triangulation of the shape, and are the basic entities which will be visualized
+      or hidden), and
+    - triangles in these shapes which hide the edges.
+
+    HLRBRep_PolyAlgo is based on the principle of comparing each edge of the shape
+    to be visualized with each of the triangles produced by the triangulation of
+    the shape, and calculating the visible and the hidden parts of each edge. For a
+    given projection, HLRBRep_PolyAlgo calculates a set of lines characteristic of
+    the object being represented. It is also used in conjunction with the
+    HLRBRep_PolyHLRToShape extraction utilities, which reconstruct a new,
+    simplified shape from a selection of calculation results. This new shape is
+    made up of edges, which represent the shape visualized in the
+    projection. HLRBRep_PolyAlgo works with a polyhedral simplification of the
+    shape whereas HLRBRep_Algo takes the shape itself into account. When you use
+    HLRBRep_Algo, you obtain an exact result, whereas, when you use
+    HLRBRep_PolyAlgo, you reduce computation time but obtain polygonal segments. An
+    HLRBRep_PolyAlgo object provides a framework for:
+
+    - defining the point of view
+    - identifying the shape or shapes to be visualized
+    - calculating the outlines
+    - calculating the visible and hidden lines of the shape. Warning
+    - Superimposed lines are not eliminated by this algorithm.
+    - There must be no unfinished objects inside the shape you wish to visualize.
+    - Points are not treated.
+    - Note that this is not the sort of algorithm used in generating shading, which
+      calculates the visible and hidden parts of each face in a shape to be
+      visualized by comparing each face in the shape with every other face in the
+      same shape.
+    """
 
     def __init__(self, shape: PartModule.Shape = None, /):
-        """Describes functions to use HLR algorithm."""
+        """
+        PolyAlgo() -> HLRBRep_PolyAlgo
+
+        A framework to compute the shape as seen in a projection
+        plane. This is done by calculating the visible and the hidden parts of the
+        shape. HLRBRep_PolyAlgo works with three types of entity:
+
+        - shapes to be visualized (these shapes must have already been triangulated.)
+        - edges in these shapes (these edges are defined as polygonal lines on the
+          triangulation of the shape, and are the basic entities which will be visualized
+          or hidden), and
+        - triangles in these shapes which hide the edges.
+
+        HLRBRep_PolyAlgo is based on the principle of comparing each edge of the shape
+        to be visualized with each of the triangles produced by the triangulation of
+        the shape, and calculating the visible and the hidden parts of each edge. For a
+        given projection, HLRBRep_PolyAlgo calculates a set of lines characteristic of
+        the object being represented. It is also used in conjunction with the
+        HLRBRep_PolyHLRToShape extraction utilities, which reconstruct a new,
+        simplified shape from a selection of calculation results. This new shape is
+        made up of edges, which represent the shape visualized in the
+        projection. HLRBRep_PolyAlgo works with a polyhedral simplification of the
+        shape whereas HLRBRep_Algo takes the shape itself into account. When you use
+        HLRBRep_Algo, you obtain an exact result, whereas, when you use
+        HLRBRep_PolyAlgo, you reduce computation time but obtain polygonal segments. An
+        HLRBRep_PolyAlgo object provides a framework for:
+
+        - defining the point of view
+        - identifying the shape or shapes to be visualized
+        - calculating the outlines
+        - calculating the visible and hidden lines of the shape. Warning
+        - Superimposed lines are not eliminated by this algorithm.
+        - There must be no unfinished objects inside the shape you wish to visualize.
+        - Points are not treated.
+        - Note that this is not the sort of algorithm used in generating shading, which
+          calculates the visible and hidden parts of each face in a shape to be
+          visualized by comparing each face in the shape with every other face in the
+          same shape.
+        """
 
     @property
     def Angle(self) -> float: ...
@@ -6866,63 +7166,214 @@ class HLRBRep_PolyAlgo(FreeCAD.PyObjectBase):
     @property
     def TolCoef(self) -> float: ...
 
-    def index(self, shape: PartModule.Shape, /) -> int: ...
+    def index(self, shape: PartModule.Shape, /) -> int:
+        """
+        index(S) ->  int
 
-    def initHide(self): ...
+        Return the index of the Shape S.
+        """
 
-    def initShow(self): ...
+    def initHide(self):
+        """initHide()"""
 
-    def load(self, shape: PartModule.Shape, /): ...
+    def initShow(self):
+        """initShow()"""
 
-    def moreHide(self) -> bool: ...
+    def load(self, shape: PartModule.Shape, /):
+        """
+        load(S)
 
-    def moreShow(self) -> bool: ...
+        Loads the shape S into this framework. Warning S must have already been triangulated.
+        """
 
-    def nbShapes(self) -> int: ...
+    def moreHide(self) -> bool:
+        """moreHide()"""
 
-    def nextHide(self): ...
+    def moreShow(self) -> bool:
+        """moreShow()"""
 
-    def nextShow(self): ...
+    def nbShapes(self) -> int:
+        """
+        nbShapes()
 
-    def outLinedShape(self, shape: PartModule.Shape, /) -> PartModule.Shape: ...
+        Returns the number of shapes in the collection.  It does not modify the
+        object's state and is used to retrieve the count of shapes.
+        """
 
-    def remove(self, index: int, /): ...
+    def nextHide(self):
+        """nextHide()"""
 
-    def setProjector(self, Origin: FreeCAD.Vector = None, ZDir: FreeCAD.Vector = None, XDir: FreeCAD.Vector = None, focus: float = None): ...
+    def nextShow(self):
+        """nextShow()"""
 
-    def shape(self, index: int, /) -> PartModule.Shape: ...
+    def outLinedShape(self, shape: PartModule.Shape, /) -> PartModule.Shape:
+        """
+        outLinedShape(S) -> TopoShape
 
-    def update(self): ...
+        Make a shape with the internal outlines in each face of shape S.
+        """
+
+    def remove(self, index: int, /):
+        """
+        remove(i)
+
+        Remove the shape of index i from this framework.
+        """
+
+    def setProjector(self, Origin: FreeCAD.Vector = (0, 0, 0), ZDir: FreeCAD.Vector = (0,0,0), XDir: FreeCAD.Vector = (0,0,0), focus: float = None):
+        """
+        setProjector(Origin=(0, 0, 0), ZDir=(0,0,0), XDir=(0,0,0), focus=NaN)
+
+        Set the projector.  With focus left to NaN, an axonometric projector is
+        created.  Otherwise, a perspective projector is created with focus focus.
+        """
+
+    def shape(self, index: int, /) -> PartModule.Shape:
+        """
+        shape(i) -> TopoShape
+
+        Return the shape of index i.
+        """
+
+    def update(self):
+        """
+        update()
+
+        Launches calculation of outlines of the shape visualized by this
+        framework. Used after setting the point of view and defining the shape or
+        shapes to be visualized.
+        """
 
 
 # PolyHLRToShapePy.xml
 class PolyHLRToShapePy(FreeCAD.PyObjectBase):
-    """Describes functions to use HLR algorithm."""
+    """
+    PolyHLRToShape(algo: HLRBRep_PolyAlgo) -> HLRBRep_PolyHLRToShape
+
+    A framework for filtering the computation results of an HLRBRep_PolyAlgo
+    algorithm by extraction.  From the results calculated by the algorithm on a
+    shape, a filter returns the type of edge you want to identify.  You can choose
+    any of the following types of output:
+    - visible sharp edges
+    - hidden sharp edges
+    - visible smooth edges
+    - hidden smooth edges
+    - visible sewn edges
+    - hidden sewn edges
+    - visible outline edges
+    - hidden outline edges
+    - visible isoparameters and
+    - hidden isoparameters.
+
+    Sharp edges present a C0 continuity (non G1). Smooth edges present a G1
+    continuity (non G2). Sewn edges present a C2 continuity. The result is composed
+    of 2D edges in the projection plane of the view which the algorithm has worked
+    with. These 2D edges are not included in the data structure of the visualized
+    shape. In order to obtain a complete image, you must combine the shapes given
+    by each of the chosen filters. The construction of the shape does not call a
+    new computation of the algorithm, but only reads its internal results.
+    """
 
     def __init__(self, algo: PartModule.HLRBRep_PolyAlgo = None, /):
-        """Describes functions to use HLR algorithm."""
+        """
+        PolyHLRToShape(algo: HLRBRep_PolyAlgo) -> HLRBRep_PolyHLRToShape
 
-    def Rg1LineHCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape: ...
+        A framework for filtering the computation results of an HLRBRep_PolyAlgo
+        algorithm by extraction.  From the results calculated by the algorithm on a
+        shape, a filter returns the type of edge you want to identify.  You can choose
+        any of the following types of output:
+        - visible sharp edges
+        - hidden sharp edges
+        - visible smooth edges
+        - hidden smooth edges
+        - visible sewn edges
+        - hidden sewn edges
+        - visible outline edges
+        - hidden outline edges
+        - visible isoparameters and
+        - hidden isoparameters.
 
-    def Rg1LineVCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape: ...
+        Sharp edges present a C0 continuity (non G1). Smooth edges present a G1
+        continuity (non G2). Sewn edges present a C2 continuity. The result is composed
+        of 2D edges in the projection plane of the view which the algorithm has worked
+        with. These 2D edges are not included in the data structure of the visualized
+        shape. In order to obtain a complete image, you must combine the shapes given
+        by each of the chosen filters. The construction of the shape does not call a
+        new computation of the algorithm, but only reads its internal results.
+        """
 
-    def RgNLineHCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape: ...
+    def Rg1LineHCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape:
+        """
+        Rg1LineHCompound(Shape=None) -> TopoShape
 
-    def RgNLineVCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape: ...
+        Sets the extraction filter for hidden smooth edges for either shape Shape or
+        for all added shapes (Shape=None).
+        """
 
-    def hCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape: ...
+    def Rg1LineVCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape:
+        """
+        Rg1LineVCompound(Shape=None) -> TopoShape
 
-    def hide(self): ...
+        Sets the extraction filter for visible smooth edges for either shape Shape or
+        for all added shapes (Shape=None).
+        """
 
-    def outLineHCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape: ...
+    def RgNLineHCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape:
+        """
+        RgNLineHCompound(Shape=None) -> TopoShape
 
-    def outLineVCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape: ...
+        Sets the extraction filter for hidden sewn edges for either shape Shape or for
+        all added shapes (Shape=None).
+        """
 
-    def show(self): ...
+    def RgNLineVCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape:
+        """
+        RgNLineVCompound(Shape=None) -> TopoShape
 
-    def update(self, algo: PartModule.HLRBRep_PolyAlgo, /): ...
+        Sets the extraction filter for visible sewn edges for either shape Shape or for
+        all added shapes (Shape=None).
+        """
 
-    def vCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape: ...
+    def hCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape:
+        """
+        hCompound(Shape=None) -> TopoShape
+
+        Sets the extraction filter for hidden sharp edges for either shape Shape or for
+        all added shapes (Shape=None).
+        """
+
+    def hide(self):
+        """hide()"""
+
+    def outLineHCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape:
+        """
+        outLineHCompound(Shape=None) -> TopoShape
+
+        Sets the extraction filter for hidden outline edges for either shape Shape or
+        for all added shapes (Shape=None).
+        """
+
+    def outLineVCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape:
+        """
+        outLineVCompound(Shape=None) -> TopoShape
+
+        Sets the extraction filter for visible outline edges for either shape Shape or
+        for all added shapes (Shape=None).
+        """
+
+    def show(self):
+        """show()"""
+
+    def update(self, algo: PartModule.HLRBRep_PolyAlgo, /):
+        """update(algo: HLRBRep_PolyAlgo)"""
+
+    def vCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape:
+        """
+        vCompound(Shape=None) -> TopoShape
+
+        Sets the extraction filter for visible sharp edges for either shape Shape or
+        for all added shapes (Shape=None).
+        """
 
 
 # AppPart.cpp
@@ -7296,11 +7747,12 @@ def __sortEdges__(obj, /) -> list[PartModule.Edge]:
     """
 
 
-def sortEdges(obj, /) -> list[list[PartModule.Edge]]:
+def sortEdges(obj, tol3d: float = None, /) -> list[list[PartModule.Edge]]:
     """
-    sortEdges(list of edges) -- list of lists of edges
+    sortEdges(list of edges, [tol3d]) -- list of lists of edges
     It does basically the same as __sortEdges__ but sorts all input edges and thus returns
     a list of lists of edges
+    optional 3D tolerance defaults to Precision::Confusion
     Possible exceptions: (Part.OCCError, TypeError).
     """
 
@@ -7358,7 +7810,7 @@ def getShape(obj: FreeCAD.DocumentObject, subname: str = None, mat: FreeCAD.Matr
     * transform: if False, then skip obj's transformation. Use this if mat already include obj's
                  transformation matrix
     * retType: 0: return TopoShape,
-               1: return (shape,subObj,mat), where subObj is the object referenced in 'subname',
+               1: return (shape,mat,subObj), where subObj is the object referenced in 'subname',
                   and 'mat' is the accumulated transformation matrix of that sub-object.
                2: same as 1, but make sure 'subObj' is resolved if it is a link.
     * refine: refine the returned shape

@@ -127,13 +127,25 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
         """
 
     @property
-    def FirstParameter(self) -> float: ...
+    def FirstParameter(self) -> float:
+        """
+        This function returns the first parameter of the curve.
+        The first parameter is the lowest parametric value for the curve, which defines the starting point of the curve.
+        """
 
     @property
-    def LastParameter(self) -> float: ...
+    def LastParameter(self) -> float:
+        """
+        This function returns the last parameter of the curve.
+        The last parameter is the highest parametric value for the curve, which defines the ending point of the curve.
+        """
 
     @property
-    def Length(self) -> float: ...
+    def Length(self) -> float:
+        """
+        This function returns the length of the curve.
+        The length of the curve is a geometric property that indicates how long the curve is in the space.
+        """
 
     @property
     def NbPoints(self) -> int:
@@ -174,10 +186,16 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
         """
 
     def curve2dOnSurf(self) -> Part.Geom2d.Curve2d:
-        """Possible exceptions: (RuntimeError)."""
+        """
+        Returns a 2d curve associated the surface resulting of the constraints
+        Possible exceptions: (RuntimeError).
+        """
 
     def curve3d(self):
-        """Possible exceptions: (RuntimeError)."""
+        """
+        Returns a 3d curve associated the surface resulting of the constraints
+        Possible exceptions: (RuntimeError).
+        """
 
     def order(self) -> int:
         """
@@ -186,10 +204,18 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
         """
 
     def projectedCurve(self):
-        """Possible exceptions: (RuntimeError)."""
+        """
+        Returns the projected curve resulting from the normal projection of the
+         curve on the initial surface
+        Possible exceptions: (RuntimeError).
+        """
 
     def setCurve2dOnSurf(self, c: Part.Geom2d.Curve2d, /):
-        """Possible exceptions: (ReferenceError, RuntimeError)."""
+        """
+        loads a 2d curve associated the surface resulting of the constraints
+
+        Possible exceptions: (ReferenceError, RuntimeError).
+        """
 
     def setG0Criterion(self):
         """
@@ -214,7 +240,16 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
         """
 
     def setG2Criterion(self):
-        """Possible exceptions: (NotImplementedError)."""
+        """
+        Allows you to set the G2 criterion. This is the law
+         defining the greatest difference in curvature allowed
+         between the constraint and the target surface. If this
+         criterion is not set, TolCurv, the curvature tolerance from
+         the constructor, is used.
+         Raises   ConstructionError if  the  point  is  not  on  the  surface
+        
+        Possible exceptions: (NotImplementedError).
+        """
 
     def setOrder(self, order: int, /):
         """
@@ -226,7 +261,11 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
         """
 
     def setProjectedCurve(self, c: Part.Geom2d.Curve2d, tolU: float, tolV: float, /):
-        """Possible exceptions: (ReferenceError, RuntimeError)."""
+        """
+        loads a 2d curve  resulting from the normal projection of
+         the curve on the initial surface
+        Possible exceptions: (ReferenceError, RuntimeError).
+        """
 
 
 # PointConstraintPy.xml
@@ -269,7 +308,10 @@ class PointConstraintPy(FreeCAD.PyObjectBase):
         """
 
     def hasPnt2dOnSurf(self) -> bool:
-        """Possible exceptions: (RuntimeError)."""
+        """
+        Checks if there is a 2D point associated with the surface. It returns a boolean indicating whether such a point exists.
+        Possible exceptions: (RuntimeError).
+        """
 
     def order(self) -> int:
         """
@@ -278,7 +320,10 @@ class PointConstraintPy(FreeCAD.PyObjectBase):
         """
 
     def pnt2dOnSurf(self) -> tuple[float, float]:
-        """Possible exceptions: (RuntimeError)."""
+        """
+        Returns the 2D point on the surface. It returns a gp_Pnt2d representing the associated 2D point.
+        Possible exceptions: (RuntimeError).
+        """
 
     def setG0Criterion(self, tolDist: float, /):
         """
@@ -303,7 +348,14 @@ class PointConstraintPy(FreeCAD.PyObjectBase):
         """
 
     def setG2Criterion(self, tolCurv: float, /):
-        """Possible exceptions: (RuntimeError)."""
+        """
+        Allows you to set the G2 criterion. This is the law
+         defining the greatest difference in curvature  allowed between the
+         constraint and the target surface. If this criterion is not
+         set, TolCurv, the curvature tolerance from the constructor, is used.
+         Raises  ConstructionError if  the  curve  is  not  on  a  surface
+        Possible exceptions: (RuntimeError).
+        """
 
     def setOrder(self, order: int, /):
         """
@@ -315,4 +367,7 @@ class PointConstraintPy(FreeCAD.PyObjectBase):
         """
 
     def setPnt2dOnSurf(self, x: float, y: float, /):
-        """Possible exceptions: (RuntimeError)."""
+        """
+        Allows you to set a 2D point on the surface. It takes a gp_Pnt2d as an argument, representing the 2D point to be associated with the surface.
+        Possible exceptions: (RuntimeError).
+        """

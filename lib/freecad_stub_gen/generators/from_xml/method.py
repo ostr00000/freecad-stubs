@@ -17,7 +17,6 @@ from freecad_stub_gen.generators.common.doc_string import (
     getDocFromNode,
 )
 from freecad_stub_gen.generators.common.gen_method import MethodGenerator
-from freecad_stub_gen.generators.common.names import getClassNameFromNode
 from freecad_stub_gen.generators.common.signature_merger import SignatureMerger
 from freecad_stub_gen.generators.from_xml.base import BaseXmlGenerator
 
@@ -36,7 +35,7 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
 
     def genInit(self) -> str:
         """Generate stub for __init__ method."""
-        className = getClassNameFromNode(self.currentNode)
+        cClassName = self.currentNode.attrib['Name']
 
         # Maybe we should check `self.currentNode.attrib['Constructor']`?
         # Better check `PyMake` - it is possible to return
@@ -44,7 +43,7 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
 
         with self.newImportContext():
             makeSignatures = list(
-                self.generateSignaturesFromCode('PyMake', cClassName=className)
+                self.generateSignaturesFromCode('PyMake', cClassName=cClassName)
             )
 
         if not makeSignatures:
@@ -59,9 +58,9 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         return self.genMethod(
             self.currentNode,
             cFunName='PyInit',
-            cClassName=className,
+            cClassName=cClassName,
             pythonFunName='__init__',
-            docsFunName=className,
+            docsFunName=cClassName,
         )
 
     def genMethod(

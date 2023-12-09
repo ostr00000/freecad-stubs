@@ -82,7 +82,7 @@ class Area(FreeCAD.BaseClass):
     All arguments are optional.
     """
 
-    def __init__(self, key=None):
+    def __init__(self):
         """
         FreeCAD python wrapper of libarea
 
@@ -112,12 +112,17 @@ class Area(FreeCAD.BaseClass):
     def add(self, shape) -> PathModule.Area:
         """Possible exceptions: (TypeError)."""
 
+    def getClearedArea(self, tipDiameter: float, diameter: float, /) -> PathModule.Area: ...
+
     def getDefaultParams(self): ...
 
     def getParams(self) -> dict:
         """Get current algorithm parameters as a dictionary."""
 
     def getParamsDesc(self): ...
+
+    def getRestArea(self, pyClearedAreas, diameter: float, /) -> PathModule.Area:
+        """Possible exceptions: (TypeError)."""
 
     def getShape(self, index: int = -1, rebuild: bool = False) -> PartModule.Shape:
         """
@@ -151,6 +156,8 @@ class Area(FreeCAD.BaseClass):
         Area will try to find a working plane from the added children shape using the
         same algorithm
         """
+
+    def toTopoShape(self) -> PartModule.Shape: ...
 
 
 # PathPy.xml
@@ -297,6 +304,45 @@ class FeaturePathCompound(FreeCAD.DocumentObject):
 
 
 # AreaPyImp.cpp
+def toTopoShape():
+    """toTopoShape():"""
+
+
+@typing.overload
+def setDefaultParams(key=None): ...
+
+
+@typing.overload
+def setDefaultParams() -> None:
+    """
+    setDefaultParams(key=value...):
+    Static method to set the default parameters of all following Path.Area, plus the following
+    additional parameters.
+
+    Possible exceptions: (ValueError).
+    """
+
+
+def getDefaultParams() -> dict:
+    """getDefaultParams(): Static method to return the current default parameters."""
+
+
+def abort(aborting: bool = True): ...
+
+
+def getParamsDesc(as_string: bool = False) -> str | dict:
+    """
+    getParamsDesc(as_string=False): Returns a list of supported parameters and their descriptions.
+
+    * as_string: if False, then return a dictionary of documents of all supported parameters.
+    """
+
+
+# AreaPy.cpp
+def toTopoShape():
+    """toTopoShape():"""
+
+
 @typing.overload
 def setDefaultParams(key=None): ...
 

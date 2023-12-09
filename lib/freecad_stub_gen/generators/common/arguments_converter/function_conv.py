@@ -96,7 +96,12 @@ class FunctionConv:
             self.varDeclarationCode,
         )
         if not matches:
-            return []
+            matches: list[str] = re.findall(
+                rf'{kwargsArgumentName}\s*{{\s*((?:.|\s)*?)}}',
+                self.varDeclarationCode,
+            )
+            if not matches:
+                return []
 
         # take the latest match and remove whitespaces
         kwargsStr = ''.join(matches[-1].split())

@@ -95,7 +95,7 @@ def getClassWithModulesFromNode(currentNode: ET.Element) -> str:
     return f'{namespace}.{name}'
 
 
-def getClassNameFromNode(currentNode: ET.Element) -> str:
+def getPythonClassNameFromNode(currentNode: ET.Element) -> str:
     return getClassName(getClassWithModulesFromNode(currentNode))
 
 

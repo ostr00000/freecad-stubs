@@ -269,6 +269,16 @@ def getSelectionObject(docName: str, objName: str, subName: str, tuple: tuple = 
     """
 
 
+def setSelectionStyle(selStyle: int = 0, /):
+    """
+    setSelectionStyle(selectionStyle) -> None
+
+    Change the selection style. 0 for normal selection, 1 for greedy selection
+
+    selectionStyle : int
+    """
+
+
 def addObserver(o, resolve: int = 1, /):
     """
     addObserver(object, resolve=ResolveMode.OldStyleElement) -> None

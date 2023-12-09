@@ -40,5 +40,5 @@ def insert(name: str, docName: str = None, importHidden: bool = None, merge: boo
 def export(obj, name: str, options: dict = None, exportHidden: bool = None, legacy: bool = None, keepPlacement: bool = None) -> None:
     """
     export(list,string) -- Export a list of objects into a single file.
-    Possible exceptions: (Exception, RuntimeError, FreeCAD.Base.FreeCADError).
+    Possible exceptions: (Exception, FreeCAD.Base.FreeCADError).
     """

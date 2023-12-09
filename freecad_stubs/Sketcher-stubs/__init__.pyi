@@ -197,7 +197,7 @@ class SketchObjectSF(PartModule.Part2DObject):
 
 # SketchObjectPy.xml
 class SketchObject(PartModule.Part2DObject):
-    """With this objects you can handle sketches"""
+    """Represents a sketch object"""
 
     @property
     def AxisCount(self) -> int:
@@ -328,7 +328,20 @@ class SketchObject(PartModule.Part2DObject):
 
     def addConstraint(self, pcObj, /) -> int | tuple[int, ...]:
         """
-        add a constraint to the sketch
+        Add constraints to the sketch.
+
+        addConstraint(constraint:Constraint) -> int
+            Add a single constraint to the sketch and solves it.
+
+            Returns:
+                The zero-based index of the newly added constraint.
+
+        addConstraint(constraints:List(Constraint)) -> Tuple(int)
+            Add many constraints to the sketch without solving.
+
+            Returns:
+                A tuple of zero-based indices of all newly added constraints.
+        
         Possible exceptions: (TypeError, IndexError).
         """
 
@@ -340,7 +353,15 @@ class SketchObject(PartModule.Part2DObject):
 
     def addExternal(self, ObjectName: str, SubName: str, /):
         """
-        add a link to an external geometry to use it in a constraint
+        Add a link to an external geometry.
+
+        addExternal(objName:str, subName:str)
+
+            Args:
+                objName: The name of the document object to reference.
+                subName: The name of the sub-element of the object's shape to link as
+                    "external geometry".
+        
         Possible exceptions: (ValueError).
         """
 
@@ -350,7 +371,29 @@ class SketchObject(PartModule.Part2DObject):
     @typing.overload
     def addGeometry(self, pcObj, /) -> int | tuple[int, ...]:
         """
-        add a geometric object to the sketch
+        Add geometric objects to the sketch.
+
+        addGeometry(geo:Geometry, isConstruction=False) -> int
+            Add a single geometric object to the sketch.
+
+            Args:
+                geo: The geometry to add. e.g. a Part.LineSegement
+                isConstruction: Whether the added geometry is a "construction geometry".
+                    Defaults to `False`, i.e. by omitting, a regular geometry is added.
+
+            Returns:
+                The zero-based index of the newly added geometry.
+
+        addGeometry(geo:List(Geometry), isConstruction=False) -> Tuple(int)
+            Add many geometric objects to the sketch.
+
+            Args:
+                geo: The geometry to add.
+                isConstruction: see above.
+
+            Returns:
+                A tuple of zero-based indices of all newly added geometry.
+        
         Possible exceptions: (TypeError).
         """
 
@@ -411,7 +454,14 @@ class SketchObject(PartModule.Part2DObject):
 
     def carbonCopy(self, ObjectName: str, construction: bool = True, /):
         """
-        copy another sketch's geometry and constraints
+        Copy another sketch's geometry and constraints into this sketch.
+
+        carbonCopy(objName:str, asConstruction=True)
+
+            Args:
+                ObjName: The name of the sketch object to copy from.
+                asConstruction: Whether to copy the geometry as "construction geometry".
+            
         Possible exceptions: (ValueError).
         """
 
@@ -440,43 +490,90 @@ class SketchObject(PartModule.Part2DObject):
 
     def delConstraint(self, Index: int, /):
         """
-        delete a constraint from the sketch
+        Delete a constraint from the sketch.
+
+        delConstraint(constraintIndex:int)
+
+            Args:
+                constraintIndex: The zero-based index of the constraint to delete.
+        
         Possible exceptions: (ValueError).
         """
 
     def delConstraintOnPoint(self, Index: int, pos: int = -1, /):
         """
-        delete coincident constraints associated with a sketch point
+        Delete coincident constraints associated with a sketch point.
+
+        delConstraintOnPoint(vertexId:int)
+
+            Args:
+                vertexId: A zero-based index of the shape's vertices.
+
+        delConstraintOnPoint(geoId:int, pointPos:int)
+
+            Args:
+                geoId: The zero-based index of the geometry that contains the point.
+                pointPos: Enum denoting which point on the geometry is meant:
+                    1: the start of a line or bounded curve.
+                    2: the end of a line or bounded curve.
+                    3: the center of a circle or ellipse.
+        
         Possible exceptions: (ValueError).
         """
 
     def delExternal(self, Index: int, /):
         """
-        delete a external geometry link from the sketch
+        Delete an external geometry link from the sketch.
+
+        delExternal(extGeoId:int)
+
+            Args:
+                extGeoId: The zero-based index of the external geometry to remove.
+        
         Possible exceptions: (ValueError).
         """
 
     def delGeometries(self, pcObj, /):
         """
-        delete a list of geometric objects from the sketch, including any internal alignment geometry thereof
+        Delete a list of geometric objects from the sketch.
+
+        delGeometries(geoIds:List(int))
+
+            Args:
+                geoId: A list of zero-based indices of the geometry to delete.
+                    Any internal alignment geometry thereof will be deleted, too.
+        
         Possible exceptions: (TypeError, ValueError).
         """
 
     def delGeometry(self, Index: int, /):
         """
-        delete a geometric object from the sketch
+        Delete a geometric object from the sketch.
+
+        delGeometry(geoId:int)
+
+            Args:
+                geoId: The zero-based index of the geometry to delete.
+                    Any internal alignment geometry thereof will be deleted, too.
+        
         Possible exceptions: (ValueError).
         """
 
     def deleteAllConstraints(self):
         """
-        delete all the constraints from the sketch
+        Delete all the constraints from the sketch.
+
+        deleteAllConstraints()
+            
         Possible exceptions: (ValueError).
         """
 
     def deleteAllGeometry(self):
         """
-        delete all the geometry objects and constraints from the sketch except external geometry
+        Delete all the geometry objects from the sketch, except external geometry.
+
+        deleteAllGeometry()
+            
         Possible exceptions: (ValueError).
         """
 
@@ -528,7 +625,17 @@ class SketchObject(PartModule.Part2DObject):
 
     def getActive(self, constrid: int, /) -> bool:
         """
-        Get the constraint status (enforced or not)
+        Get whether a constraint is active, i.e. enforced, or not.
+
+        getActive(constraintIndex:int)
+
+            Args:
+                constraintIndex: The zero-based index of the constraint to query.
+
+            Returns:
+                `True` if the constraint is active, i.e. enforced,
+                `False` if it is inactive, i.e. not enforced.
+            
         Possible exceptions: (ValueError).
         """
 
@@ -537,7 +644,17 @@ class SketchObject(PartModule.Part2DObject):
 
     def getConstruction(self, Index: int, /) -> bool:
         """
-        returns the construction mode of a geometry
+        Determine whether the given geometry is a "construction geometry".
+
+        getConstruction(geoId:int)
+
+            Args:
+                geoId: The zero-based index of the geometry to query.
+
+            Returns:
+                `True` if the geometry is "construction geometry" and
+                `False` if it s a regular geometry.
+        
         Possible exceptions: (ValueError).
         """
 
@@ -547,13 +664,32 @@ class SketchObject(PartModule.Part2DObject):
     @typing.overload
     def getDatum(self, name: str, /) -> FreeCAD.Quantity:
         """
-        Get the value of a datum constraint
+        Get the value of a datum constraint (e.g. Distance or Angle)
+
+        getDatum(constraint) -> Quantity
+
+            Args:
+                constraint (int or str): The index or name of the constraint to query.
+
+            Returns:
+                The value of the constraint.
+        
         Possible exceptions: (IndexError, NameError, TypeError).
         """
 
     def getDriving(self, constrid: int, /) -> bool:
         """
-        Get the Driving status of a datum constraint
+        Get the Driving status of a datum constraint.
+
+        getDriving(constraintIndex:int)
+
+            Args:
+                constraintIndex: The zero-based index of the constraint to query.
+
+            Returns:
+                `True` if the constraint is driving,
+                `False` if it is non-driving, i.e. reference.
+        
         Possible exceptions: (ValueError).
         """
 
@@ -575,8 +711,13 @@ class SketchObject(PartModule.Part2DObject):
 
     def getIndexByName(self, utf8Name: str, /) -> int:
         """
-        Get the index of the constraint by name.
-        If there is no such constraint an exception is raised.
+        Get the index of a constraint by name.
+
+        getIndexByName(name:str)
+
+            Args:
+                name: The name for the constraint to look up.
+                    If there is no such constraint an exception is raised.
         
         Possible exceptions: (ValueError, LookupError).
         """
@@ -638,7 +779,14 @@ class SketchObject(PartModule.Part2DObject):
 
     def moveDatumsToEnd(self):
         """
-        Moves all datum constraints to the end of the constraint list
+        Moves all datum constraints to the end of the constraint list.
+
+        moveDatumsToEnd()
+
+            Warning: This method reorders the constraint indices. Previously hold
+                numeric references to constraints may reference different constraints
+                after this operation.
+        
         Possible exceptions: (ValueError).
         """
 
@@ -665,19 +813,43 @@ class SketchObject(PartModule.Part2DObject):
 
     def renameConstraint(self, Index: int, utf8Name: str, /):
         """
-        Rename a constraint of the sketch
+        Rename a constraint in the sketch.
+
+        renameConstraint(constraintIndex:int, name:str)
+
+            Args:
+                constraintIndex: The zero-based index of the constraint to rename.
+                name: The new name for the constraint.
+                    An empty string makes the constraint "unnamed" again.
+        
         Possible exceptions: (IndexError, ValueError).
         """
 
     def setActive(self, constrid: int, isactive: bool, /):
         """
-        sets the constraint on/off (enforced or not)
+        Activates or deactivates a constraint (enforce it or not).
+
+        setActive(constraintIndex:int, state:bool)
+
+            Args:
+                constraintIndex: The zero-based index of the constraint to configure.
+                state: `True` sets the constraint to active i.e. enforced,
+                    `False` configures it as inactive, i.e. not enforced.
+            
         Possible exceptions: (ValueError).
         """
 
     def setConstruction(self, Index: int, Mode: bool, /):
         """
-        set construction mode of a geometry on or off
+        Set construction mode of a geometry.
+
+        setConstruction(geoId:int, state:bool)
+
+            Args:
+                geoId: The zero-based index of the geometry to configure.
+                state: `True` configures the geometry to "construction geometry",
+                    `False` configures it to regular geometry.
+        
         Possible exceptions: (ValueError).
         """
 
@@ -693,19 +865,43 @@ class SketchObject(PartModule.Part2DObject):
     @typing.overload
     def setDatum(self, constrName: str, Datum: float, /):
         """
-        set the Datum of a Distance or Angle constraint
+        Set the value of a datum constraint (e.g. Distance or Angle)
+
+        setDatum(constraint, value)
+
+            Args:
+                constraint (int or str): The index or name of the constraint to set.
+                value (float or Quantity): The value to set for the constraint. When
+                    using floats, values for linear dimensions are interpreted as
+                    millimeter, angular ones as radians.
+        
         Possible exceptions: (ValueError, TypeError).
         """
 
     def setDatumsDriving(self, driving: bool, /):
         """
-        set the Driving status of datum constraints
+        Set the Driving status of all datum constraints.
+
+        setDatumsDriving(state:bool)
+
+            Args:
+                state: `True` set all datum constraints to driving,
+                    `False` configures them as non-driving, i.e. reference.
+        
         Possible exceptions: (ValueError).
         """
 
     def setDriving(self, constrid: int, driving: bool, /):
         """
-        set the Driving status of a datum constraint
+        Set the Driving status of a datum constraint.
+
+        setDriving(constraintIndex:int, state:bool)
+
+            Args:
+                constraintIndex: The zero-based index of the constraint to configure.
+                state: `True` sets the constraint to driving,
+                    `False` configures it as non-driving, i.e. reference.
+        
         Possible exceptions: (ValueError).
         """
 
@@ -722,7 +918,20 @@ class SketchObject(PartModule.Part2DObject):
         """
 
     def solve(self) -> int:
-        """solve the actual set of geometry and constraints"""
+        """
+        Solve the sketch and update the geometry.
+
+        solve()
+
+            Returns:
+                0 in case of success, otherwise the following codes in this order of
+                priority:
+                -4 if over-constrained,
+                -3 if conflicting constraints,
+                -5 if malformed constraints
+                -1 if solver error,
+                -2 if redundant constraints.
+        """
 
     def split(self, GeoId: int, pcObj: FreeCAD.Vector, /):
         """
@@ -735,19 +944,37 @@ class SketchObject(PartModule.Part2DObject):
 
     def toggleActive(self, constrid: int, /):
         """
-        toggle the active status of constraint (enforced or not)
+        Toggle the constraint between active (enforced) and inactive.
+
+        toggleActive(constraintIndex:int)
+
+            Args:
+                constraintIndex: The zero-based index of the constraint to toggle.
+            
         Possible exceptions: (ValueError).
         """
 
     def toggleConstruction(self, Index: int, /):
         """
-        switch a geometry to a construction line
+        Toggles a geometry between regular and construction.
+
+        toggleConstruction(geoId:int)
+
+            Args:
+                geoId: The zero-based index of the geometry to toggle.
+        
         Possible exceptions: (ValueError).
         """
 
     def toggleDriving(self, constrid: int, /):
         """
-        toggle the Driving status of a datum constraint
+        Toggle the Driving status of a datum constraint.
+
+        toggleDriving(constraintIndex:int)
+
+            Args:
+                constraintIndex: The zero-based index of the constraint to toggle.
+        
         Possible exceptions: (ValueError).
         """
 

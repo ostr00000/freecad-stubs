@@ -50,7 +50,7 @@ def setSchema(index: int, /):
     """
 
 
-def schemaTranslate(q: FreeCAD.Quantity, index: int, /) -> tuple[str, float, str]:
+def schemaTranslate(py: FreeCAD.Quantity, index: int, /) -> tuple[str, float, str]:
     """
     schemaTranslate(Quantity, int) -> tuple
 
@@ -60,7 +60,7 @@ def schemaTranslate(q: FreeCAD.Quantity, index: int, /) -> tuple[str, float, str
 
 
 @typing.overload
-def toNumber(q: FreeCAD.Quantity, format: str = 'g', decimals: int = -1, /) -> str: ...
+def toNumber(py: FreeCAD.Quantity, format: str = 'g', decimals: int = -1, /) -> str: ...
 
 
 @typing.overload
