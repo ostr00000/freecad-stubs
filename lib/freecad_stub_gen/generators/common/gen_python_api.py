@@ -65,7 +65,10 @@ class PythonApiGenerator(BaseGenerator, ABC):
 
     def findFunctionBody(self, cFuncName: str, cClassName: str) -> str | None:
         if cFuncName == 'PyMake':
-            regs = [re.compile(fr'{cFuncName}\s*\(\s*struct\s*_typeobject\s*\*')]
+            regs = [
+                re.compile(fr'{cFuncName}\s*\(\s*struct\s*_typeobject\s*\*'),
+                re.compile(fr'{cFuncName}\s*\(\s*PyTypeObject\s*\*'),
+            ]
         else:
             regs = [
                 re.compile(fr'{cFuncName}\s*\(\s*PyObject\s*\*.*?\)'),

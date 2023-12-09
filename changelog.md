@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Do not show default argument when argument is required by C API.
+- Updated generator code for recent changes in FreeCAD src code.
 
 ### Deprecated
 
