@@ -1,7 +1,7 @@
 import logging
 import re
 from collections.abc import Iterator
-from inspect import Parameter, _ParameterKind
+from inspect import Parameter, _ParameterKind, _empty
 
 from freecad_stub_gen.cpp_code.converters import convertToPythonValue
 from freecad_stub_gen.generators.common.annotation_parameter import (
@@ -49,6 +49,7 @@ class TypesConverter:
         self.requiredImports = requiredImports
         self._sequenceStack = SequenceStack()
         self._isArgOptional = False
+        self._isArgWithDefaultValue = False
 
         if self.fun.kwargList:
             self._parameterKind: _ParameterKind = Parameter.POSITIONAL_OR_KEYWORD
@@ -159,7 +160,10 @@ class TypesConverter:
             raise TypeError
 
         if defaultValue is MISSING_DEFAULT_ARG:
-            defaultValue = self._getDefaultValue(curFormat, self._cArgNum)
+            if self._isArgWithDefaultValue:
+                defaultValue = self._getDefaultValue(curFormat, self._cArgNum)
+            else:
+                defaultValue = _empty
 
         if self._sequenceStack:
             self._sequenceStack.addElementToSequence(
@@ -229,8 +233,10 @@ class TypesConverter:
         curVal = self._remainingFormat[0]
         if curVal == '|':
             self._isArgOptional = True
+            self._isArgWithDefaultValue = True
         elif curVal == '$':
             self._isArgOptional = True
+            self._isArgWithDefaultValue = True
             self._parameterKind = Parameter.KEYWORD_ONLY
         elif curVal in ':;':
             self._remainingFormat = ''

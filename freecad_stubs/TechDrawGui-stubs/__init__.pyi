@@ -24,35 +24,35 @@ def exportPageAsSvg(pageObj, name: str, /) -> None:
     """
 
 
-def addQGIToView(viewPy: TechDraw.DrawView = None, qgiPy=None, /) -> None:
+def addQGIToView(viewPy: TechDraw.DrawView, qgiPy, /) -> None:
     """
     addQGIToView(View, QGraphicsItem) -- insert graphics item into view's graphic.
     Possible exceptions: (TypeError, RuntimeError, Exception).
     """
 
 
-def addQGObjToView(viewPy: TechDraw.DrawView = None, qgiPy=None, /) -> None:
+def addQGObjToView(viewPy: TechDraw.DrawView, qgiPy, /) -> None:
     """
     addQGObjToView(View, QGraphicsObject) -- insert graphics object into view's graphic. Use for QGraphicsItems that have QGraphicsObject as base class.
     Possible exceptions: (TypeError, RuntimeError, Exception).
     """
 
 
-def addQGIToScene(pagePy: TechDraw.DrawPage = None, qgiPy=None, /) -> None:
+def addQGIToScene(pagePy: TechDraw.DrawPage, qgiPy, /) -> None:
     """
     addQGIToScene(Page, QGraphicsItem) -- insert graphics item into Page's scene.
     Possible exceptions: (TypeError, RuntimeError, Exception).
     """
 
 
-def addQGObjToScene(pagePy: TechDraw.DrawPage = None, qgiPy=None, /) -> None:
+def addQGObjToScene(pagePy: TechDraw.DrawPage, qgiPy, /) -> None:
     """
     addQGObjToScene(Page, QGraphicsObject) -- insert graphics object into Page's scene. Use for QGraphicsItems that have QGraphicsObject as base class.
     Possible exceptions: (TypeError, RuntimeError, Exception).
     """
 
 
-def getSceneForPage(pagePy: TechDraw.DrawPage = None, /) -> qtpy.QtCore.QObject | None:
+def getSceneForPage(pagePy: TechDraw.DrawPage, /) -> qtpy.QtCore.QObject | None:
     """
     QGSPage = getSceneForPage(page) -- get the scene for a DrawPage.
     Possible exceptions: (TypeError, RuntimeError, Exception).

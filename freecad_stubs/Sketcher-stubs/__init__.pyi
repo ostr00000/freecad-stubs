@@ -104,7 +104,7 @@ class Constraint(FreeCAD.Persistence):
     def __init__(self, ConstraintType: str, intArg1: int, intArg2: int, intArg3: int, intArg4: int, oNumArg5, /): ...
 
     @typing.overload
-    def __init__(self, ConstraintType: str, FirstIndex: int, FirstPos: int, SecondIndex: int = -1, SecondPos: int = None, ThirdIndex: int = None, arg7=None, /):
+    def __init__(self, ConstraintType: str, FirstIndex: int, FirstPos: int, SecondIndex: int, SecondPos: int, ThirdIndex: int, arg7, /):
         """
         With this object you can handle sketches
         Possible exceptions: (TypeError).
@@ -403,7 +403,7 @@ class SketchObject(PartModule.Part2DObject):
         Possible exceptions: (TypeError).
         """
 
-    def addRectangularArray(self, pcObj, pcVect: FreeCAD.Vector, clone: bool = False, rows: int = None, cols: int = None, constraindisplacement: bool = False, perpscale: float = 1.0, /):
+    def addRectangularArray(self, pcObj, pcVect: FreeCAD.Vector, clone: bool, rows: int, cols: int, constraindisplacement: bool = False, perpscale: float = 1.0, /):
         """
         add an array of size cols by rows where each element is a copy of the selected geometric objects displaced by a vector3d in the cols direction and by a vector perpendicular to it in the rows direction
         Possible exceptions: (TypeError, ValueError).
@@ -431,7 +431,7 @@ class SketchObject(PartModule.Part2DObject):
         Possible exceptions: (ValueError).
         """
 
-    def calculateAngleViaPoint(self, GeoId1: int = 0, GeoId2: int = 0, px: float = 0, py: float = 0, /) -> float:
+    def calculateAngleViaPoint(self, GeoId1: int, GeoId2: int, px: float, py: float, /) -> float:
         """
         calculateAngleViaPoint(GeoId1, GeoId2, px, py) - calculates angle between
                   curves identified by GeoId1 and GeoId2 at point (x,y). The point must be
@@ -441,7 +441,7 @@ class SketchObject(PartModule.Part2DObject):
         Possible exceptions: (ValueError).
         """
 
-    def calculateConstraintError(self, ic: int = -1, /) -> float:
+    def calculateConstraintError(self, ic: int, /) -> float:
         """
         calculateConstraintError(index) - calculates the error function of the
                   constraint identified by its index and returns the signed error value.
@@ -465,7 +465,7 @@ class SketchObject(PartModule.Part2DObject):
         Possible exceptions: (ValueError).
         """
 
-    def changeConstraintsLocking(self, bLock: int = 0, /) -> int:
+    def changeConstraintsLocking(self, bLock: int, /) -> int:
         """
         changeConstraintsLocking(bLock) - locks or unlocks all tangent and
                   perpendicular constraints. (Constraint locking prevents it from
@@ -659,7 +659,7 @@ class SketchObject(PartModule.Part2DObject):
         """
 
     @typing.overload
-    def getDatum(self, index: int = 0, /) -> FreeCAD.Quantity: ...
+    def getDatum(self, index: int, /) -> FreeCAD.Quantity: ...
 
     @typing.overload
     def getDatum(self, name: str, /) -> FreeCAD.Quantity:
@@ -747,7 +747,7 @@ class SketchObject(PartModule.Part2DObject):
         Possible exceptions: (ValueError).
         """
 
-    def isPointOnCurve(self, GeoId: int, px: float = 0, py: float = 0, /) -> bool:
+    def isPointOnCurve(self, GeoId: int, px: float, py: float, /) -> bool:
         """
         isPointOnObject(GeoIdCurve, float x, float y) - tests if the point (x,y)
                   geometrically lies on a curve (e.g. ellipse). It treats lines as infinite,

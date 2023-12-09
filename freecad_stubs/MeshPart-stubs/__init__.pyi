@@ -6,7 +6,7 @@ import Part as PartModule
 
 
 # AppMeshPartPy.cpp
-def loftOnCurve(pcTopoObj: PartModule.Shape, pcListObj, x_y_z: tuple[float, float, float] = (0.0, 0.0, 1.0), size: float = 0.1, /) -> MeshModule.Mesh:
+def loftOnCurve(pcTopoObj: PartModule.Shape, pcListObj, x_y_z: tuple[float, float, float], size: float, /) -> MeshModule.Mesh:
     """
     Creates a mesh loft based on a curve and an up vector
 
@@ -88,35 +88,35 @@ def meshFromShape(shape: PartModule.Shape, /) -> MeshModule.Mesh: ...
 
 
 @typing.overload
-def meshFromShape(Shape: PartModule.Shape, LinearDeflection: float = 0, AngularDeflection: float = 0.5, Relative: bool = False, Segments: bool = False, GroupColors=None) -> MeshModule.Mesh: ...
+def meshFromShape(Shape: PartModule.Shape, GrowthRate: float = 0, SegPerEdge: float = 0, SegPerRadius: float = 0, SecondOrder: int = 0, Optimize: int = 1, AllowQuad: int = 0, MinLength: float = 0, MaxLength: float = 0) -> MeshModule.Mesh: ...
 
 
 @typing.overload
-def meshFromShape(Shape: PartModule.Shape, MaxLength: float = 0) -> MeshModule.Mesh: ...
+def meshFromShape(Shape: PartModule.Shape, LinearDeflection: float, AngularDeflection: float = 0.5, Relative: bool = False, Segments: bool = False, GroupColors=None) -> MeshModule.Mesh: ...
 
 
 @typing.overload
-def meshFromShape(Shape: PartModule.Shape, MaxArea: float = 0) -> MeshModule.Mesh: ...
+def meshFromShape(Shape: PartModule.Shape, MaxLength: float) -> MeshModule.Mesh: ...
 
 
 @typing.overload
-def meshFromShape(Shape: PartModule.Shape, LocalLength: float = 0) -> MeshModule.Mesh: ...
+def meshFromShape(Shape: PartModule.Shape, MaxArea: float) -> MeshModule.Mesh: ...
 
 
 @typing.overload
-def meshFromShape(Shape: PartModule.Shape, Deflection: float = 0) -> MeshModule.Mesh: ...
+def meshFromShape(Shape: PartModule.Shape, LocalLength: float) -> MeshModule.Mesh: ...
 
 
 @typing.overload
-def meshFromShape(Shape: PartModule.Shape, MinLength: float = 0, MaxLength: float = 0) -> MeshModule.Mesh: ...
+def meshFromShape(Shape: PartModule.Shape, Deflection: float) -> MeshModule.Mesh: ...
 
 
 @typing.overload
-def meshFromShape(Shape: PartModule.Shape, Fineness: int = 0, SecondOrder: int = 0, Optimize: int = 1, AllowQuad: int = 0, MinLength: float = 0, MaxLength: float = 0) -> MeshModule.Mesh: ...
+def meshFromShape(Shape: PartModule.Shape, Fineness: int, SecondOrder: int = 0, Optimize: int = 1, AllowQuad: int = 0, MinLength: float = 0, MaxLength: float = 0) -> MeshModule.Mesh: ...
 
 
 @typing.overload
-def meshFromShape(Shape: PartModule.Shape, GrowthRate: float = 0, SegPerEdge: float = 0, SegPerRadius: float = 0, SecondOrder: int = 0, Optimize: int = 1, AllowQuad: int = 0, MinLength: float = 0, MaxLength: float = 0) -> MeshModule.Mesh:
+def meshFromShape(Shape: PartModule.Shape, MinLength: float, MaxLength: float) -> MeshModule.Mesh:
     """
     Create surface mesh from shape
 

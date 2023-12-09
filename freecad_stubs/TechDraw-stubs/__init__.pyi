@@ -1371,7 +1371,7 @@ class DrawViewPart(TechDraw.DrawView):
     def clearGeomFormats(self):
         """clearGeomFormats() - remove all GeomFormats from the View. Returns None."""
 
-    def formatGeometricEdge(self, idx: int = -1, style: int = None, weight: float = 0.5, pColor=None, visible: int = 1, /):
+    def formatGeometricEdge(self, idx: int, style: int, weight: float, pColor, visible: int, /):
         """formatGeometricEdge(index, style, weight, color, visible). Returns None."""
 
     def getCenterLine(self, tag: str, /) -> TechDraw.CenterLine:
@@ -1392,7 +1392,7 @@ class DrawViewPart(TechDraw.DrawView):
     def getCosmeticVertexBySelection(self, selName: str, /) -> TechDraw.CosmeticVertex:
         """cv = getCosmeticVertexBySelection(name) - returns CosmeticVertex with name (Vertex6).  Used in selections."""
 
-    def getEdgeByIndex(self, edgeIndex: int = 0, /) -> PartModule.Edge:
+    def getEdgeByIndex(self, edgeIndex: int, /) -> PartModule.Edge:
         """
         getEdgeByIndex(edgeIndex). Returns Part.TopoShape.
         Possible exceptions: (ValueError).
@@ -1407,7 +1407,7 @@ class DrawViewPart(TechDraw.DrawView):
     def getHiddenEdges(self) -> list[PartModule.Edge]:
         """getHiddenEdges() - get the hidden edges in the View as Part::TopoShapeEdges"""
 
-    def getVertexByIndex(self, vertexIndex: int = 0, /) -> PartModule.Vertex:
+    def getVertexByIndex(self, vertexIndex: int, /) -> PartModule.Vertex:
         """
         getVertexByIndex(vertexIndex). Returns Part.TopoShape.
         Possible exceptions: (ValueError).
@@ -1422,55 +1422,55 @@ class DrawViewPart(TechDraw.DrawView):
     def getVisibleEdges(self) -> list[PartModule.Edge]:
         """getVisibleEdges() - get the visible edges in the View as Part::TopoShapeEdges"""
 
-    def makeCenterLine(self, pSubs: list, mode: int = 0, /) -> str:
+    def makeCenterLine(self, pSubs: list, mode: int, /) -> str:
         """
         makeCenterLine(subNames, mode) - draw a center line on this viewPart. SubNames is a list of n Faces, 2 Edges or 2 Vertices (ex [Face1,Face2,Face3]. Returns unique tag of added CenterLine.
         Possible exceptions: (TypeError, RuntimeError).
         """
 
-    def makeCosmeticCircle(self, pPnt1: FreeCAD.Vector = None, radius: float = 5.0, style: int = None, weight: float = None, pColor: tuple = None, /) -> str:
+    def makeCosmeticCircle(self, pPnt1: FreeCAD.Vector, radius: float, style: int = None, weight: float = None, pColor: tuple = None, /) -> str:
         """
         tag = makeCosmeticCircle(center, radius) - add a CosmeticEdge at center with radius radius(View coordinates). Returns tag of new CosmeticEdge.
         Possible exceptions: (RuntimeError).
         """
 
-    def makeCosmeticCircle3d(self, pPnt1: FreeCAD.Vector = None, radius: float = 5.0, style: int = None, weight: float = None, pColor: tuple = None, /) -> str:
+    def makeCosmeticCircle3d(self, pPnt1: FreeCAD.Vector, radius: float, style: int = None, weight: float = None, pColor: tuple = None, /) -> str:
         """
         tag = makeCosmeticCircle3d(center, radius) - add a CosmeticEdge at center (3d point) with radius. Returns tag of new CosmeticEdge.
         Possible exceptions: (RuntimeError).
         """
 
-    def makeCosmeticCircleArc(self, pPnt1: FreeCAD.Vector = None, radius: float = 5.0, angle1: float = 0.0, angle2: float = 360.0, style: int = None, weight: float = None, pColor: tuple = None, /) -> str:
+    def makeCosmeticCircleArc(self, pPnt1: FreeCAD.Vector, radius: float, angle1: float, angle2: float, style: int = None, weight: float = None, pColor: tuple = None, /) -> str:
         """
         tag = makeCosmeticCircleArc(center, radius, start, end) - add a CosmeticEdge at center with radius radius(View coordinates) from start angle to end angle. Returns tag of new CosmeticEdge.
         Possible exceptions: (RuntimeError).
         """
 
-    def makeCosmeticCircleArc3d(self, pPnt1: FreeCAD.Vector = None, radius: float = 5.0, angle1: float = 0.0, angle2: float = 360.0, style: int = None, weight: float = None, pColor: tuple = None, /) -> str:
+    def makeCosmeticCircleArc3d(self, pPnt1: FreeCAD.Vector, radius: float, angle1: float, angle2: float, style: int = None, weight: float = None, pColor: tuple = None, /) -> str:
         """
         tag = makeCosmeticCircleArc3d(center, radius, start, end) - add a CosmeticEdge at center (3d point) with radius from start angle to end angle. Returns tag of new CosmeticEdge.
         Possible exceptions: (RuntimeError).
         """
 
-    def makeCosmeticLine(self, pPnt1: FreeCAD.Vector = None, pPnt2: FreeCAD.Vector = None, style: int = None, weight: float = None, pColor: tuple = None, /) -> str:
+    def makeCosmeticLine(self, pPnt1: FreeCAD.Vector, pPnt2: FreeCAD.Vector, style: int = None, weight: float = None, pColor: tuple = None, /) -> str:
         """
         tag = makeCosmeticLine(p1, p2) - add a CosmeticEdge from p1 to p2(View coordinates). Returns tag of new CosmeticEdge.
         Possible exceptions: (RuntimeError).
         """
 
-    def makeCosmeticLine3D(self, pPnt1: FreeCAD.Vector = None, pPnt2: FreeCAD.Vector = None, style: int = None, weight: float = None, pColor: tuple = None, /) -> str:
+    def makeCosmeticLine3D(self, pPnt1: FreeCAD.Vector, pPnt2: FreeCAD.Vector, style: int = None, weight: float = None, pColor: tuple = None, /) -> str:
         """
         tag = makeCosmeticLine3D(p1, p2) - add a CosmeticEdge from p1 to p2(3D coordinates). Returns tag of new CosmeticEdge.
         Possible exceptions: (RuntimeError).
         """
 
-    def makeCosmeticVertex(self, pPnt1: FreeCAD.Vector = None, /) -> str:
+    def makeCosmeticVertex(self, pPnt1: FreeCAD.Vector, /) -> str:
         """id = makeCosmeticVertex(p1) - add a CosmeticVertex at p1 (View coordinates). Returns unique id vertex."""
 
-    def makeCosmeticVertex3d(self, pPnt1: FreeCAD.Vector = None, /) -> str:
+    def makeCosmeticVertex3d(self, pPnt1: FreeCAD.Vector, /) -> str:
         """id = makeCosmeticVertex3d(p1) - add a CosmeticVertex at p1 (3d model coordinates). Returns unique id vertex."""
 
-    def projectPoint(self, pPoint: FreeCAD.Vector = None, pInvert: bool = False, /) -> FreeCAD.Vector:
+    def projectPoint(self, pPoint: FreeCAD.Vector, pInvert: bool = False, /) -> FreeCAD.Vector:
         """
         projectPoint(vector3d point, [bool invert]). Returns the projection of point in the
                 projection coordinate system of this DrawViewPart. Optionally inverts the Y coordinate of the
@@ -1487,10 +1487,10 @@ class DrawViewPart(TechDraw.DrawView):
     def removeCosmeticVertex(self, tag: str, /): ...
 
     @typing.overload
-    def removeCosmeticVertex(self, pCVToDelete: TechDraw.CosmeticVertex = None, /): ...
+    def removeCosmeticVertex(self, pCVToDelete: TechDraw.CosmeticVertex, /): ...
 
     @typing.overload
-    def removeCosmeticVertex(self, pDelList=None, /):
+    def removeCosmeticVertex(self, pDelList, /):
         """
         removeCosmeticVertex(cv) - remove CosmeticVertex from View. Returns None.
         Possible exceptions: (TypeError).
@@ -1905,14 +1905,14 @@ class GeomFormat(FreeCAD.PyObjectBase):
 
 
 # AppTechDrawPy.cpp
-def edgeWalker(pcObj: list = None, inclBig=True, /) -> list[PartModule.Wire] | None:
+def edgeWalker(pcObj: list, inclBig=True, /) -> list[PartModule.Wire] | None:
     """
     [wires] = edgeWalker(edgePile, inclBiggest) -- Planar graph traversal finds wires in edge pile.
     Possible exceptions: (TypeError, Part.OCCError, Exception).
     """
 
 
-def findOuterWire(pcObj: list = None, /) -> PartModule.Wire | None:
+def findOuterWire(pcObj: list, /) -> PartModule.Wire | None:
     """
     wire = findOuterWire(edgeList) -- Planar graph traversal finds OuterWire in edge pile.
     Possible exceptions: (TypeError, Part.OCCError, Exception).
@@ -1961,7 +1961,7 @@ def findCentroid(pcObjShape, pcObjDir, /) -> FreeCAD.Vector | None:
     """
 
 
-def makeExtentDim(pDvp, pEdgeList: list, direction: int = 0, /) -> None:
+def makeExtentDim(pDvp, pEdgeList: list, direction: int, /) -> None:
     """
     makeExtentDim(DrawViewPart, [edges], direction) -- draw horizontal or vertical extent dimension for edges (or all of DrawViewPart if edge list is empty. direction:  0 - Horizontal, 1 - Vertical.
     Possible exceptions: (TypeError, Part.OCCError).
@@ -2047,7 +2047,7 @@ def build3dCurves(pcObjShape: PartModule.Shape, /) -> PartModule.Shape:
     """
 
 
-def projectToSVG(topoShape: PartModule.Shape = None, direction: FreeCAD.Vector = None, type: str = None, tolerance: float = 0.1, vStyle=None, v0Style=None, v1Style=None, hStyle=None, h0Style=None, h1Style=None) -> str:
+def projectToSVG(topoShape: PartModule.Shape, direction: FreeCAD.Vector = None, type: str = None, tolerance: float = 0.1, vStyle=None, v0Style=None, v1Style=None, hStyle=None, h0Style=None, h1Style=None) -> str:
     """
     string = projectToSVG(TopoShape[, App.Vector direction, string type, float tolerance, dict vStyle, dict v0Style, dict v1Style, dict hStyle, dict h0Style, dict h1Style])
      -- Project a shape and return the SVG representation as string.

@@ -162,7 +162,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
     def addNode(self, x: float, y: float, z: float, /) -> int: ...
 
     @typing.overload
-    def addNode(self, x: float, y: float, z: float, i: int = -1, /) -> int:
+    def addNode(self, x: float, y: float, z: float, i: int, /) -> int:
         """
         Add a node by setting (x,y,z).
         Possible exceptions: (FreeCAD.Base.FreeCADError, TypeError).
@@ -436,14 +436,14 @@ def read(Name: str, /) -> Fem.FemMesh:
     """
 
 
-def readResult(fileName: str = None, objName: str = None, /) -> None:
+def readResult(fileName: str, objName: str = None, /) -> None:
     """
     Read a CFD or Mechanical result (auto detect) from a file (file format detected from file suffix)
     Possible exceptions: (Exception).
     """
 
 
-def writeResult(fileName: str = None, pcObj: FreeCAD.DocumentObject = None, /) -> None:
+def writeResult(fileName: str, pcObj: FreeCAD.DocumentObject = None, /) -> None:
     """
     write a CFD or FEM result (auto detect) to a file (file format detected from file suffix)
     Possible exceptions: (Exception).

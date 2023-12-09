@@ -296,10 +296,10 @@ class SheetViewPy:
         """
 
     @typing.overload
-    def select(self, cell: str, flags: int = 0, /) -> None: ...
+    def select(self, cell: str, flags: int, /) -> None: ...
 
     @typing.overload
-    def select(self, topLeft: str, bottomRight: str, flags: int = 0, /) -> None:
+    def select(self, topLeft: str, bottomRight: str, flags: int, /) -> None:
         """
         select(cell,flags): Select (or deselect) the given cell, applying QItemSelectionModel.SelectionFlags
         select(topLeft,bottomRight,flags): Select (or deselect) the given range, applying QItemSelectionModel.SelectionFlags

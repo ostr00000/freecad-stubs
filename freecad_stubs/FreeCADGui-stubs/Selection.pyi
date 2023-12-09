@@ -269,7 +269,7 @@ def getSelectionObject(docName: str, objName: str, subName: str, tuple: tuple = 
     """
 
 
-def setSelectionStyle(selStyle: int = 0, /):
+def setSelectionStyle(selStyle: int, /):
     """
     setSelectionStyle(selectionStyle) -> None
 

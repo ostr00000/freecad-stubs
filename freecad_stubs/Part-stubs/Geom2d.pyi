@@ -49,10 +49,10 @@ class Curve2d(Part.Geom2d.Geometry2d):
         """
 
     @typing.overload
-    def discretize(self, Number: int = -1, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
+    def discretize(self, Number: int, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
 
     @typing.overload
-    def discretize(self, Distance: float = -1, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
+    def discretize(self, Distance: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
 
     @typing.overload
     def discretize(self, Deflection: float, First: float = None, Last: float = None) -> list[FreeCAD.Vector2d]: ...
@@ -67,10 +67,10 @@ class Curve2d(Part.Geom2d.Geometry2d):
     def discretize(self, Angular: float, Curvature: float, First: float = None, Last: float = None, Minimum: int = 2) -> list[FreeCAD.Vector2d]: ...
 
     @typing.overload
-    def discretize(self, Number: int = -1, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector2d]: ...
+    def discretize(self, Number: int, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector2d]: ...
 
     @typing.overload
-    def discretize(self, Distance: float = -1, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector2d]: ...
+    def discretize(self, Distance: float, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector2d]: ...
 
     @typing.overload
     def discretize(self, Deflection: float, First: float = 3.14, Last: float = None) -> list[FreeCAD.Vector2d]: ...
@@ -830,7 +830,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def buildFromPolesMultsKnots(self, poles=None, mults=None, knots=None, periodic: bool = False, degree: int = 3, weights=None):
+    def buildFromPolesMultsKnots(self, poles, mults=None, knots=None, periodic: bool = False, degree: int = 3, weights=None):
         """
         Builds a B-Spline by a lists of Poles, Mults, Knots.
                         arguments: poles (sequence of Base.Vector), [mults , knots, periodic, degree, weights (sequence of float), CheckRational]
@@ -1139,7 +1139,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
     def toBezier(self) -> list[Part.Geom2d.BezierCurve2d]:
         """Build a list of Bezier splines."""
 
-    def toBiArcs(self, tolerance: float = 0.001, /) -> list:
+    def toBiArcs(self, tolerance: float, /) -> list:
         """
         Build a list of arcs and lines to approximate the B-spline.
                             toBiArcs(tolerance) -> list.

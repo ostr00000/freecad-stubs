@@ -150,7 +150,7 @@ class LinkView(FreeCAD.BaseClass):
     def Visibilities(self) -> object | tuple[bool, ...]:
         """Get/set the child element visibility"""
 
-    def getBoundBox(self, vobj=None, /) -> FreeCAD.BoundBox:
+    def getBoundBox(self, vobj, /) -> FreeCAD.BoundBox:
         """getBoundBox(vobj=None): get the bounding box."""
 
     def getChildren(self) -> tuple[typing.Any, ...]:
@@ -714,13 +714,13 @@ class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
 class ViewProviderExtension(FreeCAD.Extension):
     """Base class for all view provider extensions"""
 
-    def ignoreOverlayIcon(self, name: str = None, /) -> bool:
+    def ignoreOverlayIcon(self, name: str, /) -> bool:
         """
         Ignore the overlay icon of an extension
         Possible exceptions: (NameError).
         """
 
-    def setIgnoreOverlayIcon(self, ignore: bool, name: str = None, /):
+    def setIgnoreOverlayIcon(self, ignore: bool, name: str, /):
         """
         Ignore the overlay icon of an extension
         Possible exceptions: (NameError).
@@ -755,7 +755,7 @@ class Command(FreeCAD.PyObjectBase):
         """
 
     @staticmethod
-    def findCustomCommand(macroScriptName: str = None, /) -> typing.Any | str:
+    def findCustomCommand(macroScriptName: str, /) -> typing.Any | str:
         """
         findCustomCommand(name) -> str or None
 
@@ -830,7 +830,7 @@ class Command(FreeCAD.PyObjectBase):
         """
 
     @staticmethod
-    def removeCustomCommand(actionName: str = None, /) -> bool:
+    def removeCustomCommand(actionName: str, /) -> bool:
         """
         removeCustomCommand(name) -> bool
 
@@ -1788,7 +1788,10 @@ class View3DInventorPy:
         """
 
     @typing.overload
-    def setStereoType(self, stereomode: int = -1, /) -> None: ...
+    def setStereoType(self): ...
+
+    @typing.overload
+    def setStereoType(self, stereomode: int, /) -> None: ...
 
     @typing.overload
     def setStereoType(self, modename: str, /) -> None:
@@ -1846,7 +1849,10 @@ class View3DInventorPy:
         """
 
     @typing.overload
-    def setCameraType(self, cameratype: int = -1, /) -> None: ...
+    def setCameraType(self): ...
+
+    @typing.overload
+    def setCameraType(self, cameratype: int, /) -> None: ...
 
     @typing.overload
     def setCameraType(self, modename: str, /) -> None:
@@ -2059,7 +2065,7 @@ class View3DInventorPy:
         Possible exceptions: (Exception).
         """
 
-    def setCornerCrossSize(self, size: int = 0, /) -> None:
+    def setCornerCrossSize(self, size: int, /) -> None:
         """
         setCornerCrossSize(int): Defines corner axis cross size
         Possible exceptions: (Exception).
@@ -2600,7 +2606,7 @@ def supportedLocales() -> dict[str, str]:
     """
 
 
-def createDialog(fn: str = None, /):
+def createDialog(fn: str, /):
     """
     createDialog(path) -> PyResource
 
@@ -2778,7 +2784,7 @@ def activeDocument() -> FreeCADGui.Document:
 
 
 @typing.overload
-def setActiveDocument(pstr: str = None, /): ...
+def setActiveDocument(pstr: str, /): ...
 
 
 @typing.overload
@@ -2806,7 +2812,7 @@ def activeView(typeName: str = None, /) -> FreeCADGui.MDIViewPy:
     """
 
 
-def activateView(typeStr: str, create: bool = False, /):
+def activateView(typeStr: str, create: bool, /):
     """
     activateView(typeName, create=False) -> None
 
@@ -2830,7 +2836,7 @@ def editDocument() -> FreeCADGui.Document:
 
 
 @typing.overload
-def getDocument(pstr: str = None, /) -> FreeCADGui.Document: ...
+def getDocument(pstr: str, /) -> FreeCADGui.Document: ...
 
 
 @typing.overload
@@ -2846,7 +2852,7 @@ def getDocument(doc: FreeCAD.Document, /) -> FreeCADGui.Document:
     """
 
 
-def doCommand(sCmd: str = None, /):
+def doCommand(sCmd: str, /):
     """
     doCommand(cmd) -> None
 
@@ -2856,7 +2862,7 @@ def doCommand(sCmd: str = None, /):
     """
 
 
-def doCommandGui(sCmd: str = None, /):
+def doCommandGui(sCmd: str, /):
     """
     doCommandGui(cmd) -> None
 
@@ -2981,7 +2987,7 @@ def getUserEditMode() -> str:
     """
 
 
-def setUserEditMode(mode: str = '', /) -> bool:
+def setUserEditMode(mode: str, /) -> bool:
     """
     setUserEditMode(mode) -> bool
 
@@ -3112,7 +3118,7 @@ class View3DInventorViewerPy:
         Possible exceptions: (Exception).
         """
 
-    def setPickRadius(self, r: float = 0.0, /) -> None:
+    def setPickRadius(self, r: float, /) -> None:
         """
         setPickRadius(new_radius): sets radius of confusion in pixels for picking objects on screen (selection).
         Possible exceptions: (Exception, RuntimeError).
@@ -3134,7 +3140,7 @@ class View3DInventorViewerPy:
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def setBackgroundColor(self, red: float, green: float, blue: float = 0.0, /) -> None:
+    def setBackgroundColor(self, red: float, green: float, blue: float, /) -> None:
         """
         setBackgroundColor(r,g,b): sets the background color of the current viewer.
         Possible exceptions: (Exception, RuntimeError).
@@ -3152,7 +3158,7 @@ class View3DInventorViewerPy:
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def setRedirectToSceneGraph(self, m: bool = False, /) -> None:
+    def setRedirectToSceneGraph(self, m: bool, /) -> None:
         """
         setRedirectToSceneGraph(bool): enables or disables to redirect events directly to the scene graph.
         Possible exceptions: (Exception).
@@ -3170,7 +3176,7 @@ class View3DInventorViewerPy:
         Possible exceptions: (Exception).
         """
 
-    def setEnabledNaviCube(self, m: bool = False, /) -> None:
+    def setEnabledNaviCube(self, m: bool, /) -> None:
         """
         setEnabledNaviCube(bool): enables or disables the navi cube of the viewer.
         Possible exceptions: (Exception).

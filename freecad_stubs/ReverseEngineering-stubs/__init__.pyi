@@ -82,7 +82,12 @@ def fitBSpline(Points: PointsModule.Points, Degree: int = 2, Refinement: int = 4
     """
 
 
-def filterVoxelGrid(Points: PointsModule.Points, DimX: float = 0, DimY: float = 0, DimZ: float = 0) -> PointsModule.Points:
+@typing.overload
+def filterVoxelGrid(dim, /): ...
+
+
+@typing.overload
+def filterVoxelGrid(Points: PointsModule.Points, DimX: float, DimY: float = 0, DimZ: float = 0) -> PointsModule.Points:
     """
     filterVoxelGrid(dim).
     Possible exceptions: (Exception).
@@ -136,7 +141,12 @@ def featureSegmentation(Points: PointsModule.Points, KSearch: int = 5) -> list[t
     """
 
 
-def sampleConsensus(SacModel: str = None, Points: PointsModule.Points = None, Normals=None) -> dict[str, float | tuple[float, ...] | tuple[int, ...]]:
+@typing.overload
+def sampleConsensus(): ...
+
+
+@typing.overload
+def sampleConsensus(SacModel: str, Points: PointsModule.Points, Normals=None) -> dict[str, float | tuple[float, ...] | tuple[int, ...]]:
     """
     sampleConsensus().
     Possible exceptions: (Exception).

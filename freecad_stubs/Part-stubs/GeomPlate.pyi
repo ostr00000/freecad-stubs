@@ -120,7 +120,7 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
 class CurveConstraintPy(FreeCAD.PyObjectBase):
     """Defines curves as constraints to be used to deform a surface"""
 
-    def __init__(self, Boundary: PartModule.Curve = None, Order: int = 0, NbPts: int = 10, TolDist: float = 0.0001, TolAng: float = 0.01, TolCurv: float = 0.1):
+    def __init__(self, Boundary: PartModule.Curve, Order: int = 0, NbPts: int = 10, TolDist: float = 0.0001, TolAng: float = 0.01, TolCurv: float = 0.1):
         """
         Defines curves as constraints to be used to deform a surface
         Possible exceptions: (ReferenceError, RuntimeError).

@@ -50,7 +50,7 @@ class PyObjectBase(object): ...
 class ParameterGrp:
     """Python interface class to set parameters"""
 
-    def GetGroup(self, pstr: str = None, /) -> FreeCAD.ParameterGrp:
+    def GetGroup(self, pstr: str, /) -> FreeCAD.ParameterGrp:
         """
         GetGroup(str)
         Possible exceptions: (Exception, RuntimeError).
@@ -68,13 +68,13 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
-    def RemGroup(self, pstr: str = None, /) -> None:
+    def RemGroup(self, pstr: str, /) -> None:
         """
         RemGroup(str)
         Possible exceptions: (Exception).
         """
 
-    def HasGroup(self, pstr: str = None, /) -> bool:
+    def HasGroup(self, pstr: str, /) -> bool:
         """
         HasGroup(str)
         Possible exceptions: (Exception).
@@ -104,13 +104,17 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
-    def Attach(self, obj=None, /) -> None:
+    @typing.overload
+    def Attach(self): ...
+
+    @typing.overload
+    def Attach(self, obj, /) -> None:
         """
         Attach()
         Possible exceptions: (Exception, TypeError, RuntimeError).
         """
 
-    def AttachManager(self, obj=None, /) -> None:
+    def AttachManager(self, obj, /) -> None:
         """
         AttachManager(observer) -- attach parameter manager for notification
 
@@ -136,13 +140,21 @@ class ParameterGrp:
         Possible exceptions: (Exception, RuntimeError, TypeError).
         """
 
-    def Detach(self, obj=None, /) -> None:
+    @typing.overload
+    def Detach(self): ...
+
+    @typing.overload
+    def Detach(self, obj, /) -> None:
         """
         Detach()
         Possible exceptions: (Exception, TypeError).
         """
 
-    def Notify(self, pstr: str = None, /) -> None:
+    @typing.overload
+    def Notify(self): ...
+
+    @typing.overload
+    def Notify(self, pstr: str, /) -> None:
         """
         Notify()
         Possible exceptions: (Exception).
@@ -154,13 +166,21 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
-    def SetBool(self, pstr: str = None, Bool: int = 0, /) -> None:
+    @typing.overload
+    def SetBool(self): ...
+
+    @typing.overload
+    def SetBool(self, pstr: str, Bool: int, /) -> None:
         """
         SetBool()
         Possible exceptions: (Exception).
         """
 
-    def GetBool(self, pstr: str = None, Bool: int = 0, /) -> bool:
+    @typing.overload
+    def GetBool(self): ...
+
+    @typing.overload
+    def GetBool(self, pstr: str, Bool: int = 0, /) -> bool:
         """
         GetBool()
         Possible exceptions: (Exception).
@@ -172,19 +192,31 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
-    def RemBool(self, pstr: str = None, /) -> None:
+    @typing.overload
+    def RemBool(self): ...
+
+    @typing.overload
+    def RemBool(self, pstr: str, /) -> None:
         """
         RemBool()
         Possible exceptions: (Exception).
         """
 
-    def SetInt(self, pstr: str = None, Int: int = 0, /) -> None:
+    @typing.overload
+    def SetInt(self): ...
+
+    @typing.overload
+    def SetInt(self, pstr: str, Int: int, /) -> None:
         """
         SetInt()
         Possible exceptions: (Exception).
         """
 
-    def GetInt(self, pstr: str = None, Int: int = 0, /) -> int:
+    @typing.overload
+    def GetInt(self): ...
+
+    @typing.overload
+    def GetInt(self, pstr: str, Int: int = 0, /) -> int:
         """
         GetInt()
         Possible exceptions: (Exception).
@@ -196,19 +228,31 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
-    def RemInt(self, pstr: str = None, /) -> None:
+    @typing.overload
+    def RemInt(self): ...
+
+    @typing.overload
+    def RemInt(self, pstr: str, /) -> None:
         """
         RemInt()
         Possible exceptions: (Exception).
         """
 
-    def SetUnsigned(self, pstr: str = None, UInt: int = 0, /) -> None:
+    @typing.overload
+    def SetUnsigned(self): ...
+
+    @typing.overload
+    def SetUnsigned(self, pstr: str, UInt: int, /) -> None:
         """
         SetUnsigned()
         Possible exceptions: (Exception).
         """
 
-    def GetUnsigned(self, pstr: str = None, UInt: int = 0, /) -> int:
+    @typing.overload
+    def GetUnsigned(self): ...
+
+    @typing.overload
+    def GetUnsigned(self, pstr: str, UInt: int = 0, /) -> int:
         """
         GetUnsigned()
         Possible exceptions: (Exception).
@@ -220,19 +264,31 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
-    def RemUnsigned(self, pstr: str = None, /) -> None:
+    @typing.overload
+    def RemUnsigned(self): ...
+
+    @typing.overload
+    def RemUnsigned(self, pstr: str, /) -> None:
         """
         RemUnsigned()
         Possible exceptions: (Exception).
         """
 
-    def SetFloat(self, pstr: str = None, Float: float = None, /) -> None:
+    @typing.overload
+    def SetFloat(self): ...
+
+    @typing.overload
+    def SetFloat(self, pstr: str, Float: float, /) -> None:
         """
         SetFloat()
         Possible exceptions: (Exception).
         """
 
-    def GetFloat(self, pstr: str = None, Float: float = 0.0, /) -> float:
+    @typing.overload
+    def GetFloat(self): ...
+
+    @typing.overload
+    def GetFloat(self, pstr: str, Float: float = 0.0, /) -> float:
         """
         GetFloat()
         Possible exceptions: (Exception).
@@ -244,19 +300,31 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
-    def RemFloat(self, pstr: str = None, /) -> None:
+    @typing.overload
+    def RemFloat(self): ...
+
+    @typing.overload
+    def RemFloat(self, pstr: str, /) -> None:
         """
         RemFloat()
         Possible exceptions: (Exception).
         """
 
-    def SetString(self, pstr: str = None, str: str = None, /) -> None:
+    @typing.overload
+    def SetString(self): ...
+
+    @typing.overload
+    def SetString(self, pstr: str, str: str, /) -> None:
         """
         SetString()
         Possible exceptions: (Exception).
         """
 
-    def GetString(self, pstr: str = None, str: str = '', /) -> str:
+    @typing.overload
+    def GetString(self): ...
+
+    @typing.overload
+    def GetString(self, pstr: str, str: str = '', /) -> str:
         """
         GetString()
         Possible exceptions: (Exception).
@@ -268,25 +336,41 @@ class ParameterGrp:
         Possible exceptions: (Exception).
         """
 
-    def RemString(self, pstr: str = None, /) -> None:
+    @typing.overload
+    def RemString(self): ...
+
+    @typing.overload
+    def RemString(self, pstr: str, /) -> None:
         """
         RemString()
         Possible exceptions: (Exception).
         """
 
-    def Import(self, pstr: str = None, /) -> None:
+    @typing.overload
+    def Import(self): ...
+
+    @typing.overload
+    def Import(self, pstr: str, /) -> None:
         """
         Import()
         Possible exceptions: (Exception).
         """
 
-    def Insert(self, pstr: str = None, /) -> None:
+    @typing.overload
+    def Insert(self): ...
+
+    @typing.overload
+    def Insert(self, pstr: str, /) -> None:
         """
         Insert()
         Possible exceptions: (Exception).
         """
 
-    def Export(self, pstr: str = None, /) -> None:
+    @typing.overload
+    def Export(self): ...
+
+    @typing.overload
+    def Export(self, pstr: str, /) -> None:
         """
         Export()
         Possible exceptions: (Exception).
@@ -306,7 +390,7 @@ class ProgressIndicator:
     Progress indicator
     """
 
-    def start(self, text: str = None, steps: int = 0, /) -> None:
+    def start(self, text: str, steps: int, /) -> None:
         """
         start(string,int)
         Possible exceptions: (Exception).
@@ -429,7 +513,7 @@ class StringID(FreeCAD.BaseClass):
     def Value(self) -> int:
         """Return the integer value of this ID"""
 
-    def isSame(self, other: FreeCAD.StringID = None, /) -> bool:
+    def isSame(self, other: FreeCAD.StringID, /) -> bool:
         """Check if two StringIDs are the same"""
 
 
@@ -614,13 +698,13 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     @Visibility.setter
     def Visibility(self, value: int | bool): ...
 
-    def addProperty(self, type: str, name: str = None, group: str = "", doc: str = "", attr: int = 0, read_only: bool = False, hidden: bool = False, enum_vals: list = None) -> FreeCAD.DocumentObject:
+    def addProperty(self, type: str, name: str, group: str = "", doc: str = "", attr: int = 0, read_only: bool = False, hidden: bool = False, enum_vals: list = None) -> FreeCAD.DocumentObject:
         """addProperty(type: string, name: string, group=, doc=, attr=0, read_only=False, hidden=False, enum_vals=[]) -- Add a generic property."""
 
     def adjustRelativeLinks(self, pyobj: FreeCAD.DocumentObject, recursive=True, /) -> bool:
         """adjustRelativeLinks(parent,recursive=True) -- auto correct potential cyclic dependencies"""
 
-    def clearExpression(self, path: str = None, /):
+    def clearExpression(self, path: str, /):
         """Clear the expression for a property"""
 
     def enforceRecompute(self):
@@ -732,7 +816,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     def hasChildElement(self) -> bool:
         """Return true to indicate the object having child elements"""
 
-    def isElementVisible(self, element: str = None, /) -> int:
+    def isElementVisible(self, element: str, /) -> int:
         """
         isElementVisible(element): Check if a child element is visible
         Return -1 if element visibility is not supported or element not found, 0 if invisible, or else 1
@@ -781,13 +865,13 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         Return tuple(obj,newElementName,oldElementName)
         """
 
-    def setElementVisible(self, element: str = None, visible: bool = True, /) -> int:
+    def setElementVisible(self, element: str, visible: bool = True, /) -> int:
         """
         setElementVisible(element,visible): Set the visibility of a child element
         Return -1 if element visibility is not supported, 0 if element not found, 1 if success
         """
 
-    def setExpression(self, path: str = None, expr=None, comment: str = None, /):
+    def setExpression(self, path: str, expr, comment: str = None, /):
         """
         Register an expression for a property
         Possible exceptions: (TypeError).
@@ -917,7 +1001,7 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
     def getLinkPropertyInfo(self) -> tuple[tuple[str, str, str], ...] | tuple[str, str, str] | tuple[str, str]: ...
 
     @typing.overload
-    def getLinkPropertyInfo(self, index: int = 0, /) -> tuple[tuple[str, str, str], ...] | tuple[str, str, str] | tuple[str, str]: ...
+    def getLinkPropertyInfo(self, index: int, /) -> tuple[tuple[str, str, str], ...] | tuple[str, str, str] | tuple[str, str]: ...
 
     @typing.overload
     def getLinkPropertyInfo(self, name: str, /) -> tuple[tuple[str, str, str], ...] | tuple[str, str, str] | tuple[str, str]:
@@ -1319,7 +1403,7 @@ class Metadata(FreeCAD.PyObjectBase):
     def Version(self) -> str:
         """String representing the version of this item in semantic triplet format."""
 
-    def addAuthor(self, name: str = None, email: str = None, /) -> None:
+    def addAuthor(self, name: str, email: str, /) -> None:
         """
         addAuthor(name, email)
 
@@ -1331,7 +1415,7 @@ class Metadata(FreeCAD.PyObjectBase):
     def addConflict(self, name, kind, /): ...
 
     @typing.overload
-    def addConflict(self, dictionary: dict = None, /) -> None:
+    def addConflict(self, dictionary: dict, /) -> None:
         """
         addConflict(name, kind)
 
@@ -1339,7 +1423,7 @@ class Metadata(FreeCAD.PyObjectBase):
         Possible exceptions: (Exception).
         """
 
-    def addContentItem(self, contentType: str = None, contentItem: FreeCAD.Metadata = None, /) -> None:
+    def addContentItem(self, contentType: str, contentItem: FreeCAD.Metadata, /) -> None:
         """
         addContentItem(content_type,metadata)
 
@@ -1350,7 +1434,7 @@ class Metadata(FreeCAD.PyObjectBase):
     def addDepend(self, name, kind, optional, /): ...
 
     @typing.overload
-    def addDepend(self, dictionary: dict = None, /) -> None:
+    def addDepend(self, dictionary: dict, /) -> None:
         """
         addDepend(name, kind, optional)
 
@@ -1360,7 +1444,7 @@ class Metadata(FreeCAD.PyObjectBase):
         Possible exceptions: (Exception).
         """
 
-    def addFile(self, file: str = None, /) -> None:
+    def addFile(self, file: str, /) -> None:
         """
         addFile(filename)
 
@@ -1368,7 +1452,7 @@ class Metadata(FreeCAD.PyObjectBase):
         Possible exceptions: (Exception).
         """
 
-    def addLicense(self, shortCode: str = None, path: str = None, /) -> None:
+    def addLicense(self, shortCode: str, path: str, /) -> None:
         """
         addLicense(short_code,path)
 
@@ -1376,7 +1460,7 @@ class Metadata(FreeCAD.PyObjectBase):
         Possible exceptions: (Exception).
         """
 
-    def addMaintainer(self, name: str = None, email: str = None, /) -> None:
+    def addMaintainer(self, name: str, email: str, /) -> None:
         """
         addMaintainer(name, email)
 
@@ -1384,7 +1468,7 @@ class Metadata(FreeCAD.PyObjectBase):
         Possible exceptions: (Exception).
         """
 
-    def addReplace(self, dictionary: dict = None, /) -> None:
+    def addReplace(self, dictionary: dict, /) -> None:
         """
         addReplace(name)
 
@@ -1392,7 +1476,7 @@ class Metadata(FreeCAD.PyObjectBase):
         Possible exceptions: (Exception).
         """
 
-    def addTag(self, tag: str = None, /) -> None:
+    def addTag(self, tag: str, /) -> None:
         """
         addTag(tag)
 
@@ -1400,7 +1484,7 @@ class Metadata(FreeCAD.PyObjectBase):
         Possible exceptions: (Exception).
         """
 
-    def addUrl(self, urlTypeCharStar: str = None, link: str = None, branch: str = None, /) -> None:
+    def addUrl(self, urlTypeCharStar: str, link: str, branch: str = None, /) -> None:
         """
         addUrl(url_type,url,branch)
 
@@ -1445,7 +1529,7 @@ class Metadata(FreeCAD.PyObjectBase):
         known versions).
         """
 
-    def removeAuthor(self, name: str = None, email: str = None, /) -> None:
+    def removeAuthor(self, name: str, email: str, /) -> None:
         """
         removeAuthor(name, email)
 
@@ -1457,7 +1541,7 @@ class Metadata(FreeCAD.PyObjectBase):
     def removeConflict(self, name, kind, /): ...
 
     @typing.overload
-    def removeConflict(self, dictionary: dict = None, /) -> None:
+    def removeConflict(self, dictionary: dict, /) -> None:
         """
         removeConflict(name, kind)
 
@@ -1465,7 +1549,7 @@ class Metadata(FreeCAD.PyObjectBase):
         Possible exceptions: (Exception).
         """
 
-    def removeContentItem(self, contentType: str = None, contentName: str = None, /) -> None:
+    def removeContentItem(self, contentType: str, contentName: str, /) -> None:
         """
         removeContentItem(content_type,name)
 
@@ -1476,7 +1560,7 @@ class Metadata(FreeCAD.PyObjectBase):
     def removeDepend(self, name, kind, /): ...
 
     @typing.overload
-    def removeDepend(self, dictionary: dict = None, /) -> None:
+    def removeDepend(self, dictionary: dict, /) -> None:
         """
         removeDepend(name, kind)
 
@@ -1486,7 +1570,7 @@ class Metadata(FreeCAD.PyObjectBase):
         Possible exceptions: (Exception).
         """
 
-    def removeFile(self, file: str = None, /) -> None:
+    def removeFile(self, file: str, /) -> None:
         """
         removeFile(filename)
 
@@ -1494,7 +1578,11 @@ class Metadata(FreeCAD.PyObjectBase):
         Possible exceptions: (Exception).
         """
 
-    def removeLicense(self, shortCode: str = None, path: str = None, /) -> None:
+    @typing.overload
+    def removeLicense(self, short_code, /): ...
+
+    @typing.overload
+    def removeLicense(self, shortCode: str, path: str, /) -> None:
         """
         removeLicense(short_code)
 
@@ -1502,7 +1590,7 @@ class Metadata(FreeCAD.PyObjectBase):
         Possible exceptions: (Exception).
         """
 
-    def removeMaintainer(self, name: str = None, email: str = None, /) -> None:
+    def removeMaintainer(self, name: str, email: str, /) -> None:
         """
         removeMaintainer(name, email)
 
@@ -1510,7 +1598,7 @@ class Metadata(FreeCAD.PyObjectBase):
         Possible exceptions: (Exception).
         """
 
-    def removeReplace(self, dictionary: dict = None, /) -> None:
+    def removeReplace(self, dictionary: dict, /) -> None:
         """
         removeReplace(name)
 
@@ -1518,7 +1606,7 @@ class Metadata(FreeCAD.PyObjectBase):
         Possible exceptions: (Exception).
         """
 
-    def removeTag(self, tag: str = None, /) -> None:
+    def removeTag(self, tag: str, /) -> None:
         """
         removeTag(tag)
 
@@ -1526,7 +1614,7 @@ class Metadata(FreeCAD.PyObjectBase):
         Possible exceptions: (Exception).
         """
 
-    def removeUrl(self, urlTypeCharStar: str = None, link: str = None, branch: str = None, /) -> None:
+    def removeUrl(self, urlTypeCharStar: str, link: str, branch: str = None, /) -> None:
         """
         removeUrl(url_type,url)
 
@@ -1544,7 +1632,7 @@ class Metadata(FreeCAD.PyObjectBase):
         recurse into Content items.
         """
 
-    def write(self, filename: str = None, /) -> None:
+    def write(self, filename: str, /) -> None:
         """
         write(filename)
 
@@ -1586,7 +1674,7 @@ class StringHasher(FreeCAD.BaseClass):
     def getID(self, id: int, index: int = 0, /): ...
 
     @typing.overload
-    def getID(self, value: str = None, base64: bool = False, /):
+    def getID(self, value: str, base64: bool = False, /):
         """
         getID(txt|id, base64=False) -> StringID
 
@@ -1932,7 +2020,7 @@ class Document(FreeCAD.PropertyContainer):
         Possible exceptions: (TypeError).
         """
 
-    def addProperty(self, type: str, name: str = None, group: str = "", doc: str = "", attr: int = 0, read_only: bool = False, hidden: bool = False, enum_vals=None) -> FreeCAD.Document:
+    def addProperty(self, type: str, name: str, group: str = "", doc: str = "", attr: int = 0, read_only: bool = False, hidden: bool = False, enum_vals=None) -> FreeCAD.Document:
         """addProperty(type: string, name: string, group=, doc=, attr=0, read_only=False, hidden=False) -- Add a generic property."""
 
     def clearDocument(self):
@@ -1992,10 +2080,10 @@ class Document(FreeCAD.PropertyContainer):
         """
 
     @typing.overload
-    def getObject(self, name: str = None, /) -> FreeCAD.DocumentObject: ...
+    def getObject(self, name: str, /) -> FreeCAD.DocumentObject: ...
 
     @typing.overload
-    def getObject(self, id: int = -1, /) -> FreeCAD.DocumentObject:
+    def getObject(self, id: int, /) -> FreeCAD.DocumentObject:
         """
         Return the object with the given name
         Possible exceptions: (TypeError).
@@ -2039,7 +2127,7 @@ class Document(FreeCAD.PropertyContainer):
     def isTouched(self) -> bool:
         """Check if any object is in touched state"""
 
-    def load(self, filename: str = None, /):
+    def load(self, filename: str, /):
         """Load the document from the given path"""
 
     def mergeProject(self, filename: str, /):
@@ -2370,7 +2458,7 @@ class ComplexGeoData(FreeCAD.Persistence):
     def getElementTypes(self) -> list[str]:
         """Return a list of element types"""
 
-    def getFaces(self, accuracy: float = 0.05, /) -> tuple[list[FreeCAD.Vector], list[tuple[int, int, int]]]:
+    def getFaces(self, accuracy: float, /) -> tuple[list[FreeCAD.Vector], list[tuple[int, int, int]]]:
         """
         Return a tuple of points and triangles with a given accuracy
         Possible exceptions: (RuntimeError).
@@ -2382,7 +2470,7 @@ class ComplexGeoData(FreeCAD.Persistence):
         Possible exceptions: (RuntimeError).
         """
 
-    def getLines(self, accuracy: float = 0.05, /) -> tuple[list[FreeCAD.Vector], list[tuple[int, int]]]:
+    def getLines(self, accuracy: float, /) -> tuple[list[FreeCAD.Vector], list[tuple[int, int]]]:
         """
         Return a tuple of points and lines with a given accuracy
         Possible exceptions: (RuntimeError).
@@ -2394,7 +2482,7 @@ class ComplexGeoData(FreeCAD.Persistence):
         Possible exceptions: (RuntimeError).
         """
 
-    def getPoints(self, accuracy: float = 0.05, /) -> tuple[list[FreeCAD.Vector], list[FreeCAD.Vector]]:
+    def getPoints(self, accuracy: float, /) -> tuple[list[FreeCAD.Vector], list[FreeCAD.Vector]]:
         """
         Return a tuple of points and normals with a given accuracy
         Possible exceptions: (RuntimeError).
@@ -2453,7 +2541,7 @@ class CADKernelError(FreeCAD.FreeCADError):
 
 
 # ApplicationPy.cpp
-def ParamGet(pstr: str = None, /):
+def ParamGet(pstr: str, /):
     """Get parameters by path"""
 
 
@@ -2587,7 +2675,7 @@ def newDocument(name: str = None, label: str = None, hidden: bool = False, temp:
     """
 
 
-def closeDocument(pstr: str = None, /):
+def closeDocument(pstr: str, /):
     """
     closeDocument(string) -> None
 
@@ -2603,7 +2691,7 @@ def activeDocument() -> FreeCAD.Document:
     """
 
 
-def setActiveDocument(pstr: str = None, /):
+def setActiveDocument(pstr: str, /):
     """
     setActiveDocement(string) -> None
 
@@ -2611,7 +2699,7 @@ def setActiveDocument(pstr: str = None, /):
     """
 
 
-def getDocument(pstr: str = None, /) -> FreeCADGui.Document:
+def getDocument(pstr: str, /) -> FreeCADGui.Document:
     """
     getDocument(string) -> object
 
@@ -2665,7 +2753,7 @@ def getLogLevel(tag: str, /) -> int:
     """getLogLevel(tag) -- Get the log level of a string tag"""
 
 
-def checkLinkDepth(depth: int = 0, /) -> int:
+def checkLinkDepth(depth: int, /) -> int:
     """checkLinkDepth(depth) -- check link recursion depth"""
 
 

@@ -51,7 +51,11 @@ class Command(FreeCAD.Persistence):
     @Placement.setter
     def Placement(self, value: FreeCAD.Placement): ...
 
-    def setFromGCode(self, pstr: str = None, /) -> None:
+    @typing.overload
+    def setFromGCode(self): ...
+
+    @typing.overload
+    def setFromGCode(self, pstr: str, /) -> None:
         """
         setFromGCode(): sets the path from the contents of the given GCode string
         Possible exceptions: (TypeError, ValueError).
@@ -233,7 +237,7 @@ class Path(FreeCAD.Persistence):
         adds a command at the given position or at the end of the path
         """
 
-    def setFromGCode(self, pstr: str = None, /) -> None:
+    def setFromGCode(self, pstr: str, /) -> None:
         """
         sets the contents of the path from a gcode string
         Possible exceptions: (TypeError).

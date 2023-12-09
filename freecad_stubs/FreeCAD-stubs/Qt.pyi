@@ -1,5 +1,5 @@
 # Translate.cpp
-def translate(context: str = None, source: str = None, disambiguation: str = None, num: int = -1, /) -> str:
+def translate(context: str, source: str, disambiguation: str = None, num: int = -1, /) -> str:
     """
     translate(context, sourcetext, disambiguation = None, n=-1)
     -- Returns the translation text for sourceText, by querying
@@ -10,7 +10,7 @@ def translate(context: str = None, source: str = None, disambiguation: str = Non
     """
 
 
-def QT_TRANSLATE_NOOP(context=None, sourcetext=None, /):
+def QT_TRANSLATE_NOOP(context, sourcetext, /):
     """
     QT_TRANSLATE_NOOP(context, sourcetext)
     Marks the UTF-8 encoded string literal sourcetext for delayed translation in the given context.
@@ -19,7 +19,7 @@ def QT_TRANSLATE_NOOP(context=None, sourcetext=None, /):
     """
 
 
-def QT_TRANSLATE_NOOP3(context=None, sourcetext=None, disambiguation=None, /):
+def QT_TRANSLATE_NOOP3(context, sourcetext, disambiguation, /):
     """
     QT_TRANSLATE_NOOP3(context, sourcetext, disambiguation)
     Marks the UTF-8 encoded string literal sourceText for delayed translation in the given context
@@ -30,7 +30,7 @@ def QT_TRANSLATE_NOOP3(context=None, sourcetext=None, disambiguation=None, /):
     """
 
 
-def QT_TRANSLATE_NOOP_UTF8(context=None, sourcetext=None, /):
+def QT_TRANSLATE_NOOP_UTF8(context, sourcetext, /):
     """
     QT_TRANSLATE_NOOP_UTF8(context, sourcetext)
     Same as QT_TRANSLATE_NOOP
@@ -38,7 +38,7 @@ def QT_TRANSLATE_NOOP_UTF8(context=None, sourcetext=None, /):
     """
 
 
-def QT_TR_NOOP(sourcetext=None, /):
+def QT_TR_NOOP(sourcetext, /):
     """
     QT_TR_NOOP(sourcetext)
     Marks the UTF-8 encoded string literal sourcetext for delayed translation in the current context
@@ -46,7 +46,7 @@ def QT_TR_NOOP(sourcetext=None, /):
     """
 
 
-def QT_TR_NOOP_UTF8(sourcetext=None, /):
+def QT_TR_NOOP_UTF8(sourcetext, /):
     """
     QT_TR_NOOP_UTF8(sourcetext)
     Same as QT_TR_NOOP
@@ -54,7 +54,7 @@ def QT_TR_NOOP_UTF8(sourcetext=None, /):
     """
 
 
-def installTranslator(Name: str = None, /) -> bool:
+def installTranslator(Name: str, /) -> bool:
     """
     Install a translator for testing purposes
     Possible exceptions: (Exception).

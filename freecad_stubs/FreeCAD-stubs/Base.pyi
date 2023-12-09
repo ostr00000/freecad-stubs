@@ -1,4 +1,3 @@
-import sys
 import typing
 
 import FreeCAD
@@ -71,7 +70,7 @@ class Vector(FreeCAD.PyObjectBase):
         Serialization of Vector objects.
         """
 
-    def add(self, obj: FreeCAD.Vector = None, /) -> FreeCAD.Vector:
+    def add(self, obj: FreeCAD.Vector, /) -> FreeCAD.Vector:
         """
         add(vector2) -> Base.Vector
 
@@ -80,7 +79,7 @@ class Vector(FreeCAD.PyObjectBase):
         vector2 : Base.Vector
         """
 
-    def cross(self, obj: FreeCAD.Vector = None, /) -> FreeCAD.Vector:
+    def cross(self, obj: FreeCAD.Vector, /) -> FreeCAD.Vector:
         """
         cross(vector2) -> Base.Vector
 
@@ -89,7 +88,7 @@ class Vector(FreeCAD.PyObjectBase):
         vector2 : Base.Vector
         """
 
-    def distanceToLine(self, base=None, line=None, /) -> float:
+    def distanceToLine(self, base, line, /) -> float:
         """
         distanceToLine(base, dir) -> float
 
@@ -102,7 +101,7 @@ class Vector(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError).
         """
 
-    def distanceToLineSegment(self, base=None, line=None, /) -> FreeCAD.Vector:
+    def distanceToLineSegment(self, base, line, /) -> FreeCAD.Vector:
         """
         distanceToLineSegment(point1, point2) -> Base.Vector
 
@@ -115,7 +114,7 @@ class Vector(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError).
         """
 
-    def distanceToPlane(self, base=None, line=None, /) -> float:
+    def distanceToPlane(self, base, line, /) -> float:
         """
         distanceToPlane(base, normal) -> float
 
@@ -127,7 +126,7 @@ class Vector(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError).
         """
 
-    def distanceToPoint(self, pnt: FreeCAD.Vector = None, /) -> float:
+    def distanceToPoint(self, pnt: FreeCAD.Vector, /) -> float:
         """
         distanceToPoint(point2) -> float
 
@@ -136,7 +135,7 @@ class Vector(FreeCAD.PyObjectBase):
         point : Base.Vector
         """
 
-    def dot(self, obj: FreeCAD.Vector = None, /) -> float:
+    def dot(self, obj: FreeCAD.Vector, /) -> float:
         """
         dot(vector2) -> float
 
@@ -145,7 +144,7 @@ class Vector(FreeCAD.PyObjectBase):
         vector2 : Base.Vector
         """
 
-    def getAngle(self, obj: FreeCAD.Vector = None, /) -> float:
+    def getAngle(self, obj: FreeCAD.Vector, /) -> float:
         """
         getAngle(vector2) -> float
 
@@ -154,7 +153,7 @@ class Vector(FreeCAD.PyObjectBase):
         vector2 : Base.Vector
         """
 
-    def isEqual(self, obj: FreeCAD.Vector = None, tolerance: float = 0, /) -> bool:
+    def isEqual(self, obj: FreeCAD.Vector, tolerance: float, /) -> bool:
         """
         isEqual(vector2, tol=0) -> bool
 
@@ -165,7 +164,7 @@ class Vector(FreeCAD.PyObjectBase):
         tol : float
         """
 
-    def isOnLineSegment(self, start=None, end=None, /) -> bool:
+    def isOnLineSegment(self, start, end, /) -> bool:
         """
         isOnLineSegment(vector1, vector2) -> bool
 
@@ -176,7 +175,7 @@ class Vector(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError).
         """
 
-    def multiply(self, factor: float = 0.0, /) -> FreeCAD.Vector:
+    def multiply(self, factor: float, /) -> FreeCAD.Vector:
         """
         multiply(factor) -> Base.Vector
 
@@ -201,7 +200,7 @@ class Vector(FreeCAD.PyObjectBase):
         Possible exceptions: (FreeCAD.Base.FreeCADError).
         """
 
-    def projectToLine(self, base=None, line=None, /) -> FreeCAD.Vector:
+    def projectToLine(self, base, line, /) -> FreeCAD.Vector:
         """
         projectToLine(point, dir) -> Base.Vector
 
@@ -217,7 +216,7 @@ class Vector(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError).
         """
 
-    def projectToPlane(self, base=None, line=None, /) -> FreeCAD.Vector:
+    def projectToPlane(self, base, line, /) -> FreeCAD.Vector:
         """
         projectToPlane(base, normal) -> Base.Vector
 
@@ -229,7 +228,7 @@ class Vector(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError).
         """
 
-    def scale(self, factorX: float = 0.0, factorY: float = 0.0, factorZ: float = 0.0, /) -> FreeCAD.Vector:
+    def scale(self, factorX: float, factorY: float, factorZ: float, /) -> FreeCAD.Vector:
         """
         scale(x, y, z) -> Base.Vector
 
@@ -243,7 +242,7 @@ class Vector(FreeCAD.PyObjectBase):
             z-component factor scale.
         """
 
-    def sub(self, obj: FreeCAD.Vector = None, /) -> FreeCAD.Vector:
+    def sub(self, obj: FreeCAD.Vector, /) -> FreeCAD.Vector:
         """
         sub(vector2) -> Base.Vector
 
@@ -652,7 +651,7 @@ class Persistence(FreeCAD.BaseClass):
         Possible exceptions: (NotImplementedError, IOError).
         """
 
-    def restoreContent(self, buffer=None, /):
+    def restoreContent(self, buffer, /):
         """
         restoreContent(obj) -> None
 
@@ -1536,7 +1535,7 @@ class Quantity(FreeCAD.PyObjectBase):
     def getValueAs(self, object: FreeCAD.Unit, /) -> FreeCAD.Quantity: ...
 
     @typing.overload
-    def getValueAs(self, f: float = sys.float_info.max, i1: int = 0, i2: int = 0, i3: int = 0, i4: int = 0, i5: int = 0, i6: int = 0, i7: int = 0, i8: int = 0, /) -> FreeCAD.Quantity: ...
+    def getValueAs(self, f: float, i1: int = 0, i2: int = 0, i3: int = 0, i4: int = 0, i5: int = 0, i6: int = 0, i7: int = 0, i8: int = 0, /) -> FreeCAD.Quantity: ...
 
     @typing.overload
     def getValueAs(self, string: str, /) -> FreeCAD.Quantity: ...
@@ -1969,7 +1968,7 @@ class Matrix(FreeCAD.PyObjectBase):
     def rotateX(self, object: FreeCAD.Quantity, /): ...
 
     @typing.overload
-    def rotateX(self, angle: float = 0, /):
+    def rotateX(self, angle: float, /):
         """
         rotateX(angle) -> None
 
@@ -1984,7 +1983,7 @@ class Matrix(FreeCAD.PyObjectBase):
     def rotateY(self, object: FreeCAD.Quantity, /): ...
 
     @typing.overload
-    def rotateY(self, angle: float = 0, /):
+    def rotateY(self, angle: float, /):
         """
         rotateY(angle) -> None
 
@@ -1999,7 +1998,7 @@ class Matrix(FreeCAD.PyObjectBase):
     def rotateZ(self, object: FreeCAD.Quantity, /): ...
 
     @typing.overload
-    def rotateZ(self, angle: float = 0, /):
+    def rotateZ(self, angle: float, /):
         """
         rotateZ(angle) -> None
 

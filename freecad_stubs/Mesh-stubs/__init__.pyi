@@ -367,7 +367,7 @@ class Mesh(FreeCAD.ComplexGeoData):
         Possible exceptions: (IndexError).
         """
 
-    def collapseFacets(self, pcObj=None, /):
+    def collapseFacets(self, pcObj, /):
         """Remove a list of facets"""
 
     def copy(self) -> MeshModule.Mesh:
@@ -566,10 +566,10 @@ class Mesh(FreeCAD.ComplexGeoData):
         """Create a mesh from segment"""
 
     @typing.overload
-    def movePoint(self, index: int, x: float = 0.0, y: float = 0.0, z: float = 0.0, /): ...
+    def movePoint(self, index: int, object: FreeCAD.Vector, /): ...
 
     @typing.overload
-    def movePoint(self, index: int, object: FreeCAD.Vector, /):
+    def movePoint(self, index: int, x: float, y: float, z: float, /):
         """
         movePoint(int, Vector)
           This method moves the point in the mesh along the
@@ -742,13 +742,10 @@ class Mesh(FreeCAD.ComplexGeoData):
         """Union of this and the given mesh object."""
 
     @typing.overload
-    def write(self, Filename: str = 'mymesh.stl', Format: str = 'STL', Name: str = 'Object name', Material=None): ...
+    def write(self, Filename: str, Format: str = 'STL', Name: str = 'Object name', Material=None): ...
 
     @typing.overload
-    def write(self, Stream, Format: str = 'STL', Name: str = 'Object name', Material=None): ...
-
-    @typing.overload
-    def write(self, Filename: str = None, Format: str = 'STL', Name: str = 'Object name', Material=None):
+    def write(self, Stream, Format: str, Name: str = 'Object name', Material=None):
         """
         Write the mesh object into file.
         mesh.write(Filename='mymesh.stl',[Format='STL',Name='Object name',Material=colors])
