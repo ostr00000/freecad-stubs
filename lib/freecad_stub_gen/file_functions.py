@@ -17,5 +17,14 @@ def genCppFiles(sourcePath: Path = SOURCE_DIR):
     yield from Path(sourcePath).glob('**/*.cpp')
 
 
+def genHFiles(sourcePath: Path = SOURCE_DIR):
+    yield from Path(sourcePath).glob('**/*.h')
+
+
 def genXmlFiles(sourcePath: Path = SOURCE_DIR):
     yield from Path(sourcePath).glob('**/*.xml')
+
+
+def preprocessFiles(sourcePath: Path = SOURCE_DIR):
+    yield from genHFiles(sourcePath)
+    yield from genCppFiles(sourcePath)
