@@ -1,7 +1,10 @@
 import atexit
+import functools
 import logging
+import time
 from collections import defaultdict
 from collections.abc import Hashable
+from typing import Iterator
 
 from freecad_stub_gen.ordered_set import OrderedSet
 
@@ -19,3 +22,22 @@ def addPrintAllValue(topic: str, value: Hashable):
                 logger.debug(f" - `{k}`")
 
     printAllValues[topic].add(value)
+
+
+def logProgress[T](it: Iterator[T], total: int, desc='') -> Iterator[T]:
+    for i, val in enumerate(it):
+        logger.debug(f'Progress {desc}[{i:{len(str(total))}}/{total}]')
+        yield val
+
+
+def timeDec(fun):
+    @functools.wraps(fun)
+    def timeDecWrapper(*args, **kwargs):
+        t0 = time.time()
+        try:
+            return fun(*args, **kwargs)
+        finally:
+            t1 = time.time()
+            logger.info(f"Generating time: {t1-t0}[s]")
+
+    return timeDecWrapper

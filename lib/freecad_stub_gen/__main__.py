@@ -19,16 +19,14 @@ def main():
     from freecad_stub_gen.generators.types_enum import generateTypes
     from freecad_stub_gen.cpp_code.generate_xml_files import generateXmlFiles
     from freecad_stub_gen.cpp_code.preprocess_macro import (
-        cleanPreprocessFiles,
-        preprocessAllCppFiles,
+        generatePreprocessedFiles,
     )
 
     if GENERATE_FROM_XML:
         generateXmlFiles()
 
     if PREPROCESS_CPP_FILES:
-        cleanPreprocessFiles()
-        preprocessAllCppFiles()
+        generatePreprocessedFiles()
 
     generateTypes()
     generateFreeCadStubs()

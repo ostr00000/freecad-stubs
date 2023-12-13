@@ -33,7 +33,9 @@ dependencies = [
 
 [project.optional-dependencies]
 generate = [
+    'cxxheaderparser',
     'more-itertools',
+    'pcpp',
 ]
 check = [
     'mypy',
