@@ -1,7 +1,7 @@
 import logging
 import re
 from collections.abc import Iterator
-from inspect import Parameter, _ParameterKind, _empty
+from inspect import Parameter, _empty, _ParameterKind
 
 from freecad_stub_gen.cpp_code.converters import convertToPythonValue
 from freecad_stub_gen.generators.common.annotation_parameter import (

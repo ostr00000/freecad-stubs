@@ -1,5 +1,5 @@
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable
 
 from freecad_stub_gen.config import SOURCE_DIR
 from freecad_stub_gen.cpp_code.converters import removeComments

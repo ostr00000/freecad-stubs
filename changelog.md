@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## \[Unreleased\]
 
 ### Added
 
@@ -27,18 +27,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
-## [1.0.16] - 2023-11-24
+## \[1.0.16\] - 2023-11-24
 
 ### Changed
 
 - Update stub to recent FreeCAD version (`main` from 2023-11-24).
-- New Python 3.12 typing syntax in generator code. 
+- New Python 3.12 typing syntax in generator code.
 
 ### Fixed
 
 - Errors reported by `pyright`.
 
-## [1.0.15] - 2023-11-10
+## \[1.0.15\] - 2023-11-10
 
 ### Added
 
@@ -48,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Errors reported by `ruff`, `mypy`, `pyright`.
 
-## [1.0.14] - 2023-01-29
+## \[1.0.14\] - 2023-01-29
 
 ### Changed
 

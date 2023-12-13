@@ -15,12 +15,12 @@ def configLogger():
 
 
 def main():
-    from freecad_stub_gen.generate import generateFreeCadStubs
-    from freecad_stub_gen.generators.types_enum import generateTypes
     from freecad_stub_gen.cpp_code.generate_xml_files import generateXmlFiles
     from freecad_stub_gen.cpp_code.preprocess_macro import (
         generatePreprocessedFiles,
     )
+    from freecad_stub_gen.generate import generateFreeCadStubs
+    from freecad_stub_gen.generators.types_enum import generateTypes
 
     if GENERATE_FROM_XML:
         generateXmlFiles()

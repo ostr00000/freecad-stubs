@@ -8,7 +8,10 @@ from freecad_stub_gen.generators.common.doc_string import getDocFromNode
 from freecad_stub_gen.generators.common.gen_property.gen_base import (
     BasePropertyGenerator,
 )
-from freecad_stub_gen.generators.common.names import getModuleName, getPythonClassNameFromNode
+from freecad_stub_gen.generators.common.names import (
+    getModuleName,
+    getPythonClassNameFromNode,
+)
 from freecad_stub_gen.generators.common.return_type_converter.full import (
     ReturnTypeConverter,
 )

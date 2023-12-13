@@ -3,8 +3,7 @@ import functools
 import logging
 import time
 from collections import defaultdict
-from collections.abc import Hashable
-from typing import Iterator
+from collections.abc import Hashable, Iterator
 
 from freecad_stub_gen.ordered_set import OrderedSet
 

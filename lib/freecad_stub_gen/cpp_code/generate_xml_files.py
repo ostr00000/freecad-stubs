@@ -23,4 +23,6 @@ def generateXmlFiles():
 
             logger.info(f"Generating {outputPath}")
             logger.debug(f"CMD:\n{shlex.join(args)}")
-            check_call(args)
+
+            # ignore: `subprocess` call: check for execution of untrusted input
+            check_call(args)  # noqa: S603
