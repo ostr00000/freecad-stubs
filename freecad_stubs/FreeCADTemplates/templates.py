@@ -1,11 +1,15 @@
 r"""
 This module has templates for some python object used in FreeCAD.
-Do not import these classes rather copy required methods.
+
+The content of this module is not generated.
+If there are errors/inconsistency with FreeCAD,
+please report at https://github.com/ostr00000/freecad-stubs/.
 
 The ideal solution would use optional protocol,
 but at the moment there is no such feature in Python:
 https://www.python.org/dev/peps/pep-0544/#support-optional-protocol-members
 
+Regex used for searching method for this module:
 Find regex:
 ^\s*FC_PY_ELEMENT\((\w+)\)[^\S\n]*\\?
 Replace:
@@ -18,9 +22,27 @@ import typing
 
 import FreeCAD
 import FreeCADGui
-from qtpy.QtCore import QObject
-from qtpy.QtGui import QIcon
-from qtpy.QtWidgets import QDialogButtonBox, QMenu
+
+try:
+    from qtpy import PYSIDE2, PYSIDE6
+except ImportError:
+    # `qtpy` is an optional dependency for this file
+    # (to be able easy copy-paste)
+    # See: https://github.com/ostr00000/freecad-stubs/issues/8
+    PYSIDE2 = PYSIDE6 = False
+
+if PYSIDE2 or PYSIDE6:
+    # This is a check for type checker (`pyright`). See:
+    # https://github.com/spyder-ide/qtpy/issues/447
+    # https://github.com/microsoft/pyright/blob/110efe8a3baa5657e380198ad126300a0018d983/docs/configuration.md?plain=1#L19
+
+    from qtpy.QtCore import QObject
+    from qtpy.QtGui import QIcon
+    from qtpy.QtWidgets import QDialogButtonBox, QMenu
+else:
+    from PySide.QtCore import QObject
+    from PySide.QtGui import QIcon
+    from PySide.QtWidgets import QDialogButtonBox, QMenu
 
 
 # FeaturePython.cpp

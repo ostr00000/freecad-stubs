@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Issue #10: make `templates.py` easy copy-paste.
+- Issue #8: use `qtpy` in `FreeCADTemplates` as optional dependency.
 
 ### Security
 
