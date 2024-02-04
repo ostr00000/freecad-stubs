@@ -1,3 +1,4 @@
+import logging
 import re
 from collections import defaultdict
 from operator import itemgetter
@@ -8,8 +9,11 @@ from freecad_stub_gen.python_code import indent
 
 initType = re.compile(r'(\w[\w: ]+?)\s*::init\(\)')
 
+logger = logging.getLogger(__name__)
+
 
 def generateTypes():
+    logger.info("Searching for types...")
     prefixToTypes: defaultdict[str, set[tuple[str, str]]] = defaultdict(set)
     for filePath in genCppFiles():
         fileContent = readContent(filePath)
@@ -28,6 +32,7 @@ def generateTypes():
 
             prefixToTypes[prefix].add((name, originalType))
 
+    logger.info("Generating type content...")
     typeText = '# fmt: off\n'  # disable `black` formatting for this file
     for prefix, typeNames in sorted(prefixToTypes.items(), key=itemgetter(0)):
         klassText = f'class {prefix}:\n'
@@ -41,3 +46,4 @@ def generateTypes():
     typesPath = additionalPath / 'type_consts.py'
     with typesPath.open('w', encoding='utf-8') as outputFile:
         outputFile.write(typeText)
+    logger.info(f"Saved file with types in {typesPath}...")

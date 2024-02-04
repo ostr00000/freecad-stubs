@@ -1,3 +1,4 @@
+import logging
 import re
 
 from freecad_stub_gen.cpp_code.converters import removeQuote
@@ -11,6 +12,8 @@ from freecad_stub_gen.generators.common.names import (
 from freecad_stub_gen.module_namespace import moduleNamespace
 from freecad_stub_gen.ordered_set import OrderedStrSet
 from freecad_stub_gen.python_code import indent
+
+logger = logging.getLogger(__name__)
 
 
 class ExceptionData:
@@ -79,9 +82,11 @@ class ExceptionContainer:
             repr(e)
 
     def _genExceptions(self):
+        logger.info("Generating possible exceptions...")
         for file in genCppFiles():
             content = readContent(file)
             yield from self.findExceptions(content)
+        logger.info("Generating possible exceptions - finished.")
 
     @classmethod
     def findExceptions(cls, content):

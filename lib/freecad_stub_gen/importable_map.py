@@ -1,3 +1,4 @@
+import logging
 import re
 from collections import defaultdict
 from collections.abc import Iterable
@@ -8,6 +9,8 @@ from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.file_functions import genCppFiles, readContent
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.module_namespace import moduleNamespace
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -81,6 +84,7 @@ class ImportableClassMap(dict[str, str]):
     )
 
     def _genTypes(self):
+        logger.info("Generating types for importable map...")
         for cppFile in genCppFiles():
             cppContent = readContent(cppFile)
             for match in self.REG_ADD_TYPE.finditer(cppContent):
@@ -93,6 +97,7 @@ class ImportableClassMap(dict[str, str]):
 
                 addTypeArgs = AddTypeArguments(*addTypeList)
                 yield addTypeArgs.cTypeWithoutNamespace, addTypeArgs.fullPythonName
+        logger.info("Generating types for importable map - finished.")
 
 
 __all__ = ['importableMap']

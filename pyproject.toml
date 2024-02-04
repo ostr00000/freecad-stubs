@@ -37,12 +37,13 @@ generate = [
     'pcpp',
 ]
 check = [
-    'black',
-    'mypy',
-    'pyright',
-    'pylint',
     'PyQt5',
     'PyQt5-stubs',
+    'black',
+    'mypy',
+    'pylint',
+    'pyright',
+    'pytest',
     'qtpy',
 ]
 all = ['freecad-stubs[generate,check]']

@@ -16,7 +16,7 @@ def readContent(file: Path):
 
 def _excludeIiFiles(it: Iterable[Path]):
     for p in it:
-        if '.ii' in p.suffixes:
+        if p.name.endswith(('.cpp.ii', '.h.ii')):
             continue
         yield p
 
