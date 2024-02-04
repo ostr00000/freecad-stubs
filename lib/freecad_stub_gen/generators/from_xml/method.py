@@ -3,7 +3,7 @@ import logging
 import xml.etree.ElementTree as ET
 from abc import ABC
 from collections.abc import Iterator
-from functools import cached_property, lru_cache
+from functools import cached_property
 from inspect import Parameter
 from pathlib import Path
 
@@ -201,7 +201,6 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         retType = f' -> {retType}' if retType else ''
         return f'def {name}({", ".join(("self", *args))}){retType}: ...\n\n'
 
-    @lru_cache
     def findFunctionBody(self, cFuncName: str, cClassName: str) -> str | None:
         """Override method to search `funcName` also in parent."""
         if res := super().findFunctionBody(cFuncName, cClassName):

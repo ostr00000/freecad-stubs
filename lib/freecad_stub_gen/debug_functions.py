@@ -3,7 +3,8 @@ import functools
 import logging
 import time
 from collections import defaultdict
-from collections.abc import Hashable, Iterator
+from collections.abc import Callable, Hashable, Iterable, Iterator
+from pathlib import Path
 
 from freecad_stub_gen.ordered_set import OrderedSet
 
@@ -23,10 +24,21 @@ def addPrintAllValue(topic: str, value: Hashable):
     printAllValues[topic].add(value)
 
 
-def logProgress[T](it: Iterator[T], total: int, desc='') -> Iterator[T]:
+def logProgress[T](it: Iterable[T], total: int, desc='') -> Iterator[T]:
     for i, val in enumerate(it):
         logger.debug(f'Progress {desc}[{i:{len(str(total))}}/{total}]')
         yield val
+
+
+def _sortByCoreLib(p: Path):
+    isCore = any(c in p.parts for c in ('Gui', 'Base', 'App'))
+    return -isCore, p
+
+
+def genFilesWithLog(gen: Callable[[], Iterable[Path]], **kwargs):
+    total = sum(1 for _ in gen())
+    g = sorted(gen(), key=_sortByCoreLib)
+    yield from logProgress(g, total, **kwargs)
 
 
 def timeDec(fun):
