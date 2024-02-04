@@ -30,7 +30,7 @@ def _skipAdditionalDirectiveBlocks(it: Iterator[tuple[int, str]]):
 
 def findFunctionCall(
     text: str, bodyStart: int | None = None, bracketL='{', bracketR='}'
-):
+) -> str:
     if bodyStart is None:
         bodyStart = text.find('(')
     bracketDeep = 0
@@ -54,19 +54,40 @@ def findFunctionCall(
 
 
 def generateExpressionUntilChar(
-    text: str, expStart: int = 0, splitChar: str = ',', bracketL='(', bracketR=')'
+    text: str,
+    expStart: int = 0,  # including this position
+    splitChar: str = ',',
+    bracketL='(',
+    bracketR=')',
+    *,
+    startFromEnd=False,
 ):
     if splitChar in f'\\"{bracketL}{bracketR}':
         msg = f"Cannot use {splitChar=} when generating expression"
         raise ValueError(msg)
 
+    if not (0 <= expStart <= len(text)):
+        msg = f"{expStart=} is not within text range"
+        return ValueError(msg)
+
     bracketDeep = 0
-    expEnd = 0
+    curPos = 0
+    curStart = expStart
     ignore = False
     escaped = False
 
-    sliceIt = islice(text, expStart, len(text) + 1)
-    for expEnd, char in enumerate(sliceIt, expStart):
+    if startFromEnd:
+        sliceIt = reversed(text[0 : expStart + 1])
+        sign = -1
+        openBracket = bracketR
+        closeBracket = bracketL
+    else:
+        sliceIt = islice(text, expStart, len(text) + 1)
+        sign = 1
+        openBracket = bracketL
+        closeBracket = bracketR
+
+    for curPos, char in enumerate(sliceIt):
         if escaped:
             escaped = False
         elif char == '\\':
@@ -75,18 +96,25 @@ def generateExpressionUntilChar(
             ignore = not ignore
         elif ignore:
             pass
-        elif char in bracketL:
+        elif char in openBracket:
             bracketDeep += 1
-        elif char in bracketR:
+        elif char in closeBracket:
             bracketDeep -= 1
             if bracketDeep < 0:
-                yield text[expStart:expEnd]
+                expEnd = expStart + sign * curPos
+                yield text[_normalizeSlice(curStart, expEnd)]
                 return
         elif char == splitChar and bracketDeep == 0:
-            yield text[expStart:expEnd]
-            expStart = expEnd + 1
+            expEnd = expStart + sign * curPos
+            yield text[_normalizeSlice(curStart, expEnd)]
+            curStart = expEnd + sign
 
-    yield text[expStart : expEnd + 1]
+    expEnd = expStart + sign * (curPos + 1)
+    yield text[_normalizeSlice(curStart, expEnd)]
+
+
+def _normalizeSlice(a: int, b: int) -> slice:
+    return slice(a, b) if a <= b else slice(b + 1, a + 1)
 
 
 def genFuncArgs(text: str, textStart: int | None = None) -> Iterable[str]:

@@ -1190,7 +1190,7 @@ class ExternalGeometryFacade(FreeCAD.BaseClass):
         Possible exceptions: (Part.OCCError).
         """
 
-    def setFlag(self, flag: str, bflag: bool = True, /) -> bool:
+    def setFlag(self, flag: str, bflag: bool = True, /):
         """
         Sets the given bit to true/false.
         Possible exceptions: (TypeError).

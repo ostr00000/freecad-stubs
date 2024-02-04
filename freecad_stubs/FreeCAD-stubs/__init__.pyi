@@ -772,7 +772,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         Possible exceptions: (RuntimeError).
         """
 
-    def getSubObject(self, subname, retType: int = 0, matrix: FreeCAD.Matrix = None, transform: bool = True, depth: int = 0) -> typing.Any | FreeCAD.Placement | FreeCAD.Matrix | tuple[typing.Any, FreeCAD.Matrix, typing.Any] | tuple[typing.Any, ...] | None:
+    def getSubObject(self, subname, retType: int = 0, matrix: FreeCAD.Matrix = None, transform: bool = True, depth: int = 0) -> FreeCAD.Placement | FreeCAD.Matrix | tuple[typing.Any, FreeCAD.Matrix, typing.Any] | typing.Any | tuple[typing.Any, ...]:
         """
         getSubObject(subname, retType=0, matrix=None, transform=True, depth=0)
 

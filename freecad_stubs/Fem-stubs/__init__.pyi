@@ -205,7 +205,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
         Possible exceptions: (FreeCAD.Base.CADKernelError).
         """
 
-    def getElementType(self, id: int, /) -> bool | str:
+    def getElementType(self, id: int, /) -> str:
         """
         Return the element type of a given ID
         Possible exceptions: (ValueError).
@@ -217,7 +217,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
         Possible exceptions: (ValueError, FreeCAD.Base.CADKernelError).
         """
 
-    def getGroupElementType(self, id: int, /) -> bool | str:
+    def getGroupElementType(self, id: int, /) -> str:
         """
         Return a string of group element type to a given group ID
         Possible exceptions: (ValueError).
@@ -235,7 +235,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
         Possible exceptions: (ValueError).
         """
 
-    def getIdByElementType(self, typeStr: str, /) -> bool | tuple[int, ...]:
+    def getIdByElementType(self, typeStr: str, /) -> tuple[int, ...]:
         """
         Return a tuple of IDs to a given element type
         Possible exceptions: (ValueError).
@@ -247,7 +247,7 @@ class FemMesh(FreeCAD.ComplexGeoData):
         Possible exceptions: (ValueError).
         """
 
-    def getNodeElements(self, id: int, typeStr: str = 'All', /) -> bool | tuple[int, ...]:
+    def getNodeElements(self, id: int, typeStr: str = 'All', /) -> tuple[int, ...]:
         """
         Return a tuple of specific element IDs associated to a given node ID
         Possible exceptions: (ValueError).

@@ -43,6 +43,12 @@ repos:
     rev: v1.18.0
     hooks:
       - id: typos
+        name: typos-diff
+        args:
+          - --diff
+        verbose: true
+      - id: typos
+        name: typos-fix
 
   - repo: https://github.com/codespell-project/codespell
     rev: v2.2.6

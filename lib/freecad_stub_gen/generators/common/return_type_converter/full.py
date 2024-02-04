@@ -6,6 +6,7 @@ from inspect import Parameter
 from freecad_stub_gen.cpp_code.converters import validatePythonValue
 from freecad_stub_gen.generators.common.annotation_parameter import RawRepr
 from freecad_stub_gen.generators.common.cpp_function import (
+    findFunctionCall,
     generateExpressionUntilChar,
     genFuncArgs,
 )
@@ -55,6 +56,8 @@ class ReturnTypeConverter(
 
     def _genReturnType(self) -> Iterable[str]:
         for match in self.REG_RETURN.finditer(self.functionBody):
+            if self._isInsideLambda(match.start()):
+                continue
             try:
                 retType = self.getExpressionType(match.group(1), match.end())
                 match retType:
@@ -64,6 +67,64 @@ class ReturnTypeConverter(
                         yield str(retType)
             except InvalidReturnType:
                 continue
+
+    LAMBDA_REG = re.compile(r'')
+
+    def _isInsideLambda(self, pos: int) -> bool:
+        """Check if position `pos` in `self.functionBody` is inside c++ lambda.
+
+        This is a simplified grammar for c++ lambda using PEP 617 grammar specification.
+        https://docs.python.org/3/reference/grammar.html#full-grammar-specification
+        https://en.cppreference.com/w/cpp/language/lambda
+
+        lambda:
+            '[' captures ']'
+            ('<' template-params '>')?
+            (spec)?
+            ('->' trailing-type)?
+            '{' (`body`)? '}'
+        """
+        searchPos = pos
+        while (br := self.functionBody.rfind('{', 0, searchPos)) != -1:
+            searchPos = br
+
+            if not self._isSameNumberOfChar('{', '}', br, pos, diff=1):
+                continue
+
+            searchSquareBr = br
+            while (sq := self.functionBody.rfind('[', 0, searchSquareBr)) != -1:
+                searchSquareBr = sq
+
+                if self.functionBody.find(';', sq, br) != -1:
+                    continue  # this is probably an expression
+
+                if not self._isSameNumberOfChar('{', '}', sq, br):
+                    continue
+                if not self._isSameNumberOfChar('(', ')', sq, br):
+                    continue
+                if not self._isSameNumberOfChar('[', ']', sq, br):
+                    continue
+
+                # so we probably found a lambda `[` nad `{`, but is `pos` inside lambda?
+                lambdaBody = findFunctionCall(self.functionBody, br)
+                if br + len(lambdaBody) < pos:
+                    continue
+
+                logger.debug(
+                    f"This is probably lambda expression "
+                    f"(in `{self.functionName}` function)?\n"
+                    f"{self.functionBody[sq:br + 1]}"
+                )
+                return True
+
+        return False
+
+    def _isSameNumberOfChar(
+        self, charA: str, charB: str, start: int, end: int, diff: int = 0
+    ) -> bool:
+        openB = self.functionBody.count(charA, start, end)
+        closeB = self.functionBody.count(charB, start, end)
+        return openB == closeB + diff
 
     EXCEPTION_SET_STRING_REG = re.compile(r'PyErr_SetString\(([^;]+)\);')
     EXCEPTION_PY_REG = re.compile(r'throw\s+Py::(?P<exc>\w+)\((?P<args>[^;]*)\);')

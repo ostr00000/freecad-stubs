@@ -755,7 +755,7 @@ class Command(FreeCAD.PyObjectBase):
         """
 
     @staticmethod
-    def findCustomCommand(macroScriptName: str, /) -> typing.Any | str:
+    def findCustomCommand(macroScriptName: str, /) -> str:
         """
         findCustomCommand(name) -> str or None
 
@@ -3152,7 +3152,7 @@ class View3DInventorViewerPy:
         Possible exceptions: (Exception, RuntimeError).
         """
 
-    def setGradientBackgroundColor(self, col1: tuple, col2: tuple, col3: tuple = None, /) -> typing.Any | None:
+    def setGradientBackgroundColor(self, col1: tuple, col2: tuple, col3: tuple = None, /) -> None:
         """
         setGradientBackgroundColor(tuple,tuple,[tuple]): sets the gradient colors of the current viewer.
         Possible exceptions: (Exception, RuntimeError).
