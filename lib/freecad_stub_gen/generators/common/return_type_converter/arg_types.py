@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 import keyword
-from collections.abc import Generator, Iterable, Iterator, Sized
 from functools import cached_property
-from typing import Protocol, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
 from freecad_stub_gen.generators.common.names import getModuleName, useAliasedModule
 from freecad_stub_gen.ordered_set import OrderedSet, OrderedStrSet
 from freecad_stub_gen.python_code import indent
+
+if TYPE_CHECKING:
+    from collections.abc import Generator, Iterator
 
 T = TypeVar('T')
 
@@ -44,19 +46,25 @@ class ComplexArgumentBase:
         return self.formatPythonSignature()
 
 
-class SizedIterable(Sized, Iterable['RetType'], Protocol):
-    """Protocol class for `SignatureWithImports`.
+class SizedIterable:
+    """Base abstract class for `ImportsCollector`.
 
-    When adding `SignatureWithImports` to base classes,
+    When adding `ImportsCollector` to base classes,
     this class must also be added to properly resolve MRO.
     Correct order:
-        - SignatureWithImports,
+        - ImportsCollector,
         - class implementing this protocol (__len__ + __iter__),
         - SizedIterable.
     """
 
+    def __len__(self):
+        raise NotImplementedError
 
-class CollectImportsArgument(ComplexArgumentBase, SizedIterable):
+    def __iter__(self) -> Iterator[RetType]:
+        raise NotImplementedError
+
+
+class ImportsCollector(ComplexArgumentBase, SizedIterable):
     """Mixin class for arguments that additionally collect imports."""
 
     def __iter__(self) -> Iterator[str]:
@@ -71,11 +79,8 @@ class CollectImportsArgument(ComplexArgumentBase, SizedIterable):
                     self.imports.update(ua.imports)
             yield str(argTypeVar)
 
-    def __len__(self):
-        return super().__len__()
 
-
-class UnionArgument(CollectImportsArgument, OrderedSet['RetType'], SizedIterable):
+class UnionArgument(ImportsCollector, OrderedSet['RetType'], SizedIterable):
     """Represents `typing.Union` argument."""
 
     def formatPythonSignature(self) -> str:
@@ -99,7 +104,7 @@ class UnionArgument(CollectImportsArgument, OrderedSet['RetType'], SizedIterable
 type RetType = UnionArgument | AnyValueType | str
 
 
-class TupleArgument(CollectImportsArgument, list[RetType], SizedIterable):
+class TupleArgument(ImportsCollector, list[RetType], SizedIterable):
     """Represents `tuple` argument."""
 
     repeated: bool
@@ -158,7 +163,7 @@ class DictArgument(ComplexArgumentBase):
         return ret
 
 
-class _ListIter(CollectImportsArgument, list[RetType], SizedIterable):
+class _ListIter(ImportsCollector, list[RetType], SizedIterable):
     """Stores arguments sequentially.
 
     Note that argument for `list` is `UnionArgument`,

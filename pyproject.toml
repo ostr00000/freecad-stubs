@@ -33,11 +33,11 @@ dependencies = [
 
 [project.optional-dependencies]
 generate = [
-    'cxxheaderparser',
     'more-itertools',
     'pcpp',
 ]
 check = [
+    'black',
     'mypy',
     'pyright',
     'pylint',
@@ -105,6 +105,7 @@ disable = [
 [tool.pyright]
 venvPath = "."
 venv = "freecad_env"
+exclude = ["./lib/freecad_stub_gen/FreeCADTemplates/templates.py"]
 
 [tool.pyright.defineConstant]
 # to correctly detect QT in `qtpy`
@@ -116,6 +117,9 @@ PYSIDE6 = false
 [tool.ruff]
 # https://docs.astral.sh/ruff/configuration/
 target-version = "py312"
+unsafe-fixes = true
+
+[tool.ruff.lint]
 ignore-init-module-imports = true
 select = [
     'F', # Pyflakes
@@ -199,10 +203,7 @@ ignore = [
 [tool.ruff.lint.isort]
 known-third-party = ["FreeCAD"]
 
-[tool.ruff.lint.pydocstyle]
-convention = "pep257"
-
-[tool.ruff.per-file-ignores] # glob **
+[tool.ruff.lint.per-file-ignores] # glob **
 '**/__init__.py' = [
     'E402', # Module level import not at top of file # SKIP: imports in __init__ must follow strict order
     'F401', # imported but unused # SKIP: sometimes we need an additional initialization
@@ -215,6 +216,9 @@ convention = "pep257"
     'FBT001', # Boolean-typed positional argument in function definition
     'PYI021', # Docstrings should not be included in stubs # SKIP: no harm to also include docs
 ]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
 
 [tool.setuptools]
 package-dir = {'' = 'freecad_stubs'}

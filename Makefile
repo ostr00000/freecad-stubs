@@ -1,6 +1,7 @@
 PYTHON=python3.12
 ENV_NAME=freecad_env
 PYTHON_ENV=./$(ENV_NAME)/bin/python
+export TERM=ansi
 
 # ######## env ########
 .PHONY: setup_system setup_env install_in_env install_pre_commit prepare_freecad clean_env
@@ -44,15 +45,26 @@ build_and_upload:
 
 
 # ######## checks ########
-.PHONY: run_pre_commit check_by_mypy check_by_pylint
+.PHONY: pre_commit pre_commit_install pre_commit_uninstall pre_commit_auto_update
 
-run_pre_commit:
-	export TERM=ansi; $(PYTHON_ENV) -m pre_commit run --all-files
-	@#$(PYTHON_ENV) -m pre_commit run --all-files
+pre_commit:
+	$(PYTHON_ENV) -m pre_commit run --all-files
+
+pre_commit_install:
+	$(PYTHON_ENV) -m pre_commit install
+
+pre_commit_uninstall:
+	$(PYTHON_ENV) -m pre_commit uninstall
+
+pre_commit_auto_update:
+	$(PYTHON_ENV) -m pre_commit autoupdate
+
+
+# ######## checks ########
+.PHONY: check_by_mypy check_by_pyright check_by_pylint
 
 check_by_mypy:
-	export TERM=ansi; $(PYTHON_ENV) -m mypy
-	@#$(PYTHON_ENV) -m mypy
+	$(PYTHON_ENV) -m mypy
 
 check_by_pyright:
 	$(PYTHON_ENV) -m pyright

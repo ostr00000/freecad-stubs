@@ -11,8 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class PythonSignatureProtocol(Protocol):
-    def formatPythonSignature(self) -> str:
-        ...
+    def formatPythonSignature(self) -> str: ...
 
 
 class MethodGenerator(PythonApiGenerator, ABC):

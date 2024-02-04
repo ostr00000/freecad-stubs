@@ -2,6 +2,7 @@
 Based on stubs in:
 https://github.com/python-qt-tools/PyQt5-stubs/blob/master/PyQt5-stubs/QtCore.pyi
 """
+
 import typing
 
 from qtpy.QtCore import QMetaObject, QObject
