@@ -60,6 +60,13 @@ class Module:
 
         return NotImplemented
 
+    def replace(self, old: str, new: str):
+        if self.content.find(old) == -1:
+            msg = f"Cannot find `{old}` in module content"
+            raise ValueError(msg)
+
+        self.content = self.content.replace(old, new, 1)
+
     def update(self, sameModule: Module):
         self.imports.update(sameModule.imports)
         self.content += sameModule.content

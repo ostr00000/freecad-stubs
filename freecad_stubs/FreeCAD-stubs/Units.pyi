@@ -1,6 +1,6 @@
 import typing
 
-from FreeCAD.Base import Unit, Quantity
+from FreeCAD.Base import Unit as Unit, Quantity as Quantity
 import FreeCAD
 
 
@@ -73,8 +73,6 @@ def toNumber(value: float, format: str = 'g', decimals: int = -1, /) -> str:
     """
 
 
-Unit = Unit
-Quantity = Quantity
 
 NanoMetre     = Quantity('nm')
 MicroMetre    = Quantity('um')

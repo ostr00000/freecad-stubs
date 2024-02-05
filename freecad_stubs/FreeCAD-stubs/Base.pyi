@@ -1,6 +1,7 @@
 import sys
 import typing
 
+from FreeCAD import ProgressIndicator as ProgressIndicator
 import FreeCAD
 
 

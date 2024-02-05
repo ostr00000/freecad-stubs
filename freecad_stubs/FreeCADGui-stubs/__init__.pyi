@@ -2152,52 +2152,6 @@ class MainWindowPy(qtpy.QtWidgets.QMainWindow):
         """
 
 
-# UiLoader.cpp
-class UiLoader:
-    """UiLoader to create widgets"""
-
-    @typing.overload
-    def load(self, string, /, QWidget_parent=None) -> qtpy.QtWidgets.QWidget | None: ...
-
-    @typing.overload
-    def load(self, QIODevice, /, QWidget_parent=None) -> qtpy.QtWidgets.QWidget | None:
-        """
-        load(string, QWidget parent=None) -> QWidget
-        load(QIODevice, QWidget parent=None) -> QWidget
-        Possible exceptions: (RuntimeError, TypeError).
-        """
-
-    def createWidget(self):
-        """createWidget()"""
-
-    def availableWidgets(self) -> list[str]:
-        """availableWidgets()"""
-
-    def clearPluginPaths(self) -> None:
-        """clearPluginPaths()"""
-
-    def pluginPaths(self) -> list[str]:
-        """pluginPaths()"""
-
-    def addPluginPath(self) -> None:
-        """addPluginPath()"""
-
-    def errorString(self) -> str:
-        """errorString()"""
-
-    def isLanguageChangeEnabled(self) -> bool:
-        """isLanguageChangeEnabled()"""
-
-    def setLanguageChangeEnabled(self) -> None:
-        """setLanguageChangeEnabled()"""
-
-    def setWorkingDirectory(self) -> None:
-        """setWorkingDirectory()"""
-
-    def workingDirectory(self) -> str:
-        """workingDirectory()"""
-
-
 # PythonConsolePy.cpp
 class PythonStdout:
     """Redirection of stdout to FreeCAD's Python console window"""

@@ -49,6 +49,8 @@ def _genModule(
                 curModuleName = f'{moduleName}.Units'
             case ('Selection' | 'Console' | 'TaskDialogPython') as stem:
                 curModuleName = f'{moduleName}.{stem}'
+            case 'UiLoader':
+                curModuleName = f'{moduleName}.PySideUic'
             case _:
                 curModuleName = moduleName
 
@@ -58,9 +60,7 @@ def _genModule(
             mg.getStub(sourcesRoot, curModuleName)
 
 
-def generateFreeCadStubs(sourcePath=SOURCE_DIR, targetPath=TARGET_DIR):
-    sourcesRoot = Module()
-
+def improve_FreeCAD(sourcesRoot: Module, sourcePath: Path):
     freeCad = sourcesRoot['FreeCAD']
     freeCad += 'class PyObjectBase(object): ...\n\n\n'
 
@@ -81,7 +81,8 @@ Err = FreeCAD.Console.PrintError
 Wrn = FreeCAD.Console.PrintWarning
 # be careful with following variables -
 # some of them are set in FreeCADGui (GuiUp after InitApplications),
-# so may not exist until FreeCADGuiInit is initialized - use `getattr`"""
+# so may not exist until FreeCADGuiInit is initialized - use `getattr`
+"""
     freeCad += 'GuiUp: typing.Literal[0, 1]'
     freeCad.imports.add('typing')
     freeCad += 'Gui = FreeCADGui'
@@ -97,8 +98,26 @@ Wrn = FreeCAD.Console.PrintWarning
         )
     )
 
+
+def improve_FreeCAD_Base(sourcesRoot: Module):
+    freeCadBase = sourcesRoot['FreeCAD.Base']
+    freeCadBase.imports.add(
+        "from FreeCAD import ProgressIndicator as ProgressIndicator"
+    )
+
+
+def improve_FreeCAD_Units(sourcesRoot: Module):
+    freeCADUnits = sourcesRoot['FreeCAD.Units']
+    freeCADUnits.imports.add(
+        'from FreeCAD.Base import Unit as Unit, Quantity as Quantity'
+    )
+    freeCADUnits += UNITS
+
+
+def improve_FreeCADGui(sourcesRoot: Module, sourcePath: Path):
     _genModule(sourcesRoot, sourcePath / 'Gui', sourcePath, moduleName='FreeCADGui')
     _genModule(sourcesRoot, sourcePath / 'Main', sourcePath, moduleName='FreeCADGui')
+
     freeCadGui = sourcesRoot['FreeCADGui']
     freeCadGui += 'Workbench = FreeCADGui.PythonWorkbench  # noqa'
     freeCadGui += 'ActiveDocument: FreeCADGui.Document | None'
@@ -112,8 +131,33 @@ Wrn = FreeCAD.Console.PrintWarning
         )
     )
 
+
+def improve_FreeCADGui_PySideUic(sourcesRoot: Module):
     pySideUic = sourcesRoot['FreeCADGui.PySideUic']
-    pySideUic += """
+    pySideUic.replace(
+        'def loadUiType() -> tuple[typing.Any, typing.Any] | None:',
+        """
+@typing.overload
+def loadUi(args: tuple[str]) -> _OptWid_t: ...
+@typing.overload
+def loadUi(args: tuple[str, qtpy.QtCore.QObject | None]) -> _OptWid_t:
+""".rstrip(),
+    )
+    pySideUic.replace(
+        'def loadUi() -> typing.Any | None:',
+        """
+class _UiGeneratedClass:
+    def setupUi(self, widget: qtpy.QtWidgets.QWidget) -> None: ...
+    def retranslateUi(self, widget: qtpy.QtWidgets.QWidget) -> None: ...
+
+_LoadRes_t: typing.TypeAlias =  tuple[_UiGeneratedClass, qtpy.QtWidgets.QWidget]
+
+def loadUiType(args: tuple[str]) -> _LoadRes_t | None:
+""".rstrip(),
+    )
+    pySideUic.replace(
+        'def createCustomWidget():',
+        """
 _OptWid_t: typing.TypeAlias = qtpy.QtWidgets.QWidget | None
 
 @typing.overload
@@ -121,23 +165,13 @@ def createCustomWidget(args: tuple[str]) -> _OptWid_t: ...
 @typing.overload
 def createCustomWidget(args: tuple[str, qtpy.QtWidgets.QWidget]) -> _OptWid_t: ...
 @typing.overload
-def createCustomWidget(args: tuple[str, qtpy.QtWidgets.QWidget, str]) -> _OptWid_t: ...
-
-@typing.overload
-def loadUi(args: tuple[str]) -> _OptWid_t: ...
-@typing.overload
-def loadUi(args: tuple[str, qtpy.QtCore.QObject | None]) -> _OptWid_t: ...
-
-class _UiGeneratedClass:
-    def setupUi(self, widget: qtpy.QtWidgets.QWidget) -> None: ...
-    def retranslateUi(self, widget: qtpy.QtWidgets.QWidget) -> None: ...
-
-_LoadRes_t: typing.TypeAlias =  tuple[_UiGeneratedClass, qtpy.QtWidgets.QWidget]
-
-def loadUiType(args: tuple[str]) -> _LoadRes_t | None: ...
-"""
+def createCustomWidget(args: tuple[str, qtpy.QtWidgets.QWidget, str]) -> _OptWid_t:
+""".rstrip(),
+    )
     pySideUic.imports.update(('typing', 'qtpy.QtCore', 'qtpy.QtWidgets'))
 
+
+def improve_Mod(sourcesRoot: Module, sourcePath: Path):
     for mod in (sourcePath / 'Mod').iterdir():
         moduleName = mod.name
         if moduleName in ('Test',):
@@ -147,11 +181,16 @@ def loadUiType(args: tuple[str]) -> _LoadRes_t | None: ...
         _genModule(sourcesRoot, mod / 'App', sourcePath, moduleName=moduleName)
         _genModule(sourcesRoot, mod / 'Gui', sourcePath, moduleName=moduleName)
 
-    freeCADUnits = sourcesRoot['FreeCAD.Units']
-    freeCADUnits.imports.add('from FreeCAD.Base import Unit, Quantity')
-    freeCADUnits += 'Unit = Unit'
-    freeCADUnits += 'Quantity = Quantity'
-    freeCADUnits += UNITS
+
+def generateFreeCadStubs(sourcePath=SOURCE_DIR, targetPath=TARGET_DIR):
+    sourcesRoot = Module()
+
+    improve_FreeCAD(sourcesRoot, sourcePath)
+    improve_FreeCAD_Base(sourcesRoot)
+    improve_FreeCAD_Units(sourcesRoot)
+    improve_FreeCADGui(sourcesRoot, sourcePath)
+    improve_FreeCADGui_PySideUic(sourcesRoot)
+    improve_Mod(sourcesRoot, sourcePath)
 
     sourcesRoot.setSubModulesAsPackage()
 
