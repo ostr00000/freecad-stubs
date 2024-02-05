@@ -91,12 +91,10 @@ class LateInit(Generic[T]):
         self.name = name
 
     @overload
-    def __get__(self, instance: None, owner) -> Self:
-        ...
+    def __get__(self, instance: None, owner) -> Self: ...
 
     @overload
-    def __get__(self, instance, owner) -> T:
-        ...
+    def __get__(self, instance, owner) -> T: ...
 
     def __get__(self, instance, owner):
         if instance is None:

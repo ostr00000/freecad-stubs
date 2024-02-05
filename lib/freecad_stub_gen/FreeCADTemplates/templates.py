@@ -15,6 +15,7 @@ Find regex:
 Replace:
     def $1(self):\n        \"\"\"May be implemented in python\"\"\"
 """
+
 # pyright: reportGeneralTypeIssues=false, reportMissingModuleSource=false
 from __future__ import annotations
 
