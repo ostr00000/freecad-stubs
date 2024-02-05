@@ -9,6 +9,13 @@ class ReturnExportOptionsDict(typing.TypedDict):
 
 
 # AppImportGuiPy.cpp
+def readDXF(Name: str, DocName: str = None, IgnoreErrors: int = True, optionSource: str = None, /) -> None:
+    """
+    readDXF(filename,[document,ignore_errors,option_source]): Imports a DXF file into the given document. ignore_errors is True by default.
+    Possible exceptions: (Exception, RuntimeError).
+    """
+
+
 def exportOptions(Name: str, /) -> ReturnExportOptionsDict:
     """
     exportOptions(string) -- Return the export options of a file type.

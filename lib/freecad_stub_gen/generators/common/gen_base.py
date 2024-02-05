@@ -19,8 +19,12 @@ class BaseGenerator:
         self.baseGenFilePath = filePath
         self.requiredImports = OrderedStrSet()
 
-        impPath = filePath.with_stem(filePath.stem + 'Imp').with_suffix('.cpp')
-        if not impPath.exists():  # special case for PyObjectBase
+        for implSuffix in ('Imp', 'Impl'):
+            impPath = filePath.with_stem(filePath.stem + implSuffix).with_suffix('.cpp')
+            if impPath.exists():
+                break
+        else:
+            # special case for PyObjectBase
             impPath = filePath.with_suffix('.cpp')
 
         self.impContent = readContent(impPath)

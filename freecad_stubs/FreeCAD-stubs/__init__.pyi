@@ -1738,7 +1738,7 @@ class Document(FreeCAD.PropertyContainer):
 
     @property
     def ActiveObject(self) -> FreeCAD.DocumentObject | None:
-        """The active object of the document"""
+        """The last created object in this document"""
 
     @property
     def DependencyGraph(self) -> str:
@@ -1762,7 +1762,7 @@ class Document(FreeCAD.PropertyContainer):
 
     @property
     def Objects(self) -> list:
-        """The list of object handled by this document"""
+        """The list of objects in this document"""
 
     @property
     def OldLabel(self) -> str:
@@ -1798,7 +1798,7 @@ class Document(FreeCAD.PropertyContainer):
 
     @property
     def RootObjects(self) -> list:
-        """The list of root object of this document"""
+        """The list of root objects in this document"""
 
     @property
     def Temporary(self) -> bool:
@@ -1806,7 +1806,7 @@ class Document(FreeCAD.PropertyContainer):
 
     @property
     def TopologicalSortedObjects(self) -> list:
-        """The list of object of this document in topological sorted order"""
+        """The list of objects in this document in topological sorted order"""
 
     @property
     def Transacting(self) -> bool:
@@ -1999,6 +1999,16 @@ class Document(FreeCAD.PropertyContainer):
         Property TypeId: App::PropertyUUID.
         UUID of the document.
         """
+
+    @property
+    def UnitSystem(self) -> int:
+        """
+        Property TypeId: App::PropertyEnumeration.
+        Unit system to use in this project.
+        """
+
+    @UnitSystem.setter
+    def UnitSystem(self, value: str): ...
 
     def abortTransaction(self):
         """Abort an Undo/Redo transaction (rollback)"""

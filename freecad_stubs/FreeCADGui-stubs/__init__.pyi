@@ -58,7 +58,7 @@ class __MainWindow_windowStateChanged_0(typing.Protocol):
 
 
 class __MainWindow_windowStateChanged_1(typing.Protocol):
-    def __call__(self, a0: FreeCADGui.MDIViewPy, /): ...
+    def __call__(self, a0: qtpy.QtWidgets.QWidget, /): ...
 
 
 class __MainWindow_workbenchActivated_0(typing.Protocol):
@@ -1412,7 +1412,7 @@ class Document(FreeCAD.Persistence):
 class MDIViewPy(qtpy.QtWidgets.QMainWindow):
     """Python binding class for the MDI view class"""
 
-    message: typing.ClassVar[qt.pyqtSignal[__MDIView_message_0 | __MDIView_message_1 | __MDIView_message_2]]
+    message: qt.Signal[__MDIView_message_0 | __MDIView_message_1 | __MDIView_message_2]
 
     def printView(self) -> None:
         """
@@ -2113,10 +2113,10 @@ class PyResource:
 class MainWindowPy(qtpy.QtWidgets.QMainWindow):
     """Python binding class for the MainWindow class"""
 
-    timeEvent: typing.ClassVar[qt.pyqtSignal[__MainWindow_timeEvent_0]]
-    windowStateChanged: typing.ClassVar[qt.pyqtSignal[__MainWindow_windowStateChanged_0 | __MainWindow_windowStateChanged_1]]
-    workbenchActivated: typing.ClassVar[qt.pyqtSignal[__MainWindow_workbenchActivated_0 | __MainWindow_workbenchActivated_1]]
-    mainWindowClosed: typing.ClassVar[qt.pyqtSignal[__MainWindow_mainWindowClosed_0]]
+    timeEvent: qt.Signal[__MainWindow_timeEvent_0]
+    windowStateChanged: qt.Signal[__MainWindow_windowStateChanged_0 | __MainWindow_windowStateChanged_1]
+    workbenchActivated: qt.Signal[__MainWindow_workbenchActivated_0 | __MainWindow_workbenchActivated_1]
+    mainWindowClosed: qt.Signal[__MainWindow_mainWindowClosed_0]
 
     def getWindows(self) -> list:
         """

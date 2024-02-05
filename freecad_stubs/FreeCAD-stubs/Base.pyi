@@ -197,6 +197,17 @@ class Vector(FreeCAD.PyObjectBase):
         tol : float
         """
 
+    def isNormal(self, obj: FreeCAD.Vector, tolerance: float, /) -> bool:
+        """
+        isNormal(vector2, tol=0) -> bool
+
+        Checks if this vector and `vector2` are
+        normal less or equal to the given tolerance.
+
+        vector2 : Base.Vector
+        tol : float
+        """
+
     def isOnLineSegment(self, start, end, /) -> bool:
         """
         isOnLineSegment(vector1, vector2) -> bool
@@ -206,6 +217,17 @@ class Vector(FreeCAD.PyObjectBase):
         vector1 : Base.Vector
         vector2 : Base.Vector
         Possible exceptions: (TypeError).
+        """
+
+    def isParallel(self, obj: FreeCAD.Vector, tolerance: float, /) -> bool:
+        """
+        isParallel(vector2, tol=0) -> bool
+
+        Checks if this vector and `vector2` are
+        parallel less or equal to the given tolerance.
+
+        vector2 : Base.Vector
+        tol : float
         """
 
     def multiply(self, factor: float, /) -> FreeCAD.Vector:

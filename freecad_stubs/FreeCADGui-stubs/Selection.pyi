@@ -372,12 +372,7 @@ def pushSelStack(clear: bool = True, overwrite: bool = False, /):
     """
 
 
-@typing.overload
-def hasSelection(docName, /, resolve=None): ...
-
-
-@typing.overload
-def hasSelection(doc: str = None, /) -> bool:
+def hasSelection(doc: str = None, resolve: int = 0, /) -> bool:
     """
     hasSelection(docName, resolve=ResolveMode.NoResolve) -> bool
 

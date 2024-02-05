@@ -202,7 +202,7 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         return f'def {name}({", ".join(("self", *args))}){retType}: ...\n\n'
 
     def findFunctionBody(self, cFuncName: str, cClassName: str) -> str | None:
-        """Override method to search `funcName` also in parent."""
+        """Override method to search `cFuncName` also in parent."""
         if res := super().findFunctionBody(cFuncName, cClassName):
             return res
 

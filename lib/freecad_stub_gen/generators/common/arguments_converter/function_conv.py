@@ -91,17 +91,16 @@ class FunctionConv:
             return []
 
         kwargsArgumentName = self.argumentStrings[self.formatStrPosition + 1]
-        matches: list[str] = re.findall(
+        for r in (
             rf'{kwargsArgumentName}\s*\[\s*]\s*=\s*{{((?:.|\s)*?)}}',
-            self.varDeclarationCode,
-        )
-        if not matches:
-            matches: list[str] = re.findall(
-                rf'{kwargsArgumentName}\s*{{\s*((?:.|\s)*?)}}',
-                self.varDeclarationCode,
-            )
-            if not matches:
-                return []
+            rf'{kwargsArgumentName}\s*=?\s*{{\s*((?:.|\s)*?)}}',
+        ):
+            matches: list[str] = re.findall(r, self.varDeclarationCode)
+            if matches:
+                break
+        else:
+            msg = f"Cannot find {kwargsArgumentName=} in function."
+            raise ValueError(msg)
 
         # take the latest match and remove whitespaces
         kwargsStr = ''.join(matches[-1].split())

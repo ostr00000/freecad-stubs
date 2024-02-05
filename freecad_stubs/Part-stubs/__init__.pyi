@@ -202,7 +202,7 @@ class GeometryBoolExtension(PartModule.GeometryExtension):
 
     @property
     def Value(self) -> bool:
-        """returns the value of the GeometryBoolExtension."""
+        """Returns the value of the GeometryBoolExtension."""
 
     @Value.setter
     def Value(self, value: bool): ...
@@ -2155,11 +2155,7 @@ class Shape(FreeCAD.ComplexGeoData):
         Possible exceptions: (Part.OCCError).
         """
 
-    @typing.overload
-    def optimalBoundingBox(self, useTriangulation=True, useShapeTolerance=False): ...
-
-    @typing.overload
-    def optimalBoundingBox(self, arg1: bool = None, /) -> FreeCAD.BoundBox:
+    def optimalBoundingBox(self, useT: bool = True, useS: bool = False, /) -> FreeCAD.BoundBox:
         """
         Get the optimal bounding box
         optimalBoundingBox([useTriangulation = True, useShapeTolerance = False]) -> bound box
@@ -5444,7 +5440,7 @@ class GeometryDoubleExtension(PartModule.GeometryExtension):
 
     @property
     def Value(self) -> float:
-        """returns the value of the GeometryDoubleExtension."""
+        """Returns the value of the GeometryDoubleExtension."""
 
     @Value.setter
     def Value(self, value: float): ...

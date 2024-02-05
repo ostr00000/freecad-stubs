@@ -67,7 +67,7 @@ class QtSignal(BlockItem):
             )
 
         slots = " | ".join(protocolNames)
-        return f'{self.name}: typing.ClassVar[qt.pyqtSignal[{slots}]]'
+        return f'{self.name}: qt.Signal[{slots}]'
 
 
 class ClassVarContainer(Generic[T]):

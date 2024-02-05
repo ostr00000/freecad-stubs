@@ -166,6 +166,8 @@ class ReturnTypeConverterBase:
 
             case StrWrapper('wrap.fromQObject('):
                 return 'qtpy.QtCore.QObject'
+            case StrWrapper('QWidget'):
+                return 'qtpy.QtWidgets.QWidget'
             case StrWrapper('wrap.fromQWidget('):
                 return self._extractWidget(varText)
             case StrWrapper('wrap.fromQIcon('):

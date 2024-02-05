@@ -1982,7 +1982,7 @@ def makeDistanceDim3d(pDvp, pDimType, pFrom, pTo, /) -> None:
     """
 
 
-def makeGeomHatch(pFace, scale: float = 1.0, pPatName: str = '', pPatFile: str = '', /) -> PartModule.Compound | None:
+def makeGeomHatch(pFace, scale: float = 1.0, pPatName: str = None, pPatFile: str = None, /) -> PartModule.Compound | None:
     """
     makeGeomHatch(face, [patScale], [patName], [patFile]) -- draw a geom hatch on a given face, using optionally the given scale (default 1) and a given pattern name (ex. Diamond) and .pat file (the default pattern name and/or .pat files set in preferences are used if none are given). Returns a Part compound shape.
     Possible exceptions: (TypeError, Exception).
@@ -2045,6 +2045,10 @@ def build3dCurves(pcObjShape: PartModule.Shape, /) -> PartModule.Shape:
     which is useful for shapes obtained Part.HLRBRep.Algo
     Possible exceptions: (Exception).
     """
+
+
+def makeCanonicalPoint(pyDocObj: TechDraw.DrawViewPart, pyPointIn: FreeCAD.Vector, pyUnscale=None, /) -> FreeCAD.Vector | None:
+    """makeCanonicalPoint(DrawViewPart, Vector3d) - Returns the unscaled, unrotated version of the input point"""
 
 
 def projectToSVG(topoShape: PartModule.Shape, direction: FreeCAD.Vector = None, type: str = None, tolerance: float = 0.1, vStyle=None, v0Style=None, v1Style=None, hStyle=None, h0Style=None, h1Style=None) -> str:

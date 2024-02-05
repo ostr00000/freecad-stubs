@@ -258,17 +258,23 @@ class PropertyMacroSetter(PropertyMacroBase):
 
     REG_PATTERN_ENUM_VAR_NAME = r'{}\.setEnums\(\s*(\w+)\s*\)'
     REG_PATTERN_ENUM_ARRAY = r'{}\s*\[\s*]\s*=\s*([^;]+)'
+    REG_PATTERN_VEC = r'std::vector<std::string>\s*{}'
 
     def _getEnumType(self) -> str:
         reg = self.REG_PATTERN_ENUM_VAR_NAME.format(self.name)
         if varNameMatch := re.search(reg, self.constructorBody):
-            reg = self.REG_PATTERN_ENUM_ARRAY.format(varNameMatch.group(1))
+            varName = varNameMatch.group(1)
+            reg = self.REG_PATTERN_ENUM_ARRAY.format(varName)
 
             if (match := re.search(reg, self.constructorBody)) or (
                 match := re.search(reg, self.cppContent)
             ):
                 literalsRaw = match.group(1)
             else:
+                reg = self.REG_PATTERN_VEC.format(varName)
+                if re.search(reg, self.constructorBody):
+                    return 'str'
+
                 msg = 'Cannot find enum variable'
                 raise ValueError(msg)
 

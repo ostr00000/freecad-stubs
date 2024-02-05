@@ -149,6 +149,7 @@ class App:
     PropertySpecificHeat = 'App::PropertySpecificHeat'
     PropertySpeed = 'App::PropertySpeed'
     PropertyStiffness = 'App::PropertyStiffness'
+    PropertyStiffnessDensity = 'App::PropertyStiffnessDensity'
     PropertyStress = 'App::PropertyStress'
     PropertyString = 'App::PropertyString'
     PropertyStringList = 'App::PropertyStringList'
@@ -505,6 +506,24 @@ class InspectionGui:
 
 class MatGui:
     Workbench = 'MatGui::Workbench'
+
+
+class Materials:
+    LibraryBase = 'Materials::LibraryBase'
+    Material = 'Materials::Material'
+    Material2DArray = 'Materials::Material2DArray'
+    Material3DArray = 'Materials::Material3DArray'
+    MaterialExternalLibrary = 'Materials::MaterialExternalLibrary'
+    MaterialFilter = 'Materials::MaterialFilter'
+    MaterialLibrary = 'Materials::MaterialLibrary'
+    MaterialManager = 'Materials::MaterialManager'
+    MaterialProperty = 'Materials::MaterialProperty'
+    MaterialValue = 'Materials::MaterialValue'
+    Model = 'Materials::Model'
+    ModelLibrary = 'Materials::ModelLibrary'
+    ModelManager = 'Materials::ModelManager'
+    ModelProperty = 'Materials::ModelProperty'
+    ModelUUIDs = 'Materials::ModelUUIDs'
 
 
 class Measure:
