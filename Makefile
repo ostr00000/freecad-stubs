@@ -31,12 +31,21 @@ clean_env:
 
 
 # ######## packaging ########
-.PHONY: prepare_build build_and_upload
+.PHONY: release_changelog prepare_build build_and_upload
 
 prepare_build:
 	$(PYTHON_ENV) -m pip install --upgrade pip
 	$(PYTHON_ENV) -m pip install --upgrade build
 	$(PYTHON_ENV) -m pip install --upgrade twine
+	# use `--pre` because on pypi there are old versions
+	$(PYTHON_ENV) -m pip install --upgrade keepachangelog --pre
+
+release_changelog:
+	# replace autoformat escaping, because it is not possible to configure it
+	# https://github.com/executablebooks/mdformat/issues/112
+	# Replace: `\[text\]` -> `[text]`
+	sed --in-place --expression 's@\\\[@[@g' --expression 's@\\\]@]@g' CHANGELOG.md
+	$(PYTHON_ENV) -m keepachangelog release ''
 
 build_and_upload:
 	rm -rf ./dist
@@ -44,7 +53,7 @@ build_and_upload:
 	$(PYTHON_ENV) -m twine upload dist/*
 
 
-# ######## checks ########
+# ######## pre-commit ########
 .PHONY: pre_commit pre_commit_install pre_commit_uninstall pre_commit_auto_update
 
 pre_commit:

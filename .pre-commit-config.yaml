@@ -61,7 +61,11 @@ repos:
     hooks:
       - id: mdformat
         additional_dependencies:
+          # plugins to format for GitHub:
           - mdformat-gfm
+          - mdformat-frontmatter
+          - mdformat-footnote
+          # plugin to format code blocks using `black` formatter:
           - mdformat-black
         args: [ --number ]
 
