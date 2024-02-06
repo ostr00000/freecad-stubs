@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## \[Unreleased\]
 
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
 ## \[1.0.17\] - 2024-02-05
 
 ### Added
@@ -21,10 +33,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated generator code for recent changes in FreeCAD src code.
 - Update stub to recent FreeCAD version (`main` from 2024-02-05).
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 
 - Issue #10: make `templates.py` easy copy-paste.
@@ -33,8 +41,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Issue #14: add `FreeCADGui.PySideUic`,
   - Issue #17: move `ProgressIndicator` to `FreeCAD.Base`,
   - Issue #16: set `FreeCAD.Console` as attribute,
-
-### Security
 
 ## \[1.0.16\] - 2023-11-24
 
