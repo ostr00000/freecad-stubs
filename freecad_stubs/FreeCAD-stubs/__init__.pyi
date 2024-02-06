@@ -2833,7 +2833,7 @@ def checkAbort():
 
 # Be careful with following variables.
 # Some of them are set in `FreeCADGui` (`GuiUp` after `InitApplications`),
-# so may not exist until `FreeCADGuiInit` is initialized. 
+# so may not exist until `FreeCADGuiInit` is initialized.
 # You may want to use `getattr(FreeCAD, 'GuiUp', False)`.
 GuiUp: typing.Literal[0, 1]
 ActiveDocument: FreeCAD.Document | None
