@@ -43,14 +43,22 @@ def _genModule(
     for cppPath in genCppFiles(modulePath):
         match cppPath.stem:
             # this is special case when we create separate module
+            # FreeCAD
             case 'Translate':
-                curModuleName = f'{moduleName}.Qt'
+                curModuleName = f'{moduleName}._Qt'
             case 'UnitsApiPy':
-                curModuleName = f'{moduleName}.Units'
-            case ('Selection' | 'Console' | 'TaskDialogPython') as stem:
-                curModuleName = f'{moduleName}.{stem}'
+                curModuleName = f'{moduleName}._Units'
+            case 'Console':
+                curModuleName = f'{moduleName}._Console'
+            case 'TaskDialogPython' as stem:
+                curModuleName = f'{moduleName}._{stem}'
+
+            # FreeCADGui
+            case 'Selection' as stem:
+                curModuleName = f'{moduleName}._{stem}'
             case 'UiLoader':
-                curModuleName = f'{moduleName}.PySideUic'
+                curModuleName = f'{moduleName}._PySideUic'
+
             case _:
                 curModuleName = moduleName
 
@@ -74,26 +82,30 @@ def improve_FreeCAD(sourcesRoot: Module, sourcePath: Path):
     _genModule(sourcesRoot, sourcePath / 'App', sourcePath, moduleName='FreeCAD')
 
     freeCad += """
-App = FreeCAD
-Log = FreeCAD.Console.PrintLog
-Msg = FreeCAD.Console.PrintMessage
-Err = FreeCAD.Console.PrintError
-Wrn = FreeCAD.Console.PrintWarning
-# be careful with following variables -
-# some of them are set in FreeCADGui (GuiUp after InitApplications),
-# so may not exist until FreeCADGuiInit is initialized - use `getattr`
+# Be careful with following variables.
+# Some of them are set in `FreeCADGui` (`GuiUp` after `InitApplications`),
+# so may not exist until `FreeCADGuiInit` is initialized.
+# You may want to use `getattr(FreeCAD, 'GuiUp', False)`.
+GuiUp: typing.Literal[0, 1]
+ActiveDocument: FreeCAD.Document | None
+Gui = FreeCADGui
 """
-    freeCad += 'GuiUp: typing.Literal[0, 1]'
-    freeCad.imports.add('typing')
-    freeCad += 'Gui = FreeCADGui'
-    freeCad.imports.add('FreeCADGui')
-    freeCad += 'ActiveDocument: FreeCAD.Document | None'
+
+    freeCad += """
+# You cannot import these modules in FreeCAD,
+# but you can access it from this module ex. `FreeCAD.Console`:
+Console = _Console
+Units = _Units
+Qt = _Qt
+    """
     freeCad.imports.update(
         (
-            'FreeCAD.Console',
-            'FreeCAD.Qt as Qt',
-            'FreeCAD.Units as Units',
-            'FreeCAD.Base',
+            'typing',
+            'FreeCADGui',
+            'from FreeCAD import _Console',
+            'from FreeCAD import _Units',
+            'from FreeCAD import _Qt',
+            'from FreeCAD import Base as Base',
             'from FreeCAD.Base import *',
         )
     )
@@ -107,9 +119,12 @@ def improve_FreeCAD_Base(sourcesRoot: Module):
 
 
 def improve_FreeCAD_Units(sourcesRoot: Module):
-    freeCADUnits = sourcesRoot['FreeCAD.Units']
-    freeCADUnits.imports.add(
-        'from FreeCAD.Base import Unit as Unit, Quantity as Quantity'
+    freeCADUnits = sourcesRoot['FreeCAD._Units']
+    freeCADUnits.imports.update(
+        (
+            'from FreeCAD.Base import _Unit',
+            'from FreeCAD.Base import _Quantity',
+        )
     )
     freeCADUnits += UNITS
 
@@ -124,16 +139,19 @@ def improve_FreeCADGui(sourcesRoot: Module, sourcePath: Path):
     freeCadGui += (
         'Control = ControlClass()  # hack to show this module in current module hints'
     )
+    freeCadGui += 'Selection = _Selection'
+    freeCadGui += 'PySideUic = _PySideUic'
     freeCadGui.imports.update(
         (
-            'FreeCADGui.Selection',
+            'from FreeCADGui import _Selection',
+            'from FreeCADGui import _PySideUic',
             'from FreeCADGui.TaskDialogPython import Control as ControlClass',
         )
     )
 
 
 def improve_FreeCADGui_PySideUic(sourcesRoot: Module):
-    pySideUic = sourcesRoot['FreeCADGui.PySideUic']
+    pySideUic = sourcesRoot['FreeCADGui._PySideUic']
     pySideUic.replace(
         'def loadUiType() -> tuple[typing.Any, typing.Any] | None:',
         """

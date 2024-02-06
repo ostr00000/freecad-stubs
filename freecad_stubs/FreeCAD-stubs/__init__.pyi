@@ -1,11 +1,11 @@
 import typing
 
+from FreeCAD import Base as Base
+from FreeCAD import _Console
+from FreeCAD import _Qt
+from FreeCAD import _Units
 from FreeCAD.Base import *
 import FreeCAD
-import FreeCAD.Base
-import FreeCAD.Console
-import FreeCAD.Qt as Qt
-import FreeCAD.Units as Units
 import FreeCADGui
 import FreeCADTemplates.templates
 import Mesh as MeshModule
@@ -2831,14 +2831,16 @@ def checkAbort():
 
 
 
-App = FreeCAD
-Log = FreeCAD.Console.PrintLog
-Msg = FreeCAD.Console.PrintMessage
-Err = FreeCAD.Console.PrintError
-Wrn = FreeCAD.Console.PrintWarning
-# be careful with following variables -
-# some of them are set in FreeCADGui (GuiUp after InitApplications),
-# so may not exist until FreeCADGuiInit is initialized - use `getattr`
+# Be careful with following variables.
+# Some of them are set in `FreeCADGui` (`GuiUp` after `InitApplications`),
+# so may not exist until `FreeCADGuiInit` is initialized. 
+# You may want to use `getattr(FreeCAD, 'GuiUp', False)`.
 GuiUp: typing.Literal[0, 1]
-Gui = FreeCADGui
 ActiveDocument: FreeCAD.Document | None
+Gui = FreeCADGui
+
+# You cannot import these modules in FreeCAD,
+# but you can access it from this module ex. `FreeCAD.Console`:
+Console = _Console
+Units = _Units
+Qt = _Qt

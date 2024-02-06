@@ -1,9 +1,10 @@
 import typing
 
+from FreeCADGui import _PySideUic
+from FreeCADGui import _Selection
 from FreeCADGui.TaskDialogPython import Control as ControlClass
 import FreeCAD
 import FreeCADGui
-import FreeCADGui.Selection
 import FreeCADTemplates.qt_types as qt
 import FreeCADTemplates.templates
 import pivy.coin
@@ -3190,3 +3191,5 @@ def embedToWindow(pointer: str, /) -> None:
 Workbench = FreeCADGui.PythonWorkbench  # noqa
 ActiveDocument: FreeCADGui.Document | None
 Control = ControlClass()  # hack to show this module in current module hints
+Selection = _Selection
+PySideUic = _PySideUic
