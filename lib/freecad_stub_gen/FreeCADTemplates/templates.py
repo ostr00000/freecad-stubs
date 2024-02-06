@@ -645,3 +645,33 @@ class TaskDialogPythonUi(TaskDialog):
 
 class TaskDialogPythonForm(TaskDialog):
     form: list[QObject] | QObject
+
+
+class SelectionObserver:
+    def addSelection(
+        self,
+        docName: str,
+        objectName: str,
+        subName: str,
+        xyz: tuple[float, float, float],
+        /,
+    ):
+        """May be implemented in python"""
+
+    def clearSelection(self, docName: str, /):
+        """May be implemented in python"""
+
+    def pickedListChanged(self):
+        """May be implemented in python"""
+
+    def removePreselection(self, docName: str, objectName: str, subName: str, /):
+        """May be implemented in python"""
+
+    def removeSelection(self, docName: str, objectName: str, subName: str, /):
+        """May be implemented in python"""
+
+    def setPreselection(self, docName: str, objectName: str, subName: str, /):
+        """May be implemented in python"""
+
+    def setSelection(self, docName: str, /):
+        """May be implemented in python"""
