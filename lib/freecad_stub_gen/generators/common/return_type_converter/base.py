@@ -47,41 +47,54 @@ class ReturnTypeConverterBase:
     def className(self):
         return getClassName(self.classNameWithModule)
 
-    # pylint: disable=too-many-return-statements
     def getExpressionType(
         self, varText: str, endPos: int = 0, *, onlyLiteral=False
     ) -> RetType:
         varText = self._removePrefixes(varText)
         varText = self._removeSuffix(varText)
+        sw = StrWrapper(varText)
+
+        for method in (
+            self._matchLiterals,
+            self._matchPyType,
+            self._matchSpecial,
+            self._matchQt,
+            self._matchMethodCall,
+            self._matchFreeCAD,
+            self._matchFinalPossibilities,
+        ):
+            if (result := method(sw, endPos, onlyLiteral=onlyLiteral)) is not None:
+                return result
+
+        return AnyValue
+
+    def _matchLiterals(
+        self, varText: str, endPos: int = 0, *, onlyLiteral
+    ) -> RetType | None:
         match StrWrapper(varText):
             case '':
                 return AnyValue
-            case 'Py::Object()':
-                return 'object'
-            case 'Py_None' | 'Py::None()' | 'Py_Return':
-                return 'None'
+
             case '0' | '-1' | 'NULL' | 'nullptr' | '0L':
                 if onlyLiteral:
                     return AnyValue
                 raise InvalidReturnType
 
-            case 'type->tp_new(type, this, nullptr)':
-                return self.getExpressionType('type', endPos)
-            case 'this->GetType()' | 'IncRef()':
-                return self.classNameWithModule
+        return None
 
-            case StrWrapper(end='->copyPyObject()'):
-                return self.getExpressionType(
-                    varText.removesuffix('->copyPyObject()'), endPos
-                )
+    def _matchPyType(
+        self, varText: str, endPos: int = 0, *, onlyLiteral
+    ) -> RetType | None:
+        match StrWrapper(varText):
+            case 'Py::Object()':
+                return 'object'
 
-            case 'getDocumentObjectPtr()':
-                return 'FreeCAD.DocumentObject'
-            case StrWrapper('(GetApplication().openDocument('):
-                return 'FreeCAD.Document'
+            case 'Py_None' | 'Py::None()' | 'Py_Return':
+                return 'None'
 
             case StrWrapper('Py::Boolean' | 'PyBool_From' | 'Py::True' | 'Py::False'):
                 return 'bool'
+
             case StrWrapper(
                 'Py::Long'
                 | 'PyLong_From'
@@ -91,8 +104,18 @@ class ReturnTypeConverterBase:
                 | 'int'
             ):
                 return 'int'
+
             case StrWrapper('Py::Float' | 'PyFloat_From'):
                 return 'float'
+            case StrWrapper('Py::List' | 'PyList_New'):
+                return 'list'
+            case StrWrapper('Py::Dict' | 'PyDict_New'):
+                return 'dict'
+            case StrWrapper('Py::Callable'):
+                return 'typing.Callable'
+            case StrWrapper('PyByteArray_From'):
+                return 'bytes'
+
             case StrWrapper(
                 'Py::String'
                 | 'PyString_From'
@@ -103,11 +126,10 @@ class ReturnTypeConverterBase:
                 | 'QString'
             ):
                 return 'str'
-            case StrWrapper(end='->c_str()'):
-                return 'str'
 
-            case StrWrapper('PyByteArray_From'):
-                return 'bytes'
+            case StrWrapper(contain='Py_True' | 'Py_False'):
+                # must be before identifier and should be after Py_BuildValue
+                return 'bool'
 
             case StrWrapper('Py::TupleN'):
                 if onlyLiteral:
@@ -129,13 +151,89 @@ class ReturnTypeConverterBase:
 
             case StrWrapper('Py::Tuple' | 'PyTuple_New'):
                 return 'tuple'
-            case StrWrapper('Py::List' | 'PyList_New'):
-                return 'list'
-            case StrWrapper('Py::Dict' | 'PyDict_New'):
-                return 'dict'
-            case StrWrapper('Py::Callable'):
-                return 'typing.Callable'
 
+        return None
+
+    def _matchSpecial(
+        self, varText: str, endPos: int = 0, *, onlyLiteral
+    ) -> RetType | None:
+        match StrWrapper(varText):
+            case 'getDocumentObjectPtr()':
+                return 'FreeCAD.DocumentObject'
+            case StrWrapper('(GetApplication().openDocument('):
+                return 'FreeCAD.Document'
+
+        return None
+
+    def _matchQt(self, varText: str, endPos: int = 0, *, onlyLiteral) -> RetType | None:
+        match StrWrapper(varText):
+            case StrWrapper('wrap.fromQObject('):
+                return 'qtpy.QtCore.QObject'
+
+            case StrWrapper('QWidget'):
+                return 'qtpy.QtWidgets.QWidget'
+
+            case StrWrapper('wrap.fromQWidget('):
+                return self._extractWidget(varText)
+
+            case StrWrapper('wrap.fromQIcon('):
+                return 'qtpy.QtGui.QIcon'
+
+        return None
+
+    def _matchMethodCall(
+        self, varText: str, endPos: int = 0, *, onlyLiteral
+    ) -> RetType | None:
+        match StrWrapper(varText):
+            case 'type->tp_new(type, this, nullptr)':
+                return self.getExpressionType('type', endPos)
+
+            case 'this->GetType()' | 'IncRef()':
+                return self.classNameWithModule
+
+            case StrWrapper(end='->copyPyObject()'):
+                original = varText.removesuffix('->copyPyObject()')
+                return self.getExpressionType(original, endPos)
+
+            case StrWrapper(end='->c_str()'):
+                return 'str'
+
+            case StrWrapper('PyRun_String'):
+                return AnyValue
+
+            case StrWrapper('Base::Interpreter().createSWIGPointerObj('):
+                return self._extractPivy(varText)
+
+            case StrWrapper('new ' | 'Py::asObject(new '):
+                # | 'Base::getTypeAsObject('
+                return self._findClassWithModule(varText)
+
+            case StrWrapper('Py_BuildValue("'):
+                return self._extractBuildValue(varText, endPos)
+
+            case StrWrapper('Py::asObject(' | 'Py::Object(' | 'createPyObject('):
+                rawReturnVarName = next(iter(genFuncArgs(varText)))
+                return self.getExpressionType(rawReturnVarName, endPos)
+
+            case StrWrapper(end='Py') as i if i.isidentifier() and i[0].isupper():
+                return self._findClassWithModule(varText)
+
+            case StrWrapper(end='->getPyObject()' | '.getPyObject()'):
+                varText = (
+                    varText.removesuffix('getPyObject()')
+                    .removesuffix('.')
+                    .removesuffix('->')
+                    .removesuffix(')')
+                )
+                varText = varText[varText.rfind('(') + 1 :]
+                return self.getExpressionType(varText, endPos=endPos)
+
+        return None
+
+    def _matchFreeCAD(
+        self, varText: str, endPos: int = 0, *, onlyLiteral
+    ) -> RetType | None:
+        match StrWrapper(varText):
             # PyCXX wrapper classes, search for `typedef GeometryT<`
             case StrWrapper('Py::BoundingBox'):
                 return 'FreeCAD.BoundBox'
@@ -151,63 +249,29 @@ class ReturnTypeConverterBase:
             case StrWrapper('Py::Vector'):
                 return 'FreeCAD.Vector'
 
+            case StrWrapper('MainWindowPy::createWrapper'):
+                return 'FreeCADGui.MainWindowPy'
+
             case StrWrapper('shape2pyshape' | 'Part::shape2pyshape'):
                 return 'Part.Shape'
+
             case StrWrapper('getShapes<'):
                 templateClass = varText.removeprefix('getShapes<').split('>')[0]
                 innerClass = self.getExpressionType(templateClass, endPos)
                 return f'list[{innerClass}]'
 
-            case StrWrapper('Base::Interpreter().createSWIGPointerObj('):
-                return self._extractPivy(varText)
+        return None
 
-            case StrWrapper('MainWindowPy::createWrapper'):
-                return 'FreeCADGui.MainWindowPy'
-
-            case StrWrapper('wrap.fromQObject('):
-                return 'qtpy.QtCore.QObject'
-            case StrWrapper('QWidget'):
-                return 'qtpy.QtWidgets.QWidget'
-            case StrWrapper('wrap.fromQWidget('):
-                return self._extractWidget(varText)
-            case StrWrapper('wrap.fromQIcon('):
-                return 'qtpy.QtGui.QIcon'
-
-            case StrWrapper('PyRun_String'):
-                return AnyValue
-
-            case StrWrapper('new ' | 'Py::asObject(new '):
-                return self._findClassWithModule(varText)
-            case StrWrapper(end='Py') as i if i.isidentifier() and i[0].isupper():
-                return self._findClassWithModule(varText)
-
-            case StrWrapper(end='->getPyObject()' | '.getPyObject()'):
-                varText = (
-                    varText.removesuffix('getPyObject()')
-                    .removesuffix('.')
-                    .removesuffix('->')
-                    .removesuffix(')')
-                )
-                varText = varText[varText.rfind('(') + 1 :]
-                return self.getExpressionType(varText, endPos=endPos)
-
-            case StrWrapper('Py_BuildValue("'):
-                return self._extractBuildValue(varText, endPos)
-
-            case StrWrapper(contain='Py_True' | 'Py_False'):
-                # must be before identifier and should be after Py_BuildValue
-                return 'bool'
-
-            case StrWrapper('Py::asObject(' | 'Py::Object(' | 'createPyObject('):
-                rawReturnVarName = next(iter(genFuncArgs(varText)))
-                return self.getExpressionType(rawReturnVarName, endPos)
-
-            case _ if onlyLiteral:
+    def _matchFinalPossibilities(
+        self, varText: str, endPos: int = 0, *, onlyLiteral
+    ) -> RetType | None:
+        match StrWrapper(varText):
+            case maybeClass if onlyLiteral:
                 if all(i.isidentifier() for i in varText.split('::')):
-                    maybeClass = varText
                     if not maybeClass.endswith('Py'):
                         maybeClass += 'Py'
                     return self._findClassWithModule(maybeClass, mustDiffer=varText)
+
                 return AnyValue
 
             case _ if varText.isidentifier():
@@ -226,6 +290,8 @@ class ReturnTypeConverterBase:
             case _:
                 logger.warning(f"Unknown return variable: '{varText}'")
         return AnyValue
+
+        return None
 
     @staticmethod
     def _removePrefixes(varText: str) -> str:

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from enum import Enum, auto
 
@@ -26,7 +28,16 @@ class AffixCmp:
                 raise NotImplementedError
 
 
-class StrWrapper(str):
+class StrWrapperMeta(type):
+    def __call__(cls, *args, **kwargs):
+        if len(args) == 1:
+            val = args[0]
+            if isinstance(val, StrWrapper):
+                return val
+        return super().__call__(*args, **kwargs)
+
+
+class StrWrapper(str, metaclass=StrWrapperMeta):
     __slots__ = ()
     __match_args__ = ('start', 'contain', 'end')
 
