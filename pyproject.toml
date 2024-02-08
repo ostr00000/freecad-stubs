@@ -193,8 +193,6 @@ ignore = [
     'TD003', # Missing issue link on the line following this TO-DO
     'S314', # Parse untrusted XML # SKIP: we trust these XMLs
     # disable temporary (deep refactor required):
-    'B019',
-    'C901',
     'PLR0911',
     'PLR0912',
     'PLR0913',

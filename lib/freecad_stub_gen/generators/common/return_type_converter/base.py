@@ -1,3 +1,4 @@
+import atexit
 import logging
 import re
 from functools import cached_property
@@ -12,6 +13,7 @@ from freecad_stub_gen.generators.common.names import (
     getClassName,
     getClassWithModulesFromPointer,
     getModuleName,
+    removeAffix,
 )
 from freecad_stub_gen.generators.common.py_build_converter import parsePyBuildValues
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import (
@@ -51,7 +53,7 @@ class ReturnTypeConverterBase:
         self, varText: str, endPos: int = 0, *, onlyLiteral=False
     ) -> RetType:
         varText = self._removePrefixes(varText)
-        varText = self._removeSuffix(varText)
+        varText = removeAffix(varText, ('*', '&'), isPrefix=False)
         sw = StrWrapper(varText)
 
         for method in (
@@ -205,13 +207,16 @@ class ReturnTypeConverterBase:
                 return self._extractPivy(varText)
 
             case StrWrapper('new ' | 'Py::asObject(new '):
-                # | 'Base::getTypeAsObject('
                 return self._findClassWithModule(varText)
 
             case StrWrapper('Py_BuildValue("'):
                 return self._extractBuildValue(varText, endPos)
 
             case StrWrapper('Py::asObject(' | 'Py::Object(' | 'createPyObject('):
+                rawReturnVarName = next(iter(genFuncArgs(varText)))
+                return self.getExpressionType(rawReturnVarName, endPos)
+
+            case StrWrapper('Base::getTypeAsObject('):
                 rawReturnVarName = next(iter(genFuncArgs(varText)))
                 return self.getExpressionType(rawReturnVarName, endPos)
 
@@ -267,10 +272,8 @@ class ReturnTypeConverterBase:
     ) -> RetType | None:
         match StrWrapper(varText):
             case maybeClass if onlyLiteral:
-                if all(i.isidentifier() for i in varText.split('::')):
-                    if not maybeClass.endswith('Py'):
-                        maybeClass += 'Py'
-                    return self._findClassWithModule(maybeClass, mustDiffer=varText)
+                if retVal := self._findClass(maybeClass):
+                    return retVal
 
                 return AnyValue
 
@@ -287,9 +290,22 @@ class ReturnTypeConverterBase:
             case StrWrapper(contain='=='):
                 return 'bool'
 
+            case maybeClass if retType := self._findClass(maybeClass):
+                return retType
+
             case _:
                 logger.warning(f"Unknown return variable: '{varText}'")
-        return AnyValue
+                typeExtractor.missedTypes += 1
+
+        return None
+
+    def _findClass(self, varText: str) -> RetType | None:
+        if all(i.isidentifier() for i in varText.split('::')):
+            if varText.endswith('::Type'):
+                varText = varText.removesuffix('::Type')
+            if not varText.endswith('Py'):
+                varText += 'Py'
+            return self._findClassWithModule(varText, mustDiffer=varText)
 
         return None
 
@@ -307,11 +323,7 @@ class ReturnTypeConverterBase:
                     .strip()
                 )
 
-        return varText.removeprefix('const').strip().removeprefix('*').strip()
-
-    @staticmethod
-    def _removeSuffix(varText: str) -> str:
-        return varText.removesuffix('*').strip().removesuffix('&').strip()
+        return removeAffix(varText, ('const', '*', '&'), isPrefix=True)
 
     @classmethod
     def _extractPivy(cls, varText: str):
@@ -349,7 +361,6 @@ class ReturnTypeConverterBase:
         objArg = funArgs[1].strip()
         return self.getExpressionType(objArg, endPos, onlyLiteral=True)
 
-    # pylint: disable=too-many-return-statements
     def _findClassWithModule(self, text: str, mustDiffer: str = '') -> RetType:
         cType = text.removeprefix('Py::asObject(new ').removeprefix('new ')
         cType = cType.split('(', maxsplit=1)[0]
@@ -414,63 +425,80 @@ class ReturnTypeConverterBase:
             if not (varTypeDec := self._extractTypeFromMatch(declarationMatch)):
                 continue
 
-            if varTypeDec in (
-                'auto',
-                'PyObject',
-                'Py::Object',
-                'PyTypeObject',
-                'PyObjectBase',
-            ):
-                if assignValue := declarationMatch.group('val'):
-                    #  we can try resolve real type by checking right side
-                    varType = self.getExpressionType(
-                        assignValue, endPos, onlyLiteral=True
-                    )
-                elif varTypeDec != 'auto' and (
-                    argsValue := declarationMatch.group('args')
-                ):
-                    #  we can try resolve real type from constructor argument
-                    funArgs = list(
-                        generateExpressionUntilChar(
-                            argsValue, 0, ',', bracketL='(', bracketR=')'
-                        )
-                    )
-                    varType = self.getExpressionType(
-                        funArgs[0], endPos, onlyLiteral=False
-                    )
-                else:
-                    varType = AnyValue
-
-            else:
-                varType = self.getExpressionType(varTypeDec, endPos, onlyLiteral=True)
-
-            if (isNone := varType == 'None') or varType == AnyValue:
-                varType = self._getRetTypeFromAssignment(
-                    variableName, declarationMatch.end(), endPos
-                )
-                if isNone:
-                    match varType:
-                        case UnionArgument():
-                            varType.add('None')
-                        case str():
-                            varType = UnionArgument(('None', varType))
-                        case AnyValue.value:
-                            varType = 'None'
-            if isinstance(varType, str):
-                varType = self.getInnerType(
-                    varType,
-                    variableName,
-                    declarationMatch.start(),
-                    declarationMatch.end(),
-                    endPos,
-                )
-
-            return varType
+            return self._findVariableTypeFromRegex(
+                variableName, endPos, declarationMatch, varTypeDec
+            )
 
         return self.getExpressionType(variableName, endPos, onlyLiteral=True)
 
+    def _findVariableTypeFromRegex(
+        self,
+        variableName: str,
+        endPos: int,
+        declarationMatch: re.Match,
+        varTypeDec: str,
+    ) -> RetType:
+        if varTypeDec in (
+            'auto',
+            'PyObject',
+            'Py::Object',
+            'PyTypeObject',
+            'PyObjectBase',
+        ):
+            if assignValue := declarationMatch.group('val'):
+                #  we can try resolve real type by checking right side
+                varType = self.getExpressionType(assignValue, endPos, onlyLiteral=True)
+            elif varTypeDec != 'auto' and (argsValue := declarationMatch.group('args')):
+                #  we can try resolve real type from constructor argument
+                funArgs = list(
+                    generateExpressionUntilChar(
+                        argsValue, 0, ',', bracketL='(', bracketR=')'
+                    )
+                )
+                varType = self.getExpressionType(funArgs[0], endPos, onlyLiteral=False)
+            else:
+                varType = AnyValue
+
+        else:
+            varType = self.getExpressionType(varTypeDec, endPos, onlyLiteral=True)
+
+        if varType == 'None':
+            varType = self._findVariableTypeNone(
+                variableName, declarationMatch.end(), endPos
+            )
+        elif varType == AnyValue:
+            varType = self._getRetTypeFromAssignment(
+                variableName, declarationMatch.end(), endPos
+            )
+
+        if isinstance(varType, str):
+            varType = self.getInnerType(
+                varType,
+                variableName,
+                declarationMatch.start(),
+                declarationMatch.end(),
+                endPos,
+            )
+
+        return varType
+
+    def _findVariableTypeNone(
+        self, variableName: str, startPos: int, endPos: int
+    ) -> RetType:
+        varType = self._getRetTypeFromAssignment(variableName, startPos, endPos)
+
+        match varType:
+            case UnionArgument():
+                varType.add('None')
+            case str():
+                varType = UnionArgument(('None', varType))
+            case AnyValue.value:
+                varType = 'None'
+
+        return varType
+
     @staticmethod
-    def _extractTypeFromMatch(match):
+    def _extractTypeFromMatch(match) -> str | None:
         if not (v := match.group('type')):
             return None
         if v in ('return', 'else'):
@@ -519,3 +547,16 @@ class ReturnTypeConverterBase:
         # pylint: disable=unused-argument
         """Additional search for generic types."""
         return varType
+
+
+class TypeExtractor:
+    def __init__(self):
+        self.missedTypes = 0
+
+        atexit.register(self.atExit)
+
+    def atExit(self):
+        logger.info(f"Cannot find return types for {self.missedTypes} functions")
+
+
+typeExtractor = TypeExtractor()

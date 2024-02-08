@@ -53,7 +53,7 @@ def findFunctionCall(
     return text[bodyStart : bodyEnd + 1]
 
 
-def generateExpressionUntilChar(
+def generateExpressionUntilChar(  # noqa: C901 # hard to refactor it more
     text: str,
     expStart: int = 0,  # including this position
     splitChar: str = ',',

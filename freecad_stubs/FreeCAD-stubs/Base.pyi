@@ -96,7 +96,7 @@ class Vector(FreeCAD.PyObjectBase):
     @z.setter
     def z(self, value: float): ...
 
-    def __reduce__(self) -> tuple[typing.Any, tuple[float, float, float]]:
+    def __reduce__(self) -> tuple[FreeCAD.Vector, tuple[float, float, float]]:
         """
         __reduce__() -> tuple
 

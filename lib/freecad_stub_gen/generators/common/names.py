@@ -151,3 +151,10 @@ def getClassWithModulesFromPointer(cTypePointer: str) -> str:
     cType = cTypePointer.removesuffix('::Type').removesuffix('::type_object(')
     namespace, cType = getNamespaceWithClass(cType)
     return getClassWithModulesFromStem(cType, namespace or '')
+
+
+def removeAffix(text: str, values: typing.Iterable[str], *, isPrefix=True):
+    text = text.strip()
+    for v in values:
+        text = (text.removeprefix(v) if isPrefix else text.removesuffix(v)).strip()
+    return text

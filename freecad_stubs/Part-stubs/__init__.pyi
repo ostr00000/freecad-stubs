@@ -2558,7 +2558,7 @@ class BSplineCurve(PartModule.BoundedCurve):
     def StartPoint(self) -> FreeCAD.Vector:
         """Returns the start point of this B-Spline curve."""
 
-    def __reduce__(self) -> tuple[typing.Any, tuple[typing.Callable, typing.Callable, typing.Callable, typing.Callable, typing.Any, typing.Callable, typing.Callable]]:
+    def __reduce__(self) -> tuple[PartModule.BSplineCurve, tuple[typing.Callable, typing.Callable, typing.Callable, typing.Callable, typing.Any, typing.Callable, typing.Callable]]:
         """
         __reduce__()
         Serialization of Part.BSplineCurve objects
