@@ -87,15 +87,16 @@ class ReturnTypeConverterBase:
     def _matchPyType(
         self, varText: str, endPos: int = 0, *, onlyLiteral
     ) -> RetType | None:
+        ret = None
         match StrWrapper(varText):
             case 'Py::Object()':
-                return 'object'
+                ret = 'object'
 
             case 'Py_None' | 'Py::None()' | 'Py_Return':
-                return 'None'
+                ret = 'None'
 
             case StrWrapper('Py::Boolean' | 'PyBool_From' | 'Py::True' | 'Py::False'):
-                return 'bool'
+                ret = 'bool'
 
             case StrWrapper(
                 'Py::Long'
@@ -103,20 +104,24 @@ class ReturnTypeConverterBase:
                 | 'Py::Int'
                 | 'PyInt_From'
                 | 'PYINT_FROMLONG'
-                | 'int'
+                | 'int',
             ):
-                return 'int'
+                ret = 'int'
 
             case StrWrapper('Py::Float' | 'PyFloat_From'):
-                return 'float'
+                ret = 'float'
+
             case StrWrapper('Py::List' | 'PyList_New'):
-                return 'list'
+                ret = 'list'
+
             case StrWrapper('Py::Dict' | 'PyDict_New'):
-                return 'dict'
+                ret = 'dict'
+
             case StrWrapper('Py::Callable'):
-                return 'typing.Callable'
+                ret = 'typing.Callable'
+
             case StrWrapper('PyByteArray_From'):
-                return 'bytes'
+                ret = 'bytes'
 
             case StrWrapper(
                 'Py::String'
@@ -127,11 +132,11 @@ class ReturnTypeConverterBase:
                 | 'PYSTRING_FROMSTRING'
                 | 'QString'
             ):
-                return 'str'
+                ret = 'str'
 
             case StrWrapper(contain='Py_True' | 'Py_False'):
                 # must be before identifier and should be after Py_BuildValue
-                return 'bool'
+                ret = 'bool'
 
             case StrWrapper('Py::TupleN'):
                 if onlyLiteral:
@@ -149,12 +154,12 @@ class ReturnTypeConverterBase:
                     str(self.getExpressionType(v, endPos))
                     for v in islice(genFuncArgs(varText), 1, None)
                 ]
-                return f'tuple[{", ".join(subTypes)}]'
+                ret = f'tuple[{", ".join(subTypes)}]'
 
             case StrWrapper('Py::Tuple' | 'PyTuple_New'):
-                return 'tuple'
+                ret = 'tuple'
 
-        return None
+        return ret
 
     def _matchSpecial(
         self, varText: str, endPos: int = 0, *, onlyLiteral
@@ -186,31 +191,32 @@ class ReturnTypeConverterBase:
     def _matchMethodCall(
         self, varText: str, endPos: int = 0, *, onlyLiteral
     ) -> RetType | None:
+        ret = None
         match StrWrapper(varText):
             case 'type->tp_new(type, this, nullptr)':
-                return self.getExpressionType('type', endPos)
+                ret = self.getExpressionType('type', endPos)
 
             case 'this->GetType()' | 'IncRef()':
-                return self.classNameWithModule
+                ret = self.classNameWithModule
 
             case StrWrapper(end='->copyPyObject()'):
                 original = varText.removesuffix('->copyPyObject()')
-                return self.getExpressionType(original, endPos)
+                ret = self.getExpressionType(original, endPos)
 
             case StrWrapper(end='->c_str()'):
-                return 'str'
+                ret = 'str'
 
             case StrWrapper('PyRun_String'):
-                return AnyValue
+                ret = AnyValue
 
             case StrWrapper('Base::Interpreter().createSWIGPointerObj('):
-                return self._extractPivy(varText)
+                ret = self._extractPivy(varText)
 
             case StrWrapper('new ' | 'Py::asObject(new '):
-                return self._findClassWithModule(varText)
+                ret = self._findClassWithModule(varText)
 
             case StrWrapper('Py_BuildValue("'):
-                return self._extractBuildValue(varText, endPos)
+                ret = self._extractBuildValue(varText, endPos)
 
             case StrWrapper('Py::asObject(' | 'Py::Object(' | 'createPyObject('):
                 rawReturnVarName = next(iter(genFuncArgs(varText)))
@@ -221,7 +227,7 @@ class ReturnTypeConverterBase:
                 return self.getExpressionType(rawReturnVarName, endPos)
 
             case StrWrapper(end='Py') as i if i.isidentifier() and i[0].isupper():
-                return self._findClassWithModule(varText)
+                ret = self._findClassWithModule(varText)
 
             case StrWrapper(end='->getPyObject()' | '.getPyObject()'):
                 varText = (
@@ -231,73 +237,72 @@ class ReturnTypeConverterBase:
                     .removesuffix(')')
                 )
                 varText = varText[varText.rfind('(') + 1 :]
-                return self.getExpressionType(varText, endPos=endPos)
+                ret = self.getExpressionType(varText, endPos=endPos)
 
-        return None
+        return ret
 
     def _matchFreeCAD(
         self, varText: str, endPos: int = 0, *, onlyLiteral
     ) -> RetType | None:
+        ret = None
         match StrWrapper(varText):
             # PyCXX wrapper classes, search for `typedef GeometryT<`
             case StrWrapper('Py::BoundingBox'):
-                return 'FreeCAD.BoundBox'
+                ret = 'FreeCAD.BoundBox'
             case StrWrapper('Py::Matrix'):
-                return 'FreeCAD.Matrix'
+                ret = 'FreeCAD.Matrix'
             case StrWrapper('Py::Rotation'):
-                return 'FreeCAD.Rotation'
+                ret = 'FreeCAD.Rotation'
             case StrWrapper('Py::Placement'):
-                return 'FreeCAD.Placement'
+                ret = 'FreeCAD.Placement'
             # typedef PythonClassObject<Base::Vector2dPy> Vector2d;
             case StrWrapper('Py::Vector2d' | 'Base::Vector2dPy::create('):
-                return 'FreeCAD.Vector2d'
+                ret = 'FreeCAD.Vector2d'
             case StrWrapper('Py::Vector'):
-                return 'FreeCAD.Vector'
+                ret = 'FreeCAD.Vector'
 
             case StrWrapper('MainWindowPy::createWrapper'):
-                return 'FreeCADGui.MainWindowPy'
+                ret = 'FreeCADGui.MainWindowPy'
 
             case StrWrapper('shape2pyshape' | 'Part::shape2pyshape'):
-                return 'Part.Shape'
+                ret = 'Part.Shape'
 
             case StrWrapper('getShapes<'):
                 templateClass = varText.removeprefix('getShapes<').split('>')[0]
                 innerClass = self.getExpressionType(templateClass, endPos)
-                return f'list[{innerClass}]'
+                ret = f'list[{innerClass}]'
 
-        return None
+        return ret
 
     def _matchFinalPossibilities(
         self, varText: str, endPos: int = 0, *, onlyLiteral
     ) -> RetType | None:
+        ret = None
         match StrWrapper(varText):
             case maybeClass if onlyLiteral:
-                if retVal := self._findClass(maybeClass):
-                    return retVal
-
-                return AnyValue
+                ret = retVal if (retVal := self._findClass(maybeClass)) else AnyValue
 
             case _ if varText.isidentifier():
-                return self._findVariableType(varText, endPos)
+                ret = self._findVariableType(varText, endPos)
 
             case StrWrapper('(', end=')'):
-                return self.getExpressionType(
+                ret = self.getExpressionType(
                     varText.removeprefix('(').removesuffix(')'),
                     endPos,
                     onlyLiteral=onlyLiteral,
                 )
 
             case StrWrapper(contain='=='):
-                return 'bool'
+                ret = 'bool'
 
             case maybeClass if retType := self._findClass(maybeClass):
-                return retType
+                ret = retType
 
             case _:
                 logger.warning(f"Unknown return variable: '{varText}'")
                 typeExtractor.missedTypes += 1
 
-        return None
+        return ret
 
     def _findClass(self, varText: str) -> RetType | None:
         if all(i.isidentifier() for i in varText.split('::')):

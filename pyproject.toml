@@ -134,12 +134,13 @@ select = [
     'YTT', # flake8-2020
     # 'ANN', # flake8-annotations # SKIP: annotations are optional
     'ASYNC', # flake8-async
+    'TRIO', # flake8-trio
     'S', # flake8-bandit
     'BLE', # flake8-blind-except
     'FBT', # flake8-boolean-trap
     'B', # flake8-bugbear
     'A', # flake8-builtins
-    # 'COM', # flake8-commas # SKIP: deprecated, black can add if needed
+    'COM', # flake8-commas
     # 'CPY', # flake8-copyright # SKIP: copyright should be added once, in file
     'C4', # flake8-comprehensions
     'DTZ', # flake8-datetimez
@@ -150,7 +151,7 @@ select = [
     'FA', # flake8-future-annotations
     'ISC', # flake8-implicit-str-concat
     'ICN', # flake8-import-conventions
-    # 'G', # flake8-logging-format
+    'G', # flake8-logging-format
     'INP', # flake8-no-pep420
     'PIE', # flake8-pie # NOTE: not sure if this work?
     'T20', # flake8-print
@@ -178,6 +179,8 @@ select = [
     'NPY', # NumPy-specific rules
     'AIR', # Airflow
     'PERF', # Perflint
+    'FURB', # refurb
+    'LOG', # flake8-logging
     'RUF', # Ruff-specific rules
 ]
 unfixable = [
@@ -189,14 +192,11 @@ unfixable = [
 ]
 ignore = [
     'D1', # Missing docstring # SKIP: this is not API library (at least yet)
-    'FIX002', # Line contains TO-DO, consider resolving the issue
-    'TD003', # Missing issue link on the line following this TO-DO
+    'FIX002', # Line contains TO-DO, consider resolving the issue # SKIP: this project code is rather a single person project
+    'TD003', # Missing issue link on the line following this TO-DO # SKIP: this project code is rather a single person project
     'S314', # Parse untrusted XML # SKIP: we trust these XMLs
-    # disable temporary (deep refactor required):
-    'PLR0911',
-    'PLR0912',
-    'PLR0913',
-    'PLR0915',
+    'G004', # Checks for uses of f-strings to format logging messages. # SKIP: there is little performance gain and the code seems to be prettier
+    'COM812', # Checks for the absence of trailing commas. # SKIP: `black` adds it when needed
 ]
 
 [tool.ruff.lint.isort]
@@ -218,6 +218,9 @@ known-third-party = ["FreeCAD"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "pep257"
+
+[tool.ruff.lint.pylint]
+max-args = 8
 
 [tool.setuptools]
 package-dir = {'' = 'freecad_stubs'}
