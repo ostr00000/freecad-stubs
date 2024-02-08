@@ -164,7 +164,7 @@ class SaveErrorsPreprocessor(Preprocessor):
 
         self.errors.append(f"{file}:{line} error: {msg}")
 
-    def on_include_not_found(self, *ignored):
+    def on_include_not_found(self, *_ignored):
         raise OutputDirective(Action.IgnoreAndPassThrough)
 
     def on_comment(self, tok) -> bool | None:  # type: ignore[reportIncompatibleMethodOverride]
@@ -177,6 +177,7 @@ class SaveErrorsPreprocessor(Preprocessor):
     def on_directive_unknown(
         self, directive, toks, ifpassthru, precedingtoks
     ) -> Literal[True] | None:
+        del ifpassthru, precedingtoks
         if directive.value in ('pragma', 'line'):
             raise OutputDirective(Action.IgnoreAndPassThrough)
 

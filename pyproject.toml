@@ -234,3 +234,11 @@ trailing_comma_inline_array = true
 
 [tool.typos.default.extend-words]
 'Methode' = 'Methode' # used in FreeCAD XMLs
+
+[tool.vulture]
+exclude = ["*/FreeCADTemplates/*"]
+# ignore_names = []
+make_whitelist = true
+min_confidence = 80
+paths = ["lib", "tests"]
+sort_by_size = true

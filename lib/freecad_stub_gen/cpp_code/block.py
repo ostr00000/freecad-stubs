@@ -79,7 +79,7 @@ class ClassVarContainer(Generic[T]):
     def __init__(self, val):
         self.val = val
 
-    def __get__(self, instance, owner) -> T:
+    def __get__(self, instance, _owner) -> T:
         return self.val
 
 
@@ -87,16 +87,16 @@ class LateInit(Generic[T]):
     def __init__(self):
         self.name = ''
 
-    def __set_name__(self, owner, name: str):
+    def __set_name__(self, _owner, name: str):
         self.name = name
 
     @overload
-    def __get__(self, instance: None, owner) -> Self: ...
+    def __get__(self, instance: None, _owner) -> Self: ...
 
     @overload
-    def __get__(self, instance, owner) -> T: ...
+    def __get__(self, instance, _owner) -> T: ...
 
-    def __get__(self, instance, owner):
+    def __get__(self, instance, _owner):
         if instance is None:
             return self
         try:
