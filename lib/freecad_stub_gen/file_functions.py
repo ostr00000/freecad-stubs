@@ -4,10 +4,12 @@ from pathlib import Path
 from freecad_stub_gen.config import SOURCE_DIR
 from freecad_stub_gen.cpp_code.converters import removeComments
 
+ENCODING = 'iso8859-1'
+
 
 def readContent(file: Path):
     try:
-        content = file.read_text('iso8859-1')
+        content = file.read_text(ENCODING)
     except UnicodeDecodeError:
         content = file.read_text('utf-8')
 

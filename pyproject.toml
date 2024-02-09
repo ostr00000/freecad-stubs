@@ -33,6 +33,7 @@ dependencies = [
 
 [project.optional-dependencies]
 generate = [
+    'joblib',
     'more-itertools',
     'pcpp',
 ]
