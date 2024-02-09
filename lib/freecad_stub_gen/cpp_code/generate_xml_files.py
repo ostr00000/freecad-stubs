@@ -3,12 +3,14 @@ import shlex
 import sys
 from subprocess import check_call
 
-from freecad_stub_gen.config import SOURCE_DIR, projectDir
+from freecad_stub_gen.config import PROJECT_DIR, SOURCE_DIR
+from freecad_stub_gen.decorators import logCurrentTaskDecFactory
 
 logger = logging.getLogger(__name__)
-generatePath = projectDir / 'FreeCAD/src/Tools/generate.py'
+generatePath = PROJECT_DIR / 'FreeCAD/src/Tools/generate.py'
 
 
+@logCurrentTaskDecFactory(msg="Generating FreeCAD code from xml files")
 def generateXmlFiles():
     for searchDirName in ('App', 'Base', 'Gui', 'Mod'):
         for xmlPath in (SOURCE_DIR / searchDirName).rglob('*Py.xml'):

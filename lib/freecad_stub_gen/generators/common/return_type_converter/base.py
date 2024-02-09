@@ -471,7 +471,7 @@ class ReturnTypeConverterBase:
             varType = self._findVariableTypeNone(
                 variableName, declarationMatch.end(), endPos
             )
-        elif varType == AnyValue:
+        if varType == AnyValue:
             varType = self._getRetTypeFromAssignment(
                 variableName, declarationMatch.end(), endPos
             )

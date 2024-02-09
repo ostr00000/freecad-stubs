@@ -2,6 +2,7 @@ import logging
 import re
 
 from freecad_stub_gen.cpp_code.converters import removeQuote
+from freecad_stub_gen.decorators import logCurrentTaskDecFactory
 from freecad_stub_gen.file_functions import genCppFiles, readContent
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.generators.common.names import (
@@ -74,6 +75,7 @@ class ExceptionContainer:
         re.VERBOSE,
     )
 
+    @logCurrentTaskDecFactory(msg="Generating possible exceptions")
     def __init__(self):
         self.exceptions = list(self._genExceptions())
 
@@ -82,11 +84,9 @@ class ExceptionContainer:
             repr(e)
 
     def _genExceptions(self):
-        logger.info("Generating possible exceptions...")
         for file in genCppFiles():
             content = readContent(file)
             yield from self.findExceptions(content)
-        logger.info("Generating possible exceptions - finished.")
 
     @classmethod
     def findExceptions(cls, content):

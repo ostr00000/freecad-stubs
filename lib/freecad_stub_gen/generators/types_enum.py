@@ -3,18 +3,20 @@ import re
 from collections import defaultdict
 from operator import itemgetter
 
+from freecad_stub_gen.decorators import logCurrentTaskDecFactory
 from freecad_stub_gen.file_functions import genCppFiles, readContent
 from freecad_stub_gen.FreeCADTemplates import additionalPath
 from freecad_stub_gen.python_code import indent
 
 initType = re.compile(r'(\w[\w: ]+?)\s*::init\(\)')
-
 logger = logging.getLogger(__name__)
 
+_PrefixToTypes_t = dict[str, set[tuple[str, str]]]
 
-def generateTypes():
-    logger.info("Searching for types...")
-    prefixToTypes: defaultdict[str, set[tuple[str, str]]] = defaultdict(set)
+
+@logCurrentTaskDecFactory(msg="Searching for FreeCAD type consts")
+def _searchTypes() -> _PrefixToTypes_t:
+    prefixToTypes: _PrefixToTypes_t = defaultdict(set)
     for filePath in genCppFiles():
         fileContent = readContent(filePath)
 
@@ -32,7 +34,11 @@ def generateTypes():
 
             prefixToTypes[prefix].add((name, originalType))
 
-    logger.info("Generating type content...")
+    return prefixToTypes
+
+
+@logCurrentTaskDecFactory(msg="Generating FreeCAD type content")
+def _generateContent(prefixToTypes: _PrefixToTypes_t):
     typeText = '# fmt: off\n'  # disable `black` formatting for this file
     for prefix, typeNames in sorted(prefixToTypes.items(), key=itemgetter(0)):
         klassText = f'class {prefix}:\n'
@@ -46,4 +52,8 @@ def generateTypes():
     typesPath = additionalPath / 'type_consts.py'
     with typesPath.open('w', encoding='utf-8') as outputFile:
         outputFile.write(typeText)
-    logger.info(f"Saved file with types in {typesPath}...")
+
+
+def generateTypes():
+    prefixToTypes = _searchTypes()
+    _generateContent(prefixToTypes)

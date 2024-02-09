@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from functools import cached_property
 
 from freecad_stub_gen.cpp_code.converters import removeQuote
+from freecad_stub_gen.decorators import logCurrentTaskDecFactory
 from freecad_stub_gen.file_functions import genCppFiles, readContent
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.module_namespace import moduleNamespace
@@ -56,6 +57,7 @@ class ImportableClassMap(dict[str, str]):
     # regex to find non-matching names:
     # Base::Interpreter\(\).addType\(\&\w+::(\w+)Py\s*::Type,\s*\w+,"(?!\1")
 
+    @logCurrentTaskDecFactory(msg="Generating types for importable map")
     def __init__(self):
         self.dup = defaultdict[str, set[str]](set)
         # remove duplicated keys - not all classes have namespace
@@ -84,7 +86,6 @@ class ImportableClassMap(dict[str, str]):
     )
 
     def _genTypes(self):
-        logger.info("Generating types for importable map...")
         for cppFile in genCppFiles():
             cppContent = readContent(cppFile)
             for match in self.REG_ADD_TYPE.finditer(cppContent):
@@ -97,7 +98,6 @@ class ImportableClassMap(dict[str, str]):
 
                 addTypeArgs = AddTypeArguments(*addTypeList)
                 yield addTypeArgs.cTypeWithoutNamespace, addTypeArgs.fullPythonName
-        logger.info("Generating types for importable map - finished.")
 
 
 __all__ = ['importableMap']
