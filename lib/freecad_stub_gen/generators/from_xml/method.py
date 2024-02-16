@@ -214,7 +214,7 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         if baseClass:
             return baseClass.findFunctionBody(cFuncName, cClassName)
 
-        if cFuncName in ('PyInit', 'PyMake'):
+        if cFuncName in {'PyInit', 'PyMake'}:
             # skip implicit constructor - probably inherited from PyObject
             return None
 

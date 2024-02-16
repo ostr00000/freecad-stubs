@@ -443,13 +443,13 @@ class ReturnTypeConverterBase:
         declarationMatch: re.Match,
         varTypeDec: str,
     ) -> RetType:
-        if varTypeDec in (
+        if varTypeDec in {
             'auto',
             'PyObject',
             'Py::Object',
             'PyTypeObject',
             'PyObjectBase',
-        ):
+        }:
             if assignValue := declarationMatch.group('val'):
                 #  we can try resolve real type by checking right side
                 varType = self.getExpressionType(assignValue, endPos, onlyLiteral=True)
@@ -506,7 +506,7 @@ class ReturnTypeConverterBase:
     def _extractTypeFromMatch(match) -> str | None:
         if not (v := match.group('type')):
             return None
-        if v in ('return', 'else'):
+        if v in {'return', 'else'}:
             return None
 
         if '<' in v and '>' in v:

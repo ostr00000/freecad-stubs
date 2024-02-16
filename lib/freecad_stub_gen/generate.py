@@ -192,7 +192,7 @@ def createCustomWidget(args: tuple[str, qtpy.QtWidgets.QWidget, str]) -> _OptWid
 def improve_Mod(sourcesRoot: Module, sourcePath: Path):
     for mod in (sourcePath / 'Mod').iterdir():
         moduleName = mod.name
-        if moduleName in ('Test',):
+        if moduleName == 'Test':
             continue
 
         moduleName = moduleNamespace.convertNamespaceToModule(moduleName)

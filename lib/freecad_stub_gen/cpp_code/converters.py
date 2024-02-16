@@ -42,7 +42,7 @@ def validatePythonValue(value: str) -> str | None:
     if value in builtins.__dict__:
         return value
 
-    if value in ('true', 'false'):
+    if value in {'true', 'false'}:
         return value.title()
 
     # pylint: disable=broad-exception-caught
@@ -55,7 +55,7 @@ def validatePythonValue(value: str) -> str | None:
     else:
         return value
 
-    if value and value[-1].lower() in ('f', 'l'):
+    if value and value[-1].lower() in {'f', 'l'}:
         # maybe float literal (ex. 3.14f)
         return validatePythonValue(value[:-1])
 

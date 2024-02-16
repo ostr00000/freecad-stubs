@@ -38,7 +38,7 @@ class BasePropertyGenerator(BaseGenerator, ABC):
         return ret
 
     def _extractTypeAlias(self, pythonType: str):
-        if pythonType == '':
+        if not pythonType:
             return pythonType
 
         for typePart in pythonType.split('\n'):

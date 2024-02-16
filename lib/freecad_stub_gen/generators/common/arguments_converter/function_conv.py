@@ -132,7 +132,7 @@ class FunctionConv:
         return f'{DEFAULT_ARG_NAME}{self.argNumStart + pythonArgNum}'
 
     def getCurArgName(self, curFormat: str, cArgNum: int) -> str | None:
-        if curFormat in ('O!', 'O&') or curFormat.startswith('e'):
+        if curFormat in {'O!', 'O&'} or curFormat.startswith('e'):
             # variable offset - skip type_object/converter/encoding
             cArgNum += 1
         try:

@@ -49,6 +49,6 @@ def timeDec(fun):
             return fun(*args, **kwargs)
         finally:
             t1 = time.time()
-            logger.info(f"Generating time: {t1-t0}[s]")
+            logger.info(f"Generating time: {t1 - t0}[s]")
 
     return timeDecWrapper

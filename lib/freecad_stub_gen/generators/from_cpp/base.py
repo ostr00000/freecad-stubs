@@ -90,7 +90,7 @@ class BaseGeneratorFromCpp(MethodGenerator, ABC):
             header = f'# {self.baseGenFilePath.name}\n'
             newMod = Module(header + result, self.requiredImports)
 
-            if self.baseGenFilePath.name in ('Sequencer.cpp', 'GeometryPyCXX.cpp'):
+            if self.baseGenFilePath.name in {'Sequencer.cpp', 'GeometryPyCXX.cpp'}:
                 # another exception from general rules:
                 # Base::Interpreter().addType(Base::ProgressIndicatorPy::type_object(),
                 #     pBaseModule,"ProgressIndicator");

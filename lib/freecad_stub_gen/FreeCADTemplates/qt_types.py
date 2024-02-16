@@ -1,3 +1,3 @@
 from qtpy.QtCore import pyqtBoundSignal, pyqtSignal
 
-__all__ = ['pyqtSignal', 'pyqtBoundSignal']
+__all__ = ['pyqtBoundSignal', 'pyqtSignal']

@@ -45,11 +45,9 @@ class XmlPropertyGenerator(
         if not readOnly:
             rt = self._getReturnTypeConverter(f'set{name}')
             sig = SelfSignature(exceptions=rt.getExceptionsFromCode())
-            if d := SelfSignature.getExceptionsDocs((sig,)):
-                docsSet = docs + d
-            else:
-                # do not repeat if there is no additional info
-                docsSet = ''
+
+            # do not repeat if there is no additional info
+            docsSet = docs + d if (d := SelfSignature.getExceptionsDocs((sig,))) else ''
 
             # let's assume that setter value type is same as getter,
             # this is not true, maybe it could be implemented later
