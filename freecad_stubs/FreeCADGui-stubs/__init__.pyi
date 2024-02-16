@@ -141,7 +141,10 @@ class LinkView(FreeCAD.BaseClass):
 
     @property
     def RootNode(self) -> pivy.coin.SoSeparator:
-        """A pivy node holding the cloned representation of the linked view object"""
+        """
+        A pivy node holding the cloned representation of the linked view object
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def SubNames(self) -> object | tuple[str, ...]:
@@ -281,7 +284,10 @@ class ViewProvider(FreeCAD.ExtensionContainer):
 
     @property
     def Annotation(self) -> pivy.coin.SoSeparator:
-        """A pivy Separator to add a custom scenegraph to this ViewProvider."""
+        """
+        A pivy Separator to add a custom scenegraph to this ViewProvider.
+        Possible exceptions: (RuntimeError).
+        """
 
     @Annotation.setter
     def Annotation(self, value: pivy.coin.SoSeparator): ...
@@ -315,14 +321,20 @@ class ViewProvider(FreeCAD.ExtensionContainer):
 
     @property
     def RootNode(self) -> pivy.coin.SoSeparator:
-        """A pivy Separator with the root of this ViewProvider."""
+        """
+        A pivy Separator with the root of this ViewProvider.
+        Possible exceptions: (RuntimeError).
+        """
 
     @RootNode.setter
     def RootNode(self, value: pivy.coin.SoSeparator): ...
 
     @property
     def SwitchNode(self) -> pivy.coin.SoSwitch:
-        """A pivy SoSwitch for the display mode switch of this ViewProvider."""
+        """
+        A pivy SoSwitch for the display mode switch of this ViewProvider.
+        Possible exceptions: (RuntimeError).
+        """
 
     @SwitchNode.setter
     def SwitchNode(self, value: pivy.coin.SoSwitch): ...
@@ -1123,7 +1135,10 @@ class SelectionObject(FreeCAD.BaseClass):
 
     @property
     def Document(self) -> FreeCADGui.Document:
-        """Document of the selected object"""
+        """
+        Document of the selected object
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def DocumentName(self) -> str:
@@ -1139,7 +1154,10 @@ class SelectionObject(FreeCAD.BaseClass):
 
     @property
     def Object(self) -> FreeCAD.DocumentObject:
-        """Selected object"""
+        """
+        Selected object
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def ObjectName(self) -> str:
@@ -1155,7 +1173,10 @@ class SelectionObject(FreeCAD.BaseClass):
 
     @property
     def SubObjects(self) -> tuple[typing.Any, ...]:
-        """Selected sub-element, if any"""
+        """
+        Selected sub-element, if any
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def TypeName(self) -> str:
@@ -1187,14 +1208,22 @@ class Document(FreeCAD.Persistence):
         """The active object of the document."""
 
     @ActiveObject.setter
-    def ActiveObject(self, value: FreeCADGui.ViewProvider | None): ...
+    def ActiveObject(self, value: FreeCADGui.ViewProvider | None):
+        """
+        The active object of the document.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def ActiveView(self) -> FreeCADGui.MDIViewPy | FreeCADGui.View3DInventorPy | None:
         """The active view of the document."""
 
     @ActiveView.setter
-    def ActiveView(self, value: FreeCADGui.MDIViewPy | FreeCADGui.View3DInventorPy | None): ...
+    def ActiveView(self, value: FreeCADGui.MDIViewPy | FreeCADGui.View3DInventorPy | None):
+        """
+        The active view of the document.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def Document(self) -> FreeCAD.Document:

@@ -1,9 +1,6 @@
 import logging
 
-from freecad_stub_gen.config import (
-    LOGGER_LEVEL,
-)
-from freecad_stub_gen.cpp_code.macro.cache import isNewGitHead
+from freecad_stub_gen.config import LOGGER_LEVEL
 
 logger = logging.getLogger(__name__)
 
@@ -16,12 +13,18 @@ def configLogger():
 
 
 def main():
+    from freecad_stub_gen.cpp_code.macro.cache import (
+        isNewGitHead,
+        updateGitHashToCurrent,
+    )
+
     if isNewGitHead():
         from freecad_stub_gen.cpp_code.generate_xml_files import generateXmlFiles
         from freecad_stub_gen.cpp_code.macro.run import generatePreprocessedFiles
 
         generateXmlFiles()
         generatePreprocessedFiles()
+        updateGitHashToCurrent()
 
     from freecad_stub_gen.generate import generateFreeCadStubs
     from freecad_stub_gen.generators.types_enum import generateTypes

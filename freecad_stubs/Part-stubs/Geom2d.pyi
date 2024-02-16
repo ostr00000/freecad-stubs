@@ -485,14 +485,22 @@ class Line2dSegment(Part.Geom2d.Curve2d):
         """Returns the end point of this line segment."""
 
     @EndPoint.setter
-    def EndPoint(self, value: FreeCAD.Vector2d): ...
+    def EndPoint(self, value: FreeCAD.Vector2d):
+        """
+        Returns the end point of this line segment.
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     @property
     def StartPoint(self) -> FreeCAD.Vector2d:
         """Returns the start point of this line segment."""
 
     @StartPoint.setter
-    def StartPoint(self, value: FreeCAD.Vector2d): ...
+    def StartPoint(self, value: FreeCAD.Vector2d):
+        """
+        Returns the start point of this line segment.
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     def setParameterRange(self, first: float, last: float, /):
         """
@@ -1292,7 +1300,10 @@ class OffsetCurve2d(Part.Geom2d.Curve2d):
 
     @property
     def BasisCurve(self) -> Part.Geom2d.Curve2d | None:
-        """Sets or gets the basic curve."""
+        """
+        Sets or gets the basic curve.
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def OffsetValue(self) -> float:
@@ -1374,11 +1385,19 @@ class Line2d(Part.Geom2d.Curve2d):
         """Returns the direction of this line."""
 
     @Direction.setter
-    def Direction(self, value: FreeCAD.Vector2d): ...
+    def Direction(self, value: FreeCAD.Vector2d):
+        """
+        Returns the direction of this line.
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     @property
     def Location(self) -> FreeCAD.Vector2d:
         """Returns the location of this line."""
 
     @Location.setter
-    def Location(self, value: FreeCAD.Vector2d): ...
+    def Location(self, value: FreeCAD.Vector2d):
+        """
+        Returns the location of this line.
+        Possible exceptions: (TypeError, RuntimeError).
+        """

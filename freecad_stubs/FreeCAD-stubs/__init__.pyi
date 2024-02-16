@@ -424,21 +424,21 @@ class Material(FreeCAD.PyObjectBase):
         """Ambient color"""
 
     @AmbientColor.setter
-    def AmbientColor(self, value: tuple): ...
+    def AmbientColor(self, value: tuple[float, float, float, float]): ...
 
     @property
     def DiffuseColor(self) -> tuple[float, float, float, float]:
         """Diffuse color"""
 
     @DiffuseColor.setter
-    def DiffuseColor(self, value: tuple): ...
+    def DiffuseColor(self, value: tuple[float, float, float, float]): ...
 
     @property
     def EmissiveColor(self) -> tuple[float, float, float, float]:
         """Emissive color"""
 
     @EmissiveColor.setter
-    def EmissiveColor(self, value: tuple): ...
+    def EmissiveColor(self, value: tuple[float, float, float, float]): ...
 
     @property
     def Shininess(self) -> float:
@@ -452,7 +452,7 @@ class Material(FreeCAD.PyObjectBase):
         """Specular color"""
 
     @SpecularColor.setter
-    def SpecularColor(self, value: tuple): ...
+    def SpecularColor(self, value: tuple[float, float, float, float]): ...
 
     @property
     def Transparency(self) -> float:
@@ -613,15 +613,24 @@ class DocumentObject(FreeCAD.ExtensionContainer):
 
     @property
     def InListRecursive(self) -> list[FreeCAD.DocumentObject]:
-        """A list of all objects which link to this object recursively."""
+        """
+        A list of all objects which link to this object recursively.
+        Possible exceptions: (IndexError).
+        """
 
     @property
     def MustExecute(self) -> bool:
-        """Check if the object must be recomputed"""
+        """
+        Check if the object must be recomputed
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def Name(self) -> str:
-        """Return the internal name of this object"""
+        """
+        Return the internal name of this object
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def NoTouch(self) -> bool:
@@ -637,7 +646,10 @@ class DocumentObject(FreeCAD.ExtensionContainer):
 
     @property
     def OutListRecursive(self) -> list[FreeCAD.DocumentObject]:
-        """A list of all objects this object links to recursively."""
+        """
+        A list of all objects this object links to recursively.
+        Possible exceptions: (IndexError).
+        """
 
     @property
     def Parents(self) -> list[tuple[FreeCAD.DocumentObject, str]]:
@@ -656,6 +668,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         """
         If the GUI is loaded the associated view provider is returned
         or None if the GUI is not up
+        Possible exceptions: (RuntimeError).
         """
 
     @property
@@ -2434,14 +2447,21 @@ class ComplexGeoData(FreeCAD.Persistence):
 
     @property
     def CenterOfGravity(self) -> FreeCAD.Vector:
-        """Get the center of gravity"""
+        """
+        Get the center of gravity
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def Placement(self) -> FreeCAD.Placement:
         """Get the current transformation of the object as placement"""
 
     @Placement.setter
-    def Placement(self, value: FreeCAD.Placement): ...
+    def Placement(self, value: FreeCAD.Placement):
+        """
+        Get the current transformation of the object as placement
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def Tag(self) -> int:

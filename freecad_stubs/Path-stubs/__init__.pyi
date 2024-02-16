@@ -42,14 +42,22 @@ class Command(FreeCAD.Persistence):
         """The parameters of the command"""
 
     @Parameters.setter
-    def Parameters(self, value: dict): ...
+    def Parameters(self, value: dict):
+        """
+        The parameters of the command
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def Placement(self) -> FreeCAD.Placement:
         """The coordinates of the endpoint of the command"""
 
     @Placement.setter
-    def Placement(self, value: FreeCAD.Placement): ...
+    def Placement(self, value: FreeCAD.Placement):
+        """
+        The coordinates of the endpoint of the command
+        Possible exceptions: (TypeError).
+        """
 
     @typing.overload
     def setFromGCode(self): ...
@@ -109,7 +117,11 @@ class Area(FreeCAD.BaseClass):
         """The current workplane. If no plane is set, it is derived from the added shapes."""
 
     @Workplane.setter
-    def Workplane(self, value: PartModule.Shape): ...
+    def Workplane(self, value: PartModule.Shape):
+        """
+        The current workplane. If no plane is set, it is derived from the added shapes.
+        Possible exceptions: (TypeError).
+        """
 
     def abort(self): ...
 
@@ -200,7 +212,11 @@ class Path(FreeCAD.Persistence):
         """the list of commands of this path"""
 
     @Commands.setter
-    def Commands(self, value: list): ...
+    def Commands(self, value: list[PathModule.Command]):
+        """
+        the list of commands of this path
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def Length(self) -> float:
@@ -260,7 +276,11 @@ class FeatureArea(FreeCAD.DocumentObject):
         """The current workplane. If no plane is set, it is derived from the added shapes."""
 
     @WorkPlane.setter
-    def WorkPlane(self, value: PartModule.Shape): ...
+    def WorkPlane(self, value: PartModule.Shape):
+        """
+        The current workplane. If no plane is set, it is derived from the added shapes.
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def Sources(self) -> list[FreeCAD.DocumentObject | None]:
@@ -309,6 +329,41 @@ class FeaturePathCompound(FreeCAD.DocumentObject):
 
 
 # AreaPyImp.cpp
+def toTopoShape():
+    """toTopoShape():"""
+
+
+@typing.overload
+def setDefaultParams(key=None): ...
+
+
+@typing.overload
+def setDefaultParams() -> None:
+    """
+    setDefaultParams(key=value...):
+    Static method to set the default parameters of all following Path.Area, plus the following
+    additional parameters.
+
+    Possible exceptions: (ValueError).
+    """
+
+
+def getDefaultParams() -> dict:
+    """getDefaultParams(): Static method to return the current default parameters."""
+
+
+def abort(aborting: bool = True): ...
+
+
+def getParamsDesc(as_string: bool = False) -> str | dict:
+    """
+    getParamsDesc(as_string=False): Returns a list of supported parameters and their descriptions.
+
+    * as_string: if False, then return a dictionary of documents of all supported parameters.
+    """
+
+
+# AreaPy.cpp
 def toTopoShape():
     """toTopoShape():"""
 

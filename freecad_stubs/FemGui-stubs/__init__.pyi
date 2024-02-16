@@ -25,7 +25,10 @@ class ViewProviderFemMesh(FreeCADGui.ViewProviderDocumentObject):
 
     @property
     def ElementColor(self) -> dict:
-        """Postprocessing color of the elements. All faces of the element get the same color."""
+        """
+        Postprocessing color of the elements. All faces of the element get the same color.
+        Possible exceptions: (AttributeError).
+        """
 
     @ElementColor.setter
     def ElementColor(self, value: dict): ...
@@ -35,18 +38,24 @@ class ViewProviderFemMesh(FreeCADGui.ViewProviderDocumentObject):
         """List of nodes which get highlighted."""
 
     @HighlightedNodes.setter
-    def HighlightedNodes(self, value: list): ...
+    def HighlightedNodes(self, value: list[int]): ...
 
     @property
     def NodeColor(self) -> dict:
-        """Postprocessing color of the nodes. The faces between the nodes get interpolated."""
+        """
+        Postprocessing color of the nodes. The faces between the nodes get interpolated.
+        Possible exceptions: (AttributeError).
+        """
 
     @NodeColor.setter
     def NodeColor(self, value: dict): ...
 
     @property
     def NodeDisplacement(self) -> dict:
-        """Postprocessing color of the nodes. The faces between the nodes get interpolated."""
+        """
+        Postprocessing color of the nodes. The faces between the nodes get interpolated.
+        Possible exceptions: (AttributeError).
+        """
 
     @NodeDisplacement.setter
     def NodeDisplacement(self, value: dict): ...

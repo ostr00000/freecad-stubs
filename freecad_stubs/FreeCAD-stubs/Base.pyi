@@ -73,7 +73,11 @@ class Vector(FreeCAD.PyObjectBase):
         """Gets or sets the length of this vector."""
 
     @Length.setter
-    def Length(self, value: float): ...
+    def Length(self, value: float):
+        """
+        Gets or sets the length of this vector.
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def x(self) -> float:
@@ -992,7 +996,10 @@ class BoundBox(FreeCAD.PyObjectBase):
 
     @property
     def DiagonalLength(self) -> float:
-        """Diagonal length of the bounding box."""
+        """
+        Diagonal length of the bounding box.
+        Possible exceptions: (FloatingPointError).
+        """
 
     @property
     def XLength(self) -> float:
@@ -1413,14 +1420,22 @@ class Placement(FreeCAD.PyObjectBase):
         """Set/get matrix representation of the placement."""
 
     @Matrix.setter
-    def Matrix(self, value: FreeCAD.Matrix): ...
+    def Matrix(self, value: FreeCAD.Matrix):
+        """
+        Set/get matrix representation of the placement.
+        Possible exceptions: (TypeError, ValueError).
+        """
 
     @property
     def Rotation(self) -> FreeCAD.Rotation:
         """Orientation of the placement expressed as rotation."""
 
     @Rotation.setter
-    def Rotation(self, value: FreeCAD.Rotation): ...
+    def Rotation(self, value: FreeCAD.Rotation):
+        """
+        Orientation of the placement expressed as rotation.
+        Possible exceptions: (TypeError).
+        """
 
     def copy(self) -> FreeCAD.Placement:
         """
@@ -1828,14 +1843,22 @@ class Quantity(FreeCAD.PyObjectBase):
         """Format of the Quantity"""
 
     @Format.setter
-    def Format(self, value: dict): ...
+    def Format(self, value: ReturnGetFormatDict):
+        """
+        Format of the Quantity
+        Possible exceptions: (ValueError).
+        """
 
     @property
     def Unit(self) -> FreeCAD.Unit:
         """Unit of the Quantity"""
 
     @Unit.setter
-    def Unit(self, value: FreeCAD.Unit): ...
+    def Unit(self, value: FreeCAD.Unit):
+        """
+        Unit of the Quantity
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def UserString(self) -> str:
@@ -2609,7 +2632,11 @@ class CoordinateSystem(FreeCAD.PyObjectBase):
         """Set or get axis."""
 
     @Axis.setter
-    def Axis(self, value: FreeCAD.Axis): ...
+    def Axis(self, value: FreeCAD.Axis):
+        """
+        Set or get axis.
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def Position(self) -> FreeCAD.Vector:

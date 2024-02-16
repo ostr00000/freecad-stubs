@@ -67,7 +67,7 @@ class FreecadStubGeneratorFromXML(
         for attributeNode in sorted(
             self.currentNode.findall('Attribute'), key=self._nodeSort
         ):
-            classStr += indent(self.getAttributes(attributeNode))
+            classStr += indent(self.createAttribute(attributeNode))
         for dynamicProperty in sorted(self.genDynamicProperties()):
             classStr += indent(dynamicProperty)
 
@@ -98,31 +98,36 @@ class FreecadStubGeneratorFromXML(
 
     def getCodeForSpecialCase(self, className: str) -> str:
         ret = ''
-        if className == 'DocumentObject':
-            ret += self.getProperty(
-                'Proxy',
-                'FreeCADTemplates.templates.ProxyPython',
-                'FreeCADTemplates.templates.ProxyPython',
-                readOnly=False,
-            )
-            self.requiredImports.add('FreeCADTemplates.templates')
 
-        elif className == 'ViewProviderDocumentObject':
-            ret += self.getProperty(
-                'Proxy',
-                'FreeCADTemplates.templates.ViewProviderPython',
-                'FreeCADTemplates.templates.ViewProviderPython',
-                readOnly=False,
-            )
-            self.requiredImports.add('FreeCADTemplates.templates')
+        match className:
+            case 'DocumentObject':
+                ret += self.createProperty(
+                    'Proxy',
+                    'FreeCADTemplates.templates.ProxyPython',
+                    getter=True,
+                    setter=True,
+                )
+                self.requiredImports.add('FreeCADTemplates.templates')
 
-        elif className == 'GroupExtension':
-            ret += self.getProperty(
-                'Group', 'list[DocumentObject]', 'list[DocumentObject]', readOnly=False
-            )
+            case 'ViewProviderDocumentObject':
+                ret += self.createProperty(
+                    'Proxy',
+                    'FreeCADTemplates.templates.ViewProviderPython',
+                    getter=True,
+                    setter=True,
+                )
+                self.requiredImports.add('FreeCADTemplates.templates')
 
-        elif className == 'WorkbenchC':
-            ret += workbenchBody + '\n\n'
+            case 'GroupExtension':
+                ret += self.createProperty(
+                    'Group',
+                    'list[DocumentObject]',
+                    getter=True,
+                    setter=True,
+                )
+
+            case 'WorkbenchC':
+                ret += workbenchBody + '\n\n'
 
         return ret
 

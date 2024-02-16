@@ -22,7 +22,11 @@ class Waypoint(FreeCAD.Persistence):
         """Describe which Base frame to use for that point"""
 
     @Base.setter
-    def Base(self, value: int): ...
+    def Base(self, value: int):
+        """
+        Describe which Base frame to use for that point
+        Possible exceptions: (ValueError).
+        """
 
     @property
     def Cont(self) -> bool:
@@ -50,7 +54,11 @@ class Waypoint(FreeCAD.Persistence):
         """Describe which tool frame to use for that point"""
 
     @Tool.setter
-    def Tool(self, value: int): ...
+    def Tool(self, value: int):
+        """
+        Describe which tool frame to use for that point
+        Possible exceptions: (ValueError).
+        """
 
     @property
     def Type(self) -> str:
@@ -136,7 +144,11 @@ class Robot6Axis(FreeCAD.Persistence):
         """Tool center point frame. Where the tool of the robot is"""
 
     @Tcp.setter
-    def Tcp(self, value: FreeCAD.Placement): ...
+    def Tcp(self, value: FreeCAD.Placement):
+        """
+        Tool center point frame. Where the tool of the robot is
+        Possible exceptions: (TypeError).
+        """
 
     def check(self):
         """
@@ -169,7 +181,7 @@ class Trajectory(FreeCAD.Persistence):
         """waypoints of this trajectory"""
 
     @Waypoints.setter
-    def Waypoints(self, value: list): ...
+    def Waypoints(self, value: list[Robot.Waypoint]): ...
 
     def deleteLast(self, n: int = 1, /) -> Robot.Trajectory:
         """

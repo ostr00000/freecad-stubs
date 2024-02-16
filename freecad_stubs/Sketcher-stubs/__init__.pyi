@@ -60,10 +60,19 @@ class SketchGeometryExtension(PartModule.GeometryExtension):
 
     @property
     def InternalType(self) -> str:
-        """Returns the Id of the SketchGeometryExtension."""
+        """
+        Returns the Id of the SketchGeometryExtension.
+            
+        Possible exceptions: (NotImplementedError).
+        """
 
     @InternalType.setter
-    def InternalType(self, value: str): ...
+    def InternalType(self, value: str):
+        """
+        Returns the Id of the SketchGeometryExtension.
+            
+        Possible exceptions: (ValueError).
+        """
 
     def setGeometryMode(self, flag: str, bflag: bool = True, /):
         """
@@ -126,7 +135,11 @@ class Constraint(FreeCAD.Persistence):
         """Position of first geometry index the Constraint refers to"""
 
     @FirstPos.setter
-    def FirstPos(self, value: int): ...
+    def FirstPos(self, value: int):
+        """
+        Position of first geometry index the Constraint refers to
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def InVirtualSpace(self) -> bool:
@@ -155,7 +168,11 @@ class Constraint(FreeCAD.Persistence):
         """Position of second geometry index the Constraint refers to"""
 
     @SecondPos.setter
-    def SecondPos(self, value: int): ...
+    def SecondPos(self, value: int):
+        """
+        Position of second geometry index the Constraint refers to
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def Third(self) -> int:
@@ -169,7 +186,11 @@ class Constraint(FreeCAD.Persistence):
         """Position of third geometry index the Constraint refers to"""
 
     @ThirdPos.setter
-    def ThirdPos(self, value: int): ...
+    def ThirdPos(self, value: int):
+        """
+        Position of third geometry index the Constraint refers to
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def Type(self) -> str:
@@ -224,7 +245,7 @@ class SketchObject(PartModule.Part2DObject):
         """Return a list of GeometryFacade objects corresponding to the PropertyGeometryList"""
 
     @GeometryFacadeList.setter
-    def GeometryFacadeList(self, value: list): ...
+    def GeometryFacadeList(self, value: list[Sketcher.GeometryFacade]): ...
 
     @property
     def MalformedConstraints(self) -> list[int]:
@@ -235,28 +256,28 @@ class SketchObject(PartModule.Part2DObject):
         """returns a list of (First FirstPos Second SecondPos) tuples with all the detected line segment equality constraints."""
 
     @MissingLineEqualityConstraints.setter
-    def MissingLineEqualityConstraints(self, value: list): ...
+    def MissingLineEqualityConstraints(self, value: list[tuple[int, int, int, int]]): ...
 
     @property
     def MissingPointOnPointConstraints(self) -> list[tuple[int, int, int, int, int]]:
         """returns a list of (First FirstPos Second SecondPos Type) tuples with all the detected endpoint constraints."""
 
     @MissingPointOnPointConstraints.setter
-    def MissingPointOnPointConstraints(self, value: list): ...
+    def MissingPointOnPointConstraints(self, value: list[tuple[int, int, int, int, int]]): ...
 
     @property
     def MissingRadiusConstraints(self) -> list[tuple[int, int, int, int]]:
         """returns a list of (First FirstPos Second SecondPos) tuples with all the detected radius constraints."""
 
     @MissingRadiusConstraints.setter
-    def MissingRadiusConstraints(self, value: list): ...
+    def MissingRadiusConstraints(self, value: list[tuple[int, int, int, int]]): ...
 
     @property
     def MissingVerticalHorizontalConstraints(self) -> list[tuple[int, int, int, int, int]]:
         """returns a list of (First FirstPos Second SecondPos Type) tuples with all the detected vertical/horizontal constraints."""
 
     @MissingVerticalHorizontalConstraints.setter
-    def MissingVerticalHorizontalConstraints(self, value: list): ...
+    def MissingVerticalHorizontalConstraints(self, value: list[tuple[int, int, int, int, int]]): ...
 
     @property
     def OpenVertices(self) -> list[tuple[float, float, float]]:
@@ -1007,7 +1028,10 @@ class Sketch(FreeCAD.Persistence):
 
     @property
     def Constraint(self) -> int:
-        """0: exactly constraint, -1 under-constraint, 1 over-constraint"""
+        """
+        0: exactly constraint, -1 under-constraint, 1 over-constraint
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def Geometries(self) -> tuple:
@@ -1103,10 +1127,19 @@ class ExternalGeometryFacade(FreeCAD.BaseClass):
 
     @property
     def InternalType(self) -> str:
-        """Sets/returns the Internal Alignment Type of the Geometry."""
+        """
+        Sets/returns the Internal Alignment Type of the Geometry.
+            
+        Possible exceptions: (NotImplementedError).
+        """
 
     @InternalType.setter
-    def InternalType(self, value: str): ...
+    def InternalType(self, value: str):
+        """
+        Sets/returns the Internal Alignment Type of the Geometry.
+            
+        Possible exceptions: (ValueError).
+        """
 
     @property
     def Ref(self) -> str:
@@ -1299,10 +1332,19 @@ class GeometryFacade(FreeCAD.BaseClass):
 
     @property
     def InternalType(self) -> str:
-        """Sets/returns the Internal Alignment Type of the Geometry."""
+        """
+        Sets/returns the Internal Alignment Type of the Geometry.
+            
+        Possible exceptions: (NotImplementedError).
+        """
 
     @InternalType.setter
-    def InternalType(self, value: str): ...
+    def InternalType(self, value: str):
+        """
+        Sets/returns the Internal Alignment Type of the Geometry.
+            
+        Possible exceptions: (ValueError).
+        """
 
     @property
     def Tag(self) -> str:

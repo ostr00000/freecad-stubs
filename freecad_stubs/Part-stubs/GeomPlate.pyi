@@ -131,6 +131,7 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
         """
         This function returns the first parameter of the curve.
         The first parameter is the lowest parametric value for the curve, which defines the starting point of the curve.
+        Possible exceptions: (RuntimeError).
         """
 
     @property
@@ -138,6 +139,7 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
         """
         This function returns the last parameter of the curve.
         The last parameter is the highest parametric value for the curve, which defines the ending point of the curve.
+        Possible exceptions: (RuntimeError).
         """
 
     @property
@@ -145,6 +147,7 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
         """
         This function returns the length of the curve.
         The length of the curve is a geometric property that indicates how long the curve is in the space.
+        Possible exceptions: (RuntimeError).
         """
 
     @property
@@ -154,6 +157,7 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
         constraint. The default setting is 10. This parameter
         affects computation time, which increases by the cube of
         the number of points.
+        Possible exceptions: (RuntimeError).
         """
 
     def G0Criterion(self, u: float, /) -> float:

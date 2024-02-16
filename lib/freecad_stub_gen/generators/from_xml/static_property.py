@@ -4,6 +4,7 @@ from functools import cached_property
 from xml.etree import ElementTree as ET
 
 from freecad_stub_gen.cpp_code.converters import toBool
+from freecad_stub_gen.generators.common.annotation_parameter import SelfSignature
 from freecad_stub_gen.generators.common.doc_string import getDocFromNode
 from freecad_stub_gen.generators.common.gen_property.gen_base import (
     BasePropertyGenerator,
@@ -24,24 +25,37 @@ logger = logging.getLogger(__name__)
 class XmlPropertyGenerator(
     XmlMethodGenerator, BaseXmlGenerator, BasePropertyGenerator, ABC
 ):
-    def getAttributes(self, node: ET.Element):
+    def createAttribute(self, node: ET.Element) -> str:
         """Generate property based on xml file."""
         name = node.attrib['Name']
         docs = getDocFromNode(node)
         readOnly = toBool(node.attrib.get('ReadOnly', True))
 
-        pythonType = self._findTypeBasedOnXmlDeclaration(node)
-        pythonGetType = pythonSetType = self._getReturnTypeForSpecialCase(
-            name, pythonType
-        )
+        pythonTypeFromXml = self._findTypeBasedOnXmlDeclaration(node)
+        specialType = self._getReturnTypeForSpecialCase(name, pythonTypeFromXml)
 
-        pythonGetType = self._getExtendedTypeFromCode(pythonGetType, f'get{name}')
-        if not readOnly and pythonSetType == 'object':
-            pythonSetType = pythonGetType
+        rt = self._getReturnTypeConverter(f'get{name}')
+        sig = SelfSignature(exceptions=rt.getExceptionsFromCode())
+        docsGet = docs + SelfSignature.getExceptionsDocs((sig,))
+        extractedGetType = rt.getStrReturnType()
 
-        return self.getProperty(
-            name, pythonGetType, pythonSetType, docs, readOnly=readOnly
-        )
+        patchedGetType = self._patchType(specialType, extractedGetType)
+        ret = self.createProperty(name, patchedGetType, docsGet, getter=True)
+
+        if not readOnly:
+            rt = self._getReturnTypeConverter(f'set{name}')
+            sig = SelfSignature(exceptions=rt.getExceptionsFromCode())
+            if d := SelfSignature.getExceptionsDocs((sig,)):
+                docsSet = docs + d
+            else:
+                # do not repeat if there is no additional info
+                docsSet = ''
+
+            # let's assume that setter value type is same as getter,
+            # this is not true, maybe it could be implemented later
+            ret += self.createProperty(name, patchedGetType, docsSet, setter=True)
+
+        return ret
 
     def _findTypeBasedOnXmlDeclaration(self, node: ET.Element) -> str:
         if (param := node.find('Parameter')) is None:
@@ -53,43 +67,43 @@ class XmlPropertyGenerator(
             self.requiredImports.add(mn)
         return pythonType
 
-    def _getExtendedTypeFromCode(self, pythonType: str, cFuncName: str) -> str:
+    def _getReturnTypeConverter(self, cFuncName: str) -> ReturnTypeConverter:
         cClassName = self.currentNode.attrib['Name']
         funcBody = self.findFunctionBody(cFuncName, cClassName)
         if funcBody is None:
             raise TypeError
 
-        rt = ReturnTypeConverter(
+        return ReturnTypeConverter(
             funcBody, self.requiredImports, self.classNameWithModules, cFuncName
         )
-        extendedType = rt.getStrReturnType()
 
-        match pythonType, extendedType:
+    def _patchType(self, baseType: str, extractedType: str) -> str:
+        match baseType, extractedType:
             case ('object', _):
-                return extendedType
+                return extractedType
 
-            case _ if pythonType == extendedType:
-                return extendedType
+            case _ if baseType == extractedType:
+                return extractedType
 
             case (_, 'object'):
-                return pythonType
+                return baseType
 
             case ('dict' | 'list' | 'tuple' | 'typing.Sequence', _):
-                if extendedType.startswith(pythonType) or extendedType.endswith('Dict'):
-                    return extendedType
+                if extractedType.startswith(baseType) or extractedType.endswith('Dict'):
+                    return extractedType
 
                 logger.warning(
                     f"Type from code does not match type from xml"
-                    f" (cannot extend): {pythonType=}, {extendedType=}"
+                    f" (cannot extend): {baseType=}, {extractedType=}"
                 )
 
             case _:
                 logger.warning(
                     f"Type from code does not match type from xml:"
-                    f"{pythonType=}, {extendedType=}, {self._cFunctionName=}"
+                    f"{baseType=}, {extractedType=}, {self._cFunctionName=}"
                 )
 
-        return pythonType
+        return baseType
 
     def _getReturnTypeForSpecialCase(self, propertyName: str, pythonType: str):
         className = getPythonClassNameFromNode(self.currentNode)

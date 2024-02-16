@@ -75,13 +75,12 @@ class DynamicPropertyGenerator(BasePropertyGenerator, ABC):
                     classDeclarationBodies=classDeclarationBodies,
                     macroCallStartPos=propMatch.start(),
                 )
-                yield self.getProperty(
-                    pm.name,
-                    pm.pythonGetType,
-                    pm.pythonSetType,
-                    docs=pm.docs,
-                    readOnly=pm.readOnly,
+                ret = self.createProperty(
+                    pm.name, pm.pythonGetType, pm.docs, getter=True
                 )
+                if not pm.readOnly:
+                    ret += self.createProperty(pm.name, pm.pythonSetType, setter=True)
+                yield ret
 
             # We assume that they may be more than one constructor,
             # but each constructor add the same properties.

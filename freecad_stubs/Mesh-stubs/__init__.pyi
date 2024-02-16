@@ -147,7 +147,10 @@ class MeshPoint(FreeCAD.PyObjectBase):
 
     @property
     def Normal(self) -> FreeCAD.Vector:
-        """Normal vector of the point computed by the surrounding mesh."""
+        """
+        Normal vector of the point computed by the surrounding mesh.
+        Possible exceptions: (RuntimeError, IndexError).
+        """
 
     @property
     def Vector(self) -> FreeCAD.Vector:

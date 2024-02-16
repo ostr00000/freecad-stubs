@@ -47,7 +47,7 @@ class SaveErrorsPreprocessor(Preprocessor):
         self, directive, toks, ifpassthru, precedingtoks
     ) -> Literal[True] | None:
         del ifpassthru, precedingtoks
-        if directive.value in ('pragma', 'line'):
+        if directive.value in {'pragma', 'line'}:
             raise OutputDirective(Action.IgnoreAndPassThrough)
 
         ret: bool | None = None
@@ -91,6 +91,7 @@ def getCommonMacros() -> dict[str, Macro]:
         '__FILE__',
         # this is a workaround to avoid defining SIZE_MAX as `(~(size_t)0)`
         f'SIZE_MAX {2**64}',
+        'PY_VERSION_HEX 0x03120000',
         # Qt macros
         # /usr/include/x86_64-linux-gnu/qt5/QtCore/qobjectdefs.h
         'Q_SIGNALS public STUB_GEN_COMMENT(Q_SIGNALS)',

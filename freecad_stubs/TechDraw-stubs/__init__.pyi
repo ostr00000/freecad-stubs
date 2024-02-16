@@ -805,7 +805,11 @@ class CosmeticVertex(FreeCAD.PyObjectBase):
         """set/return the vertex's colour using a tuple (rgba)."""
 
     @Color.setter
-    def Color(self, value: object): ...
+    def Color(self, value: object):
+        """
+        set/return the vertex's colour using a tuple (rgba).
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def Point(self) -> FreeCAD.Vector:
@@ -820,14 +824,22 @@ class CosmeticVertex(FreeCAD.PyObjectBase):
         """set/return the vertex's radius in mm."""
 
     @Size.setter
-    def Size(self, value: float): ...
+    def Size(self, value: float):
+        """
+        set/return the vertex's radius in mm.
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def Style(self) -> int:
         """set/return the vertex's style as integer."""
 
     @Style.setter
-    def Style(self, value: int): ...
+    def Style(self, value: int):
+        """
+        set/return the vertex's style as integer.
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def Tag(self) -> str:
@@ -1848,7 +1860,10 @@ class CosmeticEdge(FreeCAD.PyObjectBase):
 
     @property
     def Center(self) -> FreeCAD.Vector:
-        """Gives the position of center point of this CosmeticEdge as vector."""
+        """
+        Gives the position of center point of this CosmeticEdge as vector.
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def End(self) -> FreeCAD.Vector:
@@ -1860,7 +1875,10 @@ class CosmeticEdge(FreeCAD.PyObjectBase):
 
     @property
     def Radius(self) -> float:
-        """Gives the radius of CosmeticEdge in mm."""
+        """
+        Gives the radius of CosmeticEdge in mm.
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def Start(self) -> FreeCAD.Vector:

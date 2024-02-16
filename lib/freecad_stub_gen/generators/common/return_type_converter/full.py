@@ -127,7 +127,7 @@ class ReturnTypeConverter(
         return openB == closeB + diff
 
     EXCEPTION_SET_STRING_REG = re.compile(r'PyErr_SetString\(([^;]+)\);')
-    EXCEPTION_PY_REG = re.compile(r'throw\s+Py::(?P<exc>\w+)\((?P<args>[^;]*)\);')
+    EXCEPTION_PY_REG = re.compile(r'throw\s+Py\s*::\s*(?P<exc>\w+)\((?P<args>[^;]*)\);')
 
     def getExceptionsFromCode(self):
         exceptions = OrderedStrSet()

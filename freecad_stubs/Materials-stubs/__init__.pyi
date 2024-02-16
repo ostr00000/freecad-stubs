@@ -1,7 +1,4 @@
-import typing
-
 import FreeCAD
-import Materials
 
 
 # MaterialPy.xml
@@ -15,104 +12,185 @@ class Material(FreeCAD.BaseClass):
         """Material descriptions."""
 
     @property
-    def AppearanceModels(self) -> list[str]:
-        """List of implemented models."""
+    def AppearanceModels(self) -> list:
+        """
+        List of implemented models.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
-    def AppearanceProperties(self) -> dict[str, str]:
-        """deprecated -- Dictionary of material appearance properties."""
+    def AppearanceProperties(self) -> dict:
+        """
+        deprecated -- Dictionary of material appearance properties.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def Author(self) -> str:
-        """Author information."""
+        """
+        Author information.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def AuthorAndLicense(self) -> str:
-        """deprecated -- Author and license information."""
+        """
+        deprecated -- Author and license information.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def Description(self) -> str:
-        """Description of the material."""
+        """
+        Description of the material.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def Directory(self) -> str:
-        """Model directory relative to the library root."""
+        """
+        Model directory relative to the library root.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def LibraryIcon(self) -> str:
-        """Model icon path."""
+        """
+        Model icon path.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def LibraryName(self) -> str:
-        """Model library name."""
+        """
+        Model library name.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def LibraryRoot(self) -> str:
-        """Model library path."""
+        """
+        Model library path.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def License(self) -> str:
-        """License information."""
+        """
+        License information.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def Name(self) -> str:
-        """Model name."""
+        """
+        Model name.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def Parent(self) -> str:
-        """Parent material UUID."""
+        """
+        Parent material UUID.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
-    def PhysicalModels(self) -> list[str]:
-        """List of implemented models."""
+    def PhysicalModels(self) -> list:
+        """
+        List of implemented models.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
-    def PhysicalProperties(self) -> dict[str, str]:
-        """deprecated -- Dictionary of material physical properties."""
+    def PhysicalProperties(self) -> dict:
+        """
+        deprecated -- Dictionary of material physical properties.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
-    def Properties(self) -> dict[str, str]:
-        """deprecated -- Dictionary of all material properties."""
+    def Properties(self) -> dict:
+        """
+        deprecated -- Dictionary of all material properties.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def Reference(self) -> str:
-        """Reference for material data."""
+        """
+        Reference for material data.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
-    def Tags(self) -> list[str]:
-        """List of searchable tags."""
+    def Tags(self) -> list:
+        """
+        List of searchable tags.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def URL(self) -> str:
-        """URL to a material reference."""
+        """
+        URL to a material reference.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def UUID(self) -> str:
-        """Unique model identifier."""
+        """
+        Unique model identifier.
+        Possible exceptions: (AttributeError).
+        """
 
-    def getAppearanceValue(self, name: str, /):
-        """Get the value associated with the property"""
+    def getAppearanceValue(self):
+        """
+        Get the value associated with the property
+        Possible exceptions: (NotImplementedError).
+        """
 
-    def getPhysicalValue(self, name: str, /) -> Materials.Array2D | Materials.Array3D | typing.Any:
-        """Get the value associated with the property"""
+    def getPhysicalValue(self):
+        """
+        Get the value associated with the property
+        Possible exceptions: (NotImplementedError).
+        """
 
-    def hasAppearanceModel(self, uuid: str, /) -> bool:
-        """Check if the material implements the appearance model with the given UUID"""
+    def hasAppearanceModel(self):
+        """
+        Check if the material implements the appearance model with the given UUID
+        Possible exceptions: (NotImplementedError).
+        """
 
-    def hasAppearanceProperty(self, name: str, /) -> bool:
-        """Check if the material implements the appearance property with the given name"""
+    def hasAppearanceProperty(self):
+        """
+        Check if the material implements the appearance property with the given name
+        Possible exceptions: (NotImplementedError).
+        """
 
-    def hasPhysicalModel(self, uuid: str, /) -> bool:
-        """Check if the material implements the physical model with the given UUID"""
+    def hasPhysicalModel(self):
+        """
+        Check if the material implements the physical model with the given UUID
+        Possible exceptions: (NotImplementedError).
+        """
 
-    def hasPhysicalProperty(self, name: str, /) -> bool:
-        """Check if the material implements the physical property with the given name"""
+    def hasPhysicalProperty(self):
+        """
+        Check if the material implements the physical property with the given name
+        Possible exceptions: (NotImplementedError).
+        """
 
-    def isAppearanceModelComplete(self, name: str, /) -> bool:
-        """Check if the material implements the appearance model with the given UUID, and has values defined for each property"""
+    def isAppearanceModelComplete(self):
+        """
+        Check if the material implements the appearance model with the given UUID, and has values defined for each property
+        Possible exceptions: (NotImplementedError).
+        """
 
-    def isPhysicalModelComplete(self, name: str, /) -> bool:
-        """Check if the material implements the physical model with the given UUID, and has values defined for each property"""
+    def isPhysicalModelComplete(self):
+        """
+        Check if the material implements the physical model with the given UUID, and has values defined for each property
+        Possible exceptions: (NotImplementedError).
+        """
 
 
 # ModelPy.xml
@@ -127,47 +205,80 @@ class Model(FreeCAD.BaseClass):
 
     @property
     def DOI(self) -> str:
-        """Digital Object Identifier (see https://doi.org/)"""
+        """
+        Digital Object Identifier (see https://doi.org/)
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def Description(self) -> str:
-        """Description of the model."""
+        """
+        Description of the model.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def Directory(self) -> str:
-        """Model directory."""
+        """
+        Model directory.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
-    def Inherited(self) -> list[str]:
-        """List of inherited models identified by UUID."""
+    def Inherited(self) -> list:
+        """
+        List of inherited models identified by UUID.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def LibraryIcon(self) -> str:
-        """Model icon path."""
+        """
+        Model icon path.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def LibraryName(self) -> str:
-        """Model library name."""
+        """
+        Model library name.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def LibraryRoot(self) -> str:
-        """Model library path."""
+        """
+        Model library path.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def Name(self) -> str:
-        """Model name."""
+        """
+        Model name.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
-    def Properties(self) -> dict[str, Materials.ModelProperty]:
-        """Dictionary of model properties."""
+    def Properties(self) -> dict:
+        """
+        Dictionary of model properties.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def URL(self) -> str:
-        """URL to a detailed description of the model."""
+        """
+        URL to a detailed description of the model.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def UUID(self) -> str:
-        """Unique model identifier."""
+        """
+        Unique model identifier.
+        Possible exceptions: (AttributeError).
+        """
 
 
 # ModelPropertyPy.xml
@@ -182,23 +293,38 @@ class ModelProperty(FreeCAD.BaseClass):
 
     @property
     def Description(self) -> str:
-        """Property description."""
+        """
+        Property description.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def Name(self) -> str:
-        """Property name."""
+        """
+        Property name.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def Type(self) -> str:
-        """Property type."""
+        """
+        Property type.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def URL(self) -> str:
-        """URL to a detailed description of the property."""
+        """
+        URL to a detailed description of the property.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def Units(self) -> str:
-        """Property units category."""
+        """
+        Property units category.
+        Possible exceptions: (AttributeError).
+        """
 
 
 # Array3DPy.xml
@@ -209,30 +335,42 @@ class Array3D(FreeCAD.BaseClass):
         """3D Array of material properties."""
 
     @property
-    def Array(self) -> list[list]:
-        """The 3 dimensional array."""
+    def Array(self) -> list:
+        """
+        The 3 dimensional array.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def Columns(self) -> int:
-        """The number of columns in the array."""
+        """
+        The number of columns in the array.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def Depth(self) -> int:
-        """The depth of the array (3rd dimension)."""
+        """
+        The depth of the array (3rd dimension).
+        Possible exceptions: (AttributeError).
+        """
 
-    def getDepthValue(self, depth: int, /) -> FreeCAD.Quantity:
+    def getDepthValue(self):
         """
         Get the column value at the given depth
-        Possible exceptions: (IndexError).
+        Possible exceptions: (NotImplementedError).
         """
 
-    def getRows(self, depth: int = None, /) -> int:
-        """Get the number of rows in the array at the specified depth."""
+    def getRows(self):
+        """
+        Get the number of rows in the array at the specified depth.
+        Possible exceptions: (NotImplementedError).
+        """
 
-    def getValue(self, depth: int, row: int, column: int, /) -> FreeCAD.Quantity:
+    def getValue(self):
         """
         Get the value at the given row and column
-        Possible exceptions: (IndexError).
+        Possible exceptions: (NotImplementedError).
         """
 
 
@@ -247,30 +385,42 @@ class MaterialManager(FreeCAD.BaseClass):
         """Material descriptions."""
 
     @property
-    def MaterialLibraries(self) -> list[tuple[str, str, str]]:
-        """List of Material libraries."""
+    def MaterialLibraries(self) -> list:
+        """
+        List of Material libraries.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
-    def Materials(self) -> dict[str, FreeCAD.Material]:
-        """List of Materials."""
+    def Materials(self) -> dict:
+        """
+        List of Materials.
+        Possible exceptions: (AttributeError).
+        """
 
-    def getMaterial(self, uuid: str, /) -> FreeCAD.Material:
+    def getMaterial(self):
         """
         Get a material object by specifying its UUID
-        Possible exceptions: (LookupError).
+        Possible exceptions: (NotImplementedError).
         """
 
-    def getMaterialByPath(self, path: str, lib: str = '', /) -> FreeCAD.Material:
+    def getMaterialByPath(self):
         """
         Get a material object by specifying its path and library name
-        Possible exceptions: (LookupError).
+        Possible exceptions: (NotImplementedError).
         """
 
-    def materialsWithModel(self, uuid: str, /) -> dict[str, FreeCAD.Material]:
-        """Get a list of materials implementing the specified model"""
+    def materialsWithModel(self):
+        """
+        Get a list of materials implementing the specified model
+        Possible exceptions: (NotImplementedError).
+        """
 
-    def materialsWithModelComplete(self, uuid: str, /) -> dict[str, FreeCAD.Material]:
-        """Get a list of materials implementing the specified model, with values for all properties"""
+    def materialsWithModelComplete(self):
+        """
+        Get a list of materials implementing the specified model, with values for all properties
+        Possible exceptions: (NotImplementedError).
+        """
 
 
 # ModelManagerPy.xml
@@ -284,23 +434,29 @@ class ModelManager(FreeCAD.BaseClass):
         """Material model descriptions."""
 
     @property
-    def ModelLibraries(self) -> list[tuple[str, str, str]]:
-        """List of model libraries."""
+    def ModelLibraries(self) -> list:
+        """
+        List of model libraries.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
-    def Models(self) -> dict[str, Materials.Model]:
-        """List of model libraries."""
+    def Models(self) -> dict:
+        """
+        List of model libraries.
+        Possible exceptions: (AttributeError).
+        """
 
-    def getModel(self, uuid: str, /) -> Materials.Model:
+    def getModel(self):
         """
         Get a model object by specifying its UUID
-        Possible exceptions: (LookupError).
+        Possible exceptions: (NotImplementedError).
         """
 
-    def getModelByPath(self, path: str, lib: str = '', /) -> Materials.Model:
+    def getModelByPath(self):
         """
         Get a model object by specifying its path
-        Possible exceptions: (LookupError).
+        Possible exceptions: (NotImplementedError).
         """
 
 
@@ -312,25 +468,34 @@ class Array2D(FreeCAD.BaseClass):
         """2D Array of material properties."""
 
     @property
-    def Array(self) -> list[list]:
-        """The 2 dimensional array."""
+    def Array(self) -> list:
+        """
+        The 2 dimensional array.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def Columns(self) -> int:
-        """The number of columns in the array."""
+        """
+        The number of columns in the array.
+        Possible exceptions: (AttributeError).
+        """
 
     @property
     def Rows(self) -> int:
-        """The number of rows in the array."""
+        """
+        The number of rows in the array.
+        Possible exceptions: (AttributeError).
+        """
 
-    def getRow(self, row: int, /) -> list[FreeCAD.Quantity]:
+    def getRow(self):
         """
         Get the row given the first column value
-        Possible exceptions: (IndexError).
+        Possible exceptions: (NotImplementedError).
         """
 
-    def getValue(self, row: int, column: int, /) -> FreeCAD.Quantity:
+    def getValue(self):
         """
         Get the value at the given row and column
-        Possible exceptions: (IndexError).
+        Possible exceptions: (NotImplementedError).
         """

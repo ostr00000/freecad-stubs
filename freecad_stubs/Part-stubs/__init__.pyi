@@ -83,7 +83,10 @@ class Vertex(PartModule.Shape):
 
     @property
     def Point(self) -> FreeCAD.PyObjectBase:
-        """Position of this Vertex as a Vector"""
+        """
+        Position of this Vertex as a Vector
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def Tolerance(self) -> float:
@@ -91,15 +94,24 @@ class Vertex(PartModule.Shape):
 
     @property
     def X(self) -> float:
-        """X component of this Vertex."""
+        """
+        X component of this Vertex.
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def Y(self) -> float:
-        """Y component of this Vertex."""
+        """
+        Y component of this Vertex.
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def Z(self) -> float:
-        """Z component of this Vertex."""
+        """
+        Z component of this Vertex.
+        Possible exceptions: (RuntimeError).
+        """
 
 
 # CylinderPy.xml
@@ -163,14 +175,22 @@ class Cylinder(PartModule.GeometrySurface):
         """The axis direction of the cylinder"""
 
     @Axis.setter
-    def Axis(self, value: FreeCAD.Vector): ...
+    def Axis(self, value: FreeCAD.Vector):
+        """
+        The axis direction of the cylinder
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     @property
     def Center(self) -> FreeCAD.Vector:
         """Center of the cylinder."""
 
     @Center.setter
-    def Center(self, value: FreeCAD.Vector): ...
+    def Center(self, value: FreeCAD.Vector):
+        """
+        Center of the cylinder.
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def Radius(self) -> float:
@@ -237,7 +257,11 @@ class AttachEngine(FreeCAD.BaseClass):
         """Current attachment mode."""
 
     @AttachmentOffset.setter
-    def AttachmentOffset(self, value: FreeCAD.Placement): ...
+    def AttachmentOffset(self, value: FreeCAD.Placement):
+        """
+        Current attachment mode.
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def CompleteModeList(self) -> list[str]:
@@ -817,7 +841,10 @@ class OffsetSurface(PartModule.GeometrySurface):
 
     @property
     def BasisSurface(self) -> object:
-        """Sets or gets the basic surface."""
+        """
+        Sets or gets the basic surface.
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def OffsetValue(self) -> float:
@@ -897,14 +924,22 @@ class Plane(PartModule.GeometrySurface):
         """Returns the axis of this plane."""
 
     @Axis.setter
-    def Axis(self, value: FreeCAD.Vector): ...
+    def Axis(self, value: FreeCAD.Vector):
+        """
+        Returns the axis of this plane.
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     @property
     def Position(self) -> FreeCAD.Vector:
         """Returns the position point of this plane."""
 
     @Position.setter
-    def Position(self, value: FreeCAD.Vector): ...
+    def Position(self, value: FreeCAD.Vector):
+        """
+        Returns the position point of this plane.
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
 
 # TopoShapeFacePy.xml
@@ -975,7 +1010,10 @@ class Face(PartModule.Shape):
 
     @property
     def OuterWire(self) -> FreeCAD.PyObjectBase:
-        """The outer wire of this face"""
+        """
+        The outer wire of this face
+        Possible exceptions: (RuntimeError, TypeError).
+        """
 
     @property
     def ParameterRange(self) -> tuple[float, float, float, float]:
@@ -1005,7 +1043,10 @@ class Face(PartModule.Shape):
 
     @property
     def Surface(self) -> FreeCAD.PyObjectBase | None:
-        """Returns the geometric surface of the face"""
+        """
+        Returns the geometric surface of the face
+        Possible exceptions: (RuntimeError, TypeError).
+        """
 
     @property
     def Tolerance(self) -> float:
@@ -1432,7 +1473,10 @@ class Shape(FreeCAD.ComplexGeoData):
 
     @property
     def Area(self) -> float:
-        """Total area of the faces of the shape."""
+        """
+        Total area of the faces of the shape.
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def CompSolids(self) -> list[PartModule.CompSolid]:
@@ -1452,18 +1496,31 @@ class Shape(FreeCAD.ComplexGeoData):
 
     @property
     def Length(self) -> float:
-        """Total length of the edges of the shape."""
+        """
+        Total length of the edges of the shape.
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def Orientation(self) -> str:
-        """Returns the orientation of the shape."""
+        """
+        Returns the orientation of the shape.
+        Possible exceptions: (FreeCAD.Base.FreeCADError).
+        """
 
     @Orientation.setter
-    def Orientation(self, value: str): ...
+    def Orientation(self, value: str):
+        """
+        Returns the orientation of the shape.
+        Possible exceptions: (FreeCAD.Base.FreeCADError, AttributeError).
+        """
 
     @property
     def ShapeType(self) -> str:
-        """Returns the type of the shape."""
+        """
+        Returns the type of the shape.
+        Possible exceptions: (FreeCAD.Base.FreeCADError).
+        """
 
     @property
     def Shells(self) -> list[PartModule.Shell]:
@@ -1483,7 +1540,10 @@ class Shape(FreeCAD.ComplexGeoData):
 
     @property
     def Volume(self) -> float:
-        """Total volume of the solids of the shape."""
+        """
+        Total volume of the solids of the shape.
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def Wires(self) -> list[PartModule.Wire]:
@@ -3070,14 +3130,22 @@ class Sphere(PartModule.GeometrySurface):
         """The axis direction of the circle"""
 
     @Axis.setter
-    def Axis(self, value: FreeCAD.Vector): ...
+    def Axis(self, value: FreeCAD.Vector):
+        """
+        The axis direction of the circle
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     @property
     def Center(self) -> FreeCAD.Vector:
         """Center of the sphere."""
 
     @Center.setter
-    def Center(self, value: FreeCAD.Vector): ...
+    def Center(self, value: FreeCAD.Vector):
+        """
+        Center of the sphere.
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def Radius(self) -> float:
@@ -3446,21 +3514,33 @@ class Point(PartModule.Geometry):
         """X component of this point."""
 
     @X.setter
-    def X(self, value: float): ...
+    def X(self, value: float):
+        """
+        X component of this point.
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def Y(self) -> float:
         """Y component of this point."""
 
     @Y.setter
-    def Y(self, value: float): ...
+    def Y(self, value: float):
+        """
+        Y component of this point.
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def Z(self) -> float:
         """Z component of this point."""
 
     @Z.setter
-    def Z(self, value: float): ...
+    def Z(self, value: float):
+        """
+        Z component of this point.
+        Possible exceptions: (RuntimeError).
+        """
 
     def toShape(self) -> PartModule.Vertex:
         """
@@ -3590,14 +3670,22 @@ class Conic(PartModule.Curve):
         """The axis direction of the circle"""
 
     @Axis.setter
-    def Axis(self, value: FreeCAD.Vector): ...
+    def Axis(self, value: FreeCAD.Vector):
+        """
+        The axis direction of the circle
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     @property
     def Center(self) -> FreeCAD.Vector:
         """Deprecated -- use Location."""
 
     @Center.setter
-    def Center(self, value: FreeCAD.Vector): ...
+    def Center(self, value: FreeCAD.Vector):
+        """
+        Deprecated -- use Location.
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def Eccentricity(self) -> float:
@@ -3614,21 +3702,33 @@ class Conic(PartModule.Curve):
         """Location of the conic."""
 
     @Location.setter
-    def Location(self, value: FreeCAD.Vector): ...
+    def Location(self, value: FreeCAD.Vector):
+        """
+        Location of the conic.
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def XAxis(self) -> FreeCAD.Vector:
         """The X axis direction of the circle"""
 
     @XAxis.setter
-    def XAxis(self, value: FreeCAD.Vector): ...
+    def XAxis(self, value: FreeCAD.Vector):
+        """
+        The X axis direction of the circle
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     @property
     def YAxis(self) -> FreeCAD.Vector:
         """The Y axis direction of the circle"""
 
     @YAxis.setter
-    def YAxis(self, value: FreeCAD.Vector): ...
+    def YAxis(self, value: FreeCAD.Vector):
+        """
+        The Y axis direction of the circle
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
 
 # GeometryIntExtensionPy.xml
@@ -4372,7 +4472,8 @@ class RectangularTrimmedSurface(PartModule.GeometrySurface):
         """
 
     @property
-    def BasisSurface(self) -> object: ...
+    def BasisSurface(self) -> object:
+        """Possible exceptions: (TypeError)."""
 
     def setTrim(self, u1: float, u2: float, v1: float, v2: float, /):
         """
@@ -4424,14 +4525,22 @@ class Line(PartModule.Curve):
         """Returns the direction of this line."""
 
     @Direction.setter
-    def Direction(self, value: FreeCAD.Vector): ...
+    def Direction(self, value: FreeCAD.Vector):
+        """
+        Returns the direction of this line.
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     @property
     def Location(self) -> FreeCAD.Vector:
         """Returns the location of this line."""
 
     @Location.setter
-    def Location(self, value: FreeCAD.Vector): ...
+    def Location(self, value: FreeCAD.Vector):
+        """
+        Returns the location of this line.
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
 
 # GeometrySurfacePy.xml
@@ -4653,7 +4762,10 @@ class Edge(PartModule.Shape):
 
     @property
     def Closed(self) -> bool:
-        """Returns true if the edge is closed"""
+        """
+        Returns true if the edge is closed
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def Continuity(self) -> str:
@@ -4661,7 +4773,10 @@ class Edge(PartModule.Shape):
 
     @property
     def Curve(self) -> FreeCAD.PyObjectBase:
-        """Returns the 3D curve of the edge"""
+        """
+        Returns the 3D curve of the edge
+        Possible exceptions: (RuntimeError, TypeError).
+        """
 
     @property
     def Degenerated(self) -> bool:
@@ -5521,14 +5636,22 @@ class LineSegment(PartModule.TrimmedCurve):
         """Returns the end point point of this line."""
 
     @EndPoint.setter
-    def EndPoint(self, value: FreeCAD.Vector): ...
+    def EndPoint(self, value: FreeCAD.Vector):
+        """
+        Returns the end point point of this line.
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     @property
     def StartPoint(self) -> FreeCAD.Vector:
         """Returns the start point of this line."""
 
     @StartPoint.setter
-    def StartPoint(self, value: FreeCAD.Vector): ...
+    def StartPoint(self, value: FreeCAD.Vector):
+        """
+        Returns the start point of this line.
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     def setParameterRange(self, first: float, last: float, /):
         """
@@ -6038,14 +6161,22 @@ class Cone(PartModule.GeometrySurface):
         """The axis direction of the cone"""
 
     @Axis.setter
-    def Axis(self, value: FreeCAD.Vector): ...
+    def Axis(self, value: FreeCAD.Vector):
+        """
+        The axis direction of the cone
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     @property
     def Center(self) -> FreeCAD.Vector:
         """Center of the cone."""
 
     @Center.setter
-    def Center(self, value: FreeCAD.Vector): ...
+    def Center(self, value: FreeCAD.Vector):
+        """
+        Center of the cone.
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def Radius(self) -> float:
@@ -6081,28 +6212,44 @@ class Toroid(PartModule.GeometrySurface):
         """The axis direction of the toroid"""
 
     @Axis.setter
-    def Axis(self, value: FreeCAD.Vector): ...
+    def Axis(self, value: FreeCAD.Vector):
+        """
+        The axis direction of the toroid
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     @property
     def Center(self) -> FreeCAD.Vector:
         """Center of the toroid."""
 
     @Center.setter
-    def Center(self, value: FreeCAD.Vector): ...
+    def Center(self, value: FreeCAD.Vector):
+        """
+        Center of the toroid.
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def MajorRadius(self) -> float:
         """The major radius of the toroid."""
 
     @MajorRadius.setter
-    def MajorRadius(self, value: float): ...
+    def MajorRadius(self, value: float):
+        """
+        The major radius of the toroid.
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def MinorRadius(self) -> float:
         """The minor radius of the toroid."""
 
     @MinorRadius.setter
-    def MinorRadius(self, value: float): ...
+    def MinorRadius(self, value: float):
+        """
+        The minor radius of the toroid.
+        Possible exceptions: (RuntimeError).
+        """
 
     @property
     def Volume(self) -> float:
@@ -6115,7 +6262,10 @@ class AttachExtension(FreeCAD.DocumentObjectExtension):
 
     @property
     def Attacher(self) -> PartModule.AttachEngine | None:
-        """AttachEngine object driving this AttachableObject. Returns a copy."""
+        """
+        AttachEngine object driving this AttachableObject. Returns a copy.
+        Possible exceptions: (Part.OCCError, Exception).
+        """
 
     @property
     def AttacherType(self) -> str:
@@ -6683,35 +6833,55 @@ class ArcOfConic(PartModule.TrimmedCurve):
         """The axis direction of the conic"""
 
     @Axis.setter
-    def Axis(self, value: FreeCAD.Vector): ...
+    def Axis(self, value: FreeCAD.Vector):
+        """
+        The axis direction of the conic
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     @property
     def Center(self) -> FreeCAD.Vector:
         """Deprecated -- use Location."""
 
     @Center.setter
-    def Center(self, value: FreeCAD.Vector): ...
+    def Center(self, value: FreeCAD.Vector):
+        """
+        Deprecated -- use Location.
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def Location(self) -> FreeCAD.Vector:
         """Center of the conic."""
 
     @Location.setter
-    def Location(self, value: FreeCAD.Vector): ...
+    def Location(self, value: FreeCAD.Vector):
+        """
+        Center of the conic.
+        Possible exceptions: (TypeError).
+        """
 
     @property
     def XAxis(self) -> FreeCAD.Vector:
         """The X axis direction of the circle"""
 
     @XAxis.setter
-    def XAxis(self, value: FreeCAD.Vector): ...
+    def XAxis(self, value: FreeCAD.Vector):
+        """
+        The X axis direction of the circle
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
     @property
     def YAxis(self) -> FreeCAD.Vector:
         """The Y axis direction of the circle"""
 
     @YAxis.setter
-    def YAxis(self, value: FreeCAD.Vector): ...
+    def YAxis(self, value: FreeCAD.Vector):
+        """
+        The Y axis direction of the circle
+        Possible exceptions: (TypeError, RuntimeError).
+        """
 
 
 # HLRBRep_AlgoPy.xml
@@ -7154,7 +7324,8 @@ class HLRBRep_PolyAlgo(FreeCAD.PyObjectBase):
         """
 
     @property
-    def Angle(self) -> float: ...
+    def Angle(self) -> float:
+        """Possible exceptions: (RuntimeError)."""
 
     @property
     def TolAngular(self) -> float: ...
