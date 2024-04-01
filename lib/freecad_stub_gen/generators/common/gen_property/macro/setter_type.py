@@ -168,7 +168,7 @@ class PropertyMacroSetter(PropertyMacroBase):
 
             case "App::PropertyFileIncluded":
                 requiredTypes = [self.TYPE_STR_IO]
-                innerType = '{t} | tuple[{t}, {t}]'.format(t=self.TYPE_STR_IO.name)
+                innerType = f'{self.TYPE_STR_IO.name} | tuple[{self.TYPE_STR_IO.name}, {self.TYPE_STR_IO.name}]'
 
             case "App::PropertyExpressionEngine":
                 innerType = ''  # read only
