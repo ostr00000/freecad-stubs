@@ -1,4 +1,3 @@
-import contextlib
 import logging
 import xml.etree.ElementTree as ET
 from abc import ABC
@@ -16,6 +15,7 @@ from freecad_stub_gen.generators.common.doc_string import (
     generateSignaturesFromDocstring,
     getDocFromNode,
 )
+from freecad_stub_gen.generators.common.gen_base import newImportContext
 from freecad_stub_gen.generators.common.gen_method import MethodGenerator
 from freecad_stub_gen.generators.common.signature_merger import SignatureMerger
 from freecad_stub_gen.generators.from_xml.base import BaseXmlGenerator
@@ -24,14 +24,6 @@ logger = logging.getLogger(__name__)
 
 
 class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
-    @contextlib.contextmanager
-    def newImportContext(self):
-        oldImports = self.requiredImports
-        self.requiredImports = type(self.requiredImports)()
-        try:
-            yield
-        finally:
-            self.requiredImports = oldImports
 
     def genInit(self) -> str:
         """Generate stub for __init__ method."""
@@ -41,7 +33,7 @@ class XmlMethodGenerator(BaseXmlGenerator, MethodGenerator, ABC):
         # Better check `PyMake` - it is possible to return
         # something different from `nullptr`
 
-        with self.newImportContext():
+        with newImportContext():
             makeSignatures = list(
                 self.generateSignaturesFromCode('PyMake', cClassName=cClassName)
             )

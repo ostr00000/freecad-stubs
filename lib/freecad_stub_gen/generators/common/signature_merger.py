@@ -129,10 +129,9 @@ class SignatureMerger:
             ) and not docParam.name.startswith(DEFAULT_ARG_NAME):
                 newArg = newArg.replace(name=docParam.name)
 
-            if codeParam.default is None and docParam.default not in {
-                None,
-                Parameter.empty,
-            }:
+            if codeParam.default is None and (
+                docParam.default not in (None, Parameter.empty)
+            ):
                 newArg = newArg.replace(default=docParam.default)
 
             if (
