@@ -3,7 +3,8 @@ import re
 
 from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.decorators import logCurrentTaskDecFactory
-from freecad_stub_gen.file_functions import genCppFiles, readContent
+from freecad_stub_gen.file_functions import genCppFiles
+from freecad_stub_gen.generators.common.context import currentSource, initContext
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.generators.common.names import (
     getClassName,
@@ -24,14 +25,9 @@ class ExceptionData:
         self.pyModule = moduleNamespace.convertNamespaceToModule(self.pyModuleRaw)
         self.pyClass = getClassName(excModuleWithClass)
 
-        baseNamespace, self.baseCppClass = getNamespaceWithClass(newExceptionArgs[1])
-        if baseNamespace is None:
-            if self.baseCppClass.startswith('PyExc'):
-                baseNamespace = '__python__'
-            else:
-                # no namespace means it is exception from current namespace
-                baseNamespace = self.pyModuleRaw
-        self.baseCppNamespace = baseNamespace
+        self.baseCppNamespace, self.baseCppClass = getNamespaceWithClass(
+            newExceptionArgs[1]
+        )
 
         self.cppNamespace, self.cppClass = getNamespaceWithClass(exceptionName)
         if self.cppClass == 'OCCError':  # there is additional assignment
@@ -84,14 +80,14 @@ class ExceptionContainer:
             repr(e)
 
     def _genExceptions(self):
-        for file in genCppFiles():
-            content = readContent(file)
-            yield from self.findExceptions(content)
+        for filePath in genCppFiles():
+            initContext(filePath)
+            yield from self.findExceptions()
 
     @classmethod
-    def findExceptions(cls, content):
+    def findExceptions(cls):
         seen = set()  # there are two exception for OCCError
-        for match in cls.REG_NEW_EXCEPTION.finditer(content):
+        for match in cls.REG_NEW_EXCEPTION.finditer(currentSource.get()):
             name = match.group('name')
             if name in seen:
                 continue

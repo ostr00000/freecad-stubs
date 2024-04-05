@@ -52,8 +52,7 @@ class ReturnTypeConverterBase:
     def getExpressionType(
         self, varText: str, endPos: int = 0, *, onlyLiteral=False
     ) -> RetType:
-        varText = self._removePrefixes(varText)
-        varText = removeAffix(varText, ('*', '&'), isPrefix=False)
+        varText = self._removeAffixes(varText)
         sw = StrWrapper(varText)
 
         for method in (
@@ -230,11 +229,8 @@ class ReturnTypeConverterBase:
                 ret = self._findClassWithModule(varText)
 
             case StrWrapper(end='->getPyObject()' | '.getPyObject()'):
-                varText = (
-                    varText.removesuffix('getPyObject()')
-                    .removesuffix('.')
-                    .removesuffix('->')
-                    .removesuffix(')')
+                varText = removeAffix(
+                    varText, suffixes=('getPyObject()', '.', '->', ')')
                 )
                 varText = varText[varText.rfind('(') + 1 :]
                 ret = self.getExpressionType(varText, endPos=endPos)
@@ -287,7 +283,7 @@ class ReturnTypeConverterBase:
 
             case StrWrapper('(', end=')'):
                 ret = self.getExpressionType(
-                    varText.removeprefix('(').removesuffix(')'),
+                    removeAffix(varText, '(', ')'),
                     endPos,
                     onlyLiteral=onlyLiteral,
                 )
@@ -305,30 +301,25 @@ class ReturnTypeConverterBase:
         return ret
 
     def _findClass(self, varText: str) -> RetType | None:
-        if all(i.isidentifier() for i in varText.split('::')):
-            if varText.endswith('::Type'):
-                varText = varText.removesuffix('::Type')
-            if not varText.endswith('Py'):
-                varText += 'Py'
-            return self._findClassWithModule(varText, mustDiffer=varText)
+        if not all(i.isidentifier() for i in varText.split('::')):
+            return None
 
-        return None
+        if not varText[0].isupper():
+            return None
+
+        varText = varText.removesuffix('::Type')
+        return self._findClassWithModule(varText, mustDiffer=varText)
 
     @staticmethod
-    def _removePrefixes(varText: str) -> str:
+    def _removeAffixes(varText: str) -> str:
         varText = varText.strip()
         match StrWrapper(varText):
             case StrWrapper(
                 start='new_reference_to(' | 'Py::new_reference_to(', end=')'
             ):
-                varText = (
-                    varText.removeprefix('Py::')
-                    .removeprefix('new_reference_to(')
-                    .removesuffix(')')
-                    .strip()
-                )
+                varText = removeAffix(varText, ('Py::', 'new_reference_to('), ')')
 
-        return removeAffix(varText, ('const', '*', '&'), isPrefix=True)
+        return removeAffix(varText, ('const', '*', '&'), ('*', '&'))
 
     @classmethod
     def _extractPivy(cls, varText: str):
@@ -340,7 +331,7 @@ class ReturnTypeConverterBase:
         if not module.startswith('pivy') or '(' in klass:
             return AnyValue
 
-        klass = klass.removeprefix('_p_').removesuffix('*').strip()
+        klass = removeAffix(klass, '_p_', '*')
         return f'{module}.{klass}'
 
     @classmethod
@@ -367,11 +358,10 @@ class ReturnTypeConverterBase:
         return self.getExpressionType(objArg, endPos, onlyLiteral=True)
 
     def _findClassWithModule(self, text: str, mustDiffer: str = '') -> RetType:
-        cType = text.removeprefix('Py::asObject(new ').removeprefix('new ')
+        cType = removeAffix(text, ('Py::asObject(', 'new '))
         cType = cType.split('(', maxsplit=1)[0]
         classWithModule = getClassWithModulesFromPointer(cType)
         cl = getClassName(classWithModule)
-
         match StrWrapper(cl):
             case self.className:
                 return self.classNameWithModule
@@ -506,12 +496,12 @@ class ReturnTypeConverterBase:
     def _extractTypeFromMatch(match) -> str | None:
         if not (v := match.group('type')):
             return None
-        if v in {'return', 'else'}:
+        if v in {'return', 'else', 'delete'}:
             return None
 
         if '<' in v and '>' in v:
             v = v.split('<', maxsplit=1)[1].split('>', maxsplit=1)[0]
-        return v.removeprefix('const').strip().removesuffix('*').strip()
+        return removeAffix(v, 'const', '*')
 
     def _getRetTypeFromAssignment(
         self, variableName: str, startPos: int, endPos: int

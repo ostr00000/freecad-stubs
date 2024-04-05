@@ -2,6 +2,10 @@ import logging
 import typing
 import xml.etree.ElementTree as ET
 
+from freecad_stub_gen.generators.common.context import getCurrentNamespace
+from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import (
+    StrWrapper,
+)
 from freecad_stub_gen.importable_map import importableMap
 from freecad_stub_gen.module_namespace import moduleNamespace
 from freecad_stub_gen.ordered_set import OrderedStrSet
@@ -21,42 +25,70 @@ def getFatherClassWithModules(currentNode: ET.Element) -> str:
 
 
 def getClassWithModulesFromStem(stem: str, namespace: str) -> str:
-    try:
-        file = moduleNamespace.getFileForStem(stem, namespace)
-    except ValueError:
-        # if there is no xml, use this `match`
-        match namespace, stem:
-            # Gui + without Py
-            case '', 'SelectionFilterPy':
-                stem = stem.removesuffix('Py')
-                namespace = 'Gui'
+    if stem.endswith('Py'):
+        stems = [stem, stem.removesuffix('Py')]
+    else:
+        stems = [stem, stem + 'Py']
 
-            # Gui + with Py
-            case _, (
-                'MDIViewPy'
-                | 'View3DInventorPy'
-                | 'View3DInventorViewerPy'
-                | 'AbstractSplitViewPy'
-            ):
-                namespace = 'Gui'
+    # extract from xml
+    for s in stems:
+        try:
+            file = moduleNamespace.getFileForStem(s, namespace)
+        except ValueError:
+            continue
 
+        root = ET.parse(file).getroot()
+        if (exportElement := root.find('PythonExport')) is None:
+            raise ValueError
+
+        return getClassWithModulesFromNode(exportElement)
+
+    # something is wrong with `stem`
+    if not stem[0].isupper():
+        msg = "Cannot extract class name (first letter is not upper)."
+        raise ValueError(msg)
+
+    # extract from manual match
+    for s in stems:
+        if val := _getClassWithModulesFromMatch(s):
+            return val
+
+    # final fallback
+    mod = moduleNamespace.convertNamespaceToModule(namespace)
+    return f'{mod}.{stem}'
+
+
+def _getClassWithModulesFromMatch(stem: str) -> str | None:
+    ret = None
+    match stem:
+        case 'SplitView3DInventor' | 'View3DInventor':
             # we must use a base class
-            case _, 'SplitView3DInventor' | 'View3DInventor':
-                return 'FreeCADGui.AbstractSplitViewPy'
+            ret = 'FreeCADGui.AbstractSplitViewPy'
 
-            case '', _:
-                return stem.removesuffix('Py')
+        case 'ParameterGrpPy':
+            ret = 'FreeCAD.ParameterGrp'
 
-            case _, _:
-                stem = stem.removesuffix('Py')
+        case 'StringIDRef':
+            ret = 'FreeCAD.StringID'
 
-        mod = moduleNamespace.convertNamespaceToModule(namespace)
-        return f'{mod}.{stem}'
+        case (
+            'MDIViewPy'
+            | 'View3DInventorPy'
+            | 'View3DInventorViewerPy'
+            | 'AbstractSplitViewPy'
+        ):
+            ret = f'FreeCADGui.{stem}'
 
-    root = ET.parse(file).getroot()
-    if (exportElement := root.find('PythonExport')) is None:
-        raise ValueError
-    return getClassWithModulesFromNode(exportElement)
+        case 'MDIViewPyWrap':
+            ret = 'FreeCADGui.MDIViewPy'
+
+        case 'SelectionFilterPy':
+            ret = 'FreeCADGui.SelectionFilter'
+
+        case 'GeomCurve':
+            ret = 'FreeCAD.Geom.Curve'
+
+    return ret
 
 
 CLASS_TO_ALIAS = {
@@ -138,23 +170,39 @@ def useAliasedModule(
     return f'{mod}.{cls}'
 
 
-def getNamespaceWithClass(cTypeClass: str) -> tuple[str | None, str]:
-    cType = cTypeClass
-    if '::' in cType:
-        namespace, cType = cType.split('::')
-    else:
-        namespace = None
+def getNamespaceWithClass(cTypeClass: str) -> tuple[str, str]:
+    match StrWrapper(cTypeClass):
+        case StrWrapper(contain='::'):
+            namespace, cType = cTypeClass.split('::')
+        case StrWrapper(start='PyExc_'):
+            namespace = '__python__'
+            cType = cTypeClass
+        case _:
+            namespace = getCurrentNamespace()
+            cType = cTypeClass
+
     return namespace, cType
 
 
 def getClassWithModulesFromPointer(cTypePointer: str) -> str:
-    cType = cTypePointer.removesuffix('::Type').removesuffix('::type_object(')
+    cType = removeAffix(cTypePointer, suffixes=('::Type', '::type_object(', 'Py'))
     namespace, cType = getNamespaceWithClass(cType)
-    return getClassWithModulesFromStem(cType, namespace or '')
+    return getClassWithModulesFromStem(cType, namespace)
 
 
-def removeAffix(text: str, values: typing.Iterable[str], *, isPrefix=True):
+def removeAffix(
+    text: str,
+    prefixes: typing.Iterable[str] | str = (),
+    suffixes: typing.Iterable[str] | str = (),
+) -> str:
+    if isinstance(prefixes, str):
+        prefixes = (prefixes,)
+    if isinstance(suffixes, str):
+        suffixes = (suffixes,)
+
     text = text.strip()
-    for v in values:
-        text = (text.removeprefix(v) if isPrefix else text.removesuffix(v)).strip()
+    for p in prefixes:
+        text = text.removeprefix(p).strip()
+    for s in suffixes:
+        text = text.removesuffix(s).strip()
     return text

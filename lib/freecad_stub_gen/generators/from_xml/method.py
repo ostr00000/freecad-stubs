@@ -11,11 +11,11 @@ from freecad_stub_gen.generators.common.annotation_parameter import (
     AnnotationParam,
     SelfSignature,
 )
+from freecad_stub_gen.generators.common.context import newImportContext
 from freecad_stub_gen.generators.common.doc_string import (
     generateSignaturesFromDocstring,
     getDocFromNode,
 )
-from freecad_stub_gen.generators.common.gen_base import newImportContext
 from freecad_stub_gen.generators.common.gen_method import MethodGenerator
 from freecad_stub_gen.generators.common.signature_merger import SignatureMerger
 from freecad_stub_gen.generators.from_xml.base import BaseXmlGenerator

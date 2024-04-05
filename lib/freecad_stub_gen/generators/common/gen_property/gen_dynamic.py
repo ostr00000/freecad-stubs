@@ -1,9 +1,9 @@
 import re
 from abc import ABC
 from collections.abc import Iterable
-from functools import cached_property
 from itertools import chain
 
+from freecad_stub_gen.generators.common.context import getCurrentNamespace
 from freecad_stub_gen.generators.common.cpp_function import (
     findFunctionCall,
     genFuncArgs,
@@ -70,7 +70,7 @@ class DynamicPropertyGenerator(BasePropertyGenerator, ABC):
                 pm = PropertyMacro(
                     *macroArgs,  # type: ignore[misc,arg-type]
                     constructorBody=constructorBody,
-                    namespace=self._curNamespace,
+                    namespace=getCurrentNamespace(),
                     cppContent=cppIncludeContent,
                     classDeclarationBodies=classDeclarationBodies,
                     macroCallStartPos=propMatch.start(),
@@ -85,19 +85,3 @@ class DynamicPropertyGenerator(BasePropertyGenerator, ABC):
             # We assume that they may be more than one constructor,
             # but each constructor add the same properties.
             break
-
-    @cached_property
-    def _curNamespace(self):
-        parts = self.baseGenFilePath.parts
-        try:
-            index = parts.index('Mod')
-            namespace = parts[index + 1]
-        except ValueError as exc:
-            for k in ('App', 'Gui'):
-                if k in parts:
-                    namespace = k
-                    break
-            else:
-                raise ValueError from exc
-
-        return namespace
