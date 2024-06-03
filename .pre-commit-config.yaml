@@ -30,7 +30,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/abravalheri/validate-pyproject
-    rev: v0.16
+    rev: v0.18
     hooks:
       - id: validate-pyproject
 
@@ -40,7 +40,7 @@ repos:
       - id: toml-sort-fix
 
   - repo: https://github.com/crate-ci/typos
-    rev: v1.21.0
+    rev: v1.22.0
     hooks:
       - id: typos
         name: typos-diff
@@ -51,7 +51,7 @@ repos:
         name: typos-fix
 
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.6
+    rev: v2.3.0
     hooks:
       - id: codespell
         additional_dependencies: [ tomli ]
@@ -81,7 +81,7 @@ repos:
       - id: black
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.3
+    rev: v0.4.7
     hooks:
       - id: ruff
         name: ruff-diff
@@ -96,7 +96,7 @@ repos:
         args: [ --exit-non-zero-on-fix, --fix ]
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.361
+    rev: v1.1.365
     hooks:
       - id: pyright
 
