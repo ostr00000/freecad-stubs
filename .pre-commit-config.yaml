@@ -40,7 +40,7 @@ repos:
       - id: toml-sort-fix
 
   - repo: https://github.com/crate-ci/typos
-    rev: v1.22.0
+    rev: v1.22.9
     hooks:
       - id: typos
         name: typos-diff
@@ -81,7 +81,7 @@ repos:
       - id: black
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.7
+    rev: v0.5.0
     hooks:
       - id: ruff
         name: ruff-diff
@@ -96,7 +96,7 @@ repos:
         args: [ --exit-non-zero-on-fix, --fix ]
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.365
+    rev: v1.1.369
     hooks:
       - id: pyright
 
