@@ -1,8 +1,10 @@
 import logging
 
 from freecad_stub_gen.generators.common.gen_property.macro.base import PropertyMacroBase
-from freecad_stub_gen.generators.common.names import useAliasedModule
-from freecad_stub_gen.module_namespace import moduleNamespace
+from freecad_stub_gen.generators.common.names import (
+    convertNamespaceToModule,
+    useAliasedModule,
+)
 
 logger = logging.getLogger(__name__)
 seen = set()
@@ -148,7 +150,7 @@ class PropertyMacroGetter(PropertyMacroBase):
                 innerType = 'list[tuple[str, str]]'
 
             case "Mesh::PropertyMeshKernel":
-                mod = moduleNamespace.convertNamespaceToModule('Mesh')
+                mod = convertNamespaceToModule('Mesh')
                 innerType = f'{mod}.Mesh'
 
             case "Part::PropertyGeometryList":

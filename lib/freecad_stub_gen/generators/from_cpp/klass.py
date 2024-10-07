@@ -9,8 +9,10 @@ from freecad_stub_gen.generators.common.annotation_parameter import AnnotationPa
 from freecad_stub_gen.generators.common.cpp_function import findFunctionCall
 from freecad_stub_gen.generators.common.doc_string import formatDocstring
 from freecad_stub_gen.generators.common.names import (
+    getClassName,
     getClassWithModulesFromPointer,
     getModuleName,
+    useAliasedModule,
 )
 from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import (
     StrWrapper,
@@ -32,14 +34,10 @@ class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
     def _genStub(self, moduleName: str) -> Iterable[str]:
         for match in self.REG_INIT_TYPE.finditer(self.impContent):
             funcCall = findFunctionCall(self.impContent, match.start())
+            if (className := self._getClassName(funcCall, moduleName)) is None:
+                continue
 
-            classMatch = self.REG_CLASS_NAME.search(funcCall)
-            if classMatch:
-                className = classMatch.group(1).replace('.', '_')
-                self.classNameWithModules = f'{moduleName}.{className}'
-            else:
-                logger.debug(f'Cannot find function name in {self.baseGenFilePath}')
-                continue  # it is a template
+            self.classNameWithModules = f'{moduleName}.{className}'
 
             gen = self._findFunctionCallsGen(funcCall)
             result = ''.join(
@@ -62,6 +60,30 @@ class FreecadStubGeneratorFromCppClass(BaseGeneratorFromCpp):
 
             baseClasses = self._getBaseClasses(className)
             yield f"class {className}{baseClasses}:\n{doc}\n{content}\n"
+
+    def _getClassName(self, funcCall: str, moduleName: str) -> str | None:
+        classMatch = self.REG_CLASS_NAME.search(funcCall)
+        if not classMatch:
+            logger.debug(f'Cannot find function name in {self.baseGenFilePath}')
+            return None  # it is probably a template class (ex. SMESH_HypothesisPy<T>)
+
+        className = classMatch.group(1)
+        match className.count('.'):
+            case 0:
+                pass
+            case 1 if getModuleName(useAliasedModule(className)) != moduleName:
+                msg = (
+                    f'Module mismatch: {moduleName} '
+                    f'vs {getModuleName(useAliasedModule(className))}'
+                )
+                raise ValueError(msg)
+            case 1:
+                className = getClassName(className)
+            case _:
+                msg = f"Unexpected {className=}"
+                raise ValueError(msg)
+
+        return className
 
     def _genQtSignalAndSlots(self, className: str) -> Iterable[str]:
         if not className.endswith('Py'):

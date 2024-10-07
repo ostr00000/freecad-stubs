@@ -1,4 +1,3 @@
-from collections.abc import Iterable
 from pathlib import Path
 
 from freecad_stub_gen.config import SOURCE_DIR
@@ -16,19 +15,12 @@ def readContent(file: Path):
     return removeComments(content)
 
 
-def _excludeIiFiles(it: Iterable[Path]):
-    for p in it:
-        if p.name.endswith(('.cpp.ii', '.h.ii')):
-            continue
-        yield p
-
-
 def genCppFiles(sourcePath: Path = SOURCE_DIR):
-    yield from _excludeIiFiles(Path(sourcePath).rglob('*.cpp'))
+    yield from Path(sourcePath).rglob('*.cpp')
 
 
 def genHFiles(sourcePath: Path = SOURCE_DIR):
-    yield from _excludeIiFiles(Path(sourcePath).rglob('*.h'))
+    yield from Path(sourcePath).rglob('*.h')
 
 
 def genFilesToPreprocess(sourcePath: Path = SOURCE_DIR):
@@ -41,10 +33,20 @@ def genIiFiles(sourcePath: Path = SOURCE_DIR):
     yield from Path(sourcePath).rglob('*.ii')
 
 
-def genIiCppFiles(sourcePath: Path = SOURCE_DIR):
+def genCppIiFiles(sourcePath: Path = SOURCE_DIR):
     """Generate preprocessed (intermediate) files with inlined headers."""
-    yield from Path(sourcePath).rglob('*.ii.cpp')
+    yield from Path(sourcePath).rglob('*.cpp.ii')
+
+
+def genHIiFiles(sourcePath: Path = SOURCE_DIR):
+    """Generate preprocessed (intermediate) files with inlined headers."""
+    yield from Path(sourcePath).rglob('*.h.ii')
 
 
 def genXmlFiles(sourcePath: Path = SOURCE_DIR):
-    yield from Path(sourcePath).rglob('*.xml')
+    if sourcePath != SOURCE_DIR:
+        yield from Path(sourcePath).rglob('*.xml')
+        return
+
+    for searchDirName in ('App', 'Base', 'Gui', 'Mod'):
+        yield from (sourcePath / searchDirName).rglob('*Py.xml')

@@ -27,6 +27,9 @@ class AffixCmp:
             case _:
                 raise NotImplementedError
 
+    def __str__(self):
+        return self.text
+
 
 class StrWrapperMeta(type):
     def __call__(cls, *args, **kwargs):

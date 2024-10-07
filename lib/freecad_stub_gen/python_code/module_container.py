@@ -5,7 +5,7 @@ import sys
 from typing import TYPE_CHECKING
 
 from freecad_stub_gen.config import TARGET_DIR
-from freecad_stub_gen.module_namespace import moduleNamespace
+from freecad_stub_gen.generators.common.names import getModFromAlias
 from freecad_stub_gen.ordered_set import OrderedStrSet
 
 if TYPE_CHECKING:
@@ -37,7 +37,7 @@ class Module:
             raise ValueError
 
         mainPartAlias, *otherParts = item.split('.', maxsplit=1)
-        mainPart = moduleNamespace.getModFromAlias(mainPartAlias, mainPartAlias)
+        mainPart = getModFromAlias(mainPartAlias, mainPartAlias)
         mod = self.subModules[mainPart]
         if mod.parent is None:
             mod.parent = self
@@ -110,7 +110,7 @@ class Module:
             elif any(t in imp for t in ('TypeAlias', 'TypeVar', 'TypedDict')):
                 types.append(imp)
                 continue
-            elif modName := moduleNamespace.getModFromAlias(imp):
+            elif modName := getModFromAlias(imp):
                 sortModule = modName
                 impText = f'import {modName} as {imp}'
             else:

@@ -6,8 +6,6 @@ from freecad_stub_gen.generators.common.context import getCurrentNamespace
 from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import (
     StrWrapper,
 )
-from freecad_stub_gen.importable_map import importableMap
-from freecad_stub_gen.module_namespace import moduleNamespace
 from freecad_stub_gen.ordered_set import OrderedStrSet
 
 logger = logging.getLogger(__name__)
@@ -18,44 +16,12 @@ def getFatherClassWithModules(currentNode: ET.Element) -> str:
     fatherName: str = currentNode.attrib['Father']
 
     if fatherName == 'PyObjectBase':
-        mod = moduleNamespace.convertNamespaceToModule(fatherNamespace)
+        mod = convertNamespaceToModule(fatherNamespace)
         return f'{mod}.{fatherName}'
 
-    return getClassWithModulesFromStem(fatherName, fatherNamespace)
+    from freecad_stub_gen.module_namespace import moduleNamespace
 
-
-def getClassWithModulesFromStem(stem: str, namespace: str) -> str:
-    if stem.endswith('Py'):
-        stems = [stem, stem.removesuffix('Py')]
-    else:
-        stems = [stem, stem + 'Py']
-
-    # extract from xml
-    for s in stems:
-        try:
-            file = moduleNamespace.getFileForStem(s, namespace)
-        except ValueError:
-            continue
-
-        root = ET.parse(file).getroot()
-        if (exportElement := root.find('PythonExport')) is None:
-            raise ValueError
-
-        return getClassWithModulesFromNode(exportElement)
-
-    # something is wrong with `stem`
-    if not stem[0].isupper():
-        msg = "Cannot extract class name (first letter is not upper)."
-        raise ValueError(msg)
-
-    # extract from manual match
-    for s in stems:
-        if val := _getClassWithModulesFromMatch(s):
-            return val
-
-    # final fallback
-    mod = moduleNamespace.convertNamespaceToModule(namespace)
-    return f'{mod}.{stem}'
+    return moduleNamespace.getPythonNameFromCpp(fatherNamespace, fatherName)
 
 
 def _getClassWithModulesFromMatch(stem: str) -> str | None:
@@ -109,10 +75,11 @@ def getClassWithModulesFromNode(currentNode: ET.Element) -> str:
         if name.count('.') == 1:
             # we want to map only main module without submodules
             namespace, name = name.split('.', maxsplit=1)
-            namespace = moduleNamespace.convertNamespaceToModule(namespace)
+            namespace = convertNamespaceToModule(namespace)
             return f'{namespace}.{name}'
 
         return name
+    from freecad_stub_gen.importable_map import importableMap
 
     fullName = importableMap.get(currentNode.attrib['Name'])
     if fullName and '.' in fullName:
@@ -122,7 +89,7 @@ def getClassWithModulesFromNode(currentNode: ET.Element) -> str:
         name = currentNode.attrib['Name'].removesuffix('Py')
 
     namespace = currentNode.attrib['Namespace']
-    namespace = moduleNamespace.convertNamespaceToModule(namespace)
+    namespace = convertNamespaceToModule(namespace)
     name = CLASS_TO_ALIAS.get(name, name)
     return f'{namespace}.{name}'
 
@@ -136,13 +103,15 @@ def getClassName(classWithModules: str) -> str:
 
 
 @typing.overload
-def getModuleName(classWithModules: str, *, required: typing.Literal[True]) -> str: ...
+def getModuleName(classWithModules: str, *, required: typing.Literal[True]) -> str:
+    ...
 
 
 @typing.overload
 def getModuleName(
     classWithModules: str, *, required: typing.Literal[False] = False
-) -> str | None: ...
+) -> str | None:
+    ...
 
 
 def getModuleName(classWithModules: str, *, required=False) -> str | None:
@@ -152,7 +121,7 @@ def getModuleName(classWithModules: str, *, required=False) -> str | None:
     if not required:
         return None
 
-    msg = f'Cannot find module for {classWithModules}'
+    msg = f'Cannot find module for `{classWithModules}`'
     raise ValueError(msg)
 
 
@@ -164,7 +133,7 @@ def useAliasedModule(
         return classWithModules
 
     cls = getClassName(classWithModules)
-    mod = moduleNamespace.convertNamespaceToModule(mod)
+    mod = convertNamespaceToModule(mod)
     if requiredImports is not None:
         requiredImports.add(mod)
     return f'{mod}.{cls}'
@@ -185,9 +154,42 @@ def getNamespaceWithClass(cTypeClass: str) -> tuple[str, str]:
 
 
 def getClassWithModulesFromPointer(cTypePointer: str) -> str:
-    cType = removeAffix(cTypePointer, suffixes=('::Type', '::type_object(', 'Py'))
+    cType = removeAffix(cTypePointer, suffixes=('::Type', '::type_object('))
     namespace, cType = getNamespaceWithClass(cType)
-    return getClassWithModulesFromStem(cType, namespace)
+
+    from freecad_stub_gen.module_namespace import moduleNamespace
+
+    return moduleNamespace.getPythonNameFromCpp(namespace, cType)
+
+
+_NAMESPACE_TO_MODULE = {
+    'Base': 'FreeCAD',
+    'App': 'FreeCAD',
+    'Gui': 'FreeCADGui',
+    'Data': 'FreeCAD',
+    'Attacher': 'Part',
+    'Materials': 'Material',
+}
+
+# Some modules have class with the same name therefore we must use alias.
+_MODULE_TO_ALIAS = {
+    'Mesh': 'MeshModule',
+    'Path': 'PathModule',
+    'Points': 'PointsModule',
+    'Part': 'PartModule',
+}
+
+
+def getModFromAlias(alias: str, default: str = '') -> str:
+    for k, v in _MODULE_TO_ALIAS.items():
+        if v == alias:
+            return k
+    return default
+
+
+def convertNamespaceToModule(namespace: str) -> str:
+    mod = _NAMESPACE_TO_MODULE.get(namespace, namespace)
+    return _MODULE_TO_ALIAS.get(mod, mod)
 
 
 def removeAffix(
@@ -206,3 +208,19 @@ def removeAffix(
     for s in suffixes:
         text = text.removesuffix(s).strip()
     return text
+
+
+def mergeModuleNames(mod: str, namespaceWithClass: str) -> str:
+    """Merge namespace and name into a single string."""
+    if '.' not in namespaceWithClass:
+        return f'{mod}.{namespaceWithClass}'
+
+    parts = namespaceWithClass.split('.')
+    if convertNamespaceToModule(parts[0]) != mod:
+        msg = (
+            f"Found module {mod}, "
+            f"but it is not consistent with name {namespaceWithClass}"
+        )
+        raise ValueError(msg)
+
+    return f"{mod}.{'.'.join(parts[1:])}"

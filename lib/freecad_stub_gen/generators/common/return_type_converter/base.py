@@ -358,7 +358,7 @@ class ReturnTypeConverterBase:
         return self.getExpressionType(objArg, endPos, onlyLiteral=True)
 
     def _findClassWithModule(self, text: str, mustDiffer: str = '') -> RetType:
-        cType = removeAffix(text, ('Py::asObject(', 'new '))
+        cType = removeAffix(text, ('Py::asObject(', 'new'))
         cType = cType.split('(', maxsplit=1)[0]
         classWithModule = getClassWithModulesFromPointer(cType)
         cl = getClassName(classWithModule)
@@ -551,7 +551,7 @@ class TypeExtractor:
         atexit.register(self.atExit)
 
     def atExit(self):
-        logger.info(f"Cannot find return types for {self.missedTypes} functions")
+        logger.info(f"Stats: Cannot find return types for {self.missedTypes} functions")
 
 
 typeExtractor = TypeExtractor()

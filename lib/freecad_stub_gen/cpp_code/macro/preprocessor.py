@@ -33,7 +33,7 @@ class SaveErrorsPreprocessor(Preprocessor):
 
         self.errors.append(f"{file}:{line} error: {msg}")
 
-    def on_include_not_found(self, *_ignored):
+    def on_include_not_found(self, *_args, **_kwargs):
         raise OutputDirective(Action.IgnoreAndPassThrough)
 
     def on_comment(self, tok) -> bool | None:  # type: ignore[reportIncompatibleMethodOverride]
@@ -116,10 +116,28 @@ def getCommonMacros() -> dict[str, Macro]:
         fun = cm.replace('...', '__VA_ARGS__')
         pre.define(f'{cm} STUB_GEN_COMMENT({fun})')
 
-    p = Path('/usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h')
-    content = readContentForPreprocess(p)
 
-    pre.parse(content, str(p))
+    for p in (
+            Path('/usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h'),  # ubuntu
+            Path('/usr/include/qt5/QtCore/qobject.h'),  # fedora
+    ):
+        if p.exists():
+            qObjectFile = p
+            break
+    else:
+        msg = """Cannot find `qobject.h` file.
+        You can find it using:
+        > find /usr/include -type f -name 'qobject.h'
+        
+        On fedora you need to install `qt5-qtbase-devel`:
+        > sudo dnf install qt5-qtbase-devel
+        
+        """
+        raise FileNotFoundError(msg)
+
+    content = readContentForPreprocess(qObjectFile)
+
+    pre.parse(content, str(qObjectFile))
     macroContent = io.StringIO()
     pre.write(macroContent)
 

@@ -28,17 +28,38 @@ def newImportContext():
 
 
 def initContext(filePath: Path):
-    for implSuffix in ('Imp', 'Impl'):
-        impPath = filePath.with_stem(filePath.stem + implSuffix).with_suffix('.cpp')
-        if impPath.exists():
-            break
-    else:
-        # special case for PyObjectBase
-        impPath = filePath.with_suffix('.cpp')
+    match filePath.suffix:
+        case '.cpp':
+            for implSuffix in ('Imp', 'Impl'):
+                impPath = filePath.with_stem(filePath.stem + implSuffix).with_suffix(
+                    '.cpp'
+                )
+                if impPath.exists():
+                    break
+            else:
+                impPath = filePath
+        case '.xml':
+            # special case for PyObjectBase
+            impPath = filePath.with_suffix('.cpp')
+        case _:
+            impPath = filePath
 
     currentPath.set(filePath)
     currentSource.set(readContent(impPath))
     requiredImports.set(OrderedStrSet())
+
+
+@contextlib.contextmanager
+def isolatedContext(filePath: Path | None = None):
+    allContextVars = [currentPath, currentSource, requiredImports]
+    oldContext = [c.get(None) for c in allContextVars]
+    try:
+        if filePath is not None:
+            initContext(filePath)
+        yield
+    finally:
+        for c, v in zip(allContextVars, oldContext, strict=True):
+            c.set(v)
 
 
 def getCurrentNamespace():
@@ -46,12 +67,17 @@ def getCurrentNamespace():
     try:
         index = parts.index('Mod')
         namespace = parts[index + 1]
-    except ValueError as exc:
+    except ValueError:
         for k in ('App', 'Base', 'Gui'):
             if k in parts:
                 namespace = k
                 break
         else:
-            raise ValueError from exc
+            # maybe some external module? we are not interested
+            namespace = '.'.join(parts[:-1])
 
     return namespace
+
+
+def isGuiInNamespace() -> bool:
+    return 'Gui' in currentPath.get().relative_to(SOURCE_DIR).parts

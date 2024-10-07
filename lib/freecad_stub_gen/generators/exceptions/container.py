@@ -4,14 +4,14 @@ import re
 from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.decorators import logCurrentTaskDecFactory
 from freecad_stub_gen.file_functions import genCppFiles
-from freecad_stub_gen.generators.common.context import currentSource, initContext
+from freecad_stub_gen.generators.common.context import currentSource, initContext, isolatedContext
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.generators.common.names import (
+    convertNamespaceToModule,
     getClassName,
     getModuleName,
     getNamespaceWithClass,
 )
-from freecad_stub_gen.module_namespace import moduleNamespace
 from freecad_stub_gen.ordered_set import OrderedStrSet
 from freecad_stub_gen.python_code import indent
 
@@ -22,7 +22,7 @@ class ExceptionData:
     def __init__(self, exceptionName: str, newExceptionArgs: list[str]):
         excModuleWithClass = removeQuote(newExceptionArgs[0])
         self.pyModuleRaw = getModuleName(excModuleWithClass, required=True)
-        self.pyModule = moduleNamespace.convertNamespaceToModule(self.pyModuleRaw)
+        self.pyModule = convertNamespaceToModule(self.pyModuleRaw)
         self.pyClass = getClassName(excModuleWithClass)
 
         self.baseCppNamespace, self.baseCppClass = getNamespaceWithClass(
@@ -73,7 +73,8 @@ class ExceptionContainer:
 
     @logCurrentTaskDecFactory(msg="Generating possible exceptions")
     def __init__(self):
-        self.exceptions = list(self._genExceptions())
+        with isolatedContext():
+            self.exceptions = list(self._genExceptions())
 
     def checkAllExceptionsCorrect(self):
         for e in self.exceptions:

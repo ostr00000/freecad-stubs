@@ -124,6 +124,7 @@ There are a lot of possible methods. This is only example:
   - [x] dynamically added in `init_type()`,
   - [ ] qt slots,
   - [x] qt signals,
+  - [ ] descriptors in `tp_getset`,
 - [x] generate functions stub (cpp files):
   - [x] declared in `PyMethodDef` array,
   - [x] dynamically added in module constructor (subclass `Py::ExtensionModule`),

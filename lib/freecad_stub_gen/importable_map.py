@@ -2,14 +2,22 @@ import logging
 import re
 from collections import defaultdict
 from collections.abc import Iterable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import cached_property
 
 from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.decorators import logCurrentTaskDecFactory
 from freecad_stub_gen.file_functions import genCppFiles, readContent
+from freecad_stub_gen.generators.common.context import (
+    getCurrentNamespace,
+    initContext,
+    isolatedContext,
+)
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
-from freecad_stub_gen.module_namespace import moduleNamespace
+from freecad_stub_gen.generators.common.names import (
+    convertNamespaceToModule,
+    removeAffix,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -19,34 +27,29 @@ class AddTypeArguments:
     cFullType: str
     moduleName: str
     pythonName: str
-
-    @cached_property
-    def namespace(self) -> str | None:
-        if '::' in self.cFullType:
-            return self.cFullType.split('::', maxsplit=1)[0]
-        return None
-
-    @cached_property
-    def cTypeWithoutNamespace(self) -> str:
-        if '::' in self.cFullType:
-            return self.cFullType.split('::', maxsplit=1)[1]
-        return self.cFullType
-
-    @cached_property
-    def fullPythonName(self):
-        if self.namespace:
-            module = moduleNamespace.convertNamespaceToModule(self.namespace)
-            return f'{module}.{self.pythonName}'
-        return self.pythonName
+    namespace: str = field(init=False)
 
     def __post_init__(self):
-        self.cFullType = (
-            self.cFullType.removeprefix('&')
-            .removesuffix('::type_object()')
-            .removesuffix('::Type')
-        )
+        self.cFullType = removeAffix(self.cFullType, '&', ('::type_object()', '::Type'))
 
         self.pythonName = removeQuote(self.pythonName)
+        self.namespace = self._getNamespace()
+
+    def _getNamespace(self) -> str:
+        if '::' in self.cFullType:
+            return self.cFullType.rsplit('::', maxsplit=1)[0]
+        return getCurrentNamespace()
+
+    @property#TODO can it be cached property
+    def cTypeWithoutNamespace(self) -> str:
+        if '::' in self.cFullType:
+            return self.cFullType.rsplit('::', maxsplit=1)[1]
+        return self.cFullType
+
+    @property#TODO can it be cached property
+    def fullPythonName(self):
+        module = convertNamespaceToModule(self.namespace)
+        return f'{module}.{self.pythonName}'
 
 
 class ImportableClassMap(dict[str, str]):
@@ -59,9 +62,13 @@ class ImportableClassMap(dict[str, str]):
 
     @logCurrentTaskDecFactory(msg="Generating types for importable map")
     def __init__(self):
+        self.namespaceAndClassToPython = {}
         self.dup = defaultdict[str, set[str]](set)
-        # remove duplicated keys - not all classes have namespace
-        super().__init__(self._filterDuplicatedKeys(self._genTypes()))
+
+        with isolatedContext():
+            # remove duplicated keys - not all classes have namespace
+            super().__init__(self._filterDuplicatedKeys(self._genTypes()))
+
         for duplicatedKey in self.dup:
             del self[duplicatedKey]
 
@@ -87,6 +94,7 @@ class ImportableClassMap(dict[str, str]):
 
     def _genTypes(self):
         for cppFile in genCppFiles():
+            initContext(cppFile)
             cppContent = readContent(cppFile)
             for match in self.REG_ADD_TYPE.finditer(cppContent):
                 addTypeList = [
@@ -96,8 +104,10 @@ class ImportableClassMap(dict[str, str]):
                     )
                 ]
 
-                addTypeArgs = AddTypeArguments(*addTypeList)
-                yield addTypeArgs.cTypeWithoutNamespace, addTypeArgs.fullPythonName
+                ata = AddTypeArguments(*addTypeList)
+                # TODO [P2]: verify `namespaceAndClass` vs `cTypeWithoutNamespace`
+                self.namespaceAndClassToPython[ata.cTypeWithoutNamespace] = ata.fullPythonName
+                yield ata.cTypeWithoutNamespace, ata.fullPythonName
 
 
 __all__ = ['importableMap']

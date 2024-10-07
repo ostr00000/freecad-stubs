@@ -24,7 +24,7 @@ from freecad_stub_gen.generators.common.arguments_converter.sequence_stack impor
 )
 from freecad_stub_gen.generators.common.names import (
     getClassWithModulesFromPointer,
-    getModuleName,
+    getModuleName, removeAffix,
 )
 from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import (
     StrWrapper,
@@ -134,7 +134,7 @@ class TypesConverter:
         raise exc
 
     def _convertPointerToType(self, pointerArg: str) -> str | None:
-        pointerArg = pointerArg.removeprefix('&').removeprefix('(').removesuffix(')')
+        pointerArg = removeAffix(pointerArg, ('&', '('), ')')
 
         match StrWrapper(pointerArg):
             case StrWrapper(end='::Type' | '::type_object('):

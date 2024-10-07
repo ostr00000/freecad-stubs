@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Do not show default argument when argument is required by C API.
 - Updated generator code for recent changes in FreeCAD src code.
-- Update stub to recent FreeCAD version (`main` from 2024-02-05).
+- Update stub to recent FreeCAD version (`main` from 2024-02-05 `c57a83cb4f7f8bc8840ebbfc9aba97c15a502bd9`).
 
 ### Fixed
 
@@ -46,7 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Update stub to recent FreeCAD version (`main` from 2023-11-24).
+- Update stub to recent FreeCAD version (`main` from 2023-11-24 `0179cd28ecd67a997e4df4162ca1fd77e3a672f2`).
 - New Python 3.12 typing syntax in generator code.
 
 ### Fixed

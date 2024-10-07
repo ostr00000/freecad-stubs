@@ -12,6 +12,14 @@ def configLogger():
     logging.getLogger().addFilter(RepeatedFilter())
 
 
+# noinspection PyUnresolvedReferences
+def initializeGlobals():
+    """Initialize some global variables."""
+    from freecad_stub_gen.module_namespace import moduleNamespace
+    from freecad_stub_gen.importable_map import importableMap
+    from freecad_stub_gen.generators.exceptions.container import exceptionContainer
+
+
 def main():
     from freecad_stub_gen.cpp_code.macro.cache import (
         isNewGitHead,
@@ -29,6 +37,7 @@ def main():
     from freecad_stub_gen.generate import generateFreeCadStubs
     from freecad_stub_gen.generators.types_enum import generateTypes
 
+    initializeGlobals()
     generateTypes()
     generateFreeCadStubs()
 
