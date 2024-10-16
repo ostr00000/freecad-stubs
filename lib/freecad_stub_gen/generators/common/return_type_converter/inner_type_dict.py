@@ -6,6 +6,7 @@ from typing import ParamSpec, TypeVar
 from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import (
+    AnnotatedMarker,
     ComplexArgumentBase,
     DictArgument,
     RetType,
@@ -55,10 +56,10 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
             if da:
                 signature = da.formatPythonSignature()
                 self.requiredImports.update(da.imports)
-                return signature
+                return AnnotatedMarker(signature, self, variableName)
 
         if 'PARAM_PY_DICT' in self.functionBody:
-            return varType
+            return AnnotatedMarker(varType, self, variableName)
 
         msg = 'Cannot extract dict inner types.'
         raise ValueError(msg)

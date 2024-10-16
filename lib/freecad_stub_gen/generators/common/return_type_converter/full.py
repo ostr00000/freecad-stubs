@@ -12,6 +12,7 @@ from freecad_stub_gen.generators.common.cpp_function import (
 )
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import (
     InvalidReturnType,
+    RetType,
     UnionArgument,
 )
 from freecad_stub_gen.generators.common.return_type_converter.base import (
@@ -54,17 +55,12 @@ class ReturnTypeConverter(
             self.requiredImports.update(returnTypes.imports)
         return ret
 
-    def _genReturnType(self) -> Iterable[str]:
+    def _genReturnType(self) -> Iterable[RetType]:
         for match in self.REG_RETURN.finditer(self.functionBody):
             if self._isInsideLambda(match.start()):
                 continue
             try:
-                retType = self.getExpressionType(match.group(1), match.end())
-                match retType:
-                    case UnionArgument() as ua:
-                        yield from ua
-                    case _:
-                        yield str(retType)
+                yield self.getExpressionType(match.group(1), match.end())
             except InvalidReturnType:
                 continue
 

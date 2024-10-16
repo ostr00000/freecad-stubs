@@ -103,15 +103,13 @@ def getClassName(classWithModules: str) -> str:
 
 
 @typing.overload
-def getModuleName(classWithModules: str, *, required: typing.Literal[True]) -> str:
-    ...
+def getModuleName(classWithModules: str, *, required: typing.Literal[True]) -> str: ...
 
 
 @typing.overload
 def getModuleName(
     classWithModules: str, *, required: typing.Literal[False] = False
-) -> str | None:
-    ...
+) -> str | None: ...
 
 
 def getModuleName(classWithModules: str, *, required=False) -> str | None:

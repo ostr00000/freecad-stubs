@@ -1,7 +1,9 @@
 import inspect
+from functools import cached_property
 from xml.etree import ElementTree as ET
 
 from freecad_stub_gen.cpp_code.converters import toBool
+from freecad_stub_gen.file_functions import parseXml
 from freecad_stub_gen.generators.common.doc_string import (
     formatDocstring,
     getDocFromNode,
@@ -30,11 +32,17 @@ class FreecadStubGeneratorFromXML(
     Argument types are extracted from code.
     """
 
+    def postInit(self):
+        _ = self.tree
+
+    @cached_property
+    def tree(self):
+        return parseXml(self.baseGenFilePath)
+
     def getStub(self, mod: Module, moduleName, submodule=''):
         header = f'# {self.baseGenFilePath.name}\n'
 
-        tree = ET.parse(self.baseGenFilePath)
-        for child in tree.getroot():
+        for child in self.tree.getroot():
             if child.tag == 'PythonExport':
                 self.currentNode = child
                 content, classNameWithModules = self._getClassContent()

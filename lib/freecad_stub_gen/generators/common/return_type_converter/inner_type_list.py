@@ -1,6 +1,8 @@
+import logging
 import re
 
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import (
+    AnnotatedMarker,
     AnyValue,
     RetType,
     UnionArgument,
@@ -8,6 +10,8 @@ from freecad_stub_gen.generators.common.return_type_converter.arg_types import (
 from freecad_stub_gen.generators.common.return_type_converter.base import (
     ReturnTypeConverterBase,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class ReturnTypeInnerList(ReturnTypeConverterBase):
@@ -34,7 +38,7 @@ class ReturnTypeInnerList(ReturnTypeConverterBase):
             varType += f'[{innerTypes}]'
             self.requiredImports.update(innerTypes.imports)
 
-        return varType
+        return AnnotatedMarker(varType, self, lookupType=variableName)
 
     def _getInnerTypeList(self, variableName: str, startPos: int, endPos: int):
         regex = re.compile(rf'{variableName}\b.append\(([^;]*)\);')
@@ -51,7 +55,8 @@ class ReturnTypeInnerList(ReturnTypeConverterBase):
             rf'PyList_SetItem\s*\(\s*{variableName}\s*,\s*[\w+]+\s*,([^;]+)\);'
         )
         for variableMatch in regex.finditer(self.functionBody, startPos, endpos=endPos):
-            varType = self.getExpressionType(variableMatch.group(1), endPos)
+            varName = variableMatch.group(1)
+            varType = self.getExpressionType(varName, endPos)
             if varType == AnyValue:
                 raise ValueError
             arg.add(varType)

@@ -10,3 +10,4 @@ SOURCE_DIR = (FREECAD_DIR / 'src').resolve()
 TARGET_DIR = (PROJECT_DIR / 'freecad_stubs/').resolve()
 
 LOGGER_LEVEL = LEVEL_CODE
+DOCSTRING_DEBUG_NOTES = False

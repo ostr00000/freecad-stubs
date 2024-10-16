@@ -2,6 +2,7 @@ import re
 
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import (
+    AnnotatedMarker,
     RetType,
     TupleArgument,
 )
@@ -34,7 +35,7 @@ class ReturnTypeInnerTuple(ReturnTypeConverterBase):
             if tupleArg := TupleArgument(gen):
                 varType = str(tupleArg)
                 self.requiredImports.update(tupleArg.imports)
-                return varType
+                return AnnotatedMarker(varType, self, variableName)
 
         msg = 'Cannot find inner type for tuple'
         raise ValueError(msg)

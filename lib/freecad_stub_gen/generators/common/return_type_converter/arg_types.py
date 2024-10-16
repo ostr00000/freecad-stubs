@@ -2,16 +2,16 @@ from __future__ import annotations
 
 import keyword
 from functools import cached_property
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING
 
+from freecad_stub_gen.config import DOCSTRING_DEBUG_NOTES
+from freecad_stub_gen.generators.common.context import currentPath
 from freecad_stub_gen.generators.common.names import getModuleName, useAliasedModule
 from freecad_stub_gen.ordered_set import OrderedSet, OrderedStrSet
 from freecad_stub_gen.python_code import indent
 
 if TYPE_CHECKING:
-    from collections.abc import Generator, Iterator
-
-T = TypeVar('T')
+    from collections.abc import Generator, Iterable, Iterator
 
 
 class AnyValueType:
@@ -83,6 +83,16 @@ class ImportsCollector(ComplexArgumentBase, SizedIterable):
 class UnionArgument(ImportsCollector, OrderedSet['RetType'], SizedIterable):
     """Represents `typing.Union` argument."""
 
+    def __init__(self, retTypes: Iterable[RetType] = ()):
+        super().__init__()
+        for rt in retTypes:
+            match rt:
+                case UnionArgument() as ua:
+                    for ur in ua:
+                        self.add(ur)
+                case _:
+                    self.add(rt)
+
     def formatPythonSignature(self) -> str:
         values = list(iter(self))
         if 'None' in values:
@@ -97,11 +107,40 @@ class UnionArgument(ImportsCollector, OrderedSet['RetType'], SizedIterable):
         match item:
             case UnionArgument():
                 self.imports.update(item.imports)
+            case AnnotatedMarker() if DOCSTRING_DEBUG_NOTES:
+                self.imports.add('typing')
             case AnyValueType.value:
                 self.imports.add('typing')
 
 
-type RetType = UnionArgument | AnyValueType | str
+class AnnotatedMarker:
+    def __init__(self, baseExpr: RetType, genObj, lookupType: str = ''):
+        self.baseExpr = baseExpr
+        self.genObj = genObj
+        self.lookupType = lookupType
+        self.currentPath = currentPath.get()
+
+    def __str__(self):
+        if not DOCSTRING_DEBUG_NOTES:
+            return str(self.baseExpr)
+
+        args = [str(self.baseExpr)]
+
+        def addMetadata(metaType: str, data):
+            args.append(f"""'AM_{metaType}("{data}")'""")
+
+        addMetadata('Path', self.currentPath)
+
+        if self.genObj:
+            addMetadata('Class', self.genObj)
+
+        if self.lookupType:
+            addMetadata('LookupType', self.lookupType)
+
+        return f'typing.Annotated[{", ".join(args)}]'
+
+
+type RetType = AnnotatedMarker | UnionArgument | AnyValueType | str
 
 
 class TupleArgument(ImportsCollector, list[RetType], SizedIterable):

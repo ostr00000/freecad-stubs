@@ -4,7 +4,11 @@ import re
 from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.decorators import logCurrentTaskDecFactory
 from freecad_stub_gen.file_functions import genCppFiles
-from freecad_stub_gen.generators.common.context import currentSource, initContext, isolatedContext
+from freecad_stub_gen.generators.common.context import (
+    currentSource,
+    initContext,
+    isolatedContext,
+)
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.generators.common.names import (
     convertNamespaceToModule,

@@ -15,9 +15,11 @@ def configLogger():
 # noinspection PyUnresolvedReferences
 def initializeGlobals():
     """Initialize some global variables."""
-    from freecad_stub_gen.module_namespace import moduleNamespace
-    from freecad_stub_gen.importable_map import importableMap
-    from freecad_stub_gen.generators.exceptions.container import exceptionContainer
+    from freecad_stub_gen.generators.exceptions.container import (  # noqa: F401
+        exceptionContainer,
+    )
+    from freecad_stub_gen.importable_map import importableMap  # noqa: F401
+    from freecad_stub_gen.module_namespace import moduleNamespace  # noqa: F401
 
 
 def main():

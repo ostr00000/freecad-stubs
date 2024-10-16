@@ -1,4 +1,5 @@
 from pathlib import Path
+from xml.etree import ElementTree
 
 from freecad_stub_gen.config import SOURCE_DIR
 from freecad_stub_gen.cpp_code.converters import removeComments
@@ -50,3 +51,11 @@ def genXmlFiles(sourcePath: Path = SOURCE_DIR):
 
     for searchDirName in ('App', 'Base', 'Gui', 'Mod'):
         yield from (sourcePath / searchDirName).rglob('*Py.xml')
+
+
+def parseXml(file: Path) -> ElementTree.ElementTree:
+    try:
+        return ElementTree.parse(file)
+    except ElementTree.ParseError as e:
+        e.add_note(f"Parsing {file=}")
+        raise

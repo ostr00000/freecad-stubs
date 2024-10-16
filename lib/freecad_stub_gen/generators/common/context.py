@@ -9,11 +9,21 @@ from freecad_stub_gen.ordered_set import OrderedStrSet
 currentPath = contextvars.ContextVar[Path]('currentPath')
 """Path to currently processed file."""
 
+implementationPath = contextvars.ContextVar[Path]('implementationPath')
+"""Path to implementation file (may be same as `currentPath`)."""
+
 currentSource = contextvars.ContextVar[str]('currentSource')
 """Text from currently processed file."""
 
 requiredImports = contextvars.ContextVar[OrderedStrSet]('requiredImports')
 """All imports required in current stub file."""
+
+allContextVars: list[contextvars.ContextVar] = [
+    currentPath,
+    implementationPath,
+    currentSource,
+    requiredImports,
+]
 
 
 @contextlib.contextmanager
@@ -29,7 +39,7 @@ def newImportContext():
 
 def initContext(filePath: Path):
     match filePath.suffix:
-        case '.cpp':
+        case '.cpp' | '.xml':
             for implSuffix in ('Imp', 'Impl'):
                 impPath = filePath.with_stem(filePath.stem + implSuffix).with_suffix(
                     '.cpp'
@@ -38,20 +48,17 @@ def initContext(filePath: Path):
                     break
             else:
                 impPath = filePath
-        case '.xml':
-            # special case for PyObjectBase
-            impPath = filePath.with_suffix('.cpp')
         case _:
             impPath = filePath
 
     currentPath.set(filePath)
+    implementationPath.set(impPath)
     currentSource.set(readContent(impPath))
     requiredImports.set(OrderedStrSet())
 
 
 @contextlib.contextmanager
 def isolatedContext(filePath: Path | None = None):
-    allContextVars = [currentPath, currentSource, requiredImports]
     oldContext = [c.get(None) for c in allContextVars]
     try:
         if filePath is not None:

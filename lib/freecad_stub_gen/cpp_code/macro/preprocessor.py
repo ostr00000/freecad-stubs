@@ -116,10 +116,9 @@ def getCommonMacros() -> dict[str, Macro]:
         fun = cm.replace('...', '__VA_ARGS__')
         pre.define(f'{cm} STUB_GEN_COMMENT({fun})')
 
-
     for p in (
-            Path('/usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h'),  # ubuntu
-            Path('/usr/include/qt5/QtCore/qobject.h'),  # fedora
+        Path('/usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h'),  # ubuntu
+        Path('/usr/include/qt5/QtCore/qobject.h'),  # fedora
     ):
         if p.exists():
             qObjectFile = p
@@ -128,10 +127,10 @@ def getCommonMacros() -> dict[str, Macro]:
         msg = """Cannot find `qobject.h` file.
         You can find it using:
         > find /usr/include -type f -name 'qobject.h'
-        
+
         On fedora you need to install `qt5-qtbase-devel`:
         > sudo dnf install qt5-qtbase-devel
-        
+
         """
         raise FileNotFoundError(msg)
 

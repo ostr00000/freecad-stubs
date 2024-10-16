@@ -232,8 +232,18 @@ class ReturnTypeConverterBase:
                 varText = removeAffix(
                     varText, suffixes=('getPyObject()', '.', '->', ')')
                 )
-                varText = varText[varText.rfind('(') + 1 :]
-                ret = self.getExpressionType(varText, endPos=endPos)
+                if re.search(r'>\s*\([^(]', varText):
+                    # there is a cast: `cast<var>(obj)->getPyObject()`
+                    varText = varText[varText.rfind('(') + 1 :]
+                    ret = self.getExpressionType(varText, endPos=endPos)
+                elif '(' in varText and not varText.startswith('('):
+                    # there is a function: `type(arg1, arg2)->getPyObject()`
+                    varText = varText[: varText.rfind('(')]
+                    ret = self.getExpressionType(varText, endPos=endPos)
+                else:
+                    ret = self.getExpressionType(
+                        varText.removeprefix('('), endPos=endPos
+                    )
 
         return ret
 
@@ -525,11 +535,7 @@ class ReturnTypeConverterBase:
             varType = self.getExpressionType(
                 variableTypeText, endPos, onlyLiteral=onlyLiteral
             )
-            match varType:
-                case UnionArgument():
-                    yield from varType
-                case str():
-                    yield varType
+            yield varType
 
     def getInnerType(
         self,

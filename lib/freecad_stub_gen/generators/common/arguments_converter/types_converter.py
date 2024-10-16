@@ -24,7 +24,8 @@ from freecad_stub_gen.generators.common.arguments_converter.sequence_stack impor
 )
 from freecad_stub_gen.generators.common.names import (
     getClassWithModulesFromPointer,
-    getModuleName, removeAffix,
+    getModuleName,
+    removeAffix,
 )
 from freecad_stub_gen.generators.common.return_type_converter.str_wrapper import (
     StrWrapper,

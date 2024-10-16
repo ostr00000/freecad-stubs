@@ -15,6 +15,27 @@ repos:
     hooks:
       - id: identity
 
+  - repo: local
+    hooks:
+      - id: check-debug-notes
+        name: Check DOCSTRING_DEBUG_NOTES is disabled
+        description: Check if `DOCSTRING_DEBUG_NOTES` option in `config.py` is disabled.
+        entry: bash
+        language: system
+        files: 'lib/freecad_stub_gen/config.py'
+        args:
+          - -c
+          - |
+            IS_ENABLED=$(
+              grep --regexp "DOCSTRING_DEBUG_NOTES" \
+                lib/freecad_stub_gen/config.py \
+                | grep --regexp "False"
+            )
+            if [[ -z "${IS_ENABLED}" ]]; then
+              echo "Error: DOCSTRING_DEBUG_NOTES is enabled in config.py"
+              exit 1
+            fi
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
@@ -101,7 +122,7 @@ repos:
       - id: vulture
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.350
+    rev: v1.1.385
     hooks:
       - id: pyright
 

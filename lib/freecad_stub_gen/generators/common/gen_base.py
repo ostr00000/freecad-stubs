@@ -38,6 +38,10 @@ class BaseGenerator(ABC, metaclass=BaseGeneratorMeta):
         self.sourceDir = sourceDir
         self.context = contextvars.Context()
         self.context.run(initContext, filePath)
+        self.context.run(self.postInit)
+
+    def postInit(self):
+        pass
 
     @property
     def impContent(self):

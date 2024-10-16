@@ -3,7 +3,6 @@ import re
 from collections import defaultdict
 from collections.abc import Iterable
 from dataclasses import dataclass, field
-from functools import cached_property
 
 from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.decorators import logCurrentTaskDecFactory
@@ -40,13 +39,13 @@ class AddTypeArguments:
             return self.cFullType.rsplit('::', maxsplit=1)[0]
         return getCurrentNamespace()
 
-    @property#TODO can it be cached property
+    @property
     def cTypeWithoutNamespace(self) -> str:
         if '::' in self.cFullType:
             return self.cFullType.rsplit('::', maxsplit=1)[1]
         return self.cFullType
 
-    @property#TODO can it be cached property
+    @property
     def fullPythonName(self):
         module = convertNamespaceToModule(self.namespace)
         return f'{module}.{self.pythonName}'
@@ -105,8 +104,10 @@ class ImportableClassMap(dict[str, str]):
                 ]
 
                 ata = AddTypeArguments(*addTypeList)
-                # TODO [P2]: verify `namespaceAndClass` vs `cTypeWithoutNamespace`
-                self.namespaceAndClassToPython[ata.cTypeWithoutNamespace] = ata.fullPythonName
+                # TODO @PO: [P2] verify `namespaceAndClass` vs `cTypeWithoutNamespace`
+                self.namespaceAndClassToPython[ata.cTypeWithoutNamespace] = (
+                    ata.fullPythonName
+                )
                 yield ata.cTypeWithoutNamespace, ata.fullPythonName
 
 

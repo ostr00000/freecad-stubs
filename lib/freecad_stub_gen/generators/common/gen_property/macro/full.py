@@ -1,3 +1,4 @@
+from freecad_stub_gen.config import DOCSTRING_DEBUG_NOTES
 from freecad_stub_gen.generators.common.gen_property.macro.getter_type import (
     PropertyMacroGetter,
 )
@@ -23,6 +24,12 @@ class PropertyMacro(PropertyMacroGetter, PropertyMacroSetter):
 
         if self._docs:
             result += self._docs + '\n'
+
+        if DOCSTRING_DEBUG_NOTES:
+            result += (
+                f"\n\nDOCSTRING_DEBUG_NOTES:\n"
+                f"- generated-in: {self.__class__.__qualname__}"
+            )
 
         return result
 

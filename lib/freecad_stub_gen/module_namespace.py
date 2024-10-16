@@ -2,12 +2,17 @@ import logging
 import re
 import xml.etree.ElementTree as ET
 from collections import defaultdict
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from functools import cached_property
+from functools import cached_property, partial
 from pathlib import Path
 
 from freecad_stub_gen.config import SOURCE_DIR
-from freecad_stub_gen.file_functions import genCppIiFiles, genXmlFiles
+from freecad_stub_gen.file_functions import (
+    genCppIiFiles,
+    genXmlFiles,
+    parseXml,
+)
 from freecad_stub_gen.generators.common.context import (
     currentPath,
     currentSource,
@@ -70,25 +75,21 @@ class _ModuleNamespace:
         with isolatedContext():
             for file in genCppIiFiles(sourcePath):
                 initContext(file)
-                # self._addFromExtensions(cppNameToClassEntry)
                 self._addFromPyTypeObject(cppNameToClassEntry)
                 self._addFromInitType(cppNameToClassEntry)
                 self._addFromClassTypeId(cppNameToClassEntry)
 
-            # for file in genIiHFiles(sourcePath):
-            #     initContext(file)
-            #     self._addFromClassDeclaration(file, cppNameToClassEntry)
-
-        # as usual in FreeCAD, there must be at least one exception
-        # actually in runtime this shows __module__ == 'builtins'
-        # TODO maybe: we should generate `__all__` in stubs for importable classes?
+        # TODO @PO: maybe we should generate `__all__`
+        #  in stubs for importable classes?
+        #  or maybe use private module for not importable objects?
         cppNameToClassEntry['PyObjectBase'].add(
             ClassEntry('FreeCAD.PyObjectBase', 'FreeCAD', 'special')
         )
 
         for cppName, pythonName in importableMap.items():
             # it is visible from python, so we should prefer it over `tp_name`
-            mod = getModuleName(pythonName)
+            if (mod := getModuleName(pythonName)) is None:
+                raise ValueError
             cppNameToClassEntry[cppName].add(
                 ClassEntry(pythonName, mod, 'importableMap')
             )
@@ -98,19 +99,13 @@ class _ModuleNamespace:
             list, sorted(cppNameToClassEntrySeq.items())
         )
 
-    # REG_TEMPLATE = re.compile(r'Py::PythonExtension<(?P<klass>\w+)>')
-    #
-    # def _addFromExtensions(self, cppNameToClassEntry: CppNameToClassEntrySet_t):
-    #     for match in self.REG_TEMPLATE.finditer(currentSource.get()):
-    #         self._addClass(match, cppNameToClassEntry, 'PythonExtension')
-
     REG_PY_TYPE = re.compile(r'"(?P<klass>[.\w]+)"\s*,?\s*/\*tp_name\*/')
 
     def _addFromPyTypeObject(self, cppNameToClassEntry: CppNameToClassEntrySet_t):
         for match in self.REG_PY_TYPE.finditer(currentSource.get()):
             self._addClass(match, cppNameToClassEntry, 'tp_name')
 
-    # TODO this is repeated in `FreecadStubGeneratorFromCppClass`
+    # TODO @PO: [P3] this is repeated in `FreecadStubGeneratorFromCppClass`
     REG_INIT_TYPE = re.compile(r'::init_type\([^{;]*{')
     REG_CLASS_NAME = re.compile(r'behaviors\(\)\.name\(\s*"(?P<klass>[\w.]+)"\s*\);')
 
@@ -128,12 +123,6 @@ class _ModuleNamespace:
         for match in self.REG_TYPESYSTEM_SOURCE.finditer(currentSource.get()):
             self._addClass(match, cppNameToClassEntry, 'TYPESYSTEM_SOURCE')
 
-    # REG_CLASS_DECLARATION = re.compile(r'class\s+(?P<klass>\w+)\b')
-    #
-    # def _addFromClassDeclaration(self, hIiFile: Path, cppNameToClassEntry: cppNameToClassEntrySet_t):
-    #     for match in self.REG_CLASS_DECLARATION.finditer(hIiFile.read_text()):
-    #         self._addClass(match, cppNameToClassEntry)
-
     @classmethod
     def _addClass(
         cls,
@@ -146,7 +135,8 @@ class _ModuleNamespace:
         if '.' in klass:
             moduleAndClass = klass
             klass = getClassName(moduleAndClass)
-            mod = getModuleName(moduleAndClass)
+            if (mod := getModuleName(moduleAndClass)) is None:
+                raise TypeError
             cppNameToClassEntry[klass].add(
                 ClassEntry(moduleAndClass, mod, sourceType + ',dot')
             )
@@ -160,7 +150,7 @@ class _ModuleNamespace:
         cppNameToClassEntry[klass].add(ClassEntry(f'{mod}.{klass}', mod, sourceType))
 
     def _parseXml(self, file: Path, cppNameToClassEntry: CppNameToClassEntrySet_t):
-        root = ET.parse(file).getroot()
+        root = parseXml(file).getroot()
         if (exportElem := root.find('PythonExport')) is None:
             raise ValueError
 
@@ -205,18 +195,24 @@ class _ModuleNamespace:
         raise ValueError(msg)
 
     def getPythonNameFromCpp(self, namespace: str, cppName: str, *, deep=0) -> str:
-        classEntries = self.cppNameToClassEntry[cppName]
-        pythonNames = [ce.name for ce in classEntries]
+        return self._getPythonNameFromCpp(namespace, cppName, deep=deep)
+
+    def _getPythonNameFromCppSimple(
+        self, namespace: str, cppName: str, pythonNames: list[str], *, deep: int
+    ) -> str | None:
         match pythonNames:
             case []:
-                match StrWrapper(cppName), deep:
-                    case 'SplitView3DInventorPy', _:
+                match StrWrapper(cppName):
+                    case 'SplitView3DInventorPy':
                         return 'AbstractSplitViewPy'
 
-                    case StrWrapper(end='Wrap' | 'Py'), 0:
+                    case 'StringIDRef':
+                        fixedCppName = 'StringID'
+
+                    case StrWrapper(end='Wrap' | 'Py') if deep == 0:
                         fixedCppName = removeAffix(cppName, suffixes=('Py', 'Wrap'))
 
-                    case _, 0:
+                    case _ if deep == 0:
                         fixedCppName = cppName + 'Py'
 
                     case _:
@@ -229,8 +225,36 @@ class _ModuleNamespace:
                 return onlyOne
 
             case ['FreeCAD.TypeId' | 'FreeCAD.BaseType', *_]:
-                # TODO this is strange - where is it defined, is there aliases?
+                # TODO @PO: [P4] this is strange:
+                #  - where is it defined, is there aliases?
                 return 'FreeCAD.Base.TypeId'
+
+            case _ if cppName == 'DocumentObject' and namespace == 'App':
+                return 'FreeCADGui.DocumentObjectPy'
+
+        return None
+
+    def _filterPythonNames(
+        self, pythonNames: list[str], predicate: Callable[[str], bool]
+    ) -> str | None:
+        fromCurrentNamespace = set()
+        for p in pythonNames:
+            if predicate(p):
+                fromCurrentNamespace.add(p)
+
+        if len(fromCurrentNamespace):
+            return fromCurrentNamespace.pop()
+        return None
+
+    def _getPythonNameFromCpp(self, namespace: str, cppName: str, *, deep=0) -> str:
+        classEntries = self.cppNameToClassEntry[cppName]
+        pythonNames = [ce.name for ce in classEntries]
+
+        pn = self._getPythonNameFromCppSimple(
+            namespace, cppName, pythonNames, deep=deep
+        )
+        if isinstance(pn, str):
+            return pn
 
         # prefer from `importableMap`
         fromImportableMap = set()
@@ -240,45 +264,41 @@ class _ModuleNamespace:
         if len(fromImportableMap) == 1:
             return fromImportableMap.pop()
 
-        # TODO [P5]: fix repeated code here
-
         # try match current namespace
         ns = getCurrentNamespace()
-        currentMod = convertNamespaceToModule(ns)
-        fromCurrentNamespace = set()
-        for p in pythonNames:
-            if p.startswith(currentMod):
-                fromCurrentNamespace.add(p)
-        if len(fromCurrentNamespace):
-            return fromCurrentNamespace.pop()
+        isCurNamespace = partial(self._isStartsWithNamespace, namespace=ns)
+        if pn := self._filterPythonNames(pythonNames, isCurNamespace):
+            return pn
 
         # try based on `Gui` in namespace
-        isGui = isGuiInNamespace()
-        possibleNames = set()
-        for p in pythonNames:
-            if (isGui and 'Gui' in p) or (not isGui and 'Gui' not in p):
-                possibleNames.add(p)
-        if len(possibleNames) == 1:
-            return possibleNames.pop()
+        if pn := self._filterPythonNames(pythonNames, self._isGuiPackage):
+            return pn
 
         # we already should have provided module, so use it
         nsMod = convertNamespaceToModule(namespace)
-        possibleByNamespace = set()
-        for p in pythonNames:
-            if p.startswith(nsMod):
-                possibleByNamespace.add(p)
-        if len(possibleByNamespace) == 1:
-            return possibleByNamespace.pop()
+        isCurModNamespace = partial(self._isStartsWithNamespace, namespace=nsMod)
+        if pn := self._filterPythonNames(pythonNames, isCurModNamespace):
+            return pn
 
-        # TODO P3: we should choose MeshObject over Mesh (MeshPy),
+        # TODO @PO: [P3] we should choose MeshObject over Mesh (MeshPy),
         #  because this is declared in PyTypeObject
         cpNameWithoutPy = cppName.removesuffix('Py')
         if any(cpNameWithoutPy == getClassName(pnOk := pn) for pn in pythonNames):
             return pnOk  # dirty hack for MeshPy
 
+        currentMod = convertNamespaceToModule(ns)
         msg = f"Cannot choose class from `{pythonNames}` using module: `{currentMod}`"
-        ns = getCurrentNamespace()
         raise ValueError(msg)
+
+    @classmethod
+    def _isStartsWithNamespace(cls, packageName: str, namespace: str):
+        return packageName.startswith(namespace)
+
+    @classmethod
+    def _isGuiPackage(cls, packageName: str) -> bool:
+        if isGuiInNamespace():
+            return 'Gui' in packageName
+        return 'Gui' not in packageName
 
     def getFileForStem(self, stem: str, namespace: str = '') -> Path:
         match stem:  # if there is xml file, use this `match`

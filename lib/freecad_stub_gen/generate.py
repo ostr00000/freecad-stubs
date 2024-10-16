@@ -3,7 +3,7 @@ import shutil
 import typing
 from pathlib import Path
 
-from freecad_stub_gen.config import SOURCE_DIR, TARGET_DIR
+from freecad_stub_gen.config import DOCSTRING_DEBUG_NOTES, SOURCE_DIR, TARGET_DIR
 from freecad_stub_gen.file_functions import genCppFiles, genXmlFiles
 from freecad_stub_gen.FreeCADTemplates import additionalPath
 from freecad_stub_gen.generators.common.gen_base import BaseGenerator
@@ -155,6 +155,8 @@ def improve_FreeCADGui(sourcesRoot: Module, sourcePath: Path):
 
 def improve_FreeCADGui_PySideUic(sourcesRoot: Module):
     pySideUic = sourcesRoot['FreeCADGui._PySideUic']
+    if DOCSTRING_DEBUG_NOTES:
+        return
     pySideUic.replace(
         'def loadUiType() -> tuple[typing.Any, typing.Any] | None:',
         """
