@@ -58,11 +58,11 @@ class QtSignal(BlockItem):
             if len(protArgs) > 1:
                 protArgs.append('/')
 
-            pn = f'__{self.cppBlock.cppClass.name}_{self.name}_{argNum}'
-            protocolNames.append(pn)
+            on = f'__{self.cppBlock.cppClass.name}_{self.name}_{argNum}'
+            protocolNames.append(on)
 
             requiredImports.add(
-                f'class {pn}(typing.Protocol):\n'
+                f'class {on}(typing.Protocol):\n'
                 f'    def __call__({", ".join(protArgs)}): ...'
             )
 

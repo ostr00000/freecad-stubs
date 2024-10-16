@@ -250,11 +250,11 @@ class _ModuleNamespace:
         classEntries = self.cppNameToClassEntry[cppName]
         pythonNames = [ce.name for ce in classEntries]
 
-        pn = self._getPythonNameFromCppSimple(
+        pyName = self._getPythonNameFromCppSimple(
             namespace, cppName, pythonNames, deep=deep
         )
-        if isinstance(pn, str):
-            return pn
+        if isinstance(pyName, str):
+            return pyName
 
         # prefer from `importableMap`
         fromImportableMap = set()
@@ -267,24 +267,24 @@ class _ModuleNamespace:
         # try match current namespace
         ns = getCurrentNamespace()
         isCurNamespace = partial(self._isStartsWithNamespace, namespace=ns)
-        if pn := self._filterPythonNames(pythonNames, isCurNamespace):
-            return pn
+        if pyName := self._filterPythonNames(pythonNames, isCurNamespace):
+            return pyName
 
         # try based on `Gui` in namespace
-        if pn := self._filterPythonNames(pythonNames, self._isGuiPackage):
-            return pn
+        if pyName := self._filterPythonNames(pythonNames, self._isGuiPackage):
+            return pyName
 
         # we already should have provided module, so use it
         nsMod = convertNamespaceToModule(namespace)
         isCurModNamespace = partial(self._isStartsWithNamespace, namespace=nsMod)
-        if pn := self._filterPythonNames(pythonNames, isCurModNamespace):
-            return pn
+        if pyName := self._filterPythonNames(pythonNames, isCurModNamespace):
+            return pyName
 
         # TODO @PO: [P3] we should choose MeshObject over Mesh (MeshPy),
         #  because this is declared in PyTypeObject
         cpNameWithoutPy = cppName.removesuffix('Py')
-        if any(cpNameWithoutPy == getClassName(pnOk := pn) for pn in pythonNames):
-            return pnOk  # dirty hack for MeshPy
+        if any(cpNameWithoutPy == getClassName(onOk := on) for on in pythonNames):
+            return onOk  # dirty hack for MeshPy
 
         currentMod = convertNamespaceToModule(ns)
         msg = f"Cannot choose class from `{pythonNames}` using module: `{currentMod}`"

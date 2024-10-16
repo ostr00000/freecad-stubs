@@ -20,7 +20,7 @@ seen = set[str]()
 class PropertyMacroSetter(PropertyMacroBase):
     # pylint: disable=too-many-statements
     @property
-    def pythonSetType(self) -> str:  # noqa: PLR0915
+    def pythonSetType(self) -> str:
         if not (typeId := self.typeId):
             return ''
 
@@ -170,7 +170,8 @@ class PropertyMacroSetter(PropertyMacroBase):
 
             case "App::PropertyFileIncluded":
                 requiredTypes = [self.TYPE_STR_IO]
-                innerType = '{t} | tuple[{t}, {t}]'.format(t=self.TYPE_STR_IO.name)
+                t = self.TYPE_STR_IO.name
+                innerType = f'{t} | tuple[{t}, {t}]'
 
             case "App::PropertyExpressionEngine":
                 innerType = ''  # read only

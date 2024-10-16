@@ -9,11 +9,13 @@ LAST_HASH_PATH = FREECAD_DIR / 'freecad_stub_gen.last_hash'
 @lru_cache(maxsize=1)
 def getCurrentGitHash() -> str:
     args = ['git', 'rev-parse', 'HEAD']
-    return check_output(
-        args,  # noqa: S603 # Please trust me - this is call with `LiteralStr`!
+    output = check_output(  # noqa: S603
+        # Please trust me - this is call with `LiteralStr`!
+        args,
         cwd=FREECAD_DIR,
         text=True,
-    ).strip()
+    )
+    return output.strip()
 
 
 def getOldGitHash() -> str:

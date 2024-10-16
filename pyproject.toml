@@ -122,7 +122,6 @@ target-version = "py312"
 unsafe-fixes = true
 
 [tool.ruff.lint]
-ignore-init-module-imports = true
 select = [
     'F', # Pyflakes
     'E', # pycodestyle: Error
@@ -135,7 +134,6 @@ select = [
     'YTT', # flake8-2020
     # 'ANN', # flake8-annotations # SKIP: annotations are optional
     'ASYNC', # flake8-async
-    'TRIO', # flake8-trio
     'S', # flake8-bandit
     'BLE', # flake8-blind-except
     'FBT', # flake8-boolean-trap
@@ -198,10 +196,16 @@ ignore = [
     'S314', # Parse untrusted XML # SKIP: we trust these XMLs
     'G004', # Checks for uses of f-strings to format logging messages. # SKIP: there is little performance gain and the code seems to be prettier
     'COM812', # Checks for the absence of trailing commas. # SKIP: `black` adds it when needed
+    'C901', # complex-structure # SKIP match expression also counts, TODO @PO: temporary disabled
+    'PLR0912', # too-many-branches # SKIP match expression also counts, TODO @PO: temporary disabled
+    'PLR0915', # too-many-statements # SKIP match expression also counts, TODO @PO: temporary disabled
 ]
 
 [tool.ruff.lint.isort]
 known-third-party = ["FreeCAD"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 15
 
 [tool.ruff.lint.per-file-ignores] # glob **
 '**/__init__.py' = [
@@ -222,6 +226,7 @@ convention = "pep257"
 
 [tool.ruff.lint.pylint]
 max-args = 8
+max-branches = 15
 
 [tool.setuptools]
 package-dir = {'' = 'freecad_stubs'}
