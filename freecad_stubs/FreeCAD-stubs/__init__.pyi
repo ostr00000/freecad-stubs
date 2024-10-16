@@ -5,6 +5,7 @@ from FreeCAD import _Console
 from FreeCAD import _Qt
 from FreeCAD import _Units
 from FreeCAD.Base import *
+import App
 import FreeCAD
 import FreeCADGui
 import FreeCADTemplates.templates
@@ -769,7 +770,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         Possible exceptions: (RuntimeError).
         """
 
-    def getPathsByOutList(self, o: FreeCAD.DocumentObject, /) -> list[list]:
+    def getPathsByOutList(self, o: FreeCAD.DocumentObject, /) -> list[list[typing.Any]]:
         """
         Get all paths from this object to another object following the OutList.
         Possible exceptions: (RuntimeError).
@@ -816,7 +817,7 @@ class DocumentObject(FreeCAD.ExtensionContainer):
         Possible exceptions: (ValueError, TypeError).
         """
 
-    def getSubObjectList(self, subname: str, /) -> list:
+    def getSubObjectList(self, subname: str, /) -> list[typing.Any]:
         """
         getSubObjectList(subname)
 
@@ -908,7 +909,7 @@ class LinkBaseExtension(FreeCAD.DocumentObjectExtension):
     """
 
     @property
-    def LinkedChildren(self) -> list:
+    def LinkedChildren(self) -> list[typing.Any]:
         """Return a flattened (in case grouped by plain group) list of linked children"""
 
     @property
@@ -1158,16 +1159,16 @@ class GroupExtension(FreeCAD.DocumentObjectExtension):
     @Group.setter
     def Group(self, value: list[DocumentObject]): ...
 
-    def addObject(self, object: FreeCAD.DocumentObject, /) -> list[FreeCAD.DocumentObject]:
+    def addObject(self, object: FreeCAD.DocumentObject, /) -> list[FreeCADGui.DocumentObjectPy]:
         """
         Add an object to the group. Returns all objects that have been added.
         Possible exceptions: (FreeCAD.Base.FreeCADError).
         """
 
-    def addObjects(self, object, /) -> list[FreeCAD.DocumentObject]:
+    def addObjects(self, object, /) -> list[FreeCADGui.DocumentObjectPy]:
         """Adds multiple objects to the group. Expects a list and returns all objects that have been added."""
 
-    def getObject(self, pcName: str, /) -> FreeCAD.DocumentObject:
+    def getObject(self, pcName: str, /) -> FreeCADGui.DocumentObjectPy:
         """Return the object with the given name"""
 
     def hasObject(self, object: FreeCAD.DocumentObject, recursivePy: bool = False, /) -> bool:
@@ -1180,22 +1181,22 @@ class GroupExtension(FreeCAD.DocumentObjectExtension):
         Possible exceptions: (FreeCAD.Base.FreeCADError).
         """
 
-    def newObject(self, sType: str, sName: str = None, /) -> FreeCAD.DocumentObject:
+    def newObject(self, sType: str, sName: str = None, /) -> FreeCADGui.DocumentObjectPy:
         """Create and add an object with given type and name to the group"""
 
-    def removeObject(self, object: FreeCAD.DocumentObject, /) -> list[FreeCAD.DocumentObject]:
+    def removeObject(self, object: FreeCAD.DocumentObject, /) -> list[FreeCADGui.DocumentObjectPy]:
         """
         Remove an object from the group and returns all objects that have been removed.
         Possible exceptions: (FreeCAD.Base.FreeCADError).
         """
 
-    def removeObjects(self, object, /) -> list[FreeCAD.DocumentObject]:
+    def removeObjects(self, object, /) -> list[FreeCADGui.DocumentObjectPy]:
         """Remove multiple objects from the group. Expects a list and returns all objects that have been removed."""
 
     def removeObjectsFromDocument(self):
         """Remove all child objects from the group and document"""
 
-    def setObjects(self, object, /) -> list[FreeCAD.DocumentObject]:
+    def setObjects(self, object, /) -> list[FreeCADGui.DocumentObjectPy]:
         """Sets the objects of the group. Expects a list and returns all objects that are now in the group."""
 
 
@@ -1289,7 +1290,7 @@ class Metadata(FreeCAD.PyObjectBase):
         """
 
     @property
-    def Conflict(self) -> list:
+    def Conflict(self) -> list[typing.Any]:
         """List of conflicts, format identical to dependencies."""
 
     @property
@@ -1305,7 +1306,7 @@ class Metadata(FreeCAD.PyObjectBase):
         """String representing the date of this item in YYYY-MM-DD format (format not currently programmatically enforced)"""
 
     @property
-    def Depend(self) -> list:
+    def Depend(self) -> list[typing.Any]:
         """
         List of dependencies, as objects with the following attributes:
         * package
@@ -1379,7 +1380,7 @@ class Metadata(FreeCAD.PyObjectBase):
         """
 
     @property
-    def Replace(self) -> list:
+    def Replace(self) -> list[typing.Any]:
         """
         List of things this item is considered by its author to replace. The format is
         identical to dependencies.
@@ -1684,10 +1685,10 @@ class StringHasher(FreeCAD.BaseClass):
         """Data length exceed this threshold will be hashed before storing"""
 
     @typing.overload
-    def getID(self, id: int, index: int = 0, /): ...
+    def getID(self, id: int, index: int = 0, /) -> typing.Any | FreeCAD.StringID: ...
 
     @typing.overload
-    def getID(self, value: str, base64: bool = False, /):
+    def getID(self, value: str, base64: bool = False, /) -> typing.Any | FreeCAD.StringID:
         """
         getID(txt|id, base64=False) -> StringID
 
@@ -1750,7 +1751,7 @@ class Document(FreeCAD.PropertyContainer):
     """
 
     @property
-    def ActiveObject(self) -> FreeCAD.DocumentObject | None:
+    def ActiveObject(self) -> FreeCADGui.DocumentObjectPy | None:
         """The last created object in this document"""
 
     @property
@@ -1766,7 +1767,7 @@ class Document(FreeCAD.PropertyContainer):
         """Indicate if the document is importing. Note the document will also report Restoring while importing"""
 
     @property
-    def InList(self) -> list:
+    def InList(self) -> list[typing.Any]:
         """A list of all documents that link to this document."""
 
     @property
@@ -1774,7 +1775,7 @@ class Document(FreeCAD.PropertyContainer):
         """The internal name of the document"""
 
     @property
-    def Objects(self) -> list:
+    def Objects(self) -> list[typing.Any]:
         """The list of objects in this document"""
 
     @property
@@ -1782,7 +1783,7 @@ class Document(FreeCAD.PropertyContainer):
         """Contains the old label before change"""
 
     @property
-    def OutList(self) -> list:
+    def OutList(self) -> list[typing.Any]:
         """A list of all documents that this document links to."""
 
     @property
@@ -1810,7 +1811,7 @@ class Document(FreeCAD.PropertyContainer):
         """Indicate if the document is restoring"""
 
     @property
-    def RootObjects(self) -> list:
+    def RootObjects(self) -> list[typing.Any]:
         """The list of root objects in this document"""
 
     @property
@@ -1818,7 +1819,7 @@ class Document(FreeCAD.PropertyContainer):
         """Check if this is a temporary document"""
 
     @property
-    def TopologicalSortedObjects(self) -> list:
+    def TopologicalSortedObjects(self) -> list[typing.Any]:
         """The list of objects in this document in topological sorted order"""
 
     @property
@@ -2026,7 +2027,7 @@ class Document(FreeCAD.PropertyContainer):
     def abortTransaction(self):
         """Abort an Undo/Redo transaction (rollback)"""
 
-    def addObject(self, type: str, name: str = None, objProxy=None, viewProxy=None, attach: bool = False, viewType: str = None) -> FreeCAD.DocumentObject:
+    def addObject(self, type: str, name: str = None, objProxy=None, viewProxy=None, attach: bool = False, viewType: str = None) -> FreeCADGui.DocumentObjectPy:
         """
         addObject(type, name=None, objProxy=None, viewProxy=None, attach=False, viewType=None)
 
@@ -2071,7 +2072,7 @@ class Document(FreeCAD.PropertyContainer):
     def exportGraphviz(self, fn: str = None, /) -> str:
         """Export the dependencies of the objects as graph"""
 
-    def findObjects(self, Type: str = 'App::DocumentObject', Name: str = None, Label: str = None) -> list[FreeCAD.DocumentObject]:
+    def findObjects(self, Type: str = 'App::DocumentObject', Name: str = None, Label: str = None) -> list[FreeCADGui.DocumentObjectPy]:
         """
         findObjects([Type=string], [Name=string], [Label=string]) -> list
         Return a list of objects that match the specified type, name or label.
@@ -2079,7 +2080,7 @@ class Document(FreeCAD.PropertyContainer):
         Possible exceptions: (RuntimeError).
         """
 
-    def getDependentDocuments(self, sort: bool = True, /) -> list:
+    def getDependentDocuments(self, sort: bool = True, /) -> list[typing.Any]:
         """
         getDependentDocuments(sort=True)
 
@@ -2103,16 +2104,16 @@ class Document(FreeCAD.PropertyContainer):
         """
 
     @typing.overload
-    def getObject(self, name: str, /) -> FreeCAD.DocumentObject: ...
+    def getObject(self, name: str, /) -> FreeCADGui.DocumentObjectPy: ...
 
     @typing.overload
-    def getObject(self, id: int, /) -> FreeCAD.DocumentObject:
+    def getObject(self, id: int, /) -> FreeCADGui.DocumentObjectPy:
         """
         Return the object with the given name
         Possible exceptions: (TypeError).
         """
 
-    def getObjectsByLabel(self, sName: str, /) -> list:
+    def getObjectsByLabel(self, sName: str, /) -> list[typing.Any]:
         """
         Return the objects with the given label name.
         NOTE: It's possible that several objects have the same label name.
@@ -2729,7 +2730,7 @@ def setActiveDocument(pstr: str, /):
     """
 
 
-def getDocument(pstr: str, /) -> FreeCADGui.Document:
+def getDocument(pstr: str, /) -> FreeCAD.Document:
     """
     getDocument(string) -> object
 

@@ -2,9 +2,9 @@ import sys
 import typing
 
 import FreeCAD
+import Part
 import Part as PartModule
-import Part.Geom2d
-import PartDesign
+import PartModule.Geom2d
 
 
 class ReturnGetModeInfoDict(typing.TypedDict):
@@ -728,7 +728,7 @@ class OffsetCurve(PartModule.Curve):
         """Possible exceptions: (TypeError, Part.OCCError)."""
 
     @property
-    def BasisCurve(self) -> object:
+    def BasisCurve(self) -> PartModule.Curve:
         """Sets or gets the basic curve."""
 
     @property
@@ -840,7 +840,7 @@ class OffsetSurface(PartModule.GeometrySurface):
         """Possible exceptions: (TypeError, Part.OCCError)."""
 
     @property
-    def BasisSurface(self) -> object:
+    def BasisSurface(self) -> PartModule.GeometrySurface:
         """
         Sets or gets the basic surface.
         Possible exceptions: (TypeError).
@@ -1079,7 +1079,7 @@ class Face(PartModule.Shape):
         Possible exceptions: (Part.OCCError).
         """
 
-    def curveOnSurface(self, e: PartModule.Edge, /) -> tuple[Part.Geom2d.Curve2d, float, float]:
+    def curveOnSurface(self, e: PartModule.Edge, /) -> tuple[PartModule.Geom2d.Curve2d, float, float]:
         """
         Returns the curve associated to the edge in the parametric space of the face.
         curveOnSurface(Edge) -> (curve, min, max) or None
@@ -3022,7 +3022,7 @@ class BSplineCurve(PartModule.BoundedCurve):
         Possible exceptions: (Part.OCCError).
         """
 
-    def toBiArcs(self, tolerance: float, /) -> list:
+    def toBiArcs(self, tolerance: float, /) -> list[typing.Any]:
         """
         Build a list of arcs and lines to approximate the B-spline.
                             toBiArcs(tolerance) -> list.
@@ -4472,7 +4472,7 @@ class RectangularTrimmedSurface(PartModule.GeometrySurface):
         """
 
     @property
-    def BasisSurface(self) -> object:
+    def BasisSurface(self) -> PartModule.GeometrySurface:
         """Possible exceptions: (TypeError)."""
 
     def setTrim(self, u1: float, u2: float, v1: float, v2: float, /):
@@ -4610,7 +4610,7 @@ class GeometrySurface(PartModule.Geometry):
         Possible exceptions: (RuntimeError, TypeError).
         """
 
-    def intersectSS(self, p: PartModule.GeometrySurface, prec: float = None, /) -> list:
+    def intersectSS(self, p: PartModule.GeometrySurface, prec: float = None, /) -> list[typing.Any]:
         """
         Returns all intersection curves of this surface and the given surface.
         The required arguments are:
@@ -4910,7 +4910,7 @@ class Edge(PartModule.Shape):
         Possible exceptions: (Part.OCCError).
         """
 
-    def curveOnSurface(self, idx: int, /) -> tuple[Part.Geom2d.Curve2d, PartModule.GeomSurface, FreeCAD.Placement, float, float]:
+    def curveOnSurface(self, idx: int, /) -> tuple[PartModule.Geom2d.Curve2d, PartModule.GeometrySurface, FreeCAD.Placement, float, float]:
         """
         Returns the 2D curve, the surface, the placement and the parameter range of index idx.
         curveOnSurface(idx) -> None or tuple
@@ -5954,7 +5954,7 @@ class Curve(PartModule.Geometry):
         Possible exceptions: (RuntimeError).
         """
 
-    def intersectCS(self, p: PartModule.GeometrySurface, prec: float = None, /) -> tuple[list[PartModule.Point], list]:
+    def intersectCS(self, p: PartModule.GeometrySurface, prec: float = None, /) -> tuple[list[PartModule.Point], list[typing.Any]]:
         """
         Returns all intersection points and curve segments between the curve and the surface.
         Possible exceptions: (RuntimeError, TypeError).
@@ -7112,7 +7112,7 @@ class HLRToShapePy(FreeCAD.PyObjectBase):
     class.
     """
 
-    def __init__(self, algo: PartModule.HLRBRep_Algo, /):
+    def __init__(self, algo: PartModule.Algo, /):
         """
         HLRToShape(algo: HLRBRep_Algo) -> HLRBRep_HLRToShape
 
@@ -7441,7 +7441,7 @@ class PolyHLRToShapePy(FreeCAD.PyObjectBase):
     new computation of the algorithm, but only reads its internal results.
     """
 
-    def __init__(self, algo: PartModule.HLRBRep_PolyAlgo = None, /):
+    def __init__(self, algo: PartModule.PolyAlgo = None, /):
         """
         PolyHLRToShape(algo: HLRBRep_PolyAlgo) -> HLRBRep_PolyHLRToShape
 
@@ -7531,7 +7531,7 @@ class PolyHLRToShapePy(FreeCAD.PyObjectBase):
     def show(self):
         """show()"""
 
-    def update(self, algo: PartModule.HLRBRep_PolyAlgo, /):
+    def update(self, algo: PartModule.PolyAlgo, /):
         """update(algo: HLRBRep_PolyAlgo)"""
 
     def vCompound(self, shape: PartModule.Shape = None, /) -> PartModule.Shape:
@@ -7593,7 +7593,7 @@ def read(Name: str, /) -> PartModule.Shape:
     """
 
 
-def show(pcObj: PartModule.Shape, name: str = 'Shape', /) -> PartDesign.Feature:
+def show(pcObj: PartModule.Shape, name: str = 'Shape', /) -> PartModule.Feature:
     """
     show(shape,[string]) -- Add the shape to the active document or create one if no document exists.
     Possible exceptions: (Exception).
@@ -7621,7 +7621,7 @@ def makeShell(obj, /) -> PartModule.Shell:
     """
 
 
-def makeFace(pcPyShapeOrList, className: str, /) -> PartModule.Shape:
+def makeFace(pcPyShapeOrList, className: str, /) -> PartModule.TopoShape:
     """
     makeFace(list_of_shapes_or_compound, maker_class_name) -- Create a face (faces) using facemaker class.
     maker_class_name is a string like 'Part::FaceMakerSimple'.
@@ -7888,7 +7888,7 @@ def setStaticValue(name: str, string_int_float, /) -> None:
     """
 
 
-def cast_to_shape(object: PartModule.Shape, /) -> PartModule.Shape:
+def cast_to_shape(object: PartModule.Shape, /) -> PartModule.TopoShape:
     """
     cast_to_shape(shape) -- Cast to the actual shape type
     Possible exceptions: (Exception).

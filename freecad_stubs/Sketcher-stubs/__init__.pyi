@@ -2,6 +2,7 @@ import io
 import typing
 
 import FreeCAD
+import Part
 import Part as PartModule
 import Sketcher
 

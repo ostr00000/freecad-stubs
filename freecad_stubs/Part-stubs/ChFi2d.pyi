@@ -45,7 +45,7 @@ class FilletAPI(FreeCAD.PyObjectBase):
         Possible exceptions: (FreeCAD.Base.CADKernelError).
         """
 
-    def result(self, pnt: FreeCAD.Vector, solution: int = -1, /) -> tuple[typing.Any, typing.Any, typing.Any]:
+    def result(self, pnt: FreeCAD.Vector, solution: int = -1, /) -> tuple[PartModule.TopoShape, PartModule.TopoShape, PartModule.TopoShape]:
         """
         result(point, solution=-1)
 
@@ -95,7 +95,7 @@ class FilletAlgo(FreeCAD.PyObjectBase):
         Possible exceptions: (FreeCAD.Base.CADKernelError).
         """
 
-    def result(self, pnt: FreeCAD.Vector, solution: int = -1, /) -> tuple[typing.Any, typing.Any, typing.Any]:
+    def result(self, pnt: FreeCAD.Vector, solution: int = -1, /) -> tuple[PartModule.TopoShape, PartModule.TopoShape, PartModule.TopoShape]:
         """
         result(point, solution=-1)
 
@@ -143,7 +143,7 @@ class AnaFilletAlgo(FreeCAD.PyObjectBase):
         Possible exceptions: (FreeCAD.Base.CADKernelError).
         """
 
-    def result(self) -> tuple[typing.Any, typing.Any, typing.Any]:
+    def result(self) -> tuple[PartModule.TopoShape, PartModule.TopoShape, PartModule.TopoShape]:
         """
         result()
 
@@ -188,7 +188,7 @@ class ChamferAPI(FreeCAD.PyObjectBase):
         Possible exceptions: (FreeCAD.Base.CADKernelError).
         """
 
-    def result(self, length1: float, length2: float, /) -> tuple[typing.Any, typing.Any, typing.Any]:
+    def result(self, length1: float, length2: float, /) -> tuple[PartModule.TopoShape, PartModule.TopoShape, PartModule.TopoShape]:
         """
         result(point, solution=-1)
 

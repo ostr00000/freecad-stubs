@@ -2,6 +2,7 @@ import sys
 import typing
 
 import FreeCAD
+import Path as PathModule
 import Path.Voronoi
 
 
@@ -16,7 +17,7 @@ class Edge(FreeCAD.BaseClass):
         """
 
     @property
-    def Cell(self) -> Path.Voronoi.Cell:
+    def Cell(self) -> PathModule.Cell:
         """cell the edge belongs to"""
 
     @property
@@ -51,7 +52,7 @@ class Edge(FreeCAD.BaseClass):
         """Twin edge"""
 
     @property
-    def Vertices(self) -> list[Path.Voronoi.Vertex | None]:
+    def Vertices(self) -> list[PathModule.Vertex | None]:
         """Begin and End voronoi vertex"""
 
     def getDistances(self) -> list:
@@ -118,7 +119,7 @@ class Cell(FreeCAD.BaseClass):
     def Color(self, value: int): ...
 
     @property
-    def IncidentEdge(self) -> Path.Voronoi.Edge:
+    def IncidentEdge(self) -> PathModule.Edge:
         """Incident edge of the cell - if exists"""
 
     @property
@@ -176,15 +177,15 @@ class Diagram(FreeCAD.BaseClass):
         """
 
     @property
-    def Cells(self) -> list[Path.Voronoi.Cell]:
+    def Cells(self) -> list[PathModule.Cell]:
         """List of all cells of the voronoi diagram"""
 
     @property
-    def Edges(self) -> list[Path.Voronoi.Edge]:
+    def Edges(self) -> list[PathModule.Edge]:
         """List of all edges of the voronoi diagram"""
 
     @property
-    def Vertices(self) -> list[Path.Voronoi.Vertex]:
+    def Vertices(self) -> list[PathModule.Vertex]:
         """List of all vertices of the voronoi diagram"""
 
     def addPoint(self, obj, /) -> None:
@@ -284,7 +285,7 @@ class Vertex(FreeCAD.BaseClass):
     def Color(self, value: int): ...
 
     @property
-    def IncidentEdge(self) -> Path.Voronoi.Edge:
+    def IncidentEdge(self) -> PathModule.Edge:
         """Y position"""
 
     @property

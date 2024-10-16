@@ -1,7 +1,6 @@
 import FreeCAD
 import Part as PartModule
-import Part.Geom2d
-import Part.GeomPlate
+import PartModule.Geom2d
 
 
 # BuildPlateSurfacePy.xml
@@ -38,13 +37,13 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError, RuntimeError).
         """
 
-    def curveConstraint(self, index: int, /) -> Part.GeomPlate.CurveConstraintPy:
+    def curveConstraint(self, index: int, /) -> PartModule.CurveConstraint:
         """
         Returns the curve constraint of order
         Possible exceptions: (RuntimeError).
         """
 
-    def curves2d(self) -> list[Part.Geom2d.Curve2d]:
+    def curves2d(self) -> list[PartModule.Geom2d.Curve2d]:
         """
         Extracts the array of curves on the plate surface which
                 correspond to the curve constraints set in add()
@@ -88,7 +87,7 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def pointConstraint(self, index: int, /) -> Part.GeomPlate.PointConstraintPy:
+    def pointConstraint(self, index: int, /) -> PartModule.PointConstraint:
         """
         Returns the point constraint of order
         Possible exceptions: (RuntimeError).
@@ -103,13 +102,13 @@ class BuildPlateSurfacePy(FreeCAD.PyObjectBase):
     def setNbBounds(self, count: int, /):
         """Possible exceptions: (RuntimeError)."""
 
-    def surfInit(self):
+    def surfInit(self) -> PartModule.GeometrySurface:
         """
         Returns the initial surface
         Possible exceptions: (RuntimeError).
         """
 
-    def surface(self):
+    def surface(self) -> PartModule.GeometrySurface:
         """
         Returns the plate surface
         Possible exceptions: (RuntimeError).
@@ -189,7 +188,7 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def curve2dOnSurf(self) -> Part.Geom2d.Curve2d:
+    def curve2dOnSurf(self) -> PartModule.Geom2d.Curve2d:
         """
         Returns a 2d curve associated the surface resulting of the constraints
         Possible exceptions: (RuntimeError).
@@ -214,7 +213,7 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def setCurve2dOnSurf(self, c: Part.Geom2d.Curve2d, /):
+    def setCurve2dOnSurf(self, c: PartModule.Curve2d, /):
         """
         loads a 2d curve associated the surface resulting of the constraints
 
@@ -264,7 +263,7 @@ class CurveConstraintPy(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def setProjectedCurve(self, c: Part.Geom2d.Curve2d, tolU: float, tolV: float, /):
+    def setProjectedCurve(self, c: PartModule.Curve2d, tolU: float, tolV: float, /):
         """
         loads a 2d curve  resulting from the normal projection of
          the curve on the initial surface

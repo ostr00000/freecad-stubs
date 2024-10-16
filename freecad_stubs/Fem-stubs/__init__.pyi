@@ -2,6 +2,7 @@ import typing
 
 import Fem
 import FreeCAD
+import FreeCADGui
 import Part as PartModule
 
 LinkList_t: typing.TypeAlias = None | FreeCAD.DocumentObject
@@ -382,7 +383,7 @@ class FemPostPipeline(FreeCAD.GeoFeature):
     @Mode.setter
     def Mode(self, value: typing.Literal['Serial', 'Parallel', 'Custom']): ...
 
-    def getLastPostObject(self) -> FreeCAD.DocumentObject:
+    def getLastPostObject(self) -> FreeCADGui.DocumentObjectPy:
         """Get the last post-processing object"""
 
     def holdsPostObject(self, py: FreeCAD.DocumentObject, /) -> bool:

@@ -3,10 +3,11 @@ import typing
 import FreeCAD
 import Part as PartModule
 import Part.Geom2d
+import PartModule.Geom2d
 
 
 # Curve2dPy.xml
-class Curve2d(Part.Geom2d.Geometry2d):
+class Curve2d(PartModule.Geometry2d):
     """The abstract class Geom2dCurve is the root class of all curve objects."""
 
     @property
@@ -29,7 +30,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
     def Periodic(self) -> bool:
         """Returns true if the curve is periodic."""
 
-    def approximateBSpline(self, tolerance: float, maxSegment: int, maxDegree: int, order: str = 'C2', /) -> Part.Geom2d.BSplineCurve2d:
+    def approximateBSpline(self, tolerance: float, maxSegment: int, maxDegree: int, order: str = 'C2', /) -> PartModule.BSplineCurve2d:
         """
         Approximates a curve of any type to a B-Spline curve
                             approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -> B-Spline curve
@@ -118,7 +119,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def intersectCC(self, p: Part.Geom2d.Curve2d, prec: float = None, /) -> list | list[FreeCAD.Vector2d]:
+    def intersectCC(self, p: PartModule.Curve2d, prec: float = None, /) -> list | list[FreeCAD.Vector2d]:
         """
         Returns all intersection points between this curve and the given curve.
         Possible exceptions: (RuntimeError, TypeError).
@@ -163,7 +164,7 @@ class Curve2d(Part.Geom2d.Geometry2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def toBSpline(self, u: float = None, v: float = None, /) -> Part.Geom2d.BSplineCurve2d:
+    def toBSpline(self, u: float = None, v: float = None, /) -> PartModule.BSplineCurve2d:
         """
         Converts a curve of any type (only part from First to Last)
                             toBSpline([Float=First, Float=Last]) -> B-Spline curve
@@ -200,17 +201,17 @@ class Curve2d(Part.Geom2d.Geometry2d):
 
 
 # ArcOfEllipse2dPy.xml
-class ArcOfEllipse2d(Part.Geom2d.ArcOfConic2d):
+class ArcOfEllipse2d(PartModule.ArcOfConic2d):
     """Describes a portion of an ellipse"""
 
-    def __init__(self, o: Part.Geom2d.Ellipse2d, u1: float, u2: float, sense: bool = True, /):
+    def __init__(self, o: PartModule.Ellipse2d, u1: float, u2: float, sense: bool = True, /):
         """
         Describes a portion of an ellipse
         Possible exceptions: (Part.OCCError, TypeError).
         """
 
     @property
-    def Ellipse(self) -> Part.Geom2d.Ellipse2d:
+    def Ellipse(self) -> PartModule.Ellipse2d:
         """The internal ellipse representation"""
 
     @property
@@ -229,7 +230,7 @@ class ArcOfEllipse2d(Part.Geom2d.ArcOfConic2d):
 
 
 # ArcOfConic2dPy.xml
-class ArcOfConic2d(Part.Geom2d.Curve2d):
+class ArcOfConic2d(PartModule.Curve2d):
     """Describes an abstract arc of conic in 2d space"""
 
     @property
@@ -265,7 +266,7 @@ class ArcOfConic2d(Part.Geom2d.Curve2d):
 
 
 # Conic2dPy.xml
-class Conic2d(Part.Geom2d.Curve2d):
+class Conic2d(PartModule.Curve2d):
     """Describes an abstract conic in 2d space"""
 
     @property
@@ -348,7 +349,7 @@ class Geometry2d(FreeCAD.PyObjectBase):
 
 
 # Circle2dPy.xml
-class Circle2d(Part.Geom2d.Conic2d):
+class Circle2d(PartModule.Conic2d):
     """
     Describes a circle in 3D space
     To create a circle there are several ways:
@@ -369,13 +370,13 @@ class Circle2d(Part.Geom2d.Conic2d):
     """
 
     @typing.overload
-    def __init__(self, Circle: Part.Geom2d.Circle2d, Distance: float): ...
+    def __init__(self, Circle: PartModule.Circle2d, Distance: float): ...
 
     @typing.overload
     def __init__(self, Center: FreeCAD.Vector2d, Radius: float): ...
 
     @typing.overload
-    def __init__(self, Circle: Part.Geom2d.Circle2d): ...
+    def __init__(self, Circle: PartModule.Circle2d): ...
 
     @typing.overload
     def __init__(self, Point1: FreeCAD.Vector2d, Point2: FreeCAD.Vector2d, Point3: FreeCAD.Vector2d): ...
@@ -416,10 +417,10 @@ class Circle2d(Part.Geom2d.Conic2d):
 
 
 # ArcOfParabola2dPy.xml
-class ArcOfParabola2d(Part.Geom2d.ArcOfConic2d):
+class ArcOfParabola2d(PartModule.ArcOfConic2d):
     """Describes a portion of a parabola"""
 
-    def __init__(self, o: Part.Geom2d.Parabola2d, u1: float, u2: float, sense: bool = True, /):
+    def __init__(self, o: PartModule.Parabola2d, u1: float, u2: float, sense: bool = True, /):
         """
         Describes a portion of a parabola
         Possible exceptions: (Part.OCCError, TypeError).
@@ -433,12 +434,12 @@ class ArcOfParabola2d(Part.Geom2d.ArcOfConic2d):
     def Focal(self, value: float): ...
 
     @property
-    def Parabola(self) -> Part.Geom2d.Parabola2d:
+    def Parabola(self) -> PartModule.Parabola2d:
         """The internal parabola representation"""
 
 
 # Line2dSegmentPy.xml
-class Line2dSegment(Part.Geom2d.Curve2d):
+class Line2dSegment(PartModule.Curve2d):
     """
     Describes a line segment in 2D space
     To create a line there are several ways:
@@ -456,13 +457,13 @@ class Line2dSegment(Part.Geom2d.Curve2d):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, pLine: Part.Geom2d.Line2dSegment, /): ...
+    def __init__(self, pLine: PartModule.Line2dSegment, /): ...
 
     @typing.overload
-    def __init__(self, pLine: Part.Geom2d.Line2dSegment, first: float, last: float, /): ...
+    def __init__(self, pLine: PartModule.Line2dSegment, first: float, last: float, /): ...
 
     @typing.overload
-    def __init__(self, pLine: Part.Geom2d.Line2d, first: float, last: float, /): ...
+    def __init__(self, pLine: PartModule.Line2d, first: float, last: float, /): ...
 
     @typing.overload
     def __init__(self, pV1: FreeCAD.Vector2d, pV2: FreeCAD.Vector2d, /):
@@ -510,7 +511,7 @@ class Line2dSegment(Part.Geom2d.Curve2d):
 
 
 # Ellipse2dPy.xml
-class Ellipse2d(Part.Geom2d.Conic2d):
+class Ellipse2d(PartModule.Conic2d):
     """
     Describes an ellipse in 2D space
                     To create an ellipse there are several ways:
@@ -536,7 +537,7 @@ class Ellipse2d(Part.Geom2d.Conic2d):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, Ellipse: Part.Geom2d.Ellipse2d): ...
+    def __init__(self, Ellipse: PartModule.Ellipse2d): ...
 
     @typing.overload
     def __init__(self, S1: FreeCAD.Vector2d, S2: FreeCAD.Vector2d, Center: FreeCAD.Vector2d): ...
@@ -599,11 +600,11 @@ class Ellipse2d(Part.Geom2d.Conic2d):
 
 
 # ArcOfCircle2dPy.xml
-class ArcOfCircle2d(Part.Geom2d.ArcOfConic2d):
+class ArcOfCircle2d(PartModule.ArcOfConic2d):
     """Describes a portion of a circle"""
 
     @typing.overload
-    def __init__(self, o: Part.Geom2d.Circle2d, u1: float, u2: float, sense: bool = True, /): ...
+    def __init__(self, o: PartModule.Circle2d, u1: float, u2: float, sense: bool = True, /): ...
 
     @typing.overload
     def __init__(self, pV1: FreeCAD.Vector2d, pV2: FreeCAD.Vector2d, pV3: FreeCAD.Vector2d, /):
@@ -613,7 +614,7 @@ class ArcOfCircle2d(Part.Geom2d.ArcOfConic2d):
         """
 
     @property
-    def Circle(self) -> Part.Geom2d.Circle2d:
+    def Circle(self) -> PartModule.Circle2d:
         """The internal circle representation"""
 
     @property
@@ -625,17 +626,17 @@ class ArcOfCircle2d(Part.Geom2d.ArcOfConic2d):
 
 
 # ArcOfHyperbola2dPy.xml
-class ArcOfHyperbola2d(Part.Geom2d.ArcOfConic2d):
+class ArcOfHyperbola2d(PartModule.ArcOfConic2d):
     """Describes a portion of an hyperbola"""
 
-    def __init__(self, o: Part.Geom2d.Hyperbola2d, u1: float, u2: float, sense: bool = True, /):
+    def __init__(self, o: PartModule.Hyperbola2d, u1: float, u2: float, sense: bool = True, /):
         """
         Describes a portion of an hyperbola
         Possible exceptions: (Part.OCCError, TypeError).
         """
 
     @property
-    def Hyperbola(self) -> Part.Geom2d.Hyperbola2d:
+    def Hyperbola(self) -> PartModule.Hyperbola2d:
         """The internal hyperbola representation"""
 
     @property
@@ -654,7 +655,7 @@ class ArcOfHyperbola2d(Part.Geom2d.ArcOfConic2d):
 
 
 # Hyperbola2dPy.xml
-class Hyperbola2d(Part.Geom2d.Conic2d):
+class Hyperbola2d(PartModule.Conic2d):
     """
     Describes a hyperbola in 2D space
                     To create a hyperbola there are several ways:
@@ -680,7 +681,7 @@ class Hyperbola2d(Part.Geom2d.Conic2d):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, Hyperbola: Part.Geom2d.Hyperbola2d): ...
+    def __init__(self, Hyperbola: PartModule.Hyperbola2d): ...
 
     @typing.overload
     def __init__(self, S1: FreeCAD.Vector2d, S2: FreeCAD.Vector2d, Center: FreeCAD.Vector2d): ...
@@ -743,7 +744,7 @@ class Hyperbola2d(Part.Geom2d.Conic2d):
 
 
 # BSplineCurve2dPy.xml
-class BSplineCurve2d(Part.Geom2d.Curve2d):
+class BSplineCurve2d(PartModule.Curve2d):
     """Describes a B-Spline curve in 3D space"""
 
     def __init__(self):
@@ -1044,7 +1045,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
                             the weight table has been initialized.
         """
 
-    def join(self, c: Part.Geom2d.BSplineCurve2d, /) -> bool:
+    def join(self, c: PartModule.BSplineCurve2d, /) -> bool:
         """Build a new spline by joining this and a second spline."""
 
     @typing.overload
@@ -1144,10 +1145,10 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
         Possible exceptions: (Part.OCCError).
         """
 
-    def toBezier(self) -> list[Part.Geom2d.BezierCurve2d]:
+    def toBezier(self) -> list[PartModule.BezierCurve2d]:
         """Build a list of Bezier splines."""
 
-    def toBiArcs(self, tolerance: float, /) -> list:
+    def toBiArcs(self, tolerance: float, /) -> list[typing.Any]:
         """
         Build a list of arcs and lines to approximate the B-spline.
                             toBiArcs(tolerance) -> list.
@@ -1156,7 +1157,7 @@ class BSplineCurve2d(Part.Geom2d.Curve2d):
 
 
 # BezierCurve2dPy.xml
-class BezierCurve2d(Part.Geom2d.Curve2d):
+class BezierCurve2d(PartModule.Curve2d):
     """
     Describes a rational or non-rational Bezier curve in 2d space:
                     -- a non-rational Bezier curve is defined by a table of poles (also called control points)
@@ -1294,12 +1295,12 @@ class BezierCurve2d(Part.Geom2d.Curve2d):
 
 
 # OffsetCurve2dPy.xml
-class OffsetCurve2d(Part.Geom2d.Curve2d):
-    def __init__(self, pGeom: Part.Geom2d.Curve2d, offset: float, /):
+class OffsetCurve2d(PartModule.Curve2d):
+    def __init__(self, pGeom: PartModule.Curve2d, offset: float, /):
         """Possible exceptions: (TypeError, Part.OCCError)."""
 
     @property
-    def BasisCurve(self) -> Part.Geom2d.Curve2d | None:
+    def BasisCurve(self) -> PartModule.Geom2d.Curve2d | None:
         """
         Sets or gets the basic curve.
         Possible exceptions: (RuntimeError).
@@ -1311,7 +1312,7 @@ class OffsetCurve2d(Part.Geom2d.Curve2d):
 
 
 # Parabola2dPy.xml
-class Parabola2d(Part.Geom2d.Conic2d):
+class Parabola2d(PartModule.Conic2d):
     """Describes a parabola in 2D space"""
 
     def __init__(self):
@@ -1344,7 +1345,7 @@ class Parabola2d(Part.Geom2d.Conic2d):
 
 
 # Line2dPy.xml
-class Line2d(Part.Geom2d.Curve2d):
+class Line2d(PartModule.Curve2d):
     """
     Describes an infinite line in 2D space
     To create a line there are several ways:
@@ -1362,7 +1363,7 @@ class Line2d(Part.Geom2d.Curve2d):
     def __init__(self): ...
 
     @typing.overload
-    def __init__(self, pLine: Part.Geom2d.Line2d, /): ...
+    def __init__(self, pLine: PartModule.Line2d, /): ...
 
     @typing.overload
     def __init__(self, pV1: FreeCAD.Vector2d, pV2: FreeCAD.Vector2d, /):

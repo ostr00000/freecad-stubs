@@ -1,11 +1,12 @@
 import FreeCADGui
+import SpreadsheetGui
 
 
 # ViewProviderSpreadsheetPy.xml
 class ViewProviderSpreadsheet(FreeCADGui.ViewProviderDocumentObject):
     """ViewProviderSheet class"""
 
-    def getView(self):
+    def getView(self) -> SpreadsheetGui.SheetView:
         """Get access to the sheet view"""
 
 

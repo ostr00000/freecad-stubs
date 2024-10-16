@@ -2,7 +2,6 @@ import typing
 
 import FreeCAD
 import Part as PartModule
-import Part.ShapeFix
 
 
 # ShapeFix_WireVertexPy.xml
@@ -25,7 +24,7 @@ class WireVertex(FreeCAD.PyObjectBase):
     def init(self, shape: PartModule.Wire, prec: float, /):
         """Loads the wire, ininializes internal analyzer with the given precision"""
 
-    def wire(self) -> PartModule.Shape:
+    def wire(self) -> PartModule.TopoShape:
         """Returns resulting wire"""
 
 
@@ -39,7 +38,7 @@ class FaceConnect(FreeCAD.PyObjectBase):
     def add(self, face1: PartModule.Face, face2: PartModule.Face, /):
         """add(face, face)"""
 
-    def build(self, shell: PartModule.Shell, sewtoler: float, fixtoler: float, /) -> PartModule.Shape:
+    def build(self, shell: PartModule.Shell, sewtoler: float, fixtoler: float, /) -> PartModule.TopoShape:
         """build(shell, sewtolerance, fixtolerance)"""
 
     def clear(self):
@@ -47,7 +46,7 @@ class FaceConnect(FreeCAD.PyObjectBase):
 
 
 # ShapeFix_ShapePy.xml
-class Shape(Part.ShapeFix.Root):
+class Shape(PartModule.Root):
     """Class for fixing operations on shapes"""
 
     def __init__(self, shape: PartModule.Shape = None, /):
@@ -102,19 +101,19 @@ class Shape(Part.ShapeFix.Root):
     @FixVertexTolMode.setter
     def FixVertexTolMode(self, value: bool): ...
 
-    def fixEdgeTool(self) -> Part.ShapeFix.Edge:
+    def fixEdgeTool(self) -> PartModule.Edge:
         """Returns tool for fixing edges"""
 
-    def fixFaceTool(self) -> Part.ShapeFix.Face:
+    def fixFaceTool(self) -> PartModule.Face:
         """Returns tool for fixing faces"""
 
-    def fixShellTool(self) -> Part.ShapeFix.Shell:
+    def fixShellTool(self) -> PartModule.Shell:
         """Returns tool for fixing shells"""
 
-    def fixSolidTool(self) -> Part.ShapeFix.Solid:
+    def fixSolidTool(self) -> PartModule.Solid:
         """Returns tool for fixing solids"""
 
-    def fixWireTool(self) -> Part.ShapeFix.Wire:
+    def fixWireTool(self) -> PartModule.Wire:
         """Returns tool for fixing wires"""
 
     def init(self, shape: PartModule.Shape, /):
@@ -123,7 +122,7 @@ class Shape(Part.ShapeFix.Root):
     def perform(self) -> bool:
         """Iterates on sub- shape and performs fixes"""
 
-    def shape(self) -> Part.ShapeFix.Shape:
+    def shape(self) -> PartModule.TopoShape:
         """Returns resulting shape"""
 
 
@@ -159,16 +158,16 @@ class EdgeConnect(FreeCAD.PyObjectBase):
 
 
 # ShapeFix_FixSmallSolidPy.xml
-class FixSmallSolid(Part.ShapeFix.Root):
+class FixSmallSolid(PartModule.Root):
     """Fixing solids with small size"""
 
     def __init__(self):
         """Fixing solids with small size"""
 
-    def merge(self, shape: PartModule.Shape, /) -> PartModule.Shape:
+    def merge(self, shape: PartModule.Shape, /) -> PartModule.TopoShape:
         """Merge small solids in the given shape to adjacent non-small ones"""
 
-    def remove(self, shape: PartModule.Shape, /) -> PartModule.Shape:
+    def remove(self, shape: PartModule.Shape, /) -> PartModule.TopoShape:
         """Remove small solids from the given shape"""
 
     def setFixMode(self, mode: int, /):
@@ -347,18 +346,18 @@ class FreeBounds(FreeCAD.PyObjectBase):
         Possible exceptions: (TypeError).
         """
 
-    def closedWires(self) -> PartModule.Shape:
+    def closedWires(self) -> PartModule.TopoShape:
         """Returns compound of closed wires out of free edges"""
 
-    def openWires(self) -> PartModule.Shape:
+    def openWires(self) -> PartModule.TopoShape:
         """Returns compound of open wires out of free edges"""
 
-    def shape(self) -> PartModule.Shape:
+    def shape(self) -> PartModule.TopoShape:
         """Returns modified source shape"""
 
 
 # ShapeFix_SplitCommonVertexPy.xml
-class SplitCommonVertex(Part.ShapeFix.Root):
+class SplitCommonVertex(PartModule.Root):
     """Class for fixing operations on shapes"""
 
     def __init__(self, shape: PartModule.Shape = None, /):
@@ -370,12 +369,12 @@ class SplitCommonVertex(Part.ShapeFix.Root):
     def perform(self):
         """Iterates on sub- shape and performs fixes"""
 
-    def shape(self) -> PartModule.Shape:
+    def shape(self) -> PartModule.TopoShape:
         """Returns resulting shape"""
 
 
 # ShapeFix_SolidPy.xml
-class Solid(Part.ShapeFix.Root):
+class Solid(PartModule.Root):
     """Root class for fixing operations"""
 
     def __init__(self, solid: PartModule.Solid = None, /):
@@ -405,7 +404,7 @@ class Solid(Part.ShapeFix.Root):
     @FixShellOrientationMode.setter
     def FixShellOrientationMode(self, value: bool): ...
 
-    def fixShellTool(self) -> Part.ShapeFix.Shell:
+    def fixShellTool(self) -> PartModule.Shell:
         """Returns tool for fixing shells"""
 
     def init(self, solid: PartModule.Solid, /):
@@ -414,21 +413,21 @@ class Solid(Part.ShapeFix.Root):
     def perform(self) -> bool:
         """Iterates on subshapes and performs fixes"""
 
-    def shape(self) -> PartModule.Shape:
+    def shape(self) -> PartModule.TopoShape:
         """
         In case of multiconnexity returns compound of fixed solids
         else returns one solid
         """
 
-    def solid(self) -> PartModule.Shape:
+    def solid(self) -> PartModule.TopoShape:
         """Returns resulting solid"""
 
-    def solidFromShell(self, shell: PartModule.Shell, /) -> PartModule.Shape:
+    def solidFromShell(self, shell: PartModule.Shell, /) -> PartModule.TopoShape:
         """Calls MakeSolid and orients the solid to be not infinite"""
 
 
 # ShapeFix_WirePy.xml
-class Wire(Part.ShapeFix.Root):
+class Wire(PartModule.Root):
     """Class for fixing operations on wires"""
 
     @typing.overload
@@ -733,7 +732,7 @@ class Wire(Part.ShapeFix.Root):
     def fixEdgeCurves(self) -> bool:
         """Groups the fixes dealing with 3d and pcurves of the edges"""
 
-    def fixEdgeTool(self) -> Part.ShapeFix.Edge:
+    def fixEdgeTool(self) -> PartModule.Edge:
         """Returns tool for fixing wires"""
 
     def fixGap2d(self, num: int, convert: bool, /) -> bool:
@@ -847,15 +846,15 @@ class Wire(Part.ShapeFix.Root):
         Set surface for the wire
         """
 
-    def wire(self) -> PartModule.Shape:
+    def wire(self) -> PartModule.TopoShape:
         """Makes the resulting Wire (by basic Brep_Builder)"""
 
-    def wireAPIMake(self) -> PartModule.Shape:
+    def wireAPIMake(self) -> PartModule.TopoShape:
         """Makes the resulting Wire (by BRepAPI_MakeWire)"""
 
 
 # ShapeFix_FacePy.xml
-class Face(Part.ShapeFix.Root):
+class Face(PartModule.Root):
     """Class for fixing operations on faces"""
 
     @typing.overload
@@ -959,7 +958,7 @@ class Face(Part.ShapeFix.Root):
     def clearModes(self):
         """Sets all modes to default"""
 
-    def face(self) -> PartModule.Shape:
+    def face(self) -> PartModule.TopoShape:
         """Returns a face which corresponds to the current state"""
 
     def fixAddNaturalBound(self) -> bool:
@@ -978,7 +977,7 @@ class Face(Part.ShapeFix.Root):
         and this wires have intersection point
         """
 
-    def fixLoopWire(self) -> tuple[bool, list[PartModule.Shape]]:
+    def fixLoopWire(self) -> tuple[bool, list[PartModule.TopoShape]]:
         """Detects if wire has a loop and fixes this situation by splitting on the few parts."""
 
     def fixMissingSeam(self) -> bool:
@@ -1017,7 +1016,7 @@ class Face(Part.ShapeFix.Root):
         Returns True if at least one small wire removed, False nothing is done.
         """
 
-    def fixWireTool(self) -> Part.ShapeFix.Wire:
+    def fixWireTool(self) -> PartModule.Wire:
         """Returns tool for fixing wires"""
 
     def fixWiresTwoCoincidentEdges(self) -> bool:
@@ -1033,7 +1032,7 @@ class Face(Part.ShapeFix.Root):
     def perform(self) -> bool:
         """Iterates on subshapes and performs fixes"""
 
-    def result(self) -> PartModule.Shape:
+    def result(self) -> PartModule.TopoShape:
         """
         Returns resulting shape (Face or Shell if split)
         To be used instead of face() if FixMissingSeam involved
@@ -1041,31 +1040,31 @@ class Face(Part.ShapeFix.Root):
 
 
 # ShapeFix_FixSmallFacePy.xml
-class FixSmallFace(Part.ShapeFix.Root):
+class FixSmallFace(PartModule.Root):
     """Class for fixing operations on faces"""
 
     def __init__(self):
         """Class for fixing operations on faces"""
 
-    def fixFace(self, face: PartModule.Face, /) -> PartModule.Shape:
+    def fixFace(self, face: PartModule.Face, /) -> PartModule.TopoShape:
         """Fixes issues related to the specified face and returns the modified face."""
 
-    def fixShape(self) -> PartModule.Shape:
+    def fixShape(self) -> PartModule.TopoShape:
         """
         Fixes issues in the overall geometric shape. 
                     This function likely encapsulates higher-level fixes that involve multiple faces or elements.
         """
 
-    def fixSplitFace(self, shape: PartModule.Shape, /) -> PartModule.Shape:
+    def fixSplitFace(self, shape: PartModule.Shape, /) -> PartModule.TopoShape:
         """
         Fixes cases related to split faces within the given shape.
                     It may return a modified shape after fixing the issues.
         """
 
-    def fixSpotFace(self) -> PartModule.Shape:
+    def fixSpotFace(self) -> PartModule.TopoShape:
         """Fixing case of spot face, if tol = -1 used local tolerance"""
 
-    def fixStripFace(self, wasdone: bool = False, /) -> PartModule.Shape:
+    def fixStripFace(self, wasdone: bool = False, /) -> PartModule.TopoShape:
         """Fixing case of strip face, if tol = -1 used local tolerance"""
 
     def init(self, shape: PartModule.Shape, /):
@@ -1080,10 +1079,10 @@ class FixSmallFace(Part.ShapeFix.Root):
     def removeFacesInCaseOfStrip(self, face: PartModule.Face, /) -> bool:
         """Remove strip face from compound"""
 
-    def replaceVerticesInCaseOfSpot(self, face: PartModule.Face, /):
+    def replaceVerticesInCaseOfSpot(self, face: PartModule.Face, /) -> PartModule.TopoShape:
         """Compute average vertex and replacing vertices by new one"""
 
-    def shape(self) -> PartModule.Shape:
+    def shape(self) -> PartModule.TopoShape:
         """Returns the current state of the geometric shape after potential modifications."""
 
 
@@ -1098,10 +1097,10 @@ class SplitTool(FreeCAD.PyObjectBase):
         """Cut edge by parameters pend and cut"""
 
     @typing.overload
-    def splitEdge(self, edge: PartModule.Edge, param1: float, vert: PartModule.Vertex, face: PartModule.Face, tol3d: float, tol2d: float, /) -> tuple[typing.Any, typing.Any]: ...
+    def splitEdge(self, edge: PartModule.Edge, param1: float, vert: PartModule.Vertex, face: PartModule.Face, tol3d: float, tol2d: float, /) -> tuple[PartModule.TopoShape, PartModule.TopoShape]: ...
 
     @typing.overload
-    def splitEdge(self, edge: PartModule.Edge, param1: float, param2: float, vert: PartModule.Vertex, face: PartModule.Face, tol3d: float, tol2d: float, /) -> tuple[typing.Any, typing.Any]:
+    def splitEdge(self, edge: PartModule.Edge, param1: float, param2: float, vert: PartModule.Vertex, face: PartModule.Face, tol3d: float, tol2d: float, /) -> tuple[PartModule.TopoShape, PartModule.TopoShape]:
         """
         Split edge on two new edges using new vertex
         Possible exceptions: (TypeError).
@@ -1123,7 +1122,7 @@ class ShapeTolerance(FreeCAD.PyObjectBase):
 
 
 # ShapeFix_WireframePy.xml
-class Wireframe(Part.ShapeFix.Root):
+class Wireframe(PartModule.Root):
     """Provides methods for fixing wireframe of shape"""
 
     def __init__(self, shape: PartModule.Shape = None, /):
@@ -1155,7 +1154,7 @@ class Wireframe(Part.ShapeFix.Root):
     def load(self, shape: PartModule.Shape, /):
         """Loads a shape, resets statuses"""
 
-    def shape(self) -> PartModule.Shape: ...
+    def shape(self) -> PartModule.TopoShape: ...
 
 
 # ShapeFix_RootPy.xml
@@ -1191,7 +1190,7 @@ class Root(FreeCAD.PyObjectBase):
 
 
 # ShapeFix_ShellPy.xml
-class Shell(Part.ShapeFix.Root):
+class Shell(PartModule.Root):
     """Root class for fixing operations"""
 
     def __init__(self, shell: PartModule.Shell = None, /):
@@ -1211,7 +1210,7 @@ class Shell(Part.ShapeFix.Root):
     @FixOrientationMode.setter
     def FixOrientationMode(self, value: bool): ...
 
-    def errorFaces(self) -> PartModule.Shape:
+    def errorFaces(self) -> PartModule.TopoShape:
         """Returns not oriented subset of faces"""
 
     def fixFaceOrientation(self, shell: PartModule.Shell, multiConex: bool = True, nonManifold: bool = False, /) -> bool:
@@ -1232,7 +1231,7 @@ class Shell(Part.ShapeFix.Root):
         manifold shells will be created. By default - Standard_False.
         """
 
-    def fixFaceTool(self) -> Part.ShapeFix.Face:
+    def fixFaceTool(self) -> PartModule.Face:
         """Returns tool for fixing faces"""
 
     def init(self, shell: PartModule.Shell, /):
@@ -1247,8 +1246,8 @@ class Shell(Part.ShapeFix.Root):
     def setNonManifoldFlag(self, nonManifold: bool, /):
         """Sets NonManifold flag"""
 
-    def shape(self) -> PartModule.Shape:
+    def shape(self) -> PartModule.TopoShape:
         """In case of multiconnexity returns compound of fixed shells and one shell otherwise"""
 
-    def shell(self) -> PartModule.Shape:
+    def shell(self) -> PartModule.TopoShape:
         """Returns fixed shell (or subset of oriented faces)"""

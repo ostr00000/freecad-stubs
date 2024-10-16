@@ -2,6 +2,7 @@ import typing
 
 import FreeCAD
 import FreeCADGui
+import Gui
 
 
 # Selection.cpp
@@ -183,7 +184,7 @@ def countObjectsOfType(objecttype: str, document: str = None, resolve: int = 1, 
     """
 
 
-def getSelection(documentName: str = None, resolve: int = 1, single: bool = False, /) -> list:
+def getSelection(documentName: str = None, resolve: int = 1, single: bool = False, /) -> list[typing.Any]:
     """
     getSelection(docName, resolve=ResolveMode.OldStyleElement, single=False) -> list
 
@@ -200,7 +201,7 @@ def getSelection(documentName: str = None, resolve: int = 1, single: bool = Fals
     """
 
 
-def getPickedList(documentName: str = None, /) -> list:
+def getPickedList(documentName: str = None, /) -> list[typing.Any]:
     """
     getPickedList(docName) -> list of Gui.SelectionObject
 
@@ -233,7 +234,7 @@ def getCompleteSelection(resolve: int = 1, /) -> list[FreeCADGui.SelectionObject
     """
 
 
-def getSelectionEx(documentName: str = None, resolve: int = 1, single: bool = False, /) -> list:
+def getSelectionEx(documentName: str = None, resolve: int = 1, single: bool = False, /) -> list[typing.Any]:
     """
     getSelectionEx(docName, resolve=ResolveMode.OldStyleElement, single=False) -> list of Gui.SelectionObject
 
@@ -307,7 +308,7 @@ def addSelectionGate(filter: str, resolve: int = 1, /): ...
 
 
 @typing.overload
-def addSelectionGate(filterPy: FreeCADGui.SelectionFilter, resolve: int = 1, /): ...
+def addSelectionGate(filterPy: FreeCADGui.Filter, resolve: int = 1, /): ...
 
 
 @typing.overload
@@ -398,7 +399,7 @@ def hasSubSelection(doc: str = None, subElement: bool = False, /) -> bool:
     """
 
 
-def getSelectionFromStack(documentName: str = None, resolve: int = 1, index: int = 0, /) -> list:
+def getSelectionFromStack(documentName: str = None, resolve: int = 1, index: int = 0, /) -> list[typing.Any]:
     """
     getSelectionFromStack(docName, resolve=ResolveMode.OldStyleElement, index=0) -> list of Gui.SelectionObject
 

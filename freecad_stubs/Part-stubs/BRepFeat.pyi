@@ -27,10 +27,10 @@ class MakePrism(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def barycCurve(self):
+    def barycCurve(self) -> PartModule.Curve:
         """Generates a curve along the center of mass of the primitive."""
 
-    def curves(self) -> tuple[typing.Any, ...]:
+    def curves(self) -> tuple[PartModule.Curve, ...]:
         """Returns the list of curves S parallel to the axis of the prism."""
 
     def init(self, Sbase: PartModule.Shape, Pbase: PartModule.Shape, Skface: PartModule.Face, Direction: FreeCAD.Vector, Fuse: int, Modify: bool):
@@ -97,7 +97,7 @@ class MakePrism(FreeCAD.PyObjectBase):
         Possible exceptions: (RuntimeError).
         """
 
-    def shape(self) -> PartModule.Shape:
+    def shape(self) -> PartModule.TopoShape:
         """
         Returns a shape built by the shape construction algorithm.
         Possible exceptions: (RuntimeError).

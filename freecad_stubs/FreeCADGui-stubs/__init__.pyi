@@ -4,9 +4,11 @@ from FreeCADGui import _PySideUic
 from FreeCADGui import _Selection
 from FreeCADGui.TaskDialogPython import Control as ControlClass
 import FreeCAD
+import FreeCAD.Base
 import FreeCADGui
 import FreeCADTemplates.qt_types as qt
 import FreeCADTemplates.templates
+import Gui
 import pivy.coin
 import qtpy.QtCore
 import qtpy.QtGui
@@ -122,7 +124,10 @@ class WorkbenchC(FreeCAD.BaseClass):
 
 # LinkViewPy.xml
 class LinkView(FreeCAD.BaseClass):
-    """Helper class to link to a view object"""
+    """
+    This class can be imported.
+    Helper class to link to a view object
+    """
 
     def __init__(self):
         """Helper class to link to a view object"""
@@ -280,7 +285,10 @@ class LinkView(FreeCAD.BaseClass):
 
 # ViewProviderPy.xml
 class ViewProvider(FreeCAD.ExtensionContainer):
-    """This is the ViewProvider base class"""
+    """
+    This class can be imported.
+    This is the ViewProvider base class
+    """
 
     @property
     def Annotation(self) -> pivy.coin.SoSeparator:
@@ -414,7 +422,7 @@ class ViewProvider(FreeCAD.ExtensionContainer):
         Possible exceptions: (ValueError, TypeError).
         """
 
-    def claimChildren(self) -> list[FreeCAD.DocumentObject | None]:
+    def claimChildren(self) -> list[FreeCADGui.DocumentObjectPy | None]:
         """
         claimChildren() -> list
 
@@ -619,7 +627,10 @@ class ViewProvider(FreeCAD.ExtensionContainer):
 
 # ViewProviderLinkPy.xml
 class ViewProviderLink(FreeCADGui.ViewProviderDocumentObject):
-    """This is the ViewProviderLink class"""
+    """
+    This class can be imported.
+    This is the ViewProviderLink class
+    """
 
     @property
     def DraggingPlacement(self) -> FreeCAD.Placement:
@@ -742,7 +753,10 @@ class ViewProviderExtension(FreeCAD.Extension):
 
 # CommandPy.xml
 class Command(FreeCAD.PyObjectBase):
-    """FreeCAD Python wrapper of Command functions"""
+    """
+    This class can be imported.
+    FreeCAD Python wrapper of Command functions
+    """
 
     @staticmethod
     def createCustomCommand(macroFile: str, menuText: str = None, toolTip: str = None, whatsThis: str = None, statusTip: str = None, pixmap: str = None, shortcut: str = None) -> str:
@@ -970,6 +984,7 @@ class PythonWorkbench(FreeCADGui.WorkbenchC):
 # AxisOriginPy.xml
 class AxisOrigin(FreeCAD.BaseClass):
     """
+    This class can be imported.
     Gui.AxisOrigin class.
 
     Class for creating a Coin3D representation of a coordinate system.
@@ -1047,7 +1062,10 @@ class AxisOrigin(FreeCAD.BaseClass):
 
 # ViewProviderDocumentObjectPy.xml
 class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
-    """This is the ViewProvider base class"""
+    """
+    This class can be imported.
+    This is the ViewProvider base class
+    """
 
     @property
     def Proxy(self) -> FreeCADTemplates.templates.ViewProviderPython: ...
@@ -1064,7 +1082,7 @@ class ViewProviderDocumentObject(FreeCADGui.ViewProvider):
         """Reference count to force update visual"""
 
     @property
-    def Object(self) -> FreeCAD.DocumentObject:
+    def Object(self) -> FreeCADGui.DocumentObjectPy:
         """Set/Get the associated data object"""
 
     @property
@@ -1153,7 +1171,7 @@ class SelectionObject(FreeCAD.BaseClass):
         """Selected sub-element, if any"""
 
     @property
-    def Object(self) -> FreeCAD.DocumentObject:
+    def Object(self) -> FreeCADGui.DocumentObjectPy:
         """
         Selected object
         Possible exceptions: (RuntimeError).
@@ -1201,7 +1219,10 @@ class SelectionObject(FreeCAD.BaseClass):
 
 # DocumentPy.xml
 class Document(FreeCAD.Persistence):
-    """This is a Document class"""
+    """
+    This class can be imported.
+    This is a Document class
+    """
 
     @property
     def ActiveObject(self) -> FreeCADGui.ViewProvider | None:
@@ -1256,7 +1277,7 @@ class Document(FreeCAD.Persistence):
         The active object of the document. Deprecated, use ActiveObject.
         """
 
-    def activeView(self) -> FreeCADGui.MDIViewPy:
+    def activeView(self) -> FreeCADGui.MDIView:
         """
         activeView() -> object or None
 
@@ -1304,7 +1325,7 @@ class Document(FreeCAD.Persistence):
             Name of the `Gui.ViewProvider` to hide.
         """
 
-    def mdiViewsOfType(self, sType: str, /) -> list:
+    def mdiViewsOfType(self, sType: str, /) -> list[typing.Any]:
         """
         mdiViewsOfType(type) -> list of MDIView
 
@@ -1505,7 +1526,7 @@ class MDIViewPy(qtpy.QtWidgets.QMainWindow):
         Possible exceptions: (Exception).
         """
 
-    def getActiveObject(self, name: str, resolve: bool = True, /) -> FreeCAD.DocumentObject | tuple[FreeCAD.DocumentObject, FreeCAD.DocumentObject, str] | None:
+    def getActiveObject(self, name: str, resolve: bool = True, /) -> FreeCADGui.DocumentObjectPy | tuple[FreeCADGui.DocumentObjectPy, FreeCADGui.DocumentObjectPy, str] | None:
         """
         getActiveObject(name,resolve=True)
         returns the active object for the given type
@@ -2075,7 +2096,7 @@ class View3DInventorPy:
         Possible exceptions: (Exception, TypeError).
         """
 
-    def getViewProvidersOfType(self, name: str, /) -> list:
+    def getViewProvidersOfType(self, name: str, /) -> list[typing.Any]:
         """
         getViewProvidersOfType(name)
         returns a list of view providers for the given type
@@ -2148,13 +2169,13 @@ class MainWindowPy(qtpy.QtWidgets.QMainWindow):
     workbenchActivated: qt.Signal[__MainWindow_workbenchActivated_0 | __MainWindow_workbenchActivated_1]
     mainWindowClosed: qt.Signal[__MainWindow_mainWindowClosed_0]
 
-    def getWindows(self) -> list:
+    def getWindows(self) -> list[typing.Any]:
         """
         getWindows()
         Possible exceptions: (Exception).
         """
 
-    def getWindowsOfType(self, t: FreeCAD.TypeId, /) -> list:
+    def getWindowsOfType(self, t: FreeCAD.Base.TypeId, /) -> list[typing.Any]:
         """
         getWindowsOfType(typeid)
         Possible exceptions: (Exception).
@@ -2163,13 +2184,13 @@ class MainWindowPy(qtpy.QtWidgets.QMainWindow):
     def setActiveWindow(self, MDIView, /) -> None:
         """setActiveWindow(MDIView)"""
 
-    def getActiveWindow(self) -> FreeCADGui.MDIViewPy | None:
+    def getActiveWindow(self) -> FreeCADGui.MDIView | None:
         """
         getActiveWindow()
         Possible exceptions: (Exception).
         """
 
-    def addWindow(self, obj, /) -> typing.Any | None:
+    def addWindow(self, obj, /) -> FreeCADGui.MDIViewPyWrap | None:
         """
         addWindow(MDIView)
         Possible exceptions: (Exception).
@@ -2345,13 +2366,19 @@ class AbstractSplitViewPy:
 
 
 # CommandActionPy.cpp
-class Gui_CommandAction:
-    """Descriptor to access the action of the commands"""
+class CommandAction:
+    """
+    This class can be imported.
+    Descriptor to access the action of the commands
+    """
 
     pass
 # SoQtOffscreenRendererPy.cpp
-class Gui_SoQtOffscreenRenderer:
-    """Python interface for SoQtOffscreenRenderer"""
+class SoQtOffscreenRenderer:
+    """
+    This class can be imported.
+    Python interface for SoQtOffscreenRenderer
+    """
 
     pass
 # PythonDebugger.cpp
@@ -2389,7 +2416,7 @@ class PythonDebugExcept:
 
 
 # SelectionFilterPy.cpp
-class Gui_SelectionFilter:
+class SelectionFilter:
     """
     Filter for certain selection
     Example strings are:
@@ -2590,7 +2617,7 @@ def supportedLocales() -> dict[str, str]:
     """
 
 
-def createDialog(fn: str, /):
+def createDialog(fn: str, /) -> FreeCADGui.PyResource:
     """
     createDialog(path) -> PyResource
 
@@ -2772,7 +2799,7 @@ def setActiveDocument(pstr: str, /): ...
 
 
 @typing.overload
-def setActiveDocument(doc: FreeCAD.Document, /):
+def setActiveDocument(doc: FreeCADGui.Document, /):
     """
     setActiveDocument(doc) -> None
 
@@ -2784,7 +2811,7 @@ def setActiveDocument(doc: FreeCAD.Document, /):
     """
 
 
-def activeView(typeName: str = None, /) -> FreeCADGui.MDIViewPy:
+def activeView(typeName: str = None, /) -> FreeCADGui.MDIView:
     """
     activeView(typeName) -> object or None
 
@@ -2824,7 +2851,7 @@ def getDocument(pstr: str, /) -> FreeCADGui.Document: ...
 
 
 @typing.overload
-def getDocument(doc: FreeCAD.Document, /) -> FreeCADGui.Document:
+def getDocument(doc: FreeCADGui.Document, /) -> FreeCADGui.Document:
     """
     getDocument(doc) -> Gui.Document
 
@@ -2889,7 +2916,7 @@ def showPreferences(pstr: str = None, idx: int = 0, /):
     """
 
 
-def createViewer(views: int = 1, title: str = None, /) -> FreeCADGui.AbstractSplitViewPy:
+def createViewer(views: int = 1, title: str = None, /) -> FreeCADGui.View3DInventor | FreeCADGui.SplitView3DInventor:
     """
     createViewer(views=1, name) -> View3DInventorPy or AbstractSplitViewPy
 
@@ -3018,8 +3045,11 @@ def coinRemoveAllChildren(pynode, /):
 
 
 # ExpressionBindingPy.cpp
-class Gui_ExpressionBinding:
-    """Python interface class for ExpressionBinding"""
+class ExpressionBinding:
+    """
+    This class can be imported.
+    Python interface class for ExpressionBinding
+    """
 
     pass
 # View3DViewerPy.cpp

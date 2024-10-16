@@ -1,6 +1,7 @@
 import typing
 
 import FreeCAD
+import FreeCADGui
 import Part as PartModule
 
 
@@ -51,5 +52,5 @@ class Feature(PartModule.Feature):
         Property TypeId: App::PropertyLinkHidden.
         """
 
-    def getBaseObject(self) -> FreeCAD.DocumentObject | None:
+    def getBaseObject(self) -> FreeCADGui.DocumentObjectPy | None:
         """getBaseObject: returns feature this one fuses itself to, or None. Normally, this should be the same as BaseFeature property, except for legacy workflow. In legacy workflow, it will look up the support of referenced sketch."""

@@ -1,5 +1,6 @@
 import typing
 
+import App
 import FreeCAD
 import Part as PartModule
 

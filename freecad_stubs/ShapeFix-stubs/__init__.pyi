@@ -24,7 +24,7 @@ def removeSmallEdges(shape, tolerance, ReShapeContext, /): ...
 
 
 @typing.overload
-def removeSmallEdges(shape: PartModule.Shape, tol: float, /) -> PartModule.Shape:
+def removeSmallEdges(shape: PartModule.Shape, tol: float, /) -> PartModule.TopoShape:
     """
     removeSmallEdges(shape, tolerance, ReShapeContext)
     Removes edges which are less than given tolerance from shape

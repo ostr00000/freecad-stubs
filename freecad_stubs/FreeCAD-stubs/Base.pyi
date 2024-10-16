@@ -3,6 +3,7 @@ import typing
 
 from FreeCAD import ProgressIndicator as ProgressIndicator
 import FreeCAD
+import FreeCAD.Base
 
 
 class ReturnGetFormatDict(typing.TypedDict):
@@ -2801,7 +2802,7 @@ class TypeId(FreeCAD.PyObjectBase):
 
     @staticmethod
     @typing.overload
-    def getAllDerivedFrom(py: FreeCAD.TypeId, /) -> list[FreeCAD.TypeId]:
+    def getAllDerivedFrom(py: FreeCAD.Base.TypeId, /) -> list[FreeCAD.TypeId]:
         """
         getAllDerivedFrom(type) -> list
 
@@ -2845,7 +2846,7 @@ class TypeId(FreeCAD.PyObjectBase):
     def isDerivedFrom(self, name: str, /) -> bool: ...
 
     @typing.overload
-    def isDerivedFrom(self, py: FreeCAD.TypeId, /) -> bool:
+    def isDerivedFrom(self, py: FreeCAD.Base.TypeId, /) -> bool:
         """
         isDerivedFrom(type) -> bool
 
