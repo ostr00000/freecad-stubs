@@ -125,8 +125,8 @@ def improve_FreeCAD_Units(sourcesRoot: Module):
     freeCADUnits = sourcesRoot['FreeCAD._Units']
     freeCADUnits.imports.update(
         (
-            'from FreeCAD.Base import _Unit',
-            'from FreeCAD.Base import _Quantity',
+            'from FreeCAD.Base import Unit as Unit',
+            'from FreeCAD.Base import Quantity as Quantity',
         )
     )
     freeCADUnits += UNITS

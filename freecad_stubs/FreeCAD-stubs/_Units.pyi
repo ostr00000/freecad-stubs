@@ -1,7 +1,7 @@
 import typing
 
-from FreeCAD.Base import _Quantity
-from FreeCAD.Base import _Unit
+from FreeCAD.Base import Quantity as Quantity
+from FreeCAD.Base import Unit as Unit
 import FreeCAD
 
 
