@@ -149,6 +149,6 @@ repos:
 #          - --always-false=PYSIDE6
 
 ci:
-  autoupdate_schedule: monthly
+  autoupdate_schedule: quarterly
   skip:
     - pyright # https://github.com/RobertCraigie/pyright-python/issues/164
