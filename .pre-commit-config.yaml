@@ -51,17 +51,17 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/abravalheri/validate-pyproject
-    rev: v0.20.2
+    rev: v0.23
     hooks:
       - id: validate-pyproject
 
   - repo: https://github.com/pappasam/toml-sort
-    rev: v0.23.1
+    rev: v0.24.2
     hooks:
       - id: toml-sort-fix
 
   - repo: https://github.com/crate-ci/typos
-    rev: v1.26.0
+    rev: dictgen-v0.3.1
     hooks:
       - id: typos
         name: typos-diff
@@ -78,7 +78,7 @@ repos:
         additional_dependencies: [ tomli ]
 
   - repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.17
+    rev: 0.7.21
     hooks:
       - id: mdformat
         additional_dependencies:
@@ -97,12 +97,12 @@ repos:
         args: [ --line-length=89 ]
 
   - repo: https://github.com/psf/black
-    rev: 24.8.0
+    rev: 24.10.0
     hooks:
       - id: black
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.6.9
+    rev: v0.8.6
     hooks:
       - id: ruff
         name: ruff-diff
@@ -122,7 +122,7 @@ repos:
       - id: vulture
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.385
+    rev: v1.1.391
     hooks:
       - id: pyright
 
