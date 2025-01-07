@@ -3,7 +3,8 @@ import re
 from collections import defaultdict
 from operator import itemgetter
 
-from freecad_stub_gen.decorators import logCurrentTaskDecFactory
+from stub_gen.decorators import logCurrentTaskDecFactory
+
 from freecad_stub_gen.file_functions import genCppFiles, readContent
 from freecad_stub_gen.FreeCADTemplates import additionalPath
 from freecad_stub_gen.python_code import indent

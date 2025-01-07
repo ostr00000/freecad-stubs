@@ -5,9 +5,9 @@ from pathlib import Path
 from typing import TextIO
 
 from pcpp import Preprocessor
+from stub_gen.decorators import logCurrentTaskDecFactory
 
 from freecad_stub_gen.config import SOURCE_DIR
-from freecad_stub_gen.decorators import logCurrentTaskDecFactory
 from freecad_stub_gen.file_functions import ENCODING
 
 logger = logging.getLogger(__name__)

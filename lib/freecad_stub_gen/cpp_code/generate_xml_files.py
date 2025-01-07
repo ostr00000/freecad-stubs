@@ -3,8 +3,9 @@ import shlex
 import sys
 from subprocess import check_call
 
+from stub_gen.decorators import logCurrentTaskDecFactory
+
 from freecad_stub_gen.config import PROJECT_DIR
-from freecad_stub_gen.decorators import logCurrentTaskDecFactory
 from freecad_stub_gen.file_functions import genXmlFiles
 
 logger = logging.getLogger(__name__)

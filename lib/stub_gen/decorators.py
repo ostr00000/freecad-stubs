@@ -1,6 +1,8 @@
 import logging
 import sys
+from collections.abc import Callable, Iterable
 
+import clang.cindex as cc
 from decorator import decorator
 
 
@@ -40,3 +42,30 @@ def logCurrentTaskDecFactory(
 
     logger.info(f"{msg} successfully finished.")
     return ret
+
+
+def uniqueIteratorDec[
+    **Param, Ret
+](fun: Callable[Param, Iterable[Ret]]) -> Callable[Param, Iterable[Ret]]:
+    def uniqueIterator(*args: Param.args, **kwargs: Param.kwargs) -> Iterable[Ret]:
+        seen = set()
+        for item in fun(*args, **kwargs):
+            if item not in seen:
+                seen.add(item)
+                yield item
+
+    return uniqueIterator
+
+
+def checkKindDecFactory(kinds: list[cc.CursorKind]):
+    def checkKindDec(fun):
+        def checkKindFun(*args, **kwargs):
+            wrapper = args[0]
+            if wrapper.cursor.kind not in kinds:
+                msg = f"Invalid cursor kind: {wrapper.cursor.kind} (expected: {kinds})"
+                raise TypeError(msg)
+            return fun(*args, **kwargs)
+
+        return checkKindFun
+
+    return checkKindDec

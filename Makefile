@@ -3,6 +3,9 @@ ENV_NAME=freecad_env
 PYTHON_ENV=./$(ENV_NAME)/bin/python
 export TERM=ansi
 
+makefile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+repo_dir := $(dir $(makefile_path))
+
 # ######## env ########
 .PHONY: setup_system setup_env install_in_env install_pre_commit prepare_freecad clean_env
 
@@ -80,3 +83,28 @@ check_by_pyright:
 
 check_by_pylint:
 	$(PYTHON_ENV) -m pylint ./lib/
+
+
+# ######## docker ########
+docker_image_build:
+	docker build --tag "freecad_build_image" .
+
+docker_freecad_build:
+	docker run \
+		--name "freecad_build_container" \
+		--rm \
+		--interactive \
+		--tty \
+		--user "$(shell id -u):$(shell id -g)" \
+		--volume="/etc/group:/etc/group:ro" \
+    	--volume="/etc/passwd:/etc/passwd:ro" \
+    	--volume="/etc/shadow:/etc/shadow:ro" \
+		--volume "${repo_dir}/FreeCAD:/build/FreeCAD" \
+		--volume "${repo_dir}/lib/cpp_ast:/build/cpp_ast" \
+		--workdir '/build/FreeCAD' \
+		"freecad_build_image" \
+		bash \
+		# . ../env/bin/activate \
+		# mkdir --parents build_clang && cd build_clang && cmake ../ && cmake --build . -j$$(nproc --ignore=2) \
+		# python3 ../../cpp_ast/macro/run_makefile_for_intermediate.py --repo-path .
+		# clang -Xclang -ast-dump -fsyntax-only /build/FreeCAD/build_clang/src/App/CMakeFiles/FreeCADApp.dir/Origin.cpp.i > /build/FreeCAD/build_clang/src/App/CMakeFiles/FreeCADApp.dir/Origin.cpp.i.ast

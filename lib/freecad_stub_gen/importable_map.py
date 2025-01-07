@@ -4,8 +4,9 @@ from collections import defaultdict
 from collections.abc import Iterable
 from dataclasses import dataclass, field
 
+from stub_gen.decorators import logCurrentTaskDecFactory
+
 from freecad_stub_gen.cpp_code.converters import removeQuote
-from freecad_stub_gen.decorators import logCurrentTaskDecFactory
 from freecad_stub_gen.file_functions import genCppFiles, readContent
 from freecad_stub_gen.generators.common.context import (
     getCurrentNamespace,

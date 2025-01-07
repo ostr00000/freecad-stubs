@@ -1,7 +1,7 @@
 import io
 import logging
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 from pcpp import Action, OutputDirective, Preprocessor
 from pcpp.parser import Macro
@@ -39,7 +39,7 @@ class SaveErrorsPreprocessor(Preprocessor):
     def on_comment(self, tok) -> bool | None:  # type: ignore[reportIncompatibleMethodOverride]
         return True
 
-    def on_file_open(self, is_system_include, includepath):
+    def on_file_open(self, is_system_include, includepath) -> Any:
         with super().on_file_open(is_system_include, includepath) as file:
             return io.StringIO(file.read().replace('#cmakedefine', '#define'))
 

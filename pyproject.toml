@@ -4,7 +4,7 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = 'freecad-stubs'
-version = '1.0.17'
+version = '1.0.18'
 description = "Python stubs for FreeCAD"
 readme = 'README.md'
 requires-python = '>=3.6'
@@ -23,6 +23,7 @@ classifiers = [
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
     'Typing :: Stubs Only',
 ]
 urls = {repository = 'https://github.com/ostr00000/freecad-stubs'}
@@ -36,6 +37,9 @@ generate = [
     'joblib',
     'more-itertools',
     'pcpp',
+    'GitPython',
+    'dataclass_binder',
+    'typed-argparse',
 ]
 check = [
     'PyQt5',
@@ -47,7 +51,10 @@ check = [
     'pytest',
     'qtpy',
 ]
-all = ['freecad-stubs[generate,check]']
+stub_gen = [
+    'libclang',
+]
+all = ['freecad-stubs[generate,check,stub_gen]']
 
 [tool.black]
 skip-string-normalization = true
@@ -199,6 +206,7 @@ ignore = [
     'C901', # complex-structure # SKIP match expression also counts, TODO @PO: temporary disabled
     'PLR0912', # too-many-branches # SKIP match expression also counts, TODO @PO: temporary disabled
     'PLR0915', # too-many-statements # SKIP match expression also counts, TODO @PO: temporary disabled
+    'S101', # Use of `assert` detected # SKIP: later we may want to disable these checks
 ]
 
 [tool.ruff.lint.isort]

@@ -1,8 +1,9 @@
 import logging
 import re
 
+from stub_gen.decorators import logCurrentTaskDecFactory
+
 from freecad_stub_gen.cpp_code.converters import removeQuote
-from freecad_stub_gen.decorators import logCurrentTaskDecFactory
 from freecad_stub_gen.file_functions import genCppFiles
 from freecad_stub_gen.generators.common.context import (
     currentSource,
