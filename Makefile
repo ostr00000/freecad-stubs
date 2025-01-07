@@ -48,7 +48,7 @@ release_changelog:
 	# https://github.com/executablebooks/mdformat/issues/112
 	# Replace: `\[text\]` -> `[text]`
 	sed --in-place --expression 's@\\\[@[@g' --expression 's@\\\]@]@g' CHANGELOG.md
-	$(PYTHON_ENV) -m keepachangelog release ''
+	$(PYTHON_ENV) -m keepachangelog release '1.0.18'
 
 build_and_upload:
 	rm -rf ./dist
