@@ -24,11 +24,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- Support for detecting object namespace.
 - (WIP) code generation based on clang parser.
 
 ### Fixed
 
 - Issue #29: missing stubs for `FreeCAD.Units`.
+- Issue #20: wrong return type for function with sibling namespace.
 
 ## [1.0.17] - 2024-02-05
 
@@ -80,4 +82,4 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
-- An install file uses `pyproject.toml`.
+- An installation process uses `pyproject.toml`.
