@@ -20,6 +20,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Security
 
+## [1.0.19] - 2025-02-19
+
+### Fixed
+
+- Issue #34: Updated old stub file for `Part.makeLoft`.
+
 ## [1.0.18] - 2025-01-07
 
 ### Added
