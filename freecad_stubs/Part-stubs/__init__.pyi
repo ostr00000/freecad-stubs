@@ -7824,7 +7824,7 @@ def makeSweepSurface(path: PartModule.Shape, profile: PartModule.Shape, toleranc
     """
 
 
-def makeLoft(pcObj, psolid: bool = False, pruled: bool = False, pclosed: bool = False, degMax: int = 5, /) -> PartModule.Shape:
+def makeLoft(pcObj, solid: bool = False, ruled: bool = False, closed: bool = False, maxDegree: int = 5, /) -> PartModule.Shape:
     """
     makeLoft(list of wires,[solid=False,ruled=False,closed=False,maxDegree=5]) -- Create a loft shape.
     Possible exceptions: (Exception).
