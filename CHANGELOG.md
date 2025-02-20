@@ -20,6 +20,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Security
 
+## [1.0.20] - 2025-02-21
+
+### Fixed
+
+- Issue #37: Fix for `Part.makeLoft` to accept kwargs.
+
 ## [1.0.19] - 2025-02-19
 
 ### Fixed
