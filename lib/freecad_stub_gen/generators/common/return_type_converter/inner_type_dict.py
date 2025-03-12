@@ -7,6 +7,7 @@ from freecad_stub_gen.cpp_code.converters import removeQuote
 from freecad_stub_gen.generators.common.cpp_function import generateExpressionUntilChar
 from freecad_stub_gen.generators.common.return_type_converter.arg_types import (
     AnnotatedMarker,
+    AnyValue,
     ComplexArgumentBase,
     DictArgument,
     RetType,
@@ -51,6 +52,7 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
             self._getInnerTypeDictSetItem(variableName, decEndPos, endPos),
             self._getInnerTypeDictAssignLiterals(variableName, decEndPos, endPos),
             self._getInnerTypeDictAssign(variableName, decEndPos, endPos),
+            self._getInnerDictGetItem(variableName, decEndPos, endPos),
         ):
             da: ComplexArgumentBase = wrapper()
             if da:
@@ -164,5 +166,24 @@ class ReturnTypeInnerDict(ReturnTypeConverterBase):
         for match in regex.finditer(self.functionBody, startPos, endPos):
             key = self.getExpressionType(match.group(1), endPos)
             value = self.getExpressionType(match.group(2), endPos)
+            da.add(key, value)
+        return da
+
+    @lazyDec
+    def _getInnerDictGetItem(self, variableName: str, startPos: int, endPos: int):
+        """Extract parametrized type from `y = var[x]`.
+
+        Example: `auto value = ret[Py::String(v.index.appendToStringBuffer(s))];`
+        """
+        da = DictArgument()
+        regex = re.compile(rf'(\w+)\s*=\s*{variableName}\s*\[\s*(.*)]\s*;')
+        for match in regex.finditer(self.functionBody, startPos, endPos):
+            try:
+                value = self.getExpressionType(match.group(1), endPos)
+            except RecursionError:
+                # probably it would be better to have some flag for
+                # `getExpressionType` to skip `dict` extraction
+                value = AnyValue
+            key = self.getExpressionType(match.group(2), endPos)
             da.add(key, value)
         return da

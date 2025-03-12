@@ -42,7 +42,6 @@ class App:
     LinkPython = 'App::LinkPython'
     MaterialObject = 'App::MaterialObject'
     MaterialObjectPython = 'App::MaterialObjectPython'
-    MeasureDistance = 'App::MeasureDistance'
     NumberExpression = 'App::NumberExpression'
     OperatorExpression = 'App::OperatorExpression'
     Origin = 'App::Origin'
@@ -130,6 +129,7 @@ class App:
     PropertyMaterial = 'App::PropertyMaterial'
     PropertyMaterialList = 'App::PropertyMaterialList'
     PropertyMatrix = 'App::PropertyMatrix'
+    PropertyMoment = 'App::PropertyMoment'
     PropertyPath = 'App::PropertyPath'
     PropertyPercent = 'App::PropertyPercent'
     PropertyPersistentObject = 'App::PropertyPersistentObject'
@@ -173,6 +173,7 @@ class App:
     PropertyXLinkContainer = 'App::PropertyXLinkContainer'
     PropertyXLinkList = 'App::PropertyXLinkList'
     PropertyXLinkSub = 'App::PropertyXLinkSub'
+    PropertyXLinkSubHidden = 'App::PropertyXLinkSubHidden'
     PropertyXLinkSubList = 'App::PropertyXLinkSubList'
     PropertyYieldStrength = 'App::PropertyYieldStrength'
     PropertyYoungsModulus = 'App::PropertyYoungsModulus'
@@ -181,11 +182,32 @@ class App:
     StringExpression = 'App::StringExpression'
     StringHasher = 'App::StringHasher'
     StringID = 'App::StringID'
+    SuppressibleExtension = 'App::SuppressibleExtension'
+    SuppressibleExtensionPython = 'App::SuppressibleExtensionPython'
     TextDocument = 'App::TextDocument'
     TransactionalObject = 'App::TransactionalObject'
     UnitExpression = 'App::UnitExpression'
     VRMLObject = 'App::VRMLObject'
+    VarSet = 'App::VarSet'
     VariableExpression = 'App::VariableExpression'
+
+
+class Assembly:
+    AssemblyLink = 'Assembly::AssemblyLink'
+    AssemblyObject = 'Assembly::AssemblyObject'
+    BomGroup = 'Assembly::BomGroup'
+    BomObject = 'Assembly::BomObject'
+    JointGroup = 'Assembly::JointGroup'
+    ViewGroup = 'Assembly::ViewGroup'
+
+
+class AssemblyGui:
+    ViewProviderAssembly = 'AssemblyGui::ViewProviderAssembly'
+    ViewProviderAssemblyLink = 'AssemblyGui::ViewProviderAssemblyLink'
+    ViewProviderBom = 'AssemblyGui::ViewProviderBom'
+    ViewProviderBomGroup = 'AssemblyGui::ViewProviderBomGroup'
+    ViewProviderJointGroup = 'AssemblyGui::ViewProviderJointGroup'
+    ViewProviderViewGroup = 'AssemblyGui::ViewProviderViewGroup'
 
 
 class Attacher:
@@ -202,6 +224,10 @@ class Base:
     Exception = 'Base::Exception'
     Persistence = 'Base::Persistence'
     Type = 'Base::Type'
+
+
+class CAMSimulator:
+    CAMSim = 'CAMSimulator::CAMSim'
 
 
 class CloudGui:
@@ -272,7 +298,7 @@ class Common:
     voidBaseClass = 'voidBaseClass'
     voidBelongToGeom = 'voidBelongToGeom'
     voidCDxfWrite = 'voidCDxfWrite'
-    voidDlgSettingsUI = 'voidDlgSettingsUI'
+    voidDlgSettingsAdvanced = 'voidDlgSettingsAdvanced'
     voidDocumentProtector = 'voidDocumentProtector'
     voidDownloadItem = 'voidDownloadItem'
     voidE57XmlParser = 'voidE57XmlParser'
@@ -280,6 +306,7 @@ class Common:
     voidExpressionCompleter = 'voidExpressionCompleter'
     voidLineGroup = 'voidLineGroup'
     voidLyingOnGeom = 'voidLyingOnGeom'
+    voidMeasureDistanceType = 'voidMeasureDistanceType'
     voidPATLineSpec = 'voidPATLineSpec'
     voidType = 'voidType'
     voidView3DInventorViewer = 'voidView3DInventorViewer'
@@ -328,6 +355,7 @@ class Fem:
     ConstraintPressure = 'Fem::ConstraintPressure'
     ConstraintPulley = 'Fem::ConstraintPulley'
     ConstraintPython = 'Fem::ConstraintPython'
+    ConstraintRigidBody = 'Fem::ConstraintRigidBody'
     ConstraintSpring = 'Fem::ConstraintSpring'
     ConstraintTemperature = 'Fem::ConstraintTemperature'
     ConstraintTransform = 'Fem::ConstraintTransform'
@@ -338,6 +366,8 @@ class Fem:
     FemMesh = 'Fem::FemMesh'
     FemMeshObject = 'Fem::FemMeshObject'
     FemMeshObjectPython = 'Fem::FemMeshObjectPython'
+    FemMeshShapeBaseObject = 'Fem::FemMeshShapeBaseObject'
+    FemMeshShapeBaseObjectPython = 'Fem::FemMeshShapeBaseObjectPython'
     FemMeshShapeNetgenObject = 'Fem::FemMeshShapeNetgenObject'
     FemMeshShapeObject = 'Fem::FemMeshShapeObject'
     FemPostBoxFunction = 'Fem::FemPostBoxFunction'
@@ -358,6 +388,7 @@ class Fem:
     FemPostWarpVectorFilter = 'Fem::FemPostWarpVectorFilter'
     FemResultObject = 'Fem::FemResultObject'
     FemResultObjectPython = 'Fem::FemResultObjectPython'
+    FemSetElementNodesObject = 'Fem::FemSetElementNodesObject'
     FemSetElementsObject = 'Fem::FemSetElementsObject'
     FemSetFacesObject = 'Fem::FemSetFacesObject'
     FemSetGeometryObject = 'Fem::FemSetGeometryObject'
@@ -388,12 +419,15 @@ class FemGui:
     ViewProviderFemConstraintPressure = 'FemGui::ViewProviderFemConstraintPressure'
     ViewProviderFemConstraintPulley = 'FemGui::ViewProviderFemConstraintPulley'
     ViewProviderFemConstraintPython = 'FemGui::ViewProviderFemConstraintPython'
+    ViewProviderFemConstraintRigidBody = 'FemGui::ViewProviderFemConstraintRigidBody'
     ViewProviderFemConstraintSpring = 'FemGui::ViewProviderFemConstraintSpring'
     ViewProviderFemConstraintTemperature = 'FemGui::ViewProviderFemConstraintTemperature'
     ViewProviderFemConstraintTransform = 'FemGui::ViewProviderFemConstraintTransform'
     ViewProviderFemMesh = 'FemGui::ViewProviderFemMesh'
     ViewProviderFemMeshPython = 'FemGui::ViewProviderFemMeshPython'
     ViewProviderFemMeshShape = 'FemGui::ViewProviderFemMeshShape'
+    ViewProviderFemMeshShapeBase = 'FemGui::ViewProviderFemMeshShapeBase'
+    ViewProviderFemMeshShapeBasePython = 'FemGui::ViewProviderFemMeshShapeBasePython'
     ViewProviderFemMeshShapeNetgen = 'FemGui::ViewProviderFemMeshShapeNetgen'
     ViewProviderFemPostBoxFunction = 'FemGui::ViewProviderFemPostBoxFunction'
     ViewProviderFemPostClip = 'FemGui::ViewProviderFemPostClip'
@@ -412,6 +446,7 @@ class FemGui:
     ViewProviderFemPostWarpVector = 'FemGui::ViewProviderFemPostWarpVector'
     ViewProviderResult = 'FemGui::ViewProviderResult'
     ViewProviderResultPython = 'FemGui::ViewProviderResultPython'
+    ViewProviderSetElementNodes = 'FemGui::ViewProviderSetElementNodes'
     ViewProviderSetElements = 'FemGui::ViewProviderSetElements'
     ViewProviderSetFaces = 'FemGui::ViewProviderSetFaces'
     ViewProviderSetGeometry = 'FemGui::ViewProviderSetGeometry'
@@ -450,12 +485,15 @@ class Gui:
     ViewProviderExtension = 'Gui::ViewProviderExtension'
     ViewProviderExtensionPython = 'Gui::ViewProviderExtensionPython'
     ViewProviderExtern = 'Gui::ViewProviderExtern'
+    ViewProviderFaceTexture = 'Gui::ViewProviderFaceTexture'
     ViewProviderFeature = 'Gui::ViewProviderFeature'
+    ViewProviderFeaturePython = 'Gui::ViewProviderFeaturePython'
     ViewProviderGeoFeatureGroup = 'Gui::ViewProviderGeoFeatureGroup'
     ViewProviderGeoFeatureGroupExtension = 'Gui::ViewProviderGeoFeatureGroupExtension'
     ViewProviderGeoFeatureGroupExtensionPython = 'Gui::ViewProviderGeoFeatureGroupExtensionPython'
     ViewProviderGeoFeatureGroupPython = 'Gui::ViewProviderGeoFeatureGroupPython'
     ViewProviderGeometryObject = 'Gui::ViewProviderGeometryObject'
+    ViewProviderGeometryPython = 'Gui::ViewProviderGeometryPython'
     ViewProviderGroupExtension = 'Gui::ViewProviderGroupExtension'
     ViewProviderGroupExtensionPython = 'Gui::ViewProviderGroupExtensionPython'
     ViewProviderImagePlane = 'Gui::ViewProviderImagePlane'
@@ -466,7 +504,6 @@ class Gui:
     ViewProviderLinkPython = 'Gui::ViewProviderLinkPython'
     ViewProviderMaterialObject = 'Gui::ViewProviderMaterialObject'
     ViewProviderMaterialObjectPython = 'Gui::ViewProviderMaterialObjectPython'
-    ViewProviderMeasureDistance = 'Gui::ViewProviderMeasureDistance'
     ViewProviderOrigin = 'Gui::ViewProviderOrigin'
     ViewProviderOriginFeature = 'Gui::ViewProviderOriginFeature'
     ViewProviderOriginGroup = 'Gui::ViewProviderOriginGroup'
@@ -476,11 +513,12 @@ class Gui:
     ViewProviderPlacement = 'Gui::ViewProviderPlacement'
     ViewProviderPlacementPython = 'Gui::ViewProviderPlacementPython'
     ViewProviderPlane = 'Gui::ViewProviderPlane'
-    ViewProviderPointMarker = 'Gui::ViewProviderPointMarker'
-    ViewProviderPythonFeature = 'Gui::ViewProviderPythonFeature'
-    ViewProviderPythonGeometry = 'Gui::ViewProviderPythonGeometry'
+    ViewProviderSuppressibleExtension = 'Gui::ViewProviderSuppressibleExtension'
+    ViewProviderSuppressibleExtensionPython = 'Gui::ViewProviderSuppressibleExtensionPython'
     ViewProviderTextDocument = 'Gui::ViewProviderTextDocument'
+    ViewProviderTextureExtension = 'Gui::ViewProviderTextureExtension'
     ViewProviderVRMLObject = 'Gui::ViewProviderVRMLObject'
+    ViewProviderVarSet = 'Gui::ViewProviderVarSet'
     Workbench = 'Gui::Workbench'
 
 
@@ -505,6 +543,7 @@ class InspectionGui:
 
 
 class MatGui:
+    MaterialTreeWidget = 'MatGui::MaterialTreeWidget'
     Workbench = 'MatGui::Workbench'
 
 
@@ -524,10 +563,33 @@ class Materials:
     ModelManager = 'Materials::ModelManager'
     ModelProperty = 'Materials::ModelProperty'
     ModelUUIDs = 'Materials::ModelUUIDs'
+    PropertyMaterial = 'Materials::PropertyMaterial'
 
 
 class Measure:
+    MeasureAngle = 'Measure::MeasureAngle'
+    MeasureArea = 'Measure::MeasureArea'
+    MeasureBase = 'Measure::MeasureBase'
+    MeasureDistance = 'Measure::MeasureDistance'
+    MeasureDistanceDetached = 'Measure::MeasureDistanceDetached'
+    MeasureDistanceType = 'Measure::MeasureDistanceType'
+    MeasureLength = 'Measure::MeasureLength'
+    MeasurePosition = 'Measure::MeasurePosition'
+    MeasurePython = 'Measure::MeasurePython'
+    MeasureRadius = 'Measure::MeasureRadius'
     Measurement = 'Measure::Measurement'
+
+
+class MeasureGui:
+    ViewProviderMeasure = 'MeasureGui::ViewProviderMeasure'
+    ViewProviderMeasureAngle = 'MeasureGui::ViewProviderMeasureAngle'
+    ViewProviderMeasureArea = 'MeasureGui::ViewProviderMeasureArea'
+    ViewProviderMeasureBase = 'MeasureGui::ViewProviderMeasureBase'
+    ViewProviderMeasureDistance = 'MeasureGui::ViewProviderMeasureDistance'
+    ViewProviderMeasureGroup = 'MeasureGui::ViewProviderMeasureGroup'
+    ViewProviderMeasureLength = 'MeasureGui::ViewProviderMeasureLength'
+    ViewProviderMeasurePosition = 'MeasureGui::ViewProviderMeasurePosition'
+    ViewProviderMeasureRadius = 'MeasureGui::ViewProviderMeasureRadius'
 
 
 class Mesh:
@@ -687,6 +749,7 @@ class Part:
     GeometryExtension = 'Part::GeometryExtension'
     GeometryIntExtension = 'Part::GeometryIntExtension'
     GeometryMigrationExtension = 'Part::GeometryMigrationExtension'
+    GeometryMigrationPersistenceExtension = 'Part::GeometryMigrationPersistenceExtension'
     GeometryPersistenceExtension = 'Part::GeometryPersistenceExtension'
     GeometryStringExtension = 'Part::GeometryStringExtension'
     Helix = 'Part::Helix'
@@ -707,9 +770,11 @@ class Part:
     Primitive = 'Part::Primitive'
     Prism = 'Part::Prism'
     PrismExtension = 'Part::PrismExtension'
+    ProjectOnSurface = 'Part::ProjectOnSurface'
     PropertyFilletEdges = 'Part::PropertyFilletEdges'
     PropertyGeometryList = 'Part::PropertyGeometryList'
     PropertyPartShape = 'Part::PropertyPartShape'
+    PropertyShapeCache = 'Part::PropertyShapeCache'
     PropertyShapeHistory = 'Part::PropertyShapeHistory'
     PropertyTopoShapeList = 'Part::PropertyTopoShapeList'
     Refine = 'Part::Refine'
@@ -816,6 +881,7 @@ class PartDesignGui:
     ViewProviderDatumPoint = 'PartDesignGui::ViewProviderDatumPoint'
     ViewProviderDraft = 'PartDesignGui::ViewProviderDraft'
     ViewProviderDressUp = 'PartDesignGui::ViewProviderDressUp'
+    ViewProviderExtrude = 'PartDesignGui::ViewProviderExtrude'
     ViewProviderFillet = 'PartDesignGui::ViewProviderFillet'
     ViewProviderGroove = 'PartDesignGui::ViewProviderGroove'
     ViewProviderHelix = 'PartDesignGui::ViewProviderHelix'
@@ -880,6 +946,7 @@ class PartGui:
     ViewProviderPointParametric = 'PartGui::ViewProviderPointParametric'
     ViewProviderPrimitive = 'PartGui::ViewProviderPrimitive'
     ViewProviderPrism = 'PartGui::ViewProviderPrism'
+    ViewProviderProjectOnSurface = 'PartGui::ViewProviderProjectOnSurface'
     ViewProviderPython = 'PartGui::ViewProviderPython'
     ViewProviderRefine = 'PartGui::ViewProviderRefine'
     ViewProviderRegularPolygon = 'PartGui::ViewProviderRegularPolygon'
@@ -1046,10 +1113,6 @@ class SpreadsheetGui:
     Workbench = 'SpreadsheetGui::Workbench'
 
 
-class StartGui:
-    Workbench = 'StartGui::Workbench'
-
-
 class Surface:
     Cut = 'Surface::Cut'
     Extend = 'Surface::Extend'
@@ -1075,6 +1138,8 @@ class TechDraw:
     CosmeticExtension = 'TechDraw::CosmeticExtension'
     CosmeticExtensionPython = 'TechDraw::CosmeticExtensionPython'
     CosmeticVertex = 'TechDraw::CosmeticVertex'
+    DrawBrokenView = 'TechDraw::DrawBrokenView'
+    DrawBrokenViewPython = 'TechDraw::DrawBrokenViewPython'
     DrawComplexSection = 'TechDraw::DrawComplexSection'
     DrawComplexSectionPython = 'TechDraw::DrawComplexSectionPython'
     DrawGeomHatch = 'TechDraw::DrawGeomHatch'
@@ -1154,11 +1219,6 @@ class TechDrawGui:
     ViewProviderViewSection = 'TechDrawGui::ViewProviderViewSection'
     ViewProviderWeld = 'TechDrawGui::ViewProviderWeld'
     Workbench = 'TechDrawGui::Workbench'
-
-
-class WebGui:
-    BrowserView = 'WebGui::BrowserView'
-    Workbench = 'WebGui::Workbench'
 
 
 class voidApp:

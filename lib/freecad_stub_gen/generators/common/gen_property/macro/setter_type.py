@@ -275,7 +275,9 @@ class PropertyMacroSetter(PropertyMacroBase):
                 literalsRaw = match.group(1)
             else:
                 reg = self.REG_PATTERN_VEC.format(varName)
-                if re.search(reg, self.constructorBody):
+                if re.search(reg, self.constructorBody) or re.search(
+                    reg, self.cppContent
+                ):
                     return 'str'
 
                 msg = 'Cannot find enum variable'
