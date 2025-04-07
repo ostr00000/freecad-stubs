@@ -150,7 +150,7 @@ class SelfSignature(Signature):
             case Mapping():
                 initParameters = list(parameters.values())
             case _:
-                initParameters = cast(InitParameters_t, parameters)
+                initParameters = cast('InitParameters_t', parameters)
 
         if isinstance(return_annotation, RawRepr):
             retAnnotation = return_annotation

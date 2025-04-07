@@ -242,7 +242,7 @@ class _ModuleNamespace:
             if predicate(p):
                 fromCurrentNamespace.add(p)
 
-        if len(fromCurrentNamespace):
+        if fromCurrentNamespace:
             return fromCurrentNamespace.pop()
         return None
 

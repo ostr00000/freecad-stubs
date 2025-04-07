@@ -186,7 +186,7 @@ REG_BLOCK = re.compile(
 def pairwiseLongest(
     it: Iterable[T], fill: R | None = None
 ) -> Iterator[tuple[T, T | R]]:
-    return itertools.pairwise(itertools.chain(it, [cast(T, fill)]))
+    return itertools.pairwise(itertools.chain(it, [cast('T', fill)]))
 
 
 def parseClass(className: str, fileContent: str) -> CppClass:

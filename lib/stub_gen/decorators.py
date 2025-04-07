@@ -44,9 +44,9 @@ def logCurrentTaskDecFactory(
     return ret
 
 
-def uniqueIteratorDec[
-    **Param, Ret
-](fun: Callable[Param, Iterable[Ret]]) -> Callable[Param, Iterable[Ret]]:
+def uniqueIteratorDec[**Param, Ret](
+    fun: Callable[Param, Iterable[Ret]],
+) -> Callable[Param, Iterable[Ret]]:
     def uniqueIterator(*args: Param.args, **kwargs: Param.kwargs) -> Iterable[Ret]:
         seen = set()
         for item in fun(*args, **kwargs):

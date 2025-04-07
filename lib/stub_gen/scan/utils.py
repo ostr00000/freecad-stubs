@@ -17,9 +17,9 @@ class SafeAccess[V]:
         return self.val
 
 
-def uniqueIterator[
-    Item: Hashable
-](it: Iterable[Item], visited: set[Item] | None = None) -> Iterable[Item]:
+def uniqueIterator[Item: Hashable](
+    it: Iterable[Item], visited: set[Item] | None = None
+) -> Iterable[Item]:
     seen = visited if visited is not None else set[Item]()
 
     for item in it:
