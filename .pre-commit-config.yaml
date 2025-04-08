@@ -60,8 +60,11 @@ repos:
     hooks:
       - id: toml-sort-fix
 
-  - repo: https://github.com/crate-ci/typos
-    rev: v1
+  - repo: https://github.com/adhtruong/mirrors-typos
+  # original repo: https://github.com/crate-ci/typos
+  # we use mirror repo, because tags in original repo are broken:
+  # https://github.com/crate-ci/typos/issues/390
+    rev: v1.31.0
     hooks:
       - id: typos
         name: typos-diff
