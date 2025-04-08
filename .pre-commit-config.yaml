@@ -51,7 +51,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/abravalheri/validate-pyproject
-    rev: v0.23
+    rev: v0.24.1
     hooks:
       - id: validate-pyproject
 
@@ -60,8 +60,11 @@ repos:
     hooks:
       - id: toml-sort-fix
 
-  - repo: https://github.com/crate-ci/typos
-    rev: dictgen-v0.3.1
+  - repo: https://github.com/adhtruong/mirrors-typos
+  # original repo: https://github.com/crate-ci/typos
+  # we use mirror repo, because tags in original repo are broken:
+  # https://github.com/crate-ci/typos/issues/390
+    rev: v1.31.0
     hooks:
       - id: typos
         name: typos-diff
@@ -72,13 +75,13 @@ repos:
         name: typos-fix
 
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.3.0
+    rev: v2.4.1
     hooks:
       - id: codespell
         additional_dependencies: [ tomli ]
 
   - repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.21
+    rev: 0.7.22
     hooks:
       - id: mdformat
         additional_dependencies:
@@ -97,12 +100,12 @@ repos:
         args: [ --line-length=89 ]
 
   - repo: https://github.com/psf/black
-    rev: 24.10.0
+    rev: 25.1.0
     hooks:
       - id: black
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.6
+    rev: v0.11.4
     hooks:
       - id: ruff
         name: ruff-diff
@@ -117,12 +120,12 @@ repos:
         args: [ --exit-non-zero-on-fix, --fix ]
 
   - repo: https://github.com/jendrikseipp/vulture
-    rev: v2.11
+    rev: v2.14
     hooks:
       - id: vulture
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.391
+    rev: v1.1.398
     hooks:
       - id: pyright
 

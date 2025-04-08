@@ -117,8 +117,8 @@ class TypesConverter:
             msg = f'Function has not enough arguments {self.fun}'
             raise InvalidPointerFormat(msg) from ie
 
-        if (typ := self._convertPointerToType(pointerArg)) is not None:
-            return typ
+        if (ty := self._convertPointerToType(pointerArg)) is not None:
+            return ty
 
         if pointerArg.endswith('::type_object()'):
             logger.debug(f"Cannot detect pointer {pointerArg=}")

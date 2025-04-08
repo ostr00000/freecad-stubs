@@ -47,4 +47,4 @@ def main():
 if __name__ == '__main__':
     configLogger()
     main()
-    logging.info("freecad_stub_gen finished successfully")
+    logging.getLogger().info("freecad_stub_gen finished successfully")
