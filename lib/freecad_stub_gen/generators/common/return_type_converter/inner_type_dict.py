@@ -21,7 +21,7 @@ PAR = ParamSpec('PAR')
 RET = TypeVar('RET')
 
 
-def lazyDec(fun: Callable[PAR, RET]) -> Callable[PAR, Callable[[], RET]]:
+def lazyDec[**PAR, RET](fun: Callable[PAR, RET]) -> Callable[PAR, Callable[[], RET]]:
     @wraps(fun)
     def lazyInner(*args: PAR.args, **kwargs: PAR.kwargs):
         def callRequired():

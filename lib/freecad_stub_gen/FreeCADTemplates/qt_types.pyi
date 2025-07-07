@@ -15,7 +15,7 @@ from qtpy.QtCore import (
 
 _Fun_t = typing.TypeVar('_Fun_t', bound=typing.Callable)
 
-class Signal(BaseSignal, typing.Generic[_Fun_t]):
+class Signal[Fun_t: typing.Callable](BaseSignal):
     signatures: tuple[str, ...]
 
     def __init__(self, *types: typing.Any, name: str = ...) -> None: ...
@@ -26,7 +26,7 @@ class Signal(BaseSignal, typing.Generic[_Fun_t]):
         self, instance: QObject, owner: type[QObject]
     ) -> SignalInstance[_Fun_t]: ...
 
-class SignalInstance(BaseSignalInstance, typing.Generic[_Fun_t]):
+class SignalInstance[Fun_t: typing.Callable](BaseSignalInstance):
     signal: str
 
     def __getitem__(self, key: object) -> SignalInstance: ...

@@ -1,10 +1,10 @@
 from collections.abc import Hashable, Iterable
-from typing import Generic, TypeVar
+from typing import TypeVar
 
 T = TypeVar('T', bound=Hashable)
 
 
-class OrderedSet(Generic[T]):
+class OrderedSet[T: Hashable]:
     def __init__(self, it: Iterable[T] = ()):
         self._data: dict[T, None] = dict.fromkeys(it)
 

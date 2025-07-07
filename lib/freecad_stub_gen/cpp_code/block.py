@@ -4,7 +4,7 @@ import itertools
 import logging
 import re
 from functools import cached_property
-from typing import TYPE_CHECKING, Generic, Self, TypeVar, cast, overload
+from typing import TYPE_CHECKING, Self, TypeVar, cast, overload
 
 from freecad_stub_gen.generators.common.cpp_function import (
     generateExpressionUntilChar,
@@ -70,7 +70,7 @@ class QtSignal(BlockItem):
         return f'{self.name}: qt.Signal[{slots}]'
 
 
-class ClassVarContainer(Generic[T]):
+class ClassVarContainer[T]:
     """Workaround for parametrized class variables.
 
     See more: https://github.com/python/mypy/issues/5144
@@ -83,7 +83,7 @@ class ClassVarContainer(Generic[T]):
         return self.val
 
 
-class LateInit(Generic[T]):
+class LateInit[T]:
     def __init__(self):
         self.name = ''
 
@@ -115,7 +115,7 @@ class LateInit(Generic[T]):
 BI = TypeVar('BI', bound=BlockItem)
 
 
-class CppBlock(Generic[BI]):
+class CppBlock[BI: BlockItem]:
     ITEM_TYPE = ClassVarContainer[type[BI]](BlockItem)
 
     cppClass = LateInit['CppClass']()
@@ -183,7 +183,7 @@ REG_BLOCK = re.compile(
 )
 
 
-def pairwiseLongest(
+def pairwiseLongest[T, R](
     it: Iterable[T], fill: R | None = None
 ) -> Iterator[tuple[T, T | R]]:
     return itertools.pairwise(itertools.chain(it, [cast('T', fill)]))
