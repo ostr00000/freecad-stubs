@@ -2309,7 +2309,7 @@ class PropertyContainer(FreeCAD.Persistence):
             Property name.
         """
 
-    def getPropertyByName(self, pstr: str, checkOwner: int = 0, /) -> FreeCAD.Property | tuple[typing.Any, FreeCAD.Property]:
+    def getPropertyByName(self, pstr: str, checkOwner: int = 0, /) -> FreeCAD.Property | tuple[typing.Any, FreeCAD.Property] | typing.Any:
         """
         getPropertyByName(name, checkOwner=0) -> object or Tuple
 
