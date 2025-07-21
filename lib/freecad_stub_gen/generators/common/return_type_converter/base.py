@@ -229,6 +229,11 @@ class ReturnTypeConverterBase:
                 ret = self._findClassWithModule(varText)
 
             case StrWrapper(end='->getPyObject()' | '.getPyObject()'):
+                # NOTE: we are assuming here that the object return Python
+                # version of itself, but this is not always true,
+                # especially for various Properties
+                # -> it is possible to improve it
+
                 varText = removeAffix(
                     varText, suffixes=('getPyObject()', '.', '->', ')')
                 )
