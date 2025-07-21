@@ -20,6 +20,18 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Security
 
+## [1.0.21] - 2025-07-22
+
+## Changed
+
+- Issue #44: `Proxy` property in `FreeCADTemplates` is typed as `typing.Any`,
+  because in Python is not possible at the moment to write stubs for
+  an optional Protocol.
+
+# Fixed
+
+- Issue #43: invalid return type for `getPropertyByName`/
+
 ## [1.0.20] - 2025-02-21
 
 ### Fixed
