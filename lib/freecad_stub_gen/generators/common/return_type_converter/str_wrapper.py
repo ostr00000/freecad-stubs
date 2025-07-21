@@ -27,6 +27,9 @@ class AffixCmp:
             case _:
                 raise NotImplementedError
 
+    def __hash__(self):
+        return hash(self.text)
+
     def __str__(self):
         return self.text
 

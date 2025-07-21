@@ -173,6 +173,8 @@ class TupleArgument(ImportsCollector, list[RetType], SizedIterable):
             and super().__eq__(other)
         )
 
+    __hash__ = None
+
 
 class InvalidReturnType(ValueError):
     pass
@@ -263,3 +265,5 @@ class TypedDictGen(ComplexArgumentBase):
             and self.alternativeSyntax == other.alternativeSyntax
             and super().__eq__(other)
         )
+
+    __hash__ = None  # type: ignore[reportAssignmentType]

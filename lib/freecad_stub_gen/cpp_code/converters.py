@@ -27,7 +27,9 @@ def removeComments(text):
     return re.sub(_REG_COMMENT_REM, _replacer, text)
 
 
-def toBool(text: str | bool | None) -> bool:
+def toBool(
+    text: str | bool | None,  # noqa: FBT001 # SKIP: this is union of bool
+) -> bool:
     match str(text).lower():
         case 'y' | 'yes' | 't' | 'true' | 'on' | '1':
             return True

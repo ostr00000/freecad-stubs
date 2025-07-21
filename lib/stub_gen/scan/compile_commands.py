@@ -13,7 +13,7 @@ def getClangStandardIncludes() -> list[Path]:
     This is similar to:
     > clang -E -v - < /dev/null 2>&1 | grep "^ /\
     """
-    out = subprocess.check_output(  # noqa: S603
+    out = subprocess.check_output(
         ['/usr/bin/clang', '-E', '-v', '-'],
         text=True,
         stderr=subprocess.STDOUT,

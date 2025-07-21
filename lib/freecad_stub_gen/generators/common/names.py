@@ -19,7 +19,8 @@ def getFatherClassWithModules(currentNode: ET.Element) -> str:
         mod = convertNamespaceToModule(fatherNamespace)
         return f'{mod}.{fatherName}'
 
-    from freecad_stub_gen.module_namespace import moduleNamespace
+    # SKIP: cyclic import
+    from freecad_stub_gen.module_namespace import moduleNamespace  # noqa: PLC0415
 
     return moduleNamespace.getPythonNameFromCpp(fatherNamespace, fatherName)
 
@@ -79,7 +80,9 @@ def getClassWithModulesFromNode(currentNode: ET.Element) -> str:
             return f'{namespace}.{name}'
 
         return name
-    from freecad_stub_gen.importable_map import importableMap
+
+    # SKIP: cyclic import
+    from freecad_stub_gen.importable_map import importableMap  # noqa: PLC0415
 
     fullName = importableMap.get(currentNode.attrib['Name'])
     if fullName and '.' in fullName:
@@ -155,7 +158,8 @@ def getClassWithModulesFromPointer(cTypePointer: str) -> str:
     cType = removeAffix(cTypePointer, suffixes=('::Type', '::type_object('))
     namespace, cType = getNamespaceWithClass(cType)
 
-    from freecad_stub_gen.module_namespace import moduleNamespace
+    # SKIP: cyclic import
+    from freecad_stub_gen.module_namespace import moduleNamespace  # noqa: PLC0415
 
     return moduleNamespace.getPythonNameFromCpp(namespace, cType)
 

@@ -33,7 +33,7 @@ class XmlDynamicPropertyGenerator(BaseXmlGenerator, DynamicPropertyGenerator, AB
             raise TypeError(msg)
 
         parts = self.baseGenFilePath.parts
-        baseParts = (*parts[:parts.index('src') + 1], inc)
+        baseParts = (*parts[: parts.index('src') + 1], inc)
         pathFromSrc = Path(*baseParts)
         pathFromLocal = self.baseGenFilePath.parent / inc
 

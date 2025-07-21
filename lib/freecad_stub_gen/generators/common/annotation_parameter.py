@@ -36,6 +36,8 @@ class RawRepr:
             return other == self.values.first()
         return super().__eq__(other)
 
+    __hash__ = None  # type: ignore[reportAssignmentType]
+
     def __add__(self, other: str | RawRepr):
         match other:
             case str(s):
