@@ -220,6 +220,9 @@ max-complexity = 15
     'E402', # Module level import not at top of file # SKIP: imports in __init__ must follow strict order
     'F401', # imported but unused # SKIP: sometimes we need an additional initialization
 ]
+'**/__main__.py' = [
+    'PLC0415', # `import` should be at the top-level of a file # SKIP: we allow to import only when we configure everything else
+]
 '**/FreeCADTemplates/*.py*' = [
     # SKIP these are generated files
     'D', # pydocstyle
