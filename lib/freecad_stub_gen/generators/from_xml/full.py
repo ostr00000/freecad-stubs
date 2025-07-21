@@ -109,10 +109,20 @@ class FreecadStubGeneratorFromXML(
 
         match className:
             case 'DocumentObject':
+                # We use here Any, because in practice this is almost always
+                # some custom class, so to avoid using cast, we return Any.
+                # On the other hand some IDE can generate/extract additional
+                # info if we provide class with "optional protocol",
+                # so we add additional type despite using `Any`.
                 ret += self.createProperty(
                     'Proxy',
-                    'FreeCADTemplates.templates.ProxyPython',
+                    'FreeCADTemplates.templates.ProxyPython | typing.Any',
                     getter=True,
+                )
+
+                ret += self.createProperty(
+                    'Proxy',
+                    'typing.Any',
                     setter=True,
                 )
                 self.requiredImports.add('FreeCADTemplates.templates')
@@ -120,8 +130,12 @@ class FreecadStubGeneratorFromXML(
             case 'ViewProviderDocumentObject':
                 ret += self.createProperty(
                     'Proxy',
-                    'FreeCADTemplates.templates.ViewProviderPython',
+                    'FreeCADTemplates.templates.ViewProviderPython | typing.Any',
                     getter=True,
+                )
+                ret += self.createProperty(
+                    'Proxy',
+                    'typing.Any',
                     setter=True,
                 )
                 self.requiredImports.add('FreeCADTemplates.templates')

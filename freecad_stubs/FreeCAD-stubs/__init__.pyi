@@ -591,10 +591,10 @@ class DocumentObject(FreeCAD.ExtensionContainer):
     """
 
     @property
-    def Proxy(self) -> FreeCADTemplates.templates.ProxyPython: ...
+    def Proxy(self) -> FreeCADTemplates.templates.ProxyPython | typing.Any: ...
 
     @Proxy.setter
-    def Proxy(self, value: FreeCADTemplates.templates.ProxyPython): ...
+    def Proxy(self, value: typing.Any): ...
 
     @property
     def Document(self) -> FreeCAD.Document:
@@ -2237,7 +2237,7 @@ class Document(FreeCAD.PropertyContainer):
         """Undo one transaction"""
 
 
-# PropertyContainerPy.xml
+# \.xml
 class PropertyContainer(FreeCAD.Persistence):
     """
     This class can be imported.
