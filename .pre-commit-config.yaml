@@ -87,7 +87,7 @@ repos:
         additional_dependencies:
           # plugins to format for GitHub:
           - mdformat-gfm
-          - mdformat-frontmatter
+          - mdformat-front-matters
           - mdformat-footnote
           # plugin to format code blocks using `black` formatter:
           - mdformat-black
