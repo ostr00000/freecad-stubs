@@ -213,7 +213,7 @@ def stripElaborated(cursorWrapper: CursorWrapper) -> CursorWrapper:
     match cursorWrapper.cursor.kind, cursorWrapper.cursor.type.kind:
         case cc.CursorKind.VAR_DECL, cc.TypeKind.ELABORATED:
             elaboratedChild = cursorWrapper.getChildren()
-            (_qualifiers, obj) = elaboratedChild
+            _qualifiers, obj = elaboratedChild
             return obj
 
     return cursorWrapper

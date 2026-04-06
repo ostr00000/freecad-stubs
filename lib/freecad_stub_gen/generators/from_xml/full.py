@@ -154,8 +154,7 @@ class FreecadStubGeneratorFromXML(
         return ret
 
 
-workbenchBody = inspect.cleandoc(
-    """
+workbenchBody = inspect.cleandoc("""
     MenuText: str = ''
     ToolTip: str = ''
     Icon: str = None  # path to the icon
@@ -173,5 +172,4 @@ workbenchBody = inspect.cleandoc(
 
     def GetClassName(self):
         return 'Gui::PythonWorkbench'
-"""
-)
+""")
