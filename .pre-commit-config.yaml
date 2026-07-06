@@ -64,7 +64,7 @@ repos:
   # original repo: https://github.com/crate-ci/typos
   # we use mirror repo, because tags in original repo are broken:
   # https://github.com/crate-ci/typos/issues/390
-    rev: v1.45.0
+    rev: v1.48.0
     hooks:
       - id: typos
         name: typos-diff
@@ -100,12 +100,12 @@ repos:
         args: [ --line-length=89 ]
 
   - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 26.3.1
+    rev: 26.5.1
     hooks:
       - id: black
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.9
+    rev: v0.15.20
     hooks:
       - id: ruff
         name: ruff-diff
@@ -125,7 +125,7 @@ repos:
       - id: vulture
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.408
+    rev: v1.1.411
     hooks:
       - id: pyright
 
