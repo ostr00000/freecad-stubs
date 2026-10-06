@@ -23,8 +23,10 @@ class PropertyType(enum.IntFlag):
     Prop_ReadOnly = 1, "Property is read-only in the editor"
     Prop_Transient = (
         2,
-        ("Property content won't be saved to file, "
-        "but still saves name, type and status"),
+        (
+            "Property content won't be saved to file, "
+            "but still saves name, type and status"
+        ),
     )
     Prop_Hidden = 4, "Property won't appear in the editor"
     Prop_Output = 8, "Modified property doesn't touch its parent container"
